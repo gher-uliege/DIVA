@@ -32,10 +32,11 @@ cd ..
 
 
 i=0
-
+lowest=0
 if [ "$#" == "2" ]
 then 
 let i=$1-1
+let lowest=$1-1
 fi
 
 mv -f ./output/SN.dat ./output/SN.dat.ori
@@ -49,8 +50,8 @@ echo level $i
 let level=10000+$i
 
 cp ./output/gcv.dat.${level} ./output/gcv.dat.${level}.ori
-
-let jj=${i}*${ncv}
+let iii=$i-$lowest
+let jj=${iii}*${ncv}
 head -$jj ./divawork/fort.21 | tail -$ncv > ./output/gcv.dat.${level}
 
 
