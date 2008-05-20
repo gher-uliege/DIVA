@@ -1,0 +1,16 @@
+#!/bin/bash
+
+
+
+
+echo //////////////////////////////////////////////////
+echo             Looking for outliers
+echo //////////////////////////////////////////////////
+echo ' '
+
+divacalc qc
+
+echo ' '
+echo --------------------------
+echo Outlier detection finished
+echo --------------------------

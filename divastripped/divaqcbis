@@ -1,0 +1,100 @@
+#!/bin/bash
+
+
+
+echo //////////////////////////////////////////////////
+echo             Looking for outliers
+echo //////////////////////////////////////////////////
+echo ' '
+
+if [ -f ./input/data.dat ]
+then 
+cp ./input/data.dat ./divawork/fort.44
+else
+echo Need to provide data.dat in ./input
+fi
+
+
+Filepar=./input/param.par
+{
+read linecomment
+read lc
+read linecomment
+read icoordchange
+read linecomment
+read ispec
+read linecomment
+read ireg
+read linecomment
+read xori
+read linecomment
+read yori
+read linecomment
+read dx
+read linecomment
+read dy
+read linecomment
+read nx
+read linecomment
+read ny
+read linecomment
+read valex
+read linecomment
+read snr
+read linecomment
+read varbak
+} < $Filepar
+
+cd divawork
+
+nbccol=$(head -n 1 ./fort.44 | wc -w)
+GGGGG=../output/gcvval.dat
+
+{
+read GCVVAL BBBBBB TRACEA tutu
+}<$GGGGG
+
+echo $TRACEA 
+echo $lc $snr $nbccol $GCVVAL $TRACEA $varbak | ../../bin/calcestbis.a
+
+
+#output of results to user
+cp -v fort.76 ../output/expectederroratdatapointbis.anl
+
+echo ' '
+echo Looking for outliers
+echo ' '
+if [ -f fort.71 ] 
+then
+echo Using fort.71 found in divawork
+else
+echo Try using fieldatdatapoint.anl
+if [ -f ./output/fieldatdatapoint.anl ]
+then
+cp ../output/fieldatdatapoint.anl fort.71
+else
+echo Need to execute divacalc before
+fi
+fi
+echo $valex | ../../bin/lookforoutliers.a
+echo ' '
+echo Copying outlier lists
+echo ' '
+
+if [ -f fort.66 ]
+then
+mv -v fort.66 ../output/outliersbis.dat
+mv -v fort.67 ../output/outliersbis.normalized.dat
+else
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo Check execution track
+echo --------------------------------------------
+fi
+
+
+echo ' '
+echo --------------------------
+echo Outlier detection finished
+echo --------------------------

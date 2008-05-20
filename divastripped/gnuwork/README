@@ -1,0 +1,89 @@
+Gnuplot tools for DIVA
+Version 1.0
+
+January 14, 2008
+
+This is a quick guide to use gnuplot to prepare basic pictures of the analysis
+with DIVA.
+
+
+Installation:
+• put the most recent forgnuplot*.f files into directory src/Fortran/Util
+• put the most recent gnuwork directory content into directory divastripped
+• put the most recent divagnu into directory divastripped
+These three operations are automatically performed if you place yourself in di-
+rectory diva-x.y.z. and unzip diva-gnuplot.zip (or untar diva-gnuplot.tar).
+Then
+• compile DIVA (divacompile in directory src/Fortran) or only forgnuplot*.f
+(make sure the binaries forgnuplot*.a are in diva-x.y.z/bin and have
+the permission 755)
+• in directory gnuwork, edit divaplotall and change the line related to the
+executable gplot=c:/JMB/gnuplot/bin/wgnuplot.exe so that it points
+to the gnuplot executable of your system (often gnuplot in a Linux system
+if the PATH is set correctly or wgnuplot.exe on a windows system)
+
+
+Batch use: when in divastripped, the execution of divagnu will prepare
+all plots (defined by diva * in ./gnuwork). The plots obtained are placed
+in ./gnuwork/plots, using default values for plotting ranges and projections.
+Previously existing plots are erased.
+To override defaults, you can do the following:
+• To apply a plotting range for the analysed fields between 34 and 36 for
+example, just execute divagnu 34 36
+• To change the threshold for masking the analysis based on the error field,
+create a threshold.dat file in ./gnuwork, containing a single value. This
+1
+value is a fraction of the variance of the background field. When the error
+is above this threshold, the plot is masked. Example: a value of 0.01 in
+threshold.dat and a VARBAK value of 10 will lead to a mask whenever
+the error variance is larger than 0.1. Without a threshold.dat file, the
+default is a fraction of 0.5 (i.e. a 50% error on the anomaly).
+• When icoordchange is 1 or 2, a projection is plotted, with a refer-
+ence longitude (longref) based on the analysis grid. If you place a file
+longref.dat into ./gnuwork containing the single value of your desired
+reference longitude, the projection will take this value rather then the
+default one.
+• To use other color palettes than the default ones: go into ./gnuwork;
+copy analysis.pal.default into analysis.pal and edit the latter for
+your needs. Similarly error.pal.default, which is taken for error plots,
+can also be customized by creating an error.pal. It is better to create
+your own .pal files instead of modifying the default palettes, because in
+case you install a new version of the gnuplot tools, default palettes will be
+reinstalled with the new version, whereas customized palettes remain.
+• To change output from .png format to postscript, edit divaplotall found
+in ./gnuwork and change the line DRIVER=png to DRIVER=ps (you can do
+similar changes for other formats by adapting the script (search for DRIVER
+in divaplotall)
+• For more complicated customization, you need to edit divaplotall and
+adapt it to your needs, saving it before an update of the present gnuplot
+tools is installed.
+
+
+Interactive use: If you run gnuplot interactively, you can run most of the
+plotting tools by executing commands similar to load diva mesh from within
+gnuplot, applying adequate zrange, cbrange and palette commands before a
+replot. (You can look at how the batch processing divaplotall creates the
+files fead into gnuplot).
+Useful commands in gnuplot to customize your plots or work interactively
+are
+• set palette rgbformulae 33,13,10 to change colorbars
+• or set palette defined ( 0 "blue", 0.7 "green", 1 "yellow", 2 "red"
+) ; here for a matlab type colorbar
+• set cbrange[34:36.5] to set range for colorbar
+• set xrange[30:180] to set window on x
+• set yrange[10:40] to set window on y
+• set xtics autofreq makes default axes
+2
+• replot after definition of new ranges etc, replots the picture
+• to save an image (here in postscript)
+set terminal postscript landscape color
+set output ’mypicture.eps’
+replot
+• to go back to screen output
+set terminal windows (or x11 for Linux-X11 or AquaTerm for Mac
+OSX)
+set output
+• when using diva analysis mask interactively, once finished execute
+unset zrange
+set pm3d clip1in
+• When moving from a colored map to line plots: unset pm3d

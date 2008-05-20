@@ -1,0 +1,68 @@
+#!/bin/bash
+
+
+
+
+
+
+
+
+cd divawork
+
+cp ../input/data.dat fort.44
+
+if [ -f ../output/fieldatdatapoint.anl.ref ]
+then
+
+echo ' '
+echo ===================================================================
+echo There are already reference fields at data points. Will use them
+echo Preparing data anomalies based on ./output/fieldatdatapoint.anl.ref
+echo ===================================================================
+
+else
+echo ' '
+echo ===================================================================
+echo !!!!! Will try to use gridded reference field by interpolation !!!!!
+echo !!!!! Will also create reference field at valatxy.coord !!!!!!!!!!!!
+echo ===================================================================
+
+cp ../output/fieldgher.anl.ref fort.20
+cp ../output/ghertonetcdf/GridInfo.dat fort.21
+cp ../input/valatxy.coord fort.45
+../../bin/interprefe.a
+
+
+cp -v fort.81 ../output/fieldatdatapoint.anl.ref
+cp -v  fort.82 ../output/valatxyascii.anl.ref
+rm fort.45
+rm fort.20
+rm fort.21
+rm fort.81
+rm fort.82
+# keep fort.44
+fi
+
+echo ============================
+echo       Now anomalies
+echo ============================
+
+nbccol=$(head -n 1 ../input/data.dat | wc -w)
+# make sure to deal with 3 or 4 columns in data.dat
+
+
+cp ../output/fieldatdatapoint.anl.ref fort.45
+
+echo $nbccol > coucou
+head -22 ../input/param.par | tail -1 >> coucou
+cat coucou | ../../bin/datadiff.a
+rm coucou
+mv ../input/data.dat ../input/data.dat.full
+mv fort.46 ../input/data.dat
+rm fort.44 fort.45
+
+echo ===================================================================
+echo data.dat now contains anomalies
+echo data.dat.full are original data
+echo ===================================================================
+echo  ' '

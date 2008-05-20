@@ -1,0 +1,194 @@
+#!/bin/bash
+
+
+if [ -f ./input/param.par.ori ] 
+then
+echo replacing by original param file
+echo and data 
+mv ./input/param.par.ori ./input/param.par
+mv ./input/data.dat.full ./input/data.dat
+fi
+
+cd divawork
+
+
+Filepar=../input/param.par
+{
+read linecomment
+read lc
+read linecomment
+read icoordchange
+read linecomment
+read ispec
+read linecomment
+read ireg
+read linecomment
+read xori
+read linecomment
+read yori
+read linecomment
+read dx
+read linecomment
+read dy
+read linecomment
+read nx
+read linecomment
+read ny
+read linecomment
+read valex
+read linecomment
+read snr
+read linecomment
+read varbak
+} < $Filepar
+
+
+
+rm -f bidon
+echo ../output/fieldgher.anl > coucou
+echo ../output/fieldgher.anl.ref >> coucou
+echo bidon >> coucou
+cat coucou | ../../bin/sum.a
+if [ -f bidon ]
+then
+echo 'Added up analysed field'
+echo 'replacing analysis'
+mv bidon ../output/fieldgher.anl
+
+echo 'gridded ascii file, replacing anomalies'
+
+rm -f fort.20 
+rm -f fort.21
+rm -f fort.22
+
+cp  ../output/fieldascii.anl fort.20
+cp  ../output/fieldascii.anl.ref fort.21
+
+echo $valex $nx $ny | ../../bin/sumgrid.a
+mv fort.22 ../output/fieldascii.anl 
+
+echo 'adding ascii files and replacing anomalies analysis'
+
+rm -f fort.20 
+rm -f fort.21
+rm -f fort.22
+if [ -f ../output/valatxyascii.anl ]
+then
+echo 'valatxy'
+cp ../output/valatxyascii.anl fort.20
+cp ../output/valatxyascii.anl.ref fort.21
+echo $valex | ../../bin/sumup.a
+mv fort.22 ../output/valatxyascii.anl
+fi
+
+echo 'fieldatdatapoint'
+rm -f fort.20 
+rm -f fort.21
+rm -f fort.22
+cp ../output/fieldatdatapoint.anl fort.20
+cp ../output/fieldatdatapoint.anl.ref fort.21
+echo $valex | ../../bin/sumup.a
+mv fort.22 ../output/fieldatdatapoint.anl
+
+
+
+fi
+
+
+
+cp ../output/fieldgher.anl ../output/ghertonetcdf/fort.84
+if [ -f ../output/errorfieldgher.anl ]
+then 
+cp -v ../output/errorfieldgher.anl ../output/ghertonetcdf/fort.87
+fi
+
+iecal=0
+if [ "$ispec" == 1 ]
+then
+iecal=1
+fi
+if [ "$ispec" == 3 ]
+then
+iecal=1
+fi
+if [ "$ispec" == 5 ]
+then
+iecal=1
+fi
+if [ "$ispec" == 7 ]
+then
+iecal=1
+fi
+if [ "$ispec" == -1 ]
+then
+iecal=1
+fi
+if [ "$ispec" == -3 ]
+then
+iecal=1
+fi
+if [ "$ispec" == -5 ]
+then
+iecal=1
+fi
+if [ "$ispec" == -7 ]
+then
+iecal=1
+fi
+if [ "$ispec" == -11 ]
+then
+iecal=1
+fi
+if [ "$ispec" == -13 ]
+then
+iecal=1
+fi
+if [ "$ispec" == -15 ]
+then
+iecal=1
+fi
+if [ "$ispec" == -17 ]
+then
+iecal=1
+fi
+# JMB ADAPTED FOR DIFFERENT CASES IF ISPEC
+if [ "$varbak" != 0 ]
+then
+if [ "$iecal" == 1 ] 
+then
+echo Creating netcdf file for field and associated error
+cd ../output/ghertonetcdf
+../../../bin/netcdfoutput.a
+fi
+fi
+
+if [ "$varbak" == 0  -o  "$iecal" == 0 ] 
+then
+echo Creating netcdf file only for field 
+echo since Varbak and ispec are $varbak $ispec
+cd ../output/ghertonetcdf
+../../../bin/netcdfoutputfield.a
+fi
+
+cd ../..
+
+mv ./input/data.dat ./input/data.dat.anom
+cp ./input/data.dat.full ./input/data.dat
+echo ===================================================================
+echo data.dat now contains again original data
+echo data.dat.anom contains anomalies
+echo ===================================================================
+
+
+echo ' '
+echo --------------------
+echo Analysis is finished
+echo --------------------
+
+
+
+
+
+
+
+cd ..

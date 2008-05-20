@@ -1,0 +1,2 @@
+plot 'fort.67' index  0 using 1:2 with filledcurves ls  2 t ''  \
+,'fort.67' index    1 using 1:2 with filledcurves ls  1 title '' 

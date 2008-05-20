@@ -1,0 +1,15 @@
+#!/bin/bash
+
+awk '{ sum += $1;  L[n++] = $1 } 
+
+ END {
+ for (j=1;j<3;j++){
+ for (i=1; i<n-1; i++) {
+ FL[i]=(L[i+1]+L[i-1]+2*L[i])/4}; FL[0]=(L[0]+L[1])/2; FL[n-1]=(L[n-2]+L[n-1])/2 
+ for (i=0; i<n; i++) {
+ L[i]=FL[i] }
+ }
+ for (i=0; i<n; i++) {
+ print L[i]}
+ }
+ ' $1

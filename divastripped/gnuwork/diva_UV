@@ -1,0 +1,1 @@
+plot 'fort.55' using 1:2:3:4 with vectors head filled lt 3 t 'Velocity field'

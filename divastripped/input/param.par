@@ -1,0 +1,26 @@
+# Correlation Length lc in km or degree??? according to param icoordchange
+2
+# icoordchange (=0 if position of data in km ; =1 if position of data in degree)
+2
+# ispec (output files required, comments to come)
+0
+# ireg
+2
+# xori (origin of output regular grid, min values of X)
+0
+# yori (origin of output regular grid, min values of Y)
+36
+# dx (step of output grid)
+0.1
+# dy (step of output grid)
+0.1
+# nx max x of output grid
+121
+# ny max y of output grid
+91
+# valex (exclusion value)
+-9999
+# snr signal to noise ratio (not yet used as such,still set as 4th value
+100
+# varbak variance of the background field
+0

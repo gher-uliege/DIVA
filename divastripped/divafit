@@ -1,0 +1,109 @@
+#!/bin/bash
+
+nsamp=0
+iparsave=0
+
+echo ////////////////////////////////////////
+echo    Fitting of the covariance function
+echo ////////////////////////////////////////
+echo ' '
+
+if [ "$#" == "1" ]
+then
+if [ "$1" != "-r" ]
+then
+echo Subsampling activated
+nsamp=$1
+else
+echo Will replace param.par
+iparsave=1
+fi
+fi
+
+
+if [ "$#" == "2" ]
+then
+if [ "$1" != "-r" ]
+then
+echo Subsampling activated
+nsamp=$1
+else
+echo Will replace param.par
+iparsave=1
+fi
+if [ "$2" != "-r" ]
+then
+echo Subsampling activated
+nsamp=$2
+else
+echo Will replace param.par
+iparsave=1
+fi
+fi
+
+
+echo Cleaning unuseful files
+echo ' '
+rm -f fort.10 fort.11 fort.99 fort.98
+ 
+echo Going to fit covariance function
+echo ' '
+
+head -4 ./input/param.par | tail -1   > fort.11
+head -8 ./input/param.par | tail -1   >> fort.11
+
+if [ -f ./input/data.dat ] 
+then
+cp ./input/data.dat ./divawork/fort.10
+else
+echo Need to provide data.dat in ./input !
+fi
+
+mv fort.11 ./divawork
+cd ./divawork
+echo $nsamp | ../../bin/fitlsn.a
+
+if [ -f fort.98 ] 
+then 
+echo ' '
+echo -------------------------------------------------------------
+echo Finished fitting
+echo Files created : covariancefit.dat covariance.dat paramfit.dat
+echo -------------------------------------------------------------
+mv fort.98 ../output/covariancefit.dat
+mv fort.99 ../output/covariance.dat
+mv fort.66 ../output/paramfit.dat
+
+if [ -e ../gnuwork ]
+then
+mv fort.55 ../gnuwork/xrangecova
+fi
+rm -f fort.10 fort.11
+echo 'Creating adapted param.par in ./output/param.par.fit'
+
+head -1 ../input/param.par > ../output/param.par.fit
+head -2 ../output/paramfit.dat | tail -1 >> ../output/param.par.fit
+head -23 ../input/param.par | tail -21 >> ../output/param.par.fit
+head -4 ../output/paramfit.dat | tail -1 >> ../output/param.par.fit
+head -25 ../input/param.par | tail -1 >> ../output/param.par.fit
+head -6 ../output/paramfit.dat | tail -1  >> ../output/param.par.fit
+
+
+if [ "$iparsave" == "1" ]
+then
+echo =======================================================
+echo Replacing  param file with fit
+cd ..
+cp -v ./input/param.par ./input/param.par.old
+cp -v ./output/param.par.fit ./input/param.par
+echo =======================================================
+fi
+
+else
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo Check execution track
+echo --------------------------------------------
+fi
+cd ..
