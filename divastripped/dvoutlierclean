@@ -2,6 +2,7 @@
 echo ========================================================
 echo Going to clean data points that are considered outliers
 echo Using outliersbis.normalized.dat
+echo Need to change if divaqc or divaqcter
 echo ========================================================
 
 if [ -f ./output/outliersbis.normalized.dat ]
