@@ -10,6 +10,8 @@ divamesh
 divacalc
 #echo Looking for outliers
 divaqcbis
+#echo Preparing cleaned up data
+dvoutlierclean
 echo oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 echo Diva finished the performance
 echo oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
