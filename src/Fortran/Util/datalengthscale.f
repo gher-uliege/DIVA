@@ -102,7 +102,8 @@ C No data???
              RLM=sqrt(DX*DY/RNDATA)
              write(6,*) ' Data on output grid', RNDATA*RWET
              write(6,*) 'Associated mean length', RLM
-             write(66,*) RLM
+             write(33,*) ' Mean length scale'
+             write(33,*) RLM
              if(RVAR.EQ.0) then
              write(6,*) '???',RVAR
              RVAR=RNDATA
