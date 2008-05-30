@@ -87,6 +87,7 @@ cp -v ./divawork/fort.11 ./output/RLinfo.dat
 cp -v ./divawork/fort.20 ./output/RL.dat
 cp -v ./divawork/fort.21 ./output/DATABINS.dat
 cp -v ./divawork/fort.11 ./output/DATABINSinfo.dat
+cp -v ./divawork/fort.33 ./output/meandistance.dat
 
 if [ "$1" == "-r" -o "$2" == "-r" ]
 then

@@ -2,7 +2,7 @@
 
 nsamp=0
 iparsave=0
-
+llimit=0
 echo ////////////////////////////////////////
 echo    Fitting of the covariance function
 echo ////////////////////////////////////////
@@ -10,35 +10,60 @@ echo ' '
 
 if [ "$#" == "1" ]
 then
-if [ "$1" != "-r" ]
+if [ "$1" != "-r" -a "$1" != "-l" ]
 then
 echo Subsampling activated
 nsamp=$1
-else
+fi
+if [ "$1" == "-r" ]
+then
 echo Will replace param.par
 iparsave=1
 fi
+if [ "$1" == "-l" ]
+then
+echo Will try to use meandistance.dat as lower limit on L
+llimit=1
 fi
+
+fi
+
 
 
 if [ "$#" == "2" ]
 then
+
 if [ "$1" != "-r" ]
 then
 echo Subsampling activated
 nsamp=$1
+echo Will try to use meandistance.dat as lower limit on L
+llimit=1
 else
 echo Will replace param.par
 iparsave=1
-fi
-if [ "$2" != "-r" ]
+if [ "$2" != "-l" ]
 then
 echo Subsampling activated
 nsamp=$2
 else
+echo Will try to use meandistance.dat as lower limit on L
+llimit=1
+fi
+fi
+
+fi
+
+
+
+if [ "$#" == "3" ]
+then
 echo Will replace param.par
 iparsave=1
-fi
+echo Will try to use meandistance.dat as lower limit on L
+llimit=1
+echo Subsampling activated
+nsamp=$2
 fi
 
 
@@ -82,7 +107,24 @@ rm -f fort.10 fort.11
 echo 'Creating adapted param.par in ./output/param.par.fit'
 
 head -1 ../input/param.par > ../output/param.par.fit
+
+if [ "$llimit" == "1" -a -f ../output/meandistance.dat ]
+then
+echo Found meandistance.dat and flag "-l" was used, so
+echo using meandistance.dat
+rm -f bidon1
+rm -f bidon2
+head -2 ../output/meandistance.dat | tail -1 > bidon1
+head -2 ../output/paramfit.dat | tail -1 > bidon2
+paste bidon1 bidon2 | awk -F "\t" '{if ($1 > $2) {print $1} else {print $2}}' > bidon
+head -1 bidon >>  ../output/param.par.fit
+rm -f bidon1
+rm -f bidon2
+rm -f bidon
+
+else
 head -2 ../output/paramfit.dat | tail -1 >> ../output/param.par.fit
+fi
 head -23 ../input/param.par | tail -21 >> ../output/param.par.fit
 head -4 ../output/paramfit.dat | tail -1 >> ../output/param.par.fit
 head -25 ../input/param.par | tail -1 >> ../output/param.par.fit
