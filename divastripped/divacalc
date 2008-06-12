@@ -120,11 +120,13 @@ let NDDLTB=$NDDLT
 echo Square root of $NDDLTB
 #sqrt() { local x=$1 s=$1 os=0;while ((s!=os));\
 #do os=$s;s=$(((s+x/s)/2)); done;echo $s; }
-sqrt() { local x=$1 s=$1 os=0; \
-while [ "$((os-s))" -ge "1" -o "$((s-os))" -ge "1" ]; \
-do os=$s;s=$(((s+x/s)/2)); done;echo $s; }
-xx=$(sqrt $NDDLTB)
-echo root is $xx
+##sqrt() { local x=$1 s=$1 os=0; \
+##while [ "$((os-s))" -ge "1" -o "$((s-os))" -ge "1" ]; \
+##do os=$s;s=$(((s+x/s)/2)); done;echo $s; }
+##xx=$(sqrt $NDDLTB)
+
+xx=$(echo $NDDLTB | awk '{print int(sqrt($1))}')
+echo root is $xx $xxb
 let NTERM=$NDDLT*$xx
 let NTERM=$NTERM+$NTERM/2
 let NREA=$NREA+$nelt
