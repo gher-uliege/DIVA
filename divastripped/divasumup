@@ -74,11 +74,14 @@ rm -f fort.21
 rm -f fort.22
 if [ -f ../output/valatxyascii.anl ]
 then
+if [ -f ../output/valatxyascii.anl.ref ]
+then
 echo 'valatxy'
 cp ../output/valatxyascii.anl fort.20
 cp ../output/valatxyascii.anl.ref fort.21
 echo $valex | ../../bin/sumup.a
 mv fort.22 ../output/valatxyascii.anl
+fi
 fi
 
 echo 'fieldatdatapoint'
