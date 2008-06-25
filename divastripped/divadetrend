@@ -7,6 +7,20 @@ echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 echo need to modify param.par for iterations to desactivate error calculations
 
+cp -v ./input/param.par ./input/param.detrend.par
+
+head -17 ./input/param.detrend.par > bidon
+echo 1 >> bidon
+echo   >> bidon
+echo 1 >> bidon
+echo   >> bidon
+echo -99 >> bidon
+echo >> bidon
+echo $gcv >> bidon
+echo >> bidon
+echo 0 >> bidon
+mv bidon ./input/param.par
+
 nsteps=10
 
 if [ "$#" -gt "0" ]
@@ -20,11 +34,19 @@ echo =============================================
 
 i=0
 
-while [ "$i" -lt "$nsteps" ]
+while [ "$i" -le "$nsteps" ]
 do
 let i=$i+1
 echo Iteration $i
 
+if [ "$i" -gt "$nsteps" ]
+then
+echo Last final analysis
+
+cp -v ./input/param.detrend.par ./input/param.par 
+rm -f ./input/param.detrend.par
+
+fi
 
 divacalc
 echo Calculating misfit of classes and create new input data
@@ -43,11 +65,18 @@ else
 cp -v ./input/data.dat ./input/data.undetrend.dat
 cp -v ./input/data.detrend.dat ./input/data.dat
 fi
+if [ "$i" -gt "1" ]
+then
+paste ./output/trends.dat ./output/trends.all.dat > bidon
+else
+cp ./output/trends.dat bidon
+fi
+mv bidon ./output/trends.all.dat
 
 
 done
 
-
+paste 
 
 
 
