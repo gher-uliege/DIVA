@@ -6,7 +6,7 @@ DRIVER=png
 
 #===============================================
 # ADAPT the following to the gnuplot executable
-gplot=wgnuplot.exe
+gplot=c:/JMB/gnuplot/bin/wgnuplot.exe
 #===============================================
 
 
@@ -24,9 +24,9 @@ read VARBAK
 } < bb
 rm bb
 
+STDDEV=$(echo $VARBAK | awk '{print sqrt($1)}')
 
-
-echo set cbrange"["0:$VARBAK"]" > dverrorrange
+echo set cbrange"["0:$STDDEV"]" > dverrorrange
 
 # if VARBAK=0 and error file is there: message and VARBAK=1
 
