@@ -1,0 +1,66 @@
+#!/bin/bash
+
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+echo  Applying iterative detrending on classes
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+echo need to modify param.par for iterations to desactivate error calculations
+
+nsteps=10
+
+if [ "$#" -gt "0" ]
+then
+let nsteps=$1+0
+fi
+echo =============================================
+echo Number of iterations to be performed: $nsteps
+echo =============================================
+
+
+i=0
+
+while [ "$i" -lt "$nsteps" ]
+do
+let i=$i+1
+echo Iteration $i
+
+
+divacalc
+echo Calculating misfit of classes and create new input data
+
+if [ -f ./input/data.undetrend.dat ]
+then
+cp -v ./input/data.undetrend.dat ./input/data.dat
+fi
+
+dvdetrend
+
+if [ -f ./input/data.undetrend.dat ]
+then
+cp -v ./input/data.detrend.dat ./input/data.dat
+else
+cp -v ./input/data.dat ./input/data.undetrend.dat
+cp -v ./input/data.detrend.dat ./input/data.dat
+fi
+
+
+done
+
+
+
+
+
+
+echo ' '
+echo ----------------------
+echo Detrending is finished
+echo ----------------------
+
+
+
+
+
+
+
+
