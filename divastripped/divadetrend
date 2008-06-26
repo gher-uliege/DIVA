@@ -56,7 +56,15 @@ then
 cp -v ./input/data.undetrend.dat ./input/data.dat
 fi
 
-dvdetrend
+
+cd divawork
+cp ../input/data.dat fort.88
+cp ../output/fieldatdatapoint.anl fort.89
+../../bin/detrend.a
+cp fort.90 ../input/data.detrend.dat
+cp fort.97 ../output/trends.dat
+cd ..
+
 
 if [ -f ./input/data.undetrend.dat ]
 then
@@ -76,7 +84,7 @@ mv bidon ./output/trends.all.dat
 
 done
 
-paste 
+
 
 
 
