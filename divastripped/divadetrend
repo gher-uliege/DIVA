@@ -10,6 +10,7 @@ exit
 fi
 
 rm -f ./input/data.undetrend.dat
+rm -f ./ouput/rmsmisfit.dat
 
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 echo  Applying iterative detrending on classes
@@ -75,8 +76,13 @@ cp ../input/data.dat fort.88
 cp ../output/fieldatdatapoint.anl fort.89
 echo $1 | ../../bin/detrend.a
 cp fort.90 ../input/data.detrend.dat
-
-
+if [ "$i" -le "1" ]
+then
+echo $i
+cat fort.42 > ../output/rmsmisfit.dat
+else
+cat fort.42 >> ../output/rmsmisfit.dat
+fi
 cp trends.*.dat ../output
 cd ..
 
