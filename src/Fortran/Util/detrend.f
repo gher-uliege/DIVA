@@ -6,13 +6,14 @@ C First; data index, second: class index, third: group index
        integer*4 ic(icl,ig),ipoint(imax,icl,ig),indy
        integer*4 indi(ig),ndata,iclm(ig),nd
        real*4 rm(icl,ig),wm(icl,ig)
-       real*8 rms1,rms2
+       real*8 rms1,rms2,rms3
      
        
        character*12 cn
        character*1 groupe
        rms1=0
        rms2=0
+       rms3=0
        read(5,*) MG
        if(MG.GT.IG) then
        write(6,*) 'Too many classes, decrease input classes'
@@ -46,6 +47,7 @@ C       write(6,*) k,iclm(k)
        w(ndata)=ww
        da(ndata)=dda
        rms1=rms1+ww*(dd-dda)*(dd-dda)
+       rms3=rms3+ww
        goto 1
  99    continue
 C now subtract
@@ -104,6 +106,6 @@ C now next group
        goto 11
  999    continue
        write(6,*) 'Misfit after detrend/misfit before',rms2/rms1
-       write(42,*) rms2/rms1,rms1,rms2
+       write(42,*) rms2/rms1,sqrt(rms2/rms3),sqrt(rms1/rms3)
        stop
        end  
