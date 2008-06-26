@@ -35,6 +35,7 @@ C make a 2 pass algo
        do k=1,MG
        ii=indi(k)
        iclm(k)=max(iclm(k),ii)
+C       write(6,*) k,iclm(k)
        ic(ii,k)=ic(ii,k)+1
        ipoint(ic(ii,k),ii,k)=ndata
        enddo
@@ -44,6 +45,10 @@ C make a 2 pass algo
        goto 1
  99    continue
 C now subtract
+       write(6,*) 'Summary'
+       write(6,*) 'Data',ndata
+       write(6,*) 'Groups',MG
+       write(6,*) 'Classes',(iclm(k),k=1,MG)
 C first group
        do k=1,MG
        do i=1,iclm(k)
