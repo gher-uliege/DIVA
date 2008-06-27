@@ -286,3 +286,10 @@ echo Keeping data bins plots
 else
 rm -f ./plots/*DATABINS*
 fi
+
+if [ -f ../output/varfieldgher.anl ]
+then
+echo Keeping data standard deviation plots
+else
+rm -f ./plots/diva_std*
+fi

@@ -92,7 +92,7 @@ echo A problem was encountered during execution !
 echo Check execution track
 echo --------------------------------------------
 fi
-
+cd ..
 dvvariance 3
 
 echo ' '

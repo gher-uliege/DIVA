@@ -93,6 +93,7 @@ echo Check execution track
 echo --------------------------------------------
 fi
 
+cd ..
 
 dvvariance 2
 

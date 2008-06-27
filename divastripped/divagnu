@@ -56,6 +56,19 @@ mv fort.68 fort.73
 fi
 
 
+rm -f fort.19
+if [ -f ../output/varfieldgher.anl ] 
+then
+echo preparing standard deviation field
+cp ../output/varfieldgher.anl fort.20
+cp ../output/ghertonetcdf/GridInfo.dat fort.21
+
+../../bin/forgnuplotanalysis.a
+
+# output is fort.68
+mv fort.68 fort.79
+fi
+
 
 if [ -f ../input/Uvel.dat ] 
 then

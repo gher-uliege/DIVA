@@ -20,44 +20,52 @@ fi
 
 mkdir -p ./output2
 mv  ./output/*  ./output2
+mkdir -p ./output/ghertonetcdf
+mkdir -p ./output/meshvisu
 
 # make analysis without error field and increased S/N
 cp -v ./input/param.par ./input/param.var.par
 head -5 ./input/param.par > bidon
 echo 0 >> bidon
-head -26 ./input/param.par | tail -20 >> bidon
+echo ireg >> bidon
+echo 1 >> bidon
+head -26 ./input/param.par | tail -18 >> bidon
 mv bidon ./input/param.par
 
 cd divawork
 if [ "$1" -eq "1" ]
 then
 echo From divaqc
-cp ../ouput2/expectederroratdatapoint.anl bidon
+cp ../output2/expectederroratdatapoint.anl bidon
 fi
 
 if [ "$1" -eq "2" ]
 then
 echo From divaqcbis
-cp ../ouput2/expectederroratdatapointbis.anl bidon
+cp ../output2/expectederroratdatapointbis.anl bidon
 fi
 
 if [ "$1" -eq "3" ]
 then
 echo From divaqcter
-cp ../ouput2/expectederroratdatapointter.anl bidon
+cp ../output2/expectederroratdatapointter.anl bidon
 fi
 
 mv ../input/data.dat ../input/data.var.dat
 awk '{print $1, $2, $3, 1000}' bidon > ../input/data.dat
 
 cd ..
-
+echo =========================================
+echo Now trying analysis of standard deviation
+pwd
+divamesh
 divacalc
 
 mv ./input/param.var.par ./input/param.par
 mv ./input/data.var.dat ./input/data.dat
 
 cp -v ./output/fieldgher.anl ./output2/varfieldgher.anl
+cp -v ./output/ghertonetcdf/results.nc ./output2/ghertonetcdf/var.nc
 rm -r ./output/*
 mv ./output2/* ./output
 rmdir ./output2
