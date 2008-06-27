@@ -1,0 +1,1 @@
+plot '../output/trends.all.1.dat' using 1:2 with steps t 'Class 1 trends'

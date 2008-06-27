@@ -95,7 +95,8 @@ if [ "$DRIVER" == "png" ]
 then
 echo set size 1,1 > bidon
 #echo set terminal png transparent size 1280,1024 crop xffffff >> bidon
-echo set terminal png transparent giant size 2560,2048 crop xffffff >> bidon
+#echo set terminal png transparent giant size 2560,2048 crop xffffff >> bidon
+echo set terminal png transparent giant size 1920,1540 crop xffffff >> bidon
 echo set output '"./plots/'$i'.png"' >> bidon
 else
 if [ "$DRIVER" == "ps" ]
@@ -170,7 +171,7 @@ jj=$(echo $i | grep -i masked | wc -l)
 if [ "$jj" == 1 ]
 then
 echo Masking option
-echo thresh=$THRESH*$VARBAK >> bidon 
+echo thresh=$THRESH*$STDDEV >> bidon 
 fi
 
 jj=$(echo $i | grep -i projection | wc -l)
@@ -268,4 +269,20 @@ echo Keeping covariance fitting plots
 else
 echo Removing covariance fitting plots, no covariance files
 rm -f ./plots/*cova*
+fi
+for jjj in 1 2 3 4 5 
+do
+if [ -f ../output/trends.all.$jjj.dat ] 
+then
+echo Keeping trends of class $jjj
+else
+rm -f ./plots/*trends_$jjj.*
+fi
+done
+
+if [ -f ../output/DATABINS.dat ]
+then
+echo Keeping data bins plots
+else
+rm -f ./plots/*DATABINS*
 fi
