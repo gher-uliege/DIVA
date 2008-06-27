@@ -1,0 +1,64 @@
+#!/bin/bash
+
+echo Variance calculation
+
+#need to add case with column 4
+valex=$(head -22 ./input/param.par | tail -1)
+echo Using valex $valex
+##awk -v valex=$valex 'NR==FNR {s[i++]=$3; next; j=0} {j=j+1; if ( (s[j-1]-valex)*(s[j-1]-valex) > 0.0000000001*(valex*valex) ) print $1,$2,log(($3-s[j-1])*($3-s[j-1])+1E-30),1,j}'  ./output/fieldatdatapoint.anl ./input/data.dat> ./input/data.dat.log10variance
+
+##cp ./input/data.dat ./input/data.dat.novariance
+##cp ./input/data.dat.log10variance ./input/data.dat
+
+if [ "$#" -le "0" ]
+then
+echo Need to know which quality control script is calling
+exit
+else
+echo Called from quality control $1
+fi
+
+mkdir -p ./output2
+mv  ./output/*  ./output2
+
+# make analysis without error field and increased S/N
+cp -v ./input/param.par ./input/param.var.par
+head -5 ./input/param.par > bidon
+echo 0 >> bidon
+head -26 ./input/param.par | tail -20 >> bidon
+mv bidon ./input/param.par
+
+cd divawork
+if [ "$1" -eq "1" ]
+then
+echo From divaqc
+cp ../ouput2/expectederroratdatapoint.anl bidon
+fi
+
+if [ "$1" -eq "2" ]
+then
+echo From divaqcbis
+cp ../ouput2/expectederroratdatapointbis.anl bidon
+fi
+
+if [ "$1" -eq "3" ]
+then
+echo From divaqcter
+cp ../ouput2/expectederroratdatapointter.anl bidon
+fi
+
+mv ../input/data.dat ../input/data.var.dat
+awk '{print $1, $2, $3, 1000}' bidon > ../input/data.dat
+
+cd ..
+
+divacalc
+
+mv ./input/param.var.par ./input/param.par
+mv ./input/data.var.dat ./input/data.dat
+
+cp -v ./output/fieldgher.anl ./output2/varfieldgher.anl
+rm -r ./output/*
+mv ./output2/* ./output
+rmdir ./output2
+

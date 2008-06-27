@@ -10,6 +10,8 @@ echo ' '
 
 divacalc qc
 
+dvvariance 1
+
 echo ' '
 echo --------------------------
 echo Outlier detection finished

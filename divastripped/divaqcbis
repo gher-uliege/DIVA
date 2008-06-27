@@ -94,6 +94,8 @@ echo --------------------------------------------
 fi
 
 
+dvvariance 2
+
 echo ' '
 echo --------------------------
 echo Outlier detection finished
