@@ -229,7 +229,7 @@ c        write(6,*) 'Point',xx,yy, ' in contour', nn
       kmaxc=1
       nbmots=nx*ny
       open(99,form='unformatted')
-      call uwritc(iu,c8,topo,valexc,iprec,imaxc,jmaxc,kmaxc,nbmots)
+      call uwritc(iu,c8,topo,valex,iprec,imaxc,jmaxc,kmaxc,nbmots)
 
       return
       end
