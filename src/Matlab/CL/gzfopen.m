@@ -1,3 +1,12 @@
+% fid=gzfopen(fname,permisson,machineformat)
+% 
+% same as fopen except that the file is decompressed if it ends 
+% with ".gz"
+%
+%
+% Alexander Barth, 2008-03-19
+
+
 function fid=gzfopen(fname,permisson,machineformat)
 
 global GZ_FILE_IDS GZ_FILE_NAMES
@@ -15,8 +24,15 @@ if length(fname) > 3
 end
 
 if zipped
-  tmp = ['/tmp/gzfopen.' num2str(floor(rand*1e7),'%7.7i')];
-  eval(['!cp ' fname '  ' tmp '.gz;   gunzip ' tmp '.gz; ']);
+  if isempty(getenv('TMPDIR'))
+    tmpdir = '/tmp';
+  else
+    tmpdir = getenv('TMPDIR');
+  end
+  
+%  tmp = [tmpdir '/gzfopen.' num2str(floor(rand*1e7),'%7.7i')];
+  tmp = tempname;
+  system(['cp -i ' fname '  ' tmp '.gz;   gunzip ' tmp '.gz; ']);
   fid = fopen(tmp,permisson,machineformat);
 
   GZ_FILE_IDS(end+1) = fid;
