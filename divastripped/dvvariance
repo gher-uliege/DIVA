@@ -125,4 +125,5 @@ rm -r ./output/*
 echo renaming output2 to output
 mv ./output2/* ./output
 rmdir ./output2
-
+# now put original mesh back
+cp ./output/meshvisu/* ./meshgenwork
