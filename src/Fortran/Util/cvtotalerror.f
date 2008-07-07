@@ -21,7 +21,7 @@
        goto 101
  200   continue
        write(22,76) cvval,sqrt(errt/i),datavart/j,
-     & sqrt(errt)/i,0,0,float(i)
+     & sqrt(errt)/i,0.0,0.0,float(i)
  76   FORMAT(7(E11.4))
        stop 
        end 

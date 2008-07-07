@@ -511,7 +511,7 @@ c           write(6,*) 'Elimination of mesh',MA,NC,I
        WRITE(*,'(A)') ' PLEASE VERIFY YOUR CONTOURS '  
        WRITE(*,'(A)') ' DOMAIN TO LEFT'
 
-       STOP
+       STOP 'Severe error in contourgen'
       ENDIF
  
 C -----------------
@@ -535,7 +535,8 @@ C --------------
 
 C      CALL SORTIE(MAILLE,NOEUD,NMAX,MMAX,NO,MA)
       CALL REORG(MAILLE,NOEUD,NMAX,MMAX,NO,MA,NTRI)
-      stop 'FINISHED'
+      write(6,*) 'FINISHED mesh generation'
+      stop 
       END
 
 C --------------------------------------
