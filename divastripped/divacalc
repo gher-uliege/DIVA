@@ -9,14 +9,14 @@ echo //////////////////////////////////////////////////
 echo           Going to analyse a field
 echo //////////////////////////////////////////////////
 
-divarunning=$(ps -eafl | grep -i diva.a | wc -l)
+divarunning=$(ps -eafl | grep -i 'diva\.a' | wc -l)
 
 if [ "$divarunning" != 0 ]
 then
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 echo ????????diva already running??????
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-ps -eafl | grep -i diva.a
+ps -eafl | grep -i 'diva\.a'
 fi
 
 
@@ -103,7 +103,7 @@ NINT=0
 NDATA=$(cat ../input/data.dat | wc -l)
 echo Data points $NDATA
 let NREA=$NREA+4*$NDATA
-let NREA=$NREA+$nx*$ny
+let NREA=$NREA+${nx}*${ny}
 let NINT=$NINT+8*$NDATA
 let NINT=$NINT+$nelt
 let NINT=$NINT+41
