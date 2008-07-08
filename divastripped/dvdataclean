@@ -6,7 +6,7 @@ echo Going to clean data points outside the mesh
 
 valex=$(head -22 ./input/param.par | tail -1)
 echo Using valex $valex
-awk -v valex=$valex 'NR==FNR {s[i++]=$0; next; j=0} { if ( ($3-valex)*($3-valex) > 0.0000000001*(valex*valex) ) {j=j+1;print s[j-1],j} else {j=j+1}}' ./input/data.dat ./output/fieldatdatapoint.anl > ./input/data.dat.clean
+awk -v valex=$valex 'NR==FNR {s[i++]=$0; next; j=0} { if ( ($3-valex)*($3-valex) > 0.0000000001*(valex*valex) ) {j=j+1;print s[j-1]} else {j=j+1}}' ./input/data.dat ./output/fieldatdatapoint.anl > ./input/data.dat.clean
 echo Before cleaning
 wc -l ./input/data.dat
 echo After cleaning of points outside of the mesh
