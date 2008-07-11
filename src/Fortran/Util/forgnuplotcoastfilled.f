@@ -20,9 +20,10 @@ C read the n contours (maximum number ncmax)
       endif
       do i=1,n
        read(66,*) ip(i)
-       if(ip(p).gt.nmax) then
-       write(6,*) 'Sorry, please increase nmax'
-       stop
+       if(ip(i).gt.nmax) then
+       write(6,*) 'Plotting error, please increase nmax'
+       stop 'Plotting error, please increase nmax'
+       
        endif
        j=1
  17     continue

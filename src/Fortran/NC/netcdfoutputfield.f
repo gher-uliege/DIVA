@@ -313,6 +313,7 @@ C
       PARAMETER(KBLANC=10)
       real*4 c4(*)
       real*8 c8(*)
+      integer*4 imaxc,jmaxc,kmaxc,iprec,nbmots
       
 C in the calling routin you can specify the following equivalence to
 C save memory space:

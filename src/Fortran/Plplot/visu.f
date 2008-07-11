@@ -70,7 +70,7 @@ C     enddo
 
           read(12,*)nbcont(itot)
 
-          do i=1,nbcont(itot)
+          do i=1,nint(nbcont(itot))
             ipos = ipos + 1
             read(12,*)xcont(ipos),ycont(ipos)
 
@@ -150,7 +150,7 @@ C       call plcol(4)
   
         do itot=1,nbc
           iposinit=ipos+1
-          do i=1,nbcont(itot)-1
+          do i=1,nint(nbcont(itot)-1)
             ipos=ipos+1
             call pljoin(xcont(ipos),ycont(ipos),xcont(ipos+1),
      +           ycont(ipos+1))
