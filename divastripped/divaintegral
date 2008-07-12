@@ -1,0 +1,167 @@
+#!/bin/bash
+
+
+
+
+echo //////////////////////////////////////////////////
+echo        integral and error on integrals
+echo  works with no coordinate change or -xscale
+echo For icoordchange: to do
+echo ASSUMES integrationpoints.dat are ALL in water ///
+echo ASSUMES Bessel correlation function
+echo //////////////////////////////////////////////////
+echo ' '
+
+
+Filepar=./input/param.par
+{
+read linecomment
+read lc
+read linecomment
+read icoordchange
+read linecomment
+read ispec
+read linecomment
+read ireg
+read linecomment
+read xori
+read linecomment
+read yori
+read linecomment
+read dx
+read linecomment
+read dy
+read linecomment
+read nx
+read linecomment
+read ny
+read linecomment
+read valex
+read linecomment
+read snr
+read linecomment
+read varbak
+} < $Filepar
+
+
+if [ -f ./input/integrationpoints.dat ] 
+then
+echo Found a list of integration points :hope they are all wet
+else
+echo Did not find a list of integration points. 
+echo Will create a list based on the gridded output field
+if [ -f ./output/fieldgher.anl ]
+then
+cp ./output/fieldgher.anl ./divawork/fort.20
+cp ./output/ghertonetcdf/GridInfo.dat ./divawork/fort.21
+cd divawork
+../../bin/gridpointlist.a
+cd ..
+mv ./divawork/fort.22 ./input/integrationpoints.dat
+echo Now select only special points for the integral
+dvintegral
+
+else
+echo Please run first an analysis
+exit
+fi
+
+
+fi
+
+
+scale=$icoordchange
+if [ "$icoordchange" == "1" ]
+then
+echo will assume latitude of analysis grid center
+scale=$(echo $yori $dy $ny | awk '{print -cos(3.141593/180*($1+$2*$3/2))}')
+echo Scale $scale
+dxm=$(echo $dx $scale | awk '{print -$1*$2*63700000*3.141593/180.}')
+echo dx in meters $dxm
+dym=$(echo $dy  | awk '{print $1*63700000*3.141593/180.}')
+echo dy in meters $dym
+dx=$dxm
+dy=$dym
+echo Integration will be done with surface units in meters
+fi
+
+
+echo Calculating integral
+INTEGRAL=$(awk '{s=s+$3} END {print s}' ./input/integrationpoints.dat)
+echo $INTEGRAL $dx $dy | awk '{print $1*$2*$3}' > ./output/integral.dat
+INTEGRAL=$(awk '{s=s+1} END {print s}' ./input/integrationpoints.dat)
+echo $INTEGRAL $dx $dy | awk '{print $1*$2*$3}' > ./output/surface.dat
+
+if [ "$varbak" == "0" -o "$ispec" == "0" ]
+then
+echo Sorry no error on integral will be calculated since error fields not requested
+else
+
+
+cp ./input/integrationpoints.dat ./divawork/fort.10
+cp ./input/data.dat ./divawork/fort.11
+
+
+
+cd divawork
+echo $scale $lc  | ../../bin/erroronintegrals.a
+cd ..
+
+cp -v ./input/data.dat ./input/data.dat.nointegral
+cp -v ./input/param.par ./input/param.par.nointegral
+cp -v ./input/valatxy.coord ./input/valatxy.coord.nointegral
+cp ./divawork/fort.12 ./input/data.dat
+
+#cat ./input/data.dat
+
+cp ./divawork/fort.14 ./output/Pfsum.dat
+cp ./input/integrationpoints.dat ./input/valatxy.coord
+
+head -5 ./input/param.par.nointegral > ./input/param.par
+echo 4 >> ./input/param.par
+echo 0 >> ./input/param.par
+echo 0 >> ./input/param.par
+head -26 ./input/param.par.nointegral | tail -18 >> ./input/param.par
+
+
+
+divamesh
+divacalc
+
+
+
+awk '{s=s+$3} END {print -s}' ./output/valatxyascii.anl >> ./output/Pfsum.dat
+PFSUM=$(awk '{s=s+$1} END {print s}' ./output/Pfsum.dat)
+
+echo $PFSUM $varbak $dx $dy > bidon
+
+awk '{ print sqrt($1*$2*$3*$4*$3*$4)}' bidon > ./output/erroronintegral.dat
+
+#cat ./output/erroratxyascii.anl
+
+sumsquare=$(awk '{s=s+$3*$3} END {print s}' ./output/erroratxyascii.anl)
+
+echo $sumsquare $dx $dy > bidon
+
+awk '{ print sqrt($1*$2*$3*$2*$3)}' bidon > ./output/erroronintegralnaive.dat
+
+
+
+
+
+
+mv -f ./input/data.dat.nointegral ./input/data.dat
+mv -f ./input/valatxy.coord.nointegral ./input/valatxy.coord
+mv -f ./input/param.par.nointegral ./input/param.par
+
+fi
+
+mv -f ./input/integrationpoints.dat ./output/integrationpoints.dat
+
+
+
+
+echo ' '
+echo --------------------------
+echo 
+echo --------------------------
