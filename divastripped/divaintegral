@@ -71,7 +71,7 @@ fi
 
 
 scale=$icoordchange
-if [ "$icoordchange" == "1" ]
+if [ "$icoordchange" == "1" -o "$icoordchange" == "2" ]
 then
 echo will assume latitude of analysis grid center
 scale=$(echo $yori $dy $ny | awk '{print -cos(3.141593/180*($1+$2*$3/2))}')
@@ -100,11 +100,12 @@ else
 
 cp ./input/integrationpoints.dat ./divawork/fort.10
 cp ./input/data.dat ./divawork/fort.11
+rm ./divawork/fort.12
 
-
+datacol=$(head -n 1 ./input/data.dat | wc -w)
 
 cd divawork
-echo $scale $lc  | ../../bin/erroronintegrals.a
+echo $scale $lc $datacol | ../../bin/erroronintegrals.a
 cd ..
 
 cp -v ./input/data.dat ./input/data.dat.nointegral
@@ -114,8 +115,8 @@ cp ./divawork/fort.12 ./input/data.dat
 
 #cat ./input/data.dat
 
-cp ./divawork/fort.14 ./output/Pfsum.dat
-cp ./input/integrationpoints.dat ./input/valatxy.coord
+cp -v ./divawork/fort.14 ./output/Pfsum.dat
+cp -v ./input/integrationpoints.dat ./input/valatxy.coord
 
 head -5 ./input/param.par.nointegral > ./input/param.par
 echo 4 >> ./input/param.par
@@ -124,6 +125,10 @@ echo 0 >> ./input/param.par
 head -26 ./input/param.par.nointegral | tail -18 >> ./input/param.par
 
 
+echo need to save original outputs...
+
+mkdir ./output3
+cp -r ./output/* ./output3
 
 divamesh
 divacalc
@@ -135,15 +140,19 @@ PFSUM=$(awk '{s=s+$1} END {print s}' ./output/Pfsum.dat)
 
 echo $PFSUM $varbak $dx $dy > bidon
 
-awk '{ print sqrt($1*$2*$3*$4*$3*$4)}' bidon > ./output/erroronintegral.dat
+awk '{ print sqrt($1*$2*$3*$4*$3*$4)}' bidon > ./output3/erroronintegral.dat
 
-#cat ./output/erroratxyascii.anl
+#head ./output/erroratxyascii.anl
+
+#head ./input/valatxy.coord
+
+#ls -l ./output
 
 sumsquare=$(awk '{s=s+$3*$3} END {print s}' ./output/erroratxyascii.anl)
 
 echo $sumsquare $dx $dy > bidon
 
-awk '{ print sqrt($1*$2*$3*$2*$3)}' bidon > ./output/erroronintegralnaive.dat
+awk '{ print sqrt($1*$2*$3*$2*$3)}' bidon > ./output3/erroronintegralnaive.dat
 
 
 
@@ -156,10 +165,13 @@ mv -f ./input/param.par.nointegral ./input/param.par
 
 fi
 
-mv -f ./input/integrationpoints.dat ./output/integrationpoints.dat
+mv -f ./input/integrationpoints.dat ./output3/integrationpoints.dat
 
 
-
+echo Pushing back original output
+rm -r ./output/*
+mv -f ./output3/* ./output
+rmdir ./output3
 
 echo ' '
 echo --------------------------
