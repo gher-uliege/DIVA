@@ -6,8 +6,8 @@ if [ -f ./input/integrationpoints.dat ]
 then
 echo will try to make subselectio
 # Select only points where analysis is positive 
- awk '{ if ($3 > 0) print $1,$2,$3,1}' ./input/integrationpoints.dat > bidon
- mv bidon ./input/integrationpoints.dat
+# awk '{ if ($3 > 0) print $1,$2,$3,1}' ./input/integrationpoints.dat > bidon
+# mv bidon ./input/integrationpoints.dat
 else
 echo Sorry, no list available
 exit

@@ -87,9 +87,9 @@ fi
 
 
 echo Calculating integral
-INTEGRAL=$(awk '{s=s+$3} END {print s}' ./input/integrationpoints.dat)
+INTEGRAL=$(awk -v val=$valex '{ if ($3!=val) {s=s+$3}} END {print s}' ./input/integrationpoints.dat)
 echo $INTEGRAL $dx $dy | awk '{print $1*$2*$3}' > ./output/integral.dat
-INTEGRAL=$(awk '{s=s+1} END {print s}' ./input/integrationpoints.dat)
+INTEGRAL=$(awk -v val=$valex '{if ($3!=val) {s=s+1}} END {print s}' ./input/integrationpoints.dat)
 echo $INTEGRAL $dx $dy | awk '{print $1*$2*$3}' > ./output/surface.dat
 
 if [ "$varbak" == "0" -o "$ispec" == "0" ]
@@ -135,20 +135,20 @@ divacalc
 
 
 
-awk '{s=s+$3} END {print -s}' ./output/valatxyascii.anl >> ./output/Pfsum.dat
+awk -v val=$valex '{if ($3!=val) {s=s+$3}} END {print -s}' ./output/valatxyascii.anl >> ./output/Pfsum.dat
 PFSUM=$(awk '{s=s+$1} END {print s}' ./output/Pfsum.dat)
 
 echo $PFSUM $varbak $dx $dy > bidon
 
 awk '{ print sqrt($1*$2*$3*$4*$3*$4)}' bidon > ./output3/erroronintegral.dat
 
-#head ./output/erroratxyascii.anl
+cp ./output/erroratxyascii.anl errorbidon
 
 #head ./input/valatxy.coord
 
 #ls -l ./output
 
-sumsquare=$(awk '{s=s+$3*$3} END {print s}' ./output/erroratxyascii.anl)
+sumsquare=$(awk -v val=$valex '{if ($3!=val) {s=s+$3*$3}} END {print s}' ./output/erroratxyascii.anl)
 
 echo $sumsquare $dx $dy > bidon
 
