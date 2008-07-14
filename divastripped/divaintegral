@@ -70,12 +70,16 @@ fi
 fi
 
 
+inflation=$(echo $lc $dx $dy | awk '{print $1*sqrt(4*3.141593)/sqrt($2*$3)}')
+
 scale=$icoordchange
 if [ "$icoordchange" == "1" -o "$icoordchange" == "2" ]
 then
 echo will assume latitude of analysis grid center
 scale=$(echo $yori $dy $ny | awk '{print -cos(3.141593/180*($1+$2*$3/2))}')
 echo Scale $scale
+inflation=$(echo $lc $dx $dy $scale | awk '{print $1*sqrt(4*3.141593)/sqrt($2*$3*(-$4))}')
+
 dxm=$(echo $dx $scale | awk '{print -$1*$2*63700000*3.141593/180.}')
 echo dx in meters $dxm
 dym=$(echo $dy  | awk '{print $1*63700000*3.141593/180.}')
@@ -88,9 +92,10 @@ fi
 
 echo Calculating integral
 INTEGRAL=$(awk -v val=$valex '{ if ($3!=val) {s=s+$3}} END {print s}' ./input/integrationpoints.dat)
-echo $INTEGRAL $dx $dy | awk '{print $1*$2*$3}' > ./output/integral.dat
-INTEGRAL=$(awk -v val=$valex '{if ($3!=val) {s=s+1}} END {print s}' ./input/integrationpoints.dat)
-echo $INTEGRAL $dx $dy | awk '{print $1*$2*$3}' > ./output/surface.dat
+SURFACE=$(awk -v val=$valex '{if ($3!=val) {s=s+1}} END {print s}' ./input/integrationpoints.dat)
+echo $INTEGRAL $SURFACE $dx $dy | awk '{print $1*$4*$3,$2*$4*$3,$1/$2}' > ./output/integral.dat
+
+
 
 if [ "$varbak" == "0" -o "$ispec" == "0" ]
 then
@@ -150,9 +155,9 @@ cp ./output/erroratxyascii.anl errorbidon
 
 sumsquare=$(awk -v val=$valex '{if ($3!=val) {s=s+$3*$3}} END {print s}' ./output/erroratxyascii.anl)
 
-echo $sumsquare $dx $dy > bidon
+echo $sumsquare $dx $dy $inflation> bidon
 
-awk '{ print sqrt($1*$2*$3*$2*$3)}' bidon > ./output3/erroronintegralnaive.dat
+awk '{ print sqrt($1*$2*$3*$2*$3),$4,$4*sqrt($1*$2*$3*$2*$3)}' bidon > ./output3/erroronintegralnaive.dat
 
 
 
