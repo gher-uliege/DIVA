@@ -230,6 +230,8 @@ if [ "$ispec" -lt 0 ]
 then
 if [ "$varbak" != 0 ]
 then
+if [ "$1" != "-pfsum" ]
+then
 #dvkern
 echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 echo %  Going to call another diva execution    %
@@ -247,6 +249,7 @@ echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 fi
 
 
+fi
 fi
 fi
 fi
@@ -344,7 +347,13 @@ echo -------------------------------------------
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 fi
 
-
+if [ "$1" == "-pfsum" ]
+then
+echo Summing covariances
+cd ..
+. ./dvcovariancesum
+exit
+fi
 
 #execute diva
 echo $NINT $NREA | ../../bin/diva.a
