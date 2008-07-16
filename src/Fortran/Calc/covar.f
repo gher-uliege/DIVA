@@ -11,6 +11,13 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       include'divainc.h'
       zero=0.
       read(10,*) ispec
+      isumcovar=0
+      if(ispec.lt.-100) then
+      write(6,*) 'Summing on covariances'
+      isumcovar=1
+      ispec=ispec+100
+      write(6,*) 'ispec',ispec
+      endif
       write(6,*) 'Please be patient'
 CJMB TO BE OPTIMIZED: calculate error only if point in mesh; use locopt
 C for regular grid should already be done?? Yes done; so just do it on 
@@ -27,7 +34,10 @@ C data points and valatxy with locopt.
       write(6,*) 'Full covariance calculation, be patient'
       
       ipipe=0
-      read(59,*) ipipe
+
+      if(isumcovar.ne.1) then
+
+            read(59,*) ipipe
       
       if(ipipe.ne.1) then
       close(61)
@@ -38,7 +48,8 @@ C data points and valatxy with locopt.
 c      call system('sleep 2')
       call pingpong(1,1,1)
       endif
-      
+C only when no summing on covariances
+      endif
       
       endif
 
@@ -77,9 +88,11 @@ c      call allody(1,0,'cvpoii',lcvpoii,ipr)
 c      call allody(1,1,'cvpoir',lcvpoir,ipr)
        call allody(2*ncvdatar,0,'cvpoii',lcvpoii,ipr)
        call allody(2*ncvdatar,1,'cvpoir',lcvpoir,ipr)
+       
+
  
       call cvread(l(lcvpoii),s(lcvpoir),ncvdata)
-c      write(6,*) 'ncvdata?',ncvdata,ncvdatar
+      write(6,*) 'ncvdata?',ncvdata,ncvdatar
 c      call allody(2*ncvdata-1,0,'cvpoii',jjjjj,99)
 c      call allody(2*ncvdata-1,1,'cvpoir',jjjjj,99)
       call allody(nddlt,1,'cvg',lcvg,ipr)
@@ -89,6 +102,40 @@ C      write(6,*) 'xy',s(lcvpoir+2*i-2),s(lcvpoir+2*i-1)
 C      write(6,*) 'ei',l(lcvpoii+2*i-2),l(lcvpoii+2*i-1)
 C      enddo
 C
+       jjjjco=0
+       if(isumcovar.eq.1) then
+            doublesum=0
+            read(55,*) npxy
+            write(6,*) 'npxy',npxy
+            call allody(2*npxy,1,'lxycova',lxycova,ipr)
+            jjjjco=0
+            rewind(79)
+            do i=1,npxy
+            read(79,*,END=8822,ERR=8822) xxxcov,yyycov
+            jjjjco=jjjjco+1
+            s(lxycova+2*i-2)=xxxcov
+            s(lxycova+2*i-1)=yyycov
+            enddo
+ 8822       continue
+            npxy=jjjjco
+            write(6,*) 'npxy',npxy
+            call allody(npxy,1,'lsumcova',lsumcova,ipr)
+            do i=1,npxy
+            s(lsumcova+i-1)=0
+            enddo
+            call allody(ncvdata,1,'lwcova',lwcova,ipr)
+C read here weights
+            do i=1,ncvdata
+            s(lwcova+i-1)=1
+            enddo
+            jjjjco=0
+       endif
+       
+       
+       
+C if sum to be calculated, loop here over all "data" points; no not needed !
+ 3344  continue
+      jjjjco=jjjjco+1
 
 c Boucle sur les points de grille ou l'erreur doit etre calculee
       close(80)
@@ -101,7 +148,7 @@ C Only if ispec=1 3 5 or 7
 
       
  10   read(80,*,end=100)xob,yob,iel,isub
-      val=valex
+      val=0
 C      write(6,*) 'Errors in',xob,yob,iel,isub
       jmcount=jmcount+1
       
@@ -159,12 +206,15 @@ c ... extraction de la solution au point observe
 C Ici boucle sur le reste des points et decision sur fichier fortran de sortie
 C 72, points eux memes, 73 avec les points du fichier 45
 C 
+      if(isumcovar.ne.1) then
       if(ipipe.eq.1) then
       open(61,file='../divapipe',form='unformatted')
       rewind(61)
       endif
+      
        
       write(61) xob,yob,val/(1+val)
+      endif
       valcv=val
       STS=SCAL(s(lcvg),s(lcvg),nddlt)
       SKTS=SCAL(s(ltrhsg),s(lcvg),nddlt)
@@ -192,6 +242,7 @@ c         write(6,*) 'in data location', val, valcv,xob,yob,xxx,yyy
 c         write(59,*) val/(1+valcv),xxx,yyy,iiel,iisub
           s(lcova+i-1)=val/(1+valcv)
 	enddo
+	if(isumcovar.ne.1) then
       write(61) (s(lcova+i-1),i=1,ncvdata)
        if (ipipe.eq.1) then
        close(61)
@@ -199,6 +250,11 @@ c         write(59,*) val/(1+valcv),xxx,yyy,iiel,iisub
 c       write(6,*) 'Now waiting covar'
        call pingpong(1,0,0)
        endif
+                         else
+      write(6,*) 'Why should I be here?'
+      endif
+       
+       
       endif
 C END if point in mesh
 
@@ -271,11 +327,14 @@ c               write(6,*) 'x,y,error RMS : ',xob,yob,val
                write(85,*) xob,yob,val
 	    endif 
          endif
+         
+         if(isumcovar.ne.1) then
          if(ipipe.eq.1) then
          open(61,file='../divapipe',form='unformatted')
        rewind(61)
          endif
       write(61) xob,yob,val/(1+val)
+         endif
       valcv=val
       STS=SCAL(s(lcvg),s(lcvg),nddlt)
       SKTS=SCAL(s(ltrhsg),s(lcvg),nddlt)
@@ -303,12 +362,23 @@ c         write(6,*) 'in data location', val, valcv,xob,yob,xxx,yyy
 c         write(59,*) val/(1+valcv),xxx,yyy,iiel,iisub
           s(lcova+i-1)=val/(1+valcv)
 	enddo
+	if(isumcovar.ne.1) then
       write(61) (s(lcova+i-1),i=1,ncvdata)
       if (ipipe.eq.1) then
       close(61)
        call pingpong(1,1,0)
        call pingpong(1,0,0)
       endif
+                        else
+       do i=1,ncvdata
+       wwwjco=s(lwcova+iiiii-1)
+       wwwico=s(lwcova+i-1)
+       doublesum=doublesum+s(lcova+i-1)*wwwjco*wwwico
+       enddo
+      
+      endif
+      
+      
       endif
       
 C      goto 666
@@ -326,7 +396,9 @@ C only of ispec= 4 5 6 7
          write(6,*) 'Finally covariance at desired discrete locations'
          ireclu=0
          rewind(79)
+         jjiijj=0
  667      read(79,*,end=867) x,y
+         jjiijj=jjiijj+1
          x_ll=x
          y_ll=y
          if (icoordchange.ne.0) call llxy(x,y)
@@ -351,7 +423,7 @@ c               endif
 C               if (icoordchange.ne.0) call xyll(x,y)
 c               write(6,*) ' Donnee ',ireclu,x_ll,y_ll,' non localisee'
 C               write(82,*) x_ll,y_ll,-9999.0
-               val=valex
+               val=0
                write(73,*) x_ll,y_ll,valex
                goto 667
             endif
@@ -366,7 +438,7 @@ C               write(82,*) x_ll,y_ll,-9999.0
             endif
 
             if(iel.le.0.or.isub.le.0) then
-            val=valex
+            val=0
             write(73,*) x_ll,y_ll,valex
             goto 667
             endif
@@ -418,11 +490,13 @@ c               write(6,*) 'x,y,error RMS : ',xob,yob,val
                write(85,*) xob,yob,val
 	    endif 
          endif
+         if(isumcovar.ne.1) then
          if (ipipe.eq.1) then
          open(61,file='../divapipe',form='unformatted')
        rewind(61)
        endif
       write(61) xob,yob,val/(1+val)
+         endif
       valcv=val
       STS=SCAL(s(lcvg),s(lcvg),nddlt)
       SKTS=SCAL(s(ltrhsg),s(lcvg),nddlt)
@@ -450,12 +524,21 @@ c         write(6,*) 'in data location', val, valcv,xob,yob,xxx,yyy
 c         write(59,*) val/(1+valcv),xxx,yyy,iiel,iisub
           s(lcova+i-1)=val/(1+valcv)
 	enddo
+	if(isumcovar.ne.1) then
       write(61) (s(lcova+i-1),i=1,ncvdata)
       if (ipipe.eq.1) then
       close(61)
        call pingpong(1,1,0)
        call pingpong(1,0,0)
       endif
+                         else
+      do i=1,ncvdata
+      wwwiii=s(lwcova+i-1)
+      s(lsumcova+jjiijj-1)=s(lsumcova+jjiijj-1)+wwwiii*s(lcova+i-1)
+      enddo
+      endif
+      
+      
       endif
 C end point in mesh
       
@@ -466,12 +549,35 @@ C end point in mesh
   867     continue
 
  1991 continue
+ 
+      if(isumcovar.ne.1) then
       call flush(61)
       if (ipipe.eq.1) then
       write(6,*) 'Last call'
 c      call pingpong(1,1,0)
       write(6,*) 'Getting out'
       endif
+      endif
+      
+      
+      if (isumcovar.eq.1) then
+
+c      if (jjjjco.lt.ncvdata) then
+c      write(6,*) 'next point'
+c      goto 3344
+c                          else
+      write(6,*) 'Saving summed covariances',npxy,ncvdata
+      
+      do i=1,npxy
+      write(65,*) s(lsumcova+i-1)
+      enddo
+      write(64,*) doublesum
+C Save here
+c      endif
+      endif
+      
+      
+      
       return
       end
 
