@@ -2,7 +2,7 @@
       parameter(npmax=1000000)
       real*8 tbess(40000)
       common/tabbess/tbess
-      real*8 x(npmax),y(npmax)
+      real*8 x(npmax),y(npmax),h(npmax)
       
       call tabess
         
@@ -13,10 +13,11 @@
       np=0
  1    continue
       
-      read(10,*,end=100,err=100) xxx,yyy
+      read(10,*,end=100,err=100) xxx,yyy,val,www
       np=np+1
       x(np)=xxx*xscale
       y(np)=yyy
+      h(np)=www
       goto 1
       
  100  continue        
@@ -39,7 +40,7 @@ C First sum of Pf elements
        ccc=tbess(ii)
  2     continue
 c      write(6,*) 'Correlation',ccc
-      rsum=rsum+ccc
+      rsum=rsum+ccc*h(i)*h(j)
       enddo
       enddo
 C finished
@@ -69,7 +70,7 @@ C now on data points
        ccc=tbess(ii)
        
  22     continue
-      rr=rr+ccc
+      rr=rr+ccc*h(j)
       enddo
       write(12,*) xx,yy,rr,ww   
       

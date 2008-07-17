@@ -27,7 +27,7 @@
        do j=1,jmax
         do i=1,imax
         if(c(i,j).ne.valex) then
-        write(22,*) x0+(i-1)*dx,y0+(j-1)*dy,c(i,j)
+        write(22,*) x0+(i-1)*dx,y0+(j-1)*dy,c(i,j),1
         endif
        enddo
        enddo
