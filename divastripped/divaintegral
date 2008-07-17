@@ -130,7 +130,7 @@ head -5 ./input/param.par.nointegral > ./input/param.par
 if [ "$1" == "-naive" ] 
 then
 cp ./input/integrationpoints.dat ./input/valatxy.coord
-echo 6 >> ./input/param.par
+echo 4 >> ./input/param.par
 else
 echo 0 >> ./input/param.par
 fi
@@ -144,14 +144,19 @@ echo need to save original outputs...
 mkdir ./output3
 cp -r ./output/* ./output3
 
+cp -v ./input/data.dat ./output3/Csum.dat
+
 divamesh
 divacalc
 
 echo summing at discrete locations
 head ./output/valatxyascii.anl
 
-awk -v val=$valex '{if ($3!=val) {s=s+$3}} END {print -s}' ./output/valatxyascii.anl >> ./output/Pfsum.dat
-PFSUM=$(awk '{s=s+$1} END {if (s>0) {print s} else {print 0}}' ./output/Pfsum.dat)
+awk -v val=$valex '{if ($3!=val) {s=s+$3}} END {print -s}' ./output/valatxyascii.anl >> ./output3/Pfsum.dat
+
+cat ./output3/Pfsum.dat
+
+PFSUM=$(awk '{s=s+$1} END {if (s>0) {print s} else {print 0}}' ./output3/Pfsum.dat)
 echo For errors $PFSUM $varbak $dx $dy
 echo $PFSUM $varbak $dx $dy > bidon
 
@@ -229,13 +234,14 @@ cp ./input/data.dat bidon2
 paste bidon2 bidon > ./input/data.dat
 fi
 
+cp -v ./input/data.dat ./output3/Csum.dat
 
 
 head -5 ./input/param.par.nointegral > ./input/param.par
 if [ "$1" == "-naive" ] 
 then
 cp ./input/integrationpoints.dat ./input/valatxy.coord
-echo -6 >> ./input/param.par
+echo -4 >> ./input/param.par
 else
 echo 0 >> ./input/param.par
 fi
@@ -246,9 +252,13 @@ head -26 ./input/param.par.nointegral | tail -18 >> ./input/param.par
 divacalc
 
 
-cp ./output/Pfsumum.dat ./output/Pfsum.dat
-awk -v val=$valex '{if ($3!=val) {s=s+$3}} END {print -s}' ./output/fieldatdatapoint.anl >> ./output/Pfsum.dat
-PFSUM=$(awk '{s=s+$1} END {if (s>0) {print s} else {print 0}}' ./output/Pfsum.dat)
+cp ./output/Pfsumum.dat ./output3/Pfsum.dat
+
+echo summing at discrete locations
+head ./output/valatxyascii.anl
+
+awk -v val=$valex '{if ($3!=val) {s=s+$3}} END {print -s}' ./output/valatxyascii.anl >> ./output3/Pfsum.dat
+PFSUM=$(awk '{s=s+$1} END {if (s>0) {print s} else {print 0}}' ./output3/Pfsum.dat)
 
 echo $PFSUM $varbak $dx $dy > bidon
 
