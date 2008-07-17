@@ -206,6 +206,10 @@ c ... extraction de la solution au point observe
 C Ici boucle sur le reste des points et decision sur fichier fortran de sortie
 C 72, points eux memes, 73 avec les points du fichier 45
 C 
+      valcv=val
+CJMB BUG??17/7/8 NO, OK
+c      valcv=0
+C JMBBUGEND?
       if(isumcovar.ne.1) then
       if(ipipe.eq.1) then
       open(61,file='../divapipe',form='unformatted')
@@ -213,9 +217,10 @@ C
       endif
       
        
-      write(61) xob,yob,val/(1+val)
+      write(61) xob,yob,val/(1+valcv)
       endif
-      valcv=val
+      rjmc0=val/(1+valcv)
+c               write(6,*) '?jmc0a',rjmc0,xob,yob
       STS=SCAL(s(lcvg),s(lcvg),nddlt)
       SKTS=SCAL(s(ltrhsg),s(lcvg),nddlt)
       STSA=SCAL(s(ltrhsg),s(ltrhsg),nddlt)
@@ -327,15 +332,20 @@ c               write(6,*) 'x,y,error RMS : ',xob,yob,val
                write(85,*) xob,yob,val
 	    endif 
          endif
-         
+         valcv=val
+C JMBBUG: NO
+c         valcv=0
+C   
+         rjmc0=val/(1+valcv)
+c                  write(6,*) '?jmc0b',rjmc0,val,xob,yob
          if(isumcovar.ne.1) then
          if(ipipe.eq.1) then
          open(61,file='../divapipe',form='unformatted')
        rewind(61)
          endif
-      write(61) xob,yob,val/(1+val)
+      write(61) xob,yob,val/(1+valcv)
          endif
-      valcv=val
+      
       STS=SCAL(s(lcvg),s(lcvg),nddlt)
       SKTS=SCAL(s(ltrhsg),s(lcvg),nddlt)
       STSA=SCAL(s(ltrhsg),s(ltrhsg),nddlt)
@@ -373,7 +383,7 @@ c         write(59,*) val/(1+valcv),xxx,yyy,iiel,iisub
        do i=1,ncvdata
        wwwjco=s(lwcova+iiiii-1)
        wwwico=s(lwcova+i-1)
-       doublesum=doublesum+s(lcova+i-1)*wwwjco*wwwico
+       doublesum=doublesum+s(lcova+i-1)*wwwjco*wwwico*1./(1.-rjmc0)
        enddo
       
       endif
@@ -490,14 +500,20 @@ c               write(6,*) 'x,y,error RMS : ',xob,yob,val
                write(85,*) xob,yob,val
 	    endif 
          endif
+         valcv=val
+C JMBBUG? NO see paper on efficient calculation
+c         valcv=0
+C END
+         rjmc0=val/(1+valcv)
+c         write(6,*) '?jmc0',rjmc0,xob,yob
          if(isumcovar.ne.1) then
          if (ipipe.eq.1) then
          open(61,file='../divapipe',form='unformatted')
        rewind(61)
        endif
-      write(61) xob,yob,val/(1+val)
+      write(61) xob,yob,val/(1+valcv)
          endif
-      valcv=val
+      
       STS=SCAL(s(lcvg),s(lcvg),nddlt)
       SKTS=SCAL(s(ltrhsg),s(lcvg),nddlt)
       STSA=SCAL(s(ltrhsg),s(ltrhsg),nddlt)
@@ -533,7 +549,7 @@ c         write(59,*) val/(1+valcv),xxx,yyy,iiel,iisub
       endif
                          else
       do i=1,ncvdata
-      wwwiii=s(lwcova+i-1)
+      wwwiii=s(lwcova+i-1)*1./(1.-rjmc0)
       s(lsumcova+jjiijj-1)=s(lsumcova+jjiijj-1)+wwwiii*s(lcova+i-1)
       enddo
       endif
