@@ -152,7 +152,7 @@ divacalc
 echo summing at discrete locations
 head ./output/valatxyascii.anl
 # need to add non-uniform grid here
-paste ./output/valatxyascii.anl /input/integrationpoints.dat > bidon
+paste ./output/valatxyascii.anl ./input/integrationpoints.dat > bidon
 awk -v val=$valex '{if ($3!=val) {s=s+$3*$7}} END {print -s}' bidon >> ./output3/Pfsum.dat
 
 
@@ -177,7 +177,7 @@ echo summing error at discrete locations
 head ./output/erroratxyascii.anl
 # need to add non-uniform grid here
 
-paste ./output/erroratxyascii.anl /input/integrationpoints.dat > bidon
+paste ./output/erroratxyascii.anl ./input/integrationpoints.dat > bidon
 sumsquare=$(awk -v val=$valex '{if ($3!=val) {s=s+$3*$3*$7*$7}} END {print s}' bidon)
 
 
@@ -262,7 +262,7 @@ cp ./output/Pfsumum.dat ./output3/Pfsum.dat
 echo summing at discrete locations
 head ./output/valatxyascii.anl
 # need to add non-uniform grid here
-paste ./output/valatxyascii.anl /input/integrationpoints.dat > bidon
+paste ./output/valatxyascii.anl ./input/integrationpoints.dat > bidon
 awk -v val=$valex '{if ($3!=val) {s=s+$3*$7}} END {print -s}' bidon >> ./output3/Pfsum.dat
 PFSUM=$(awk '{s=s+$1} END {if (s>0) {print s} else {print 0}}' ./output3/Pfsum.dat)
 
@@ -275,7 +275,7 @@ then
 echo summing error at discrete locations
 head ./output/erroratxyascii.anl
 # need to add non-uniform grid here
-paste ./output/erroratxyascii.anl /input/integrationpoints.dat > bidon
+paste ./output/erroratxyascii.anl ./input/integrationpoints.dat > bidon
 sumsquare=$(awk -v val=$valex '{if ($3!=val) {s=s+$3*$3*$7*$7}} END {print s}' bidon)
 
 echo $sumsquare $dx $dy $inflation> bidon
