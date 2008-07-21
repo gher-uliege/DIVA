@@ -1,0 +1,134 @@
+#!/bin/bash
+
+iparsave=0
+if [ "$1" == "-r" ]
+then
+echo Will replace param.par
+iparsave=1
+fi
+
+
+echo //////////////////////////////////////////////////
+echo 
+echo //////////////////////////////////////////////////
+echo ' '
+
+
+Filepar=./input/param.par
+{
+read linecomment
+read lc
+read linecomment
+read icoordchange
+read linecomment
+read ispec
+read linecomment
+read ireg
+read linecomment
+read xori
+read linecomment
+read yori
+read linecomment
+read dx
+read linecomment
+read dy
+read linecomment
+read nx
+read linecomment
+read ny
+read linecomment
+read valex
+read linecomment
+read snr
+read linecomment
+read varbak
+} < $Filepar
+
+
+
+
+
+scale=$icoordchange
+if [ "$icoordchange" == "1" -o "$icoordchange" == "2" ]
+then
+echo will assume latitude of analysis grid center
+scale=$(echo $yori $dy $ny | awk '{print -cos(3.141593/180*($1+$2*$3/2))}')
+echo Scale $scale
+fi
+
+
+
+cp ./input/data.dat ./divawork/fort.10
+
+FIRSTL=$(head -2 ./input/param.par | tail -1)
+echo ==========
+echo L: $FIRSTL
+echo will try
+rm ./input/gcvsamplingL.dat
+echo 0.1 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 0.3 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 0.5 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 0.7 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 0.8 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 0.9 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 1 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 1.5 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 2 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 3 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 5 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo ==========
+
+if [ -f ./output/gcvLL.dat ]
+then
+echo Erasing old gcvLL.dat
+rm ./output/gcvLL.dat
+fi
+
+for Lgcv in `cat ./input/gcvsamplingL.dat`
+do
+
+echo Length scale $Lgcv
+
+cd divawork
+echo $scale $ireg $Lgcv  | ../../bin/snbygrid.a
+head -8 fort.14 | tail -1 > bidon
+{
+read gcvval
+} < bidon
+echo Cross validator $gcvval
+echo $gcvval $Lgcv >> ../output/gcvLL.dat
+cd ..
+LVAL=$(awk 'BEGIN {i=1;max=-99999} {if ($1 > max) {lmax=$2;max=$1}; i=i+1} END {print lmax}' ./output/gcvLL.dat)
+
+echo Best value for L $LVAL
+
+done
+
+cd divawork
+echo $scale $ireg $LVAL  | ../../bin/snbygrid.a
+
+cp -v fort.14 ../output/SNbygrid.dat
+
+
+head -1 ../input/param.par > ../output/param.par.fit
+head -2 ../output/SNbygrid.dat | tail -1 >> ../output/param.par.fit
+head -23 ../input/param.par | tail -21 >> ../output/param.par.fit
+head -4 ../output/SNbygrid.dat | tail -1 >> ../output/param.par.fit
+head -25 ../input/param.par | tail -1 >> ../output/param.par.fit
+head -6 ../output/SNbygrid.dat | tail -1  >> ../output/param.par.fit
+cd ..
+
+if [ "$iparsave" == "1" ]
+then
+echo =======================================================
+echo Replacing  param file with fit
+cd ..
+cp -v ./input/param.par ./input/param.par.old
+cp -v ./output/param.par.fit ./input/param.par
+echo =======================================================
+fi
+
+echo ' '
+echo --------------------------
+echo 
+echo --------------------------
