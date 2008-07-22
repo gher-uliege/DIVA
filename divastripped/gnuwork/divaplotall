@@ -6,7 +6,7 @@ DRIVER=png
 
 #===============================================
 # ADAPT the following to the gnuplot executable
-#gplot=c:/JMB/gnuplot/bin/wgnuplot.exe
+gplot=c:/JMB/gnuplot/bin/wgnuplot.exe
 gplot=gnuplot
 #===============================================
 
@@ -103,8 +103,8 @@ else
 if [ "$DRIVER" == "ps" ]
 then
 # For postscript comment previous lines and use the following instead
-echo set terminal postscript landscape color > bidon
-echo set output '"./plots/'$i'.ps"' >> bidon
+echo set terminal postscript eps color > bidon
+echo set output '"./plots/'$i'.eps"' >> bidon
 fi
 fi
 
@@ -121,6 +121,20 @@ then
 echo Data related field: using range
 cat dvanalysisrange
 cat dvanalysisrange >> bidon
+
+if [ -f plotboundingbox.dat ]
+then
+
+{
+read xmingp xmaxgp
+read ymingp ymaxgp
+} < plotboundingbox.dat
+echo set xrange"[" $xmingp ":" $xmaxgp "]" > boundingbox.dat
+echo set yrange"[" $ymingp ":" $ymaxgp "]" >> boundingbox.dat
+cat boundingbox.dat >> bidon
+cat boundingbox.dat
+fi
+
 if [ -f analysis.pal ]
 then
 echo using user defined palette
@@ -138,6 +152,19 @@ then
 echo Error related field: using range
 cat dverrorrange
 cat dverrorrange >> bidon
+if [ -f plotboundingbox.dat ]
+then
+
+{
+read xmingp xmaxgp
+read ymingp ymaxgp
+} < plotboundingbox.dat
+echo set xrange"[" $xmingp ":" $xmaxgp "]" > boundingbox.dat
+echo set yrange"[" $ymingp ":" $ymaxgp "]" >> boundingbox.dat
+cat boundingbox.dat >> bidon
+cat boundingbox.dat
+
+fi
 if [ -f error.pal ]
 then
 echo using user defined palette
@@ -156,6 +183,14 @@ then
 echo Analysis related field: using range
 cat dvanalysisrange
 cat dvanalysisrange >> bidon
+{
+read xmingp xmaxgp
+read ymingp ymaxgp
+} < plotboundingbox.dat
+echo set xrange"[" $xmingp ":" $xmaxgp "]" > boundingbox.dat
+echo set yrange"[" $ymingp ":" $ymaxgp "]" >> boundingbox.dat
+cat boundingbox.dat >> bidon
+cat boundingbox.dat
 if [ -f analysis.pal ]
 then
 echo using user defined palette
@@ -293,4 +328,24 @@ then
 echo Keeping data standard deviation plots
 else
 rm -f ./plots/diva_std*
+fi
+
+
+if [ -f plotboundingbox.dat ]
+then
+echo need to go from plotboundinbox.dat to fort.47 of kml
+
+{
+read xmingp xmaxgp
+read ymingp ymaxgp
+} < plotboundingbox.dat
+
+echo    "<north>"  $ymaxgp "</north>" > googlebox.dat
+echo    "<south>"  $ymingp "</south>" >> googlebox.dat
+echo    "<east>"  $xmaxgp "</east>" >> googlebox.dat
+echo    "<west>" $xmingp "</west>" >> googlebox.dat
+
+
+else
+cp -v fort.47 googlebox.dat
 fi
