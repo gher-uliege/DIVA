@@ -56,19 +56,26 @@
       nx=(xmax-xmin)/dx+2
       ny=(ymax-ymin)/dy+2
       ns=nx*ny
+      if(6*ns.gt.mmax) then
+      write(6,*) 'severe error snbyrid needs more space'
+      stop 'severe error snbyrid needs more space'
+      endif
       write(6,*) 'Average number of points per bin',np/(nx*1.*ny)
-      Mmin=10
+      Mmin=30
       call sncalc(work(1),work(1+ns),work(1+2*ns),work(1+3*ns)
+     &    ,work(1+4*ns),work(1+5*ns)
      &    ,nx,ny,np,x,y,d,x0,dx,y0,dy,xscale,Mmin,RL)
       stop
       end
-      subroutine sncalc(rnd,var,rmean,alpha
+      subroutine sncalc(rnd,var,rmean,alpha,xmass,ymass
      &    ,nxd,nyd,np,x,y,d,x0,dx,y0,dy,scale,Mmin,RL)
       include'../Calc/divapre.h'
       real*8 rnd(nxd,nyd)
       real*8 var(nxd,nyd)
       real*8 rmean(nxd,nyd)
       real*8 alpha(nxd,nyd)
+      real*8 xmass(nxd,nyd)
+      real*8 ymass(nxd,nyd)
       real*8 x(np),y(np),d(np)
       real*8 aa,bb,cc,dd,ee,ff,rnoise,rsignal
       parameter(nemax=10000)
@@ -78,7 +85,7 @@
       nx=nxd
       ny=nyd
  2222 continue
-      if(nx*ny.lt.25) then
+      if(nx*ny.lt.1) then
       write(6,*) 'Too few bins, will stop'
       stop 'Severe error, unable to fit'
       endif
@@ -89,6 +96,8 @@
       rnd(i,j)=0
       rmean(i,j)=0
       alpha(i,j)=0
+      xmass(i,j)=0
+      ymass(i,j)=0
       enddo
       enddo
       
@@ -102,6 +111,8 @@ c      write(6,*) ig,jg,x(i),y(i),x0,y0
       if(ig.gt.nx) goto 999
       if(jg.gt.ny) goto 999
       rmean(ig,jg)=rmean(ig,jg)+d(i)
+      xmass(ig,jg)=xmass(ig,jg)+x(i)
+      ymass(ig,jg)=ymass(ig,jg)+y(i)
       rnd(ig,jg)=rnd(ig,jg)+1
       
        do j=1,np
@@ -139,9 +150,11 @@ C Use all boxes with more than Mmin points
       do j=1,ny
       if(rnd(i,j).ge.1) then
       VARTOT=VARTOT+var(i,j)
-      var(i,j)=var(i,j)/(2*rnd(i,j)*rnd(i,j))
+      var(i,j)=var(i,j)/(2.*rnd(i,j)*rnd(i,j))
       rmean(i,j)=rmean(i,j)/rnd(i,j)
-      alpha(i,j)=1-alpha(i,j)/(rnd(i,j)*rnd(i,j))
+      xmass(i,j)=xmass(i,j)/rnd(i,j)
+      ymass(i,j)=ymass(i,j)/rnd(i,j)
+      alpha(i,j)=1-alpha(i,j)/(1*rnd(i,j)*rnd(i,j))
 
       endif
       if(rnd(i,j).ge.Mmin) then
@@ -156,6 +169,41 @@ C Use all boxes with more than Mmin points
       endif
       enddo
       enddo
+C Other approach, double loop and double sum as in note      
+      varvar=0
+      alpalp=0
+      do i=1,nx
+      do j=1,ny
+      do ii=1,nx
+      do jj=1,ny
+      if(rnd(i,j).ge.Mmin.and.rnd(ii,jj).ge.Mmin) then
+      varvar=varvar+(rmean(i,j)-rmean(ii,jj))**2
+      xxi=xmass(i,j)
+      xxj=xmass(ii,jj)
+      yyi=ymass(i,j)
+      yyj=ymass(ii,jj)
+      dist=sqrt((xxi-xxj)**2*scale**2+(yyi-yyj)**2)
+       dist=dist/RL
+       iii=dist/0.0005
+       if(iii.eq.0) then
+       ccc=1
+       goto 223
+       endif
+       if(iii.gt.40000) then
+       ccc=0
+       goto 223
+       endif
+       ccc=tbess(iii)
+ 223     continue
+      alpalp=alpalp+ccc
+      endif
+      enddo
+      enddo
+      enddo
+      enddo
+      
+      
+      
       if(NREL.eq.0) then
       write(6,*) 'Not enought data in bins'
       write(6,*) 'will try to increase bins'
@@ -168,6 +216,8 @@ C Use all boxes with more than Mmin points
       
                     else
       VARBAK=VARBAK/NREL
+      varvar=varvar/(2.*NREL*NREL)
+      alpalp=1-alpalp/(1.*NREL*NREL)
       endif
       
       VARTOT2=0
@@ -177,15 +227,15 @@ C Use all boxes with more than Mmin points
       rm=rm+d(i)
       enddo
       vartot2=vartot2/np-(rm/np)**2
-      write(6,*) 'Check',vartot2,NREL
+      write(6,*) 'Check',varbak,NREL,varvar
       
       
       VARTOT=VARTOT/(2*np*np)
       NREL=NREL+1
-      W(NREL)=1./(1.*NREL)
-      b(NREL)=VARBAK
+      W(NREL)=1./(1.*(NREL-1.))
+      b(NREL)=VARVAR
       E(NREL,1)=0
-      E(NREL,2)=1
+      E(NREL,2)=alpalp
       
       
       
@@ -195,7 +245,7 @@ C Use all boxes with more than Mmin points
       b(NREL)=VARTOT2
       E(NREL,1)=1
       E(NREL,2)=1
-      write(6,*) 'varbak',VARBAK,VARTOT
+ 
       
       
 
@@ -228,7 +278,7 @@ C Use all boxes with more than Mmin points
       sm=sm+1./W(l)
       enddo
       rms=sqrt(rms/sm)
-      write(6,*) 'rms',rms,vartot2     
+      write(6,*) 'rms',rms,vartot2,rsignal/rnoise,rsignal,rnoise     
       
         write(14,*) 'Length scale'
         write(14,*) RL
