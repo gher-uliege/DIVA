@@ -11,7 +11,7 @@
         
       xscale=1
       read(5,*) rcoordchange,ireg,RL
-      write(6,*) 'parameters',rcoordchange,RL
+      write(6,*) 'command line parameters',rcoordchange,ireg,RL
       if (rcoordchange.lt.0) xscale=-rcoordchange
       np=0
  
@@ -165,7 +165,7 @@ C Use all boxes with more than Mmin points
       E(NREL,1)=1
       E(NREL,2)=alpha(i,j)
       VARBAK=VARBAK+rmean(i,j)*rmean(i,j)
-      write(6,*) var(i,j),i,j,rnd(i,j),rmean(i,j)
+c      write(6,*) var(i,j),i,j,rnd(i,j),rmean(i,j)
       endif
       enddo
       enddo
@@ -206,7 +206,7 @@ C Other approach, double loop and double sum as in note
       
       if(NREL.eq.0) then
       write(6,*) 'Not enought data in bins'
-      write(6,*) 'will try to increase bins'
+      write(6,*) '      will try to increase bins'
       dx=dx*2
       dy=dy*2
       nx=nx/2+1
@@ -227,7 +227,7 @@ C Other approach, double loop and double sum as in note
       rm=rm+d(i)
       enddo
       vartot2=vartot2/np-(rm/np)**2
-      write(6,*) 'Check',varbak,NREL,varvar
+c      write(6,*) 'Check',varbak,NREL,varvar
       
       
       VARTOT=VARTOT/(2*np*np)
@@ -259,7 +259,7 @@ C Other approach, double loop and double sum as in note
       ee=0
       ff=0
       do l=1,NREL
-      write(6,*) '?',W(l),E(l,1),E(l,2),b(l)
+c      write(6,*) '?',W(l),E(l,1),E(l,2),b(l)
       aa=aa+E(l,1)/W(l)*E(l,1)
       bb=bb+E(l,1)/W(l)*E(l,2)
       cc=cc+E(l,2)/W(l)*E(l,1)
@@ -270,7 +270,9 @@ C Other approach, double loop and double sum as in note
       
       
       rnoise=(dd*ee-bb*ff)/(aa*dd-bb*cc)
+      if(rnoise.le.0) rnoise=vartot2/1000.
       rsignal=(-cc*ee+aa*ff)/(aa*dd-bb*cc)
+      if(rsignal.lt.0) rsignal=vartot2/1000.
       rms=0
       sm=0
       do l=1,NREL
@@ -278,7 +280,17 @@ C Other approach, double loop and double sum as in note
       sm=sm+1./W(l)
       enddo
       rms=sqrt(rms/sm)
-      write(6,*) 'rms',rms,vartot2,rsignal/rnoise,rsignal,rnoise     
+
+        write(6,*) 'Length scale'
+        write(6,*) RL
+        write(6,*) 'Signal to noise ratio'
+        write(6,*) rsignal/rnoise
+        write(6,*) 'VARBAK'
+        write(6,*) rsignal
+        write(6,*) 'Quality of the fit (0: bad 1: good)'
+        write(6,*) (vartot2-rms)/vartot2
+        write(6,*) 'Noise variance'
+        write(6,*) rnoise
       
         write(14,*) 'Length scale'
         write(14,*) RL
