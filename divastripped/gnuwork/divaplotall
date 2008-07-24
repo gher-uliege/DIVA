@@ -7,7 +7,6 @@ DRIVER=png
 #===============================================
 # ADAPT the following to the gnuplot executable
 gplot=c:/JMB/gnuplot/bin/wgnuplot.exe
-gplot=gnuplot
 #===============================================
 
 
@@ -183,6 +182,9 @@ then
 echo Analysis related field: using range
 cat dvanalysisrange
 cat dvanalysisrange >> bidon
+
+if [ -f plotboundingbox.dat ]
+then
 {
 read xmingp xmaxgp
 read ymingp ymaxgp
@@ -191,6 +193,7 @@ echo set xrange"[" $xmingp ":" $xmaxgp "]" > boundingbox.dat
 echo set yrange"[" $ymingp ":" $ymaxgp "]" >> boundingbox.dat
 cat boundingbox.dat >> bidon
 cat boundingbox.dat
+fi
 if [ -f analysis.pal ]
 then
 echo using user defined palette
