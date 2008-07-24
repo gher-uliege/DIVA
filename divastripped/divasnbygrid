@@ -1,12 +1,17 @@
 #!/bin/bash
 
 iparsave=0
-if [ "$1" == "-r" ]
+inoise=0
+if [ "$1" == "-r" -o "$2" == "-r" ]
 then
 echo Will replace param.par
 iparsave=1
 fi
-
+if [ "$1" == "-noise" -o "$2" == "-noise" ]
+then
+echo Will try to create grid with noise level and data weights
+inoise=1
+fi
 
 echo //////////////////////////////////////////////////
 echo 
@@ -125,6 +130,7 @@ cd divawork
 echo $scale $ireg $LVAL  | ../../bin/snbygrid.a
 
 cp -v fort.14 ../output/SNbygrid.dat
+cp -v fort.15 ../output/noiseanomaly.dat
 
 
 head -1 ../input/param.par > ../output/param.par.fit
@@ -141,6 +147,73 @@ echo There is now an adapted param.par file
 echo         ./output/param.par.fit
 echo use option -r if to replace param.par
 echo ======================================
+
+if [ "$inoise" == "1" ]
+then
+echo will try to create new data file with adapted weights
+echo will also try to create variance field for climatologies
+
+
+head -1 ./input/param.par > ./output/param.par.noisevar
+LBIS=$(echo $LVAL | awk '{print $1*10}')
+echo $LBIS >> ./output/param.par.noisevar
+head -5 ./input/param.par | tail -3 >> ./output/param.par.noisevar
+echo 0 >> ./output/param.par.noisevar
+echo iref >> ./output/param.par.noisevar
+echo 0 >> ./output/param.par.noisevar
+head -23 ./input/param.par | tail -15 >> ./output/param.par.noisevar
+echo 100 >> ./output/param.par.noisevar
+head -25 ./input/param.par | tail -1 >> ./output/param.par.noisevar
+head -6 ./output/SNbygrid.dat | tail -1  >> ./output/param.par.noisevar
+
+mv ./input/data.dat ./input/data.dat.nosnbygrid
+if [ -f ./input/valatxy.coord ]
+then
+mv ./input/valatxy.coord ./input/valatxy.coord.nosnbygrid
+fi
+cp ./input/data.dat.nosnbygrid ./input/valatxy.coord
+cp ./output/noiseanomaly.dat ./input/data.dat
+# Use nice mesh
+divamesh
+cp ./input/param.par ./input/param.par.nosnbygrid
+cp ./output/param.par.noisevar ./input/param.par 
+
+mkdir -p ./output2
+mv  ./output/*  ./output2
+
+mkdir -p ./output/ghertonetcdf
+mkdir -p ./output/meshvisu
+cp ./output2/meshvisu/* ./output/meshvisu
+divacalc
+
+
+NOISREF=$(head -8 ./output2/SNbygrid.dat  | tail -1 | awk '{print 1.*$1}')
+awk -v ref=$NOISREF '{if ((ref+$3)>0.1*ref) {print ref/(ref+$3)} else {print ref*10}}' ./output/valatxyascii.anl > ./output/dataweights.dat
+
+cp -v ./output/dataweights.dat ./output2/dataweights.dat
+cp -v ./output/fieldgher.anl ./output2/varfieldgher.anl
+cp -v ./output/ghertonetcdf/results.nc ./output2/ghertonetcdf/var.nc
+rm -r ./output/*
+echo renaming output2 to output
+mv ./output2/* ./output
+rmdir ./output2
+cp ./output/meshvisu/* ./meshgenwork
+
+echo now need to push back original files
+cp ./input/data.dat.nosnbygrid ./input/data.dat
+cp ./input/param.par.nosnbygrid ./input/param.par
+if [ -f ./input/valatxy.coord.nosnbygrid ]
+then
+mv ./input/valatxy.coord.nosnbygrid ./input/valatxy.coord
+fi
+
+dvdatacolchange
+
+
+
+
+fi
+
 
 if [ "$iparsave" == "1" ]
 then
