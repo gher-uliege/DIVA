@@ -44,7 +44,7 @@ C      include 'netcdf.inc'
       write(6,*) 'Severe error, increase iw netcdfoutput.f'
       stop 'Severe error, increase iw netcdfoutput.f'
       endif
-      if(imax.gt.nmax.or.jmax.lt.nmax) then
+      if(imax.gt.nmax.or.jmax.gt.nmax) then
       write(6,*) 'Severe error, increase iw netcdfoutput.f'
       stop 'Severe error, increase nmax netcdfoutput.f'
       endif
