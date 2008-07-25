@@ -22,9 +22,11 @@ C ----------------------------------------------------------------------
       program ncoutputerr
       implicit none
 C      include 'netcdf.inc'
-      REAL*4 U(1000000)
-      REAL*4 X(1000)
-      REAL*4 Y(1000)
+      integer nmax,iw
+      parameter(nmax=10000,iw=100000000)
+      REAL*4 U(iw)
+      REAL*4 X(nmax)
+      REAL*4 Y(nmax)
 
       integer NX, NY, KMAX, ipr, nw, IMAX, JMAX
       real VALEXU
@@ -38,7 +40,14 @@ C      include 'netcdf.inc'
 
       ipr=4
       nw=imax*jmax
-
+      if(nw.gt.iw) then
+      write(6,*) 'Severe error, increase iw netcdfoutput.f'
+      stop 'Severe error, increase iw netcdfoutput.f'
+      endif
+      if(nmax.gt.imax.or.jmax.gt.nmax) then
+      write(6,*) 'Severe error, increase iw netcdfoutput.f'
+      stop 'Severe error, increase nmax netcdfoutput.f'
+      endif
 
 C     Reads the grid data from GridInfo.dat
 C----------------------------------------------
