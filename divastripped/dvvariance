@@ -80,6 +80,7 @@ echo 0 >> param.par
 #echo 0 >> bidon
 #mv bidon ./input/param.par
 
+cd ..
 cd divawork
 if [ "$1" -eq "1" ]
 then
