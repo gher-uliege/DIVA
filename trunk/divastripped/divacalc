@@ -1,0 +1,544 @@
+#!/bin/bash
+
+
+
+ipipe=1
+
+
+echo //////////////////////////////////////////////////
+echo           Going to analyse a field
+echo //////////////////////////////////////////////////
+
+divarunning=$(ps -eafl | grep -i 'diva\.a' | wc -l)
+
+if [ "$divarunning" != 0 ]
+then
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+echo ????????diva already running??????
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ps -eafl | grep -i 'diva\.a'
+fi
+
+
+echo ' ' 
+iqc=0
+if [ "$1" == "qc" ] 
+then
+echo ===============
+echo Quality control
+echo ===============
+iqc=1
+fi
+
+
+
+Filepar=./input/param.par
+{
+read linecomment
+read lc
+read linecomment
+read icoordchange
+read linecomment
+read ispec
+read linecomment
+read ireg
+read linecomment
+read xori
+read linecomment
+read yori
+read linecomment
+read dx
+read linecomment
+read dy
+read linecomment
+read nx
+read linecomment
+read ny
+read linecomment
+read valex
+read linecomment
+read snr
+read linecomment
+read varbak
+} < $Filepar
+
+
+
+if [ -f ./input/valatxy.coord ] 
+then
+cp ./input/valatxy.coord ./divawork/fort.79
+fi
+
+
+
+xi=1
+
+cd ./meshgenwork
+
+File23=./fort.23
+
+#output of info for mesh visualisation with meshvisu.m
+
+echo Copying output files for mesh visialisation
+cp  -v ../output/meshvisu/fort.10 .
+cp  -v ../output/meshvisu/fort.22 .
+cp  -v ../output/meshvisu/fort.23 .
+echo ' '
+
+{
+read nnt1
+read nnint
+read nelt
+} < $File23
+
+ 
+
+cp fort.22 ../divawork/fort.11
+cd ../divawork
+
+# try to estimate memory allocation....
+# 
+NREA=0
+NINT=0
+NDATA=$(cat ../input/data.dat | wc -l)
+echo Data points $NDATA
+let NREA=$NREA+4*$NDATA
+let NREA=$NREA+${nx}*${ny}
+let NINT=$NINT+8*$NDATA
+let NINT=$NINT+$nelt
+let NINT=$NINT+41
+let NDDLT=3*$nnt1+$nnint
+let NDDLE=16
+let NNT=$nnt1+$nnint
+let NINT=$NINT+2*$NNT
+let NINT=$NINT+$NDDLT
+let NINT=$NINT+8*$nelt
+let NINT=$NINT+$NDDLE
+let NTERM=$NDDLT*$NDDLT
+# instead of 90, square root of $NDDLT
+let NDDLTB=$NDDLT
+echo Square root of $NDDLTB
+#sqrt() { local x=$1 s=$1 os=0;while ((s!=os));\
+#do os=$s;s=$(((s+x/s)/2)); done;echo $s; }
+##sqrt() { local x=$1 s=$1 os=0; \
+##while [ "$((os-s))" -ge "1" -o "$((s-os))" -ge "1" ]; \
+##do os=$s;s=$(((s+x/s)/2)); done;echo $s; }
+##xx=$(sqrt $NDDLTB)
+
+xx=$(echo $NDDLTB | awk '{print int(sqrt($1))}')
+echo root is $xx $xxb
+let NTERM=$NDDLT*$xx
+let NTERM=$NTERM+$NTERM/2
+let NREA=$NREA+$nelt
+let NREA=$NREA+2*$NTERM
+let NREA=$NREA+2*NDDLT
+let NREA=$NREA+$NDDLE*NDDLE
+let NREA=$NREA+$NDDLE*NDDLE
+let NREA=$NREA+$NDDLE
+let NREA=$NREA+38*nelt
+let NREA=$NREA+2*$nnt1
+# For optimisation of element location, rought estimate:
+let NINT=$NINT+$nelt*100
+#
+
+
+itcs=0
+if [ -f ../input/constraint.dat ]
+then
+let itcs=$itcs+1
+echo Advection requested
+cat ../input/constraint.dat > ./fort.49
+cp ../input/UVinfo.dat ./fort.93
+cp ../input/Uvel.dat ./fort.91
+cp ../input/Vvel.dat ./fort.92
+
+let NREA=$NREA+2*$nnt1
+{
+read aaaaa
+read bbbbb
+read ccccc
+read ddddd
+read nxuuu
+read nyuuu
+} < ../input/UVinfo.dat
+let NREA=$NREA+$nxuuu*$nyuuu
+let NREA=$NREA+2*$nnt1
+let NREA=$NREA+1
+
+fi
+if [ -f ../input/RL.dat ]
+then
+let itcs=$itcs+2
+echo Variable L requested
+cp ../input/RL.dat ./fort.94
+cp ../input/RLinfo.dat ./fort.95
+
+let NREA=$NREA+$nnt1
+{
+read aaaaa
+read bbbbb
+read ccccc
+read ddddd
+read nxlll
+read nylll
+} < ../input/RLinfo.dat
+let NREA=$NREA+$nxlll*$nylll
+let NREA=$NREA+$nnt1
+let NREA=$NREA+1
+
+fi
+
+
+
+
+
+#creation of file fort.13
+echo $xori > ./fort.13
+echo $yori >> ./fort.13
+echo $dx >> ./fort.13
+echo $dy >> ./fort.13
+echo $nx >> ./fort.13
+echo $ny >> ./fort.13
+echo $valex >> ./fort.13
+
+../../bin/griddef.a
+
+
+echo $lc $xi | ../../bin/alpha.a
+
+if [ "$ireg" == 3 ]
+then
+aaaref=$(head -1 fort.12)
+echo 0 > newalpha
+# Test, not really zero, but small
+echo  1.E-6 $aaaref | ../../bin/multiply.a > newalpha
+tail -1 fort.12 >> newalpha
+mv newalpha fort.12
+let ireg=1
+fi
+
+
+echo $varbak > ./fort.15
+
+
+cd ..
+
+
+if [ "$iqc" != 1 ]
+then
+if [ "$ispec" -lt 0 ] 
+then
+if [ "$varbak" != 0 ]
+then
+if [ "$1" != "-pfsum" ]
+then
+#dvkern
+echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+echo %  Going to call another diva execution    %
+echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+. dvcovariance
+if [ "$ipipe" == "1" ]
+then
+echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+echo %  Have launched another diva execution    %
+echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+else
+echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+echo %  Have finished another diva execution    %
+echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+fi
+
+
+fi
+fi
+fi
+fi
+
+if [ -f ./input/data.dat ] 
+then 
+cp ./input/data.dat ./divawork/fort.44
+else
+echo Need to provide data.dat in ./input !
+ls -l ./input
+pwd
+fi
+
+
+
+
+
+cd ./divawork
+echo coord 1 > ./fort.10
+echo $icoordchange >> ./fort.10
+echo mathpr 1 >> ./fort.10
+echo 2 >> ./fort.10
+echo 0 >> ./fort.10
+echo 2 >> ./fort.10
+echo topolo 1 >> ./fort.10
+echo $nnt1 >> ./fort.10
+echo $nnint >> ./fort.10
+echo $nelt >> ./fort.10
+echo datapr 1 >> ./fort.10
+echo $ireg >> ./fort.10
+#JMB
+
+if [ "$itcs" != 0 ] 
+then 
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+echo  Module constraint activated
+echo $itcs
+echo constr 1 >> ./fort.10
+echo $itcs >> ./fort.10
+
+
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+fi
+
+
+
+echo solver 1 >> ./fort.10
+echo 0 >> ./fort.10
+echo stores 1 >> ./fort.10
+echo 3 >> ./fort.10
+echo VARBAK: $varbak
+if [ "$iqc" != 1 ]
+then
+if [ "$varbak" != 0 ]
+then
+if [ "$ispec" != 0 ]
+then
+echo errors will be calculated
+echo esterr 1 >> ./fort.10
+echo $ispec >> ./fort.10
+fi
+fi
+#echo $ >> ./fort.10
+
+echo gcvfac 1 >> ./fort.10
+
+echo 5 >> ./fort.10
+
+echo stopex >> ./fort.10
+
+else
+#QC
+echo dataqc 1 >> ./fort.10
+echo stopex >>./fort.10
+fi
+
+
+#creation of file fort.20
+nbccol=$(head -n 1 ./fort.44 | wc -w)
+echo $lc $snr $nbccol $xi | ../../bin/calcmu.a
+
+
+NDATAB=$(cat ./fort.20 | wc -l)
+
+if [ "$NDATAB" -lt "$NDATA" ]
+then
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+echo -------------------------------------------
+echo ???????????????????????????????????????????
+echo ?????   Corrupted data file    ????????????
+echo From $NDATA lines in data.dat
+echo Only $NDATAB have been feed into DIVA
+echo ???????????????????????????????????????????
+echo -------------------------------------------
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+fi
+
+if [ "$1" == "-pfsum" ]
+then
+echo Summing covariances
+cd ..
+. ./dvcovariancesum
+exit
+fi
+
+#execute diva
+echo $NINT $NREA | ../../bin/diva.a
+
+rm -f fort.59
+rm -f fort.61
+
+if [ "$iqc" == 1 ] 
+then
+#
+#output of results to user
+cp -v fort.76 ../output/expectederroratdatapoint.anl
+cp -v fort.71 ../output/fieldatdatapoint.anl
+
+echo ' '
+echo Looking for outliers
+echo ' '
+echo $valex | ../../bin/lookforoutliers.a
+echo ' '
+echo Copying outlier lists
+echo ' '
+
+if [ -f fort.66 ]
+then
+mv -v fort.66 ../output/outliers.dat
+mv -v fort.67 ../output/outliers.normalized.dat
+else
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo Check execution track
+echo --------------------------------------------
+fi
+
+
+else
+
+
+#output as netcdf not yet done
+echo Output of results for user
+echo ' '
+cp -v fort.84 ../output/fieldgher.anl
+if [ -f fort.82 ]
+then
+cp -v fort.82 ../output/valatxyascii.anl
+fi
+
+cp -v fort.83 ../output/fieldascii.anl
+if [ -f fort.87 ]
+then
+cp -v fort.87 ../output/errorfieldgher.anl
+fi
+if [ -f fort.73 ]
+then
+cp -v fort.73 ../output/erroratxyascii.anl
+fi
+if [ -f fort.86 ]
+then
+cp -v fort.86 ../output/errorfieldascii.anl
+fi
+cp -v fort.71 ../output/fieldatdatapoint.anl
+if [ -f fort.72 ] 
+then
+cp -v fort.72 ../output/erroratdatapoint.anl
+fi
+if [ -f fort.77 ]
+then
+cp -v fort.77 ../output/gcvval.dat
+fi
+echo ' '
+
+echo Creation of file GridInfo.dat
+echo ' '
+echo $xori > ../output/ghertonetcdf/GridInfo.dat
+echo $yori >> ../output/ghertonetcdf/GridInfo.dat
+echo $dx >> ../output/ghertonetcdf/GridInfo.dat
+echo $dy >> ../output/ghertonetcdf/GridInfo.dat
+echo $nx >> ../output/ghertonetcdf/GridInfo.dat
+echo $ny >> ../output/ghertonetcdf/GridInfo.dat
+echo $valex >> ../output/ghertonetcdf/GridInfo.dat
+
+cp fort.84 ../output/ghertonetcdf
+if [ -f fort.87 ]
+then 
+cp -v fort.87 ../output/ghertonetcdf
+fi
+
+iecal=0
+if [ "$ispec" == 1 ]
+then
+iecal=1
+fi
+if [ "$ispec" == 3 ]
+then
+iecal=1
+fi
+if [ "$ispec" == 5 ]
+then
+iecal=1
+fi
+if [ "$ispec" == 7 ]
+then
+iecal=1
+fi
+
+if [ "$ispec" == 11 ]
+then
+iecal=1
+fi
+if [ "$ispec" == 13 ]
+then
+iecal=1
+fi
+if [ "$ispec" == 15 ]
+then
+iecal=1
+fi
+if [ "$ispec" == 17 ]
+then
+iecal=1
+fi
+
+if [ "$ispec" == -1 ]
+then
+iecal=1
+fi
+if [ "$ispec" == -3 ]
+then
+iecal=1
+fi
+if [ "$ispec" == -5 ]
+then
+iecal=1
+fi
+if [ "$ispec" == -7 ]
+then
+iecal=1
+fi
+if [ "$ispec" == -11 ]
+then
+iecal=1
+fi
+if [ "$ispec" == -13 ]
+then
+iecal=1
+fi
+if [ "$ispec" == -15 ]
+then
+iecal=1
+fi
+if [ "$ispec" == -17 ]
+then
+iecal=1
+fi
+# JMB ADAPTED FOR DIFFERENT CASES IF ISPEC
+if [ "$varbak" != 0 ]
+then
+if [ "$iecal" == 1 ] 
+then
+echo Creating netcdf file for field and associated error
+cd ../output/ghertonetcdf
+../../../bin/netcdfoutput.a
+fi
+fi
+
+if [ "$varbak" == 0  -o  "$iecal" == 0 ] 
+then
+echo Creating netcdf file only for field 
+echo since Varbak and ispec are $varbak $ispec
+cd ../output/ghertonetcdf
+../../../bin/netcdfoutputfield.a
+fi
+
+cd ../..
+echo ' '
+echo --------------------
+echo Analysis is finished
+echo --------------------
+fi
+
+
+if [ "$ispec" -lt 0 ] 
+then
+if [ "$varbak" != 0 ]
+then
+rm -f ./divawork/sub/fort.*
+fi
+fi

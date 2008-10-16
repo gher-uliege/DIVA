@@ -1,0 +1,5 @@
+set pm3d map
+set style data pm3d
+set palette
+set cbrange[:]
+splot 'fort.72' using 1:2:0:3 t 'Relative Length scale'

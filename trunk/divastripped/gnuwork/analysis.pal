@@ -1,0 +1,27 @@
+set palette defined ( \
+0 "gray20" ,\
+4 "gray60" ,\
+6 "light-blue", \
+8 "skyblue",\
+10 "aquamarine", \
+12 "turquoise", \
+14 "dark-turquoise",\
+15 "gray50", \
+15 "gray50", \
+ 16 "light-green", \
+ 17 "sea-green",\
+  17 "sea-green",\
+ 18 "light-yellow", \
+ 19 "light-red",\
+ 20 "khaki",\
+ 21 "gray60",\
+ 22 "dark-blue", \
+ 23 "royalblue",\
+ 33 "blue", \
+ 35 "green", \
+ 37 "yellow", \
+ 38 "red", \
+ 39.5 "dark-red",\
+ 39.5 "dark-red",\
+ 40 "violet",\
+ 42 "gray10")

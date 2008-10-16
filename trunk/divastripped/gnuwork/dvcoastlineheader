@@ -1,0 +1,6 @@
+unset pm3d
+set style line 2 linetype 1 lw 2 linecolor rgb "dark-gray"
+set style line 1 linetype 1 lw 2 linecolor rgb "dark-blue"
+
+set title 'DIVA contours'
+

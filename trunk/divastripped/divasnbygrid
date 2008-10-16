@@ -1,0 +1,230 @@
+#!/bin/bash
+
+iparsave=0
+inoise=0
+if [ "$1" == "-r" -o "$2" == "-r" ]
+then
+echo Will replace param.par
+iparsave=1
+fi
+if [ "$1" == "-noise" -o "$2" == "-noise" ]
+then
+echo Will try to create grid with noise level and data weights
+inoise=1
+fi
+
+echo //////////////////////////////////////////////////
+echo 
+echo //////////////////////////////////////////////////
+echo ' '
+
+
+Filepar=./input/param.par
+{
+read linecomment
+read lc
+read linecomment
+read icoordchange
+read linecomment
+read ispec
+read linecomment
+read ireg
+read linecomment
+read xori
+read linecomment
+read yori
+read linecomment
+read dx
+read linecomment
+read dy
+read linecomment
+read nx
+read linecomment
+read ny
+read linecomment
+read valex
+read linecomment
+read snr
+read linecomment
+read varbak
+} < $Filepar
+
+
+
+
+
+scale=$icoordchange
+if [ "$icoordchange" == "1" -o "$icoordchange" == "2" ]
+then
+echo will assume latitude of analysis grid center
+scale=$(echo $yori $dy $ny | awk '{print -cos(3.141593/180*($1+$2*$3/2))}')
+echo Scale $scale
+fi
+
+
+
+cp ./input/data.dat ./divawork/fort.10
+
+if [ -f ./input/gcvsamplingL.dat ]
+then
+echo There is a sampling file for L, will use it
+else
+echo There is a NO sampling file for L, will create it
+FIRSTL=$(head -2 ./input/param.par | tail -1)
+echo ==========
+echo L: $FIRSTL
+echo will try
+rm ./input/gcvsamplingL.dat
+echo 0.1 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 0.3 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 0.5 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 0.7 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 0.8 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 0.9 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 1 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 1.5 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 2 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 3 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 5 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo ==========
+echo Values to be sampled
+cat ./input/gcvsamplingL.dat
+echo ===========
+
+fi
+
+if [ -f ./output/gcvLL.dat ]
+then
+echo Erasing old gcvLL.dat
+rm ./output/gcvLL.dat
+fi
+
+for Lgcv in `cat ./input/gcvsamplingL.dat`
+do
+echo ' '
+echo ====================================
+echo Working with test length scale $Lgcv
+echo ====================================
+
+cd divawork
+echo $scale $ireg $Lgcv  | ../../bin/snbygrid.a
+head -8 fort.14 | tail -1 > bidon
+{
+read gcvval
+} < bidon
+echo quality of the fit $gcvval
+echo $gcvval $Lgcv >> ../output/gcvLL.dat
+cd ..
+LVAL=$(awk 'BEGIN {i=1;max=-99999} {if ($1 > max) {lmax=$2;max=$1}; i=i+1} END {print lmax}' ./output/gcvLL.dat)
+
+echo Best value for L for the moment is $LVAL
+
+done
+
+echo ' '
+echo ====================================
+echo ====================================
+echo Retaining best length scale $LVAL
+echo ====================================
+cd divawork
+echo $scale $ireg $LVAL  | ../../bin/snbygrid.a
+
+cp -v fort.14 ../output/SNbygrid.dat
+cp -v fort.15 ../output/noiseanomaly.dat
+
+
+head -1 ../input/param.par > ../output/param.par.fit
+head -2 ../output/SNbygrid.dat | tail -1 >> ../output/param.par.fit
+head -23 ../input/param.par | tail -21 >> ../output/param.par.fit
+head -4 ../output/SNbygrid.dat | tail -1 >> ../output/param.par.fit
+head -25 ../input/param.par | tail -1 >> ../output/param.par.fit
+head -6 ../output/SNbygrid.dat | tail -1  >> ../output/param.par.fit
+
+cd ..
+
+echo ======================================
+echo There is now an adapted param.par file
+echo         ./output/param.par.fit
+echo use option -r if to replace param.par
+echo ======================================
+
+if [ "$inoise" == "1" ]
+then
+echo will try to create new data file with adapted weights
+echo will also try to create variance field for climatologies
+
+
+head -1 ./input/param.par > ./output/param.par.noisevar
+LBIS=$(echo $LVAL | awk '{print $1*10}')
+echo $LBIS >> ./output/param.par.noisevar
+head -5 ./input/param.par | tail -3 >> ./output/param.par.noisevar
+echo 0 >> ./output/param.par.noisevar
+echo iref >> ./output/param.par.noisevar
+echo 0 >> ./output/param.par.noisevar
+head -23 ./input/param.par | tail -15 >> ./output/param.par.noisevar
+echo 100 >> ./output/param.par.noisevar
+head -25 ./input/param.par | tail -1 >> ./output/param.par.noisevar
+head -6 ./output/SNbygrid.dat | tail -1  >> ./output/param.par.noisevar
+
+mv ./input/data.dat ./input/data.dat.nosnbygrid
+if [ -f ./input/valatxy.coord ]
+then
+mv ./input/valatxy.coord ./input/valatxy.coord.nosnbygrid
+fi
+cp ./input/data.dat.nosnbygrid ./input/valatxy.coord
+cp ./output/noiseanomaly.dat ./input/data.dat
+# Use nice mesh
+divamesh
+cp ./input/param.par ./input/param.par.nosnbygrid
+cp ./output/param.par.noisevar ./input/param.par 
+
+mkdir -p ./output2
+mv  ./output/*  ./output2
+
+mkdir -p ./output/ghertonetcdf
+mkdir -p ./output/meshvisu
+cp ./output2/meshvisu/* ./output/meshvisu
+divacalc
+
+
+NOISREF=$(head -8 ./output2/SNbygrid.dat  | tail -1 | awk '{print 1.*$1}')
+awk -v ref=$NOISREF '{if ((ref+$3)>0.1*ref) {print ref/(ref+$3)} else {print ref*10}}' ./output/valatxyascii.anl > ./output/dataweights.dat
+
+cp -v ./output/dataweights.dat ./output2/dataweights.dat
+cp -v ./output/fieldgher.anl ./output2/varfieldgher.anl
+cp -v ./output/ghertonetcdf/results.nc ./output2/ghertonetcdf/var.nc
+rm -r ./output/*
+echo renaming output2 to output
+mv ./output2/* ./output
+rmdir ./output2
+cp ./output/meshvisu/* ./meshgenwork
+
+echo now need to push back original files
+cp ./input/data.dat.nosnbygrid ./input/data.dat
+cp ./input/param.par.nosnbygrid ./input/param.par
+if [ -f ./input/valatxy.coord.nosnbygrid ]
+then
+mv ./input/valatxy.coord.nosnbygrid ./input/valatxy.coord
+fi
+
+dvdatacolchange
+
+
+
+
+fi
+
+
+if [ "$iparsave" == "1" ]
+then
+echo =======================================================
+echo Replacing  param file with fit
+cp -v ./input/param.par ./input/param.par.old
+cp -v ./output/param.par.fit ./input/param.par
+echo =======================================================
+fi
+
+echo ' '
+echo --------------------------
+echo 
+echo --------------------------
