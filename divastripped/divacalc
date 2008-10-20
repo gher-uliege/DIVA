@@ -435,6 +435,20 @@ echo $nx >> ../output/ghertonetcdf/GridInfo.dat
 echo $ny >> ../output/ghertonetcdf/GridInfo.dat
 echo $valex >> ../output/ghertonetcdf/GridInfo.dat
 
+#Iceedge case
+if [ -f ../input/iceedge.dat ]
+then
+echo Ice edge to be used as mask
+cd ..
+dvicemask
+cp ./output/fieldgher.anl ./divawork/fort.84
+cd divawork
+echo finished ice edge case
+fi
+
+
+
+
 cp fort.84 ../output/ghertonetcdf
 if [ -f fort.87 ]
 then 
@@ -525,6 +539,7 @@ echo Creating netcdf file only for field
 echo since Varbak and ispec are $varbak $ispec
 cd ../output/ghertonetcdf
 ../../../bin/netcdfoutputfield.a
+rm -f ../error*.anl
 fi
 
 cd ../..

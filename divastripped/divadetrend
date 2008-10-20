@@ -16,6 +16,8 @@ echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 echo  Applying iterative detrending on classes
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+divadatacoverage -n
+dvdataclean
 
 echo need to modify param.par for iterations to desactivate error calculations
 
@@ -28,7 +30,7 @@ echo 1 >> bidon
 echo   >> bidon
 echo -99 >> bidon
 echo >> bidon
-echo $gcv >> bidon
+head -24 ./input/param.detrend.par | tail -1 >> bidon
 echo >> bidon
 echo 0 >> bidon
 mv bidon ./input/param.par
@@ -79,8 +81,10 @@ cp fort.90 ../input/data.detrend.dat
 if [ "$i" -le "1" ]
 then
 echo $i
+head -1 fort.90 > ../output/sowhat.dat
 cat fort.42 > ../output/rmsmisfit.dat
 else
+head -1 fort.90 >> ../output/sowhat.dat
 cat fort.42 >> ../output/rmsmisfit.dat
 fi
 cp trends.*.dat ../output

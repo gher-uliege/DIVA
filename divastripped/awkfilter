@@ -1,7 +1,5 @@
 #!/bin/bash
-
 awk '{ sum += $1;  L[n++] = $1 } 
-
  END {
  for (j=1;j<3;j++){
  for (i=1; i<n-1; i++) {
