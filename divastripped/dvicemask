@@ -1,0 +1,24 @@
+#!/bin/bash
+
+
+
+echo ' '
+echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+echo %% Try to translate contours into gridded  format %%%
+echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+cp ./output/ghertonetcdf/GridInfo.dat ./divawork/fort.13
+
+cp ./input/iceedge.dat ./divawork/fort.10
+
+cp ./output/fieldgher.anl ./divawork/fort.98
+
+cd ./divawork
+../../bin/cont2grid.a
+../../bin/ghermask.a
+
+
+cd ..
+rm -f ./output/fieldgher.anl 
+cp -v ./divawork/fort.97 ./output/fieldgher.anl
