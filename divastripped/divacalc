@@ -112,8 +112,8 @@ let NDDLE=16
 let NNT=$nnt1+$nnint
 let NINT=$NINT+2*$NNT
 let NINT=$NINT+$NDDLT
-let NINT=$NINT+8*$nelt
-let NINT=$NINT+$NDDLE
+let NINT=$NINT+16*$nelt
+let NINT=$NINT+2*$NDDLE
 let NTERM=$NDDLT*$NDDLT
 # instead of 90, square root of $NDDLT
 let NDDLTB=$NDDLT
@@ -131,11 +131,11 @@ let NTERM=$NDDLT*$xx
 let NTERM=$NTERM+$NTERM/2
 let NREA=$NREA+$nelt
 let NREA=$NREA+2*$NTERM
-let NREA=$NREA+2*NDDLT
-let NREA=$NREA+$NDDLE*NDDLE
-let NREA=$NREA+$NDDLE*NDDLE
+let NREA=$NREA+2*$NDDLT
+let NREA=$NREA+$NDDLE*$NDDLE
+let NREA=$NREA+$NDDLE*$NDDLE
 let NREA=$NREA+$NDDLE
-let NREA=$NREA+38*nelt
+let NREA=$NREA+38*$nelt
 let NREA=$NREA+2*$nnt1
 # For optimisation of element location, rought estimate:
 let NINT=$NINT+$nelt*100
