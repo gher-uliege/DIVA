@@ -9,7 +9,7 @@ echo ' '
 
 nddd=$(cat ./input/data.dat | wc -l)
 
-if [ $# -eq 0 ] 
+if [ $# -eq "0" ] 
 then
 echo ==============================
 echo Need at least two paramteres for divacv:

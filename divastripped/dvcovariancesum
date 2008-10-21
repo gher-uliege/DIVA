@@ -44,7 +44,7 @@ echo $nnint >> ./fort.10
 echo $nelt >> ./fort.10
 echo datapr 1 >> ./fort.10
 echo 0 >> ./fort.10
-if [ "$itcs" != 0 ] 
+if [ "$itcs" != "0" ] 
 then 
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 echo  Module constraint activated
@@ -60,9 +60,9 @@ echo 0 >> ./fort.10
 echo stores 1 >> ./fort.10
 echo 3 >> ./fort.10
 echo VARBAK: $varbak
-if [ "$varbak" != 0 ]
+if [ "$varbak" != "0" ]
 then
-if [ "$ispec" != 0 ]
+if [ "$ispec" != "0" ]
 then
 echo errors will be calculated
 echo covar 1 >> ./fort.10

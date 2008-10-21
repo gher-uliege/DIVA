@@ -11,7 +11,7 @@ echo //////////////////////////////////////////////////
 
 divarunning=$(ps -eafl | grep -i 'diva\.a' | wc -l)
 
-if [ "$divarunning" != 0 ]
+if [ "$divarunning" != "0" ]
 then
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 echo ????????diva already running??????
@@ -206,7 +206,7 @@ echo $valex >> ./fort.13
 
 echo $lc $xi | ../../bin/alpha.a
 
-if [ "$ireg" == 3 ]
+if [ "$ireg" == "3" ]
 then
 aaaref=$(head -1 fort.12)
 echo 0 > newalpha
@@ -224,11 +224,11 @@ echo $varbak > ./fort.15
 cd ..
 
 
-if [ "$iqc" != 1 ]
+if [ "$iqc" != "1" ]
 then
-if [ "$ispec" -lt 0 ] 
+if [ "$ispec" -lt "0" ] 
 then
-if [ "$varbak" != 0 ]
+if [ "$varbak" != "0" ]
 then
 if [ "$1" != "-pfsum" ]
 then
@@ -282,7 +282,7 @@ echo datapr 1 >> ./fort.10
 echo $ireg >> ./fort.10
 #JMB
 
-if [ "$itcs" != 0 ] 
+if [ "$itcs" != "0" ] 
 then 
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 echo  Module constraint activated
@@ -301,11 +301,11 @@ echo 0 >> ./fort.10
 echo stores 1 >> ./fort.10
 echo 3 >> ./fort.10
 echo VARBAK: $varbak
-if [ "$iqc" != 1 ]
+if [ "$iqc" != "1" ]
 then
-if [ "$varbak" != 0 ]
+if [ "$varbak" != "0" ]
 then
-if [ "$ispec" != 0 ]
+if [ "$ispec" != "0" ]
 then
 echo errors will be calculated
 echo esterr 1 >> ./fort.10
@@ -361,7 +361,7 @@ echo $NINT $NREA | ../../bin/diva.a
 rm -f fort.59
 rm -f fort.61
 
-if [ "$iqc" == 1 ] 
+if [ "$iqc" == "1" ] 
 then
 #
 #output of results to user
@@ -456,76 +456,76 @@ cp -v fort.87 ../output/ghertonetcdf
 fi
 
 iecal=0
-if [ "$ispec" == 1 ]
+if [ "$ispec" == "1" ]
 then
 iecal=1
 fi
-if [ "$ispec" == 3 ]
+if [ "$ispec" == "3" ]
 then
 iecal=1
 fi
-if [ "$ispec" == 5 ]
+if [ "$ispec" == "5" ]
 then
 iecal=1
 fi
-if [ "$ispec" == 7 ]
-then
-iecal=1
-fi
-
-if [ "$ispec" == 11 ]
-then
-iecal=1
-fi
-if [ "$ispec" == 13 ]
-then
-iecal=1
-fi
-if [ "$ispec" == 15 ]
-then
-iecal=1
-fi
-if [ "$ispec" == 17 ]
+if [ "$ispec" == "7" ]
 then
 iecal=1
 fi
 
-if [ "$ispec" == -1 ]
+if [ "$ispec" == "11" ]
 then
 iecal=1
 fi
-if [ "$ispec" == -3 ]
+if [ "$ispec" == "13" ]
 then
 iecal=1
 fi
-if [ "$ispec" == -5 ]
+if [ "$ispec" == "15" ]
 then
 iecal=1
 fi
-if [ "$ispec" == -7 ]
+if [ "$ispec" == "17" ]
 then
 iecal=1
 fi
-if [ "$ispec" == -11 ]
+
+if [ "$ispec" == "-1" ]
 then
 iecal=1
 fi
-if [ "$ispec" == -13 ]
+if [ "$ispec" == "-3" ]
 then
 iecal=1
 fi
-if [ "$ispec" == -15 ]
+if [ "$ispec" == "-5" ]
 then
 iecal=1
 fi
-if [ "$ispec" == -17 ]
+if [ "$ispec" == "-7" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-11" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-13" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-15" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-17" ]
 then
 iecal=1
 fi
 # JMB ADAPTED FOR DIFFERENT CASES IF ISPEC
-if [ "$varbak" != 0 ]
+if [ "$varbak" != "0" ]
 then
-if [ "$iecal" == 1 ] 
+if [ "$iecal" == "1" ] 
 then
 echo Creating netcdf file for field and associated error
 cd ../output/ghertonetcdf
@@ -533,7 +533,7 @@ cd ../output/ghertonetcdf
 fi
 fi
 
-if [ "$varbak" == 0  -o  "$iecal" == 0 ] 
+if [ "$varbak" == "0"  -o  "$iecal" == "0" ] 
 then
 echo Creating netcdf file only for field 
 echo since Varbak and ispec are $varbak $ispec
@@ -550,9 +550,9 @@ echo --------------------
 fi
 
 
-if [ "$ispec" -lt 0 ] 
+if [ "$ispec" -lt "0" ] 
 then
-if [ "$varbak" != 0 ]
+if [ "$varbak" != "0" ]
 then
 rm -f ./divawork/sub/fort.*
 fi

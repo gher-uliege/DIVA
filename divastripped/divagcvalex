@@ -68,7 +68,7 @@ crossval
 #######
 itestGCV=0
 itestsingle=0
-if [ "$itestGCV" != 0 ] 
+if [ "$itestGCV" != "0" ] 
 then
 cp ./output/fieldatdatapoint.anl ./divawork/fort.71
 cp ./input/data.dat ./divawork/fort.20
@@ -77,7 +77,7 @@ cd ./divawork
 cat fort.30 >> ../input/GCVtest/exactgcv.dat
 cd ..
 fi
-if [ "$itestsingle" != 0 ]
+if [ "$itestsingle" != "0" ]
 then
 cat ./output/fieldatdatapoint.anl >> ./input/GCVtest/localvalue.dat
 fi

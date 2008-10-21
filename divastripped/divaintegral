@@ -102,7 +102,7 @@ then
 echo Sorry no error on integral will be calculated since error fields not requested
 else
 
-if [ "$ispec" -gt 0 ]
+if [ "$ispec" -gt "0" ]
 then
 echo hybrid errors, also for the sum
 

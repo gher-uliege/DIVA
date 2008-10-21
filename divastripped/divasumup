@@ -106,58 +106,58 @@ cp -v ../output/errorfieldgher.anl ../output/ghertonetcdf/fort.87
 fi
 
 iecal=0
-if [ "$ispec" == 1 ]
+if [ "$ispec" == "1" ]
 then
 iecal=1
 fi
-if [ "$ispec" == 3 ]
+if [ "$ispec" == "3" ]
 then
 iecal=1
 fi
-if [ "$ispec" == 5 ]
+if [ "$ispec" == "5" ]
 then
 iecal=1
 fi
-if [ "$ispec" == 7 ]
+if [ "$ispec" == "7" ]
 then
 iecal=1
 fi
-if [ "$ispec" == -1 ]
+if [ "$ispec" == "-1" ]
 then
 iecal=1
 fi
-if [ "$ispec" == -3 ]
+if [ "$ispec" == "-3" ]
 then
 iecal=1
 fi
-if [ "$ispec" == -5 ]
+if [ "$ispec" == "-5" ]
 then
 iecal=1
 fi
-if [ "$ispec" == -7 ]
+if [ "$ispec" == "-7" ]
 then
 iecal=1
 fi
-if [ "$ispec" == -11 ]
+if [ "$ispec" == "-11" ]
 then
 iecal=1
 fi
-if [ "$ispec" == -13 ]
+if [ "$ispec" == "-13" ]
 then
 iecal=1
 fi
-if [ "$ispec" == -15 ]
+if [ "$ispec" == "-15" ]
 then
 iecal=1
 fi
-if [ "$ispec" == -17 ]
+if [ "$ispec" == "-17" ]
 then
 iecal=1
 fi
 # JMB ADAPTED FOR DIFFERENT CASES IF ISPEC
-if [ "$varbak" != 0 ]
+if [ "$varbak" != "0" ]
 then
-if [ "$iecal" == 1 ] 
+if [ "$iecal" == "1" ] 
 then
 echo Creating netcdf file for field and associated error
 cd ../output/ghertonetcdf
@@ -165,7 +165,7 @@ cd ../output/ghertonetcdf
 fi
 fi
 
-if [ "$varbak" == 0  -o  "$iecal" == 0 ] 
+if [ "$varbak" == "0"  -o  "$iecal" == "0" ] 
 then
 echo Creating netcdf file only for field 
 echo since Varbak and ispec are $varbak $ispec
