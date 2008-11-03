@@ -11,21 +11,15 @@ C  - IPRC   : precision (real*4 or real*8)
        
        COMMON /ALLO/ IPRC,IRE,IEN,IREMAX,IENMAX
 
-C#ifdef DIVADYNAMIC
-C      
-C      
-C      Declare S and L allocatable and in common 
-C      COMMON /SDYN/ S
-C      COMMON /LDYN/ L
-C
-C#else
-      PARAMETER(nrea=150000000)
-      PARAMETER(nent=20000000)
-      
-      COMMON /SDYN/ S(nrea)
-      COMMON /LDYN/ L(nent)
-C
-C#endif
+!     Declare S and L allocatable and in common 
+      REAL(8),    POINTER :: S(:)
+!      POINTER :: S(:)
+      INTEGER(4), POINTER :: L(:)
+
+      COMMON /SDYN/ S
+      COMMON /LDYN/ L
+      COMMON /DYN/ NREA,NENT
+
 C INDEXES IN  L vector
 C  - LKLINK : optimal position of node (i) in the sequence of dof
 C  - LKSORT : optimal sorted sequence of nodes

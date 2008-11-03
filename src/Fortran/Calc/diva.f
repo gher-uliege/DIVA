@@ -124,7 +124,8 @@ C   SUBROUTINE LIST:
 C     -  (MAIN PROGRAM)
 C
 C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-      
+
+#     include "../cppdefs.h"      
       include'divapre.h'
       include'divainc.h'
       character*6 modul
@@ -204,13 +205,18 @@ C                    to be printed)
       NINTDIVA=II
       NREADIVA=JJ
  1010 continue
-C#ifdef DIVADYNAMIC
-C      write(6,*) 'Dynamic memory allocation'
-C      write(6,*) 'Integer',NINTDIVA
-C      write(6,*) 'Real',NREADIVA
-C     allocate S(NREADIVA)
-C     allocate L(NINTDIVA)
-C#endif
+#ifdef DIVADYNAMIC
+      write(6,*) 'Dynamic memory allocation'
+      write(6,*) 'Integer',NINTDIVA
+      write(6,*) 'Real',NREADIVA
+      NREA = NREADIVA
+      NENT = NINTDIVA
+!     Values can be hardcorded here
+!     NREA=15000000
+!     NENT=2000000
+      allocate(S(NREA))
+      allocate(L(NENT))
+#endif
  10   read(10,810) modul,ipr
       if(modul.eq.'mathpr') then
          write(6,820) ipr
