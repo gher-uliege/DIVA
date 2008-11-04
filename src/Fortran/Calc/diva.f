@@ -313,5 +313,11 @@ C                    to be printed)
       close(85)
       close(86)
       close(87)
+
+#ifdef DIVADYNAMIC
+      deallocate(S)
+      deallocate(L)
+#endif
+
       stop
       end
