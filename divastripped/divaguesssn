@@ -104,7 +104,7 @@ then
 icont=0
 fi
 
-if [ "ijm" -le "2" ]
+if [ "$ijm" -le "2" ]
 then
 icont=1
 fi
