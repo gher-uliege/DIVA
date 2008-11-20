@@ -400,6 +400,7 @@ C now compute the diagnostics for new value of lambda
       rm=0
       rvar=0
       do i=1,12
+      lamnew(i)=log10(lamnew(i))
       rm=rm+lamnew(i)
       rvar=rvar+lamnew(i)*lamnew(i)
       enddo
@@ -409,13 +410,14 @@ C now compute the diagnostics for new value of lambda
       
       ii=12
  1    continue
-      bestguess=lamnew(ii)
+      bestguessl=lamnew(ii)
+      bestguess=10**lamnew(ii)
       
-      if (abs(bestguess-rm/12.).le.3*std) then
+      if (abs(bestguessl-rm/12.).le.2*std) then
        return
       else
        if (ii.eq.1) then
-          bestguess=rm/12.
+          bestguess=10**(rm/12.)
           return
        else
          ii=ii-1
