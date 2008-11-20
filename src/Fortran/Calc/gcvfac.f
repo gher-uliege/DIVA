@@ -18,6 +18,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       real*8 aaagcv,bbbgcv,ggggcv,lll1,lll2,lll3,lll4,ll1,ll2,ll3,ll4
       real*8 llll1,llll2,llll3,llll4
       real*8 gcvaln,vargcv,gcvala,gcvalb,gcval,zval,terr,terra
+      real*8 lamnew(12)
       common/GCV/GCVALN,vargcv,d0d,d1d,d2d,d3d,d4d,atr,btr,ctr,nntr
       zero=0.
       gcvala=0
@@ -363,18 +364,64 @@ C now compute the diagnostics for new value of lambda
                  llll4=(ll4+lll4)/2
                  endif
       endif
+      
+      lamnew(1)=ll1
+      lamnew(2)=ll2
+      lamnew(3)=ll3
+      lamnew(4)=ll4
+      lamnew(5)=lll1
+      lamnew(6)=lll2
+      lamnew(7)=lll3
+      lamnew(8)=lll4
+      lamnew(9)=llll1
+      lamnew(10)=llll2
+      lamnew(11)=llll3
+      lamnew(12)=llll4
+      call sellam(lamnew,bestguess,guessflag)           
+      write(27,*) 'S/N'
+      write(27,*) bestguess
+      write(27,*) 'Varbak'
+      write(27,*) d0d/(1+bestguess)
+      write(27,*) 'Quality of guess'
+      write(27,*) guessflag
       write(27,*) 'Old value'
       write(27,999)     rlamjm
       write(27,*) 'proposed new values'
       write(27,999)     ll1,ll2,ll3,ll4
       write(27,999)     lll1,lll2,lll3,lll4
       write(27,999)     llll1,llll2,llll3,llll4
+ 
+ 
+      return
+      end
+      subroutine sellam(lamnew,bestguess,qualflag)
+      real*8 lamnew(12),bestguess,qualflag
       
+      rm=0
+      rvar=0
+      do i=1,12
+      rm=rm+lamnew(i)
+      rvar=rvar+lamnew(i)*lamnew(i)
+      enddo
+      std=sqrt(rvar/12.-(rm/12.)**2)
       
-           
- 
- 
- 
+      qualflag=1-std/(rm/12.)
+      
+      ii=12
+ 1    continue
+      bestguess=lamnew(ii)
+      
+      if (abs(bestguess-rm/12.).le.3*std) then
+       return
+      else
+       if (ii.eq.1) then
+          bestguess=rm/12.
+          return
+       else
+         ii=ii-1
+         goto 1
+       endif
+      endif
       return
       end
 
