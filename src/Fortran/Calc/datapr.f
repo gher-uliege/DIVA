@@ -106,11 +106,11 @@ C test
       endif
       endif
       if(opti.eq.1) then
-      write(6,*) 'NCAMAX found',ncamax
+C      write(6,*) 'NCAMAX found',ncamax
 C Si ok, allody ici de ncax*ncay*ncamax EN plus en gardant le pointeur lkntc
           nelkntc=ncax*ncay*ncamax
           ncaz=ncamax+1
-          write(6,*) 'ncaz',ncaz
+C          write(6,*) 'ncaz',ncaz
           call allody(nelkntc,0,'kntc',jjjjjj,ipr)
       
       endif

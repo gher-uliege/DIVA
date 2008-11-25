@@ -305,7 +305,7 @@ c      write(6,*) 'gridded',ix,iy,jmboff,val
 C JMBend??
       goto 10
  100  nptsol=index
-      write(6,*)' Total nb. of pts where gridded solution is asked ='
+      write(6,*)'Total nb. of pts where gridded solution is asked ='
      &  ,nptsol
       endif
       if(ispec.ge.1) then
@@ -320,10 +320,10 @@ c        write(6,*) 'storing', iprc
 c           write(6,*) 'Storing field estimate in real*8'
 c,nx,ny,nbm
            call uwrit2(iu,c8,s(ltgrds),valex,iprc,nx,ny,1,nbm)  
-           write(6,*)' % Writing gridded field in single precision % '
+c           write(6,*)' % Writing gridded field in single precision % '
 c           write(6,*) 'Storing field estimate in real*8'
          endif
-         write(6,*) 'finished storing'
+         write(6,*) 'Finished storing'
       endif
       if(ityp.eq.2.or.ityp.eq.3) then
          close(32)
