@@ -1,6 +1,6 @@
 #!/bin/bash
 
-
+export LC_ALL=C 
 
 
 
@@ -10,10 +10,17 @@
 cd divawork
 
 cp ../input/data.dat fort.44
-
+LR=0
+LD=1
 if [ -f ../output/fieldatdatapoint.anl.ref ]
 then
+ LD=$(cat ../input/data.dat | wc -l)
+ LR=$(cat ../output/fieldatdatapoint.anl.ref | wc -l)
+ echo $LD $LR
+fi
 
+if [ "$LD" -eq "$LR" ]
+then
 echo ' '
 echo ===================================================================
 echo There are already reference fields at data points. Will use them
@@ -47,19 +54,19 @@ echo ============================
 echo       Now anomalies
 echo ============================
 
-nbccol=$(head -n 1 ../input/data.dat | wc -w)
-# make sure to deal with 3 or 4 columns in data.dat
 
-
-cp ../output/fieldatdatapoint.anl.ref fort.45
-
-echo $nbccol > coucou
-head -22 ../input/param.par | tail -1 >> coucou
-cat coucou | ../../bin/datadiff.a
+head -22 ../input/param.par | tail -1 > coucou
+{
+read valex
+} < coucou
 rm coucou
+paste ../output/fieldatdatapoint.anl.ref ../input/data.dat > bidon
+
 mv ../input/data.dat ../input/data.dat.full
-mv fort.46 ../input/data.dat
-rm fort.44 fort.45
+awk -v valex=$valex '{$6=$6-$3; $1=""; $2=""; $3=""; print $0}' bidon > ../input/data.dat
+
+
+rm bidon
 
 echo ===================================================================
 echo data.dat now contains anomalies
