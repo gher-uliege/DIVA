@@ -1,4 +1,5 @@
 #!/bin/bash
+export LC_ALL=C
 DIVAWORK=./divawork
 # method = 1 put regression into single data misfit
 method=1

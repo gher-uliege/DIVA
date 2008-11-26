@@ -1,4 +1,5 @@
 #!/bin/bash
+export LC_ALL=C
 
 iparsave=0
 inoise=0

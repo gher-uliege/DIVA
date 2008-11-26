@@ -1,3 +1,5 @@
+#!/bin/bash
+export LC_ALL=C
 rm -f ./input/param.par.ori
 rm -f ./input/data.dat.oriclass
 rm -f ./input/valatxy.coord.oriclass

@@ -1,4 +1,5 @@
 #!/bin/bash
+export LC_ALL=C
 echo ========================================================
 echo Going to clean data points that are considered outliers
 echo Using outliersbis.normalized.dat

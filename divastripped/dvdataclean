@@ -1,5 +1,5 @@
 #!/bin/bash
-
+export LC_ALL=C
 echo Going to clean data points outside the mesh
 
 

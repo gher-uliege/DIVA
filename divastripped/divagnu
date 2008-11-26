@@ -1,5 +1,5 @@
 #!/bin/bash
-
+export LC_ALL=C
 # Flat colors, ie boxes with uniform filling
 smooth=1
 # smooth=1 will interpolate color filling

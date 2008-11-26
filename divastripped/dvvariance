@@ -1,5 +1,5 @@
 #!/bin/bash
-
+export LC_ALL=C
 echo Variance calculation
 
 #need to add case with column 4
