@@ -1,0 +1,76 @@
+#!/bin/bash
+
+nlevel=$(cat ./input/contour.depth | wc -l)
+i=0
+nlay=$nlevel
+
+if [ "$#" == "2" ]
+then 
+let i=$1-1
+nlevel=$2
+let nlay=$nlevel-$i
+fi
+
+rm ./divawork/fort.20
+
+while [ "$i" -lt "$nlevel" ]
+do
+let i=$i+1
+echo level $i
+let level=10000+$i
+cat ./output/gcv.dat.${level} >> ./divawork/fort.20
+done
+
+ntot=$(cat ./divawork/fort.20 | wc -l)
+##let ncv=${ntot}/${nlevel}
+let ncv=${ntot}/${nlay}
+echo Cross validation points $ncv
+cd divawork
+##echo $ncv $nlevel | ../../bin/filtercv.a
+echo $ncv $nlay | ../../bin/filtercv.a
+cd ..
+
+
+i=0
+lowest=0
+if [ "$#" == "2" ]
+then 
+let i=$1-1
+let lowest=$1-1
+fi
+
+mv -f ./output/SN.dat ./output/SN.dat.ori
+mv -f ./output/VAR.dat ./output/VAR.dat.ori
+
+
+while [ "$i" -lt "$nlevel" ]
+do
+let i=$i+1
+echo level $i
+let level=10000+$i
+
+cp ./output/gcv.dat.${level} ./output/gcv.dat.${level}.ori
+let iii=$i-$lowest
+let jj=${iii}*${ncv}
+head -$jj ./divawork/fort.21 | tail -$ncv > ./output/gcv.dat.${level}
+
+
+cp ./output/gcv.dat.${level} ./divawork/fort.11
+cd divawork
+
+echo Looking for the minimum of GCV
+echo ' '
+../../bin/findmin.a
+echo ' '
+echo ----------------------------------------
+
+cd ..
+
+head -2  ./divawork/fort.12 | tail -1 >> ./output/SN.dat
+head -4 ./divawork/fort.12 | tail -1 >> ./output/VAR.dat
+
+done
+
+
+
+

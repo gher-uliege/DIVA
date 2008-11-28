@@ -1,0 +1,6 @@
+for jj in `ls *.f`
+do
+echo $jj
+f77 -O $jj   -o `basename $jj .f`.a
+done
+mv *.a ../../../bin/SGI

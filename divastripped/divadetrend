@@ -1,0 +1,134 @@
+#!/bin/bash
+
+
+if [ "$#" -le "0" ]
+then
+echo ????????????????????????????????????????
+echo usage: divadetrend ngroups [niterations]
+echo ????????????????????????????????????????
+exit
+fi
+
+rm -f ./input/data.undetrend.dat
+rm -f ./ouput/rmsmisfit.dat
+
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+echo  Applying iterative detrending on classes
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+divadatacoverage -n
+dvdataclean
+
+echo need to modify param.par for iterations to desactivate error calculations
+
+cp -v ./input/param.par ./input/param.detrend.par
+
+head -17 ./input/param.detrend.par > bidon
+echo 1 >> bidon
+echo   >> bidon
+echo 1 >> bidon
+echo   >> bidon
+echo -99 >> bidon
+echo >> bidon
+head -24 ./input/param.detrend.par | tail -1 >> bidon
+echo >> bidon
+echo 0 >> bidon
+mv bidon ./input/param.par
+
+nsteps=10
+
+
+
+if [ "$#" -gt "1" ]
+then
+let nsteps=$2+0
+fi
+echo =============================================
+echo Number of iterations to be performed: $nsteps
+echo =============================================
+
+
+i=0
+
+while [ "$i" -le "$nsteps" ]
+do
+let i=$i+1
+echo Iteration $i
+
+if [ "$i" -gt "$nsteps" ]
+then
+echo Last final analysis
+
+cp -v ./input/param.detrend.par ./input/param.par 
+rm -f ./input/param.detrend.par
+
+fi
+
+divacalc
+echo Calculating misfit of classes and create new input data
+
+if [ -f ./input/data.undetrend.dat ]
+then
+cp -v ./input/data.undetrend.dat ./input/data.dat
+fi
+
+
+cd divawork
+cp ../input/data.dat fort.88
+cp ../output/fieldatdatapoint.anl fort.89
+echo $1 | ../../bin/detrend.a
+cp fort.90 ../input/data.detrend.dat
+if [ "$i" -le "1" ]
+then
+echo $i
+head -1 fort.90 > ../output/sowhat.dat
+cat fort.42 > ../output/rmsmisfit.dat
+else
+head -1 fort.90 >> ../output/sowhat.dat
+cat fort.42 >> ../output/rmsmisfit.dat
+fi
+cp trends.*.dat ../output
+cd ..
+
+
+if [ -f ./input/data.undetrend.dat ]
+then
+cp -v ./input/data.detrend.dat ./input/data.dat
+else
+cp -v ./input/data.dat ./input/data.undetrend.dat
+cp -v ./input/data.detrend.dat ./input/data.dat
+fi
+
+jj="0"
+while [ "$jj" -lt "$1" ]
+do
+let jj=$jj+1
+if [ "$i" -gt "1" ]
+then
+paste ./output/trends.$jj.dat ./output/trends.all.$jj.dat > bidon
+else
+cp ./output/trends.$jj.dat bidon
+fi
+mv bidon ./output/trends.all.$jj.dat
+done
+
+
+done
+
+
+
+
+
+
+echo ' '
+echo ----------------------
+echo Detrending is finished
+echo ----------------------
+
+
+
+
+
+
+
+

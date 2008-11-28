@@ -1,0 +1,192 @@
+#!/bin/bash
+export LC_ALL=C
+
+
+echo //////////////////////////////////////////////////
+echo                Mesh generation
+echo //////////////////////////////////////////////////
+echo ' '
+
+# switch for the mesh generation
+let imesh=0
+# number of try to generate the mesh
+let itry=0
+
+# stop the loop after 2 tries or if the mesh is ok
+while [ "$imesh" == "0" -a "$itry" -lt "2" ]
+do
+
+
+
+echo Testing if mesh already exist...
+echo ' '
+
+if [ -f ./output/meshvisu/fort.22 -a -f ./output/meshvisu/fort.23 ]
+then
+	echo '... Both mesh files exist'
+	echo ' '
+	echo 'Will test if they are coherent...'
+
+	ntotal=$(cat ./output/meshvisu/fort.22 | wc -l)
+	
+
+	meshfile=./output/meshvisu/fort.23
+	{
+	read aa
+	read bb
+	read cc
+	} < $meshfile
+
+	dd=$(echo $aa $bb $cc | awk '{print ($1+$2+$3)}')
+	
+	if [ "$ntotal" == "$dd" ]
+	then
+		let imesh=1
+		echo ' '
+		echo '...coherent mesh files!'
+	else
+		echo 'uncoherent mesh files' 
+		echo ' '
+	fi
+else
+	echo 'Mesh does not exist and will be generated'
+	echo ' '
+
+
+
+if [ -f ./input/coast.cont ] 
+then
+cp ./input/coast.cont ./meshgenwork/fort.10
+else
+echo Need to provide coast.cont in ./input !
+fi
+
+isdens=0
+if [ -f ./input/coast.cont.dens ] 
+then
+echo There is a density file for the mesh
+cp -v ./input/coast.cont.dens ./meshgenwork/fort.12
+isdens=1
+fi
+echo $isdens
+
+if [ -f ./input/param.par ] 
+then
+echo Reading parameters
+else
+echo Need to provide param.par in ./input
+fi
+
+
+Filepar=./input/param.par
+{
+read linecomment
+read lc
+read linecomment
+read icoordchange
+read linecomment
+read ispec
+read linecomment
+read ireg
+read linecomment
+read xori
+read linecomment
+read yori
+read linecomment
+read dx
+read linecomment
+read dy
+read linecomment
+read nx
+read linecomment
+read ny
+read linecomment
+read valex
+read linecomment
+read snr
+read linecomment
+read varbak
+} < $Filepar
+
+#param.par
+
+#creation of files for mesh generation
+#creation of file fort.11 for gener.a
+#rm fort.11
+
+#exec 11<>fort.11
+#echo 0 > ./meshgenwork/fort.11
+#echo $lc >> ./meshgenwork/fort.11
+#echo 1.5 >> ./meshgenwork/fort.11
+#echo 5 >> ./meshgenwork/fort.11
+#exec 11>&-
+
+# if the mesh failed at the first try (itry=1)
+# then another mesh is tried with L = 2*L
+
+if [ "$itry" == "1" ]
+then
+	echo 'try another mesh with L=L*2'
+	echo ' '
+	echo 'Old L value:' $lc
+	lc=$(echo $lc | awk '{print ($1*2)}')
+	echo 'New L value:' $lc
+	echo ' '
+fi
+
+
+rm -f fort.11
+echo $isdens > fort.11
+lmesh=$(echo $lc | awk '{print ($rl/5.)}')
+echo $lmesh >> fort.11
+
+
+echo TTTTTTTTTTTTTTT
+echo  test: $lmesh
+echo TTTTTTTTTTTTTTT
+
+
+mv fort.11 ./meshgenwork/fort.11
+echo 1.5 >> ./meshgenwork/fort.11
+echo 5 >> ./meshgenwork/fort.11
+#exec 11>&-
+
+#generation of the mesh
+cd ./meshgenwork
+echo $icoordchange | ../../bin/generopt.a
+
+
+File23=./fort.23
+{
+read nnt1
+read nnint
+read nelt
+} < $File23
+
+#output of info for mesh visualisation with meshvisu.m
+echo ' '
+echo Copying output files for visualisation 
+cp -v fort.10 ../output/meshvisu/
+cp -v fort.22 ../output/meshvisu/
+cp -v fort.23 ../output/meshvisu/
+ 
+
+#exec 23<>fort.23
+#read  nnt1 nnint nelt <&3
+#exec 23>&-
+
+cd ..
+
+let itry=$itry+1
+#echo $itry
+
+#	echo ' '
+#	echo 'Previously created mesh is kept'
+#	echo ' '
+fi
+
+
+done
+
+
+

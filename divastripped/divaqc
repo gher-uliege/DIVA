@@ -1,0 +1,18 @@
+#!/bin/bash
+
+
+
+
+echo //////////////////////////////////////////////////
+echo             Looking for outliers
+echo //////////////////////////////////////////////////
+echo ' '
+
+divacalc qc
+
+dvvariance 1
+
+echo ' '
+echo --------------------------
+echo Outlier detection finished
+echo --------------------------

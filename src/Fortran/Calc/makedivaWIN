@@ -1,0 +1,2 @@
+f77 -O3 -mno-cygwin *.f -o diva.a
+mv diva.a ../../../bin

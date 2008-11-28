@@ -1,0 +1,87 @@
+#!/bin/bash
+
+
+
+
+echo //////////////////////////////////////////////////
+echo Going to check contour
+echo //////////////////////////////////////////////////
+echo ' '
+
+if [ -f ./input/coast.cont ] 
+then
+cp -v ./input/coast.cont ./meshgenwork/fort.10
+else
+echo Need to provide coast.cont in ./input !
+fi
+
+isdens=0
+if [ -f ./input/coast.cont.dens ] 
+then
+echo There is a density file for the mesh
+cp -v ./input/coast.cont.dens ./meshgenwork/fort.12
+isdens=1
+fi
+
+Filepar=./input/param.par
+{
+read linecomment
+read lc
+read linecomment
+read icoordchange
+read linecomment
+read ispec
+read linecomment
+read ireg
+read linecomment
+read xori
+read linecomment
+read yori
+read linecomment
+read dx
+read linecomment
+read dy
+read linecomment
+read nx
+read linecomment
+read ny
+read linecomment
+read valex
+read linecomment
+read snr
+read linecomment
+read varbak
+} < $Filepar
+
+rm -f fort.11
+
+echo $isdens > fort.11
+lmesh=$(echo $rl | awk '{print ($rl/5.)}')
+echo $lmesh >> fort.11
+
+mv fort.11 ./meshgenwork/fort.11
+echo 1.5 >> ./meshgenwork/fort.11
+echo 5 >> ./meshgenwork/fort.11
+cd ./meshgenwork
+
+if [ \( "$1" == "-v"  -o "$2" == "-v" \) ]
+then
+../../bin/contourcheck.a
+else
+../../bin/contourcheck.a > /dev/null
+fi
+mv fort.30 ../output/coast.cont.checked
+
+cd ..
+
+echo ' '
+echo ------------------
+echo Contour is checked
+echo ------------------
+
+if [ \( "$1" == "-r"  -o "$2" == "-r" \) ]
+then
+echo 'Replacing original contour file'
+cp -v ./input/coast.cont ./input/coast.cont.ori
+cp -v ./output/coast.cont.checked ./input/coast.cont 
+fi

@@ -1,0 +1,6 @@
+set pm3d map
+set style data pm3d
+set palette
+set cbrange[:]
+set zrange[:]
+splot 'fort.73' using 1:2:(0.0):($3) t 'Data coverage','fort.67' using 1:2:(0.0):(0.0) with lines lt 10  notitle
