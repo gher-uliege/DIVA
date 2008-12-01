@@ -141,9 +141,9 @@ lmesh=$(echo $lc | awk '{print ($rl/5.)}')
 echo $lmesh >> fort.11
 
 
-echo TTTTTTTTTTTTTTT
-echo  test: $lmesh
-echo TTTTTTTTTTTTTTT
+echo ---------------------
+echo mesh length = $lmesh
+echo ---------------------
 
 
 mv fort.11 ./meshgenwork/fort.11
