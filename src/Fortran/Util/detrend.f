@@ -57,6 +57,7 @@ C now subtract
        write(6,*) 'Classes',(iclm(k),k=1,MG)
 C first group
        do k=1,MG
+       ijmclass=iclm(k)
        do i=1,iclm(k)
        
        do jj=1,ic(i,k)
@@ -64,14 +65,22 @@ C first group
        rm(i,k)=rm(i,k)+w(indy)*(d(indy)-da(indy))
        wm(i,k)=wm(i,k)+w(indy)
        enddo
+       if (wm(i,k).eq.0.) then
+C  no data in class
+       write(6,*) 'No data in class',i, 'group',k
+       rm(i,k)=0.
+       ijmclass=ijmclass-1
+                          else
        rm(i,k)=rm(i,k)/wm(i,k)
+       endif
+
        enddo
        RR=0
        do i=1,iclm(k)
        RR=RR+rm(i,k)
        enddo
-       RR=RR/max(iclm(k),1)
-       write(6,*) ' Mean to be subtracted', RR
+       RR=RR/max(ijmclass,1)
+       write(6,*) ' Mean to be subtracted', RR,ijmclass
        do i=1,iclm(k)
        rm(i,k)=rm(i,k)-RR
        enddo
