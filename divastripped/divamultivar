@@ -1,17 +1,28 @@
 #!/bin/bash
-export LC_ALL=C
 DIVAWORK=./divawork
+LC_ALL=C
+# Now default values
 # method = 1 put regression into single data misfit
 method=1
-
 nsteps=10
-
 valex=-9999
+
+
+# Check for correlation length different in param.par files
+
+L2LTL1=0
+
+RL1=$(head -2 ./input/param.par.01 | tail -1 | awk '{print $1}')
+RL2=$(head -2 ./input/param.par.02 | tail -1 | awk '{print $1}')
+
+echo Correlation length  in use $RL1 $RL2 
+L2LTL1=$(echo $RL1 $RL2 | awk '{ if($1<$2) {print 0} else {print 1} }')
+#echo $RL1 $RL2 $L2LTL1
 
 if [ "$#" -le "0" ]
 then
 echo ????????????????????????????????????????????
-echo usage: divamultivar method  [niterations]
+echo usage:    divamultivar method  [niterations]
 echo ????????????????????????????????????????????
 exit
 fi
@@ -23,36 +34,39 @@ then
 nsteps=$2
 fi
 
-rm ./output/reg*.dat.0?
+rm -f ./output/reg*.dat.0?
 
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-echo  Multivariate approach on two files
+echo !     Multivariate approach on two files      !
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-echo need to modify param.par for iterations to desactivate error calculations
 
-cp -v ./input/param.par.01 ./input/param.multivar.par.01
-cp -v ./input/param.par.02 ./input/param.multivar.par.02
-#cp -v ./input/data.dat.01 ./input/data.multivar.dat.01
-#cp -v ./input/data.dat.02 ./input/data.multivar.dat.02
-
-awk '{ if (NF==3) {print $1,$2,$3,1} else { print $0 } }' ./input/data.dat.01 > ./input/data.multivar.dat.01
-awk '{ if (NF==3) {print $1,$2,$3,1} else { print $0 } }' ./input/data.dat.02 > ./input/data.multivar.dat.02
 
 echo Will now scale data so as to have similar variances
 
 awk '{mean+=$3;var+=$3*$3;i+=1} END { print mean/i,sqrt(var/i-(mean/i)*(mean/i))}' ./input/data.dat.01 > ${DIVAWORK}/varian.01
 awk '{mean+=$3;var+=$3*$3;i+=1} END { print mean/i,sqrt(var/i-(mean/i)*(mean/i))}' ./input/data.dat.02 > ${DIVAWORK}/varian.02
 
-echo will scale data by respective input data standard deviation 
-echo If other scaling, adapt varian.xx files
+echo Will scale data by respective input data standard deviation 
+echo Variable 1 mean and standard deviation
+cat ${DIVAWORK}/varian.01
+echo Variable 2 mean and standard deviation
+cat ${DIVAWORK}/varian.02
+
+echo If other scaling is needed, adapt varian.xx files
 
 awk 'NR==FNR {a=$1;b=$2} {if (NR!=FNR) {$3=($3-a)/b ; if (NF==3) {print $1,$2,$3,1} else { print $0 } }}' ${DIVAWORK}/varian.01 ./input/data.dat.01 > ./input/data.multivar.dat.01
 awk 'NR==FNR {a=$1;b=$2} {if (NR!=FNR) {$3=($3-a)/b ; if (NF==3) {print $1,$2,$3,1} else { print $0 } }}' ${DIVAWORK}/varian.02 ./input/data.dat.02 > ./input/data.multivar.dat.02
 
-
+if [ -f ./input/pseudodata.dat.01 ]
+then
 rm -f ./input/pseudodata.dat.01
+fi
+if [ -f ./input/pseudodata.dat.01 ]
+then
 rm -f ./input/pseudodata.dat.02
+fi
+
 
 if [ "$method" == "1" ]
 then
@@ -61,9 +75,13 @@ cp -v ./input/data.multivar.dat.01 ./input/pseudodata.dat.01
 cp -v ./input/data.multivar.dat.02 ./input/pseudodata.dat.02
 fi
 
-echo need to think about valatxy.coord
 
-echo use now $valex as exclusion value
+echo Modifying param.par for iterations to desactivate error calculations
+
+cp -v ./input/param.par.01 ./input/param.multivar.par.01
+cp -v ./input/param.par.02 ./input/param.multivar.par.02
+
+echo Will use now $valex as exclusion value
 
 head -17 ./input/param.multivar.par.01 > ${DIVAWORK}/bidon
 echo 1 >> ${DIVAWORK}/bidon
@@ -121,34 +139,32 @@ echo Iteration $i
 
 
 if [ "$i" -gt "$nsteps" ]
-then
-echo Last final analysis
+ then
+ echo Last final analysis
 
-head -21 ./input/param.multivar.par.01 > ${DIVAWORK}/bidon
-echo $valex >> ${DIVAWORK}/bidon
-head -26 ./input/param.multivar.par.01 | tail -4 >> ${DIVAWORK}/bidon
-mv ${DIVAWORK}/bidon ./input/param.par.01
+ head -21 ./input/param.multivar.par.01 > ${DIVAWORK}/bidon
+ echo $valex >> ${DIVAWORK}/bidon
+ head -26 ./input/param.multivar.par.01 | tail -4 >> ${DIVAWORK}/bidon
+ mv ${DIVAWORK}/bidon ./input/param.par.01
 
+ head -21 ./input/param.multivar.par.02 > ${DIVAWORK}/bidon
+ echo $valex >> ${DIVAWORK}/bidon
+ head -26 ./input/param.multivar.par.02 | tail -4 >> ${DIVAWORK}/bidon
+ mv ${DIVAWORK}/bidon ./input/param.par.02
 
-head -21 ./input/param.multivar.par.02 > ${DIVAWORK}/bidon
-echo $valex >> ${DIVAWORK}/bidon
-head -26 ./input/param.multivar.par.02 | tail -4 >> ${DIVAWORK}/bidon
-mv ${DIVAWORK}/bidon ./input/param.par.02
-
-
-rm -f ./input/param.multivar.par.01
-
-
-rm -f ./input/param.multivar.par.02
-
+ rm -f ./input/param.multivar.par.01
+ rm -f ./input/param.multivar.par.02
 fi
+
+
+
 if [ "$i" == "1" -o "$ping" == "1" ] 
 then
 echo FIELD 1
 
 if [ "$method" == "1" ]
 then
-echo only pseudo-data
+echo Only pseudo-data
 cat ./input/pseudodata.dat.01 > ./input/data.dat
 else
 cat ./input/data.multivar.dat.01 > ./input/data.dat
@@ -156,7 +172,10 @@ cat ./input/pseudodata.dat.01 >> ./input/data.dat
 fi
 cp -v ./input/param.par.01 ./input/param.par
 cp -v ./input/data.multivar.dat.02 ./input/valatxy.coord
-echo mesh only on first iteration 
+
+echo Will add at the end the real valatxy.coord file
+
+echo Mesh only on first iteration 
 if [ "$i" -le "1" ] 
 then
 divamesh
@@ -167,7 +186,10 @@ echo Save analyses
 cp -v ./output/valatxyascii.anl ./input/valxy.01
 cp -v ./output/fieldgher.anl ./output/fieldgher.anl.01
 cp -v ./output/fieldatdatapoint.anl ./output/fieldatdatapoint.anl.01
+if [ -f ./output/errorfieldgher.anl ]
+then
 cp -v ./output/errorfieldgher.anl ./output/errorfieldgher.anl.01
+fi
 
 fi
 
@@ -186,14 +208,24 @@ fi
 cp -v ./input/param.par.02 ./input/param.par
 cp -v ./input/data.multivar.dat.01 ./input/valatxy.coord
 
+if [ "$i" -le "1" -a "$L2LTL1" == "1" ]
+then
+echo Smaller correlation length for second field, will refine mesh
+rm -f ./meshgenwork/fort.*
 divamesh
+fi
+
+
 divacalc
 
 echo Save analyses 
 cp -v ./output/valatxyascii.anl ./input/valxy.02
 cp -v ./output/fieldgher.anl ./output/fieldgher.anl.02
 cp -v ./output/fieldatdatapoint.anl ./output/fieldatdatapoint.anl.02
+if [ -f ./output/errorfieldgher.anl ]
+then
 cp -v ./output/errorfieldgher.anl ./output/errorfieldgher.anl.02
+fi
 
 fi
 
@@ -210,9 +242,11 @@ head -$ldat ./output/fieldatdatapoint.anl.01 > ${DIVAWORK}/biddddon
 awk '{print $1,$2,$3,$4}' ./input/data.multivar.dat.01 > ${DIVAWORK}/bidddon
 paste ${DIVAWORK}/bidddon ${DIVAWORK}/biddddon | awk '{ print $1,$2, $3-$7,$4}' > ${DIVAWORK}/residue.dat.01
 ldat=$(cat ./input/data.multivar.dat.02 | wc -l)
-awk '{print $1,$2,$3,$4}' ./input/data.multivar.dat.01 > ${DIVAWORK}/bidddon
+awk '{print $1,$2,$3,$4}' ./input/data.multivar.dat.02 > ${DIVAWORK}/bidddon
 head -$ldat ./output/fieldatdatapoint.anl.02 > ${DIVAWORK}/biddddon
 paste ${DIVAWORK}/bidddon ${DIVAWORK}/biddddon | awk '{ print $1,$2, $3-$7,$4}' > ${DIVAWORK}/residue.dat.02
+
+
 paste ./input/valxy.02 ${DIVAWORK}/residue.dat.01 | awk -v valex=$valex '{ if ($3 != valex) print $3,$6}' > ${DIVAWORK}/psi2d1.dat
 paste ./input/valxy.01 ${DIVAWORK}/residue.dat.02 | awk -v valex=$valex '{ if ($3 != valex) print $3,$6}' > ${DIVAWORK}/psi1d2.dat
 
@@ -239,6 +273,10 @@ awk '{print $1,$2,$3,$4}' ./input/data.multivar.dat.02 > ${DIVAWORK}/bidddon
 paste ${DIVAWORK}/bidddon ./input/valxy.01 > ${DIVAWORK}/biddon
 awk 'NR==FNR {a=$1;b=$2;w=$3} {if (NR!=FNR) print $1,$2,$3-a*$7-b,$4}' ./output/regression.dat.02 ${DIVAWORK}/biddon > ./input/pseudodata.dat.02
 
+
+fulldata=0
+if [ "$fulldata" == "1" ]
+then
 echo need to add pseudo data in other locations too
 ldat=$(cat ./input/data.multivar.dat.02 | wc -l)
 head -$ldat ./output/fieldatdatapoint.anl.02 > ${DIVAWORK}/bidddon
@@ -250,12 +288,12 @@ head -$ldat ./output/fieldatdatapoint.anl.01 > ${DIVAWORK}/bidddon
 awk '{print $1,$2,$3,$4}' ./input/data.multivar.dat.01 > ${DIVAWORK}/bidddddon
 paste ${DIVAWORK}/bidddddon ${DIVAWORK}/bidddon > ${DIVAWORK}/biddon
 awk 'NR==FNR {a=$1;b=$2;w=$3} {if (NR!=FNR) print $1,$2,($3-$7-b)/a,$4*a*a}' ./output/regression.dat.01 ${DIVAWORK}/biddon >> ./input/pseudodata.dat.02
-
+fi
 
 
 else
 echo Now pseudo data method $method
-echo with treatment of valex
+echo With treatment of valex
 # awk -v valex=$valex '{ if ($3 != valex) print $0}' ./output/valatxyascii.anl > ./input/valxy.01
 
 echo valxy.02 is field 2 at data points 1 and can use valex there
@@ -297,7 +335,7 @@ awk 'NR==FNR {a=$1;b=$2;w=$3} {if (NR!=FNR) print $1,$2,a*$3+b,w}' ./output/regr
 
 fi
 
-echo now pseudo data are ready
+echo Now pseudo data are ready
 
 
 done
@@ -327,6 +365,11 @@ cd divawork
 cp -v fort.12 ../output/fieldgher.anl.01
 cp -v fort.13 ../output/fieldgher.anl.02
 cd ..
+
+echo Finally also combine the values at xy when necessary 
+cat ${DIVAWORK}/fort.20
+
+
 fi
 
 
