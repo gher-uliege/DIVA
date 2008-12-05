@@ -17,6 +17,7 @@ echo  Applying iterative detrending on classes
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 divadatacoverage -n
+divamesh
 dvdataclean
 
 echo need to modify param.par for iterations to desactivate error calculations
@@ -116,7 +117,7 @@ done
 done
 
 
-
+rm -f ./divawork/trend*.dat
 
 
 
@@ -126,7 +127,7 @@ echo Detrending is finished
 echo ----------------------
 
 
-
+rm -f ./divawork/trend*.dat
 
 
 
