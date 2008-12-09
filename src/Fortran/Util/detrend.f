@@ -15,6 +15,7 @@ C First; data index, second: class index, third: group index
        rms2=0
        rms3=0
        read(5,*) MG
+       write(6,*) 'Nomber of groups',MG
        if(MG.GT.IG) then
        write(6,*) 'Too many classes, decrease input classes'
        write(6,*) ' or increase IG in detrend.f and recompile'
