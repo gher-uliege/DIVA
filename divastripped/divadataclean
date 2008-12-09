@@ -6,20 +6,36 @@ echo //////////////////////////////////////////////////
 echo Going to select data in bounding box
 echo //////////////////////////////////////////////////
 
+fmin=-1E36
+fmax=1E36
 if [ "$#" == "2" ]
 then
-
 echo //////////////////////////////////////////////////
 echo Going to select data in range $1 $2
 echo //////////////////////////////////////////////////
-echo $1 $2 > ./divawork/fort.60
+fmin=$1
+fmax=$2
 fi
 
 cp ./input/data.dat ./divawork/fort.44
 cp ./input/coast.cont ./divawork/fort.10
 cd divawork
+
 nbccol=$(head -n 1 ./fort.44 | wc -w)
 echo $nbccol | ../../bin/datacheck.a
+# retrieve bounding box
+{
+read xmin
+read xmax
+read ymin
+read ymax
+} < fort.61
+
+echo $xmin $xmax $ymin $ymax $fmin $fmax
+
+awk -v xmin=$xmin -v xmax=$xmax -v ymin=$ymin -v ymax=$ymax -v fmin=$fmin -v fmax=$fmax '{
+if ($1>= xmin && $1 <= xmax && $2 >= ymin && $2 <= ymax && $3 >= fmin && $3 <= fmax ) print $0
+}' ../input/data.dat > fort.20
 
 cd ..
 rm -f ./divawork/fort.60
