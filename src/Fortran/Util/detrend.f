@@ -112,9 +112,10 @@ C now next group
        read(88,*,end=999,err=999) x,y,dd,ww,(indi(k),k=1,MG)
        nd=nd+1
        rms2=rms2+ww*(d(nd)-da(nd))*(d(nd)-da(nd))
-       write(90,*) x,y,d(nd),ww,(indi(k),k=1,MG)
+       write(90,444) x,y,d(nd),ww,(indi(k),k=1,MG)
        goto 11
  999    continue
+ 444   format(4(1X,E16.5),5(1X,I6))
        write(6,*) 'Misfit after detrend/misfit before',rms2/rms1
        write(42,*) rms2/rms1,sqrt(rms2/rms3),sqrt(rms1/rms3)
        stop
