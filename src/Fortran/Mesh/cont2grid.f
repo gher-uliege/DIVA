@@ -308,8 +308,12 @@ C      OUTPUT UNIT FOR PRINTED MESSAGES
       IF(.NOT.((MY.OR.NY).AND.(MX.OR.NX)).OR.(MX.AND.NX)) GO TO 2       
       IF(.NOT.(MY.AND.NY.AND.(MX.OR.NX).AND..NOT.(MX.AND.NX))) GO TO 3  
       INOUT=-INOUT                                                      
-      GO TO 2                                                           
-3     IF((Y(I)*X(J)-X(I)*Y(J))/(X(J)-X(I))) 2,4,5                       
+      GO TO 2            
+3     IF(((Y(I)*X(J)-X(I)*Y(J))/(X(J)-X(I))).LT.0) goto 2
+      IF(((Y(I)*X(J)-X(I)*Y(J))/(X(J)-X(I))).EQ.0) goto 4   
+      IF(((Y(I)*X(J)-X(I)*Y(J))/(X(J)-X(I))).GT.0) goto 5      
+C replaced depreciated style
+C     IF((Y(I)*X(J)-X(I)*Y(J))/(X(J)-X(I))) 2,4,5                       
 4     INOUT=0                                                           
       RETURN                                                            
 5     INOUT=-INOUT                                                      
