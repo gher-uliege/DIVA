@@ -78,7 +78,9 @@ C......   POUR CHAQUE COLONNE DE KE
       DO 90 JD=1,IDLE
       IF(NSYM.NE.1) IEQ0=JD
       JL=KLOCE(JD)
-      IF(JL)90,90,10
+C      IF(JL)90,90,10
+C replaced old fashioned if
+      IF (JL.LE.0) goto 90
  10   I0=KLD(JL+1)
       IEQ=IEQ1
       IQ=1
@@ -86,11 +88,18 @@ C......   POUR CHAQUE LIGNE DE KE
       DO 80 ID=1,IDLE
       IL=KLOCE(ID)
       IF(NSYM.EQ.1) GO TO 30
-      IF(ID-JD) 30,20,20
+C      IF(ID-JD) 30,20,20
+C replaced old fashioned if test
+      IF(ID.LT.JD) goto 30
  20   IQ=ID
- 30   IF(IL) 80,80,40
+C 30   IF(IL) 80,80,40
+C replaced old fashioned if test
+  30   IF(IL.LE.0) goto 80
  40   IJ=JL-IL
-      IF(IJ) 70,50,60
+C      IF(IJ) 70,50,60
+C replaced old fashioned if test
+       IF(IJ.LT.0) goto 70
+       IF(IJ.GT.0) goto 60
 C......   TERMES DIAGONAUX DE KG
  50   VKGD(IL)=VKGD(IL)+VKE(IEQ)
       GO TO 80
@@ -110,7 +119,9 @@ C
  100  IF(IFG.NE.1) GO TO 130
       DO 120 ID=1,IDLE
       IL=KLOCE(ID)
-      IF(IL) 120,120,110
+C      IF(IL) 120,120,110
+C replaced old fashioned if test
+      IF(IL.LE.0) goto 120
  110  VFG(IL)=VFG(IL)+VFE(ID)
  120  CONTINUE
  130  RETURN
@@ -246,13 +257,16 @@ C     ==================================
 
       K=1
  1    KK=K+7
-      IF (KK-M) 3,3,2
+C      IF (KK-M) 3,3,2
+      if(KK.LE.M) goto 3
  2    KK=M
  3    WRITE(IUCT,200) (J,J=K,KK)
       DO 4 I=1,L
  4    WRITE(IUCT,201) I,(A(I,J),J=K,KK)
       K=K+8
-      IF (K-M) 1,1,5
+C      IF (K-M) 1,1,5
+      if(K.LE.M) goto 1
+      if(K.GT.M) goto 5
                      else
       DO 10 J=1,M
       DO 10 I=1,L
@@ -469,7 +483,9 @@ C
  60   CDIAG=CDIAG+C1*C2
  70   JCK=JCK+1
       VKGD(IK)=VKGD(IK)-CDIAG
-      IF(VKGD(IK)) 90,80,90
+C      IF(VKGD(IK)) 90,80,90
+      IF(VKGD(IK).LT.0) goto 90
+      IF(VKGD(IK).GT.0) goto 90
  80   WRITE(MP,2000) IK
  2000 FORMAT(' *** ERREUR, PIVOT NUL EQUATION ',I5)
       STOP
