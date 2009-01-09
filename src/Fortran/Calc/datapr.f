@@ -155,6 +155,7 @@ C SORT THE DATA
       if (opti.eq.0) then
          call sortdt(l(lkindt),l(lkdata),l(lkelos),ipr)
       endif
+      write(35,*) ndata,nonloc
       return
       end
 
