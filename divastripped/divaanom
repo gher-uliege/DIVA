@@ -34,10 +34,32 @@ echo !!!!! Will try to use gridded reference field by interpolation !!!!!
 echo !!!!! Will also create reference field at valatxy.coord !!!!!!!!!!!!
 echo ===================================================================
 
+if [ -f ../output/diva.log ] ; then
+ cp  -f ../output/diva.log .
+fi
+
 cp ../output/fieldgher.anl.ref fort.20
 cp ../output/ghertonetcdf/GridInfo.dat fort.21
 cp ../input/valatxy.coord fort.45
 ../../bin/interprefe.a
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo      divaanom:     interprefe.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo      divaanom:    interprefe.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+ cp  -f diva.log ../output/.
 
 
 cp -v fort.81 ../output/fieldatdatapoint.anl.ref

@@ -55,7 +55,34 @@ then
 cp ./output/fieldgher.anl ./divawork/fort.20
 cp ./output/ghertonetcdf/GridInfo.dat ./divawork/fort.21
 cd divawork
-../../bin/gridpointlist.a
+##../../bin/gridpointlist.a
+
+
+
+if [ -f ../output/diva.log ] ; then
+ cp -f ../output/diva.log .
+fi
+
+../../bin/gridpointlist.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divaintegral      gridpointlist.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo          divaintegral      gridpointlist.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+ cp -f diva.log ../output/.
+
 cd ..
 mv ./divawork/fort.22 ./input/integrationpoints.dat
 echo Now select only special points for the integral
@@ -113,7 +140,34 @@ rm ./divawork/fort.12
 datacol=$(head -n 1 ./input/data.dat | wc -w)
 
 cd divawork
-echo $scale $lc $datacol | ../../bin/erroronintegrals.a
+##echo $scale $lc $datacol | ../../bin/erroronintegrals.a
+
+
+if [ -f ../output/diva.log ] ; then
+ cp -f ../output/diva.log .
+fi
+
+echo $scale $lc $datacol | ../../bin/erroronintegrals.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divaintegral      erroronintegrals.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo          divaintegral      erroronintegrals.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+ cp -f diva.log ../output/.
+
+
 cd ..
 
 cp -v ./input/data.dat ./input/data.dat.nointegral

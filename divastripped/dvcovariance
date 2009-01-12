@@ -67,7 +67,29 @@ fi
 echo stopex >> ./fort.10
 
 
-echo $lc 1 4 $xi | ../../bin/calcmu.a
+if [ -f ../output/diva.log ] ; then
+ cp -f ../output/diva.log .
+fi
+
+echo $lc 1 4 $xi | ../../bin/calcmu.a >> diva.log
+
+if [ $? -ne "0" ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo                calmu.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo                calmu.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+ cp -f diva.log ../output/.
 
 #execute diva
 
@@ -98,14 +120,62 @@ mknod dvpong p
 
 sleep 1
 cd sub
+
+
+if [ -f ../../output/diva.log ] ; then
+ cp -f ../../output/diva.log .
+fi
+
 echo Launching a detached diva.a
-echo $NINT $NREA | ../../../bin/diva.a &
+echo $NINT $NREA | ../../../bin/diva.a >> diva.log &
+
+if [ $? -ne "0" ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo                diva.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo                diva.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+ cp -f diva.log ../../output/.
 
 else
 
 cd sub
+
+
+if [ -f ../../output/diva.log ] ; then
+ cp -f ../../output/diva.log .
+fi
+
 echo Launching a sequential diva.a
-echo $NINT $NREA | ../../../bin/diva.a 
+echo $NINT $NREA | ../../../bin/diva.a >> diva.log
+
+if [ $? -ne "0" ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo                diva.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo                diva.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+ cp -f diva.log ../../output/.
 
 fi
 

@@ -100,7 +100,32 @@ echo ' '
 
 if [ -f ../input/gcvsampling.dat ] 
 then 
-../../bin/findmin.a
+
+
+if [ -f ../output/diva.log ] ; then
+ cp -f ../output/diva.log .
+fi
+
+../../bin/findmin.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divagcvalex      findmin.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo          divagcvalex      findmin.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+ cp -f diva.log ../output/.
+
 echo ' '
 echo ----------------------------------------
 echo GCV finished

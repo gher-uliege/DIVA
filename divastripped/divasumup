@@ -48,7 +48,33 @@ rm -f bidon
 echo ../output/fieldgher.anl > coucou
 echo ../output/fieldgher.anl.ref >> coucou
 echo bidon >> coucou
-cat coucou | ../../bin/sum.a
+
+
+if [ -f ../output/diva.log ] ; then
+ cp -f ../output/diva.log .
+fi
+
+cat coucou | ../../bin/sum.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divasumup      sum.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo          divasumup      sum.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+
+ cp -f diva.log ../output/.
+
 if [ -f bidon ]
 then
 echo 'Added up analysed field'
@@ -64,7 +90,29 @@ rm -f fort.22
 cp  ../output/fieldascii.anl fort.20
 cp  ../output/fieldascii.anl.ref fort.21
 
-echo $valex $nx $ny | ../../bin/sumgrid.a
+
+if [ -f ../output/diva.log ] ; then
+ cp -f ../output/diva.log .
+fi
+
+echo $valex $nx $ny | ../../bin/sumgrid.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divasumup      sumgrid.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo          divasumup      sumgrid.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
 mv fort.22 ../output/fieldascii.anl 
 
 echo 'adding ascii files and replacing anomalies analysis'
@@ -90,10 +138,27 @@ rm -f fort.21
 rm -f fort.22
 cp ../output/fieldatdatapoint.anl fort.20
 cp ../output/fieldatdatapoint.anl.ref fort.21
-echo $valex | ../../bin/sumup.a
+echo $valex | ../../bin/sumup.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divasumup      sum.a (valex)
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo          divasumup      sum.a (valex) >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
 mv fort.22 ../output/fieldatdatapoint.anl
 
-
+ cp -f diva.log ../output/.
 
 fi
 
@@ -161,7 +226,31 @@ if [ "$iecal" == "1" ]
 then
 echo Creating netcdf file for field and associated error
 cd ../output/ghertonetcdf
-../../../bin/netcdfoutput.a
+
+if [ -f ../diva.log ] ; then
+ cp -f ../diva.log .
+fi
+
+../../../bin/netcdfoutput.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divasumup      netcdfoutput.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo          divasumup      netcedfoutput.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+ cp -f diva.log ../.
+
 fi
 fi
 
@@ -170,7 +259,31 @@ then
 echo Creating netcdf file only for field 
 echo since Varbak and ispec are $varbak $ispec
 cd ../output/ghertonetcdf
-../../../bin/netcdfoutputfield.a
+
+if [ -f ../diva.log ] ; then
+ cp -f ../diva.log .
+fi
+
+../../../bin/netcdfoutputfield.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divasumup      netcdfoutputfield.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo          divasumup      netcdfoutputfield.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+ cp -f diva.log ../diva.log
+
 fi
 
 cd ../..

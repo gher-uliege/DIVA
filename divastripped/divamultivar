@@ -361,7 +361,33 @@ cp ./output/fieldgher.anl.02 ./divawork/fort.11
 head -1 ${DIVAWORK}/varian.01 >> ./divawork/fort.20
 head -1 ${DIVAWORK}/varian.02 >> ./divawork/fort.20
 cd divawork
-../../bin/lincom.a
+
+if [ -f ../output/diva.log ] ; then
+ cp  -f ../output/diva.log .
+fi
+
+../../bin/lincom.a >> diva.log
+
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo       divamultivar:   lincom.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo       divamultivar:   lincom.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+
+ cp -f diva.log ../output/.
+
 cp -v fort.12 ../output/fieldgher.anl.01
 cp -v fort.13 ../output/fieldgher.anl.02
 cd ..

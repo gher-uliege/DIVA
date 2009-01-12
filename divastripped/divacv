@@ -60,8 +60,30 @@ cp ../input/data.dat fort.20
 cp ../output/fieldatdatapoint.anl fort.21
 cp ../output/expectederroratdatapoint.anl fort.22
 
-echo -99 $gcv | ../../bin/cverroraii.a
 
+if [ -f ../output/diva.log ] ; then
+ cp -f ../output/diva.log .
+fi
+
+echo -99 $gcv | ../../bin/cverroraii.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo        divacv:     cverroraii.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo       divacv:      cverroraii.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+ cp -f diva.log ../output/.
 
 cat fort.23 >> ../output/gcv.dat
 cd ..
@@ -85,7 +107,32 @@ echo ' '
 
 if [ -f ../input/gcvsampling.dat ] 
 then 
-../../bin/findmin.a
+
+
+if [ -f ../output/diva.log ] ; then
+ cp -f ../output/diva.log .
+fi
+
+../../bin/findmin.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo       divacv:    findmin.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo       divacv:     findmin.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+ cp -f diva.log ../output/.
+
 echo ' '
 echo ----------------------------------------
 echo CV finished

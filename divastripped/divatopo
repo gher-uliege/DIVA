@@ -23,7 +23,33 @@ fi
 echo 0 0 > ./input/valatxyascii.anl
 cp ./input/param.par ./divawork/fort.10
 cd ./divawork
-../../bin/topoprep.a
+
+
+if [ -f ../output/diva.log ] ; then
+ cp -f ../output/diva.log .
+fi
+
+../../bin/topoprep.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divatopo      topoprep.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo          divatopo      topoprep.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+
+ cp -f diva.log ../output/.
+
 cd ..
 mv ./divawork/fort.11 ./input/param.par
 mv ./divawork/fort.20 ./output/TopoInfo.dat

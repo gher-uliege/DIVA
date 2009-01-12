@@ -108,7 +108,32 @@ divacalc
 cd divawork
 cp ../input/valatxy.coord fort.20
 cp ../output/valatxyascii.anl fort.21
-echo -99 | ../../bin/cverror.a
+
+
+if [ -f ../output/diva.log ] ; then
+ cp -f ../output/diva.log .
+fi
+
+echo -99 | ../../bin/cverror.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo         divacvrand       cverror.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo         divacvrand       cverror.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+ cp -f diva.log ../output/.
+
 cat fort.22 >> cverror.dat
 cat fort.33 >> cvdatavar.dat
 cd ..
@@ -119,7 +144,32 @@ done
 cd divawork
 cp cverror.dat fort.20
 cp cvdatavar.dat fort.21
-echo $gcv | ../../bin/cvtotalerror.a
+
+
+if [ -f ../output/diva.log ] ; then
+ cp -f ../output/diva.log .
+fi
+
+echo $gcv | ../../bin/cvtotalerror.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divacvrand      cvtotalerror.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo          divacvrand      cvtotalerror.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+ cp -f diva.log ../output/.
+
 cat fort.22 >> ../output/gcv.dat
 cd ..
 #Next cv test
@@ -138,7 +188,31 @@ echo ' '
 
 if [ -f ../input/gcvsampling.dat ] 
 then 
-../../bin/findmin.a
+
+
+if [ -f ../output/diva.log ] ; then
+ cp -f ../output/diva.log .
+fi
+../../bin/findmin.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divacvrand      findmin.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo          divacvrand      findmin.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+ cp -f diva.log ../output/.
+
 echo ' '
 echo ----------------------------------------
 echo CV finished

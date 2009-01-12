@@ -52,7 +52,15 @@ echo $ny >> ./divawork/fort.13
 cp ./input/coast.coa ./divawork/fort.10
 
 cd ./divawork
-../../bin/coatocont.a
+
+
+if [ -f ../output/diva.log ] ; then
+ cp  -f ../output/diva.log .
+fi
+
+../../bin/coatocont.a >> diva.log
+
+ cp -f diva.log ../output/.
 
 cp -v fort.99 ../output/coast.cont
 cp -v fort.67 ../output/coast.cont.odv

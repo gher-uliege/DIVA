@@ -26,8 +26,33 @@ ntot=$(cat ./divawork/fort.20 | wc -l)
 let ncv=${ntot}/${nlay}
 echo Cross validation points $ncv
 cd divawork
+
+
+if [ -f ../../output/diva.log ] ; then
+ cp -f ../../output/diva.log .
+fi
+
 ##echo $ncv $nlevel | ../../bin/filtercv.a
-echo $ncv $nlay | ../../bin/filtercv.a
+echo $ncv $nlay | ../../bin/filtercv.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo                filtercv.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo                filtercv.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+ cp -f diva.log ../output/.
+
 cd ..
 
 
@@ -60,7 +85,32 @@ cd divawork
 
 echo Looking for the minimum of GCV
 echo ' '
-../../bin/findmin.a
+
+
+if [ -f ../../output/diva.log ] ; then
+ cp -f ../../output/diva.log .
+fi
+
+../../bin/findmin.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo                findmin.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo                findmin.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+ cp -f diva.log ../output/.
+
 echo ' '
 echo ----------------------------------------
 

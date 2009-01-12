@@ -108,13 +108,39 @@ echo Working with test length scale $Lgcv
 echo ====================================
 
 cd divawork
-echo $scale $ireg $Lgcv  | ../../bin/snbygrid.a
+
+
+if [ -f ../output/diva.log ] ; then
+ cp -f ../output/diva.log .
+fi
+
+echo $scale $ireg $Lgcv  | ../../bin/snbygrid.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divasnbygrid      snbygrid.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo          divasnbygrid      snbygrid.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
 head -8 fort.14 | tail -1 > bidon
 {
 read gcvval
 } < bidon
 echo quality of the fit $gcvval
 echo $gcvval $Lgcv >> ../output/gcvLL.dat
+
+ cp -f diva.log ../output/.
+
 cd ..
 LVAL=$(awk 'BEGIN {i=1;max=-99999} {if ($1 > max) {lmax=$2;max=$1}; i=i+1} END {print lmax}' ./output/gcvLL.dat)
 
@@ -128,7 +154,29 @@ echo ====================================
 echo Retaining best length scale $LVAL
 echo ====================================
 cd divawork
-echo $scale $ireg $LVAL  | ../../bin/snbygrid.a
+
+
+if [ -f ../output/diva.log ] ; then
+ cp -f ../output/diva.log .
+fi
+
+echo $scale $ireg $LVAL  | ../../bin/snbygrid.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divasnbygrid      snbygrid.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo          divasnbygrid      snbygrid.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
 
 cp -v fort.14 ../output/SNbygrid.dat
 cp -v fort.15 ../output/noiseanomaly.dat
@@ -140,6 +188,8 @@ head -23 ../input/param.par | tail -21 >> ../output/param.par.fit
 head -4 ../output/SNbygrid.dat | tail -1 >> ../output/param.par.fit
 head -25 ../input/param.par | tail -1 >> ../output/param.par.fit
 head -6 ../output/SNbygrid.dat | tail -1  >> ../output/param.par.fit
+
+ cp -f diva.log ../output/.
 
 cd ..
 

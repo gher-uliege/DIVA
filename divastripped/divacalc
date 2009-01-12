@@ -191,6 +191,11 @@ fi
 
 
 
+if [ -f ../output/diva.log ] ; then
+ cp  -f ../output/diva.log .
+fi
+
+
 
 #creation of file fort.13
 echo $xori > ./fort.13
@@ -201,10 +206,42 @@ echo $nx >> ./fort.13
 echo $ny >> ./fort.13
 echo $valex >> ./fort.13
 
-../../bin/griddef.a
+../../bin/griddef.a >> diva.log
 
 
-echo $lc $xi | ../../bin/alpha.a
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo       divacalc:    griddef.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo       divacalc:    griddef.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+echo $lc $xi | ../../bin/alpha.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo       divacalc:    alpha.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo       divacalc:  alpha.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
 
 if [ "$ireg" == "3" ]
 then
@@ -329,7 +366,25 @@ fi
 
 #creation of file fort.20
 nbccol=$(head -n 1 ./fort.44 | wc -w)
-echo $lc $snr $nbccol $xi | ../../bin/calcmu.a
+echo $lc $snr $nbccol $xi | ../../bin/calcmu.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo       divacalc:  calmu.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo       divacalc:   calmu.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+ cp -f diva.log ../output/.
 
 
 NDATAB=$(cat ./fort.20 | wc -l)
@@ -355,8 +410,31 @@ cd ..
 exit
 fi
 
+if [ -f ../output/diva.log ] ; then
+ cp  -f ../output/diva.log .
+fi
+
 #execute diva
-echo $NINT $NREA | ../../bin/diva.a
+echo $NINT $NREA | ../../bin/diva.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo       divacalc:   diva.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo       divacalc:   diva.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+ cp -f diva.log ../output/.
+
 
 rm -f fort.59
 rm -f fort.61
@@ -368,10 +446,35 @@ then
 cp -v fort.76 ../output/expectederroratdatapoint.anl
 cp -v fort.71 ../output/fieldatdatapoint.anl
 
+if [ -f ../output/diva.log ] ; then
+ cp  -f ../output/diva.log .
+fi
+
 echo ' '
 echo Looking for outliers
 echo ' '
-echo $valex | ../../bin/lookforoutliers.a
+echo $valex | ../../bin/lookforoutliers.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo       divacalc:   lookforoutliers.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo       divacalc:    lookforoutliers.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+echo ' '
+
+ cp -f diva.log ../output/.
+
 echo ' '
 echo Copying outlier lists
 echo ' '
@@ -529,7 +632,32 @@ if [ "$iecal" == "1" ]
 then
 echo Creating netcdf file for field and associated error
 cd ../output/ghertonetcdf
-../../../bin/netcdfoutput.a
+
+
+if [ -f ../diva.log ] ; then
+ cp  -f ../diva.log .
+fi
+
+../../../bin/netcdfoutput.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo       divacalc:   netcdfoutput.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo       divacalc:   netcdfoutput.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+ cp -f diva.log ../.
+
 fi
 fi
 
@@ -538,7 +666,32 @@ then
 echo Creating netcdf file only for field 
 echo since Varbak and ispec are $varbak $ispec
 cd ../output/ghertonetcdf
-../../../bin/netcdfoutputfield.a
+
+
+if [ -f ../diva.log ] ; then
+ cp  -f ../diva.log .
+fi
+
+../../../bin/netcdfoutputfield.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo       divacalc:   netcdfoutputfield.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo       divacalc:    netcdfoutputfield.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+ cp -f diva.log ../.
+
 rm -f ../error*.anl
 fi
 

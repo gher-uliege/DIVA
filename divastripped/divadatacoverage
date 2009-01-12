@@ -55,7 +55,6 @@ head -23 param.par.orirl   | tail -15 >> param.par
 echo $snr 0.1 | ../../bin/multiply.a >> param.par
 echo varba >> param.par
 echo 0 >> param.par
-
 cd ..
 
 divamesh
@@ -80,7 +79,30 @@ cp -v ./output/fieldgher.anl ./divawork/fort.10
 cp -v ./output/ghertonetcdf/GridInfo.dat ./divawork/fort.11
 cp -v ./input/data.dat ./divawork/fort.40
 cd divawork
-echo 10 | ../../bin/datalengthscale.a
+
+if [ -f ../output/diva.log ] ; then
+ cp -f ../output/diva.log .
+fi
+
+echo 10 | ../../bin/datalengthscale.a >> diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divadataclean      datalengthscale.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo          divadataclean      datalengthscale.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+ cp -f diva.log ../output/.
 
 cd ..
 cp -v ./divawork/fort.11 ./output/RLinfo.dat

@@ -101,7 +101,35 @@ divacalc
 cd divawork
 cp ../input/valatxy.coord fort.20
 cp ../output/valatxyascii.anl fort.21
-echo -99 | ../../bin/cverror.a
+
+
+if [ -f ../output/diva.log ] ; then
+ cp  -f ../output/diva.log .
+fi
+
+echo -99 | ../../bin/cverror.a >> diva.log
+
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo       divacvclasses:   cverror.a
+echo Check execution track
+echo --------------------------------------------
+
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo       divacvclasses:    cverror.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+
+
+ cp -f diva.log ../output/.
+
+
 cat fort.22 >> cverror.dat
 cat fort.33 >> cvdatavar.dat
 cd ..
