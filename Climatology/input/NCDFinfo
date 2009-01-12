@@ -1,0 +1,16 @@
+! Title string for temperature 3D NetCDF file:
+'Diva 3D analysis of Medar temperature data'
+! Reference time for data (ie: days since since 1900-01-01), if not climatological data
+'months since since xxxx-01-01'
+! Time value (that reprsents the data set), if not climatological data
+1200
+! Cell_methode string:
+'time: mean (this month data from all years)'
+! Institution name: where the dataset was produced.
+'ULg_GHER'
+! Production group and date
+'Diva group'
+! Source (observation, radiosonde, database, model-generated data,...)
+'Medar merged data'
+!Comment
+'No comment'

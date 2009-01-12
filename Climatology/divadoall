@@ -1,0 +1,578 @@
+#!/bin/bash
+
+#ODVDATA="data_from_barents.txt"
+ODVDATA="woaODV.txt"
+
+FILENAME=driver
+{
+read isextractcomm
+read isextract
+read iscontourcomm
+read iscontour
+read isdatacleancomm
+read isdataclean
+read minimumdatanumbercomm
+read mindata
+read isoptimisecomm
+read isoptimise
+read CLMINcomm
+read CLMIN
+read CLMAXcomm
+read CLMAX
+read SNMINcomm
+read SNMIN
+read SNMAXcomm
+read SNMAX
+read isanalysiscomm
+read isanalysis
+read lowerlevelcomm
+read minlevel
+read upperlevelcomm
+read upperlevel
+read referencecomm
+read referenceflag
+read isplotcomm
+read isplot
+} < $FILENAME
+
+jmtrend=$(cat driver | wc -l)
+
+FILENAME=./input/NCDFinfo
+{
+read titlecomm
+read titlestr
+read reftimecomm
+read reftimestr
+read valtimecomm
+read valtimestr
+read cellmethcomm
+read cellmethstr
+read institcomm
+read institstr
+read produccomm
+read producstr
+read sourcecomm
+read sourcestr
+read commentcomm
+read commentstr
+} < $FILENAME
+
+
+
+DIVADIR="../../DIVA3D"
+##################################################
+# loop on depth layers defined in contour.depth
+# loop on seasons devined in monthlist
+# loop on years defined in yearlist
+# loop on variables defined in varlist
+
+
+# innermost loop on depth to use diva3D
+
+WDIR=$(pwd)
+
+echo Working in $WDIR
+
+declare -i mlevel
+declare -i depth
+declare -i depthp
+declare -i depthm
+
+dos2unix ./input/contour.depth
+dos2unix varlist
+dos2unix yearlist
+dos2unix monthlist
+
+maxlevel=$(cat ./input/contour.depth | wc -l)
+
+if [ "$isextract" == "1" ]
+then
+echo Trying to guess ODV format on $ODVDATA
+divaguessforms $ODVDATA
+
+
+#########################################################
+for var in `cat varlist`
+#########################################################
+do
+
+#########################################################
+for year in `cat yearlist`
+#########################################################
+do
+
+#########################################################
+for month in `cat monthlist`
+#########################################################
+do
+
+#########################################################
+mlevel="0"
+while [ "$mlevel" -lt "$maxlevel" ]
+#########################################################
+do
+
+
+
+
+let levell=$mlevel+0
+let mlevel=$mlevel+1
+let levelp=$mlevel+1
+
+
+depth=$(head -$mlevel ./input/contour.depth | tail -1)
+
+if [ "$levell" == "0" ]
+then
+let depthm=$depth+0
+else
+depthm=$(head -$levell ./input/contour.depth | tail -1)
+fi
+
+if [ "$mlevel" == "$maxlevel" ]
+then
+let depthp=$depth+0
+else
+depthp=$(head -$levelp ./input/contour.depth | tail -1)
+fi
+
+let depth="1*${depth}"
+let depthm="1*${depthm}"
+let depthp="1*${depthp}"
+
+let deltaa=${depth}-${depthp}
+let deltab=${depthm}-${depth}
+
+#echo delta $deltaa $deltab $maxlevel $depth $depthp
+
+if [ "$deltaa" -ge "$deltab" ]
+then
+let delta=$deltab+0
+else
+let delta=$deltaa+0
+fi
+
+
+if [ "$levell" == "0" ]
+then
+echo lowest level under treatment
+let delta=${depth}-${depthp}
+fi
+
+if [ "$mlevel" == "$maxlevel" ]
+then
+echo uppermost level under treatment
+let delta=$depthm-$depth
+fi
+
+#echo Layers: $delta $levell $mlevel $levelp $depthm $depth $depthp
+#del=$(echo $delta | awk '{print $1/2}')
+
+let del=${delta}/2
+let del=1
+
+#echo Depth $depth $mlevel $del
+
+yearb=${year:0:4}
+yeare=${year:4:4}
+monthb=${month:0:2}
+monthe=${month:2:2}
+
+if [ "$yearb" == "xxxx" ]
+then
+yearb="*"
+fi
+
+if [ "$yeare" == "xxxx" ]
+then
+yeare="*"
+fi
+
+
+ncolvar=$(grep -i $var ODVcolumns | awk -F "\t" '{print $3}')
+
+longvarname=$(grep -i $var ODVcolumns | awk -F "\t" '{print $1}' | awk -F " " '{print $1}')
+longvarunit=$(grep -i $var ODVcolumns | awk -F "\t" '{print $1}' | awk -F " " '{print $2}')
+
+
+
+echo working on variable $var 
+echo $ncolvar
+
+head -3 select.form.guess > select.form
+echo $var $ncolvar "*   *" >> select.form
+head -6 select.form.guess | tail -2 >> select.form
+let nqf=$ncolvar+1
+echo Qf $nqf 0 1 >> select.form
+ddepth=$(head -7 select.form.guess | tail -1 | awk -F " " '{print $1, $2}')
+let dmin=${depth}-${del}
+let dmax=${depth}+${del}
+#echo so what $dmin $dmax $del 
+echo $ddepth $dmin $dmax >> select.form
+cat select.form
+
+echo year "$yearb" "$yeare" > timeselect.form
+echo month $monthb $monthe >> timeselect.form
+echo "hour * *" >> timeselect.form
+echo "min * *" >> timeselect.form
+echo "sec * *" >> timeselect.form
+
+echo ====================================
+cat timeselect.form
+
+
+
+
+echo Going to extract data
+
+divaselector $ODVDATA data.dat
+
+echo ADDITIONAL RESTRICTIONS
+specialdataonly
+echo FINISHED RESTRICTIONS
+
+let namelevel=10000+$mlevel
+mkdir -p ./input/divadata
+mv data.dat ./input/divadata/$var.$year.$month.$namelevel
+
+done
+echo ==================
+echo first loop
+echo ==================
+
+
+done
+
+echo ==================
+echo second loop
+echo ==================
+
+
+done
+
+echo ==================
+echo third loop
+echo ==================
+
+done
+
+echo ========================================================================
+echo Finished loop on data
+echo ========================================================================
+
+fi
+
+echo =======================================================================
+
+#########################################################
+for var in `cat varlist`
+#########################################################
+do
+echo variable $var
+#########################################################
+for year in `cat yearlist`
+#########################################################
+do
+echo year $year
+#########################################################
+for month in `cat monthlist`
+#########################################################
+do
+echo month $month
+#########################################################
+#
+if [ -f constandrefe ];then
+FILENAME=constandrefe
+{
+read isUVcstcomm
+read isUVcst
+read isrefcomm
+read isref
+} < $FILENAME
+
+if [ "$isUVcst" == "1" ];then
+ if [ -d ./input/divaUVcons ]; then
+ rm -r ./input/divaUVcons
+ rm -f ./input/constraint.dat
+ fi
+ mkdir ./input/divaUVcons
+ let lev=0+$minlevel
+ let maxlevel=0+$maxlevel
+ while [ "$lev" -le "$maxlevel" ]
+ do 
+ let level=10000+$lev
+
+ cp -v ./input/divaUVcons_all/constraint.dat ./input/constraint.dat
+ cp -v './input/divaUVcons_all/UVinfo.dat' './input/divaUVcons/UVinfo.'$level
+
+if [ -f './input/divaUVcons_all/Uvel.'$year'.'$month'.'$level ]; then
+ cp -v './input/divaUVcons_all/Uvel.'$year'.'$month'.'$level './input/divaUVcons/Uvel.'$level
+ cp -v './input/divaUVcons_all/Vvel.'$year'.'$month'.'$level './input/divaUVcons/Vvel.'$level
+ cp -v './input/divaUVcons_all/UVinfo.'$year'.'$month'.'$level './input/divaUVcons/UVinfo.'$level
+else
+ if [ -f './input/divaUVcons_all/Uvel.'$month'.'$level ]; then
+  cp -v './input/divaUVcons_all/Uvel.'$month'.'$level './input/divaUVcons/Uvel.'$level
+  cp -v './input/divaUVcons_all/Vvel.'$month'.'$level './input/divaUVcons/Vvel.'$level
+  cp -v './input/divaUVcons_all/UVinfo.'$month'.'$level './input/divaUVcons/UVinfo.'$level
+ else
+  if [ -f './input/divaUVcons_all/Uvel.'$level ]; then
+   cp -v './input/divaUVcons_all/Uvel.'$level './input/divaUVcons/Uvel.'$level
+   cp -v './input/divaUVcons_all/Vvel.'$level './input/divaUVcons/Vvel.'$level
+   cp -v './input/divaUVcons_all/UVinfo.'$level './input/divaUVcons/UVinfo.'$level
+  fi
+ fi
+fi
+
+ let lev=$lev+1
+ done
+else
+ if [ -f ./input/constraint.dat ]; then
+ rm -f ./input/constraint.dat
+ fi
+fi
+#
+if [ "$isref" == "1" ];then
+ if [ -d ./input/divarefe ]; then
+ rm -r ./input/divarefe
+ fi
+ mkdir ./input/divarefe
+ let lev=0+$minlevel
+ let maxlevel=0+$maxlevel
+ while [ "$lev" -le "$maxlevel" ]
+ do 
+ let level=10000+$lev
+ cp -v './input/divarefe_all/'$var'.'$year'.0112.'$level'.ref' './input/divarefe/'$var'.'$year'.'$month'.'$level'.ref'
+ cp -v './input/divarefe_all/'$var'.'$year'.0112.'$level'.ascii.ref' './input/divarefe/'$var'.'$year'.'$month'.'$level'.ascii.ref'
+ cp -v './input/divarefe_all/'$var'.'$year'.0112.'$level'.datapoint.ref' './input/divarefe/'$var'.'$year'.'$month'.'$level'.datapoint.ref'
+ cp -v ./input/divarefe_all/GridInfo.dat  ./input/divarefe/GridInfo.dat
+ let lev=$lev+1
+ done
+else
+ if [ -d ./input/divarefe ]; then
+ rm -rf ./input/divarefe
+ fi
+ if [ -f ./input/RLinfo.dat ]; then
+ rm -f ./input/RLinfo.dat 
+ rm -f ./input/RL.dat 
+ fi
+fi
+fi
+
+
+FILENAME=${var}.bounds
+{
+read GMINcomm
+read GMIN
+read GMAXcomm
+read GMAX
+} < $FILENAME
+
+yearb=${year:0:4}
+yeare=${year:4:4}
+monthb=${month:0:2}
+monthe=${month:2:2}
+
+
+
+ncolvar=$(grep -i $var ODVcolumns | awk -F "\t" '{print $3}')
+
+longvarname=$(grep -i $var ODVcolumns | awk -F "\t" '{print $1}' | awk -F " " '{print $1}')
+longvarunit=$(grep -i $var ODVcolumns | awk -F "\t" '{print $1}' | awk -F " " '{print $2}')
+
+
+
+echo working on variable $var 
+echo $ncolvar
+
+#########################################################
+mlevel="0"
+while [ "$mlevel" -lt "$maxlevel" ]
+#########################################################
+do
+echo Checking data coverage
+
+
+
+let levell=$mlevel+0
+let mlevel=$mlevel+1
+let levelp=$mlevel+1
+
+let jmlevel=$mlevel+10000
+ndatajm=$(cat ./input/divadata/$var.$year.$month.$jmlevel | wc -l)
+echo level $mlevel with data points $ndatajm
+if [ "$ndatajm" -le "$mindata" ]
+then
+echo Too few data $ndatajm , will try to use all month values 
+cp -v ./input/divadata/$var.$year.$month.$jmlevel ./input/divadata/$var.$year.$month.$jmlevel.ori
+cat ./input/divadata/$var.$year.*.$jmlevel > bidon
+mv bidon ./input/divadata/$var.$year.$month.$jmlevel 
+ndatajm=$(cat ./input/divadata/$var.$year.$month.$jmlevel | wc -l)
+echo now using data points $ndatajm 
+ 
+fi
+
+done
+
+#
+#iceedge treatment
+if [ -f input/iceedge.dat ]
+then
+rm -f input/iceedge.dat
+fi
+cp ./input/iceedge$month.dat ./input/iceedge.dat
+
+#
+# Prepare info3D and run diva3D
+
+if [ "$iscontour" -ne "0" -o "$isdataclean" -ne "0" -o "$isoptimise"  -ne "0" -o"$isanalysis" -ne "0" ]
+then
+# Need to optimise the copy operation, too much movements
+# Also clean up destination directories
+# Also contour generation not needed each loop, though fast operation.
+rm  ${DIVADIR}/divastripped/input/*
+rm  ${DIVADIR}/divastripped/input/*/*
+rm  ${DIVADIR}/divastripped/output/*
+rm  ${DIVADIR}/divastripped/output/*/*
+rm  ${DIVADIR}/divastripped/output/*/*/*
+rm  ${DIVADIR}/divastripped/divawork/*
+
+
+
+
+cp -r ./input/* ${DIVADIR}/divastripped/input
+
+if [ -f ${var}.pal ]
+then
+echo using local palette for plotting
+cp -v ${var}.pal ${DIVADIR}/divastripped/gnuwork/analysis.pal
+else
+echo using default palette for plotting
+cp -v ${DIVADIR}/divastripped/gnuwork/analysis.pal.default ${DIVADIR}/divastripped/gnuwork/analysis.pal
+fi
+
+
+cd ${DIVADIR}/divastripped/
+
+mkdir -p ./input/divadata
+mkdir -p ./input/divaparam
+mkdir -p ./input/divaUVcons
+mkdir -p ./output/3Danalysis
+
+
+if [ -f $WDIR'/output/3Danalysis/'$var'.'$year'.3Dncliste' ]; then
+ cp -v $WDIR'/output/3Danalysis/'$var'.'$year'.3Dncliste' ${DIVADIR}/divastripped/output/3Danalysis/.
+fi
+
+# preparing 3Dinfo to run
+
+
+
+echo ! Variable  > ./input/3Dinfo
+echo $var.$year.$month >> ./input/3Dinfo
+echo ! Number of the first level to be processed  >> ./input/3Dinfo
+echo $minlevel >> ./input/3Dinfo
+echo ! Number of the last level to be processed  >> ./input/3Dinfo
+echo $upperlevel >> ./input/3Dinfo
+echo ! coast contour generation  >>  ./input/3Dinfo
+echo $iscontour >> ./input/3Dinfo
+echo ! data cleaning >>  ./input/3Dinfo
+echo $isdataclean >>  ./input/3Dinfo
+echo ! parameters optimisation >>  ./input/3Dinfo
+echo $isoptimise >>  ./input/3Dinfo
+echo ! perform 3D analysis >>  ./input/3Dinfo
+echo $isanalysis >>  ./input/3Dinfo
+echo ! Min value for correlation lenght >> ./input/3Dinfo
+echo $CLMIN  >> ./input/3Dinfo
+echo ! Max value for correlation lenght >> ./input/3Dinfo
+echo $CLMAX >> ./input/3Dinfo
+echo ! Min value for S/N >> ./input/3Dinfo
+echo $SNMIN >> ./input/3Dinfo
+echo ! Max value for S/N >> ./input/3Dinfo
+echo $SNMAX >> ./input/3Dinfo
+echo !gp >>  ./input/3Dinfo
+echo $isplot >>  ./input/3Dinfo
+echo !gp >>  ./input/3Dinfo
+echo $GMIN >>  ./input/3Dinfo
+echo !gp >>  ./input/3Dinfo
+echo $GMAX >>  ./input/3Dinfo
+echo $titlecomm >> ./input/3Dinfo
+echo $titlestr >> ./input/3Dinfo
+echo ! Variable long name string >> ./input/3Dinfo
+echo "'"${longvarname}"'" >> ./input/3Dinfo
+echo ! variable units string >> ./input/3Dinfo
+echo "'"${longvarunit}"'" >> ./input/3Dinfo
+echo !pararam clim >> ./input/3Dinfo
+echo 1 >> ./input/3Dinfo
+echo $reftimecomm >> ./input/3Dinfo
+echo $reftimestr >> ./input/3Dinfo
+echo $valtimecomm >> ./input/3Dinfo
+echo $valtimestr >> ./input/3Dinfo
+echo $cellmethcomm >> ./input/3Dinfo
+echo $cellmethstr >> ./input/3Dinfo
+echo $institcomm >> ./input/3Dinfo
+echo $institstr >> ./input/3Dinfo
+echo $produccomm >> ./input/3Dinfo
+echo $producstr >> ./input/3Dinfo
+echo $sourcecomm >> ./input/3Dinfo
+echo $sourcestr >> ./input/3Dinfo
+echo $commentcomm >> ./input/3Dinfo
+echo $commentstr >> ./input/3Dinfo
+
+dos2unix  ./input/3Dinfo
+
+cat ./input/3Dinfo
+
+ls -l ./input
+
+
+#For trended data
+rm ./input/dodetrend.dat
+rm ./input/detrendinfo
+if [ "$jmtrend" -ge "29" ]
+then
+head -30 ${WDIR}/driver  |  tail -1 > ./input/dodetrend.dat
+#
+  Fileinf=./input/dodetrend.dat
+{
+read ngrp
+} < $Fileinf
+#
+echo comment >  ./input/detrendinfo
+echo $ngrp   >> ./input/detrendinfo
+echo comment >> ./input/detrendinfo
+echo 10      >> ./input/detrendinfo
+fi
+
+echo Ready to run diva3Ddress on $var $year $month
+
+diva3Ddress
+
+echo now saving needs to be done
+mkdir -p ${WDIR}/output
+mkdir -p ${WDIR}/newinput
+cp -r ${DIVADIR}/divastripped/output/* ${WDIR}/output
+cp -r ${DIVADIR}/divastripped/input/* ${WDIR}/newinput
+fi
+
+cd $WDIR
+
+done
+
+echo ==================
+echo first loop
+echo ==================
+
+done
+
+echo ==================
+echo second loop
+echo ==================
+
+
+
+
+done
+
+echo ==================
+echo Finished
+echo ==================
