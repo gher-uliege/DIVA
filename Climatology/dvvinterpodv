@@ -1,0 +1,223 @@
+# Function to interpolate vertical profiles
+# zin must be ordered (from lowest value to largest value)
+# Not yet allowed to have coinciding points. If this is the case,
+# use average function value and make small displacements of z
+# zout must be ordered (from lowest value to largest value)
+# zin has nin points
+
+# vin are the values at zin
+# nout are the number of points to which to interpolate at positions zout
+# valex is the special value to put in points with no interpolation
+# Still need to include valex interpolation for too distance points?
+# Algorithm: 
+# Valex in input must be eliminated.
+#
+function vinterp(zin,vin,nin,zout,vout,nout,valex)
+#        =======
+{ kl=1; klp=jmmin(nin,kl+1); k=0;
+# make sure input is sorted
+#print "vintin",nin,zin[1],vin[1],zin[nin],vin[nin];
+needsort=0;
+for (ijk=2; ijk<=nin; ijk++) {if (zin[ijk]<zin[ijk-1]) needsort=1};
+if (needsort==1) jmsort=mysort(zin,vin,nin);
+#print "vintins",nin,zin[1],vin[1],zin[nin],vin[nin],jmsort;
+# make sure no colocated points
+jmcheck=mycheck(zin,vin,nin);
+#print "vintinc",nin,zin[1],vin[1],zin[nin],vin[nin];
+while (k<nout)
+ {k=k+1;
+  vout[k]=valex;
+# Only one input point? take it if within one meter
+  if (nin==1) { if (abs(zout[k]-zin[1])<=1.1 ) {vout[k]=vin[1];continue} };
+#  
+  while ( zout[k] > zin[klp])
+    {kl=kl+1; klp=jmmin(nin,kl+1); if (klp<=kl) {break}}
+#  print "vint",k,zout[k],klp,zin[klp],kl,nout;
+#  vout[k]=k; print "kkk",k,vout[k];continue;
+# now kl and klp are the surrounding indexes for zout[k]
+# need to deal with lower and upper points.
+# need to deal with large distance and over/undershooting?
+# Mixing layer
+  if (zout[k] < zin[kl] && zin[kl] < 10) {vout[k]=vin[kl]; continue}
+  if (zout[k] < zin[kl]) {vout[k]=valex; continue}
+# Too deep, but save point that is within one meter of deepest point
+  if(kl==nin && zout[k] < zin[kl]+1) {vout[k]=vin[kl];continue}
+  if(kl>=nin) {vout[k]=valex;continue}
+#
+# Now the other cases...
+# kl and klp surround the point of interest.
+# If too far away, put exclusion
+  DDDDDD=indist(zout[k]);
+  if( abs(zin[kl]-zout[k])> DDDDDD && abs(zin[klp]-zout[k])> DDDDDD) {vout[k]=valex;continue};
+# First point
+  if (kl==1) {vout[k]=flin(zin[kl],vin[kl],zin[klp],vin[klp],zout[k]);continue}
+# Last point
+  if (klp==nin) {vout[k]=flin(zin[kl],vin[kl],zin[klp],vin[klp],zout[k]);continue}
+#
+  vout[k]=finterp(zin[kl-1],vin[kl-1],zin[kl],vin[kl],zin[klp],vin[klp],zin[klp+1],vin[klp+1],zout[k]);
+  vmin=vin[kl];
+  vmax=vin[klp];
+  if (vmin>vmax) {zz=vmax;vmax=vmin;vmin=zz}
+  if(vout[k]>vmax) {vout[k]=vmax}
+  if(vout[k]<vmin) {vout[k]=vmin}
+  }
+#  print "Finished??"
+  return 1
+}
+#--------------------------------------------------------
+#
+# Minimum of a and b
+function jmmin(a,b)
+#        =====
+{min=a; if(b<a) min=b;return min}
+#
+#--------------------------------------------------------
+#--------------------------------------------------------
+#
+# 
+function abs(a)
+#        =====
+{z=a; if(a<0) z=-a;return z}
+#
+#--------------------------------------------------------
+#
+# acceptable depth difference for inside values (WOD01)
+function indist(z)
+#        ======
+{ 
+if (z>=2000) return 1000 ;
+if (z>=900) return 200 ;
+if (z>=250) return 100 ;
+if (z>=10) return 50;
+return 5 
+}
+#--------------------------------------------------------
+#
+# acceptable depth difference for outside values (WOD01)
+function outdist(z)
+#        =======
+{ 
+if (z>=1300) return 1000 ;
+if (z>=500) return 400 ;
+return 200
+}
+#
+#--------------------------------------------------------
+# Parabolic interpolation, assumes non-coinciding points
+function parabolic(z1,v1,z2,v2,z3,v3,z)
+#        =========
+{
+f=(z-z1)*(z-z2)*(z1-z2)*v3+(z-z2)*(z-z3)*(z2-z3)*v1+(z-z1)*(z-z3)*(z3-z1)*v2;
+f=f/((z3-z1)*(z3-z2)*(z1-z2));
+return f
+}
+
+#--------------------------------------------------------
+# Linear interpolation, assumes non-coinciding points
+function flin(z1,v1,z2,v2,z)
+#        =========
+{
+f=(z-z2)*v1-(z-z1)*v2;
+f=f/(z1-z2);
+return f
+}
+
+#--------------------------------------------------------
+# reference interpolation
+function fref(z1,v1,z2,v2,z3,v3,z4,v4,z)
+#        ====
+{
+y12 = flin(z1,v1,z2,v2,z);
+y23 = flin(z2,v2,z3,v3,z);
+y34 = flin(z3,v3,z4,v4,z);
+d123 = (y12-y23)*(y12-y23);
+d234 = (y23-y34)*(y23-y34);
+if (abs(d123+d234)<0.001) {f=(y12+y23+y34)/3.} else { f=0.5*(y23+(((d234*y12)+(d123*y34))/(d234+d123)));}
+return f
+}
+
+#--------------------------------------------------------
+# Reisinger-Ross interpolation
+function finterp(z1,v1,z2,v2,z3,v3,z4,v4,z)
+#        ====
+{
+y1 = parabolic(z1,v1,z2,v2,z3,v3,z);
+y2 = parabolic(z2,v2,z3,v3,z4,v4,z);
+yref=fref(z1,v1,z2,v2,z3,v3,z4,v4,z);
+d1 = abs(y1-yref);
+d2 = abs(y2-yref);
+if (abs(d1+d2)<0.001) {f=(y1+y2)/2.} else { r1=d1/(d1+d2);
+        r2=d2/(d1+d2);f=r1*y2+r2*y1;}
+return f
+}
+
+#--------------------------------------------------------
+# Sorting function
+function mysort(zin,vin,n)
+#        =====
+{
+fname=("tmpfile." NR);
+#print "name used ", fname;
+mcomm=("sort -n >" fname)
+for  (i=1; i<=n; i++) print zin[i],vin[i] | mcomm;
+#print "tmpfile created";
+        close(mcomm);
+        nn=0;
+        while(getline a[++nn] < fname) ;#print "mysort",nn,a[nn];
+        system("rm -f " fname);
+#        print "so what",nn,a[nn];
+         {for(i=1;i<=nn;i++)  {split(a[i],ww," "); zin[i]=ww[1];vin[i]=ww[2]}}
+return nn
+}
+#---------------------------------------------------------
+
+#--------------------------------------------------------
+# checking for double locations 
+function mycheck(zin,vin,n)
+#        =====
+{
+if (n <= 1) return n;
+if (zin[1] > zin[2]-0.1) {zin[1]=zin[2]-0.1;vv=(vin[1]+vin[2])/2;vin[1]=vv;vin[2]=vv};
+for  (i=3; i<=n; i++) {  if (zin[i-1] > zin[i]-0.1) {zin[i-1]=zin[i-1]-0.1/i;vv=(vin[i]+vin[i-1])/2;vin[i]=vv;vin[i-1]=vv} };
+return n
+}
+#---------------------------------------------------------
+
+
+# Main program
+# 
+BEGIN {meta[1]=0;meta[2]=0;meta[3]=0;meta[4]=0;meta[5]=0;meta[6]=0;meta[7]=0;meta[8]=0;meta[9]=0;i=1;ifirst=1}
+NR==FNR {level[k+1]=$1;vout[k+1]=0;k=k+1;jjj=0;next} 
+{if (jjj<=0) {jjj=1;i=1;jm=k;
+{for (j=1;j<=jm/2;j++)  { zz=level[j];      
+level[j]=level[jm-j+1];level[jm-j+1]=zz}} }}
+#}
+{#Main loop
+if (ifirst==1 && i==1) {meta[1]=$1 ; meta[2]=$2 ; meta[3]=$5 ; meta[4]=$6 ; meta[5]=$7; meta[6]=$8 ; meta[7]=$9 ; meta[8]=$10 ; meta[9]=$11 ; ifirst=0};
+#if (meta[1]==$1 && meta[2]==$2 && meta[3]==$5 && meta[4]==$6 && meta[5]==$7 && meta[6]==$8 && meta[7]==$9 && meta[8]==$10 && meta[9]==$11)
+if (meta[8]==$10 && meta[9]==$11)
+  {
+zin[i]=$4;vin[i]=$3;i=i+1#;print "uu",i-1,zin[i-1],vin[i-1]
+   } 
+else
+# profile now to be treated
+  {zzz=$4;vvv=$3;mm1=$1;mm2=$2;mm3=$3;mm4=$4;mm5=$5;mm6=$6;mm7=$7;mm8=$8;mm9=$9;mm10=$10;mm11=$11;
+#  print "jjj",i-1,jm,vin[1],zin[1],meta[8],meta[9],vin[i-1],zin[i-1];
+ nin=i-1;nout=jm;valex=99999; jmb=vinterp(zin,vin,nin,level,vout,nout,valex);
+# add test to put out only when no exclusion value
+    for (ii=1; ii<=nout; ii++) {if (vout[ii] != valex) print meta[1],meta[2],vout[ii],level[ii],meta[3],meta[4],meta[5],meta[6],meta[7],meta[8],meta[9],10000+(jm-ii+1)};
+    meta[1]=mm1 ; meta[2]=mm2 ; meta[3]=mm5 ; meta[4]=mm6 ; meta[5]=mm7; meta[6]=mm8 ; meta[7]=mm9 ; meta[8]=mm10 ; meta[9]=mm11; 
+    zin[1]=zzz;vin[1]=vvv;i=2;
+  }
+} 
+
+END {
+ nin=i-1;nout=jm;valex=99999; jmb=vinterp(zin,vin,nin,level,vout,nout,valex);
+# add test to put out only when no exclusion value
+    for (i=1; i<=nout; i++) {if (vout[i] != valex) print meta[1],meta[2],vout[i],level[i],meta[3],meta[4],meta[5],meta[6],meta[7],meta[8],meta[9],10000+(jm-i+1)};
+    }
+    
+
+#STILL NEED TO CHECK WHAT HAPPENS WITH SINGLE POINT seems to work
+#But assumes input is ordered, no repeating point and downward profile. Maybe check in vinterp
+# if reversed profile?

@@ -1,0 +1,240 @@
+#!/bin/bash
+export LC_ALL=C 
+WORK=./Datawork
+dcoordinate=Depth
+todepth=0
+#dcoordinate=Pressure
+#todepth=1
+#todepth=1 means transformation of pressure to depth (saunder and Fofonoff)
+# For expert users, you can disactivate ODV4 to bigfile for variables if you
+# change only layer positions (put zero)
+ivar=1
+
+
+rm -f tmpfile
+
+if [ -d "$WORK" ]
+then
+if [ "$ivar" == "1" ]
+then
+echo Cleaning working directoy $WORK
+rm -f ${WORK}/*
+fi
+else
+echo Creating working directory $WORK
+mkdir $WORK
+fi
+
+if [ -f "pressure.coordinates" ]
+then
+echo PRESSURE coordinates
+dos2unix pressure.coordinates
+dcoordinate=Pressure
+todepth=0
+
+{
+read todepth
+} < pressure.coordinates
+
+if [ "$todepth" == "1" ]
+then
+echo     == Will transform with Saunders algorithm to depth
+else
+echo     == Will use dbar as meters
+fi
+
+fi
+
+inputfile=$1
+
+if [ -f "$inputfile" ]
+then
+echo Trying to make data extraction on data file $inputfile
+#echo Number of lines in the data file :
+#wc -l $inputfile
+datalines=$(wc -l $inputfile | awk '{print $1}')
+headerlines=$(head -1000 $inputfile | grep "//"  | wc -l)
+let userlines=$datalines-headerlines
+let userlines=$userlines-1
+echo data $datalines header $headerlines user $userlines
+
+echo Checking file structure
+divaguessformsODV4 $inputfile
+echo
+echo =================
+echo Finished checking
+echo Columns found
+cat ODVcolumns
+echo 
+echo ================
+{
+read delimiter
+} < ODVdelimiter
+
+if [ "$delimiter" == "t" ]
+then
+delimiter="\t"
+fi
+echo Delimiter for ODV $delimiter
+
+
+#First drop all bad points for a given variable and keep only metainformation, z and variable 
+echo Making sure files have correct line endings
+dos2unix varlist
+dos2unix yearlist
+dos2unix monthlist
+dos2unix qflist
+dos2unix input/contour.depth
+echo ----------------------------
+echo Now starting data extraction
+echo ----------------------------
+
+for var in `cat varlist`
+do
+echo Working on parameter $var
+#head ODVcolumns
+datacol=$(grep "$var" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
+loncol=$(grep -i "Longitude" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
+latcol=$(grep -i "Latitude" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
+datecol=$(grep -i "YYYY-MM" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
+# Pressure for the moment if depht, carefull about bottom depth columns
+if [ "$dcoordinate" == "Pressure" ]
+then
+depthcol=$(grep -i "pressure" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
+echo === PRESSURE COORDINATE in column $depthcol
+else
+depthcol=$(grep -i "Depth" ODVcolumns | head -2 | tail -1 |  awk -F "$delimiter" '{print $3}')
+echo === DEPTH COORDINATE in column $depthcol
+fi
+
+let qccol=$datacol+1
+units=$(grep "$var" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $1}' | awk -F "[" '{print $2}' \
+                                        | awk -F "]" '{print $1}' )
+echo Data are in column $datacol
+echo Corresponding quality flags are in column $qccol
+echo Units are $units
+
+echo Now producing one big file for variable $var
+echo Quality flags retained are 1 2 and 8
+
+echo Foreseen to put two parameters on CDI EDMO
+
+if [ "$ivar" == "1" ]
+then
+
+tail -$userlines $inputfile | \
+    awk -F "$delimiter" -v datacol=$datacol -v qccol=$qccol -v latcol=$latcol -v loncol=$loncol -v datecol=$datecol -v depthcol=$depthcol -v todepth=$todepth \
+      '
+      function myqfok(qf,n,qval)
+#        =====
+{
+if (n <= 0) return 1;
+for  (i=1; i<=n; i++) {  if (qval==qf[i]) return 1 };
+return 0
+}
+      BEGIN {nn=0;
+        while(getline qf[++nn] < "qflist") xbidon=1;} 
+      {
+      {if ($1 > "") {x=$1} else {$1=x}};
+      {if ($2 > "") {y=$2} else {$2=y}};
+      {if ($3 > "") {z=$3} else {$3=z}};
+      {if ($loncol > "") {w=$loncol} else {$loncol=w}};
+      {if ($loncol +0< -180+0) {n=int((-180-$loncol)/360)+1; $loncol=$loncol+n*360}} ;
+      {if ($loncol +0> -180+360) {n=int(($loncol-(-180))/360); $loncol=$loncol-n*360}} ;
+      {if ($latcol > "") {ww=$latcol} else {$latcol=ww}};
+      {if ($datecol > "") {www=$datecol} else {$datecol=www}};
+      year=substr($datecol,1,4);
+      month=substr($datecol,6,2);
+      day=substr($datecol,9,2);
+      hour=substr($datecol,12,2);
+      minu=substr($datecol,15,2);
+      {if (minu > 30) hour=hour+1};
+      qcval=$qccol;
+      qfok=myqfok(qf,nn,qcval);
+#      if ( $qccol==1 || $qccol==2 || $qccol==8 );
+      if (todepth==1) {locx=sin($latcol/57.29578); locc=(5.92+5.25*locx*locx)/1000.; $depthcol=((1-locc)-2.21*$depthcol/1000000)*$depthcol};
+      if ($datacol > "" && qfok==1) print $loncol,$latcol,$datacol,$depthcol,$qccol,year,month,day,hour,$1,$3}' \
+       > ${WORK}/${var}.bigfile
+
+fi
+
+#Then make interpolation on standard depth.
+
+echo Now interpolating
+
+# make sure columns are now in correct order
+
+awk -f "dvvinterpodv" ./input/contour.depth ${WORK}/${var}.bigfile > ${WORK}/${var}.bigfile.interp
+
+
+#Then split file in data for layers?
+
+lev="0"
+for layer in `cat input/contour.depth`
+do
+let lev=$lev+1
+let lnum=10000+$lev
+
+echo Now split in layers $lnum and drop exclusion values 
+echo Order now: x y val 1 year month day hour meta1 meta2
+
+awk -v lnum=$lnum '{if ($12 == lnum && $3 != 99999) {print $1,$2,$3,1,$6,$7,$8,$9,$10,$11}}' ${WORK}/${var}.bigfile.interp > ${WORK}/$var.$lnum
+
+#Then extract for each layer the dates (small files now)
+
+for yyy in `cat yearlist`
+do
+for mmm in `cat monthlist`
+do
+echo Working on years $yyy and month $mmm
+
+let mm11=0+${mmm:0:1}
+let mm12=0+${mmm:1:1}
+let mm21=0+${mmm:2:1}
+let mm22=0+${mmm:3:1}
+let mm1=10*$mm11+$mm12
+let mm2=10*$mm21+$mm22
+year1=${yyy:0:4}
+year2=${yyy:4:4}
+
+if [ "$mm1" -gt "$mm2" ]
+then
+echo winter season across new year
+let mm2=$mm2+12
+echo Virtual ending month $mm2
+fi
+
+echo year from $year1 to $year2
+echo month from $mm1 to $mm2
+
+# dans awk if(mm2>12) $x=$x+12
+awk -v mm1=$mm1 -v mm2=$mm2 -v year1=$year1 -v year2=$year2 \
+'{{if (mm2>12) $6=$6+12}; 
+{if (mm1 <=$6+0 && $6+0 <= mm2 && year1<=$5+0 && $5+0 <= year2) print $1,$2,$3,$4,$5-year1+1,$6-mm1+1,$7,$8+1,$9,$10}
+}' ${WORK}/$var.$lnum > input/${var}.${yyy}.${mmm}.$lnum
+
+done
+done
+
+
+
+
+done
+echo Finished loop on layers
+
+
+
+done
+echo Finished loop on variables
+
+
+else
+echo ====SEVERE ERROR==================
+echo Data file specifyed does not exist
+echo ====SEVERE ERROR==================
+exit
+fi
+
+echo ==================================
+echo =======Finished data =============
+echo ==================================
