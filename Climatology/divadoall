@@ -537,10 +537,13 @@ head -30 ${WDIR}/driver  |  tail -1 > ./input/dodetrend.dat
 read ngrp
 } < $Fileinf
 #
+if [ "ngrp" -gt "0" ]
+then
 echo comment >  ./input/detrendinfo
 echo $ngrp   >> ./input/detrendinfo
 echo comment >> ./input/detrendinfo
 echo 10      >> ./input/detrendinfo
+fi
 fi
 
 echo Ready to run diva3Ddress on $var $year $month
