@@ -3,6 +3,9 @@ export LC_ALL=C
 WORK=./Datawork
 dcoordinate=Depth
 todepth=0
+
+mkdir input
+mkdir input/divadata
 #dcoordinate=Pressure
 #todepth=1
 #todepth=1 means transformation of pressure to depth (saunder and Fofonoff)
@@ -220,6 +223,7 @@ awk -v mm1=$mm1 -v mm2=$mm2 -v year1=$year1 -v year2=$year2 \
 }' ${WORK}/$var.$lnum > input/${var}.${yyy}.${mmm}.$lnum
 
 specialdataonly input/${var}.${yyy}.${mmm}.$lnum
+mv input/${var}.${yyy}.${mmm}.$lnum input/divadata/${var}.${yyy}.${mmm}.$lnum
 
 done
 done

@@ -227,14 +227,25 @@ else
 fi
 fi
 
+GMIN=" "
+GMAX=" "
+
+
+
 
 FILENAME=${var}.bounds
+
+if [ -f "$FILENAME" ] 
+then
+
 {
 read GMINcomm
 read GMIN
 read GMAXcomm
 read GMAX
 } < $FILENAME
+
+fi
 
 yearb=${year:0:4}
 yeare=${year:4:4}
@@ -303,12 +314,15 @@ if [ -f input/iceedge.dat ]
 then
 rm -f input/iceedge.dat
 fi
+if [ -f ./input/iceedge$month.dat ]
+then
 cp ./input/iceedge$month.dat ./input/iceedge.dat
+fi
 
 #
 # Prepare info3D and run diva3D
-
-if [ "$iscontour" -ne "0" -o "$isdataclean" -ne "0" -o "$isoptimise"  -ne "0" -o"$isanalysis" -ne "0" ]
+echo strange test $iscontour $isdataclean $isoptimise $isanalysis
+if [ "$iscontour" -ne "0" ] || [ "$isdataclean" -ne "0" ] || [ "$isoptimise" -ne "0" ] || [ "$isanalysis" -ne "0" ]
 then
 # Need to optimise the copy operation, too much movements
 # Also clean up destination directories
