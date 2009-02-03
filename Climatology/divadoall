@@ -227,8 +227,8 @@ else
 fi
 fi
 
-GMIN=" "
-GMAX=" "
+GMIN="1"
+GMAX="0"
 
 
 
