@@ -116,14 +116,15 @@ After this, you should have topographic files {\tt topo.grd} and {\tt TopoInfo.d
 For easy use, import your data into Ocean Data View (ODV, found at \url{http://odv.awi.de/}, now at version 4.0). You can for example extract data from the world ocean atlas at \url{http://www.nodc.noaa.gov/OC5/SELECT/dbsearch/dbsearch.html} and choose the export in the native world ocean atlas. This allows a direct import of the file into ODV.
 \item During the import into ODV, you might consider sampling the profiles at regular intervals for easier level selection later, though a vertical interpolation tool is also available in {\tt divaselectorODV4}.
 \item Once imported in ODV you can apply some selection criteria if you want to reduce the amount of data exported for \diva 
-\item Then export the data you want as ODV generic spreadsheat and name this exported file as {\tt woaODV.txt}) and if possible, take already care of the longitude range  $[$0:360$]$ or $[$-180:180$]$ according to your needs. For european projects, the range $[$-180:180$]$  is the most appropriate.
+\item Then export the data you want as ODV generic spreadsheat and name this exported file for example as {\tt woaODV.txt}) and if possible, take already care of the longitude range  $[$0:360$]$ or $[$-180:180$]$ according to your needs. For european projects, the range $[$-180:180$]$  is the most appropriate and is coded in {\tt divaselectorODV4} to transform any range into the $[$-180:180$]$ range.
 \item Look at the header of the exported file to have an idea of the name of the variables that are in the file (use command {\tt head -40 woaODV.txt}). If in doubt, apply {\tt divaguessforms woaODV.txt} that will create file {\tt ODVcolumns} which includes names of variables and the columns in which to find them.
 \end{itemize}
 
+If you do not use {\tt divaselectorODV4} and prepare your data yourself, you need to create  file {\tt VAR.units} in the main climatology directory. This file containes the units of variable {\tt VAR}. {\tt divaselectorODV4} does create this file based on the units provided by ODV. Similarly you might want to create {\tt VAR.longname} which contains a long name of the variable (eg. temp.longname containes a line with "Temperature" if your variable name is temp and stands for temperature).
 
 {\bf NOTE}: do not forget to deal adequately with data elimination based on quality flags, either before importing in ODV, selection within ODV, or during export from ODV. Ensure that you export the quality flags with the data and make sure you know their meaning.
 
-{\bf NOTE}: if you want to use another filename than {\tt woaODV.txt}, you can do it, but you need to edit {\tt divadoall}.
+{\bf NOTE}: if you want to use another filename than {\tt woaODV.txt}, you can do it, but you need to edit {\tt datasource} which contains filename of the data file.
 
 {\bf NOTE}: if original data export was done with pressure (in dbar) vertical coordinate, you can either chose to map it as if they were meters or apply the Saunders correction. In both cases, you MUST tell {\tt divaselectorODV4} to use pressure coordinate as input by editing {\tt driver} and assigning a special value to the dataextraction flag: -1 to use pressure coordinate and assume they are meters. Flag value -10 to use pressure coordinates and transform to meters by using the Saunders approach.
 
@@ -140,6 +141,8 @@ For easy use, import your data into Ocean Data View (ODV, found at \url{http://o
 \end{footnotesize}
 \caption{{\tt qflist } file content.} 
 \end{exfile}
+
+
 
 \section{Climatology definition}
 
@@ -302,7 +305,7 @@ The adapted parameter files after an optimisation are in {\tt newinput}. You can
 
 \section{Removing of outliers}
 {\bf Todo} Streamline data: reduce weight of outliers : in the {\tt newinput} using the outlier of the outputs, 
-save original input and copu newinput into input and adapt data.dat.
+save original input and rename directory {\tt newinput} to {\tt input} and adapt {\tt data.dat}.
 
 Then do the whole thing again.
 

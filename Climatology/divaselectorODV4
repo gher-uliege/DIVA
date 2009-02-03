@@ -33,13 +33,16 @@ dcoordinate=Pressure
 todepth=0
 
 {
-read todepth
+read todepthf
 } < pressure.coordinates
 
-if [ "$todepth" == "1" ]
+if [ "$todepthf" == "-10" ]
 then
 echo     == Will transform with Saunders algorithm to depth
-else
+todepth=1
+fi
+if [ "$todepthf" == "-1" ]
+then
 echo     == Will use dbar as meters
 fi
 
@@ -113,6 +116,9 @@ units=$(grep "$var" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $1}' | a
 echo Data are in column $datacol
 echo Corresponding quality flags are in column $qccol
 echo Units are $units
+
+echo $units > $var.units
+echo $var > $var.longname
 
 echo Now producing one big file for variable $var
 echo Quality flags retained are 1 2 and 8
@@ -212,6 +218,8 @@ awk -v mm1=$mm1 -v mm2=$mm2 -v year1=$year1 -v year2=$year2 \
 '{{if (mm2>12) $6=$6+12}; 
 {if (mm1 <=$6+0 && $6+0 <= mm2 && year1<=$5+0 && $5+0 <= year2) print $1,$2,$3,$4,$5-year1+1,$6-mm1+1,$7,$8+1,$9,$10}
 }' ${WORK}/$var.$lnum > input/${var}.${yyy}.${mmm}.$lnum
+
+specialdataonly input/${var}.${yyy}.${mmm}.$lnum
 
 done
 done

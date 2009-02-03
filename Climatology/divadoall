@@ -1,12 +1,19 @@
 #!/bin/bash
 
-#ODVDATA="data_from_barents.txt"
-ODVDATA="woaODV.txt"
+
+DIVADIR="../../DIVA3D"
+
+dos2unix datasource
+{
+read ODVDATA
+} < datasource
+
+echo Data source file is $ODVDATA
 
 FILENAME=driver
 {
 read isextractcomm
-read isextract
+read isextractf
 read iscontourcomm
 read iscontour
 read isdatacleancomm
@@ -38,6 +45,10 @@ read isplot
 jmtrend=$(cat driver | wc -l)
 
 FILENAME=./input/NCDFinfo
+
+if [ -f "$FILENAME" ]
+then
+
 {
 read titlecomm
 read titlestr
@@ -56,10 +67,15 @@ read sourcestr
 read commentcomm
 read commentstr
 } < $FILENAME
+else
+echo DIVAERRS2 divadoall71 Missing file $FILENAME
+echo Please provide information file $FILENAME
+exit
+fi
 
 
 
-DIVADIR="../../DIVA3D"
+
 ##################################################
 # loop on depth layers defined in contour.depth
 # loop on seasons devined in monthlist
@@ -78,190 +94,43 @@ declare -i depth
 declare -i depthp
 declare -i depthm
 
+
+echo Making sure files are in unix format
 dos2unix ./input/contour.depth
 dos2unix varlist
 dos2unix yearlist
 dos2unix monthlist
+dos2unix qflist
 
 maxlevel=$(cat ./input/contour.depth | wc -l)
+
+
+isextract=0
+if [ "$isextractf" == "1" ]
+then
+isextract=1
+fi
+
+if [ "$isextractf" == "-1" ]
+then
+echo $isextractf > pressure.coordinates
+isextract=1
+fi
+if [ "$isextractf" == "-10" ]
+then
+echo $isextractf > pressure.coordinates
+isextract=1
+fi
+
 
 if [ "$isextract" == "1" ]
 then
 echo Trying to guess ODV format on $ODVDATA
-divaguessforms $ODVDATA
+divaguessformsODV4 $ODVDATA
 
-
-#########################################################
-for var in `cat varlist`
-#########################################################
-do
-
-#########################################################
-for year in `cat yearlist`
-#########################################################
-do
-
-#########################################################
-for month in `cat monthlist`
-#########################################################
-do
-
-#########################################################
-mlevel="0"
-while [ "$mlevel" -lt "$maxlevel" ]
-#########################################################
-do
-
-
-
-
-let levell=$mlevel+0
-let mlevel=$mlevel+1
-let levelp=$mlevel+1
-
-
-depth=$(head -$mlevel ./input/contour.depth | tail -1)
-
-if [ "$levell" == "0" ]
-then
-let depthm=$depth+0
-else
-depthm=$(head -$levell ./input/contour.depth | tail -1)
-fi
-
-if [ "$mlevel" == "$maxlevel" ]
-then
-let depthp=$depth+0
-else
-depthp=$(head -$levelp ./input/contour.depth | tail -1)
-fi
-
-let depth="1*${depth}"
-let depthm="1*${depthm}"
-let depthp="1*${depthp}"
-
-let deltaa=${depth}-${depthp}
-let deltab=${depthm}-${depth}
-
-#echo delta $deltaa $deltab $maxlevel $depth $depthp
-
-if [ "$deltaa" -ge "$deltab" ]
-then
-let delta=$deltab+0
-else
-let delta=$deltaa+0
-fi
-
-
-if [ "$levell" == "0" ]
-then
-echo lowest level under treatment
-let delta=${depth}-${depthp}
-fi
-
-if [ "$mlevel" == "$maxlevel" ]
-then
-echo uppermost level under treatment
-let delta=$depthm-$depth
-fi
-
-#echo Layers: $delta $levell $mlevel $levelp $depthm $depth $depthp
-#del=$(echo $delta | awk '{print $1/2}')
-
-let del=${delta}/2
-let del=1
-
-#echo Depth $depth $mlevel $del
-
-yearb=${year:0:4}
-yeare=${year:4:4}
-monthb=${month:0:2}
-monthe=${month:2:2}
-
-if [ "$yearb" == "xxxx" ]
-then
-yearb="*"
-fi
-
-if [ "$yeare" == "xxxx" ]
-then
-yeare="*"
-fi
-
-
-ncolvar=$(grep -i $var ODVcolumns | awk -F "\t" '{print $3}')
-
-longvarname=$(grep -i $var ODVcolumns | awk -F "\t" '{print $1}' | awk -F " " '{print $1}')
-longvarunit=$(grep -i $var ODVcolumns | awk -F "\t" '{print $1}' | awk -F " " '{print $2}')
-
-
-
-echo working on variable $var 
-echo $ncolvar
-
-head -3 select.form.guess > select.form
-echo $var $ncolvar "*   *" >> select.form
-head -6 select.form.guess | tail -2 >> select.form
-let nqf=$ncolvar+1
-echo Qf $nqf 0 1 >> select.form
-ddepth=$(head -7 select.form.guess | tail -1 | awk -F " " '{print $1, $2}')
-let dmin=${depth}-${del}
-let dmax=${depth}+${del}
-#echo so what $dmin $dmax $del 
-echo $ddepth $dmin $dmax >> select.form
-cat select.form
-
-echo year "$yearb" "$yeare" > timeselect.form
-echo month $monthb $monthe >> timeselect.form
-echo "hour * *" >> timeselect.form
-echo "min * *" >> timeselect.form
-echo "sec * *" >> timeselect.form
-
-echo ====================================
-cat timeselect.form
-
-
-
-
-echo Going to extract data
-
-divaselector $ODVDATA data.dat
-
-echo ADDITIONAL RESTRICTIONS
-specialdataonly
-echo FINISHED RESTRICTIONS
-
-let namelevel=10000+$mlevel
-mkdir -p ./input/divadata
-mv data.dat ./input/divadata/$var.$year.$month.$namelevel
-
-done
-echo ==================
-echo first loop
-echo ==================
-
-
-done
-
-echo ==================
-echo second loop
-echo ==================
-
-
-done
-
-echo ==================
-echo third loop
-echo ==================
-
-done
-
-echo ========================================================================
-echo Finished loop on data
-echo ========================================================================
+divaselectorODV4 $ODVDATA
 
 fi
-
 echo =======================================================================
 
 #########################################################
@@ -378,6 +247,21 @@ ncolvar=$(grep -i $var ODVcolumns | awk -F "\t" '{print $3}')
 
 longvarname=$(grep -i $var ODVcolumns | awk -F "\t" '{print $1}' | awk -F " " '{print $1}')
 longvarunit=$(grep -i $var ODVcolumns | awk -F "\t" '{print $1}' | awk -F " " '{print $2}')
+
+if [ -f "${var}.units" ]
+then
+{
+read longvarunit
+} < $var.units
+fi
+
+if [ -f "${var}.longname" ]
+then
+{
+read longvarname
+} < $var.longname
+fi
+
 
 
 
