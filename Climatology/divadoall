@@ -435,7 +435,7 @@ head -30 ${WDIR}/driver  |  tail -1 > ./input/dodetrend.dat
 read ngrp
 } < $Fileinf
 #
-if [ "ngrp" -gt "0" ]
+if [ "$ngrp" -gt "0" ]
 then
 echo comment >  ./input/detrendinfo
 echo $ngrp   >> ./input/detrendinfo
