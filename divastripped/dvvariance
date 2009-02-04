@@ -21,7 +21,25 @@ rm -r ./output2/*
 rmdir output2
 fi
 mkdir -p ./output2
+
+ls -l ./output
 mv -f ./output/*  ./output2
+errcode=$?
+if [ $errcode -ne 0 ]; then
+    echo ERROR CODE $errcode try again
+    mv -f ./output/*  ./output2
+    errcode=$?
+    echo Now error code is $errcode
+    if [ $errcode -ne 0 ]; then
+    sleep 1
+    mv -f -v -t ./output2 ./output/*  
+    errcode=$?
+    echo Now error code is $errcode
+    fi
+fi
+
+
+
 mkdir -p ./output/ghertonetcdf
 mkdir -p ./output/meshvisu
 
