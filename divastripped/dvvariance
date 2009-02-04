@@ -15,8 +15,13 @@ else
 echo Called from quality control $1
 fi
 
+if [ -d "output2" ]
+then
+rm -r ./output2/*
+rmdir output2
+fi
 mkdir -p ./output2
-mv  ./output/*  ./output2
+mv -f ./output/*  ./output2
 mkdir -p ./output/ghertonetcdf
 mkdir -p ./output/meshvisu
 
@@ -123,7 +128,7 @@ cp -v ./output/fieldgher.anl ./output2/varfieldgher.anl
 cp -v ./output/ghertonetcdf/results.nc ./output2/ghertonetcdf/var.nc
 rm -r ./output/*
 echo renaming output2 to output
-mv ./output2/* ./output
+mv -f ./output2/* ./output
 rmdir ./output2
 # now put original mesh back
 cp ./output/meshvisu/* ./meshgenwork
