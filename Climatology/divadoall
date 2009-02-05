@@ -474,6 +474,13 @@ echo ==================
 
 done
 
+
+echo Producing 4D netcdf files
+
+divadoNCDF
+
+
+
 echo ==================
 echo Finished
 echo ==================
