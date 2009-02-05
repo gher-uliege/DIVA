@@ -124,7 +124,8 @@ echo $units > $var.units
 echo $var > $var.longname
 
 echo Now producing one big file for variable $var
-echo Quality flags retained are 1 2 and 8
+echo Quality flags retained are 
+cat qflist
 
 echo Foreseen to put two parameters on CDI EDMO
 
