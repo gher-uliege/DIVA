@@ -368,13 +368,22 @@ To prepare netcdf 4D files, use {\tt divadoNCDF}. When {\tt divadoall} runs are 
 
 For more advanced presentations, you can use {\tt Java} tools for animations.
 
-An example on how to prepare GoogleEarth compatible {\tt .kml} files with a collection of .png files is also provided.
+An example on how to prepare GoogleEarth compatible {\tt .kml} files with a collection of .png files is also provided when you chose the plotting option.
 
 
 \section{WARNING}
 
 For yet unknown reasons, some versions of cygwin seem to be allergic to move files and directories when Explorer is open on one of them. {\bf So do NEVER open an
-explorer window on divastripped directory during climatology production.}
+explorer window on the {\tt divastripped} directory during climatology production.}
+
+
+\section{Efficiency}
+
+If you know what you do, you can save some computing time by not regenerating meshes when running a second time {\tt divadoall}. Indeed, if you correlation length
+is not changed or if you created the mesh with a small correlation length, you can keep the meshes, even if in a subsequent analysis your correlation length is larger. To use preexisting meshes, copy the files {\tt  meshtopo.*} and {\tt mesh.dat.*} found in directory {\tt newinput/divamesh} into a directory {\tt input/divamesh}. {\bf WARNING: } should you change the levels of analysis {\tt contour.depth}, you need to recreate the meshes and therefore erase the content of 
+{\tt input/divamesh}. The same holds if you use a much smaller correlation length than the one used to create the initial meshes.
+
+\section{Best practice for using features}
 
 \end{document}
 

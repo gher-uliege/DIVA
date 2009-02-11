@@ -124,8 +124,16 @@ echo $units > $var.units
 echo $var > $var.longname
 
 echo Now producing one big file for variable $var
+iqf=0
+if [ -f qflist ]
+then
 echo Quality flags retained are 
 cat qflist
+iqf=1
+else
+echo All quality flags are retained
+touch qflist
+fi
 
 echo Foreseen to put two parameters on CDI EDMO
 
@@ -246,6 +254,11 @@ echo ====SEVERE ERROR==================
 echo Data file specifyed does not exist
 echo ====SEVERE ERROR==================
 exit
+fi
+
+if [ "$iqf" == "0" ]
+then
+rm qflist
 fi
 
 echo ==================================

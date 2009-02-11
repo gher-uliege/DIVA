@@ -357,8 +357,8 @@ mkdir -p ./input/divaUVcons
 mkdir -p ./output/3Danalysis
 
 
-if [ -f $WDIR'/output/3Danalysis/'$var'.'$year'.3Dncliste' ]; then
- cp -v $WDIR'/output/3Danalysis/'$var'.'$year'.3Dncliste' ${DIVADIR}/divastripped/output/3Danalysis/.
+if [ -f $WDIR'/output/3Danalysis/'$var'.'$year'.3DNcliste' ]; then
+ cp -v $WDIR'/output/3Danalysis/'$var'.'$year'.3DNcliste' ${DIVADIR}/divastripped/output/3Danalysis/.
 fi
 
 # preparing 3Dinfo to run
