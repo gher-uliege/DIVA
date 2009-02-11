@@ -114,7 +114,7 @@ After this, you should have topographic files {\tt topo.grd} and {\tt TopoInfo.d
 \begin{itemize}
 \item
 For easy use, import your data (by hand) into Ocean Data View (ODV, found at \url{http://odv.awi.de/}, now at version 4.0). You can for example extract data from the world ocean atlas at \url{http://www.nodc.noaa.gov/OC5/SELECT/dbsearch/dbsearch.html} and choose the export in the native world ocean atlas. This allows a direct import of the file into ODV via ODV collections.
-\item During the import into ODV, you might consider sampling the profiles at regular intervals for easier level selection later, though a vertical interpolation tool is also available in {\tt divaselectorODV4}.
+\item During the import into ODV, you might consider sampling the profiles at regular intervals for easier level selection later, though a vertical interpolation tool is also available in {\tt divaselectorODV4} and is activated by default.
 \item Once imported in ODV you can apply some selection criteria if you want to reduce the amount of data exported for \diva 
 \item Then export the data you want as ODV generic spreadsheat and name this exported file for example as {\tt woaODV.txt}) and if possible, take already care of the longitude range  $[$0:360$]$ or $[$-180:180$]$ according to your needs. For european projects, the range $[$-180:180$]$  is the most appropriate and is coded in {\tt divaselectorODV4} to transform any range into the $[$-180:180$]$ range.
 \item Look at the header of the exported file to have an idea of the name of the variables that are in the file (use command {\tt head -40 woaODV.txt}). If in doubt, apply {\tt divaguessforms woaODV.txt} that will create file {\tt ODVcolumns} which includes names of variables and the columns in which to find them.
@@ -130,6 +130,10 @@ If you do not use {\tt divaselectorODV4} and prepare your data yourself, you nee
 
 
 {\bf NOTE:} if there is a {\tt qflist} file, the selection with {\tt divaselectorODV4} will only use those measurements for which the quality flag is one of those found in the file {\tt qflist}. In the absence of {\tt qflist}, no quality flag analysis is done and all data taken.
+
+{\bf NOTE:} if you activate the data extraction in the {\tt driver} file, the execution of {\tt divadoall} will run the {\tt divaselectorODV4} automatically, including interpolation to the levels specified in {\tt contour.depth}. 
+
+{\bf NOTE:} if you change {\tt contour.depth} you need to rerun the data extraction.
  
 \begin{exfile}[H]
 \begin{footnotesize}
@@ -204,6 +208,8 @@ if your colorbar definition goes from 0 to 10 and the {\tt VAR} bounds are from 
 
 
 \section{Execution control}
+
+
 
 For the control of the execution edit {\tt driver} and adapt the self explaining parameters
 \begin{exfile}[H]
