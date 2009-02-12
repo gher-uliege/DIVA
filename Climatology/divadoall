@@ -144,10 +144,15 @@ for layer in `cat input/contour.depth`
 do
 let lev=$lev+1
 let lnum=10000+$lev
-rm -f input/divadata/${var}.${yyy}.${mmm}.$lnum
+ls -l input/divadata/${var}.${year}.${month}.$lnum
+rm -f input/divadata/${var}.${year}.${month}.$lnum
+
 done
+
 done
+
 done
+
 done
 
 
@@ -157,12 +162,17 @@ do
 
 echo Data source file is $ODVDATA
 echo Trying to guess ODV format on $ODVDATA
+
 divaguessformsODV4 $ODVDATA
 echo Now extracting
 divaselectorODV4 $ODVDATA
+
+echo finished with $ODVDATA
 done
 
+echo Finished data extraction
 fi
+
 echo =======================================================================
 
 #########################################################
