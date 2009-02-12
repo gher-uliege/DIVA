@@ -139,6 +139,7 @@ for month in `cat monthlist`
 do
 echo month $month
 #########################################################
+lev="0"
 for layer in `cat input/contour.depth`
 do
 let lev=$lev+1
