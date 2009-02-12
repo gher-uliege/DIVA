@@ -232,7 +232,12 @@ awk -v mm1=$mm1 -v mm2=$mm2 -v year1=$year1 -v year2=$year2 \
 }' ${WORK}/$var.$lnum > input/${var}.${yyy}.${mmm}.$lnum
 
 specialdataonly input/${var}.${yyy}.${mmm}.$lnum
-mv input/${var}.${yyy}.${mmm}.$lnum input/divadata/${var}.${yyy}.${mmm}.$lnum
+
+#mv input/${var}.${yyy}.${mmm}.$lnum input/divadata/${var}.${yyy}.${mmm}.$lnum
+#Assume file already exist and need to add
+cat input/${var}.${yyy}.${mmm}.$lnum >> input/divadata/${var}.${yyy}.${mmm}.$lnum
+rm -f input/${var}.${yyy}.${mmm}.$lnum 
+
 
 done
 done

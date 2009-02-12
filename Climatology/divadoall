@@ -4,11 +4,7 @@
 DIVADIR="../../DIVA3D"
 
 dos2unix datasource
-{
-read ODVDATA
-} < datasource
 
-echo Data source file is $ODVDATA
 
 FILENAME=driver
 {
@@ -125,10 +121,45 @@ fi
 
 if [ "$isextract" == "1" ]
 then
+echo Cleaning up the old data files
+
+#########################################################
+for var in `cat varlist`
+#########################################################
+do
+echo variable $var
+#########################################################
+for year in `cat yearlist`
+#########################################################
+do
+echo year $year
+#########################################################
+for month in `cat monthlist`
+#########################################################
+do
+echo month $month
+#########################################################
+for layer in `cat input/contour.depth`
+do
+let lev=$lev+1
+let lnum=10000+$lev
+rm -f input/divadata/${var}.${yyy}.${mmm}.$lnum
+done
+done
+done
+done
+
+
+
+for ODVDATA in `cat datasource`
+do
+
+echo Data source file is $ODVDATA
 echo Trying to guess ODV format on $ODVDATA
 divaguessformsODV4 $ODVDATA
-
+echo Now extracting
 divaselectorODV4 $ODVDATA
+done
 
 fi
 echo =======================================================================
