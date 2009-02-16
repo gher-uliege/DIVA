@@ -128,11 +128,19 @@ for var in `cat varlist`
 #########################################################
 do
 echo variable $var
+
 #########################################################
 for year in `cat yearlist`
 #########################################################
 do
 echo year $year
+
+if [ -f output/3Danalysis/${var}.${year}.3DNCliste ]
+then
+echo Erasing 3DNCD list
+rm -f output/3Danalysis/${var}.${year}.3DNCliste
+fi
+
 #########################################################
 for month in `cat monthlist`
 #########################################################
