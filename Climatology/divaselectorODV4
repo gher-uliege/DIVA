@@ -100,6 +100,8 @@ do
 echo Working on parameter $var
 #head ODVcolumns
 datacol=$(grep "$var" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
+cruisecol=$(grep "Cruise" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
+stationcol=$(grep "Station" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 loncol=$(grep -i "Longitude" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 latcol=$(grep -i "Latitude" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 datecol=$(grep -i "YYYY-MM" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
@@ -142,6 +144,7 @@ then
 
 tail -$userlines $inputfile | \
     awk -F "$delimiter" -v datacol=$datacol -v qccol=$qccol -v latcol=$latcol -v loncol=$loncol -v datecol=$datecol -v depthcol=$depthcol -v todepth=$todepth \
+         -v cruisecol=$cruisecol -v stationcol=$stationcol \
       '
       function myqfok(qf,n,qval)
 #        =====
@@ -171,7 +174,7 @@ return 0
       qfok=myqfok(qf,nn,qcval);
 #      if ( $qccol==1 || $qccol==2 || $qccol==8 );
       if (todepth==1) {locx=sin($latcol/57.29578); locc=(5.92+5.25*locx*locx)/1000.; $depthcol=((1-locc)-2.21*$depthcol/1000000)*$depthcol};
-      if ($datacol > "" && qfok==1) print $loncol,$latcol,$datacol,$depthcol,$qccol,year,month,day,hour,$1,$2}' \
+      if ($datacol > "" && qfok==1) print $loncol,$latcol,$datacol,$depthcol,$qccol,year,month,day,hour,$cruisecol,$stationcol}' \
        > ${WORK}/${var}.bigfile
 
 fi
