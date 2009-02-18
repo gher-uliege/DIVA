@@ -160,6 +160,8 @@ return 0
       {if ($2 > "") {y=$2} else {$2=y}};
       {if ($3 > "") {z=$3} else {$3=z}};
       {if ($loncol > "") {w=$loncol} else {$loncol=w}};
+      {if ($cruisecol > "") {wcruise=$cruisecol} else {$cruisecol=wcruise}};
+      {if ($stationcol > "") {wstation=$stationcol} else {$stationcol=wstation}};
       {if ($loncol +0< -180+0) {n=int((-180-$loncol)/360)+1; $loncol=$loncol+n*360}} ;
       {if ($loncol +0> -180+360) {n=int(($loncol-(-180))/360); $loncol=$loncol-n*360}} ;
       {if ($latcol > "") {ww=$latcol} else {$latcol=ww}};
