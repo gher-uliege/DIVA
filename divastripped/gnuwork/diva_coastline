@@ -1,5 +1,23 @@
+#!/bin/bash
+
+if [ -f fort.67 ] 
+then
+
+echo gnuplot is $gplot
+awk '{print $0 >> "bidon"}' << EOF
+#the gnuplot commands
 unset pm3d
 set style line 10 linetype 1 lw 2 linecolor rgb "black"
 
 
 plot 'fort.67' using 1:2 with lines lt 10  t 'DIVA coastlines'
+#end gnuplot commands
+exit
+EOF
+
+$gplot bidon
+
+else
+echo No plot produced
+
+fi

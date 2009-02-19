@@ -78,8 +78,8 @@ echo -------------------------------------------- >> diva.log
 fi
 
 # output is fort.67
-cat dvcoastlineheader > diva_coastlinefilled
-cat dvcoastlinetailer>> diva_coastlinefilled
+#cat dvcoastlineheader > diva_coastlinefilled
+#cat dvcoastlinetailer>> diva_coastlinefilled
 
 
 

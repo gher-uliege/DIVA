@@ -1,1 +1,19 @@
-plot '../output/trends.all.4.dat' using 1:2 with steps t 'Class 4 trends'
+#!/bin/bash
+
+if [ -f ../output/trends.all.4.dat ] 
+then
+
+echo gnuplot is $gplot
+awk '{print $0 >> "bidon"}' << EOF
+#the gnuplot commands
+plot '../output/trends.all.4.dat' using 1:2 with steps t 'Group 4 trends'
+#end gnuplot commands
+exit
+EOF
+
+$gplot bidon
+
+else
+echo No plot produced
+
+fi

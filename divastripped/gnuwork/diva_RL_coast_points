@@ -1,3 +1,13 @@
+#!/bin/bash
+
+if [ -f fort.72 -a -f fort.99 ] 
+then
+if [ -f fort.67 ]
+then
+
+echo gnuplot is $gplot
+awk '{print $0 >> "bidon"}' << EOF
+#the gnuplot commands
 set pm3d map
 set style data pm3d
 set palette
@@ -5,3 +15,15 @@ set style line 6 linecolor rgbcolor "black" pt 7 ps 0.5
 set style line 9 linetype 1 lw 1 linecolor rgb "black"
 set cbrange[:]
 splot 'fort.72' using 1:2:0:3 t 'Relative Length scale','fort.99' using 1:2:(0.0):(0.0) with  points ls 6 notitle,'fort.67' using 1:2:(0.0):(0.0) with lines lt 10  notitle
+
+#end gnuplot commands
+exit
+EOF
+
+$gplot bidon
+exit
+fi
+else
+echo No plot produced
+
+fi

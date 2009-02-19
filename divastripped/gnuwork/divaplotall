@@ -6,8 +6,8 @@ DRIVER=png
 
 #===============================================
 # ADAPT the following to the gnuplot executable
-#gplot=c:/JMB/gnuplot/bin/wgnuplot.exe
-gplot=gnuplot
+gplot=c:/JMB/gnuplot/bin/wgnuplot.exe
+export gplot
 #===============================================
 
 
@@ -87,9 +87,14 @@ read LONGREF
 fi
 
 for i in `ls diva_*`
+#for i in `ls diva_RL`
 
 do
-echo execution of gnuplot $i
+echo ===========================================
+echo 
+echo ===========================================
+echo Execution of gnuplot $i
+echo --------------------------------------
 
 
 if [ "$DRIVER" == "png" ]
@@ -243,8 +248,9 @@ fi
 
 
 
-cat $i >> bidon
-$gplot bidon
+#cat $i >> bidon
+$i
+#$gplot bidon
 #cp ./plots/$i.png ./plots/$i.ori.png
 
 
@@ -302,6 +308,7 @@ else
    rm -f ./plots/*projection*
   fi
 fi
+
 
 if [ -f ../output/covariance.dat ]
 then
