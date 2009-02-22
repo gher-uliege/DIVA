@@ -37,6 +37,10 @@ if [ -f './output/3Danalysis/'$var'.'$year'.3DNCliste' ]; then
 
 cp -v './output/3Danalysis/'$var'.'$year'.3DNCliste' ${DIVADIR}/divastripped/output/3Danalysis/.
 
+if [ -f './output/3Danalysis/'$var'.'$year'.3DNCinfo' ]; then
+
+cp -v './output/3Danalysis/'$var'.'$year'.3DNCinfo' ${DIVADIR}/divastripped/output/3Danalysis/.
+
 cd ./output/3Danalysis/
 for ncfile in `ls $var.*.anl.nc` ;do
 echo $ncfile
@@ -52,6 +56,14 @@ cp -v ./output/3Danalysis/$var.$year.4Danl.nc ${WDIR}/output/3Danalysis/.
 
 else
 
+echo ====SEVERE ERROR==================
+echo 'did not find ./output/3Danalysis/'$var'.'$year'.3DNCinfo'
+
+fi
+
+else
+
+echo ====SEVERE ERROR==================
 echo 'did not find ./output/3Danalysis/'$var'.'$year'.3DNCliste'
 
 fi

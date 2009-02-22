@@ -269,6 +269,11 @@ This can take quite some time depending on the options activated, but during exe
 
 After the first runs and elimination of implementation errors (be careful about end-of-line problems (remember {\tt dos2unix}), file permissions, limited disk space, input-data file formats) tuning can be perfomed.
 
+
+{\bf NOTE}: When cleanning data and eliminating outliers (data cleaning flag value equal to 4 or 5 in the {\tt driver}), the data files in {\tt input/divadata} will be replaced by the cleaned ones. In {\tt output/3Danalysis/FieldWithOutliers} are stored the 2D analysis and related files made with the original data files. 
+
+{\bf NOTE}: When cleanning data and eliminating outliers, and making analysis in the same run of divadoall (data cleaning flag value equal to 4 or 5, and analysis flag value equal to 1  in the {\tt driver}), The analysis files stored in {\tt output/3Danalysis} will be made on the basis of cleaned data file (except the ones in  {\tt output/3Danalysis/FieldWithOutliers} of course).
+
 \section{Advection constraint and Reference fields}
 If you prepared advection constraint fields and/or reference fields, you have to store them respectively in {\tt /input/divaUVcons\_all} and {\tt input/divarefe\_all}. The advection constraint fields can be named as: {\tt Uvel.level} and {\tt Vvel.level}, {\tt Uvel.month.level} and {\tt Vvel.month.level} or {\tt Uvel.year.month.level} and {\tt Vvel.year.month.level}. You have to provide in {\tt /input/divaUVcons\_all} two additional files: {\tt constraint.dat} and {\tt UVinfo.dat}.
  
@@ -368,6 +373,8 @@ To prepare netcdf 4D files, use {\tt divadoNCDF}. When {\tt divadoall} runs are 
 \end{exfile}
 
  To generate a 4D netcdf file of all the 3D netcdf files named in the list, simply run {\tt divadoNCDF}. If you want to not consider one or more 3D netcdf files, edit the {\tt VAR.3DNCliste} and change the flag value of the correponding file name to 0.
+
+{\bf NOTE}: {\tt divadoall} runs produce an info file {\tt VAR.3DNCinfo} which is used to produce the 4D netcdf file. This file must remain in the {\tt output/3Danalysis} with the {\tt VAR.3DNCliste} file.
 
 \begin{itemize}
 \item netCDF files are ready for use {\tt VAR.lowerlevel.upperlevel.nc} and can be presented on a web page for download
