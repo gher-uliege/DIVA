@@ -48,7 +48,7 @@
       CHARACTER (len=255)        :: file_name,Ref_time, ncliste
       character (len=255)        :: title_string, cellmeth
      &                            , INSTITUT,PRODUCTION,SOURCE,COMMENT
-      CHARACTER (len=99)         :: var_shname,var_name
+      CHARACTER (len=99)         :: var_shname,var_name,var_cfname
       character (len=99)         :: var_lgname
       character (len=20)         :: var_units,vrb_units
       character (len=4)          :: yy1,yy2
@@ -663,6 +663,20 @@
       var_name = TRIM(var_shname)
       ENDIF
 !
+      var_cfname = var_shname
+      IF(ipar == 1) then
+      chlen = 1
+      DO while(var_shname(chlen:chlen) .ne. ' ')
+         IF(var_shname(chlen:chlen) .eq. '.') 
+     &             WRITE(var_cfname(chlen:chlen),'("_")')
+         chlen = chlen + 1
+      ENDDO
+      chlen = chlen - 1
+      var_name = var_shname(1:chlen-5)
+      ELSE
+      var_name = TRIM(var_shname)
+      ENDIF
+!
       WRITE(ncliste,'("../output/3Danalysis/",
      &a,".3DNCliste")')TRIM(var_name)
         INQUIRE(FILE=TRIM(ncliste),EXIST=exist)
@@ -687,7 +701,7 @@
         if(exist) then
           close(12)
           OPEN(UNIT=12,FILE=ncliste,STATUS='OLD',POSITION='APPEND')
-          write(12,*) "'",TRIM(var_shname),"'"
+          write(12,*) "'",TRIM(var_cfname),"'"
           write(12,*) "'",TRIM(cellmeth),"'"
           write(12,*) "'",TRIM(Ref_time),"'"
         else
@@ -703,14 +717,13 @@
           write(12,*) "'",TRIM(title_string),"'"
           write(12,*) "'",TRIM(l_units(1)),"'"
           write(12,*) "'",TRIM(l_units(2)),"'"
-          write(12,*) "'",TRIM(var_shname),"'"
+          write(12,*) "'",TRIM(var_cfname),"'"
           write(12,*) "'",TRIM(cellmeth),"'"
           write(12,*) "'",TRIM(Ref_time),"'"
         endif
 !
       WRITE(file_name,'("../output/3Danalysis/",
      &a,".1",i4.4,".1",i4.4,".anl.nc")')TRIM(var_shname),MINLEV,MAXLEV
-      var_name = file_name(1:chlen-33)
 !
       iun=1
       CALL NC_4DCLIM(IMAX, JMAX,nk,ipar,iun,time_val,clbnds,
@@ -720,7 +733,7 @@
      &  dbin_max,var1_min,var1_max,var2_min,var2_max,verel_min,
      &  verel_max,obin_min,obin_max,rl_min,rl_max,VALEXC,l_units,
      &  LEN_TRIM(file_name),TRIM(file_name),
-     &  LEN_TRIM(var_shname),TRIM(var_shname),
+     &  LEN_TRIM(var_cfname),TRIM(var_cfname),
      &  LEN_TRIM(var_lgname),TRIM(var_lgname),
      &  LEN_TRIM(var_units),TRIM(var_units),
      &  LEN_TRIM(vrb_units),TRIM(vrb_units),
