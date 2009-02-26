@@ -106,10 +106,9 @@
         xm2 = 0
         xy1 = 0
         xy2 = 0
-        WRITE(Ref_time,'("Months since xxxx until yyyy ")')
+        WRITE(Ref_time,'("Months since xxxx-01-01 ")')
         WRITE(cellmeth,'(
-     &"time: mean data within months ",I2," to "
-     &,I2," over years ",I4," to ",I4)'),xm1,xm2,xy1,xy2
+     &"time: mean within month time: mean over years")')
         close(2)
         INSTITUT = 'Not specified'
         PRODUCTION = 'Not specified'
@@ -149,17 +148,20 @@
         if(yy1(1:4) .EQ. 'xxxx') yy1='1850'
         if(yy2(1:4) .EQ. 'xxxx') yy2='2050'
         WRITE(Ref_time,
-     &'("Months since ",a," until ",a)'),yy1(1:4) ,yy2(1:4) 
+     &'("Months since ",a,"-01-01")'),yy1(1:4) ! ,yy2(1:4) 
+!x     &'("Months since ",a," until ",a)'),yy1(1:4) ,yy2(1:4) 
         read (mm1,'(I2.2)') xm1
         read (mm2,'(I2.2)') xm2
         read (yy1,'(I4.4)') xy1
         read (yy2,'(I4.4)') xy2
-        time_val = (xy2-xy1)*6.+float((xm2-xm1+1))/2
+        time_val = (xy2-xy1+1)*12.+float(xm1-1)+float((xm2-xm1+1))/2
         clbnds(1,1)= 1.*xm1 !float(xm1)
         clbnds(2,1)= 1.*xm2 !float(xm2)
         WRITE(cellmeth,'(
-     &"time: mean data within months ",I2," to "
-     &,I2," over years ",I4," to ",I4)'),xm1,xm2,xy1,xy2
+     &"time: mean within month time: mean over years")')
+!     &" over years ",I4," to ",I4)')xy1,xy2
+!     &"time: mean data within months ",I2," to "
+!     &,I2," over years ",I4," to ",I4)'),xm1,xm2,xy1,xy2
       ENDIF
 !
       WRITE(vrb_units,'(a,"^2")')TRIM(var_units)

@@ -104,11 +104,11 @@
 !
       if (icdf == 0) then
 !
-      WRITE(err_shname,'(a,".err")')TRIM(var_shname)
-      WRITE(vbt_shname,'(a,".bottom")')TRIM(var_shname)
-      WRITE(var1_shname,'(a,".L1")')TRIM(var_shname)
-      WRITE(var2_shname,'(a,".L2")')TRIM(var_shname)
-      WRITE(rer_shname,'(a,".relerr")')TRIM(var_shname)
+      WRITE(err_shname,'(a,"_err")')TRIM(var_shname)
+      WRITE(vbt_shname,'(a,"_bottom")')TRIM(var_shname)
+      WRITE(var1_shname,'(a,"_L1")')TRIM(var_shname)
+      WRITE(var2_shname,'(a,"_L2")')TRIM(var_shname)
+      WRITE(rer_shname,'(a,"_relerr")')TRIM(var_shname)
 !
       WRITE(err_lgname,
      &       '("Standard deviation error of ",a)')TRIM(var_lgname)
@@ -478,7 +478,7 @@
 
 !
       status=nf_put_att_real(ncid,id1,'missing_value',
-     &                                   nf_float,one,valexu)
+     &                                   nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att valex'
@@ -528,7 +528,7 @@
       ENDIF
 !
       status=nf_put_att_real(ncid,id1_1,'missing_value',
-     &                                 nf_float,one,valexu)
+     &                                 nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att valexv1'
@@ -576,7 +576,7 @@
       ENDIF
 !
       status=nf_put_att_real(ncid,id1_2,'missing_value',
-     &                                   nf_float,one,valexu)
+     &                                   nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att valexv2'
@@ -624,7 +624,7 @@
       ENDIF
 !
       status=nf_put_att_real(ncid,id2,'missing_value',
-     &                                   nf_float,one,valexu)
+     &                                   nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att valexerr'
@@ -668,7 +668,7 @@
       ENDIF
 !
       status=nf_put_att_real(ncid,id2_1,'missing_value',
-     &                                   nf_float,one,valexu)
+     &                                   nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att valexrer'
@@ -713,7 +713,7 @@
       ENDIF
 !
       status=nf_put_att_real(ncid,id3,'missing_value',
-     &                                   nf_float,one,valexu)
+     &                                   nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att valexdb'
@@ -754,7 +754,7 @@
       ENDIF
 !
       status=nf_put_att_real(ncid,id3_1,'missing_value',
-     &                                   nf_float,one,valexu)
+     &                                   nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att valexob'
@@ -795,7 +795,7 @@
       ENDIF
 !
       status=nf_put_att_real(ncid,id4,'missing_value',
-     &                                   nf_float,one,valexu)
+     &                                   nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att valexdb'

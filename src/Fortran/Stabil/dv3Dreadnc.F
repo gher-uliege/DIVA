@@ -302,7 +302,13 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_READ3DCL att varmax'
       ENDIF
-
+!
+      status=nf_get_att_real(ncid,id1,'missing_value',valexc)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_READ3DCL att valexc'
+      ENDIF
+!
       status= nf_get_att_text(ncid,id1 , 'cell_methods',cellmeth)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
@@ -312,23 +318,23 @@
 !----------------------------------------------------------------
 !
 
-      WRITE(err_shname,'(a,".err")')TRIM(var_shname)
+      WRITE(err_shname,'(a,"_err")')TRIM(var_shname)
 !x      WRITE(err_lgname,
 !x     &       '(a," standard deviation error")')TRIM(var_lgname)
 !
 
-      WRITE(rer_shname,'(a,".relerr")')TRIM(var_shname)
+      WRITE(rer_shname,'(a,"_relerr")')TRIM(var_shname)
 !x      WRITE(rer_lgname,'(a," relative error")')TRIM(var_lgname)
 !
-      WRITE(var1_shname,'(a,".L1")')TRIM(var_shname)
+      WRITE(var1_shname,'(a,"_L1")')TRIM(var_shname)
 !x      WRITE(var1_lgname,
 !x     & '(a,": first threshold masked fields")')TRIM(var_lgname)
 !
-      WRITE(var2_shname,'(a,".L2")')TRIM(var_shname)
+      WRITE(var2_shname,'(a,"_L2")')TRIM(var_shname)
 !x      WRITE(var2_lgname,
 !x     & '(a,": second threshold masked fields")')TRIM(var_lgname)
 !
-      WRITE(vbt_shname,'(a,".bottom")')TRIM(var_shname)
+      WRITE(vbt_shname,'(a,"_bottom")')TRIM(var_shname)
 !x      WRITE(vbt_lgname,'("deepest values of ",a)')TRIM(var_lgname)
 !
 !-----------------------------------------------------------------
