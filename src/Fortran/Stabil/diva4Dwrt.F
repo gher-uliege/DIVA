@@ -263,7 +263,7 @@
      &  verel_min0,verel_max0,obin_min0,obin_max0,rl_min,rl_max,
      &  VALEXC,l_units,
      &  LEN_TRIM(file_name2),TRIM(file_name2),
-     &  LEN_TRIM(var_shname_l(ivars)),TRIM(var_shname_l(ivars)),
+     &  LEN_TRIM(var_shname),TRIM(var_shname),
      &  LEN_TRIM(var_lgname),TRIM(var_lgname),
      &  LEN_TRIM(var_units),TRIM(var_units),
      &  LEN_TRIM(vrb_units),TRIM(vrb_units),
