@@ -407,7 +407,8 @@
          STOP 'Stopped in NC_4DCLIMATO att vbt max'
       ENDIF
       status=nf_put_att_real(ncid,id2d1,'_FillValue',
-     &                                   nf_float,one,nf_fill_real)
+     &                                   nf_float,one,valexc)
+!     &                                   nf_float,one,nf_fill_real)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO vbt Fillvalue'
@@ -463,7 +464,7 @@
          STOP 'Stopped in NC_4DCLIMATO att varmax'
       ENDIF
       status=nf_put_att_real(ncid,id1,'_FillValue',
-     &                                   nf_float,one,nf_fill_real)
+     &                                   nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO id1 Fillvalue'
@@ -521,7 +522,7 @@
          STOP 'Stopped in NC_4DCLIMATO att valex'
       ENDIF
       status=nf_put_att_real(ncid,id1_1,'_FillValue',
-     &                                   nf_float,one,nf_fill_real)
+     &                                   nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO id1_1 Fillvalue'
@@ -569,7 +570,7 @@
          STOP 'Stopped in NC_4DCLIMATO att v2max'
       ENDIF
       status=nf_put_att_real(ncid,id1_2,'_FillValue',
-     &                                   nf_float,one,nf_fill_real)
+     &                                   nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO id1_2 Fillvalue'
@@ -617,7 +618,7 @@
          STOP 'Stopped in NC_4DCLIMATO att vermax'
       ENDIF
       status=nf_put_att_real(ncid,id2,'_FillValue',
-     &                                   nf_float,one,nf_fill_real)
+     &                                   nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO id2 Fillvalue'
@@ -661,7 +662,7 @@
          STOP 'Stopped in NC_4DCLIMATO att verelmax'
       ENDIF
       status=nf_put_att_real(ncid,id2_1,'_FillValue',
-     &                                   nf_float,one,nf_fill_real)
+     &                                   nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO id2_1 Fillvalue'
@@ -706,7 +707,7 @@
          STOP 'Stopped in NC_4DCLIMATO att dbmax'
       ENDIF
       status=nf_put_att_real(ncid,id3,'_FillValue',
-     &                                   nf_float,one,nf_fill_real)
+     &                                   nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO id3 Fillvalue'
@@ -747,7 +748,7 @@
          STOP 'Stopped in NC_4DCLIMATO att obmax'
       ENDIF
       status=nf_put_att_real(ncid,id3_1,'_FillValue',
-     &                                   nf_float,one,nf_fill_real)
+     &                                   nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO id3_1 Fillvalue'
@@ -788,7 +789,7 @@
          STOP 'Stopped in NC_4DCLIMATO att rlbmax'
       ENDIF
       status=nf_put_att_real(ncid,id4,'_FillValue',
-     &                                   nf_float,one,nf_fill_real)
+     &                                   nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO id4 Fillvalue'
