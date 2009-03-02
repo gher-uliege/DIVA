@@ -50,7 +50,7 @@
      &                            , INSTITUT, PRODUCTION
      &                            , SOURCE, COMMENT
       character (len=30)         :: Ref_time
-      CHARACTER (len=99)         :: var_shname, var_cfname
+      CHARACTER (len=99)         :: var_shname, var_cfname, var_name
       character (len=99)         :: var_lgname
       character (len=5)          :: chname
       character (len=20)         :: var_units,vrb_units
@@ -191,6 +191,14 @@
 !
       WRITE(title_string,'("DIVA 4D analysis of ",a)')TRIM(var_shname)
 !
+      var_name = var_shname
+      chlen = 1
+      DO while(var_shname(chlen:chlen) .ne. ' ')
+         IF(var_shname(chlen:chlen) .eq. '.') 
+     &             WRITE(var_name(chlen:chlen),'("_")')
+         chlen = chlen + 1
+      ENDDO
+!
       DO ivars = 1,time_len
 
       WRITE(file_name,'("../output/3Danalysis/",
@@ -263,7 +271,7 @@
      &  verel_min0,verel_max0,obin_min0,obin_max0,rl_min,rl_max,
      &  VALEXC,l_units,
      &  LEN_TRIM(file_name2),TRIM(file_name2),
-     &  LEN_TRIM(var_shname),TRIM(var_shname),
+     &  LEN_TRIM(var_name),TRIM(var_name),
      &  LEN_TRIM(var_lgname),TRIM(var_lgname),
      &  LEN_TRIM(var_units),TRIM(var_units),
      &  LEN_TRIM(vrb_units),TRIM(vrb_units),
