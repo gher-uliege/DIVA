@@ -58,7 +58,6 @@
       LOGICAL                          :: exist
 !--------------------------------------------------------------
 !
-!
       EXECIN='./fort.44'
       OPEN(2,FILE=EXECIN,STATUS='OLD')
       READ(2,*) iparpar
@@ -154,7 +153,9 @@
         read (mm2,'(I2.2)') xm2
         read (yy1,'(I4.4)') xy1
         read (yy2,'(I4.4)') xy2
-        time_val = (xy2-xy1+1)*12.+float(xm1-1)+float((xm2-xm1+1))/2
+!x        time_val = (xy2-xy1+1)*12.+float(xm1-1)+float((xm2-xm1+1))/2
+        time_val = 12*(nint(float(xy2)-float(xy1))/2)
+     &                        +float(xm1-1)+float((xm2-xm1+1))/2
         clbnds(1,1)= 1.*xm1 !float(xm1)
         clbnds(2,1)= 1.*xm2 !float(xm2)
         WRITE(cellmeth,'(
