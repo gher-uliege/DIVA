@@ -1,3 +1,11 @@
+#!/bin/bash
+
+if [ -f fort.69 ] 
+then
+
+echo gnuplot is $gplot
+awk '{print $0 >> "bidon"}' << EOF
+#the gnuplot commands
 set pm3d map
 
 
@@ -9,3 +17,13 @@ set palette
 splot 'fort.69' using 1:2:3:4 with pm3d t 'Mesh coloured by index'
 
 #set palette rgbformulae 33,13,10
+#end gnuplot commands
+exit
+EOF
+
+$gplot bidon
+
+else
+echo No plot produced
+
+fi

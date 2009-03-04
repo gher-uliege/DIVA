@@ -40,7 +40,13 @@ fi
 
 cp ../output/fieldgher.anl.ref fort.20
 cp ../output/ghertonetcdf/GridInfo.dat fort.21
+if [ -f ../input/valatxy.coord ]
+then
 cp ../input/valatxy.coord fort.45
+else
+echo no valatxy.coord
+rm -f fort.45
+fi
 ../../bin/interprefe.a
 
 if [ $? -ne 0 ];then

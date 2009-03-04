@@ -8,8 +8,15 @@ echo ///////////////////////////////////////////
 echo ' '
 
 cp ./input/param.par  ./input/param.par.ori
+
+if [ -f ./input/valatxy.coord.ori ]
+then
 rm -f ./input/valatxy.coord.ori
+fi
+if [ -f ./input/valatxy.coord ]
+then
 mv ./input/valatxy.coord ./input/valatxy.coord.ori
+fi
 rm -f ./output/gcv.dat
 
 if [ -f ./input/gcvsampling.dat ]
@@ -92,7 +99,10 @@ done
 
 
 mv ./input/param.par.ori ./input/param.par
+if [ -f ./input/valatxy.coord.ori ]
+then
 mv ./input/valatxy.coord.ori ./input/valatxy.coord
+fi
 cp ./output/gcv.dat ./divawork/fort.11
 cd divawork
 

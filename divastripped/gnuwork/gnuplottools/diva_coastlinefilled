@@ -1,11 +1,19 @@
-unset pm3d
-set style line 2 linetype 1 lw 2 linecolor rgb "dark-gray"
-set style line 1 linetype 1 lw 2 linecolor rgb "dark-blue"
+#!/bin/bash
 
-set title 'DIVA contours'
+if [ -f fort.67 ] 
+then
+cat dvcoastlineheader >> bidon
+cat dvcoastlinetailer >> bidon
+echo gnuplot is $gplot
+awk '{print $0 >> "bidon"}' << EOF
+#the gnuplot commands
+exit
+EOF
 
-plot 'fort.67' index  0 using 1:2 with filledcurves ls  2 t ''  \
-,'fort.67' index    1 using 1:2 with filledcurves ls  1 title '' \
-,'fort.67' index    2 using 1:2 with filledcurves ls  2 title '' \
-,'fort.67' index    3 using 1:2 with filledcurves ls  2 title '' \
-,'fort.67' index    4 using 1:2 with filledcurves ls  2 title '' \
+$gplot bidon
+
+else
+echo No plot produced
+
+fi
+

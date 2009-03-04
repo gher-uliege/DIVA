@@ -1,5 +1,23 @@
+#!/bin/bash
+
+if [ -f fort.72 ] 
+then
+
+echo gnuplot is $gplot
+awk '{print $0 >> "bidon"}' << EOF
+#the gnuplot commands
 set pm3d map
 set style data pm3d
 set palette
 set cbrange[:]
 splot 'fort.72' using 1:2:0:3 t 'Relative Length scale'
+#end gnuplot commands
+exit
+EOF
+
+$gplot bidon
+
+else
+echo No plot produced
+
+fi

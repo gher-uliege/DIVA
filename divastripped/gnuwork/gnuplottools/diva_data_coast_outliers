@@ -1,3 +1,11 @@
+#!/bin/bash
+
+if [ -f fort.67 -a -f fort.43 ] 
+then
+
+echo gnuplot is $gplot
+awk '{print $0 >> "bidon"}' << EOF
+#the gnuplot commands
 set pm3d map
 
 set palette defined (  0 "green", 3 "yellow", 5 "red", 6 "dark-red" )
@@ -9,3 +17,13 @@ set cbrange[0:6]
 splot 'fort.43' using 3:4:(0.0):1 with points palette pt 7 ps 1.1 t 'Outliers and DIVA coastline', 'fort.67' using 1:2:(0.0) with lines lt 10  notitle
 
 #set palette rgbformulae 33,13,10
+#end gnuplot commands
+exit
+EOF
+
+$gplot bidon
+
+else
+echo No plot produced
+
+fi
