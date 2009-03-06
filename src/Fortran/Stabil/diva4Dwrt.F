@@ -194,10 +194,12 @@
       var_name = var_shname
       chlen = 1
       DO while(var_shname(chlen:chlen) .ne. ' ')
-         IF(var_shname(chlen:chlen) .eq. '.') 
-     &             WRITE(var_name(chlen:chlen),'("_")')
+!         IF(var_shname(chlen:chlen) .eq. '.') 
+!     &             WRITE(var_name(chlen:chlen),'("_")')
          chlen = chlen + 1
       ENDDO
+      chlen = chlen - 1
+      var_name = var_shname(1:chlen-9)
 !
       DO ivars = 1,time_len
 
