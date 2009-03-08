@@ -31,7 +31,7 @@
       integer*4                 :: KMAX, ipr, nw, IMAX, JMAX
 !!      integer                 :: KMAX, ipr, nw, IMAX, JMAX
       integer                   :: ICOOC, IREG, ISPEC
-      integer                   :: xm1,xm2,xy1,xy2
+      integer                   :: nm,xm1,xm2,xy1,xy2
 !
       real*4                     :: zz, time_val,VALEXC,
      &              var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
@@ -154,8 +154,13 @@
         read (yy1,'(I4.4)') xy1
         read (yy2,'(I4.4)') xy2
 !x        time_val = (xy2-xy1+1)*12.+float(xm1-1)+float((xm2-xm1+1))/2
+        if(xm1 > xm2) then
+           nm = xm2 + (12 - xm1) + 1
+        else
+           nm = xm2 - xm1 + 1
+        endif
         time_val = 12*(nint(float(xy2)-float(xy1))/2)
-     &                        +float(xm1-1)+float((xm2-xm1+1))/2
+     &                        +float(xm1-1)+float(nm)/2
         clbnds(1,1)= 1.*xm1 !float(xm1)
         clbnds(2,1)= 1.*xm2 !float(xm2)
         WRITE(cellmeth,'(
@@ -270,10 +275,6 @@
             l_units(1) = 'degrees_east'
             l_units(2) = 'degrees_north'
          ENDIF
-!
-          write(*,*) 'l_units ',l_units(1)
-          write(*,*) 'l_units' ,l_units(2)
-
 !--------------------------------------------------------------
 !
       NX = INT(xend)
@@ -315,6 +316,7 @@
       ichge = 0
       DO istep = MINLEV,MAXLEV
         klev = klev + 1
+        valexu(klev) = valexc
         WRITE(VARFILEIN,
      &'(a,".1",i4.4,".anl")')TRIM(var_shname),istep
         divafile = '../output/3Danalysis/Fields/'//TRIM(VARFILEIN)
@@ -369,6 +371,7 @@
       ichge = 0
       DO istep = MINLEV,MAXLEV
         klev = klev + 1
+        valexu(klev) = valexc
         WRITE(VARFILEIN,
      &'(a,".1",i4.4,".error")')TRIM(var_shname),istep
         divafile = '../output/3Danalysis/Fields/'//TRIM(VARFILEIN)
@@ -385,13 +388,17 @@
                ic = ic + 1
                verr(i,j,klev) = U(ic)
                kwu = kwu + 1
-               W3(kwu) = var(i,j,klev)
+               W3(kwu) = verr(i,j,klev)
             ENDDO
           ENDDO
           IF(VARBAK(klev) > 0.) THEN
             DO j = 1,jmax
               DO i = 1,imax
+               if (verr(i,j,klev) .ne. VALEXU(klev)) then
                reler(i,j,klev) = verr(i,j,klev)/SQRT(VARBAK(klev))
+               else
+               reler(i,j,klev) = VALEXU(klev)
+               endif
               ENDDO
             ENDDO
           ENDIF
@@ -414,10 +421,11 @@
       ichge = 0
       DO istep = MINLEV,MAXLEV
         klev = klev + 1
+        valexu(klev) = valexc
         WRITE(VARFILEIN,
      &'(a,".1",i4.4,".DATABINS")')TRIM(var_shname),istep
         divafile = '../input/divadata/'//TRIM(VARFILEIN)
-        dbins(:,:,klev) =VALEXU(klev)
+        dbins(:,:,klev) = valexc
         INQUIRE(FILE=TRIM(divafile),EXIST=exist)
         IF(exist) then
           close(84)
@@ -452,10 +460,11 @@
       ichge = 0
       DO istep = MINLEV,MAXLEV
         klev = klev + 1
+        valexu(klev) = valexc
         WRITE(VARFILEIN,
      &'(a,".1",i4.4,".OUTLIERBINS")')TRIM(var_shname),istep
         divafile = '../output/3Danalysis/Fields/'//TRIM(VARFILEIN)
-        obins(:,:,klev) =VALEXU(klev)
+        obins(:,:,klev) = valexc
         INQUIRE(FILE=TRIM(divafile),EXIST=exist)
         IF(exist) then
           close(84)
@@ -467,7 +476,7 @@
           DO j = 1,jmax
             DO i = 1,imax
                ic = ic + 1
-              IF(U(ic) .gt. 0.) THEN
+              IF(U(ic) .gt. 0. .AND. U(ic) .ne. VALEXU(klev)) THEN
                obins(i,j,klev) =log10(U(ic))
               ELSE
                obins(i,j,klev) =VALEXU(klev)
@@ -500,13 +509,25 @@
           DO j = 1,jmax
             DO i = 1,imax
                ic = ic + 1
+               if(U(ic) .ne. VALEXU(klev)) then
                rlfield(i,j,klev) = U(ic)*CORLEN(klev)
+               else
+               rlfield(i,j,klev) = U(ic)
+               endif
             ENDDO
           ENDDO
         ELSE
-         rlfield(:,:,klev) = CORLEN(klev)
+          DO j = 1,jmax
+            DO i = 1,imax
+              if(var(i,j,klev) .ne. valexc) then
+                rlfield(i,j,klev) = CORLEN(klev)
+              else
+                rlfield(i,j,klev) = valexc
+              endif
+            ENDDO
+          ENDDO
         ENDIF
-      if(valexu(klev) /= valexc ) ichge = 1
+        if(valexu(klev) /= valexc ) ichge = 1
       ENDDO
 !
       if(ichge == 1) 
@@ -561,6 +582,9 @@
       call jmbround(x,y,xr,yr)
       vbt_max = yr
       vbt_min = xr
+
+      write(*,*) 'vbt_max = yr',vbt_max
+      write(*,*) 'vbt_min = xr',vbt_min
 !
       DO k = 1,NK
        resmax1(1:jmax,k)=MAXVAL(var(1:imax,1:jmax,k),dim=1,
@@ -694,9 +718,6 @@
         endif
 !
 !
-          write(*,*) 'l_units ',l_units(1)
-          write(*,*) 'l_units' ,l_units(2)
-
 
       WRITE(ncliste,'("../output/3Danalysis/",
      &a,".3DNCinfo")')TRIM(var_name)

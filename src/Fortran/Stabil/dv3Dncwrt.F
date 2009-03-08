@@ -21,7 +21,7 @@
         integer*4   :: im4,jm4 
 !!        integer   :: im4,jm4 
         integer     :: one,two,foor,ttime_len,km ,time_len,ipar,im,jm
-     &              , three
+     &              , three, valexc 
         integer     :: L_file_name,L_var_shname,L_var_lgname,
      &  L_var_units,L_vrb_units,L_title_string,L_cellmeth,L_Ref_time,
      &  L_INSTITUT,L_PRODUCTION,L_SOURCE,L_COMMENT
@@ -31,7 +31,7 @@
      &            vbt_min,vbt_max,var1_min,var1_max,clen_min,clen_max,
      &            var2_min,var2_max,verel_min,verel_max,
      &            obin_min,obin_max,rl_min,rl_max
-        real*4                              :: hrss,time_val, valexc 
+        real*4                              :: hrss,time_val
 !
         real*4  ,dimension(im4,jm4,km)        :: var, var1, var2
      &                                       , Verr,reler,dbins
@@ -105,7 +105,7 @@
       if (icdf == 0) then
 !
       WRITE(err_shname,'(a,"_err")')TRIM(var_shname)
-      WRITE(vbt_shname,'(a,"_bottom")')TRIM(var_shname)
+      WRITE(vbt_shname,'(a,"_deepest")')TRIM(var_shname)
       WRITE(var1_shname,'(a,"_L1")')TRIM(var_shname)
       WRITE(var2_shname,'(a,"_L2")')TRIM(var_shname)
       WRITE(rer_shname,'(a,"_relerr")')TRIM(var_shname)
@@ -413,7 +413,14 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO vbt Fillvalue'
       ENDIF
-
+!
+      status=nf_put_att_real(ncid,id2d1,'missing_value',
+     &                                   nf_float,one,valexc)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO att valex'
+      ENDIF
+!
 !x      status= nf_put_att_text(ncid,id2d1 , 'cell_methods',
 !x     &                 LEN_TRIM(cellmeth),TRIM(cellmeth))
 !x      IF (status .NE.nf_noerr) THEN
@@ -474,7 +481,7 @@
      &                 LEN_TRIM(cellmeth),TRIM(cellmeth))
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_4DCLIMATO id1 Fillvalue'
+         STOP 'Stopped in NC_4DCLIMATO id1 cellmeth'
       ENDIF
 
 !

@@ -334,7 +334,7 @@
 !x      WRITE(var2_lgname,
 !x     & '(a,": second threshold masked fields")')TRIM(var_lgname)
 !
-      WRITE(vbt_shname,'(a,"_bottom")')TRIM(var_shname)
+      WRITE(vbt_shname,'(a,"_deepest")')TRIM(var_shname)
 !x      WRITE(vbt_lgname,'("deepest values of ",a)')TRIM(var_lgname)
 !
 !-----------------------------------------------------------------
@@ -342,7 +342,7 @@
       status=nf_inq_varid(ncid,TRIM(vbt_shname),id2d1)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ3DCL def var'
+         STOP 'Stopped in NC_READ3DCL def vardeep'
       ENDIF
 !
 !x      status=nf_get_att_text(ncid,id2d1,'long_name',vbt_lgname)
