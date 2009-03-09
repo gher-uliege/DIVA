@@ -403,12 +403,20 @@
             ENDDO
           ENDIF
         ELSE
-          verr(:,:,klev) = VALEXU(klev)
-          reler(:,:,klev) = VALEXU(klev)
+          DO j = 1,jmax
+            DO i = 1,imax
+              if (var(i,j,klev) .ne. VALEXU(klev)) then
+               reler(i,j,klev) = 0.
+               verr(i,j,klev)  = 0.
+               else
+               reler(i,j,klev) = VALEXU(klev)
+               verr(i,j,klev) = VALEXU(klev)
+               endif
+            ENDDO
+          ENDDO
         ENDIF
       if(valexu(klev) /= valexc ) ichge = 1
       ENDDO
-!
       if(ichge == 1) 
      & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,verr)
 !
@@ -597,7 +605,7 @@
       call jmbround(x,y,xr,yr)
       var_max = yr
       var_min = xr
-!
+
       DO k = 1,NK
        resmax1(1:jmax,k)=MAXVAL(verr(1:imax,1:jmax,k),dim=1,
      &                        MASK= (mask(:,:,k) .eq. 1))
