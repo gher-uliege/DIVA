@@ -24,7 +24,7 @@
      &                                         , verr,reler,dbins
      &                                         , obins,rlfield
 !
-      integer,DIMENSION(:,:,:),    ALLOCATABLE :: mask,mask1,mask2
+      integer,DIMENSION(:,:,:),  ALLOCATABLE :: mask,mask1,mask2,masker
 !
       integer            :: i,j,k,klev,ic,top_lev,kuw,kwu,ipar,iparpar
       integer                   :: NX, NY, NK, ndata, nl,chlen,iun
@@ -285,6 +285,7 @@
       ALLOCATE(mask(1:NX,1:NY,1:NK))
       ALLOCATE(mask1(1:NX,1:NY,1:NK))
       ALLOCATE(mask2(1:NX,1:NY,1:NK))
+      ALLOCATE(masker(1:NX,1:NY,1:NK))
       ALLOCATE(var(NX,NY,NK))
       ALLOCATE(var1(NX,NY,NK))
       ALLOCATE(var2(NX,NY,NK))
@@ -355,15 +356,14 @@
      & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,VAR)
 !
 !
-      varbot(:,:) = var(:,:,nk)
-      DO k = NK-1,1,-1
+      varbot =  valexc
+      DO k = NK,1,-1
         DO j = 1,jmax
            DO i = 1,imax
              IF(var(i,j,k) /= valexc)   varbot(i,j) = var(i,j,k)
            ENDDO
          ENDDO
       ENDDO
-!
 !
 ! Reading error field
       klev = 0
@@ -405,13 +405,8 @@
         ELSE
           DO j = 1,jmax
             DO i = 1,imax
-              if (var(i,j,klev) .ne. VALEXU(klev)) then
-               reler(i,j,klev) = 0.
-               verr(i,j,klev)  = 0.
-               else
                reler(i,j,klev) = VALEXU(klev)
                verr(i,j,klev) = VALEXU(klev)
-               endif
             ENDDO
           ENDDO
         ENDIF
@@ -556,6 +551,14 @@
            ENDDO
          ENDDO
       ENDDO
+      masker = 1
+      DO k = 1,NK
+         DO j = 1,jmax
+           DO i = 1,imax
+             if(verr(i,j,k) == valexc) masker(i,j,k) = 0
+           ENDDO
+         ENDDO
+      ENDDO
 !
         var1 = var
         var2 = var
@@ -608,9 +611,9 @@
 
       DO k = 1,NK
        resmax1(1:jmax,k)=MAXVAL(verr(1:imax,1:jmax,k),dim=1,
-     &                        MASK= (mask(:,:,k) .eq. 1))
+     &                        MASK= (masker(:,:,k) .eq. 1))
        resmin1(1:jmax,k)=MINVAL(verr(1:imax,1:jmax,k),dim=1,
-     &                        MASK= (mask(:,:,k) .eq. 1))
+     &                        MASK= (masker(:,:,k) .eq. 1))
       ENDDO
       y = MAXVAL(resmax1)
       x = MINVAL(resmin1)
@@ -654,9 +657,9 @@
 !
       DO k = 1,NK
        resmax1(1:jmax,k)=MAXVAL(reler(1:imax,1:jmax,k),dim=1,
-     &                        MASK= (mask(:,:,k) .eq. 1))
+     &                        MASK= (masker(:,:,k) .eq. 1))
        resmin1(1:jmax,k)=MINVAL(reler(1:imax,1:jmax,k),dim=1,
-     &                        MASK= (mask(:,:,k) .eq. 1))
+     &                        MASK= (masker(:,:,k) .eq. 1))
       ENDDO
       y = MAXVAL(resmax1)
       x = MINVAL(resmin1)
@@ -664,15 +667,16 @@
       verel_min = xr
       verel_max = yr
 !
+
+
       DO k = 1,NK
        resmax1(1:jmax,k)=MAXVAL(obins(1:imax,1:jmax,k),dim=1,
-     &                        MASK= (mask(:,:,k) .eq. 1))
+     & MASK= (obins(:,:,k) .eq. valexc))
       ENDDO
-      y = MAXVAL(resmax1)
       x = 0.
       call jmbround(x,y,xr,yr)
-      obin_min = xr
       obin_max = yr
+      obin_min = 0.
 !
       DO k = 1,NK
        resmax1(1:jmax,k)=MAXVAL(rlfield(1:imax,1:jmax,k),dim=1,
