@@ -343,6 +343,10 @@ C
 C storage of number of data located in the mesh
 C
       ndatl=imaxd
+      if (imaxd.le.0) then
+       write(6,*) ' Will create valex grid'
+       write(43,*) imaxd
+      endif
       if(ipr.ge.1) then
          write(6,910) imaxd
  910     format(/,t2,60('%'),/,' There are ',i7,
