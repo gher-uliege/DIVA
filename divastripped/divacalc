@@ -413,12 +413,23 @@ fi
 if [ -f ../output/diva.log ] ; then
  cp  -f ../output/diva.log .
 fi
-
+rm -f fort.43
 #execute diva
 echo $NINT $NREA | ../../bin/diva.a >> diva.log
 
-if [ $? -ne 0 ];then
+if [ -f fort.43 ] 
+then
+echo No data, will produce emty files
+echo $nx $ny $valex | ../../bin/ghervalex.a
+cp fort.84 fort.87
+fi
+
+
+if [ $? -ne 0 ] ;then
 echo ' '
+
+echo 
+
 echo --------------------------------------------
 echo A problem was encountered during execution !
 echo       divacalc:   diva.a
