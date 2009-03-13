@@ -1,9 +1,10 @@
 !
       SUBROUTINE NC_RD3DCL(im4,jm4,km,ipar,time_val,clbnds,
-     &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,
+     &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
      &  clo,cla,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
      &  var_min,var_max,vbt_max,vbt_min,ver_min,ver_max,dbin_min,
      &  dbin_max,var1_min,var1_max,var2_min,var2_max,verel_min,
+     &  vbt1_min,vbt1_max,vbt2_min,vbt2_max,
      &  verel_max,obin_min,obin_max,rl_min,rl_max,VALEXC,
      &  file_name,var_shname)
 !     &  cellmeth,var_units,vrb_units,l_units,Ref_time,
@@ -21,13 +22,14 @@
      &            var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
      &            vbt_min,vbt_max,var1_min,var1_max,clen_min,clen_max,
      &            var2_min,var2_max,verel_min,verel_max,
+     &            vbt1_min,vbt1_max,vbt2_min,vbt2_max,
      &            obin_min,obin_max,rl_min,rl_max
         real*4                              :: hrss,time_val
 !
         real*4  ,dimension(im4,jm4,km)        :: var, var1, var2
      &                                       , Verr,reler,dbins
      &                                       , obins,rlfield
-        real*4  ,dimension(im4,jm4)          :: varbot
+        real*4  ,dimension(im4,jm4)          :: varbot,varb1,varb2
 !
         real*4  ,dimension(2,1)              :: clbnds
      &                                        ,climatology_bounds
@@ -47,6 +49,8 @@
      &                         , var1_shname,var1_lgname
      &                         , var2_shname,var2_lgname
      &                         , rer_shname,rer_lgname
+     &                         , varb1_shname,varb1_lgname
+     &                         , varb2_shname,varb2_lgname
      &                         , vbt_shname,vbt_lgname
      &                         , string256
 !
@@ -56,9 +60,9 @@
       integer  ,dimension(3)              :: star2, coun2
       integer  ,dimension(4)              :: dim
       integer  ,dimension(4)              :: start, count
-      integer                             :: id1,id1_1,id1_2,id2,id2_1
-     &                                     , id3,id3_1,id4,id2d1,id2d2
-     &                                     , id0_1,id0_2,id0_3,idcb
+      integer                         :: id1,id1_1,id1_2,id2,id2_1
+     &                                 , id3,id3_1,id4,id2d1,id2d2,id2d3
+     &                                 , id0_1,id0_2,id0_3,idcb
       integer                             :: timeid,idtime, icdf
 !
       integer                 :: IREG,ISPEC,ICOOC
@@ -337,6 +341,9 @@
       WRITE(vbt_shname,'(a,"_deepest")')TRIM(var_shname)
 !x      WRITE(vbt_lgname,'("deepest values of ",a)')TRIM(var_lgname)
 !
+      WRITE(varb1_shname,'(a,"_L1")')TRIM(vbt_shname)
+      WRITE(varb2_shname,'(a,"_L2")')TRIM(vbt_shname)
+!
 !-----------------------------------------------------------------
 !
       status=nf_inq_varid(ncid,TRIM(vbt_shname),id2d1)
@@ -358,6 +365,58 @@
       ENDIF
 !
       status=nf_get_att_real(ncid,id2d1,'valid_max',vbt_max)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_READ3DCL att vbtmax'
+      ENDIF
+!
+!-----------------------------------------------------------------
+!
+      status=nf_inq_varid(ncid,TRIM(varb1_shname),id2d2)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_READ3DCL def vardeep'
+      ENDIF
+!
+!x      status=nf_get_att_text(ncid,id2d2,'long_name',varb1_lgname)
+!x      IF (status .NE.nf_noerr) THEN
+!x         print *,nf_strerror(status)
+!x         STOP 'Stopped in NC_READ3DCL att lgname'
+!x      ENDIF
+!
+      status=nf_get_att_real(ncid,id2d2,'valid_min',vbt1_min)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_READ3DCL att vbtmin'
+      ENDIF
+!
+      status=nf_get_att_real(ncid,id2d2,'valid_max',vbt1_max)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_READ3DCL att vbtmax'
+      ENDIF
+!
+!-----------------------------------------------------------------
+!
+      status=nf_inq_varid(ncid,TRIM(varb2_shname),id2d3)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_READ3DCL def vardeep'
+      ENDIF
+!
+!x      status=nf_get_att_text(ncid,id2d3,'long_name',varb2_lgname)
+!x      IF (status .NE.nf_noerr) THEN
+!x         print *,nf_strerror(status)
+!x         STOP 'Stopped in NC_READ3DCL att lgname'
+!x      ENDIF
+!
+      status=nf_get_att_real(ncid,id2d3,'valid_min',vbt2_min)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_READ3DCL att vbtmin'
+      ENDIF
+!
+      status=nf_get_att_real(ncid,id2d3,'valid_max',vbt2_max)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_READ3DCL att vbtmax'
@@ -577,6 +636,18 @@
       coun2(3)=1
 ! 
       status=nf_get_vara_real(ncid,id2d1, star2, coun2,varbot)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_READ3DCL get varbot'
+      ENDIF
+!
+      status=nf_get_vara_real(ncid,id2d2, star2, coun2,varb1)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_READ3DCL get varbot'
+      ENDIF
+!
+      status=nf_get_vara_real(ncid,id2d3, star2, coun2,varb2)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_READ3DCL get varbot'

@@ -17,6 +17,7 @@
 !
       REAL*4 ,DIMENSION(:,:),    ALLOCATABLE :: resmax1,resmin1,clbnds
      &                                        , varbot
+     &                                        , varb1, varb2
 !
       REAL*4 , DIMENSION(:,:,:),  ALLOCATABLE :: var, var1, var2
      &                                        , verr,reler,dbins
@@ -31,11 +32,13 @@
       real*4                     :: VALEXC, zz,time_val,
      &              var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
      &              vbt_min,vbt_max,var1_min,var1_max,
+     &              vbt1_min,vbt1_max,vbt2_min,vbt2_max,
      &              var2_min,var2_max,verel_min,verel_max,
      &             obin_min,obin_max,rl_min,rl_max,x,y,xr,yr
       real*4                     ::
      &              var_min0,var_max0,ver_min0,ver_max0,dbin_min0,
      &              vbt_min0,vbt_max0,var1_min0,var1_max0,dbin_max0,
+     &              vbt1_min0,vbt1_max0,vbt2_min0,vbt2_max0,
      &              var2_min0,var2_max0,verel_min0,verel_max0,
      &              obin_min0,obin_max0,rl_min0,rl_max0
 !
@@ -150,6 +153,8 @@
       ALLOCATE(resmax1(1:NY,NK))
       ALLOCATE(resmin1(1:NY,NK))
       ALLOCATE(varbot(1:NX,1:NY))
+      ALLOCATE(varb1(1:NX,1:NY))
+      ALLOCATE(varb2(1:NX,1:NY))
 !
       EXECIN='../3DWORK/3DNCinfo'
       INQUIRE(FILE=EXECIN,EXIST=exist)
@@ -213,10 +218,11 @@
 !!        var_shname = var_shname_l(ivars)
 !
       CALL NC_RD3DCL(imax,jmax,nk,ipar,time_val,clbnds(1:2,ivars),
-     &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,
+     &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
      &  xlon,ylat,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
      &  var_min,var_max,vbt_max,vbt_min,ver_min,ver_max,dbin_min,
      &  dbin_max,var1_min,var1_max,var2_min,var2_max,verel_min,
+     &  vbt1_min,vbt1_max,vbt2_min,vbt2_max,
      &  verel_max,obin_min,obin_max,rl_min,rl_max,VALEXC,
      &  file_name,var_shname_l(ivars))
 !     &  var_lgname,cellmeth,var_units,vrb_units,l_units,Ref_time,
@@ -241,6 +247,10 @@
         rl_max0 = rl_max
         vbt_min0 = vbt_min
         vbt_max0 = vbt_max
+        vbt1_min0 = vbt1_min
+        vbt1_max0 = vbt1_max
+        vbt2_min0 = vbt2_min
+        vbt2_max0 = vbt2_max
       ENDIF
 !
         IF(var_min0 >= var_min) var_min0 = var_min
@@ -261,15 +271,20 @@
         IF(rl_max0 <= rl_max) rl_max0 = rl_max
         IF(vbt_min0 >= vbt_min) vbt_min0 = vbt_min
         IF(vbt_max0 <= vbt_max) vbt_max0 = vbt_max
+        IF(vbt1_min0 >= vbt1_min) vbt1_min0 = vbt1_min
+        IF(vbt1_max0 <= vbt1_max) vbt1_max0 = vbt1_max
+        IF(vbt2_min0 >= vbt2_min) vbt2_min0 = vbt2_min
+        IF(vbt2_max0 <= vbt2_max) vbt2_max0 = vbt2_max
 !
         cellmeth =  cellmeth_l(ivars)
         Ref_time = Ref_time_l(ivars)
 !
       CALL NC_4DCLIM(imax,jmax,nk,ipar,time_len,time_val,clbnds,
-     &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,
+     &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
      &  xlon,ylat,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
      &  var_min0,var_max0,vbt_max0,vbt_min0,ver_min0,ver_max0,
      &  dbin_min0,dbin_max0,var1_min0,var1_max0,var2_min0,var2_max0,
+     &  vbt1_min0,vbt1_max0,vbt2_min0,vbt2_max0,
      &  verel_min0,verel_max0,obin_min0,obin_max0,rl_min,rl_max,
      &  VALEXC,l_units,
      &  LEN_TRIM(file_name2),TRIM(file_name2),

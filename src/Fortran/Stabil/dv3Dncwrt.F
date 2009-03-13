@@ -1,9 +1,10 @@
 !
-      SUBROUTINE NC_4DCLIM(im4,jm4,km,ipar,time_len,time_val,clbnds,
-     &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,
+      SUBROUTINE NC_4DCLIM(im4,jm4,km,ipar,time_len,time_val,clbnds,var,
+     &  var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
      &  clo,cla,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
      &  var_min,var_max,vbt_max,vbt_min,ver_min,ver_max,dbin_min,
      &  dbin_max,var1_min,var1_max,var2_min,var2_max,verel_min,
+     &  vbt1_min,vbt1_max,vbt2_min,vbt2_max,
      &  verel_max,obin_min,obin_max,rl_min,rl_max,VALEXC,l_units,
      &  L_file_name,file_name,L_var_shname,var_shname,
      &  L_var_lgname,var_lgname,L_var_units,var_units,
@@ -30,13 +31,14 @@
      &            var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
      &            vbt_min,vbt_max,var1_min,var1_max,clen_min,clen_max,
      &            var2_min,var2_max,verel_min,verel_max,
+     &            vbt1_min,vbt1_max,vbt2_min,vbt2_max,
      &            obin_min,obin_max,rl_min,rl_max
         real*4                              :: hrss,time_val
 !
         real*4  ,dimension(im4,jm4,km)        :: var, var1, var2
      &                                       , Verr,reler,dbins
      &                                       , obins,rlfield
-        real*4  ,dimension(im4,jm4)          :: varbot
+        real*4  ,dimension(im4,jm4)          :: varbot,varb1,varb2
         real*4  ,dimension(2,time_len)       :: clbnds 
 !     &                                      , climatology_bounds
 !   
@@ -61,6 +63,8 @@
 	character (len=256)   :: err_shname,err_lgname
      &                         , var1_shname,var1_lgname
      &                         , var2_shname,var2_lgname
+     &                         , varb1_shname,varb1_lgname
+     &                         , varb2_shname,varb2_lgname
      &                         , rer_shname,rer_lgname
      &                         , vbt_shname,vbt_lgname
      &                         , string256
@@ -74,7 +78,7 @@
       integer  ,dimension(4)              :: dim
       integer  ,dimension(4)              :: start, count
       integer                        :: id1,id1_1,id1_2,id2,id2_1
-     &                                , id3,id3_1,id4,id2d1
+     &                                , id3,id3_1,id4,id2d1,id2d2,id2d3
      &                                , id0_1,id0_2,id0_3,idcb
       integer                        :: timeid,idtime, icdf
 !
@@ -85,7 +89,7 @@
       integer                 :: OLDMOD
 !
       save                    :: id1,id1_1,id1_2,id2,id2_1
-     &                         , id3,id3_1,id4,id2d1
+     &                         , id3,id3_1,id4,id2d1,id2d2,id2d3
      &                         , id0_1,id0_2,id0_3,idcb
       save                    :: timeid,idtime, icdf
       save                    :: lonid,latid,depthid,nvid
@@ -106,8 +110,13 @@
 !
       WRITE(err_shname,'(a,"_err")')TRIM(var_shname)
       WRITE(vbt_shname,'(a,"_deepest")')TRIM(var_shname)
+!
       WRITE(var1_shname,'(a,"_L1")')TRIM(var_shname)
       WRITE(var2_shname,'(a,"_L2")')TRIM(var_shname)
+!
+      WRITE(varb1_shname,'(a,"_L1")')TRIM(vbt_shname)
+      WRITE(varb2_shname,'(a,"_L2")')TRIM(vbt_shname)
+
       WRITE(rer_shname,'(a,"_relerr")')TRIM(var_shname)
 !
       WRITE(err_lgname,
@@ -124,6 +133,14 @@
       WRITE(var2_lgname,
      &'(a," masked using relative error threshold 0.5 ")')
      &TRIM(var_lgname)
+!
+      WRITE(varb1_lgname,
+     &'(a," masked using relative error threshold 0.3 ")')
+     &TRIM(vbt_lgname)
+!
+      WRITE(varb2_lgname,
+     &'(a," masked using relative error threshold 0.5 ")')
+     &TRIM(vbt_lgname)
 !
       valexu(:) = valexc
 !-------------------------------------------------------------------
@@ -808,9 +825,110 @@
 !x         print *,nf_strerror(status)
 !x         STOP 'Stopped in NC_4DCLIMATO vbt clmt'
 !x      ENDIF
-
+!==================================================================
+      three = 3
+      status=nf_def_var(ncid,TRIM(varb1_shname),nf_float,
+     &                                             three,dim2,id2d2)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO def varb1'
+      ENDIF
 !
-!===============================================
+      status=nf_put_att_text(ncid,id2d2,'long_name',
+     &                 LEN_TRIM(varb1_lgname),TRIM(varb1_lgname))
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO att varb1 lgname'
+      ENDIF
+
+      status=nf_put_att_text(ncid,id2d2,'units',
+     &                 LEN_TRIM(var_units),TRIM(var_units))
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO att varb1 units'
+      ENDIF
+!
+      status=nf_put_att_real(ncid,id2d2,'valid_min',
+     &                                   nf_float,one,vbt1_min)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO att vbt1 min'
+      ENDIF
+!
+      status=nf_put_att_real(ncid,id2d2,'valid_max',
+     &                                   nf_float,one,vbt1_max)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO att vbt1 max'
+      ENDIF
+      status=nf_put_att_real(ncid,id2d2,'_FillValue',
+     &                                   nf_float,one,valexc)
+!     &                                   nf_float,one,nf_fill_real)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO vbt Fillvalue'
+      ENDIF
+!
+      status=nf_put_att_real(ncid,id2d2,'missing_value',
+     &                                   nf_float,one,valexc)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO att valex'
+      ENDIF
+!==========================================================
+!
+!
+      three = 3
+      status=nf_def_var(ncid,TRIM(varb2_shname),nf_float,
+     &                                             three,dim2,id2d3)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO def varb2'
+      ENDIF
+!
+      status=nf_put_att_text(ncid,id2d3,'long_name',
+     &                 LEN_TRIM(varb2_lgname),TRIM(varb2_lgname))
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO att varb2 lgname'
+      ENDIF
+
+      status=nf_put_att_text(ncid,id2d3,'units',
+     &                 LEN_TRIM(var_units),TRIM(var_units))
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO att varb2 units'
+      ENDIF
+!
+      status=nf_put_att_real(ncid,id2d3,'valid_min',
+     &                                   nf_float,one,vbt2_min)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO att vbt2 min'
+      ENDIF
+!
+      status=nf_put_att_real(ncid,id2d3,'valid_max',
+     &                                   nf_float,one,vbt2_max)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO att vbt2 max'
+      ENDIF
+      status=nf_put_att_real(ncid,id2d3,'_FillValue',
+     &                                   nf_float,one,valexc)
+!     &                                   nf_float,one,nf_fill_real)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO vbt2 Fillvalue'
+      ENDIF
+!
+      status=nf_put_att_real(ncid,id2d3,'missing_value',
+     &                                   nf_float,one,valexc)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO att vbt2valex'
+      ENDIF
+!
+!==========================================================
 
 
 !----------------------------------------------------------------
@@ -935,7 +1053,32 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att vbtmax 2'
       ENDIF
-
+      status=nf_put_att_real(ncid,id2d2,'valid_min',
+     &                                   nf_float,one,vbt1_min)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO att vbt1min 2'
+      ENDIF
+!
+      status=nf_put_att_real(ncid,id2d2,'valid_max',
+     &                                   nf_float,one,vbt1_max)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO att vbt1max 2'
+      ENDIF
+      status=nf_put_att_real(ncid,id2d3,'valid_min',
+     &                                   nf_float,one,vbt2_min)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO att vbt2min 2'
+      ENDIF
+      status=nf_put_att_real(ncid,id2d3,'valid_max',
+     &                                   nf_float,one,vbt2_max)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO att vbt2max 2'
+      ENDIF
+!
       status=nf_put_att_real(ncid,id1,'valid_min',
      &                                   nf_float,one,var_min)
       IF (status .NE.nf_noerr) THEN
@@ -1132,6 +1275,18 @@
       coun2(3)=1
 ! 
       status=nf_put_vara_real(ncid,id2d1, star2, coun2,varbot)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO put var'
+      ENDIF
+!
+      status=nf_put_vara_real(ncid,id2d2, star2, coun2,varb1)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO put var'
+      ENDIF
+!
+      status=nf_put_vara_real(ncid,id2d3, star2, coun2,varb2)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put var'

@@ -17,7 +17,9 @@
      &                                     , VALEXU,CORLEN,SN,VARBAK
 !
       REAL*4 ,DIMENSION(:,:),    ALLOCATABLE :: resmax1,resmin1
-     &                                        , varbot
+     &                                        , varbot, verbot
+     &                                        , varb1, varb2
+     &                                     , mskbot,mskb1,mskb2,mskber
       REAL*4 ,DIMENSION(2,1)                 :: clbnds
 !
       REAL*4 , DIMENSION(:,:,:),  ALLOCATABLE :: var, var1, var2
@@ -36,6 +38,7 @@
       real*4                     :: zz, time_val,VALEXC,
      &              var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
      &              vbt_min,vbt_max,var1_min,var1_max,
+     &              vbt1_min,vbt1_max,vbt2_min,vbt2_max,
      &              var2_min,var2_max,verel_min,verel_max,
      &              obin_min,obin_max,rl_min,rl_max,x,y,xr,yr
 !
@@ -301,6 +304,13 @@
       ALLOCATE(resmax1(1:NY,NK))
       ALLOCATE(resmin1(1:NY,NK))
       ALLOCATE(varbot(1:NX,1:NY))
+      ALLOCATE(verbot(1:NX,1:NY))
+      ALLOCATE(varb1(1:NX,1:NY))
+      ALLOCATE(varb2(1:NX,1:NY))
+      ALLOCATE(mskbot(1:NX,1:NY))
+      ALLOCATE(mskb1(1:NX,1:NY))
+      ALLOCATE(mskb2(1:NX,1:NY))
+      ALLOCATE(mskber(1:NX,1:NY))
 !
 !retreiving grid points longitude and latitude
       DO i = 1, NX
@@ -357,10 +367,12 @@
 !
 !
       varbot =  valexc
+      verbot =  valexc
       DO k = NK,1,-1
         DO j = 1,jmax
            DO i = 1,imax
              IF(var(i,j,k) /= valexc)   varbot(i,j) = var(i,j,k)
+             IF(verr(i,j,k) /= valexc)   verbot(i,j) = verr(i,j,k)
            ENDDO
          ENDDO
       ENDDO
@@ -586,6 +598,40 @@
             ENDDO
         ENDDO
 !
+! retreiving masks from data
+      mskbot = 1
+      DO j = 1,jmax
+        DO i = 1,imax
+          if(varbot(i,j) == valexc) mskbot(i,j) = 0
+        ENDDO
+      ENDDO
+      mskber = 1
+      DO j = 1,jmax
+        DO i = 1,imax
+          if(verbot(i,j) == valexc) mskber(i,j) = 0
+        ENDDO
+      ENDDO
+!
+       varb1 = varbot
+       varb2 = varbot
+       mskb1 = mskbot
+       mskb2 = mskbot
+!
+! Masking of fields
+!
+       DO j = 1,jmax
+         DO i = 1,imax
+           IF(verbot(i,j) == VALEXC .OR. verbot(i,j) > 0.3)THEN
+              varb1(i,j) = VALEXC
+               mskb1(i,j) = 0
+           ENDIF
+           IF(verbot(i,j) == VALEXC .OR. verbot(i,j) > 0.5)THEN
+               varb2(i,j) = VALEXC
+               mskb2(i,j) = 0
+           ENDIF
+         ENDDO
+       ENDDO
+!
       y=MAXVAL(varbot(1:imax,1:jmax),
      &                        MASK= (mask(:,:,nk) .eq. 1))
       x=MINVAL(varbot(1:imax,1:jmax),
@@ -593,9 +639,18 @@
       call jmbround(x,y,xr,yr)
       vbt_max = yr
       vbt_min = xr
-
-      write(*,*) 'vbt_max = yr',vbt_max
-      write(*,*) 'vbt_min = xr',vbt_min
+!
+      y=MAXVAL(varb1(1:imax,1:jmax),MASK= (mskb1(:,:) .eq. 1))
+      x=MINVAL(varb1(1:imax,1:jmax),MASK= (mskb1(:,:) .eq. 1))
+      call jmbround(x,y,xr,yr)
+      vbt1_max = yr
+      vbt1_min = xr
+!
+      y=MAXVAL(varb2(1:imax,1:jmax),MASK= (mskb2(:,:) .eq. 1))
+      x=MINVAL(varb2(1:imax,1:jmax),MASK= (mskb2(:,:) .eq. 1))
+      call jmbround(x,y,xr,yr)
+      vbt2_max = yr
+      vbt2_min = xr
 !
       DO k = 1,NK
        resmax1(1:jmax,k)=MAXVAL(var(1:imax,1:jmax,k),dim=1,
@@ -608,7 +663,7 @@
       call jmbround(x,y,xr,yr)
       var_max = yr
       var_min = xr
-
+!
       DO k = 1,NK
        resmax1(1:jmax,k)=MAXVAL(verr(1:imax,1:jmax,k),dim=1,
      &                        MASK= (masker(:,:,k) .eq. 1))
@@ -620,7 +675,7 @@
       call jmbround(x,y,xr,yr)
       ver_max = yr
       ver_min = xr
-
+!
       DO k = 1,NK
        resmax1(1:jmax,k)=MAXVAL(dbins(1:imax,1:jmax,k),dim=1,
      & MASK= (dbins(:,:,k) .ge. 0.))
@@ -763,10 +818,11 @@
 !
       iun=1
       CALL NC_4DCLIM(IMAX, JMAX,nk,ipar,iun,time_val,clbnds,
-     &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,
+     &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
      &  xlon,ylat,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
      &  var_min,var_max,vbt_max,vbt_min,ver_min,ver_max,dbin_min,
      &  dbin_max,var1_min,var1_max,var2_min,var2_max,verel_min,
+     &  vbt1_min,vbt1_max,vbt2_min,vbt2_max,
      &  verel_max,obin_min,obin_max,rl_min,rl_max,VALEXC,l_units,
      &  LEN_TRIM(file_name),TRIM(file_name),
      &  LEN_TRIM(var_cfname),TRIM(var_cfname),
