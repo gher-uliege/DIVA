@@ -538,9 +538,9 @@
      & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,rlfield)
 !
 !
-      varbot =  var(i,j,nk)  !valexc
-      verbot =  verr(i,j,nk) !valexc
-      DO k = NK-1,1,-1
+      varbot =  valexc
+      verbot =  valexc
+      DO k = NK,1,-1
         DO j = 1,jmax
            DO i = 1,imax
              IF(var(i,j,k) /= valexc)   varbot(i,j) = var(i,j,k)
