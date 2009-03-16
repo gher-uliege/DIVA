@@ -366,17 +366,6 @@
      & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,VAR)
 !
 !
-      varbot =  valexc
-      verbot =  valexc
-      DO k = NK,1,-1
-        DO j = 1,jmax
-           DO i = 1,imax
-             IF(var(i,j,k) /= valexc)   varbot(i,j) = var(i,j,k)
-             IF(verr(i,j,k) /= valexc)   verbot(i,j) = verr(i,j,k)
-           ENDDO
-         ENDDO
-      ENDDO
-!
 ! Reading error field
       klev = 0
       kwu = 0
@@ -548,6 +537,18 @@
       if(ichge == 1) 
      & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,rlfield)
 !
+!
+      varbot =  var(i,j,nk)  !valexc
+      verbot =  verr(i,j,nk) !valexc
+      DO k = NK-1,1,-1
+        DO j = 1,jmax
+           DO i = 1,imax
+             IF(var(i,j,k) /= valexc)   varbot(i,j) = var(i,j,k)
+             IF(verr(i,j,k) /= valexc)   verbot(i,j) = verr(i,j,k)
+           ENDDO
+         ENDDO
+      ENDDO
+!
       k=0
       DO i = MINLEV,MAXLEV
          k = k+1
@@ -622,7 +623,7 @@
        DO j = 1,jmax
          DO i = 1,imax
            IF(verbot(i,j) == VALEXC .OR. verbot(i,j) > 0.3)THEN
-              varb1(i,j) = VALEXC
+               varb1(i,j) = VALEXC
                mskb1(i,j) = 0
            ENDIF
            IF(verbot(i,j) == VALEXC .OR. verbot(i,j) > 0.5)THEN

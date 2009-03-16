@@ -160,7 +160,8 @@
       ! Open the data file       
       !-----------------------
 !
-      status = nf_open(TRIM(file_name), nf_write,ncid)
+!      status = nf_open(TRIM(file_name), nf_write,ncid)
+      status = nf_open(TRIM(file_name), nf_64bit_offset,ncid)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO open file'
