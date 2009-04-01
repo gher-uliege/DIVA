@@ -2,10 +2,10 @@
       SUBROUTINE NC_RD3DCL(im4,jm4,km,ipar,time_val,clbnds,
      &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
      &  clo,cla,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
-     &  var_min,var_max,vbt_max,vbt_min,ver_min,ver_max,dbin_min,
+     &  var_min,var_max,vbt_min,vbt_max,ver_min,ver_max,dbin_min,
      &  dbin_max,var1_min,var1_max,var2_min,var2_max,verel_min,
-     &  vbt1_min,vbt1_max,vbt2_min,vbt2_max,
-     &  verel_max,obin_min,obin_max,rl_min,rl_max,VALEXC,
+     &  verel_max,vbt1_min,vbt1_max,vbt2_min,vbt2_max,
+     &  obin_min,obin_max,rl_min,rl_max,VALEXC,
      &  file_name,var_shname)
 !     &  cellmeth,var_units,vrb_units,l_units,Ref_time,
 !     &  title_string,INSTITUTION,PRODUCTION,SOURCE,COMMENT)

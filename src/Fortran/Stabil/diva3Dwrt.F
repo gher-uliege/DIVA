@@ -785,8 +785,6 @@
           write(12,*) TRIM(file_name),1
         endif
 !
-!
-
       WRITE(ncliste,'("../output/3Danalysis/",
      &a,".3DNCinfo")')TRIM(var_name)
         INQUIRE(FILE=TRIM(ncliste),EXIST=exist)
@@ -821,10 +819,10 @@
       CALL NC_4DCLIM(IMAX, JMAX,nk,ipar,iun,time_val,clbnds,
      &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
      &  xlon,ylat,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
-     &  var_min,var_max,vbt_max,vbt_min,ver_min,ver_max,dbin_min,
+     &  var_min,var_max,vbt_min,vbt_max,ver_min,ver_max,dbin_min,
      &  dbin_max,var1_min,var1_max,var2_min,var2_max,verel_min,
-     &  vbt1_min,vbt1_max,vbt2_min,vbt2_max,
-     &  verel_max,obin_min,obin_max,rl_min,rl_max,VALEXC,l_units,
+     &  verel_max,vbt1_min,vbt1_max,vbt2_min,vbt2_max,
+     &  obin_min,obin_max,rl_min,rl_max,VALEXC,l_units,
      &  LEN_TRIM(file_name),TRIM(file_name),
      &  LEN_TRIM(var_cfname),TRIM(var_cfname),
      &  LEN_TRIM(var_lgname),TRIM(var_lgname),

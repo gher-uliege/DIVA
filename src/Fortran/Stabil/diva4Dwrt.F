@@ -211,7 +211,7 @@
       WRITE(file_name,'("../output/3Danalysis/",
      &a)')TRIM(all_files(ivars))
 
-
+!!
       imax = NX
       jmax = NY
 !
@@ -220,14 +220,15 @@
       CALL NC_RD3DCL(imax,jmax,nk,ipar,time_val,clbnds(1:2,ivars),
      &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
      &  xlon,ylat,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
-     &  var_min,var_max,vbt_max,vbt_min,ver_min,ver_max,dbin_min,
+     &  var_min,var_max,vbt_min,vbt_max,ver_min,ver_max,dbin_min,
      &  dbin_max,var1_min,var1_max,var2_min,var2_max,verel_min,
-     &  vbt1_min,vbt1_max,vbt2_min,vbt2_max,
-     &  verel_max,obin_min,obin_max,rl_min,rl_max,VALEXC,
+     &  verel_max,vbt1_min,vbt1_max,vbt2_min,vbt2_max,
+     &  obin_min,obin_max,rl_min,rl_max,VALEXC,
      &  file_name,var_shname_l(ivars))
 !     &  var_lgname,cellmeth,var_units,vrb_units,l_units,Ref_time,
 !     &  title_string,INSTITUT,PRODUCTION,SOURCE,COMMENT)
 !
+
       IF(ivars == 1) THEN
         var_min0 = var_min
         var_max0 = var_max
@@ -282,10 +283,10 @@
       CALL NC_4DCLIM(imax,jmax,nk,ipar,time_len,time_val,clbnds,
      &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
      &  xlon,ylat,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
-     &  var_min0,var_max0,vbt_max0,vbt_min0,ver_min0,ver_max0,
+     &  var_min0,var_max0,vbt_min0,vbt_max0,ver_min0,ver_max0,
      &  dbin_min0,dbin_max0,var1_min0,var1_max0,var2_min0,var2_max0,
-     &  vbt1_min0,vbt1_max0,vbt2_min0,vbt2_max0,
-     &  verel_min0,verel_max0,obin_min0,obin_max0,rl_min,rl_max,
+     &  verel_min0,verel_max0,vbt1_min0,vbt1_max0,vbt2_min0,vbt2_max0,
+     &  obin_min0,obin_max0,rl_min,rl_max,
      &  VALEXC,l_units,
      &  LEN_TRIM(file_name2),TRIM(file_name2),
      &  LEN_TRIM(var_name),TRIM(var_name),
