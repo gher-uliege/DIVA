@@ -5,43 +5,14 @@ echo      DIVA_HC compilation
 echo ///////////////////////////
 echo ' ' 
 
-
-## GNU-cygwin, netcdf compiled for no-cygwin
-#compiler=g95
-#flags='-O3'
-
-#noglobals='-Wno-globals'
-#nocyg='-O3 -mno-cygwin'
-#nclib=./Win32/libnetcdf.a  
-#ncinc=
-
-##
-
 # Linux
+
+ifort-start
+
 compiler=ifort
-flags='-O'
+flags='-check bounds -warn all -O'
 nclib='-L/usr/local/lib -lnetcdf'
 ncinc=-I/usr/local/include
-
-##
-
-# PGI
-#compiler=pgf90
-#flags='-O3'
-#flags='-O3 -byteswapio '
-#noglobals='-Wno-globals'
-#nocyg=''
-#nclib=/u/mouberdo/Lib/netcdf-3.6.1/lib/libnetcdf.a  
-
-# SGI
-#compiler=f90
-#flags='-O3'
-##noglobals='-Wno-globals'
-##nocyg=''
-#nclib='-L/usr/local/lib -lnetcdf'
-#ncinc=-I/usr/local/include
-
-
 
 ##########################
 # end of user parameters #
@@ -64,11 +35,11 @@ $compiler $flags diva3Dref.F ureadc.F uwritc.F diva3Dnc.F -o diva3Dref.a $nclib 
 mv diva3Dref.a ../../../bin/
 #
 #
-$compiler $flags report.F ureadc.F uwritc.F dvSTncwrt.F -o report.a $nclib $ncinc
-mv report.a ../../../bin/
+####$compiler $flags report.F ureadc.F uwritc.F dvSTncwrt.F -o report.a $nclib $ncinc
+####mv report.a ../../../bin/
 #
-$compiler $flags stabil.F N2brunt.F albe2d.F potmp.F pzcon.F  ureadc.F write_2T_NC.F -o stabil.a $nclib $ncinc
-mv stabil.a ../../../bin/
+####$compiler $flags stabil.F N2brunt.F albe2d.F potmp.F pzcon.F  ureadc.F write_2T_NC.F -o stabil.a $nclib $ncinc
+####mv stabil.a ../../../bin/
 #
 #
 $compiler $flags datapre.F -o datapre.a
