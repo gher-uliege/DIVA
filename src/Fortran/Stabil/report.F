@@ -722,7 +722,7 @@
 
       CALL NC_4DCLIM(imax,jmax,nk,0,1,time_val(1),clbnds,
      &  psal,vars1,vars2,errs,rers,dbns,obns,xlon,ylat,dep,CorLenS,SNS,
-     &  VARBAS,IREG,ispcs,ICOOC,valexu,vars_min,vars_max,vers_min,
+     &  VARBAS,valexu,vars_min,vars_max,vers_min,
      &  vers_max,dbins_min,dbins_max,vars1_min,vars1_max,vars2_min,
      &  vars2_max,rers_min,rers_max,obins_min,obint_max,
      &  TRIM(file_name),TRIM(var_name(ivar)),TRIM(var_lgname(ivar)),
@@ -758,7 +758,7 @@
 
       CALL NC_4DCLIM(imax,jmax,nk,0,1,time_val(2),clbnds,
      &  temp,vart1,vart2,errt,rert,dbnt,obnt,xlon,ylat,dep,CorLenT,SNT,
-     &  VARBAT,IREG,ispcs,ICOOC,valexu,vart_min,vart_max,vert_min,
+     &  VARBAT,valexu,vart_min,vart_max,vert_min,
      &  vert_max,dbint_min,dbint_max,vart1_min,vart1_max,vart2_min,
      &  vart2_max,rert_min,rert_max,obint_min,obint_max,
      &  TRIM(file_name),TRIM(var_name(ivar)),TRIM(var_lgname(ivar)),
@@ -791,7 +791,7 @@
 
       CALL NC_4DCLIM(imax,jmax,nk,0,1,time_val(1),clbnds,
      &  psal,vars1,vars2,errs,rers,dbns,obns,xlon,ylat,dep,CorLenS,SNS,
-     &  VARBAS,IREG,ispcs,ICOOC,valexu,vars_min,vars_max,vers_min,
+     &  VARBAS,valexu,vars_min,vars_max,vers_min,
      &  vers_max,dbins_min,dbins_max,vars1_min,vars1_max,vars2_min,
      &  vars2_max,rers_min,rers_max,obins_min,obint_max,
      &  TRIM(file_name),TRIM(var_name(ivar)),TRIM(var_lgname(ivar)),
@@ -817,7 +817,7 @@
 
       CALL NC_4DCLIM(imax,jmax,nk,0,1,time_val(2),clbnds,
      &  temp,vart1,vart2,errt,rert,dbnt,obnt,xlon,ylat,dep,CorLenT,SNT,
-     &  VARBAT,IREG,ispcs,ICOOC,valexu,vart_min,vart_max,vert_min,
+     &  VARBAT,valexu,vart_min,vart_max,vert_min,
      &  vert_max,dbint_min,dbint_max,vart1_min,vart1_max,vart2_min,
      &  vart2_max,rert_min,rert_max,obint_min,obint_max,
      &  TRIM(file_name),TRIM(var_name(ivar)),TRIM(var_lgname(ivar)),
