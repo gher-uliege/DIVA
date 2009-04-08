@@ -4,8 +4,8 @@
 !
       IMPLICIT NONE
 !
-      INTEGER :: i,ivar, istep,LEVELS,nbccol
-      INTEGER :: fnum,lev,first_level,last_level
+      INTEGER :: ivar, istep,nbccol
+      INTEGER :: first_level,last_level
      &,ndata
 !
 !      INTEGER, DIMENSION(:),    ALLOCATABLE  :: FNUMBERS
@@ -15,8 +15,6 @@
       CHARACTER (len=20)   :: EXECIN 
 !
       CHARACTER (len=99)                :: VARFILEIN,VARFINFO,VARFILEOU
-      CHARACTER (len=255)               :: file_name
-!x!x      CHARACTER (len=99)                :: DATAFILE
       CHARACTER (len=99), DIMENSION(2)  :: var_name
 
 

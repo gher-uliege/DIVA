@@ -5,14 +5,14 @@
 !
 !---------------------------------------------------------------------!
 !
-      INTEGER :: ivar, istep,MINLEV,MAXLEV
-      INTEGER :: step,ichge
+      INTEGER :: istep,MINLEV,MAXLEV
+      INTEGER :: ichge
 !
       real*8                           :: W8
       REAL*4, DIMENSION(:) ,    ALLOCATABLE :: U,U3,W3
 !
       REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: z_watercolumn
-     &                                      ,  Z, dep
+     &                                      ,  dep
       REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: XLON,YLAT
      &                                     , VALEXU,CORLEN,SN,VARBAK
 !
@@ -29,13 +29,13 @@
       integer,DIMENSION(:,:,:),  ALLOCATABLE :: mask,mask1,mask2,masker
 !
       integer            :: i,j,k,klev,ic,top_lev,kuw,kwu,ipar,iparpar
-      integer                   :: NX, NY, NK, ndata, nl,chlen,iun
+      integer                   :: NX, NY, NK, chlen, iun
       integer*4                 :: KMAX, ipr, nw, IMAX, JMAX
 !!      integer                 :: KMAX, ipr, nw, IMAX, JMAX
       integer                   :: ICOOC, IREG, ISPEC
       integer                   :: nm,xm1,xm2,xy1,xy2
 !
-      real*4                     :: zz, time_val,VALEXC,
+      real*4                     :: time_val,VALEXC,
      &              var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
      &              vbt_min,vbt_max,var1_min,var1_max,
      &              vbt1_min,vbt1_max,vbt2_min,vbt2_max,
@@ -44,7 +44,7 @@
 !
       real*4                     :: xorig, yorig, dx, dy, xend, yend
 !
-      CHARACTER (len=255)        :: divafile,comments
+      CHARACTER (len=255)        :: divafile
       CHARACTER (len=16)         :: EXECIN
       CHARACTER (len=22)         :: DEPTHS
       CHARACTER (len=99)         :: VARFILEIN
@@ -68,39 +68,39 @@
 !
       EXECIN='../input/3Dinfo'
       OPEN(2,FILE=EXECIN,STATUS='OLD')
-      READ(2,*)! comments
+      READ(2,*)
       READ(2,*) var_shname
-      READ(2,*)! comments
+      READ(2,*)
       READ(2,*) MINLEV
-      READ(2,*)! comments
+      READ(2,*)
       READ(2,*) MAXLEV
-      READ(2,*) ! comments
-      READ(2,*) ! comments
-      READ(2,*) ! comments
-      READ(2,*) ! comments
-      READ(2,*) ! comments
-      READ(2,*) ! comments
-      READ(2,*) ! comments
-      READ(2,*) ! comments
-      READ(2,*) ! comments
-      READ(2,*) ! comments
-      READ(2,*) ! comments
-      READ(2,*) ! comments
-      READ(2,*) ! comments
-      READ(2,*) ! comments
-      READ(2,*) ! comments
-      READ(2,*) ! comments
-      READ(2,*) ! comments
-      READ(2,*) ! comments
-      READ(2,*) ! comments
-      READ(2,*) ! comments
-      READ(2,*) ! comments
-      READ(2,*) ! comments
-      READ(2,*) ! comments
+      READ(2,*) 
+      READ(2,*) 
+      READ(2,*) 
+      READ(2,*) 
+      READ(2,*) 
+      READ(2,*) 
+      READ(2,*) 
+      READ(2,*) 
+      READ(2,*) 
+      READ(2,*) 
+      READ(2,*) 
+      READ(2,*) 
+      READ(2,*) 
+      READ(2,*) 
+      READ(2,*) 
+      READ(2,*) 
+      READ(2,*) 
+      READ(2,*) 
+      READ(2,*) 
+      READ(2,*) 
+      READ(2,*) 
+      READ(2,*) 
+      READ(2,*) 
       READ(2,*) title_string
-      READ(2,*) !comments
+      READ(2,*) 
       READ(2,*) var_lgname
-      READ(2,*) !comments
+      READ(2,*) 
       READ(2,*) var_units
       IF(iparpar == 34) then
         time_val = 0.
@@ -117,21 +117,21 @@
         SOURCE = 'Not specified'
         COMMENT = 'Not specified'
       ELSE
-        READ(2,*)! comments
+        READ(2,*)
         READ(2,*) ipar
-          READ(2,*)! comments
+          READ(2,*)
           READ(2,*) Ref_time
-          READ(2,*)! comments
+          READ(2,*)
           READ(2,*) time_val
-          READ(2,*)! comments
+          READ(2,*)
           READ(2,*) cellmeth
-          READ(2,*)! comments
+          READ(2,*)
           READ(2,*) INSTITUT
-          READ(2,*)! comments
+          READ(2,*)
           READ(2,*) PRODUCTION
-          READ(2,*)! comments
+          READ(2,*)
           READ(2,*) SOURCE
-          READ(2,*)! comments
+          READ(2,*)
           READ(2,*) COMMENT
           clbnds = 0.
           CLOSE(2)
@@ -248,23 +248,23 @@
                 ENDIF
               ENDIF
             ENDIF
-            READ(2,*)! comments
+            READ(2,*)
             READ(2,*) CORLEN(klev)
-            READ(2,*)! comments
+            READ(2,*)
             READ(2,*) ICOOC
-            READ(2,*)! comments
+            READ(2,*)
             READ(2,*) ISPEC
-            READ(2,*)! comments
+            READ(2,*)
             READ(2,*) IREG
             DO i = 1,6
-               READ(2,*)! comments
-               READ(2,*)! comments
+               READ(2,*)
+               READ(2,*)
             ENDDO
-            READ(2,*)! comments
+            READ(2,*)
             READ(2,*) VALEXU(klev)
-            READ(2,*)! comments
+            READ(2,*)
             READ(2,*) SN(klev)
-            READ(2,*)! comments
+            READ(2,*) 
             READ(2,*) VARBAK(klev)
             CLOSE(2)
          ENDDO
@@ -818,7 +818,7 @@
       iun=1
       CALL NC_4DCLIM(IMAX, JMAX,nk,ipar,iun,time_val,clbnds,
      &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
-     &  xlon,ylat,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
+     &  xlon,ylat,dep,CORLEN,SN,VARBAK,
      &  var_min,var_max,vbt_min,vbt_max,ver_min,ver_max,dbin_min,
      &  dbin_max,var1_min,var1_max,var2_min,var2_max,verel_min,
      &  verel_max,vbt1_min,vbt1_max,vbt2_min,vbt2_max,
@@ -876,6 +876,8 @@
 !
 
         subroutine jmbround(x1,x2,x1r,x2r)
+        real*4 :: x1,x2,x1r,x2r,ip
+        integer :: i1neg,i2neg,i1s,i2s
         if(x1.ge.x2) then
 !        write(6,*) 'Sorry only for range'
         x1r=x1

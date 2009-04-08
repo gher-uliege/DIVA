@@ -5,16 +5,13 @@
 !
 !------------------------------------------------------------------
 !
-      INTEGER :: ivar, istep,MINLEV,MAXLEV,filop
-      INTEGER :: step
-!
-      DOUBLE PRECISION :: lon,lat,val
+      INTEGER :: istep, MINLEV,MAXLEV,filop
 !
       real*8                           :: W8
       REAL*4, DIMENSION(:) ,    ALLOCATABLE :: U,W
 !
       REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: z_watercolumn
-     &                                      ,  Z, dep
+     &                                      ,  dep
       REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: XLON,YLAT
 !
       REAL*4 ,DIMENSION(:,:),    ALLOCATABLE :: resmax1,resmin1
@@ -25,10 +22,10 @@
       INTEGER,DIMENSION(:,:,:),    ALLOCATABLE :: mask
 !
       integer                   :: i,j,k,klev,ic,top_lev,kuw
-      integer                   :: NX, NY, NK, ndata, nl
+      integer                   :: NX, NY, NK
       integer*4                   :: KMAX, ipr, nw, IMAX, JMAX
 !!      integer                   :: KMAX, ipr, nw, IMAX, JMAX
-      real*4                      :: VALEXU, zz,
+      real*4                      :: VALEXU, 
      &var_min,var_max,ver_min,ver_max,dbin_min,dbin_max
       real*4                      :: xorig, yorig, dx, dy, xend, yend
 !

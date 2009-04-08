@@ -1,7 +1,7 @@
 !
       SUBROUTINE NC_RD3DCL(im4,jm4,km,ipar,time_val,clbnds,
      &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
-     &  clo,cla,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
+     &  clo,cla,dep,CORLEN,SN,VARBAK,
      &  var_min,var_max,vbt_min,vbt_max,ver_min,ver_max,dbin_min,
      &  dbin_max,var1_min,var1_max,var2_min,var2_max,verel_min,
      &  verel_max,vbt1_min,vbt1_max,vbt2_min,vbt2_max,
@@ -20,7 +20,7 @@
         integer                             :: im,jm,km,ipar
         real*4                              :: valexc, 
      &            var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
-     &            vbt_min,vbt_max,var1_min,var1_max,clen_min,clen_max,
+     &            vbt_min,vbt_max,var1_min,var1_max,
      &            var2_min,var2_max,verel_min,verel_max,
      &            vbt1_min,vbt1_max,vbt2_min,vbt2_max,
      &            obin_min,obin_max,rl_min,rl_max
@@ -32,11 +32,11 @@
         real*4  ,dimension(im4,jm4)          :: varbot,varb1,varb2
 !
         real*4  ,dimension(2,1)              :: clbnds
-     &                                        ,climatology_bounds
+!xx     &                                        ,climatology_bounds
 !   
         real*4  ,dimension(im4)              :: clo
         real*4  ,dimension(jm4)              :: cla
-        real*4  ,dimension(km)               :: dep, valexu
+        real*4  ,dimension(km)               :: dep
      &                                       , CORLEN, SN, VARBAK
 !
 	character (len=*)     :: file_name,var_shname
@@ -45,31 +45,26 @@
      &                         , INSTITUTION,PRODUCTION,SOURCE,COMMENT
         character (len=20), DIMENSION(2)           :: l_units
 !
-	character (len=256)   :: err_shname,err_lgname
-     &                         , var1_shname,var1_lgname
-     &                         , var2_shname,var2_lgname
-     &                         , rer_shname,rer_lgname
-     &                         , varb1_shname,varb1_lgname
-     &                         , varb2_shname,varb2_lgname
-     &                         , vbt_shname,vbt_lgname
-     &                         , string256
+	character (len=256)   :: err_shname 
+     &                         , var1_shname
+     &                         , var2_shname
+     &                         , rer_shname 
+     &                         , varb1_shname
+     &                         , varb2_shname
+     &                         , vbt_shname
 !
-      integer  ,dimension(2)              :: cbdim, pardim
+      integer  ,dimension(2)              :: cbdim 
       integer  ,dimension(2)              :: stpar, prcnt
-      integer  ,dimension(3)              :: dim2
       integer  ,dimension(3)              :: star2, coun2
-      integer  ,dimension(4)              :: dim
       integer  ,dimension(4)              :: start, count
       integer                         :: id1,id1_1,id1_2,id2,id2_1
      &                                 , id3,id3_1,id4,id2d1,id2d2,id2d3
      &                                 , id0_1,id0_2,id0_3,idcb
       integer                             :: timeid,idtime, icdf
 !
-      integer                 :: IREG,ISPEC,ICOOC
       integer                 :: lonid,latid,depthid,nvid
       integer                 :: idlon,idlat,iddepth
       integer                 :: ncid,status
-      integer                 :: OLDMOD
 !
       im = im4
       jm = jm4
