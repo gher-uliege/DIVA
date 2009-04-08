@@ -22,7 +22,7 @@
         integer*4   :: im4,jm4 
 !!        integer   :: im4,jm4 
         integer     :: one,two,foor,ttime_len,km ,time_len,ipar,im,jm
-     &              , three, valexc 
+     &              , three
         integer     :: L_file_name,L_var_shname,L_var_lgname,
      &  L_var_units,L_vrb_units,L_title_string,L_cellmeth,L_Ref_time,
      &  L_INSTITUT,L_PRODUCTION,L_SOURCE,L_COMMENT
@@ -33,7 +33,7 @@
      &            var2_min,var2_max,verel_min,verel_max,
      &            vbt1_min,vbt1_max,vbt2_min,vbt2_max,
      &            obin_min,obin_max,rl_min,rl_max
-        real*4                              :: hrss,time_val
+        real*4                              :: hrss,time_val, valexc
 !
         real*4  ,dimension(im4,jm4,km)        :: var, var1, var2
      &                                       , Verr,reler,dbins
