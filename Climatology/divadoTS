@@ -1,0 +1,418 @@
+#!/bin/bash
+#
+##########################################
+WDIR=$(pwd)
+echo Working in $WDIR
+
+DIVADIR="../../DIVA3D"
+
+FILENAME=driver
+{
+read isextractcomm
+read isextractf
+read iscontourcomm
+read iscontour
+read isdatacleancomm
+read isdataclean
+read minimumdatanumbercomm
+read mindata
+read isoptimisecomm
+read isoptimise
+read CLMINcomm
+read CLMIN
+read CLMAXcomm
+read CLMAX
+read SNMINcomm
+read SNMIN
+read SNMAXcomm
+read SNMAX
+read isanalysiscomm
+read isanalysis
+read lowerlevelcomm
+read minlevel
+read upperlevelcomm
+read upperlevel
+read referencecomm
+read referenceflag
+read isplotcomm
+read isplot
+} < $FILENAME
+
+#
+  Fileinf=./input/Stabinfo
+if [ -f "$FILENAME" ]
+then
+{
+read commentsalvar
+read psal
+read commenttempvar
+read temp
+read commentRelativeError1
+read epsilon1
+read commentRelativeError2
+read epsilon2
+read Relativewidthfooprint
+read widthfooprint
+read commentcombinationfactor
+read factorcombin
+read commentMaximumiteration
+read maxit
+} < $Fileinf
+else
+echo DIVAERRS2 divadoTS71 Missing file $FILENAME
+echo Please provide information file $FILENAME
+exit
+fi
+#
+
+FILENAME=./input/NCDFinfo_salinity
+
+if [ -f "$FILENAME" ]
+then
+
+{
+read longnamesalcomm
+read longsalname
+read salunitscomm
+read longsalunit
+read titlecomm_sal
+read titlestr_sal
+read reftimecomm_sal
+read reftimestr_sal
+read valtimecomm_sal
+read valtimestr_sal
+read cellmethcomm_sal
+read cellmethstr_sal
+read institcomm_sal
+read institstr_sal
+read produccomm_sal
+read producstr_sal
+read sourcecomm_sal
+read sourcestr_sal
+read commentcomm_sal
+read commentstr_sal
+} < $FILENAME
+else
+echo DIVAERRS2 divadoTS Missing file $FILENAME
+echo Please provide information file $FILENAME
+exit
+fi
+
+FILENAME=./input/NCDFinfo_temperature
+
+if [ -f "$FILENAME" ]
+then
+
+{
+read longnametmpcomm
+read longtmpname
+read tempunitscomm
+read longtmpunit
+read titlecomm_temp
+read titlestr_temp
+read reftimecomm_temp
+read reftimestr_temp
+read valtimecomm_temp
+read valtimestr_temp
+read cellmethcomm_temp
+read cellmethstr_temp
+read institcomm_temp
+read institstr_temp
+read produccomm_temp
+read producstr_temp
+read sourcecomm_temp
+read sourcestr_temp
+read commentcomm_temp
+read commentstr_temp
+} < $FILENAME
+else
+echo DIVAERRS2 divadoTS Missing file $FILENAME
+echo Please provide information file $FILENAME
+exit
+fi
+
+maxlevel=$(cat ./input/contour.depth | wc -l)
+##
+
+
+sGMIN="0"
+sGMAX="40"
+FILENAME=Salinity.bounds
+
+if [ -f "$FILENAME" ] 
+then
+
+{
+read GMINcomm
+read sGMIN
+read GMAXcomm
+read sGMAX
+} < $FILENAME
+fi
+
+
+tGMIN="-1"
+tGMAX="30"
+FILENAME=Temperature.bounds
+if [ -f "$FILENAME" ] 
+then
+{
+read GMINcomm
+read tGMIN
+read GMAXcomm
+read tGMAX
+} < $FILENAME
+fi
+
+if [ -f ./Salinity.longname ]
+then
+{
+read longsalname
+} < ./Salinity.longname
+fi
+
+if [ -f ./Salinity.units ]
+then
+{
+read longsalunit
+} < ./Salinity.units
+fi
+
+if [ -f ./Temperature.longname ]
+then
+{
+read longtmpname
+} < ./Temperature.longname
+fi
+
+if [ -f ./Temperature.units ]
+then
+{
+read longtmpunit
+} < ./Temperature.units
+fi
+
+#
+# Prepare infofiles and run divaSTB
+
+rm  ${DIVADIR}/divastripped/input/*
+rm  ${DIVADIR}/divastripped/input/*/*
+rm  ${DIVADIR}/divastripped/output/*
+rm  ${DIVADIR}/divastripped/output/*/*
+rm  ${DIVADIR}/divastripped/output/*/*/*
+rm  ${DIVADIR}/divastripped/output/*/*/*/*
+rm  ${DIVADIR}/divastripped/divawork/*
+
+cp -r ./input/* ${DIVADIR}/divastripped/input
+
+if [ -f ${var}.pal ]
+then
+echo using local palette for plotting
+cp -v ${var}.pal ${DIVADIR}/divastripped/gnuwork/analysis.pal
+else
+echo using default palette for plotting
+cp -v ${DIVADIR}/divastripped/gnuwork/analysis.pal.default ${DIVADIR}/divastripped/gnuwork/analysis.pal
+fi
+
+cd ${DIVADIR}/divastripped/
+
+mkdir -p ./input/divadata
+mkdir -p ./input/divaparam
+mkdir -p ./input/divaUVcons
+mkdir -p ./output/3Danalysis
+
+#############################################################
+
+# write 3Dinfo for psal
+
+echo ! Variable  > ./input/3Dinfosalinity
+echo $psal >> ./input/3Dinfosalinity
+echo ! Number of the first level to be processed  >> ./input/3Dinfosalinity
+echo $minlevel >> ./input/3Dinfosalinity
+echo ! Number of the last level to be processed  >> ./input/3Dinfosalinity
+echo $upperlevel >> ./input/3Dinfosalinity
+echo ! coast contour generation  >>  ./input/3Dinfosalinity
+echo $iscontour >> ./input/3Dinfosalinity
+echo ! data cleaning >>  ./input/3Dinfosalinity
+echo $isdataclean >>  ./input/3Dinfosalinity
+echo ! parameters optimisation >>  ./input/3Dinfosalinity
+echo $isoptimise >>  ./input/3Dinfosalinity
+echo ! perform 3D analysis >>  ./input/3Dinfosalinity
+echo $isanalysis >>  ./input/3Dinfosalinity
+echo ! Min value for correlation lenght >> ./input/3Dinfosalinity
+echo $CLMIN  >> ./input/3Dinfosalinity
+echo ! Max value for correlation lenght >> ./input/3Dinfosalinity
+echo $CLMAX >> ./input/3Dinfosalinity
+echo ! Min value for S/N >> ./input/3Dinfosalinity
+echo $SNMIN >> ./input/3Dinfosalinity
+echo ! Max value for S/N >> ./input/3Dinfosalinity
+echo $SNMAX >> ./input/3Dinfosalinity
+echo !gp >>  ./input/3Dinfosalinity
+echo $isplot >>  ./input/3Dinfosalinity
+echo !gp >>  ./input/3Dinfosalinity
+echo $sGMIN >>  ./input/3Dinfosalinity
+echo !gp >>  ./input/3Dinfosalinity
+echo $sGMAX >>  ./input/3Dinfosalinity
+echo $titlecomm_sal >> ./input/3Dinfosalinity
+echo $titlestr_sal >> ./input/3Dinfosalinity
+echo ! Variable long name string >> ./input/3Dinfosalinity
+echo "'"${longsalname}"'" >> ./input/3Dinfosalinity
+echo ! variable units string >> ./input/3Dinfosalinity
+echo "'"${longsalunit}"'" >> ./input/3Dinfosalinity
+echo !pararam clim >> ./input/3Dinfosalinity
+echo 1 >> ./input/3Dinfosalinity
+echo $reftimecomm_sal >> ./input/3Dinfosalinity
+echo $reftimestr_sal >> ./input/3Dinfosalinity
+echo $valtimecomm_sal >> ./input/3Dinfosalinity
+echo $valtimestr_sal >> ./input/3Dinfosalinity
+echo $cellmethcomm_sal >> ./input/3Dinfosalinity
+echo $cellmethstr_sal >> ./input/3Dinfosalinity
+echo $institcomm_sal >> ./input/3Dinfosalinity
+echo $institstr_sal >> ./input/3Dinfosalinity
+echo $produccomm_sal >> ./input/3Dinfosalinity
+echo $producstr_sal >> ./input/3Dinfosalinity
+echo $sourcecomm_sal >> ./input/3Dinfosalinity
+echo $sourcestr_sal >> ./input/3Dinfosalinity
+echo $commentcomm_sal >> ./input/3Dinfosalinity
+echo $commentstr_sal >> ./input/3Dinfosalinity
+
+
+###################################################################
+
+# write 3Dinfo for psal
+
+echo ! Variable  > ./input/3Dinfotemper
+echo $temp >> ./input/3Dinfotemper
+echo ! Number of the first level to be processed  >> ./input/3Dinfotemper
+echo $minlevel >> ./input/3Dinfotemper
+echo ! Number of the last level to be processed  >> ./input/3Dinfotemper
+echo $upperlevel >> ./input/3Dinfotemper
+echo ! coast contour generation  >>  ./input/3Dinfotemper
+echo $iscontour >> ./input/3Dinfotemper
+echo ! data cleaning >>  ./input/3Dinfotemper
+echo $isdataclean >>  ./input/3Dinfotemper
+echo ! parameters optimisation >>  ./input/3Dinfotemper
+echo $isoptimise >>  ./input/3Dinfotemper
+echo ! perform 3D analysis >>  ./input/3Dinfotemper
+echo $isanalysis >>  ./input/3Dinfotemper
+echo ! Min value for correlation lenght >> ./input/3Dinfotemper
+echo $CLMIN  >> ./input/3Dinfotemper
+echo ! Max value for correlation lenght >> ./input/3Dinfotemper
+echo $CLMAX >> ./input/3Dinfotemper
+echo ! Min value for S/N >> ./input/3Dinfotemper
+echo $SNMIN >> ./input/3Dinfotemper
+echo ! Max value for S/N >> ./input/3Dinfotemper
+echo $SNMAX >> ./input/3Dinfotemper
+echo !gp >>  ./input/3Dinfotemper
+echo $isplot >>  ./input/3Dinfotemper
+echo !gp >>  ./input/3Dinfotemper
+echo $sGMIN >>  ./input/3Dinfotemper
+echo !gp >>  ./input/3Dinfotemper
+echo $tGMAX >>  ./input/3Dinfotemper
+echo $titlecomm_temp >> ./input/3Dinfotemper
+echo $titlestr_temp >> ./input/3Dinfotemper
+echo ! Variable long name string >> ./input/3Dinfotemper
+echo "'"${longtmpname}"'" >> ./input/3Dinfotemper
+echo ! variable units string >> ./input/3Dinfotemper
+echo "'"${longtmpunit}"'" >> ./input/3Dinfotemper
+echo !param clim >> ./input/3Dinfotemper
+echo 1 >> ./input/3Dinfotemper
+echo $reftimecomm_temp >> ./input/3Dinfotemper
+echo $reftimestr_temp >> ./input/3Dinfotemper
+echo $valtimecomm_temp >> ./input/3Dinfotemper
+echo $valtimestr_temp >> ./input/3Dinfotemper
+echo $cellmethcomm_temp >> ./input/3Dinfotemper
+echo $cellmethstr_temp >> ./input/3Dinfotemper
+echo $institcomm_temp >> ./input/3Dinfotemper
+echo $institstr_temp >> ./input/3Dinfotemper
+echo $produccomm_temp >> ./input/3Dinfotemper
+echo $producstr_temp >> ./input/3Dinfotemper
+echo $sourcecomm_temp >> ./input/3Dinfotemper
+echo $sourcestr_temp >> ./input/3Dinfotemper
+echo $commentcomm_temp >> ./input/3Dinfotemper
+echo $commentstr_temp >> ./input/3Dinfotemper
+#
+
+###################################################################
+
+# write STBinfo file
+
+echo ! Code name for salinity variable > ./input/STBinfo
+echo $psal >> ./input/STBinfo
+echo ! Code name for temperature variable >> ./input/STBinfo
+echo $temp >> ./input/STBinfo >> ./input/STBinfo
+echo ! Number of the first level to be processed  >> ./input/STBinfo
+echo $minlevel >> ./input/STBinfo >> ./input/STBinfo
+echo ! Number of the last level to be processed >> ./input/STBinfo
+echo $upperlevel >> ./input/STBinfo >> ./input/STBinfo
+echo ! Number of the surface level >> ./input/STBinfo
+echo $maxlevel >> ./input/STBinfo
+echo "!Relative Error 1 (epsilon1)" >> ./input/STBinfo
+echo $epsilon1 >> ./input/STBinfo
+echo "!Relative Error 2 (epsilon2)" >> ./input/STBinfo
+echo $epsilon2 >> ./input/STBinfo
+echo !Relative width fooprint >> ./input/STBinfo
+echo $widthfooprint >> ./input/STBinfo
+echo !Variational-Mixing combination factor >> ./input/STBinfo
+echo $factorcombin >> ./input/STBinfo
+echo !Maximum iteration permited for each level >> ./input/STBinfo
+echo $maxit >> ./input/STBinfo
+echo ! Gnuplot param >>  ./input/STBinfo
+echo 0 >>  ./input/STBinfo
+echo !Salinity minimum value for gnuplot plots >>  ./input/STBinfo
+echo 0 >>  ./input/STBinfo
+echo !Salinity maximum value for gnuplot plots >>  ./input/STBinfo
+echo 40 >>  ./input/STBinfo
+echo !Temperature minimum value for gnuplot plots >>  ./input/STBinfo
+echo 0 >>  ./input/STBinfo
+echo !Temperature maximum value for gnuplot plots >>  ./input/STBinfo
+echo 35 >>  ./input/STBinfo
+echo $titlecomm_sal >> ./input/STBinfo
+echo $titlestr_sal >> ./input/STBinfo
+echo ! Variable long name string >> ./input/STBinfo
+echo "'"${longsalname}"'" >> ./input/STBinfo
+echo ! variable units string >> ./input/STBinfo
+echo "'"${longsalunit}"'" >> ./input/STBinfo
+echo !pararam clim >> ./input/STBinfo
+echo 1 >> ./input/STBinfo
+echo $reftimecomm_sal >> ./input/STBinfo
+echo $reftimestr_sal >> ./input/STBinfo
+echo $valtimecomm_sal >> ./input/STBinfo
+echo $valtimestr_sal >> ./input/STBinfo
+echo $cellmethcomm_sal >> ./input/STBinfo
+echo $cellmethstr_sal >> ./input/STBinfo
+echo $titlecomm_temp >> ./input/STBinfo
+echo $titlestr_temp >> ./input/STBinfo
+echo ! Variable long name string >> ./input/STBinfo
+echo "'"${longtmpname}"'" >> ./input/STBinfo
+echo ! variable units string >> ./input/STBinfo
+echo "'"${longtmpunit}"'" >> ./input/STBinfo
+echo !pararam clim >> ./input/STBinfo
+echo 1 >> ./input/STBinfo
+echo $reftimecomm_temp >> ./input/STBinfo
+echo $reftimestr_temp >> ./input/STBinfo
+echo $valtimecomm_temp >> ./input/STBinfo
+echo $valtimestr_temp >> ./input/STBinfo
+echo $cellmethcomm_temp >> ./input/STBinfo
+echo $cellmethstr_temp >> ./input/STBinfo
+echo $institcomm_temp >> ./input/STBinfo
+echo $institstr_temp >> ./input/STBinfo
+echo $produccomm_temp >> ./input/STBinfo
+echo $producstr_temp >> ./input/STBinfo
+echo $sourcecomm_temp >> ./input/STBinfo
+echo $sourcestr_temp >> ./input/STBinfo
+echo $commentcomm_temp >> ./input/STBinfo
+echo $commentstr_temp >> ./input/STBinfo
+#
+./divaTSdress
+#
+echo now saving needs to be done
+mkdir -p ${WDIR}/output
+mkdir -p ${WDIR}/newinput
+cp -r ${DIVADIR}/divastripped/output/* ${WDIR}/output
+cp -r ${DIVADIR}/divastripped/input/* ${WDIR}/newinput
+
+
+cd $WDIR
+
+#
