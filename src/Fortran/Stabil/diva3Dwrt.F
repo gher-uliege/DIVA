@@ -5,14 +5,14 @@
 !
 !---------------------------------------------------------------------!
 !
-      INTEGER :: istep,MINLEV,MAXLEV
-      INTEGER :: ichge
+      INTEGER :: ivar, istep,MINLEV,MAXLEV
+      INTEGER :: step,ichge
 !
       real*8                           :: W8
       REAL*4, DIMENSION(:) ,    ALLOCATABLE :: U,U3,W3
 !
       REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: z_watercolumn
-     &                                      ,  dep
+     &                                      ,  Z, dep
       REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: XLON,YLAT
      &                                     , VALEXU,CORLEN,SN,VARBAK
 !
@@ -29,13 +29,13 @@
       integer,DIMENSION(:,:,:),  ALLOCATABLE :: mask,mask1,mask2,masker
 !
       integer            :: i,j,k,klev,ic,top_lev,kuw,kwu,ipar,iparpar
-      integer                   :: NX, NY, NK, chlen, iun
+      integer                   :: NX, NY, NK, ndata, nl,chlen,iun
       integer*4                 :: KMAX, ipr, nw, IMAX, JMAX
 !!      integer                 :: KMAX, ipr, nw, IMAX, JMAX
       integer                   :: ICOOC, IREG, ISPEC
       integer                   :: nm,xm1,xm2,xy1,xy2
 !
-      real*4                     :: time_val,VALEXC,
+      real*4                     :: zz, time_val,VALEXC,
      &              var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
      &              vbt_min,vbt_max,var1_min,var1_max,
      &              vbt1_min,vbt1_max,vbt2_min,vbt2_max,
@@ -44,7 +44,7 @@
 !
       real*4                     :: xorig, yorig, dx, dy, xend, yend
 !
-      CHARACTER (len=255)        :: divafile
+      CHARACTER (len=255)        :: divafile,comments
       CHARACTER (len=16)         :: EXECIN
       CHARACTER (len=22)         :: DEPTHS
       CHARACTER (len=99)         :: VARFILEIN
@@ -68,39 +68,39 @@
 !
       EXECIN='../input/3Dinfo'
       OPEN(2,FILE=EXECIN,STATUS='OLD')
-      READ(2,*)
+      READ(2,*)! comments
       READ(2,*) var_shname
-      READ(2,*)
+      READ(2,*)! comments
       READ(2,*) MINLEV
-      READ(2,*)
+      READ(2,*)! comments
       READ(2,*) MAXLEV
-      READ(2,*) 
-      READ(2,*) 
-      READ(2,*) 
-      READ(2,*) 
-      READ(2,*) 
-      READ(2,*) 
-      READ(2,*) 
-      READ(2,*) 
-      READ(2,*) 
-      READ(2,*) 
-      READ(2,*) 
-      READ(2,*) 
-      READ(2,*) 
-      READ(2,*) 
-      READ(2,*) 
-      READ(2,*) 
-      READ(2,*) 
-      READ(2,*) 
-      READ(2,*) 
-      READ(2,*) 
-      READ(2,*) 
-      READ(2,*) 
-      READ(2,*) 
+      READ(2,*) ! comments
+      READ(2,*) ! comments
+      READ(2,*) ! comments
+      READ(2,*) ! comments
+      READ(2,*) ! comments
+      READ(2,*) ! comments
+      READ(2,*) ! comments
+      READ(2,*) ! comments
+      READ(2,*) ! comments
+      READ(2,*) ! comments
+      READ(2,*) ! comments
+      READ(2,*) ! comments
+      READ(2,*) ! comments
+      READ(2,*) ! comments
+      READ(2,*) ! comments
+      READ(2,*) ! comments
+      READ(2,*) ! comments
+      READ(2,*) ! comments
+      READ(2,*) ! comments
+      READ(2,*) ! comments
+      READ(2,*) ! comments
+      READ(2,*) ! comments
+      READ(2,*) ! comments
       READ(2,*) title_string
-      READ(2,*) 
+      READ(2,*) !comments
       READ(2,*) var_lgname
-      READ(2,*) 
+      READ(2,*) !comments
       READ(2,*) var_units
       IF(iparpar == 34) then
         time_val = 0.
@@ -117,21 +117,21 @@
         SOURCE = 'Not specified'
         COMMENT = 'Not specified'
       ELSE
-        READ(2,*)
+        READ(2,*)! comments
         READ(2,*) ipar
-          READ(2,*)
+          READ(2,*)! comments
           READ(2,*) Ref_time
-          READ(2,*)
+          READ(2,*)! comments
           READ(2,*) time_val
-          READ(2,*)
+          READ(2,*)! comments
           READ(2,*) cellmeth
-          READ(2,*)
+          READ(2,*)! comments
           READ(2,*) INSTITUT
-          READ(2,*)
+          READ(2,*)! comments
           READ(2,*) PRODUCTION
-          READ(2,*)
+          READ(2,*)! comments
           READ(2,*) SOURCE
-          READ(2,*)
+          READ(2,*)! comments
           READ(2,*) COMMENT
           clbnds = 0.
           CLOSE(2)
@@ -248,23 +248,23 @@
                 ENDIF
               ENDIF
             ENDIF
-            READ(2,*)
+            READ(2,*)! comments
             READ(2,*) CORLEN(klev)
-            READ(2,*)
+            READ(2,*)! comments
             READ(2,*) ICOOC
-            READ(2,*)
+            READ(2,*)! comments
             READ(2,*) ISPEC
-            READ(2,*)
+            READ(2,*)! comments
             READ(2,*) IREG
             DO i = 1,6
-               READ(2,*)
-               READ(2,*)
+               READ(2,*)! comments
+               READ(2,*)! comments
             ENDDO
-            READ(2,*)
+            READ(2,*)! comments
             READ(2,*) VALEXU(klev)
-            READ(2,*)
+            READ(2,*)! comments
             READ(2,*) SN(klev)
-            READ(2,*) 
+            READ(2,*)! comments
             READ(2,*) VARBAK(klev)
             CLOSE(2)
          ENDDO
@@ -747,28 +747,30 @@
       WRITE(file_name,'(
      &a,".1",i4.4,".1",i4.4,".anl.nc")')TRIM(var_shname),MINLEV,MAXLEV
 
-      IF(ipar == 1) then
-      chlen = 1
-      DO while(var_shname(chlen:chlen) .ne. ' ') 
-         chlen = chlen + 1
-      ENDDO
-      chlen = chlen - 1
-      var_name = var_shname(1:chlen-5)
-      ELSE
-      var_name = TRIM(var_shname)
-      ENDIF
+!xx      IF(ipar == 1) then
+!xx      chlen = 1
+!xx      DO while(var_shname(chlen:chlen) .ne. ' ') 
+!xx         chlen = chlen + 1
+!xx      ENDDO
+!xx      chlen = chlen - 1
+!xx      var_name = var_shname(1:chlen-5)
+!xx      ELSE
+!xx      var_name = TRIM(var_shname)
+!xx      ENDIF
 !
-      var_cfname = var_shname
+!xx      var_cfname = var_shname
       IF(ipar == 1) then
       chlen = 1
       DO while(var_shname(chlen:chlen) .ne. ' ')
-         IF(var_shname(chlen:chlen) .eq. '.') 
-     &             WRITE(var_cfname(chlen:chlen),'("_")')
+!xx         IF(var_shname(chlen:chlen) .eq. '.') 
+!xx     &             WRITE(var_cfname(chlen:chlen),'("_")')
          chlen = chlen + 1
       ENDDO
       chlen = chlen - 1
       var_name = var_shname(1:chlen-5)
+      var_cfname = var_shname(1:chlen-14)
       ELSE
+      var_cfname = var_shname
       var_name = TRIM(var_shname)
       ENDIF
 !
@@ -818,7 +820,7 @@
       iun=1
       CALL NC_4DCLIM(IMAX, JMAX,nk,ipar,iun,time_val,clbnds,
      &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
-     &  xlon,ylat,dep,CORLEN,SN,VARBAK,
+     &  xlon,ylat,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
      &  var_min,var_max,vbt_min,vbt_max,ver_min,ver_max,dbin_min,
      &  dbin_max,var1_min,var1_max,var2_min,var2_max,verel_min,
      &  verel_max,vbt1_min,vbt1_max,vbt2_min,vbt2_max,
@@ -876,8 +878,6 @@
 !
 
         subroutine jmbround(x1,x2,x1r,x2r)
-        real*4 :: x1,x2,x1r,x2r,ip
-        integer :: i1neg,i2neg,i1s,i2s
         if(x1.ge.x2) then
 !        write(6,*) 'Sorry only for range'
         x1r=x1

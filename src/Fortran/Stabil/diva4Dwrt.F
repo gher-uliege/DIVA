@@ -5,8 +5,10 @@
 !
 !--------------------------------------------------------------------!
 !
-      INTEGER :: MINLEV,MAXLEV
-      INTEGER :: ipar
+      INTEGER :: ivar, istep,MINLEV,MAXLEV
+      INTEGER :: step,ipar
+!
+      DOUBLE PRECISION :: lon,lat,val
 !
       integer , DIMENSION(:) ,  ALLOCATABLE :: flags
       REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: dep
@@ -21,17 +23,18 @@
      &                                        , verr,reler,dbins
      &                                        , obins,rlfield
 !
-      integer                   :: i,j,top_lev,time_len
+      integer                   :: i,j,k,klev,ic,top_lev,kuw,time_len
      &                           , list_len
-      integer                   :: NX, NY, NK, ivars,chlen
-      integer*4                 :: IMAX, JMAX
+      integer                   :: NX, NY, NK, ndata, nl, ivars,chlen
+      integer*4                 :: KMAX, ipr, nw, IMAX, JMAX
+      integer                   :: ICOOC, IREG, ISPEC
 !
-      real*4                     :: VALEXC, time_val,
+      real*4                     :: VALEXC, zz,time_val,
      &              var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
      &              vbt_min,vbt_max,var1_min,var1_max,
      &              vbt1_min,vbt1_max,vbt2_min,vbt2_max,
      &              var2_min,var2_max,verel_min,verel_max,
-     &             obin_min,obin_max,rl_min,rl_max
+     &             obin_min,obin_max,rl_min,rl_max,x,y,xr,yr
       real*4                     ::
      &              var_min0,var_max0,ver_min0,ver_max0,dbin_min0,
      &              vbt_min0,vbt_max0,var1_min0,var1_max0,dbin_max0,
@@ -43,12 +46,14 @@
 !
       CHARACTER (len=255)        :: divafile,comments
       CHARACTER (len=20)         :: EXECIN
-      CHARACTER (len=255)        :: file_name, file_name2
+      CHARACTER (len=22)         :: DEPTHS
+      CHARACTER (len=99)         :: VARFILEIN
+      CHARACTER (len=255)        :: file_name, file_name2, ncliste
       character (len=255)        :: title_string,cellmeth
      &                            , INSTITUT, PRODUCTION
      &                            , SOURCE, COMMENT
       character (len=30)         :: Ref_time
-      CHARACTER (len=99)         :: var_shname, var_name
+      CHARACTER (len=99)         :: var_shname, var_cfname, var_name
       character (len=99)         :: var_lgname
       character (len=5)          :: chname
       character (len=20)         :: var_units,vrb_units
@@ -214,7 +219,7 @@
 !
       CALL NC_RD3DCL(imax,jmax,nk,ipar,time_val,clbnds(1:2,ivars),
      &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
-     &  xlon,ylat,dep,CORLEN,SN,VARBAK,
+     &  xlon,ylat,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
      &  var_min,var_max,vbt_min,vbt_max,ver_min,ver_max,dbin_min,
      &  dbin_max,var1_min,var1_max,var2_min,var2_max,verel_min,
      &  verel_max,vbt1_min,vbt1_max,vbt2_min,vbt2_max,
@@ -277,14 +282,14 @@
 !
       CALL NC_4DCLIM(imax,jmax,nk,ipar,time_len,time_val,clbnds,
      &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
-     &  xlon,ylat,dep,CORLEN,SN,VARBAK,
+     &  xlon,ylat,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
      &  var_min0,var_max0,vbt_min0,vbt_max0,ver_min0,ver_max0,
      &  dbin_min0,dbin_max0,var1_min0,var1_max0,var2_min0,var2_max0,
      &  verel_min0,verel_max0,vbt1_min0,vbt1_max0,vbt2_min0,vbt2_max0,
      &  obin_min0,obin_max0,rl_min,rl_max,
      &  VALEXC,l_units,
      &  LEN_TRIM(file_name2),TRIM(file_name2),
-     &  LEN_TRIM(var_name),TRIM(var_name),
+     &  LEN_TRIM(var_shname_l(ivars)),TRIM(var_shname_l(ivars)),
      &  LEN_TRIM(var_lgname),TRIM(var_lgname),
      &  LEN_TRIM(var_units),TRIM(var_units),
      &  LEN_TRIM(vrb_units),TRIM(vrb_units),

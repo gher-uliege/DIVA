@@ -11,7 +11,7 @@
 !
       REAL    :: rmin,rmax
 !
-      CHARACTER (len=8)                :: VARFILEIN
+      CHARACTER (len=8)                :: VARFILEIN,comments
       CHARACTER (len=15)               :: EXECIN
       CHARACTER (len=31)               :: VARFINFO
 !------------------------------------------------------------
@@ -21,11 +21,11 @@
 !
       EXECIN='../input/3Dinfo'
       OPEN(2,FILE=EXECIN,STATUS='OLD')
-      READ(2,*)
-      READ(2,*)
-      READ(2,*)
+      READ(2,*)! comments
+      READ(2,*)! comments
+      READ(2,*)! comments
       READ(2,*) MINLEV
-      READ(2,*)
+      READ(2,*)! comments
       READ(2,*) MAXLEV
       CLOSE(2)
 !

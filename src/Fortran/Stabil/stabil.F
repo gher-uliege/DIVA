@@ -77,7 +77,7 @@
       CHARACTER (len=99)                :: DATAFILE
       CHARACTER (len=99), DIMENSION(2)  :: var_name
 !
-      CHARACTER (len=16)                :: REPORT
+      CHARACTER (len=22)                :: REPORT
       LOGICAL                           :: exist
 !
 !--------------------------------------------------------------
@@ -113,10 +113,10 @@
      &'(a,".1",i4.4,".analysis")')TRIM(var_name(1)),MINLEV
       WRITE(DATAFILE,
      &'(a,".1",i4.4)')TRIM(var_name(1)),MINLEV
-      REPORT    = 'info.1xxxx.1xxxx'
+      REPORT    = 'stbinfo.1xxxx.1xxxx'
 !
 ! reading grid data
-      file_name = '../output/3Danalysis/STABOUT/analysis/GridInfo.dat'
+      file_name = '../output/3Danalysis/Fields/GridInfo.dat'
       open(unit=90,file=file_name)
       read(90,*) xorig
       read(90,*) yorig
@@ -161,12 +161,24 @@
       DEPTHS='../input/contour.depth'
       OPEN(2,FILE=DEPTHS,STATUS='OLD')
       nl = 1
- 1    continue
-      read(2,*,err=99,end=99) z_watercolumn(nl)
-      nl=nl+1
-      goto 1
+
+!
+      DEPTHS='../input/contour.depth'
+      OPEN(2,FILE=DEPTHS,STATUS='OLD')
+      do i=1,MAXLEV
+      read(2,*,err=99,end=99) z_watercolumn(i) 
+      enddo
  99   continue
       CLOSE(2)
+
+
+
+!x 1    continue
+!x      read(2,*,err=99,end=99) z_watercolumn(nl)
+!x      nl=nl+1
+!x      goto 1
+!x 99   continue
+!x      CLOSE(2)
 !
 ! reading loop state prameters
       EXECIN='infoloop'
@@ -177,7 +189,8 @@
       READ(2,*) iflag
       CLOSE(2)
 !
-      WRITE(REPORT,'("info.1",i4.4,".1",i4.4)')layer,layer+1
+!
+      WRITE(REPORT,'("stbinfo.1",i4.4,".to.1",i4.4)')layer,layer+1
 !
       istep = layer + 1
 !
@@ -252,7 +265,7 @@
         WRITE(VARFINFO,
      &'(a,".1",i4.4,".info")')TRIM(var_name(ivar)),istep
         WRITE(file_name,
-     &'("./data/",a)')TRIM(VARFINFO)
+     &'("../input/divadata/",a)')TRIM(VARFINFO)
 !
             OPEN(12,FILE=file_name)
              read(12,*)! comments
@@ -264,9 +277,9 @@
             ENDIF
 !
         WRITE(VARFILEIN,
-     &'(a,".1",i4.4,".analysis")')TRIM(var_name(ivar)),istep
+     &'(a,".1",i4.4,".anl")')TRIM(var_name(ivar)),istep
         WRITE(file_name,
-     &'("../output/3Danalysis/STABOUT/analysis/",a)')TRIM(VARFILEIN)
+     &'("../output/3Danalysis/Fields/",a)')TRIM(VARFILEIN)
 !
            close(84)
            open (unit=84,file=file_name,form='unformatted')
@@ -334,7 +347,7 @@
        close(17)
 !
        CALL albesi
-     &  (valexu,nx,ny,nk,mask,dep,psal,temp,alpha,beta,RHO)
+     &  (valexu,nx,ny,2,mask,dep,psal,temp,alpha,beta,RHO)
 !
        open (unit=21,file='fort.21')
            write(21,*) alpha
@@ -404,13 +417,6 @@
 !
       IF(iter > maxit .OR. iflag >= 2) THEN
 !
-       if(itrack == 1) then
-          CALL NC_OUTLEV1(layer,iter,itrack,temp(:,:,1),psal(:,:,1)
-     &                 ,N2(:,:,1),dsigma,xlon,ylat,IMAX,JMAX,valexu)
-       endif
-          CALL NC_OUTLEV2(layer+1,iter,itrack,temp(:,:,2),psal(:,:,2)
-     &                 ,N2(:,:,1),dsigma,xlon,ylat,IMAX,JMAX,valexu)
-!
           write(12,*)' adddata finished performing for processing ',
      &itrack
           write(12,*)'positive N2 rms = ',rmsp
@@ -445,7 +451,7 @@
           WRITE(VARFILEIN,
      &'(a,".1",i4.4,".error")')TRIM(var_name(ivar)),istep
           WRITE(file_name,
-     &'("../output/3Danalysis/STABOUT/analysis/",a)')TRIM(VARFILEIN)
+     &'("../output/3Danalysis/Fields/",a)')TRIM(VARFILEIN)
 !
            close(84)
            open (unit=84,file=file_name,form='unformatted')
@@ -500,13 +506,6 @@
 !
       IF(rmsn <= relerr1*N2R .AND. ABS(NN2_max) <= relerr2*N2R
      &                      .OR. iflag >= 2) THEN
-!
-       if(itrack == 1) then
-          CALL NC_OUTLEV1(layer,iter,itrack,temp(:,:,1),psal(:,:,1)
-     &                 ,N2(:,:,1),dsigma,xlon,ylat,IMAX,JMAX,valexu)
-       endif
-          CALL NC_OUTLEV2(layer+1,iter,itrack,temp(:,:,2),psal(:,:,2)
-     &                 ,N2(:,:,1),dsigma,xlon,ylat,IMAX,JMAX,valexu)
 !
 
 !
@@ -572,23 +571,12 @@
         erc1 = 0.5*(SUM(ert(i1:i2,j1:j2,1))+SUM(ers(i1:i2,j1:j2,1)))
         erc2 = 0.5*(SUM(ert(i1:i2,j1:j2,2))+SUM(ers(i1:i2,j1:j2,2)))
         if( erc2 .lt. erc1) ij_lay(ii,jj) = 1
-
-        write(*,*) 'level iter ',layer,iter
-        write(*,*) 'erc2  erc1', ij_lay(ii,jj)
-
       endif
 !
         endif
         ENDDO
       ENDDO
       ik_instabl = ij_instabl
-!
-       if(itrack == 1) then
-          CALL NC_OUTLEV1(layer,iter,itrack,temp(:,:,1),psal(:,:,1)
-     &                 ,N2(:,:,1),dsigma,xlon,ylat,IMAX,JMAX,valexu)
-       endif
-          CALL NC_OUTLEV2(layer+1,iter,itrack,temp(:,:,2),psal(:,:,2)
-     &                 ,N2(:,:,1),dsigma,xlon,ylat,IMAX,JMAX,valexu)
 !
       epsilon4 = relerr1
 !
@@ -767,7 +755,7 @@
       WRITE(VARFINFO,
      &'(a,".1",i4.4,".info")')TRIM(var_name(ivar)),istep
       WRITE(file_name,
-     &'("./data/",a)')TRIM(VARFINFO)
+     &'("../input/divadata/",a)')TRIM(VARFINFO)
 !
       close(84)
       open (unit=84,file=file_name,STATUS='old')
@@ -780,7 +768,7 @@
       WRITE(VARFINFO,
      &'(a,".1",i4.4,".info")')TRIM(var_name(ivar)),istep
       WRITE(file_name,
-     &'("./data/",a)')TRIM(VARFINFO)
+     &'("../input/divadata/",a)')TRIM(VARFINFO)
 !
       close(84)
       open (unit=84,file=file_name,STATUS='old')
@@ -794,7 +782,7 @@
 !
       WRITE(DATAFILE,
      &'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
-      WRITE(file_name,'("./data/"
+      WRITE(file_name,'("../input/divadata/"
      &,a,".1",i4.4)')TRIM(var_name(ivar)),istep
 !
       close(84)
@@ -815,7 +803,7 @@
 !
       WRITE(DATAFILE,
      &'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
-      WRITE(file_name,'("./data/"
+      WRITE(file_name,'("../input/divadata/"
      &,a,".1",i4.4)')TRIM(var_name(ivar)),istep
 !
       close(84)
@@ -856,7 +844,7 @@
       WRITE(VARFINFO,
      &'(a,".1",i4.4,".info")')TRIM(var_name(ivar)),istep
       WRITE(file_name,
-     &'("./data/",a)')TRIM(VARFINFO)
+     &'("../input/divadata/",a)')TRIM(VARFINFO)
 !
       close(84)
       open (unit=84,file=file_name,STATUS='old')
@@ -869,7 +857,7 @@
       WRITE(VARFINFO,
      &'(a,".1",i4.4,".info")')TRIM(var_name(ivar)),istep
       WRITE(file_name,
-     &'("./data/",a)')TRIM(VARFINFO)
+     &'("../input/divadata/",a)')TRIM(VARFINFO)
 !
       close(84)
       open (unit=84,file=file_name,STATUS='old')
@@ -883,7 +871,7 @@
 !
       WRITE(DATAFILE,
      &'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
-      WRITE(file_name,'("./data/"
+      WRITE(file_name,'("../input/divadata/"
      &,a,".1",i4.4)')TRIM(var_name(ivar)),istep
 !
       open (unit=84,file=file_name,STATUS='old',POSITION='APPEND')
@@ -903,7 +891,7 @@
 !
       WRITE(DATAFILE,
      &'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
-      WRITE(file_name,'("./data/"
+      WRITE(file_name,'("../input/divadata/"
      &,a,".1",i4.4)')TRIM(var_name(ivar)),istep
 !
       open (unit=84,file=file_name,STATUS='old',POSITION='APPEND')
