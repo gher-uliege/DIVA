@@ -144,14 +144,14 @@ if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
 echo A problem was encountered during execution !
-echo          divasumup      sum.a (valex)
+echo '          divasumup      sum.a valex'
 echo Check execution track
 echo --------------------------------------------
 
 echo ' ' >> diva.log
 echo -------------------------------------------- >> diva.log
 echo A problem was encountered during execution ! >> diva.log
-echo          divasumup      sum.a (valex) >> diva.log
+echo '         divasumup      sum.a valex' >> diva.log
 echo Check execution track >> diva.log
 echo -------------------------------------------- >> diva.log
 fi
