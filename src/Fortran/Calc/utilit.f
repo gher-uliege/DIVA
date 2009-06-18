@@ -535,14 +535,23 @@ C
 C=======================================================================
 C     PRODUIT SCALAIRE DES VECTEURS X ET Y DE LONGUEUR N
 C=======================================================================
+
       include'divapre.h'
+      REAL*8 SUM
       DIMENSION X(*),Y(*)
       DATA ZERO/0.0D0/
 C.......................................................................
       SCAL=ZERO
+      SUM=0
 c      write(6,*) 'Prod SCAL',N
-      DO 10 I=1,N
- 10   SCAL=SCAL+X(I)*Y(I)
+
+C$OMP  PARALLEL DO
+C$OMP& REDUCTION(+:SUM) 
+      DO  I=1,N
+       SUM=SUM+(X(I)*Y(I))
+      ENDDO
+C$OMP  END PARALLEL DO 
+      SCAL=SUM
       RETURN
       END
 
