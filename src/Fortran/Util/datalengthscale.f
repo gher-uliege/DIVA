@@ -119,7 +119,7 @@ C
              RDEL=(1-RB)/(RA-1)
              write(6,*) 'RDEL',RDEL,RA,RB,RVAR,RNDATA
              do i=1,NX
-                do j=1,NX
+                do j=1,NY
                 IF(C(i,j).NE.VALEX) then
                 XI=(RN(i,j)-RNDATA)/RVAR
                 xi=max(xi,-5.)
