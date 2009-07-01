@@ -1,0 +1,119 @@
+#!/bin/bash
+#####################################################
+#
+if [ -d  ./output/3Danalysis/ ];then
+echo  ./output/3Danalysis exists
+else
+mkdir -p ./output/3Danalysis/
+fi
+#
+  Fileinf=./input/3Dinfo
+{
+read comment
+read var
+read comment
+read bottm
+read comment
+read surf
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read act
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read gnup
+read comment
+read gmin
+read comment
+read gmax
+} < $Fileinf
+#
+if [ "$gnup" == "1" ]
+then
+mkdir -p ./output/3Danalysis/GnuPlots
+fi
+#
+if [ "$act" == "2" ];then
+if [ -d ./input/divarefe ];then
+echo '>>>WARNING: ./input/divarefe exists, ref files may be rewritten'
+else
+mkdir ./input/divarefe
+fi
+fi
+#
+if [ -d './output/3Danalysis/Fields' ];then
+# mv './output/3Danalysis/Fields' './output/3Danalysis/Fields.save'
+echo './output/3Danalysis/Fields exists'
+fi
+ mkdir -p ./output/3Danalysis/Fields
+#
+if [ -d ./input/divamesh ]; then
+ fmeshe=1
+else
+ mkdir ./input/divamesh
+ fmeshe=0
+fi
+#
+dep=$bottm
+while [ $dep -le $surf ]
+do
+let level=10000+$dep
+#
+echo 'oooooooooooooooooooooooooooooo'
+echo 'diva3Dsub: performing analysis for '$var'.'$level
+echo 'oooooooooooooooooooooooooooooo'
+#
+echo '%%%%%%%%%%%%  analysing '$var'.'$level' %%%%%%%%%%'
+#
+if [ -f ./input/detrendinfo ]; then
+ echo  ./input/detrendinfo found
+ mkdir -p ./output/3Danalysis/DATADETREND
+ trd=1
+else
+ trd=0
+fi
+#
+if [ "$act" == "1" -o  "$act" == "2" ];then
+ ./dv3Drefoanl $level $var $gnup $gmin $gmax $act $trd
+fi
+#
+ dep=`expr $dep + 1`
+done
+#
+if [ "$fmeshe" == "0" ]; then
+cp -r ./input/divamesh  ./output/3Danalysis/Meshes
+fi
+#
+if [ -d ./3DWORK ]; then
+:
+else
+ mkdir -p ./3DWORK
+fi
+cd ./3DWORK/
+#
+#
+if [ -f fort.44 ];then
+rm fort.44
+fi
+#
+nbfls=`cat '../input/3Dinfo' |wc -l`
+echo $nbfls >> ./fort.44
+#
+if [ "$act" == "1" ];then
+../../bin/diva3Dstr.a
+fi
+if [ "$act" == "2" ];then
+../../bin/diva3Dref.a
+fi
+cd ..
