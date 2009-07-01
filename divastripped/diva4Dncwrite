@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+#     WRITES 4D NETCDF FILES
+# 
+#####################################################
+#
+cd ./3DWORK/
+cp ../output/3Danalysis/*.3DNCliste ./3Dncliste
+cp ../output/3Danalysis/*.3DNCinfo ./3DNCinfo
+#
+if [ -f fort.44 ];then
+rm fort.44
+fi
+#
+nbfls=`cat './3Dncliste' |wc -l`
+echo $nbfls >> ./fort.44
+../../bin/diva4Dstr.a
+#
+cd ../
+
