@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+#first layer to be processed
+bottm=$1
+#last layer to be processed
+surf=$2
+temp=$3
+psal=$4
+##########################################
+#
+#
+let lev1=10000+$bottm
+let lev2=10000+$surf
+mv ./output/3Danalysis/$temp'.'$lev1'.'$lev2'.anl.nc' ./output/3Danalysis/$temp'.'$lev1'.'$lev2'.beforstb.nc'
+mv ./output/3Danalysis/$temp'.'$lev1'.'$lev2'.fieldgher.anl' ./output/3Danalysis/$temp'.'$lev1'.'$lev2'.beforstb.anl'
+mv ./output/3Danalysis/$psal'.'$lev1'.'$lev2'.anl.nc' ./output/3Danalysis/$psal'.'$lev1'.'$lev2'.beforstb.nc'
+mv ./output/3Danalysis/$psal'.'$lev1'.'$lev2'.fieldgher.anl' ./output/3Danalysis/$psal'.'$lev1'.'$lev2'.beforstb.anl'
+#
+cp -r ./output/3Danalysis/Fields ./output/3Danalysis/Fields_beforstb
+cp -r ./output/3Danalysis/GnuPlots ./output/3Danalysis/GnuPlots_beforstb

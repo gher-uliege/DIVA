@@ -1,0 +1,59 @@
+#!/bin/bash
+#
+#     prepares diva layers input data
+# 
+#####################################################
+#first layer to be prossessed
+bottm=$1
+#last layer to be prossessed
+surf=$2
+var1=$3
+var2=$4
+#####################################################
+#
+dep=$bottm
+#
+cd ./3DWORK/
+cp ../input/STBinfo .
+#
+DATADir=./data
+#
+if [ -d $DATADir ];then
+rm -rf $DATADir
+fi
+mkdir $DATADir
+#
+if [ -f fort.44 ];then
+rm fort.44
+fi
+#
+let lev=10000+$surf
+#
+cp ../input/divadata/$var1.$lev fort.44
+nbccol=`head -n 1 ./fort.44 | wc -w`
+rm fort.44
+echo $bottm >> ./fort.44
+echo $surf >> ./fort.44
+echo $nbccol >> ./fort.44
+../../bin/datapre.a
+#
+echo $PWD
+ls -ls
+while [ $dep -le $surf ]
+do
+#
+let lev=10000+$dep
+if [ -f  ./data/$var1.$lev ] ; then
+ cp -v ../input/divadata/$var1.$lev  ../input/divadata/$var1.$lev.beforstb
+ cp -v ./data/$var1.$lev ../input/divadata/$var1.$lev
+ cp -v ./data/$var1.$lev.info ../input/divadata/$var1.$lev.info
+fi
+if [ -f  ./data/$var2.$lev ] ; then
+ cp -v ../input/divadata/$var2.$lev  ../input/divadata/$var2.$lev.beforstb
+ cp -v ./data/$var2.$lev ../input/divadata/$var2.$lev
+ cp -v ./data/$var2.$lev.info ../input/divadata/$var2.$lev.info
+fi
+dep=`expr $dep + 1`
+done
+cd ../
+#echo data ready for analysis

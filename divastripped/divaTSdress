@@ -1,0 +1,77 @@
+#!/bin/bash
+#
+##########################################
+if [ -d ./3DWORK ];then
+ rm -rf ./3DWORK/*
+else
+ mkdir ./3DWORK
+fi
+#
+  Fileinf=./input/STBinfo
+{
+read comment
+read psal
+read comment
+read temp
+read comment
+read lay1
+read comment
+read lay2
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read maxit
+} < $Fileinf
+#
+if [ -f  ./input/3Dinfo ]
+then
+rm  ./input/3Dinfo
+fi
+if [ -f ./input/3Dinfosalinity ]
+then
+cp ./input/3Dinfosalinity ./input/3Dinfo
+else
+echo 'DIVAERRS2 divadoTS Missing file 3Dinfo file salinity'
+echo 'Please provide information file 3Dinfosalinity in ./input'
+exit
+fi
+diva3Ddress
+#
+#
+if [ -f  ./input/3Dinfo ]
+then
+rm  ./input/3Dinfo
+fi
+if [ -f ./input/3Dinfotemper ]
+then
+cp ./input/3Dinfotemper ./input/3Dinfo
+else
+echo 'DIVAERRS2 divadoTS Missing file 3Dinfo file temperature'
+echo 'Please provide information file 3Dinfotemper in ./input'
+exit
+fi
+diva3Ddress
+#
+if [ $maxit -ge 1 ];then
+#
+./dvstbdat $lay1 $lay2 $temp $psal
+#
+./dv3d2stb $lay1 $lay2 $temp $psal
+#
+./dvstblize
+#
+cp ./input/3Dinfosalinity ./input/3Dinfo
+diva3Ddress
+#
+cp ./input/3Dinfotemper ./input/3Dinfo
+diva3Ddress
+#
+fi

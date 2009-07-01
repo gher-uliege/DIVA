@@ -1,0 +1,156 @@
+#!/bin/bash
+# 
+#####################################################
+#
+DATADir=./input/divadata/
+ARCHIVES=./output/3Danalysis/Fields
+#
+cd ./3DWORK
+#
+cp ../input/STBinfo .
+#
+ipassg2=2
+ipassg1=1
+while [ $ipassg1 -le $ipassg2 ]
+do
+##
+echo '\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'
+echo '//////////////////////////////////////////////////////'
+echo '             =================================='
+echo '                STABILISATION  TRACK '$ipassg1
+echo '             =================================='
+echo '\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'
+echo '//////////////////////////////////////////////////////'
+#
+rm -f infocoor
+#
+rm -f fort.11
+iflag=0
+echo $iflag >> ./fort.11
+rm -f fort.19
+echo $iflag >> ./fort.19
+#
+  Fileinf=./STBinfo
+{
+read comment
+read temp
+read comment
+read psal
+read comments
+read klev
+read comments
+read flev
+read comments
+read surface_lev
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comments
+read maxit
+} < $Fileinf
+#
+while [ $klev -lt $flev ]
+do
+##
+lay=`expr $klev + 1`
+echo '\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'
+echo '//////////////////////////////////////////////////////'
+echo '     ================================================'
+echo '       STABILISATION: LEVEL '$lay ' TRACK '$ipassg1
+echo '     ================================================'
+echo '\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'
+echo '//////////////////////////////////////////////////////'
+#
+count=1
+ifmax=2
+iflag=1
+while [ $iflag -le $ifmax ]
+do
+##
+rm -f infoloop
+echo $ipassg1 > ./infoloop
+echo $klev >> ./infoloop
+echo $count >> ./infoloop
+echo $iflag >> ./infoloop
+#
+../../bin/stabil.a
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------------------------
+echo !A problem was encountered during execution of stabil program!
+echo --------------------------------------------------------------
+exit
+fi
+#
+if [ "$count" -gt "$maxit" ];then
+rm -f ./fort.11
+echo 3 >> ./fort.11
+fi
+#
+fort11=./fort.11
+{
+read iflag
+} < $fort11
+#
+if [ "$iflag" -le "1" ]; then
+cd ../
+#
+lay=`expr $klev + 1`
+#
+let level=10000+$lay
+#
+#
+./dv3Drefoanl $level $temp 0 1 -1 1 0 stb
+#############
+#
+cp -v ./output/ghertonetcdf/fort.84 $ARCHIVES/$temp'.'$level'.analysis'
+cp -v ./output/ghertonetcdf/results.nc $ARCHIVES/$temp'.'$level'.nc'
+cp -v ./output/ghertonetcdf/GridInfo.dat $ARCHIVES/GridInfo.dat
+cp -v ./output/fieldascii.anl $ARCHIVES/$temp'.'$level'.ascii'
+#------------------------------------------------------------
+./dv3Drefoanl $level $psal 0 1 -1 1 0 stb
+#############
+#
+cp -v ./output/ghertonetcdf/fort.84 $ARCHIVES/$psal'.'$level'.analysis'
+cp -v ./output/ghertonetcdf/results.nc $ARCHIVES/$psal'.'$level'.nc'
+cp -v ./output/ghertonetcdf/GridInfo.dat $ARCHIVES/GridInfo.dat
+cp -v ./output/fieldascii.anl $ARCHIVES/$psal'.'$level'.ascii'
+#------------------------------------------------------------
+#
+cd ./3DWORK
+#
+fi
+#
+count=`expr $count + 1`
+#
+done
+#
+klev=`expr $klev + 1`
+#
+done
+##
+echo '\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'
+echo '//////////////////////////////////////////////////////'
+echo '             ==============================='
+echo '                   FINISHED TRACK '$ipassg1
+echo '             ==============================='
+echo '\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'
+echo '//////////////////////////////////////////////////////'
+#
+ipassg1=`expr $ipassg1 + 1`
+#
+done
+##
+cp -v stbinfo.* ../output/3Danalysis/.
+if [ -d  ../output/3Danalysis/NCstab ]; then
+mv *.nc ../output/3Danalysis/NCstab/.
+else
+mkdir  ../output/3Danalysis/NCstab
+mv *.nc ../output/3Danalysis/NCstab/.
+fi
+cd ..
