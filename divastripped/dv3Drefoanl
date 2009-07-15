@@ -393,10 +393,10 @@ else
 ./divadatacoverage -n
 cp -v ./output/DATABINS.dat ./input/divadata/$var'.'$lev'.DATABINS'
 cp -v ./output/DATABINSinfo.dat ./input/divadata/$var'.'$lev'.DATABINSinfo'
- if [ -f ./input/divaparam/RL.$var.$lev ];then
- echo RL.$var.$lev exists
- else
- fi
+# if [ -f ./input/divaparam/RL.$var.$lev ];then
+# echo RL.$var.$lev exists
+# else
+# fi
 fi
 #
 if [ "$detrd" -eq "1" ];then
