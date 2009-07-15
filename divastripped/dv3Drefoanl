@@ -344,7 +344,6 @@ fi
 if [ "$gnpl" == "1" ]
 then
 #
-# JMB Copy resuts back
 if [ -f './output/covariancefit.'${var}.${lev} ];then
 cp -v './output/covariancefit.'${var}.${lev} ./output/covariancefit.dat
 fi
@@ -397,10 +396,6 @@ cp -v ./output/DATABINSinfo.dat ./input/divadata/$var'.'$lev'.DATABINSinfo'
  if [ -f ./input/divaparam/RL.$var.$lev ];then
  echo RL.$var.$lev exists
  else
- echo no need to copy ???
-#JMB
-# cp -v ./output/RL.dat ./input/divaparam/RL.$var.$lev
-# cp -v ./output/RLinfo.dat ./input/divaparam/RLinfo.dat
  fi
 fi
 #
@@ -430,6 +425,30 @@ cp -v ./output/fieldascii.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.ascii.
 cp -v ./output/fieldatdatapoint.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.datapoint.ref'
 cp -v ./output/fieldgher.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.ref'
 cp -v ./output/valatxyascii.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.valatxyasc.ref'
+
+#
+if [ "$gnpl" == "1" ]
+then
+#
+if [ -f './output/covariancefit.'${var}.${lev} ];then
+cp -v './output/covariancefit.'${var}.${lev} ./output/covariancefit.dat
+fi
+if [ -f './output/covariance.'${var}.${lev} ];then
+cp -v './output/covariance.'${var}.${lev} ./output/covariance.dat
+fi
+if [ "$gmin" -le "$gmax" ]
+then
+./divagnu $gmin $gmax
+else
+./divagnu
+fi
+#
+cd ./gnuwork/plots
+for i in `ls *.png`
+do
+cp -v $i ../../output/3Danalysis/GnuPlots/$var'.'$lev'.'$i
+done
+fi
 #------------------------------------------------------------
 fi
 ##################################################################
