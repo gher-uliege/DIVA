@@ -3,8 +3,6 @@
       real*4 A(XM),B(XM),C(XM)
       
       read(5,*,end=200) valex,M,N
-      
-      
       call RDMAT(A,M,N,M,20)
       call RDMAT(B,M,N,M,21)
       call msum(A,B,C,N,M,valex)
@@ -13,7 +11,8 @@
       stop
       end
       subroutine msum(A,B,C,N,M,valex)
-      real*4 A(N,M),B(N,M),C(N,M)
+c      real*4 A(N,M),B(N,M),C(N,M)
+      real*4 A(M,N),B(M,N),C(M,N)
       do i=1,M
       do j=1,N
       val=A(i,j)+B(i,j)
