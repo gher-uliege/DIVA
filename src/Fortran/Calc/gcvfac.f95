@@ -1,16 +1,16 @@
-C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-C
-C   SUBROUTINE LIST:
-C     -  GCVFAC (MODULE)
-C     -  GCVRAN : constructing random data
-C
-C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-C                                                                      C
-C                             GCVFAC MODULE                            C
-C       Estimates the analysis error (same grid as the analysis)       C
-C                                                                      C
-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+!C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+!C
+!C   SUBROUTINE LIST:
+!C     -  GCVFAC (MODULE)
+!C     -  GCVRAN : constructing random data
+!C
+!C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+!C                                                                      C
+!C                             GCVFAC MODULE                            C
+!C       Estimates the analysis error (same grid as the analysis)       C
+!C                                                                      C
+!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       subroutine gcvfac(ipr)
       include'divapre.h'
       include'divainc.h'
@@ -39,24 +39,23 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
             s(i)=0.
 15        continue
 
-
-C  CALCULATION OF ELEMENTARY SECOND MEMBERS AND INTEGRATION
-C                    IN THE GLOBAL SYSTEM
+!
+!C  CALCULATION OF ELEMENTARY SECOND MEMBERS AND INTEGRATION
+!C                    IN THE GLOBAL SYSTEM
 
          call calgel(s(ltrhsg),s(ltcoog),s(ltrhse),l(lkconn),ipr)
 
-C  SOLVE THE LINEAR SYSTEM (SKYLINE METHOD)  (Dhatt & Touzot, 1985)
-C  BASED ON THE ALREADY TRIANGULARIZED SYSTEM
+!C  SOLVE THE LINEAR SYSTEM (SKYLINE METHOD)  (Dhatt & Touzot, 1985)
+!C  BASED ON THE ALREADY TRIANGULARIZED SYSTEM
          ifac=0
          isol=1
          mp=6
-         call sol(s(ltuppe),s(ltdiag),s(ltlowe),s(ltrhsg),l(lkskyh),
-     &            nddlt,mp,ifac,isol,isym,energ)
+         call sol(s(ltuppe),s(ltdiag),s(ltlowe),s(ltrhsg),l(lkskyh),nddlt,mp,ifac,isol,isym,energ)
          if(ipr.ge.6) then
             call impsol(s(ltcoog),l(lklink),s(ltrhsg))
          endif
 
-c ... extraction de la solution au point observe
+!c ... extraction de la solution au point observe
 
          ireclu=0
          rewind(20)
@@ -65,35 +64,32 @@ c ... extraction de la solution au point observe
          y_ll=y
          if (icoordchange.ne.0) call llxy(x,y)
          ireclu=ireclu+1
-c         write(6,*) 'gcval.?',ityp,opti
+!c         write(6,*) 'gcval.?',ityp,opti
          if(ityp.eq.2) then
             if (opti.eq.1) then 		! (SvL)
-               call locpt2opti(x,y,s(ltcoog),l(lkconn),iel,isub,
-     &                         l(lkntc),ipr)
-c               if (iel.eq.-1) then
-c                write(6,*) 'sauve qui store',x_ll,y_ll
-c                call locpt2(x,y,s(ltcoog),l(lkconn),iel,isub,ipr)
-c               endif
+               call locpt2opti(x,y,s(ltcoog),l(lkconn),iel,isub,l(lkntc),ipr)
+!c               if (iel.eq.-1) then
+!c                write(6,*) 'sauve qui store',x_ll,y_ll
+!c                call locpt2(x,y,s(ltcoog),l(lkconn),iel,isub,ipr)
+!c               endif
             endif
             if (opti.eq.0) then 
                call locpt2(x,y,s(ltcoog),l(lkconn),iel,isub,ipr)
             endif
 
             if(iel.le.0.or.isub.le.0) then
-C               if (icoordchange.ne.0) call xyll(x,y)
-c               write(6,*) ' Donnee ',ireclu,x_ll,y_ll,' non localisee'
-C               write(82,*) x_ll,y_ll,-9999.0
+!C               if (icoordchange.ne.0) call xyll(x,y)
+!c               write(6,*) ' Donnee ',ireclu,x_ll,y_ll,' non localisee'
+!C               write(82,*) x_ll,y_ll,-9999.0
                val=valex
-c               write(72,*) x_ll,y_ll,valex
+!c               write(72,*) x_ll,y_ll,valex
                goto 666
             endif
-            call extrt2(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
-     &               l(lklocs),s(ltrhsg),val,s(ltrhsg),ipr,s(lrkele))
+            call extrt2(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),l(lklocs),s(ltrhsg),val,s(ltrhsg),ipr,s(lrkele))
          endif
          if(ityp.eq.3) then
             if (opti.eq.1) then 		! (SvL)
-            call locpt3opti(x,y,tcoog,kconn,tcele,iel,isub,kntc,
-     &                      ipr)
+            call locpt3opti(x,y,tcoog,kconn,tcele,iel,isub,kntc,ipr)
             endif
             if (opti.eq.0) then 
             call locpt3(x,y,tcoog,kconn,tcele,iel,isub,ipr)
@@ -101,13 +97,12 @@ c               write(72,*) x_ll,y_ll,valex
 
             if(iel.le.0.or.isub.le.0) then
             val=valex
-c            write(72,*) x_ll,y_ll,valex
+!c            write(72,*) x_ll,y_ll,valex
             goto 666
             endif
-            call extrt3(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
-     &   l(lklocs),s(ltrhsg),s(ltcele),val,s(ltrhsg),ipr,s(lrkele))
+            call extrt3(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),l(lklocs),s(ltrhsg),s(ltcele),val,s(ltrhsg),ipr,s(lrkele))
          endif
-C only add up points that are located in the mesh
+!C only add up points that are located in the mesh
        valb=val
        IF (IREG.EQ.1) THEN
          IF (IFIRST.EQ.1) THEN
@@ -136,7 +131,7 @@ C only add up points that are located in the mesh
       ENDIF
 
          jmboff=ndata*2+ireclu-1
-c         write(6,*) 'data',s(ltdata+jmboff),jmboff,ireclu,ndata
+!c         write(6,*) 'data',s(ltdata+jmboff),jmboff,ireclu,ndata
          GCVAL=GCVAL+s(ltdata+jmboff)*(valb)
          terr=terr+valb*valb
          zval=zval+(s(ltdata+jmboff))*(s(ltdata+jmboff))
@@ -163,46 +158,43 @@ c         write(6,*) 'data',s(ltdata+jmboff),jmboff,ireclu,ndata
       
       
       
-C Factor 1.4 to avoir understmoothing (see???)
-      write(77,999) GCVALN/(1-1.0*GCVala)
-     &           ,vargcv,GCVALA,GCVALN,(vargcv/gcvaln**2*(1-gcvala)-1)
-     &           ,float(NDATL)
+!C Factor 1.4 to avoir understmoothing (see???)
+      write(77,999) GCVALN/(1-1.0*GCVala),vargcv,GCVALA,GCVALN,(vargcv/gcvaln**2*(1-gcvala)-1),float(NDATL)
  999  format(6(E12.5))
  
  
  
  
  
-C read input from fort.71
-C subtract reference field (make sure coordinates are correct) 
-C analyse
-C calculate anomaly of analysis and finally calculate the diagnostics:
-c
-C prepare input data (anomalies)
+!C read input from fort.71
+!C subtract reference field (make sure coordinates are correct)
+!C analyse
+!C calculate anomaly of analysis and finally calculate the diagnostics:
+!c
+!C prepare input data (anomalies)
          call GCVRDT(s(ltdata),ipr,jjj)
-c
+!c
          do 415 i=ltrhsg,ltrhsg+nddlt
             s(i)=0.
  415        continue
 
 
-C  CALCULATION OF ELEMENTARY SECOND MEMBERS AND INTEGRATION
-C                    IN THE GLOBAL SYSTEM
+!C  CALCULATION OF ELEMENTARY SECOND MEMBERS AND INTEGRATION
+!C                    IN THE GLOBAL SYSTEM
 
          call calgel(s(ltrhsg),s(ltcoog),s(ltrhse),l(lkconn),ipr)
 
-C  SOLVE THE LINEAR SYSTEM (SKYLINE METHOD)  (Dhatt & Touzot, 1985)
-C  BASED ON THE ALREADY TRIANGULARIZED SYSTEM
+!C  SOLVE THE LINEAR SYSTEM (SKYLINE METHOD)  (Dhatt & Touzot, 1985)
+!C  BASED ON THE ALREADY TRIANGULARIZED SYSTEM
          ifac=0
          isol=1
          mp=6
-         call sol(s(ltuppe),s(ltdiag),s(ltlowe),s(ltrhsg),l(lkskyh),
-     &            nddlt,mp,ifac,isol,isym,energ)
+         call sol(s(ltuppe),s(ltdiag),s(ltlowe),s(ltrhsg),l(lkskyh), nddlt,mp,ifac,isol,isym,energ)
          if(ipr.ge.6) then
             call impsol(s(ltcoog),l(lklink),s(ltrhsg))
          endif
 
-c ... extraction de la solution au point observe
+!c ... extraction de la solution au point observe
 
          ireclu=0
          ijmbval=0
@@ -212,35 +204,32 @@ c ... extraction de la solution au point observe
          y_ll=y
          if (icoordchange.ne.0) call llxy(x,y)
          ireclu=ireclu+1
-c         write(6,*) 'gcval.?',ityp,opti
+!c         write(6,*) 'gcval.?',ityp,opti
          if(ityp.eq.2) then
             if (opti.eq.1) then 		! (SvL)
-               call locpt2opti(x,y,s(ltcoog),l(lkconn),iel,isub,
-     &                         l(lkntc),ipr)
-c               if (iel.eq.-1) then
-c                write(6,*) 'sauve qui store',x_ll,y_ll
-c                call locpt2(x,y,s(ltcoog),l(lkconn),iel,isub,ipr)
-c               endif
+               call locpt2opti(x,y,s(ltcoog),l(lkconn),iel,isub,l(lkntc),ipr)
+!c               if (iel.eq.-1) then
+!c                write(6,*) 'sauve qui store',x_ll,y_ll
+!c                call locpt2(x,y,s(ltcoog),l(lkconn),iel,isub,ipr)
+!c               endif
             endif
             if (opti.eq.0) then 
                call locpt2(x,y,s(ltcoog),l(lkconn),iel,isub,ipr)
             endif
 
             if(iel.le.0.or.isub.le.0) then
-C               if (icoordchange.ne.0) call xyll(x,y)
-c               write(6,*) ' Donnee ',ireclu,x_ll,y_ll,' non localisee'
-C               write(82,*) x_ll,y_ll,-9999.0
+!C               if (icoordchange.ne.0) call xyll(x,y)
+!c               write(6,*) ' Donnee ',ireclu,x_ll,y_ll,' non localisee'
+!C               write(82,*) x_ll,y_ll,-9999.0
                val=valex
-c               write(72,*) x_ll,y_ll,valex
+!c               write(72,*) x_ll,y_ll,valex
                goto 466
             endif
-            call extrt2(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
-     &                  l(lklocs),s(ltrhsg),val,s(ltrhsg),ipr,s(lrkele))
+            call extrt2(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),l(lklocs),s(ltrhsg),val,s(ltrhsg),ipr,s(lrkele))
          endif
          if(ityp.eq.3) then
             if (opti.eq.1) then 		! (SvL)
-            call locpt3opti(x,y,tcoog,kconn,tcele,iel,isub,kntc,
-     &                      ipr)
+            call locpt3opti(x,y,tcoog,kconn,tcele,iel,isub,kntc,ipr)
             endif
             if (opti.eq.0) then 
             call locpt3(x,y,tcoog,kconn,tcele,iel,isub,ipr)
@@ -248,13 +237,12 @@ c               write(72,*) x_ll,y_ll,valex
 
             if(iel.le.0.or.isub.le.0) then
             val=valex
-c            write(72,*) x_ll,y_ll,valex
+!c            write(72,*) x_ll,y_ll,valex
             goto 466
             endif
-            call extrt3(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
-     &    l(lklocs),s(ltrhsg),s(ltcele),val,s(ltrhsg),ipr,s(lrkele))
+            call extrt3(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),l(lklocs),s(ltrhsg),s(ltcele),val,s(ltrhsg),ipr,s(lrkele))
          endif
-C only add up points that are located in the mesh
+!C only add up points that are located in the mesh
        valb=val
        IF (IREG.EQ.1) THEN
          IF (IFIRST.EQ.1) THEN
@@ -284,19 +272,16 @@ C only add up points that are located in the mesh
          ijmbval=ijmbval+1
          jmboff=ndata*2+ireclu-1
 
-         d2db=d2db+wwww/hmmu*
-     &     s(ltdata+jmboff)*s(ltdata+jmboff)
-         d3d=d3d+wwww/hmmu*
-     &     s(ltdata+jmboff)*valb
-         d4d=d4d+wwww/hmmu*
-     &     valb*valb
+         d2db=d2db+wwww/hmmu*s(ltdata+jmboff)*s(ltdata+jmboff)
+         d3d=d3d+wwww/hmmu*s(ltdata+jmboff)*valb
+         d4d=d4d+wwww/hmmu*valb*valb
 
          goto 466
  566     continue
          d2db=d2db/ijmbval
          d3d=d3d/ijmbval
          d4d=d4d/ijmbval
-C now compute the diagnostics for new value of lambda
+!C now compute the diagnostics for new value of lambda
       RLAMJM=sqrt(1./alpha0)/(4*3.1415)*hmmu
       if(icoordchange.eq.1) RLAMJM=RLAMJM/dykm/dykm
       aaagcv=(d0d-d1d)
@@ -394,6 +379,7 @@ C now compute the diagnostics for new value of lambda
  
       return
       end
+      
       subroutine sellam(lamnew,bestguess,qualflag)
       real*8 lamnew(12),bestguess,qualflag
       
@@ -429,28 +415,27 @@ C now compute the diagnostics for new value of lambda
 
       subroutine GCVRAN(tdata,ipr,iii)
 
-C RANDOM PSEUDO-DATA USED TO COMPUTE GCV ESTIMATION
+!C RANDOM PSEUDO-DATA USED TO COMPUTE GCV ESTIMATION
       include'divapre.h'
       include'divainc.h'
       dimension tdata(ndata,4)
       integer iseed
       COMMON /CSEED/ ISEED
       iseed=1000000+iii
-C  INPUT OF DATA SET DESCRIPTION
+!C  INPUT OF DATA SET DESCRIPTION
             
       do 10 i=1,ndata/2
           call GRNF(x,y)
           tdata(i,3)=x
           tdata(ndata/2+i,3)=y
-c          write(6,*) 'random',i,x
+!c          write(6,*) 'random',i,x
  10   continue
-c if ndata is odd
+!c if ndata is odd
           call grnf(x,y)
           tdata(ndata,3)=x
-C OUTPUT OF PSEUDO-DATA SET DESCRIPTION
+!C OUTPUT OF PSEUDO-DATA SET DESCRIPTION
       if(ipr.ge.3) then
-         write(6,*)' List pseudo-data set used for error estimate at :',
-     &               xob,' , ',yob
+         write(6,*)' List pseudo-data set used for error estimate at :',xob,' , ',yob
          write(6,*)' -------------------------------------------------'
          do 100 i=1,ndata
            write(6,*) tdata(i,1),tdata(i,2),tdata(i,3),tdata(i,4)
@@ -470,7 +455,7 @@ C OUTPUT OF PSEUDO-DATA SET DESCRIPTION
         Y  = R1*SIN(R2)
       RETURN
       END
-C
+
       FUNCTION RANF()
       include'divapre.h'
       integer iseed,ia,ic,iq,ir
@@ -491,13 +476,13 @@ C
       
       subroutine GCVRDT(tdata,ipr,iii)
 
-C READ ANALYSED DATA AT DATA LOCATION
+!C READ ANALYSED DATA AT DATA LOCATION
       include'divapre.h'
       include'divainc.h'
       dimension tdata(ndata,4)
       
       rewind(71)
-C  INPUT OF DATA SET DESCRIPTION
+!C  INPUT OF DATA SET DESCRIPTION
        IFIRST=1
        
 

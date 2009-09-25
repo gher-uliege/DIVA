@@ -1,44 +1,44 @@
-C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-C
-C   SUBROUTINE LIST:
-C     -  SOLVER (MODULE)
-C     -  CALKEL : calculating and assembling elementary matrices
-C     -  CDIR   : calculating cos-directions
-C     -  CKELE2 : integrating elementary matrices when ITYP=2
-C     -  CKELE3 : integrating elementary matrices when ITYP=3
-C     -  CKSEL2 : integrating sub-elementary matrices when ITYP=2
-C     -  FIXBCD : fixe the boundary conditions (Dirichlet type)
-C     -  LOCSE2 : localisation of sub-elements in the ITYP=2 element
-C     -  LOCSE3 : localisation of sub-elements in the ITYP=3 element
-C     -  IMPSOL : print the solution at principal connectors
-C
-C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-C                                                                      C
-C                             SOLVER MODULE                            C
-C       Build and solve the global linear finite element system        C
-C                                                                      C
-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+!C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+!C
+!C   SUBROUTINE LIST:
+!C     -  SOLVER (MODULE)
+!C     -  CALKEL : calculating and assembling elementary matrices
+!C     -  CDIR   : calculating cos-directions
+!C     -  CKELE2 : integrating elementary matrices when ITYP=2
+!C     -  CKELE3 : integrating elementary matrices when ITYP=3
+!C     -  CKSEL2 : integrating sub-elementary matrices when ITYP=2
+!C     -  FIXBCD : fixe the boundary conditions (Dirichlet type)
+!C     -  LOCSE2 : localisation of sub-elements in the ITYP=2 element
+!C     -  LOCSE3 : localisation of sub-elements in the ITYP=3 element
+!C     -  IMPSOL : print the solution at principal connectors
+!C
+!C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+!C                                                                      C
+!C                             SOLVER MODULE                            C
+!C       Build and solve the global linear finite element system        C
+!C                                                                      C
+!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       subroutine solver(ipr)
       include'divapre.h'
       include'divainc.h'
-C
-C  INPUT OF GENERAL DATA
-C
+!C
+!C  INPUT OF GENERAL DATA
+!C
       write(6,*) 'into solver',ipr
       read(10,*) istf 
       if (istf.ne.0) then
       write(6,*) 'Stiffness parameter ISTF',istf
       endif
-C
-C ALLOCATION OF STORAGE TABLES:
-C  ==> TUPPE   : UPPER VECTOR CONTAINING THE GLOBAL LINEAR SYSTEM
-C  ==> TLOWE   : LOWER VECTOR OF THE GLOBAL LINEAR SYSTEM (IF ISYM=0)
-C  ==> TDIAG   : DIAGONAL VECTOR OF THE GLOBAL LINEAR SYSTEM
-C  ==> TRHSG   : RIGHT HAND SIDE OF THE GLOBAL LINEAR SYSTEM
-C  ==> TKELE   : ELEMENTARY MATRIX (NDDLE*NDDLE)
-C  ==> TRHSE   : RIGHT HAND SIDE OF THE ELEMENTARY SYSTEM
-C
+!C
+!C ALLOCATION OF STORAGE TABLES:
+!C  ==> TUPPE   : UPPER VECTOR CONTAINING THE GLOBAL LINEAR SYSTEM
+!C  ==> TLOWE   : LOWER VECTOR OF THE GLOBAL LINEAR SYSTEM (IF ISYM=0)
+!C  ==> TDIAG   : DIAGONAL VECTOR OF THE GLOBAL LINEAR SYSTEM
+!C  ==> TRHSG   : RIGHT HAND SIDE OF THE GLOBAL LINEAR SYSTEM
+!C  ==> TKELE   : ELEMENTARY MATRIX (NDDLE*NDDLE)
+!C  ==> TRHSE   : RIGHT HAND SIDE OF THE ELEMENTARY SYSTEM
+!C
       call allody(nelt,1,'tstif',ltstif,ipr)
       call allody(nterm,1,'tuppe',ltuppe,ipr)
       if(isym.eq.0) then
@@ -50,36 +50,31 @@ C
       call allody(nddlt,1,'trhsg',ltrhsg,ipr)
       call allody(nddle*nddle,1,'tkele',ltkele,ipr)
       call allody(nddle,1,'trhse',ltrhse,ipr)
-C
-C  CALCULATION OF ELEMENTARY MATRICES AND INTEGRATION
-C              IN THE GLOBAL SYSTEM
-C
-      call calkel(s(ltuppe),s(ltlowe),s(ltdiag),s(ltrhsg),s(ltcoog),
-     &            s(ltkele),s(ltrhse),l(lkconn),l(lkskyh),s(ltstif),
-     &            ipr)
-C
-C  FIX BOUNDARY CONDITIONS
-C
+!C
+!C  CALCULATION OF ELEMENTARY MATRICES AND INTEGRATION
+!C              IN THE GLOBAL SYSTEM
+!C
+      call calkel(s(ltuppe),s(ltlowe),s(ltdiag),s(ltrhsg),s(ltcoog),s(ltkele),s(ltrhse),l(lkconn),l(lkskyh),s(ltstif),ipr)
+!C
+!C  FIX BOUNDARY CONDITIONS
+!C
       if(ltcndi.eq.0) then
       bidon=0
       ibidon=0
-      call fixbcd(s(ltuppe),s(ltlowe),s(ltdiag),s(ltrhsg),l(lklink),
-     &            l(lkskyh),bidon,ibidon)
+      call fixbcd(s(ltuppe),s(ltlowe),s(ltdiag),s(ltrhsg),l(lklink),l(lkskyh),bidon,ibidon)
 
                        else
 
-      call fixbcd(s(ltuppe),s(ltlowe),s(ltdiag),s(ltrhsg),l(lklink),
-     &            l(lkskyh),s(ltcndi),l(lkcndi))
+      call fixbcd(s(ltuppe),s(ltlowe),s(ltdiag),s(ltrhsg),l(lklink),l(lkskyh),s(ltcndi),l(lkcndi))
       endif
       
-C
-C  SOLVE THE LINEAR SYSTEM (SKYLINE METHOD)  (Dhatt & Touzot, 1985)
-C
+!C
+!C  SOLVE THE LINEAR SYSTEM (SKYLINE METHOD)  (Dhatt & Touzot, 1985)
+!C
       ifac=1
       isol=1
       mp=6
-      call sol(s(ltuppe),s(ltdiag),s(ltlowe),s(ltrhsg),l(lkskyh),nddlt,
-     &        mp,ifac,isol,isym,energ)
+      call sol(s(ltuppe),s(ltdiag),s(ltlowe),s(ltrhsg),l(lkskyh),nddlt,mp,ifac,isol,isym,energ)
       if(ipr.ge.1) then
          call impsol(s(ltcoog),l(lklink),s(ltrhsg))
       endif
@@ -89,25 +84,24 @@ C
 
 
 
-      subroutine calkel(tuppe,tlowe,tdiag,trhsg,tcoog,tkele,trhse,
-     &                  kconn,kskyh,tstif,ipr)
-C
-C  LOOP FOR EVERY ELEMENT: CALCULATION OF ELEMENTARY MATRICES AND
-C  ASSEMBLING IN THE GLOBAL SYSTEM
-C
+      subroutine calkel(tuppe,tlowe,tdiag,trhsg,tcoog,tkele,trhse,kconn,kskyh,tstif,ipr)
+!C
+!C  LOOP FOR EVERY ELEMENT: CALCULATION OF ELEMENTARY MATRICES AND
+!C  ASSEMBLING IN THE GLOBAL SYSTEM
+!C
       include'divapre.h'
       include'divainc.h'
-      dimension tuppe(nterm),tlowe(nterm),tdiag(nddlt),trhsg(nddlt),
-     &          tcoog(nnt1,2),tkele(nddle,nddle),trhse(nddle),
-     &          kconn(nelt,nnel),kskyh(nddlt+1),tstif(nelt),
-     &          xg(16),yg(16),wg(16)
+      dimension tuppe(nterm),tlowe(nterm),tdiag(nddlt),trhsg(nddlt),   &
+               tcoog(nnt1,2),tkele(nddle,nddle),trhse(nddle),          &
+               kconn(nelt,nnel),kskyh(nddlt+1),tstif(nelt),             &
+               xg(16),yg(16),wg(16)
       one=1.0D0
       three=3.0D0
       five=5.0D0
-C
-C  READ ELEMENTARY STIFNESSES WHEN ISTF = 1 (PSEUDO-MODIF. OF TOPOLOGY) 
-C  DEFAULT VALUE = 1
-C
+!C
+!C  READ ELEMENTARY STIFNESSES WHEN ISTF = 1 (PSEUDO-MODIF. OF TOPOLOGY)
+!C  DEFAULT VALUE = 1
+!C
       do 2 iel=1,nelt
          tstif(iel)=one        
  2    continue
@@ -116,30 +110,30 @@ C
             read(60,*)tstif(iel)
  5       continue
       endif
-C
-C  EVALUATION OF SHAPE FUNCTIONS AT GAUSS INTEGRATION POINTS
-C  AND AT INTERIOR INTERFACES BETWEEN SUB-ELEMENTS
-C   Maximum : 16 Gauss Integration Points
-C======================================================================
-C  SHAPE FUNCTIONS WHEN ITYP = 2 OR 3: NG = 4 (HAMMER RULE)
-C  ALLOCATION OF STORAGE ARRAYS:
-C   ==> TSHAG(I,J,K) = VALUE OF SHAPE FUNCTION I, IRULE=J,
-C       GAUSS P OR INTERIOR INTERFACE = K
-C         (IRULE=:1=>VALUE; 2=>DX; 3=>DY; 4=>DDX; 5=>DDY; 6=>DDXY;
-C          7=>  DX AT INTERIOR INTERFACES;
-C          8=>  DY AT INTERIOR INTERFACES)
-C   ==> KLOCS(I,J) = ARRAY FOR LOCALISATION OF SUB-ELEMENTS IN ELEMENTS
-C
-C  WHEN ITYP.EQ.3 ...
-C
+!C
+!C  EVALUATION OF SHAPE FUNCTIONS AT GAUSS INTEGRATION POINTS
+!C  AND AT INTERIOR INTERFACES BETWEEN SUB-ELEMENTS
+!C   Maximum : 16 Gauss Integration Points
+!C======================================================================
+!C  SHAPE FUNCTIONS WHEN ITYP = 2 OR 3: NG = 4 (HAMMER RULE)
+!C  ALLOCATION OF STORAGE ARRAYS:
+!C   ==> TSHAG(I,J,K) = VALUE OF SHAPE FUNCTION I, IRULE=J,
+!C       GAUSS P OR INTERIOR INTERFACE = K
+!C         (IRULE=:1=>VALUE; 2=>DX; 3=>DY; 4=>DDX; 5=>DDY; 6=>DDXY;
+!C          7=>  DX AT INTERIOR INTERFACES;
+!C          8=>  DY AT INTERIOR INTERFACES)
+!C   ==> KLOCS(I,J) = ARRAY FOR LOCALISATION OF SUB-ELEMENTS IN ELEMENTS
+!C
+!C  WHEN ITYP.EQ.3 ...
+!C
       if(ityp.eq.2) then
          ng=4
          call allody(10*8*ng,1,'tshag',ltshag,ipr)
          call allody(30,0,'klocs',lklocs,ipr)
-C
-C  NUMERICAL INTEGRATION : HAMMER METHOD ON A TRIANGLE (Dhatt & Touzot)
-C    FOR 3rd ORDER POLYNOMIAL BASIS: 4 Gauss Points
-C
+!C
+!C  NUMERICAL INTEGRATION : HAMMER METHOD ON A TRIANGLE (Dhatt & Touzot)
+!C    FOR 3rd ORDER POLYNOMIAL BASIS: 4 Gauss Points
+!C
          xg(1)=one/three
          yg(1)=one/three
          wg(1)=-27./96.
@@ -153,22 +147,22 @@ C
          yg(4)=three/five
          wg(4)=25./96.
          call calsh2(s(ltshag),xg,yg,ng,ipr)
-C
-C  CONSTRUCTION OF LOCALISATION ARRAY FOR SUB-ELEMENTS
-C
+!C
+!C  CONSTRUCTION OF LOCALISATION ARRAY FOR SUB-ELEMENTS
+!C
          call locse2(l(lklocs))
       endif
-C
-C  WHEN ITYP.EQ.3 ...
-C
+!C
+!C  WHEN ITYP.EQ.3 ...
+!C
       if(ityp.eq.3) then
          ng=4
          call allody(10*8*ng,1,'tshag',ltshag,ipr)
          call allody(40,0,'klocs',lklocs,ipr)
-C
-C  NUMERICAL INTEGRATION : HAMMER METHOD ON A TRIANGLE (Dhatt & Touzot)
-C    FOR 3rd ORDER POLYNOMIAL BASIS: 4 Gauss Points
-C
+!C
+!C  NUMERICAL INTEGRATION : HAMMER METHOD ON A TRIANGLE (Dhatt & Touzot)
+!C    FOR 3rd ORDER POLYNOMIAL BASIS: 4 Gauss Points
+!C
          xg(1)=one/three
          yg(1)=one/three
          wg(1)=-27./96.
@@ -182,9 +176,9 @@ C
          yg(4)=three/five
          wg(4)=25./96.
          call calsh2(s(ltshag),xg,yg,ng,ipr)
-C
-C  CONSTRUCTION OF LOCALISATION ARRAY FOR SUB-ELEMENTS
-C
+!C
+!C  CONSTRUCTION OF LOCALISATION ARRAY FOR SUB-ELEMENTS
+!C
          call locse3(l(lklocs))
       endif
       if(isym.eq.0) then
@@ -193,41 +187,41 @@ C
          nspace=nddle*nddle
       endif
       call allody(nspace,1,'tvele',ltvele,ipr)
-C
-C  EVALUATION OF ELEMENTARY MATRIX WHEN ITYP = 2 OR 3
-C
-C  OPEN FILE FOR STORAGE OF CONDENSATION VECTORS (FOR DECONDENSATION)
-C
-c      if(ityp.eq.2.or.ityp.eq.3) then
-c         open(32,file='kele2.cnd',recl=nddle*3*iprc,form='unformatted',
-c     &        access='direct')
-c      endif
-C REPLACE by allody for TRKELE and pointer LRKELE
+!C
+!C  EVALUATION OF ELEMENTARY MATRIX WHEN ITYP = 2 OR 3
+!C
+!C  OPEN FILE FOR STORAGE OF CONDENSATION VECTORS (FOR DECONDENSATION)
+!C
+!c      if(ityp.eq.2.or.ityp.eq.3) then
+!c         open(32,file='kele2.cnd',recl=nddle*3*iprc,form='unformatted',
+!c     &        access='direct')
+!c      endif
+!C REPLACE by allody for TRKELE and pointer LRKELE
       call allody(3*12*NELT,1,'trkele',lrkele,ipr)
-C now s(lrkele) for TRKELE
+!C now s(lrkele) for TRKELE
       do 10 iel=1,nelt
          if(ityp.eq.2) then
             if(ltprop.eq.0) then
             bidon=0
-            call ckele2 (iel,tstif(iel),tcoog,kconn,tkele,trhse,
-     &                   l(lklocs),
-     &                   bidon,wg,ipr,s(lrkele))
+            call ckele2 (iel,tstif(iel),tcoog,kconn,tkele,trhse, &
+                        l(lklocs),                                &
+                        bidon,wg,ipr,s(lrkele))
             else
-            call ckele2 (iel,tstif(iel),tcoog,kconn,tkele,trhse,
-     &                   l(lklocs),
-     &                   s(ltprop),wg,ipr,s(lrkele))
+            call ckele2 (iel,tstif(iel),tcoog,kconn,tkele,trhse,   &
+                        l(lklocs),                                  &
+                        s(ltprop),wg,ipr,s(lrkele))
             endif
          endif
          if(ityp.eq.3) then
          if(ltprop.eq.0) then
             bidon=0
-            call ckele3 (iel,tstif(iel),tcoog,kconn,tkele,trhse,
-     &                   l(lklocs),
-     &                   bidon,s(ltcele),wg,ipr,s(lrkele))
+            call ckele3 (iel,tstif(iel),tcoog,kconn,tkele,trhse,        &
+                        l(lklocs),                                     &
+                        bidon,s(ltcele),wg,ipr,s(lrkele))
                          else
-            call ckele3 (iel,tstif(iel),tcoog,kconn,tkele,trhse,
-     &                   l(lklocs),
-     &                   s(ltprop),s(ltcele),wg,ipr,s(lrkele))
+            call ckele3 (iel,tstif(iel),tcoog,kconn,tkele,trhse,       &
+                        l(lklocs),                                    &
+                        s(ltprop),s(ltcele),wg,ipr,s(lrkele))
          endif
          endif
          if(ipr.ge.2) write(6,*) ' ...assembling element',iel
@@ -241,19 +235,17 @@ C now s(lrkele) for TRKELE
          endif
  406     FORMAT(///,T10,' ELEMENTARY  RHS  FOR ELEMENT ',I5,///)
          IF(IPR.GE.4) CALL IMPMAT(trhse,nddle,1,nddle,6)
-C
-C  LOCALIZATION IN THE STRUCTURE AND TRANSFORMATION OF THE MATRIX
-C  ELEMENT IN VECTOR ELEMENT (REQUIRED BY ASSEL)
-C  IF ISYM = 0, ONLY THE UPPER PART OF ELEMENTARY MATRIX IS REPRESENTED
-C
+!C
+!C  LOCALIZATION IN THE STRUCTURE AND TRANSFORMATION OF THE MATRIX
+!C  ELEMENT IN VECTOR ELEMENT (REQUIRED BY ASSEL)
+!C  IF ISYM = 0, ONLY THE UPPER PART OF ELEMENTARY MATRIX IS REPRESENTED
+!C
          call calloc(iel,l(lkloce),nddle,l(lkconn),l(lklink),ipr)
-         call append(tkele,nddle,s(ltvele),nspace,
-     &               isym)
+         call append(tkele,nddle,s(ltvele),nspace,isym)
          ikg=1
          ifg=1
-c         write(6,*) 'Into assel ',nddlt,kskyh(1)
-         call assel(ikg,ifg,nddle,isym,l(lkloce),kskyh,s(ltvele),
-     &              trhse,tuppe,tdiag,tlowe,trhsg)
+!c         write(6,*) 'Into assel ',nddlt,kskyh(1)
+         call assel(ikg,ifg,nddle,isym,l(lkloce),kskyh,s(ltvele),trhse,tuppe,tdiag,tlowe,trhsg)
  10   continue
       if(ityp.eq.2.or.ityp.eq.3) then
          close(32)
@@ -274,27 +266,25 @@ c         write(6,*) 'Into assel ',nddlt,kskyh(1)
 
 
 
-      subroutine ckele2 (iel,stiff,tcoog,kconn,tkele,trhse,loces,tprop,
-     &                   wg,ipr,TRKELE)
-C
-C  INTEGRATE ELEMENTARY MATRIX WHEN ITYP = 2 (FDV ELEMENT)
-C
+      subroutine ckele2 (iel,stiff,tcoog,kconn,tkele,trhse,loces,tprop,wg,ipr,TRKELE)
+!C
+!C  INTEGRATE ELEMENTARY MATRIX WHEN ITYP = 2 (FDV ELEMENT)
+!C
       include'divapre.h'
       include'divainc.h'
-      dimension tcoog(nnt1,2),tkele(12,12),trhse(12),kconn(nelt,nnel),
-     &          x(0:3),y(0:3),wg(ng),tprop(nnt1,nnpr),u(0:3),v(0:3)
-C
-C  WORKING SPACE FOR SUB-ELEMENTARY MATRICES, ...
-C
-      dimension tke(15,15),tge(15),tkse(10,10),tgse(10),loces(3,10),
-     &          derx1(10),dery1(10),derx2(10),dery2(10),
-     &          tcond(3,15),ro(3,3),tr(3,12),rw(3,12),romin(3,3)
-     &          ,TRKELE(3,12,*),rll(0:3)
+      dimension tcoog(nnt1,2),tkele(12,12),trhse(12),kconn(nelt,nnel),x(0:3),y(0:3),wg(ng),tprop(nnt1,nnpr),u(0:3),v(0:3)
+!C
+!C  WORKING SPACE FOR SUB-ELEMENTARY MATRICES, ...
+!C
+      dimension tke(15,15),tge(15),tkse(10,10),tgse(10),loces(3,10),&
+               derx1(10),dery1(10),derx2(10),dery2(10),          &
+               tcond(3,15),ro(3,3),tr(3,12),rw(3,12),romin(3,3) &
+               ,TRKELE(3,12,*),rll(0:3)
       toler=0.0001
-C
-C  DEFINE THE CENTER OF TRIANGLE (i.e., FOR SUB-ELEMENTS) - INIT.
-C  CALCULATE NORMAL COMPONENTS OF INTERNAL INTERFACES
-C
+!C
+!C  DEFINE THE CENTER OF TRIANGLE (i.e., FOR SUB-ELEMENTS) - INIT.
+!C  CALCULATE NORMAL COMPONENTS OF INTERNAL INTERFACES
+!C
       x(1)=tcoog(kconn(iel,1),1)
       y(1)=tcoog(kconn(iel,1),2)
       x(2)=tcoog(kconn(iel,3),1)
@@ -351,17 +341,17 @@ C
          tke(i,j)=zero
  20      continue
  10   continue
-C
-C  INTEGRATION OF THE 3 (10*10) SUB-ELEMENT MATRICES
-C
+!C
+!C  INTEGRATION OF THE 3 (10*10) SUB-ELEMENT MATRICES
+!C
       x0=x(0)
       y0=y(0)
       u0=u(0)
       v0=v(0)
       rll0=rll(0)
-C
-C  First sub-element
-C
+!C
+!C  First sub-element
+!C
       x1=x(1)
       y1=y(1)
       x2=x(2)
@@ -376,9 +366,9 @@ C
          rll1=rll(1)
          rll2=rll(2)
       endif
-      call cksel2(1,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,l(lkindt),l(lkdata)
-     &            ,l(lkelos),s(ltdata),s(ltshag),wg,ipr,derx1,dery1,
-     &             derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
+      call cksel2(1,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,l(lkindt),l(lkdata)   &
+                 ,l(lkelos),s(ltdata),s(ltshag),wg,ipr,derx1,dery1,      &
+                  derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
       do 110 i=1,10
       tge(loces(1,i))=tge(loces(1,i))+tgse(i)
       tcond(1,loces(1,i))=tcond(1,loces(1,i))+rn1*derx1(i)+sn1*dery1(i)
@@ -387,9 +377,9 @@ C
       tke(loces(1,i),loces(1,j))=tke(loces(1,i),loces(1,j))+tkse(i,j)
  115  continue
  110  continue
-C
-C  Second sub-element
-C
+!C
+!C  Second sub-element
+!C
       x1=x(2)
       y1=y(2)
       x2=x(3)
@@ -404,9 +394,9 @@ C
          rll1=rll(2)
          rll2=rll(3)
       endif
-      call cksel2(2,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,l(lkindt),l(lkdata)
-     &            ,l(lkelos),s(ltdata),s(ltshag),wg,ipr,derx1,dery1,
-     &             derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
+      call cksel2(2,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,l(lkindt),l(lkdata)     &
+                 ,l(lkelos),s(ltdata),s(ltshag),wg,ipr,derx1,dery1,         &
+                  derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
       do 120 i=1,10
       tge(loces(2,i))=tge(loces(2,i))+tgse(i)
       tcond(2,loces(2,i))=tcond(2,loces(2,i))+rn2*derx1(i)+sn2*dery1(i)
@@ -415,9 +405,9 @@ C
       tke(loces(2,i),loces(2,j))=tke(loces(2,i),loces(2,j))+tkse(i,j)
  125  continue
  120  continue
-C
-C  Third sub-element
-C
+!C
+!C  Third sub-element
+!C
       x1=x(3)
       y1=y(3)
       x2=x(1)
@@ -432,9 +422,9 @@ C
          rll1=rll(3)
          rll2=rll(1)
       endif
-      call cksel2(3,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,l(lkindt),l(lkdata)
-     &            ,l(lkelos),s(ltdata),s(ltshag),wg,ipr,derx1,dery1,
-     &             derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
+      call cksel2(3,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,l(lkindt),l(lkdata)  &
+                 ,l(lkelos),s(ltdata),s(ltshag),wg,ipr,derx1,dery1,      &
+                  derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
       do 130 i=1,10
       tge(loces(3,i))=tge(loces(3,i))+tgse(i)
       tcond(3,loces(3,i))=tcond(3,loces(3,i))+rn3*derx1(i)+sn3*dery1(i)
@@ -443,11 +433,11 @@ C
       tke(loces(3,i),loces(3,j))=tke(loces(3,i),loces(3,j))+tkse(i,j)
  135  continue
  130  continue
-C
-C             AND ELIMINATING THE D.O.F AT THE CENTER
-C                       MATRIX CONDENSATION
-C       (see method in: Brasseur, 1993, Ph. D. dissertation)
-C
+!C
+!C             AND ELIMINATING THE D.O.F AT THE CENTER
+!C                       MATRIX CONDENSATION
+!C       (see method in: Brasseur, 1993, Ph. D. dissertation)
+!C
       do 140 i=1,3
          do 145 j=1,3
             ro(i,j)=tcond(i,j+12)
@@ -463,9 +453,9 @@ C
          write(6,*)'   REDUCTION VECTOR (3*15) '
          call impmat(tcond,3,15,3,6)
       endif
-C
-C  INVERSE OF RO
-C
+!C
+!C  INVERSE OF RO
+!C
       romin(1,1)=ro(2,2)*ro(3,3)-ro(3,2)*ro(2,3)
       romin(1,2)=ro(3,1)*ro(2,3)-ro(2,1)*ro(3,3)
       romin(1,3)=ro(2,1)*ro(3,2)-ro(3,1)*ro(2,2)
@@ -499,23 +489,23 @@ C
  155     continue
  150  continue
  
-CJMB
-C       write(32,rec=iel) tr
-c       if(iel.gt.JMBELE) then
-c        write(*,*) 'INCREASE JMBELE to at least',IEL
-c        stop
-c       endif
+!CJMB
+!C       write(32,rec=iel) tr
+!c       if(iel.gt.JMBELE) then
+!c        write(*,*) 'INCREASE JMBELE to at least',IEL
+!c        stop
+!c       endif
        IJMB=1
        if(ipr.gt.5) write(6,*) 'saving trkele'
         do i=1,3
          do j=1,12
           trkele(i,j,iel)=tr(i,j)
-c          ijmbw(iel)=1
+!c          ijmbw(iel)=1
           enddo
         enddo
-C
-C  REDUCTION OF ELEMENTARY MATRIX (15*15) ==> (12*12)
-C
+!C
+!C  REDUCTION OF ELEMENTARY MATRIX (15*15) ==> (12*12)
+!C
       do 158 i=1,3
          do 159 j=1,12
             rw(i,j)=zero
@@ -546,11 +536,11 @@ C
          tkele(i,j)=tke(i,j)+tcd1+tcd2+tcd3
  165  continue
  160  continue
-C
-C  BEFORE ASSEMBLING, CHOICE OF A REFERENCE NORMAL: POINTING TO THE
-C  RIGHT WHEN COVERING THE EXTERNAL INTERFACE FROM NOD1 TO NOD2,
-C  WITH number(nod2) > number(nod1)
-C
+!C
+!C  BEFORE ASSEMBLING, CHOICE OF A REFERENCE NORMAL: POINTING TO THE
+!C  RIGHT WHEN COVERING THE EXTERNAL INTERFACE FROM NOD1 TO NOD2,
+!C  WITH number(nod2) > number(nod1)
+!C
       if(kconn(iel,3).lt.kconn(iel,1)) then
          do 200 i=1,12
             tkele(i,10)=-tkele(i,10)
@@ -577,29 +567,28 @@ C
 
 
 
-      subroutine ckele3 (iel,stiff,tcoog,kconn,tkele,trhse,loces,tprop,
-     &                   tcele,wg,ipr,TRKELE)
-C
-C  INTEGRATE ELEMENTARY MATRIX WHEN ITYP = 2 (FDV ELEMENT)
-C
+      subroutine ckele3 (iel,stiff,tcoog,kconn,tkele,trhse,loces,tprop,tcele,wg,ipr,TRKELE)
+!C
+!C  INTEGRATE ELEMENTARY MATRIX WHEN ITYP = 2 (FDV ELEMENT)
+!C
       include'divapre.h'
       include'divainc.h'
-      dimension tcoog(nnt1,2),tkele(16,16),trhse(16),kconn(nelt,nnel),
-     &          x(0:4),y(0:4),wg(ng),tprop(nnt1,nnpr),u(0:4),v(0:4),
-     &          tcele(nelt,2)
-     &          ,TRKELE(3,12,*)
-C
-C  WORKING SPACE FOR SUB-ELEMENTARY MATRICES, ...
-C
-      dimension tke(19,19),tge(19),tkse(10,10),tgse(10),loces(4,10),
-     &          derx1(10),dery1(10),derx2(10),dery2(10),
-     &          tcond(3,19),ro(3,3),tr(3,16),rw(3,16),romin(3,3)
-     &                         ,rll(0:4)
+      dimension tcoog(nnt1,2),tkele(16,16),trhse(16),kconn(nelt,nnel), &
+               x(0:4),y(0:4),wg(ng),tprop(nnt1,nnpr),u(0:4),v(0:4),    &
+               tcele(nelt,2)                                            &
+               ,TRKELE(3,12,*)
+!C
+!C  WORKING SPACE FOR SUB-ELEMENTARY MATRICES, ...
+!C
+      dimension tke(19,19),tge(19),tkse(10,10),tgse(10),loces(4,10), &
+               derx1(10),dery1(10),derx2(10),dery2(10),              &
+               tcond(3,19),ro(3,3),tr(3,16),rw(3,16),romin(3,3)       &
+                              ,rll(0:4)
       toler=0.0001
-C
-C  DEFINE THE CENTER OF TRIANGLE (i.e., FOR SUB-ELEMENTS) - INIT.
-C  CALCULATE NORMAL COMPONENTS OF INTERNAL INTERFACES
-C
+!C
+!C  DEFINE THE CENTER OF TRIANGLE (i.e., FOR SUB-ELEMENTS) - INIT.
+!C  CALCULATE NORMAL COMPONENTS OF INTERNAL INTERFACES
+!C
       x(1)=tcoog(kconn(iel,1),1)
       y(1)=tcoog(kconn(iel,1),2)
       x(2)=tcoog(kconn(iel,3),1)
@@ -668,17 +657,17 @@ C
          tke(i,j)=zero
  20      continue
  10   continue
-C
-C  INTEGRATION OF THE 4 (10*10) SUB-ELEMENT MATRICES
-C
+!C
+!C  INTEGRATION OF THE 4 (10*10) SUB-ELEMENT MATRICES
+!C
       x0=x(0)
       y0=y(0)
       u0=u(0)
       v0=v(0)
       rll0=rll(0)
-C
-C  First sub-element
-C
+!C
+!C  First sub-element
+!C
       x1=x(1)
       y1=y(1)
       x2=x(2)
@@ -693,9 +682,9 @@ C
          rll1=rll(1)
          rll2=rll(2)
       endif
-      call cksel2(1,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,l(lkindt),l(lkdata)
-     &            ,l(lkelos),s(ltdata),s(ltshag),wg,ipr,derx1,dery1,
-     &             derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
+      call cksel2(1,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,l(lkindt),l(lkdata)  &
+                 ,l(lkelos),s(ltdata),s(ltshag),wg,ipr,derx1,dery1,     &
+                  derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
       do 110 i=1,10
       tge(loces(1,i))=tge(loces(1,i))+tgse(i)
       tcond(1,loces(1,i))=tcond(1,loces(1,i))+rn1*derx1(i)+sn1*dery1(i)
@@ -704,9 +693,9 @@ C
       tke(loces(1,i),loces(1,j))=tke(loces(1,i),loces(1,j))+tkse(i,j)
  115  continue
  110  continue
-C
-C  Second sub-element
-C
+!C
+!C  Second sub-element
+!C
       x1=x(2)
       y1=y(2)
       x2=x(3)
@@ -721,9 +710,9 @@ C
          rll1=rll(2)
          rll2=rll(3)
       endif
-      call cksel2(2,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,l(lkindt),l(lkdata)
-     &            ,l(lkelos),s(ltdata),s(ltshag),wg,ipr,derx1,dery1,
-     &             derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
+      call cksel2(2,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,l(lkindt),l(lkdata)   &
+                 ,l(lkelos),s(ltdata),s(ltshag),wg,ipr,derx1,dery1,      &
+                  derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
       do 120 i=1,10
       tge(loces(2,i))=tge(loces(2,i))+tgse(i)
       tcond(2,loces(2,i))=tcond(2,loces(2,i))+rn2*derx1(i)+sn2*dery1(i)
@@ -732,9 +721,9 @@ C
       tke(loces(2,i),loces(2,j))=tke(loces(2,i),loces(2,j))+tkse(i,j)
  125  continue
  120  continue
-C
-C  Third sub-element
-C
+!C
+!C  Third sub-element
+!C
       x1=x(3)
       y1=y(3)
       x2=x(4)
@@ -749,9 +738,9 @@ C
          rll1=rll(3)
          rll2=rll(4)
       endif
-      call cksel2(3,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,l(lkindt),l(lkdata)
-     &            ,l(lkelos),s(ltdata),s(ltshag),wg,ipr,derx1,dery1,
-     &             derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
+      call cksel2(3,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,l(lkindt),l(lkdata)   &
+                 ,l(lkelos),s(ltdata),s(ltshag),wg,ipr,derx1,dery1,       &
+                  derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
       do 130 i=1,10
       tge(loces(3,i))=tge(loces(3,i))+tgse(i)
       tcond(3,loces(3,i))=tcond(3,loces(3,i))+rn3*derx1(i)+sn3*dery1(i)
@@ -759,9 +748,9 @@ C
       tke(loces(3,i),loces(3,j))=tke(loces(3,i),loces(3,j))+tkse(i,j)
  135  continue
  130  continue
-C
-C  Fourth sub-element
-C
+!C
+!C  Fourth sub-element
+!C
       x1=x(4)
       y1=y(4)
       x2=x(1)
@@ -776,9 +765,8 @@ C
          rll1=rll(4)
          rll2=rll(1)
       endif
-      call cksel2(4,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,l(lkindt),l(lkdata)
-     &            ,l(lkelos),s(ltdata),s(ltshag),wg,ipr,derx1,dery1,
-     &             derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
+      call cksel2(4,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,l(lkindt),l(lkdata),l(lkelos),s(ltdata),s(ltshag),wg,ipr,derx1,dery1, &
+                  derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
       do 131 i=1,10
       tge(loces(4,i))=tge(loces(4,i))+tgse(i)
       tcond(1,loces(4,i))=tcond(1,loces(4,i))-rn1*derx2(i)-sn1*dery2(i)
@@ -786,11 +774,11 @@ C
       tke(loces(4,i),loces(4,j))=tke(loces(4,i),loces(4,j))+tkse(i,j)
  136  continue
  131  continue
-C
-C             AND ELIMINATING THE D.O.F AT THE CENTER
-C                       MATRIX CONDENSATION
-C       (see method in: Brasseur, 1993, Ph. D. dissertation)
-C
+!C
+!C             AND ELIMINATING THE D.O.F AT THE CENTER
+!C                       MATRIX CONDENSATION
+!C       (see method in: Brasseur, 1993, Ph. D. dissertation)
+!C
       do 140 i=1,3
          do 145 j=1,3
             ro(i,j)=tcond(i,j+16)
@@ -806,9 +794,9 @@ C
          write(6,*)'   REDUCTION VECTOR (3*19) '
          call impmat(tcond,3,19,3,6)
       endif
-C
-C  INVERSE OF RO
-C
+!C
+!C  INVERSE OF RO
+!C
       romin(1,1)=ro(2,2)*ro(3,3)-ro(3,2)*ro(2,3)
       romin(1,2)=ro(3,1)*ro(2,3)-ro(2,1)*ro(3,3)
       romin(1,3)=ro(2,1)*ro(3,2)-ro(3,1)*ro(2,2)
@@ -841,21 +829,21 @@ C
  157        continue
  155     continue
  150  continue
-C JMB
-C      write(32,rec=iel) tr
-c      if(iel.gt.JMBELE) then
-c        write(*,*) 'INCREASE JMBELE to at least',IEL
-c        stop
-c        endif
+!C JMB
+!C      write(32,rec=iel) tr
+!c      if(iel.gt.JMBELE) then
+!c        write(*,*) 'INCREASE JMBELE to at least',IEL
+!c        stop
+!c        endif
         do i=1,3
          do j=1,12
           trkele(i,j,iel)=tr(i,j)
           enddo
         enddo
-C JMB
-C
-C  REDUCTION OF ELEMENTARY MATRIX (19*19) ==> (16*16)
-C
+!C JMB
+!C
+!C  REDUCTION OF ELEMENTARY MATRIX (19*19) ==> (16*16)
+!C
       do 158 i=1,3
          do 159 j=1,16
             rw(i,j)=zero
@@ -886,11 +874,11 @@ C
          tkele(i,j)=tke(i,j)+tcd1+tcd2+tcd3
  165  continue
  160  continue
-C
-C  BEFORE ASSEMBLING, CHOICE OF A REFERENCE NORMAL: POINTING TO THE
-C  RIGHT WHEN COVERING THE EXTERNAL INTERFACE FROM NOD1 TO NOD2,
-C  WITH number(nod2) > number(nod1)
-C
+!C
+!C  BEFORE ASSEMBLING, CHOICE OF A REFERENCE NORMAL: POINTING TO THE
+!C  RIGHT WHEN COVERING THE EXTERNAL INTERFACE FROM NOD1 TO NOD2,
+!C  WITH number(nod2) > number(nod1)
+!C
       if(kconn(iel,3).lt.kconn(iel,1)) then
          do 200 i=1,16
             tkele(i,13)=-tkele(i,13)
@@ -925,19 +913,19 @@ C
 
 
 
-      subroutine cksel2(isub,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,kindt,
-     &                  kdata,kelos,tdata,tshag,wg,ipr,derx1,dery1,
-     &              derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
-C
-C  INTEGRATE SUB-ELEMENT MATRIX WHEN ITYP = 2 (FDV ELEMENT)
-C
+      subroutine cksel2(isub,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,kindt, &
+                       kdata,kelos,tdata,tshag,wg,ipr,derx1,dery1,   &
+                   derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
+!C
+!C  INTEGRATE SUB-ELEMENT MATRIX WHEN ITYP = 2 (FDV ELEMENT)
+!C
       include'divapre.h'
       include'divainc.h'
-      dimension tkse(10,10),tgse(10),kindt(nelt),kdata(ndata),
-     &          kelos(ndata,2),tdata(ndata,4),tshag(10,8,ng),
-     &          tjaci(2,2),t2j(3,3),tp(10),wg(ng),derx1(10),derx2(10),
-     &          dery1(10),dery2(10),tshagn(10,8,4),tjac(2,2),
-     &          tr(10,10),ttemp(10,10),gtemp(10),ep(10)
+      dimension tkse(10,10),tgse(10),kindt(nelt),kdata(ndata),  &
+               kelos(ndata,2),tdata(ndata,4),tshag(10,8,ng),    &
+               tjaci(2,2),t2j(3,3),tp(10),wg(ng),derx1(10),derx2(10),&
+               dery1(10),dery2(10),tshagn(10,8,4),tjac(2,2),          &
+               tr(10,10),ttemp(10,10),gtemp(10),ep(10)
       zero=0.D0
       un=1.D0
       deux=2.D0
@@ -967,17 +955,17 @@ C
       rlrel=(1.D0/(rll0*rll0)+1.D0/(rll1*rll1)+1.D0/(rll2*rll2))/trois
       rlrel=1.D0/sqrt(rlrel)
       endif
-C
-C  CALCULATION OF INVERSE JACOBIAN MATRIX , ...
-C
+!C
+!C  CALCULATION OF INVERSE JACOBIAN MATRIX , ...
+!C
       detj=(x1-x0)*(y2-y0)-(x2-x0)*(y1-y0)
       if(detj.le.zero) then
          write(6,*) ' %%% ERROR - CKSEL2 : DET. JACOBIAN = ZERO %%%'
          write(6,*) 'Iel,isub,detj',iel,isub,detj
          write(6,*) 'x0,x1,x2,y0,y1,y2',x0,x1,x2,y0,y1,y2
          write(6,*) 'Will try to recover'
-c         detj=(x2-x1)*(y0-y1)-(x0-x1)*(y2-y1)
-c         write(6,*) 'Detj now',detj
+!c         detj=(x2-x1)*(y0-y1)-(x0-x1)*(y2-y1)
+!c         write(6,*) 'Detj now',detj
         detj=max(abs((x2-x1)*(y0-y1)),abs((x0-x1)*(y2-y1)))
         detj=max(detj,abs((x1-x0)*(y2-y0)),abs((x2-x0)*(y1-y0)))
         detj=max(detj,abs((x1-x2)*(y0-y2)),abs((x0-x2)*(y1-y2)))
@@ -1004,9 +992,9 @@ c         write(6,*) 'Detj now',detj
       endif
  406  FORMAT(///,T10,'INVERSE JAC. MATRIX FOR EL. ',I5,'  SUB=',i5,///)
       IF(IPR.GE.5) CALL IMPMAT(tjaci,2,2,2,6)
-C
-C  For second derivatives: see Dhatt & Touzot (p57)
-C
+!C
+!C  For second derivatives: see Dhatt & Touzot (p57)
+!C
       t2j(1,1)=tjaci(1,1)*tjaci(1,1)
       t2j(2,2)=tjaci(2,2)*tjaci(2,2)
       t2j(1,2)=tjaci(1,2)*tjaci(1,2)
@@ -1021,76 +1009,67 @@ C
       endif
  46   FORMAT(///,T10,'   T2   MATRIX FOR ELEMENT ',I5,'  SUB=',i5,///)
       IF(IPR.GE.6) CALL IMPMAT(t2j,3,3,3,6)
-C
-C  TRANSFORMATION OF SHAPE FUNCTIONS DERIVATIVES
-C
+!C
+!C  TRANSFORMATION OF SHAPE FUNCTIONS DERIVATIVES
+!C
       do 20 ig=1,ng
          do 30 k=1,10
-C
-C  First Derivatives
-C
+!C
+!C  First Derivatives
+!C
             tp(1)=tjaci(1,1)*tshag(k,2,ig)+tjaci(1,2)*tshag(k,3,ig)
             tp(2)=tjaci(2,1)*tshag(k,2,ig)+tjaci(2,2)*tshag(k,3,ig)
             tshagn(k,2,ig)=tp(1)
             tshagn(k,3,ig)=tp(2)
-C
-C  Second Derivatives
-C
-            tp(1)=t2j(1,1)*tshag(k,4,ig)+t2j(1,2)*tshag(k,5,ig)
-     &            +t2j(1,3)*tshag(k,6,ig)
-            tp(2)=t2j(2,1)*tshag(k,4,ig)+t2j(2,2)*tshag(k,5,ig)
-     &            +t2j(2,3)*tshag(k,6,ig)
-            tp(3)=t2j(3,1)*tshag(k,4,ig)+t2j(3,2)*tshag(k,5,ig)
-     &            +t2j(3,3)*tshag(k,6,ig)
+!C
+!C  Second Derivatives
+!C
+            tp(1)=t2j(1,1)*tshag(k,4,ig)+t2j(1,2)*tshag(k,5,ig)+t2j(1,3)*tshag(k,6,ig)
+            tp(2)=t2j(2,1)*tshag(k,4,ig)+t2j(2,2)*tshag(k,5,ig)+t2j(2,3)*tshag(k,6,ig)
+            tp(3)=t2j(3,1)*tshag(k,4,ig)+t2j(3,2)*tshag(k,5,ig)+t2j(3,3)*tshag(k,6,ig)
             tshagn(k,4,ig)=tp(1)
             tshagn(k,5,ig)=tp(2)
             tshagn(k,6,ig)=tp(3)
  30      continue
  20   continue
-C
-C  SUB-ELEMENTARY MATRIX FOR NORM SPLINE PROBLEM
-C
+!C
+!C  SUB-ELEMENTARY MATRIX FOR NORM SPLINE PROBLEM
+!C
       do 100 i=1,10
          do 110 j=1,10
             do 120 ig=1,ng
-C
-C  Second derivative terms
-C
-              tkse(i,j)=tkse(i,j)+wg(ig)*(tshagn(i,4,ig)*tshagn(j,4,ig)
-     &                                   +tshagn(i,5,ig)*tshagn(j,5,ig)
-     &                              +deux*tshagn(i,6,ig)*tshagn(j,6,ig))
-C
-C  First derivative terms
-C
-              tkse(i,j)=tkse(i,j)+wg(ig)*alpha1
-     &                        /RLREL/RLREL*
-     &                            (tshagn(i,2,ig)*tshagn(j,2,ig)
-     &                            +tshagn(i,3,ig)*tshagn(j,3,ig))
-C
-C  Non derivated term
-C
-              tkse(i,j)=tkse(i,j)+wg(ig)*alpha0
-     &                         /(RLREL*RLREL*RLREL*RLREL)*
-     &                            (tshag(i,1,ig)*tshag(j,1,ig))
-C
-C  If advection constraint
-C
+!C
+!C  Second derivative terms
+!C
+              tkse(i,j)=tkse(i,j)+wg(ig)*(tshagn(i,4,ig)*tshagn(j,4,ig)+tshagn(i,5,ig)*tshagn(j,5,ig) &
+                                   +deux*tshagn(i,6,ig)*tshagn(j,6,ig))
+!C
+!C  First derivative terms
+!C
+              tkse(i,j)=tkse(i,j)+wg(ig)*alpha1/RLREL/RLREL*(tshagn(i,2,ig)*tshagn(j,2,ig)+tshagn(i,3,ig)*tshagn(j,3,ig))
+!C
+!C  Non derivated term
+!C
+              tkse(i,j)=tkse(i,j)+wg(ig)*alpha0/(RLREL*RLREL*RLREL*RLREL)*(tshag(i,1,ig)*tshag(j,1,ig))
+!C
+!C  If advection constraint
+!C
               if(itcs.eq.1.or.itcs.eq.3) then
-                 tkse(i,j)=tkse(i,j)+wg(ig)*wc1
-     &                   /(RLREL*RLREL)*    
-     &                   (
-     &                     (u*tshagn(i,2,ig)+v*tshagn(i,3,ig)-
-     &                      visc*tshagn(i,4,ig)-visc*tshagn(i,5,ig))*
-     &                     (u*tshagn(j,2,ig)+v*tshagn(j,3,ig)-
-     &                      visc*tshagn(j,4,ig)-visc*tshagn(j,5,ig)))
+                 tkse(i,j)=tkse(i,j)+wg(ig)*wc1&
+                        /(RLREL*RLREL)*       &
+                        (                     &
+                          (u*tshagn(i,2,ig)+v*tshagn(i,3,ig)-&
+                           visc*tshagn(i,4,ig)-visc*tshagn(i,5,ig))*&
+                          (u*tshagn(j,2,ig)+v*tshagn(j,3,ig)-        &
+                           visc*tshagn(j,4,ig)-visc*tshagn(j,5,ig)))
               endif
  120       continue
            tkse(i,j)=tkse(i,j)*detj*stiff
  110    continue
  100  continue
-C
-C  CONTRIBUTION OF THE DATA POINTS
-C
+!C
+!C  CONTRIBUTION OF THE DATA POINTS
+!C
       ifirst=kindt(iel)+1
       if(iel.eq.nelt) then
          ilast=ndatl
@@ -1108,53 +1087,50 @@ C
          xo=tdata(idata,1)
          yo=tdata(idata,2)
          do=tdata(idata,3)
-CJMBJMB big test
+!CJMBJMB big test
          tdata(idata,4)=tdata(idata,4)/RLREL/RLREL
          wo=tdata(idata,4)
          if(ipr.ge.3) then
              write(6,151)xo,yo,do,wo
          endif
- 151     format(t2,'Data Contribution: xo=',f8.2,';xo=',f8.2,';do=',
-     &          f8.2,';wo=',f8.2)
-C
-C Transformation of the data position in reference element
-C
+ 151     format(t2,'Data Contribution: xo=',f8.2,';xo=',f8.2,';do=',f8.2,';wo=',f8.2)
+!C
+!C Transformation of the data position in reference element
+!C
 
          xi=tjaci(1,1)*(xo-x0)+tjaci(2,1)*(yo-y0)
          eta=tjaci(1,2)*(xo-x0)+tjaci(2,2)*(yo-y0)
          call ep2(xi,eta,ep)
-C
-C  CONTRIBUTION FROM OBSERVATIONS
-C
+!C
+!C  CONTRIBUTION FROM OBSERVATIONS
+!C
          do 160 i=1,10
             tgse(i)=tgse(i)+wo*do*ep(i)*stiff*stiff
-c     &                       /(RLREL*RLREL)
+!c     &                       /(RLREL*RLREL)
             do 170 j=1,10
                tkse(i,j)=tkse(i,j)+wo*ep(i)*ep(j)*stiff*stiff
-c     &                       /(RLREL*RLREL)
+!c     &                       /(RLREL*RLREL)
  170        continue
  160     continue
  150  continue
       IF(IPR.GE.6) then
          WRITE (6,407) iel,isub
       endif
- 407  FORMAT(///,T10,'SUB-ELEMENT PRE-MATRIX FOR EL ',I5,', SUB',I5,
-     &       ///)
+ 407  FORMAT(///,T10,'SUB-ELEMENT PRE-MATRIX FOR EL ',I5,', SUB',I5,///)
       IF(IPR.GE.6) CALL IMPMAT(tkse,10,10,10,6)
       IF(IPR.GE.6) then
          WRITE (6,408) iel,isub
       endif
- 408  FORMAT(///,T10,'SUB-RHS PRE-VECTOR FOR ELEMENT ',I5,', SUB',I5,
-     &       ///)
+ 408  FORMAT(///,T10,'SUB-RHS PRE-VECTOR FOR ELEMENT ',I5,', SUB',I5,///)
       IF(IPR.GE.6) then
          do 200 i=1,10
             write(6,*) tgse(i)
  200     continue
       endif
-C
-C  CALCULATION OF DERIVATIVES AT INTERIOR INTERFACES (FOR SUBSEQUENT
-C  IDENTIFICATION OF NORMAL DERIVATIVES, in ckele2)
-C
+!C
+!C  CALCULATION OF DERIVATIVES AT INTERIOR INTERFACES (FOR SUBSEQUENT
+!C  IDENTIFICATION OF NORMAL DERIVATIVES, in ckele2)
+!C
       do 300 k=1,10
          tp(1)=tjaci(1,1)*tshag(k,7,1)+tjaci(1,2)*tshag(k,8,1)
          tp(2)=tjaci(2,1)*tshag(k,7,1)+tjaci(2,2)*tshag(k,8,1)
@@ -1167,10 +1143,10 @@ C
          derx2(k)=tp(1)
          dery2(k)=tp(2)
  310  continue
-C
-C  TRANSFORMATION OF CONNECTORS FROM REFERENCE TO GLOBAL AXES SYSTEM
-C  TR IS THE TRANSFORMATION MATRIX
-C
+!C
+!C  TRANSFORMATION OF CONNECTORS FROM REFERENCE TO GLOBAL AXES SYSTEM
+!C  TR IS THE TRANSFORMATION MATRIX
+!C
       dist12=sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2))
       p1=(y2-y1)*(x1+x2-deux*x0)-(x2-x1)*(y1+y2-deux*y0)
       p1=p1/(sqrt(deux)*dist12)
@@ -1195,12 +1171,11 @@ C
       IF(IPR.GE.6) then
          WRITE (6,707) iel,isub
       endif
- 707  FORMAT(///,T10,'TRANSFORM. MATRIX FOR ELEMENT ',I5,', SUB',I5,
-     &       ///)
+ 707  FORMAT(///,T10,'TRANSFORM. MATRIX FOR ELEMENT ',I5,', SUB',I5,///)
       IF(IPR.GE.6) CALL IMPMAT(tr,10,10,10,6)
-C
-C TRANSFORMATION OF TKSE
-C
+!C
+!C TRANSFORMATION OF TKSE
+!C
       do 450 i=1,10
          do 460 j=1,10
             do 470 k=1,10
@@ -1216,9 +1191,9 @@ C
  570        continue
  560     continue
  550  continue
-C
-C TRANSFORMATION OF TGSE
-C
+!C
+!C TRANSFORMATION OF TGSE
+!C
       do 650 i=1,10
          gtemp(i)=zero
          do 660 k=1,10
@@ -1228,9 +1203,9 @@ C
       do 670 i=1,10
          tgse(i)=gtemp(i)
  670  continue
-C
-C TRANSFORMATION OF DERX1
-C
+!C
+!C TRANSFORMATION OF DERX1
+!C
       do 750 i=1,10
          gtemp(i)=zero
          do 760 k=1,10
@@ -1240,9 +1215,9 @@ C
       do 770 i=1,10
          derx1(i)=gtemp(i)
  770  continue
-C
-C TRANSFORMATION OF DERX2
-C
+!C
+!C TRANSFORMATION OF DERX2
+!C
       do 850 i=1,10
          gtemp(i)=zero
          do 860 k=1,10
@@ -1252,9 +1227,9 @@ C
       do 870 i=1,10
          derx2(i)=gtemp(i)
  870  continue
-C
-C TRANSFORMATION OF DERY1
-C
+!C
+!C TRANSFORMATION OF DERY1
+!C
       do 950 i=1,10
          gtemp(i)=zero
          do 960 k=1,10
@@ -1264,9 +1239,9 @@ C
       do 970 i=1,10
          dery1(i)=gtemp(i)
  970  continue
-C
-C TRANSFORMATION OF DERY2
-C
+!C
+!C TRANSFORMATION OF DERY2
+!C
       do 1050 i=1,10
          gtemp(i)=zero
          do 1060 k=1,10
@@ -1279,14 +1254,12 @@ C
       IF(IPR.GE.5) then
          WRITE (6,507) iel,isub
       endif
- 507  FORMAT(///,T10,'SUB-ELEMENT MATRIX FOR ELEMENT ',I5,', SUB',I5,
-     &       ///)
+ 507  FORMAT(///,T10,'SUB-ELEMENT MATRIX FOR ELEMENT ',I5,', SUB',I5,///)
       IF(IPR.GE.5) CALL IMPMAT(tkse,10,10,10,6)
       IF(IPR.GE.5) then
          WRITE (6,508) iel,isub
       endif
- 508  FORMAT(///,T10,'SUB-RHS VECTOR FOR ELEMENT ',I5,', SUB',I5,
-     &       ///)
+ 508  FORMAT(///,T10,'SUB-RHS VECTOR FOR ELEMENT ',I5,', SUB',I5,///)
       IF(IPR.GE.5) then
          do 201 i=1,10
             write(6,*) tgse(i)
@@ -1297,16 +1270,13 @@ C
 
 
 
-      subroutine fixbcd(tuppe,tlowe,tdiag,trhsg,klink,kskyh,
-     &                  tcndi,kcndi)
-C
-C  FIX BOUNDARY CONDITIONS IN THE GLOBAL MATRIX SYSTEM
-C
+      subroutine fixbcd(tuppe,tlowe,tdiag,trhsg,klink,kskyh,tcndi,kcndi)
+!C
+!C  FIX BOUNDARY CONDITIONS IN THE GLOBAL MATRIX SYSTEM
+!C
       include'divapre.h'
       include'divainc.h'
-      dimension tuppe(nterm),tlowe(*),tdiag(nddlt),trhsg(nddlt),
-     &          tcndi(ncond),kcndi(ncond,info),kskyh(nddlt+1),
-     &          klink(nnt)
+      dimension tuppe(nterm),tlowe(*),tdiag(nddlt),trhsg(nddlt),tcndi(ncond),kcndi(ncond,info),kskyh(nddlt+1),klink(nnt)
       un=1.D0
       zero=0.D0
       do 10 i=1,ncond
@@ -1347,14 +1317,14 @@ C
 
 
       subroutine impsol(tcoog,klink,sol)
-C
-C  PRINT THE SOLUTION AT PRINCIPAL CONNECTORS
-C
+!C
+!C  PRINT THE SOLUTION AT PRINCIPAL CONNECTORS
+!C
       include'divapre.h'
       include'divainc.h'
       dimension tcoog(nnt1,2),klink(nnt),sol(nddlt)
       if(ityp.eq.2.or.ityp.eq.3) then
-c         write(81,400)
+!c         write(81,400)
          do 10 i=1,nnt1
             x=tcoog(i,1)
             y=tcoog(i,2)
@@ -1364,8 +1334,7 @@ c         write(81,400)
             write(81,401)x,y,val,valx,valy
  10      continue
       endif
- 400  format(72('&'),/,t8,'X',t18,'Y',t29,'PHI',t44,'PHIX',t59,'PHIY',
-     &       /,72('&'))
+ 400  format(72('&'),/,t8,'X',t18,'Y',t29,'PHI',t44,'PHIX',t59,'PHIY',/,72('&'))
  401  format(t3,f8.3,t13,f8.3,t26,f10.5,t41,f10.5,t56,f10.5)
       return
       end
@@ -1374,9 +1343,9 @@ c         write(81,400)
 
 
       subroutine locse2 (klocs)
-C
-C  INTEGRATE ELEMENTARY MATRIX WHEN ITYP = 2 (FDV ELEMENT)
-C
+!C
+!C  INTEGRATE ELEMENTARY MATRIX WHEN ITYP = 2 (FDV ELEMENT)
+!C
       include'divapre.h'
       include'divainc.h'
       dimension klocs(3,10)
@@ -1416,9 +1385,9 @@ C
 
 
       subroutine locse3 (klocs)
-C
-C  INTEGRATE ELEMENTARY MATRIX WHEN ITYP = 3 (FDV ELEMENT)
-C
+!C
+!C  INTEGRATE ELEMENTARY MATRIX WHEN ITYP = 3 (FDV ELEMENT)
+!C
       include'divapre.h'
       include'divainc.h'
       dimension klocs(4,10)

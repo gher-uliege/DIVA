@@ -1,29 +1,29 @@
-C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-C
-C   SUBROUTINE LIST:
-C     -  DATAPR (MODULE)
-C     -  FINDL2 (associate one element to each data to be fitted)
-C     -  FINDL3 (associate one element to each data to be fitted)
-C     -  RDDATA (read the data to be fitted by spline smooting)
-C     -  SORTDT (sort the data according to the sequence of elements)
-C
-C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-C                                                                      C
-C                             DATAPR MODULE                            C
-C             Input of data to be fitted by spline smooting            C
-C                                                                      C
-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+!C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+!C
+!C   SUBROUTINE LIST:
+!C     -  DATAPR (MODULE)
+!C     -  FINDL2 (associate one element to each data to be fitted)
+!C     -  FINDL3 (associate one element to each data to be fitted)
+!C     -  RDDATA (read the data to be fitted by spline smooting)
+!C     -  SORTDT (sort the data according to the sequence of elements)
+!C
+!C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+!C                                                                      C
+!C                             DATAPR MODULE                            C
+!C             Input of data to be fitted by spline smooting            C
+!C                                                                      C
+!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       subroutine datapr(ipr)
       include'divapre.h'
       include'divainc.h'
-cJMB another bug??? why should there be the declaration???       
-c      dimension kconn(nelt,nnel),tcoog(nnt1,2)
-c jmb
+!cJMB another bug??? why should there be the declaration???
+!c      dimension kconn(nelt,nnel),tcoog(nnt1,2)
+!c jmb
 
-C  READ IREG :  TYPE OF DATA TREATMENT
-C  IF YOU DON'T WANT TO USE THE OPTIMISATION SYSTEM, JUST WRITE IN 
-C  './drv/diva.drv' : IREG+10 INSTEAD OF IREG (SvL)
+!C  READ IREG :  TYPE OF DATA TREATMENT
+!C  IF YOU DON'T WANT TO USE THE OPTIMISATION SYSTEM, JUST WRITE IN
+!C  './drv/diva.drv' : IREG+10 INSTEAD OF IREG (SvL)
       read (10,*) ireg 
       if(ireg.lt.10) then
          opti=1
@@ -32,8 +32,8 @@ C  './drv/diva.drv' : IREG+10 INSTEAD OF IREG (SvL)
 	 ireg=ireg-10
       endif
 
-c     opti=0
-C  READ THE DATA SET TO COMPUTE THE NUMBER OF DATA CONSTRAINTS
+!c     opti=0
+!C  READ THE DATA SET TO COMPUTE THE NUMBER OF DATA CONSTRAINTS
       index=0
  10   read(20,*,end=100,err=100) xxx
       index=index+1
@@ -46,20 +46,20 @@ C  READ THE DATA SET TO COMPUTE THE NUMBER OF DATA CONSTRAINTS
       stop
       endif
 
-C ALLOCATION OF STORAGE TABLES:
-C  ==> TDATA(I,*)  : DATA X and Y POSITION, VALUE and WEIGHT:
-C                    (the weight is defined as the mu factor in
-C                    the P2 Problem:  BRASSEUR, Ph. D. dissert.)
-C  ==> KELOS(ID,*) : LOCALIZATON OF DATA ID IN THE ELEMENT MESH ;
-C                    KELOS(ID,1) = IEL where data is located
-C                    KELOS(ID,2) = SUB-ELEMENT IN IEL (1,2,3 or 4)
-C                    IF IEL<0 ==> DATA NON LOCALIZED
-C  ==> KINDT(IEL)  : INDEX OF THE LAST DATA BELONGING TO (IEL-1) IN
-C                    ARRAY KDATA
-C  ==> KDATA(I)    : DATA NUMBER SEQUENCE, SORTED ELEMENT/ELEMENT
-C  ==> KNTC(nelkntc) : USED FOR OPTIMISATION  (SvL)
-C  ==> KELOS1(nadata) : USED FOR OPTIMISATION FOR THE QUICK SORT ALGORITHM
-C                       (see the 'sordtopti' routine in 'optimi.f')
+!C ALLOCATION OF STORAGE TABLES:
+!C  ==> TDATA(I,*)  : DATA X and Y POSITION, VALUE and WEIGHT:
+!C                    (the weight is defined as the mu factor in
+!C                    the P2 Problem:  BRASSEUR, Ph. D. dissert.)
+!C  ==> KELOS(ID,*) : LOCALIZATON OF DATA ID IN THE ELEMENT MESH ;
+!C                    KELOS(ID,1) = IEL where data is located
+!C                    KELOS(ID,2) = SUB-ELEMENT IN IEL (1,2,3 or 4)
+!C                    IF IEL<0 ==> DATA NON LOCALIZED
+!C  ==> KINDT(IEL)  : INDEX OF THE LAST DATA BELONGING TO (IEL-1) IN
+!C                    ARRAY KDATA
+!C  ==> KDATA(I)    : DATA NUMBER SEQUENCE, SORTED ELEMENT/ELEMENT
+!C  ==> KNTC(nelkntc) : USED FOR OPTIMISATION  (SvL)
+!C  ==> KELOS1(nadata) : USED FOR OPTIMISATION FOR THE QUICK SORT ALGORITHM
+!C                       (see the 'sordtopti' routine in 'optimi.f')
 
       ll=4*ndata
       call allody(ll,1,'tdata',ltdata,ipr)
@@ -72,29 +72,29 @@ C                       (see the 'sordtopti' routine in 'optimi.f')
           call datallxy(s(ltdata),ipr)
       endif
 
-C COMPUTE THE DIVISIONS OF SPACE FOR OPTIMISATION (SvL)
+!C COMPUTE THE DIVISIONS OF SPACE FOR OPTIMISATION (SvL)
       if (opti.eq.1) then
          call divesp(s(ltcoog),l(lkconn))
-c JMB added 20
+!c JMB added 20
          ncaz=int(100*real(nelt)/real(ncat))+20
-c         write(6,*) 'Ncaz',nelt,ncat,ncaz
+!c         write(6,*) 'Ncaz',nelt,ncat,ncaz
          nelkntc=ncax*ncay*ncaz
          call allody(ndata,0,'kelos1',lkelos1,ipr)
-C JMB TO DO
-C Dirty hack first allocate one point (since last allocated can be extended to 
-C the end; once repel2 or repel3 finished, allocate what was actually needed
-C but keep old pointer and add nelkntc-1
-C simply put third element * in repel2 and repel3
-C         call allody(nelkntc,0,'kntc',lkntc,ipr)
+!C JMB TO DO
+!C Dirty hack first allocate one point (since last allocated can be extended to
+!C the end; once repel2 or repel3 finished, allocate what was actually needed
+!C but keep old pointer and add nelkntc-1
+!C simply put third element * in repel2 and repel3
+!C         call allody(nelkntc,0,'kntc',lkntc,ipr)
           nelkntc=ncax*ncay
           call allody(nelkntc,0,'kntc',lkntc,ipr)
-C	       nelkntc=ncax*ncay*ncaz
-C      call allody(nelkntc-1,0,'kntc',jjjjjj,ipr)
+!C	       nelkntc=ncax*ncay*ncaz
+!C      call allody(nelkntc-1,0,'kntc',jjjjjj,ipr)
 
       endif
 
-C ASSOCIATE DATA TO ELEMENTS 
-C test
+!C ASSOCIATE DATA TO ELEMENTS
+!C test
       if(ityp.eq.2) then
       if (opti.eq.1) then 		! SvL
       call repeltest2(s(ltcoog),l(lkconn),l(lkntc),ncamax)
@@ -106,11 +106,11 @@ C test
       endif
       endif
       if(opti.eq.1) then
-C      write(6,*) 'NCAMAX found',ncamax
-C Si ok, allody ici de ncax*ncay*ncamax EN plus en gardant le pointeur lkntc
+!C      write(6,*) 'NCAMAX found',ncamax
+!C Si ok, allody ici de ncax*ncay*ncamax EN plus en gardant le pointeur lkntc
           nelkntc=ncax*ncay*ncamax
           ncaz=ncamax+1
-C          write(6,*) 'ncaz',ncaz
+!C          write(6,*) 'ncaz',ncaz
           call allody(nelkntc,0,'kntc',jjjjjj,ipr)
       
       endif
@@ -118,12 +118,11 @@ C          write(6,*) 'ncaz',ncaz
          if (opti.eq.1) then 		! SvL
             write (6,*) ' *** Optimisation is working 2 ***'
             call repel2(s(ltcoog),l(lkconn),l(lkntc),ncamax)
-c            write(6,*) 'Now found',ncamax
+!c            write(6,*) 'Now found',ncamax
          else 
 	    write(6,*) ' *** You asked no optimisation ***'
          endif
-         call findl2(l(lkelos),s(ltcoog),l(lkconn),s(ltdata),
-     &               l(lkntc),ipr)
+         call findl2(l(lkelos),s(ltcoog),l(lkconn),s(ltdata),l(lkntc),ipr)
       endif
 
       if(ityp.eq.3) then
@@ -133,24 +132,22 @@ c            write(6,*) 'Now found',ncamax
          else 
 	    write(6,*) ' *** You asked no optimisation ***'
           endif
-         call findl3(l(lkelos),s(ltcoog),l(lkconn),s(ltcele),
-     &               s(ltdata),ipr)
+         call findl3(l(lkelos),s(ltcoog),l(lkconn),s(ltcele),s(ltdata),ipr)
       endif
-c      write(6,*) 'Space for optimization?',ncamax,ncaz
+!c      write(6,*) 'Space for optimization?',ncamax,ncaz
       
       nelkntc=ncax*ncay*ncaz
-C      call allody(nelkntc-1,0,'kntc',jjjjjj,99)
+!C      call allody(nelkntc-1,0,'kntc',jjjjjj,99)
       
-C --- CODE ADDED FOR 2.2 RELEASE (RS 22 MARCH 94) ---
-c      if (IREG.GT.0.AND.IREG.LT.3) then 
+!C --- CODE ADDED FOR 2.2 RELEASE (RS 22 MARCH 94) ---
+!c      if (IREG.GT.0.AND.IREG.LT.3) then
           call LINREG (L(LKELOS),S(LTDATA))
-c      endif
-C --- END OF ADDED CODE ---
+!c      endif
+!C --- END OF ADDED CODE ---
 
-C SORT THE DATA
+!C SORT THE DATA
       if (opti.eq.1) then		!SvL
-         call sortdtopti(l(lkindt),l(lkdata),l(lkelos),l(lkelos1)
-     &                   ,ipr)
+         call sortdtopti(l(lkindt),l(lkdata),l(lkelos),l(lkelos1),ipr)
       endif
       if (opti.eq.0) then
          call sortdt(l(lkindt),l(lkdata),l(lkelos),ipr)
@@ -163,31 +160,30 @@ C SORT THE DATA
 
       subroutine findl2(kelos,tcoog,kconn,tdata,kntc,ipr)
 
-C  ASSOCIATE ONE ELEMENT TO EACH DATA TO BE FITTED (IF EXISTS)
-C  !!!!!!!!!!!!!!!!  WORKS ONLY FOR ELEMENT OF TYPE 2 !!!!!!!!!!!!!!!!!
+!C  ASSOCIATE ONE ELEMENT TO EACH DATA TO BE FITTED (IF EXISTS)
+!C  !!!!!!!!!!!!!!!!  WORKS ONLY FOR ELEMENT OF TYPE 2 !!!!!!!!!!!!!!!!!
 
       include'divapre.h'
       include'divainc.h'
-      dimension tdata(ndata,4),kconn(nelt,nnel),tcoog(nnt1,2),
-     &          kelos(ndata,2)
+      dimension tdata(ndata,4),kconn(nelt,nnel),tcoog(nnt1,2),kelos(ndata,2)
       dimension kntc(ncax,ncay,*)
 
       do 20 id=1,ndata
-c mr
-c        write(6,*) 'Data ', id 
+!c mr
+!c        write(6,*) 'Data ', id
          x=tdata(id,1)
          y=tdata(id,2)
          if (opti.eq.1) then 
             call locpt2opti(x,y,tcoog,kconn,iel,isub,kntc,ipr)
-C JMBTEST
-c            if (iel.eq.-1) then
-c            write(6,*) 'sauve qui peut',x,y
-c            call locpt2(x,y,tcoog,kconn,iel,isub,ipr)
-c              if(iel.ne.-1) then 
-c              write(6,*) '???problem???',x,y
-c              endif
-c            endif
-C ENDJMBTEST
+!C JMBTEST
+!c            if (iel.eq.-1) then
+!c            write(6,*) 'sauve qui peut',x,y
+!c            call locpt2(x,y,tcoog,kconn,iel,isub,ipr)
+!c              if(iel.ne.-1) then
+!c              write(6,*) '???problem???',x,y
+!c              endif
+!c            endif
+!C ENDJMBTEST
          endif
          if (opti.eq.0) then 
             call locpt2(x,y,tcoog,kconn,iel,isub,ipr)
@@ -199,14 +195,12 @@ C ENDJMBTEST
       do 30 id=1,ndata
          if(kelos(id,1).lt.0) nonloc=nonloc+1
  30   continue
-C
-C  PRINT LOCALIZATION OF DATA IN THE MESH
-C
+!C
+!C  PRINT LOCALIZATION OF DATA IN THE MESH
+!C
       if(ipr.ge.1) then
          write(6,910) nonloc
- 910     format(/,t2,60('%'),/,' There are ',i7,
-     &' data NON localized in the mesh (and ignored)'
-     &,/,t2,60('%'))
+ 910     format(/,t2,60('%'),/,' There are ',i7,' data NON localized in the mesh (and ignored)',/,t2,60('%'))
       endif
       if(ipr.ge.4) then
          write(6,*)'   LOCALIZATION OF DATA IN ELEMENT AND SUB-ELT'
@@ -220,20 +214,18 @@ C
 
 
       subroutine findl3(kelos,tcoog,kconn,tcele,tdata,ipr)
-C
-C  ASSOCIATE ONE ELEMENT TO EACH DATA TO BE FITTED (IF EXISTS)
-C  !!!!!!!!!!!!!!!!  WORKS ONLY FOR ELEMENT OF TYPE 3 !!!!!!!!!!!!!!!!!
-C
+!C
+!C  ASSOCIATE ONE ELEMENT TO EACH DATA TO BE FITTED (IF EXISTS)
+!C  !!!!!!!!!!!!!!!!  WORKS ONLY FOR ELEMENT OF TYPE 3 !!!!!!!!!!!!!!!!!
+!C
       include'divapre.h'
       include'divainc.h'
-      dimension tdata(ndata,4),kconn(nelt,nnel),tcoog(nnt1,2),
-     &          kelos(ndata,2),tcele(nelt,2)
+      dimension tdata(ndata,4),kconn(nelt,nnel),tcoog(nnt1,2),kelos(ndata,2),tcele(nelt,2)
       do 20 id=1,ndata
          x=tdata(id,1)
          y=tdata(id,2)
          if (opti.eq.1) then 
-            call locpt3opti(x,y,tcoog,kconn,tcele,iel,isub,kntc,
-     &                      ipr)
+            call locpt3opti(x,y,tcoog,kconn,tcele,iel,isub,kntc,ipr)
          endif
          if (opti.eq.0) then 
             call locpt3(x,y,tcoog,kconn,tcele,iel,isub,ipr)
@@ -241,21 +233,19 @@ C
          kelos(id,1)=iel
          kelos(id,2)=isub
  20   continue
-C
-C  COUNT THE NUMBER OF NON LOCATED DATA
-C
+!C
+!C  COUNT THE NUMBER OF NON LOCATED DATA
+!C
       nonloc=0
       do 30 id=1,ndata
          if(kelos(id,1).lt.0) nonloc=nonloc+1
  30   continue
-C
-C  PRINT LOCALIZATION OF DATA IN THE MESH
-C
+!C
+!C  PRINT LOCALIZATION OF DATA IN THE MESH
+!C
       if(ipr.ge.1) then
          write(6,910) nonloc
- 910     format(/,t2,60('%'),/,' There are ',i7,
-     &' data NON localized in the mesh (and ignored)',
-     &/,t2,60('%'))
+ 910     format(/,t2,60('%'),/,' There are ',i7,' data NON localized in the mesh (and ignored)',/,t2,60('%'))
       endif
       if(ipr.ge.4) then
          write(6,*)'   LOCALIZATION OF DATA IN ELEMENT AND SUB-ELT'
@@ -270,16 +260,16 @@ C
 
 
       subroutine rddata(tdata,ipr)
-C
-C  I/O DATA SET TO BE FITTED BY SPLINE SMOOTHONG
-C
+!C
+!C  I/O DATA SET TO BE FITTED BY SPLINE SMOOTHONG
+!C
       include'divapre.h'
       include'divainc.h'
       dimension tdata(ndata,4)
-C
-C  INPUT OF DATA SET DESCRIPTION
-C
-C JMB add calculation of harmonic mean of mu for misfit scaling in GCV
+!C
+!C  INPUT OF DATA SET DESCRIPTION
+!C
+!C JMB add calculation of harmonic mean of mu for misfit scaling in GCV
       jmbmud=0
       hmmu=0
       do 10 i=1,ndata
@@ -290,9 +280,9 @@ C JMB add calculation of harmonic mean of mu for misfit scaling in GCV
          endif
  10   continue
       hmmu=jmbmud/hmmu
-C
-C OUTPUT OF DATA SET DESCRIPTION
-C
+!C
+!C OUTPUT OF DATA SET DESCRIPTION
+!C
       if(ipr.ge.3) then
          write(6,*)' List of X and Y position, value and weight of data'
          write(6,*)' --------------------------------------------------'
@@ -304,9 +294,9 @@ C
       end
 
       subroutine sortdt(kindt,kdata,kelos,ipr)
-C
-C  SORT THE DATA ACCORDING TO THE SEQUENCE OF ELEMENTS
-C
+!C
+!C  SORT THE DATA ACCORDING TO THE SEQUENCE OF ELEMENTS
+!C
       include'divapre.h'
       include'divainc.h'
       dimension kdata(ndata),kelos(ndata,2),kindt(nelt)
@@ -315,7 +305,7 @@ C
          kindt(iel)=0
  10   continue
 
-C  SORTING LOOP (SO SLOW!)
+!C  SORTING LOOP (SO SLOW!)
       do 20 idata=1,ndata
          iel=kelos(idata,1)
          if(iel.lt.0) then
@@ -337,11 +327,11 @@ C  SORTING LOOP (SO SLOW!)
             kindt(ie)=kindt(ie)+1
  30      continue
  20   continue
-C  END OF SORTING LOOP
+!C  END OF SORTING LOOP
 
-C
-C storage of number of data located in the mesh
-C
+!C
+!C storage of number of data located in the mesh
+!C
       ndatl=imaxd
       if (imaxd.le.0) then
        write(6,*) ' Will create valex grid'
@@ -349,9 +339,7 @@ C
       endif
       if(ipr.ge.1) then
          write(6,910) imaxd
- 910     format(/,t2,60('%'),/,' There are ',i7,
-     &' data localized in the mesh (and resorted)'
-     &   ,/,t2,60('%'))
+ 910     format(/,t2,60('%'),/,' There are ',i7,' data localized in the mesh (and resorted)',/,t2,60('%'))
       endif
       if(ipr.ge.4) then
          write(6,*)'   ORDERED SEQUENCE OF DATA IN ELEMENTS '
@@ -366,7 +354,7 @@ C
       return
       end
 
-C --- Compute Linear Regression ---
+!C --- Compute Linear Regression ---
 
       SUBROUTINE LINREG (KELOS,TDATA)
 
@@ -380,10 +368,10 @@ C --- Compute Linear Regression ---
       REAL*4 A(NP,NP), B(NP)
 
       INTEGER*4 INDX(NP)
-C JMB I put D as REAL??
+!C JMB I put D as REAL??
       REAL*4 D
         
-C Compute Mean Value
+!C Compute Mean Value
 
       IF (IREG.EQ.1) THEN
          XMEAN = 0.
@@ -407,7 +395,7 @@ C Compute Mean Value
          CLOSE (22)
       ENDIF
 
-C Compute Linear Regression
+!C Compute Linear Regression
 
       IF (IREG.EQ.2) THEN
          TOTDAT = 0.
@@ -458,8 +446,7 @@ C Compute Linear Regression
          ENDIF
 
          DO 21 I = 1,NDATA
-            TDATA (I,3)=TDATA(I,3) 
-     &                  -B(1) - B(2) * TDATA(I,1) - B(3) * TDATA(I,2)
+            TDATA (I,3)=TDATA(I,3) -B(1) - B(2) * TDATA(I,1) - B(3) * TDATA(I,2)
 21       CONTINUE
          DO 22 I=1,3
             D = D*A(I,I)
@@ -473,22 +460,22 @@ C Compute Linear Regression
          WRITE (22,*) D
          CLOSE (22)
       ENDIF
-c      VARDATA=0
-c      do i=1,ndata
-c      VARDATA=VARDATA+TDATA (I,3)*TDATA(I,3)
-c      enddo
-c      write(6,*) 'Variance of anomalies',VARDATA/ndata
-c      write(33,*) VARDATA/ndata,ndata
+!c      VARDATA=0
+!c      do i=1,ndata
+!c      VARDATA=VARDATA+TDATA (I,3)*TDATA(I,3)
+!c      enddo
+!c      write(6,*) 'Variance of anomalies',VARDATA/ndata
+!c      write(33,*) VARDATA/ndata,ndata
       END
               
 
-C -------------------------------------------------
-C --- LUDCMP & LUBKSB :
-C ---                   LU Matrix Decomposition
-C ---                   and Backward Substitution
-C ---
-C --- Numerical Recipies (c)
-C -------------------------------------------------
+!C -------------------------------------------------
+!C --- LUDCMP & LUBKSB :
+!C ---                   LU Matrix Decomposition
+!C ---                   and Backward Substitution
+!C ---
+!C --- Numerical Recipies (c)
+!C -------------------------------------------------
 
       SUBROUTINE LUDCMP(A,N,NP,INDX,D)
       PARAMETER (NMAX=100,TINY=1.0E-20)
@@ -535,10 +522,10 @@ C -------------------------------------------------
             AAMAX=DUM
           ENDIF
 16      CONTINUE
-C JMB???
+!C JMB???
         imax=N
         write(6,*) 'ludcmp',imax
-C JMBE
+!C JMBE
         IF (J.NE.IMAX)THEN
           DO 17 K=1,N
             DUM=A(IMAX,K)
@@ -575,7 +562,7 @@ C JMBE
       RETURN
       END
 
-C ----------------------------------------------
+!C ----------------------------------------------
 
       SUBROUTINE LUBKSB(A,N,NP,INDX,B)
       DIMENSION A(NP,NP),INDX(N),B(N)

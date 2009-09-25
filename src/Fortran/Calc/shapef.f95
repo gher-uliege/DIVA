@@ -1,24 +1,22 @@
-C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-C
-C   SUBROUTINE LIST:
-C     - CALSH2 (evaluation of the shape functions at gauss points
-C        * EP2,EDPX2,EDPY2,EDDY2,EDDX2,EDXY2
-C
-C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+!C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+!C
+!C   SUBROUTINE LIST:
+!C     - CALSH2 (evaluation of the shape functions at gauss points
+!C        * EP2,EDPX2,EDPY2,EDDY2,EDDX2,EDXY2
+!C
+!C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
       SUBROUTINE CALSH2(TSHAG,XG,YG,NG,IPR)
-C     =========================
+!C     =========================
       include'divapre.h'
-      DIMENSION EP(10),EDPX(10),
-     *          EDPY(10),EDDX(10),EDDY(10),EDDXY(10),
-     *          TSHAG(10,8,NG),XG(NG),YG(NG)
+      DIMENSION EP(10),EDPX(10),EDPY(10),EDDX(10),EDDY(10),EDDXY(10),TSHAG(10,8,NG),XG(NG),YG(NG)
       ZERO=0.D0
-C
-C  REFERENCE TRIANGULAR SUB-ELEMENT
-C      3 NODES
-C
-C  CALCULATION OF SHAPE FUNCTION AT GAUSS INTEGRATION POINTS
-C
+!C
+!C  REFERENCE TRIANGULAR SUB-ELEMENT
+!C      3 NODES
+!C
+!C  CALCULATION OF SHAPE FUNCTION AT GAUSS INTEGRATION POINTS
+!C
       do 25 ig=1,ng
          x=xg(ig)
          y=yg(ig)
@@ -37,9 +35,9 @@ C
             tshag(i,6,ig)=eddxy(i)
  30      continue
  25   continue
-C
-C  CALCULATION OF X- AND Y- DERIVATIVES AT INTERIOR INTERFACE 1
-C
+!C
+!C  CALCULATION OF X- AND Y- DERIVATIVES AT INTERIOR INTERFACE 1
+!C
       x=0.5
       y=zero
       call edpx2(x,y,edpx)
@@ -48,9 +46,9 @@ C
          tshag(i,7,1)=edpx(i)
          tshag(i,8,1)=edpy(i)
  40   continue
-C
-C  CALCULATION OF X- AND Y- DERIVATIVES AT INTERIOR INTERFACE 2
-C
+!C
+!C  CALCULATION OF X- AND Y- DERIVATIVES AT INTERIOR INTERFACE 2
+!C
       x=zero
       y=0.5
       call edpx2(x,y,edpx)
@@ -110,7 +108,7 @@ C
 
 
       SUBROUTINE EP2(R,S,VP)
-C     =======================
+!C     =======================
       include'divapre.h'
       DIMENSION VP(10)
       UN=1.D0
@@ -118,8 +116,7 @@ C     =======================
       TROIS=3.D0
       SIX=6.D0
       RAC2=2.D0*SQRT(2.D0)
-      VP(1)=UN-SIX*R*S-TROIS*R*R-TROIS*S*S+SIX*R*R*S+SIX*R*S*S+
-     *      DEUX*R*R*R+DEUX*S*S*S
+      VP(1)=UN-SIX*R*S-TROIS*R*R-TROIS*S*S+SIX*R*R*S+SIX*R*S*S+DEUX*R*R*R+DEUX*S*S*S
       VP(2)=R-DEUX*R*S-DEUX*R*R+DEUX*R*R*S+R*S*S+R*R*R
       VP(3)=S-DEUX*S*R-DEUX*S*S+DEUX*S*S*R+S*R*R+S*S*S
       VP(4)=TROIS*R*S+TROIS*R*R-TROIS*R*R*S-TROIS*R*S*S-DEUX*R*R*R
@@ -134,7 +131,7 @@ C     =======================
 
 
       SUBROUTINE EDPX2(R,S,VDPX)
-C     ===========================
+!C     ===========================
       include'divapre.h'
       DIMENSION VDPX(10)
       UN=1.D0
@@ -160,7 +157,7 @@ C     ===========================
 
 
       SUBROUTINE EDPY2(R,S,VDPY)
-C     ===========================
+!C     ===========================
       include'divapre.h'
       DIMENSION VDPY(10)
       UN=1.D0
@@ -183,7 +180,7 @@ C     ===========================
       END
 
       SUBROUTINE EDDY2(R,S,VDDPY)
-C     ============================
+!C     ============================
       include'divapre.h'
       DIMENSION VDDPY(10)
       DEUX=2.D0
@@ -206,7 +203,7 @@ C     ============================
       END
 
       SUBROUTINE EDDX2(R,S,VDDPX)
-C     ============================
+!C     ============================
       include'divapre.h'
       DIMENSION VDDPX(10)
       DEUX=2.D0
@@ -229,7 +226,7 @@ C     ============================
       END
 
       SUBROUTINE EDXY2(R,S,VDPXY)
-C     ============================
+!C     ============================
       include'divapre.h'
       DIMENSION VDPXY(10)
       UN=1.D0

@@ -1,19 +1,19 @@
-C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-C
-C   SUBROUTINE LIST:
-C     -  STORES (MODULE)
-C     -  EXTRT2 (extract the solution from an ITYP=2 element)
-C     -  EXTRT3 (extract the solution from an ITYP=3 element)
-C     -  GENF80 (create fort.80 file, with localization of solution
-C               points in the finite element mesh
-C
-C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-C                                                                      C
-C                             STORES MODULE                            C
-C                         Storage of the solution                      C
-C                                                                      C
-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+!C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+!C
+!C   SUBROUTINE LIST:
+!C     -  STORES (MODULE)
+!C     -  EXTRT2 (extract the solution from an ITYP=2 element)
+!C     -  EXTRT3 (extract the solution from an ITYP=3 element)
+!C     -  GENF80 (create fort.80 file, with localization of solution
+!C               points in the finite element mesh
+!C
+!C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+!C                                                                      C
+!C                             STORES MODULE                            C
+!C                         Storage of the solution                      C
+!C                                                                      C
+!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       subroutine stores(ipr)
       include'divapre.h'
       real*8 c8,gcvaln,vargcv
@@ -31,24 +31,24 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       btr=0
       ctr=0
       ifirst=1
-C
-C  PROBLEM P2: OPEN THE FILE CONTAINING THE CONDENSATION VECTOR
-C
-c      if(ityp.eq.2.or.ityp.eq.3) then
-c         open(32,file='kele2.cnd',recl=nddle*3*iprc,form='unformatted',
-c     &        access='direct')
-C         write(6,*) 'JMB: depreciated file output'
-c         if (IJMB.EQ.0) STOP 'KELE OPTIMISATION NOT WORKING'
-c      endif
-C
-C  input of general data
-C
+!C
+!C  PROBLEM P2: OPEN THE FILE CONTAINING THE CONDENSATION VECTOR
+!C
+!c      if(ityp.eq.2.or.ityp.eq.3) then
+!c         open(32,file='kele2.cnd',recl=nddle*3*iprc,form='unformatted',
+!c     &        access='direct')
+!C         write(6,*) 'JMB: depreciated file output'
+!c         if (IJMB.EQ.0) STOP 'KELE OPTIMISATION NOT WORKING'
+!c      endif
+!C
+!C  input of general data
+!C
       read(10,*) ispec
-C      if(ipr.gt.0) write(6,*) ' Specification of output =',ispec
+!C      if(ipr.gt.0) write(6,*) ' Specification of output =',ispec
       ispec0=ispec
       ispec=0
       
-CJMBB Produce analysis at data points into fort.71
+!CJMBB Produce analysis at data points into fort.71
          rewind(13)
          read(13,*,end=1234) xori,yori
          read(13,*)dx,dy
@@ -65,32 +65,29 @@ CJMBB Produce analysis at data points into fort.71
          ireclu=ireclu+1
          if(ityp.eq.2) then
             if (opti.eq.1) then 		! (SvL)
-               call locpt2opti(x,y,s(ltcoog),l(lkconn),iel,isub,
-     &                         l(lkntc),ipr)
-c               if (iel.eq.-1) then
-c                write(6,*) 'sauve qui store',x_ll,y_ll
-c                call locpt2(x,y,s(ltcoog),l(lkconn),iel,isub,ipr)
-c               endif
+               call locpt2opti(x,y,s(ltcoog),l(lkconn),iel,isub,l(lkntc),ipr)
+!c               if (iel.eq.-1) then
+!c                write(6,*) 'sauve qui store',x_ll,y_ll
+!c                call locpt2(x,y,s(ltcoog),l(lkconn),iel,isub,ipr)
+!c               endif
             endif
             if (opti.eq.0) then 
                call locpt2(x,y,s(ltcoog),l(lkconn),iel,isub,ipr)
             endif
 
             if(iel.le.0.or.isub.le.0) then
-C               if (icoordchange.ne.0) call xyll(x,y)
-c               write(6,*) ' Donnee ',ireclu,x_ll,y_ll,' non localisee'
+!C               if (icoordchange.ne.0) call xyll(x,y)
+!c               write(6,*) ' Donnee ',ireclu,x_ll,y_ll,' non localisee'
                write(82,*) x_ll,y_ll,valex
                goto 6
             endif
-            call extrt2(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
-     &                  l(lklocs),s(ltrhsg),val,s(1),ipr,s(lrkele))
-C            if (icoordchange.ne.0) call xyll(x,y)
+            call extrt2(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),l(lklocs),s(ltrhsg),val,s(1),ipr,s(lrkele))
+!C            if (icoordchange.ne.0) call xyll(x,y)
             write(82,*) x_ll,y_ll,val
          endif
          if(ityp.eq.3) then
             if (opti.eq.1) then 		! (SvL)
-            call locpt3opti(x,y,tcoog,kconn,tcele,iel,isub,kntc,
-     &                      ipr)
+            call locpt3opti(x,y,tcoog,kconn,tcele,iel,isub,kntc,ipr)
             endif
             if (opti.eq.0) then 
             call locpt3(x,y,tcoog,kconn,tcele,iel,isub,ipr)
@@ -100,14 +97,13 @@ C            if (icoordchange.ne.0) call xyll(x,y)
             write(82,*) x_ll,y_ll,val
             goto 6
             endif
-            call extrt3(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
-     &       l(lklocs),s(ltrhsg),s(ltcele),val,s(1),ipr,s(lrkele))
-C            if (icoordchange.ne.0) call xyll(x,y)
+            call extrt3(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),l(lklocs),s(ltrhsg),s(ltcele),val,s(1),ipr,s(lrkele))
+!C            if (icoordchange.ne.0) call xyll(x,y)
             write(82,*) x_ll,y_ll,val
          endif
          goto 6
  8       continue
-C
+
  123     continue
          ireclu=0
          ijmbval=0
@@ -119,34 +115,31 @@ C
          ireclu=ireclu+1
          if(ityp.eq.2) then
             if (opti.eq.1) then 		! (SvL)
-               call locpt2opti(x,y,s(ltcoog),l(lkconn),iel,isub,
-     &                         l(lkntc),ipr)
-c               if (iel.eq.-1) then
-c                write(6,*) 'sauve qui store',x_ll,y_ll
-c                call locpt2(x,y,s(ltcoog),l(lkconn),iel,isub,ipr)
-c               endif
+               call locpt2opti(x,y,s(ltcoog),l(lkconn),iel,isub,l(lkntc),ipr)
+!c               if (iel.eq.-1) then
+!c                write(6,*) 'sauve qui store',x_ll,y_ll
+!c                call locpt2(x,y,s(ltcoog),l(lkconn),iel,isub,ipr)
+!c               endif
             endif
             if (opti.eq.0) then 
                call locpt2(x,y,s(ltcoog),l(lkconn),iel,isub,ipr)
             endif
 
             if(iel.le.0.or.isub.le.0) then
-C               if (icoordchange.ne.0) call xyll(x,y)
-c              write(6,*) ' Donnee ',ireclu,x_ll,y_ll,' non localisee'
-C               write(82,*) x_ll,y_ll,-9999.0
+!C               if (icoordchange.ne.0) call xyll(x,y)
+!c              write(6,*) ' Donnee ',ireclu,x_ll,y_ll,' non localisee'
+!C               write(82,*) x_ll,y_ll,-9999.0
                 val=valex
                 write(71,*) x_ll,y_ll,val
                goto 66
             endif
-            call extrt2(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
-     &       l(lklocs),s(ltrhsg),val,s(1),ipr,s(lrkele))
-C            if (icoordchange.ne.0) call xyll(x,y)
+            call extrt2(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),l(lklocs),s(ltrhsg),val,s(1),ipr,s(lrkele))
+!C            if (icoordchange.ne.0) call xyll(x,y)
             write(71,*) x_ll,y_ll,val
          endif
          if(ityp.eq.3) then
             if (opti.eq.1) then 		! (SvL)
-            call locpt3opti(x,y,tcoog,kconn,tcele,iel,isub,kntc,
-     &                      ipr)
+            call locpt3opti(x,y,tcoog,kconn,tcele,iel,isub,kntc,ipr)
             endif
             if (opti.eq.0) then 
             call locpt3(x,y,tcoog,kconn,tcele,iel,isub,ipr)
@@ -157,9 +150,8 @@ C            if (icoordchange.ne.0) call xyll(x,y)
             write(71,*) x_ll,y_ll,val
             goto 66
             endif
-            call extrt3(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
-     &        l(lklocs),s(ltrhsg),s(ltcele),val,s(1),ipr,s(lrkele))
-C            if (icoordchange.ne.0) call xyll(x,y)
+            call extrt3(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),l(lklocs),s(ltrhsg),s(ltcele),val,s(1),ipr,s(lrkele))
+!C            if (icoordchange.ne.0) call xyll(x,y)
             write(71,*) x_ll,y_ll,val
          endif
          ijmbval=ijmbval+1
@@ -190,16 +182,12 @@ C            if (icoordchange.ne.0) call xyll(x,y)
          VALb = VAL - A0 - A1*X - A2*Y
       ENDIF
 
-c         write(6,*) 'datasto',s(ltdata+jmboff),jmboff,ireclu,val
-         GCVALN=GCVALN+(s(ltdata+jmboff)-valb)*
-     &     wwww/hmmu*(s(ltdata+jmboff)-valb)
+!c         write(6,*) 'datasto',s(ltdata+jmboff),jmboff,ireclu,val
+         GCVALN=GCVALN+(s(ltdata+jmboff)-valb)*wwww/hmmu*(s(ltdata+jmboff)-valb)
          vargcv=vargcv+(s(ltdata+jmboff))*(s(ltdata+jmboff))
-         d0d=d0d+wwww/hmmu*
-     &     s(ltdata+jmboff)*s(ltdata+jmboff)
-         d1d=d1d+wwww/hmmu*
-     &     s(ltdata+jmboff)*valb
-         d2d=d2d+wwww/hmmu*
-     &     valb*valb
+         d0d=d0d+wwww/hmmu*s(ltdata+jmboff)*s(ltdata+jmboff)
+         d1d=d1d+wwww/hmmu*s(ltdata+jmboff)*valb
+         d2d=d2d+wwww/hmmu*valb*valb
          goto 66
   86     continue
          GCVALN=sqrt(GCVALN/ijmbval)
@@ -209,7 +197,7 @@ c         write(6,*) 'datasto',s(ltdata+jmboff),jmboff,ireclu,val
          d2d=d2d/ijmbval
          nntr=ijmbval
          write(33,*) vargcv,ijmbval
-CJMBE
+!CJMBE
  
  
       endif
@@ -219,7 +207,7 @@ CJMBE
          read(13,*)dx,dy
          read(13,*)nx,ny
          read(13,*)valex
-c                  write(6,*) 'xorib',xori, yori,dx,dy
+!c                  write(6,*) 'xorib',xori, yori,dx,dy
          
          iix=1
          iiy=0
@@ -229,19 +217,19 @@ c                  write(6,*) 'xorib',xori, yori,dx,dy
           dx=dx*dxkm 
           dy=dy*dykm 
          endif
-c         write(6,*) 'xori',xori, yori,dx,dy
-C
-C  ALLOCATION OF SPACE FOR THE GRIDDED SOLUTION
-C
+!c         write(6,*) 'xori',xori, yori,dx,dy
+!C
+!C  ALLOCATION OF SPACE FOR THE GRIDDED SOLUTION
+!C
          call allody(nx*ny,1,'tgrds',ltgrds,ipr)
          do 5 i=1,nx*ny
             s(ltgrds+i-1)=valex
  5       continue
       endif
 
-C
-C  construction of file 80
-C
+!C
+!C  construction of file 80
+!C
       if(ispec.eq.1.or.ispec.eq.3) then
          if(ltcele.eq.0) then
          bidon=0
@@ -254,29 +242,27 @@ C
       endif
       if(ispec.gt.0) then
       index=0
-C JMB (change for the problem in extre2 for regular grid...
+!C JMB (change for the problem in extre2 for regular grid...
  10    continue
        val=valex
        if(ityp.eq.2) then
     
          read(80,*,end=100)x,y,iel,isub
-cmr         write(6,*)x,y,iel,isub
-C         if (icoordchange.ne.0) call llxy(x,y)
+!cmr         write(6,*)x,y,iel,isub
+!C         if (icoordchange.ne.0) call llxy(x,y)
          if(iel.gt.0) then
-            call extrt2(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
-     &       l(lklocs),s(ltrhsg),val,s(ltgrds),ipr,s(lrkele))
+            call extrt2(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),l(lklocs),s(ltrhsg),val,s(ltgrds),ipr,s(lrkele))
          endif
       endif
       if(ityp.eq.3) then
          read(80,*,end=100)x,y,iel,isub
-C         if (icoordchange.ne.0) call llxy(x,y)
+!C         if (icoordchange.ne.0) call llxy(x,y)
          if(iel.gt.0) then
-            call extrt3(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
-     &      l(lklocs),s(ltrhsg),s(ltcele),val,s(ltgrds),ipr,s(lrkele))
+            call extrt3(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),l(lklocs),s(ltrhsg),s(ltcele),val,s(ltgrds),ipr,s(lrkele))
          endif
       endif
       index=index+1
-C JMB to replace the regular grid output
+!C JMB to replace the regular grid output
       ix=nint((x-xori)/dx)
       iy=nint((y-yori)/dy)
 
@@ -286,42 +272,41 @@ C JMB to replace the regular grid output
       iix=iix+1
       endif
       
-c      if (isspheric.eq.1) then
-c      xori=xorio
-c      yyy=y
-c      call llxy(xori,yyy)
-c      write(6,*) 'Spheric',xori,dx
-c      xxx=max(cos(y*RPI/180),1E-10)
-c      ix=nint((x-xori)/dx/xxx)
-c      endif
-c      if(iix.ne.ix.or.iiy.ne.iy) then
-c      write(6,*) '????',ix,iix,iy,iiy
-c      endif
+!c      if (isspheric.eq.1) then
+!c      xori=xorio
+!c      yyy=y
+!c      call llxy(xori,yyy)
+!c      write(6,*) 'Spheric',xori,dx
+!c      xxx=max(cos(y*RPI/180),1E-10)
+!c      ix=nint((x-xori)/dx/xxx)
+!c      endif
+!c      if(iix.ne.ix.or.iiy.ne.iy) then
+!c      write(6,*) '????',ix,iix,iy,iiy
+!c      endif
        ix=iix
        iy=iiy
        jmboff=(iy-1)*nx+ix-1
-c      write(6,*) 'gridded',ix,iy,jmboff,val
+!c      write(6,*) 'gridded',ix,iy,jmboff,val
       s(ltgrds+jmboff)=val
-C JMBend??
+!C JMBend??
       goto 10
  100  nptsol=index
-      write(6,*)'Total nb. of pts where gridded solution is asked ='
-     &  ,nptsol
+      write(6,*)'Total nb. of pts where gridded solution is asked =',nptsol
       endif
       if(ispec.ge.1) then
          call impmat(s(ltgrds),nx,ny,nx,83)
          iu=84
         nbm=-1
-c        write(6,*) 'storing', iprc
+!c        write(6,*) 'storing', iprc
          if(iprc.eq.4) then
            call uwritc(iu,c8,s(ltgrds),valex,iprc,nx,ny,1,nbm)
            write(6,*) 'Storing field estimate in real*4'
                        else
-c           write(6,*) 'Storing field estimate in real*8'
-c,nx,ny,nbm
+!c           write(6,*) 'Storing field estimate in real*8'
+!c,nx,ny,nbm
            call uwrit2(iu,c8,s(ltgrds),valex,iprc,nx,ny,1,nbm)  
-c           write(6,*)' % Writing gridded field in single precision % '
-c           write(6,*) 'Storing field estimate in real*8'
+!c           write(6,*)' % Writing gridded field in single precision % '
+!c           write(6,*) 'Storing field estimate in real*8'
          endif
          write(6,*) 'Finished storing'
       endif
@@ -333,25 +318,24 @@ c           write(6,*) 'Storing field estimate in real*8'
 
 
 
-      subroutine extrt2(xp,yp,iel,isub,tcoog,kconn,kloce,klocs,sol,val,
-     &                  tgrds,ipr,trkele)
-C
-C  EXTRACTION OF THE SOLUTION FROM AN ELEMENT WITH ITYP=2
-C  !!!!!!  A CHANGE OF COORDINATES (FROM GLOBAL TO REFERENCE SYSTEM)
-C            IS COMPULSORY                               !!!!!!!!!!!
-C
+      subroutine extrt2(xp,yp,iel,isub,tcoog,kconn,kloce,klocs,sol,val,tgrds,ipr,trkele)
+!C
+!C  EXTRACTION OF THE SOLUTION FROM AN ELEMENT WITH ITYP=2
+!C  !!!!!!  A CHANGE OF COORDINATES (FROM GLOBAL TO REFERENCE SYSTEM)
+!C            IS COMPULSORY                               !!!!!!!!!!!
+!C
       include'divapre.h'
       include'divainc.h'
-      dimension tcoog(nnt1,2),kconn(nelt,nnel),kloce(nddle),klocs(3,10),
-     &          sol(nddlt),tr(3,12),ddl(15),x(0:3),y(0:3),ddlsub(10),
-     &          tjac(2,2),tjaci(2,2),wk(10,10),tgrds(nx,ny),ep(10)
-     &          ,TRKELE(3,12,*)
+      dimension tcoog(nnt1,2),kconn(nelt,nnel),kloce(nddle),klocs(3,10),  &
+               sol(nddlt),tr(3,12),ddl(15),x(0:3),y(0:3),ddlsub(10),      &
+               tjac(2,2),tjaci(2,2),wk(10,10),tgrds(nx,ny),ep(10)          &
+               ,TRKELE(3,12,*)
       REAL*4 XMEAN, A0, A1, A2
       INTEGER IFIRST
       SAVE IFIRST, XMEAN, A0, A1, A2
 
       DATA IFIRST / 1 /
-cmr      write(6,*) 'element bef: ',iel
+!cmr      write(6,*) 'element bef: ',iel
 
       zero=0.D0
       un=1.D0
@@ -367,32 +351,32 @@ cmr      write(6,*) 'element bef: ',iel
       x(0)=(x(1)+x(2)+x(3))/3.
       y(0)=(y(1)+y(2)+y(3))/3.
       call calloc(iel,kloce,nddle,kconn,l(lklink),ipr)
-cmr      write(6,*) 'element : ',iel
-C JMB
-c      read(32,rec=iel) tr
-c            if(iel.gt.JMBELE) then
-c        write(*,*) 'INCREASE JMBELE to at least',IEL
-c        stop
-c         endif
+!cmr      write(6,*) 'element : ',iel
+!C JMB
+!c      read(32,rec=iel) tr
+!c            if(iel.gt.JMBELE) then
+!c        write(*,*) 'INCREASE JMBELE to at least',IEL
+!c        stop
+!c         endif
         do i=1,3
          do j=1,12
           tr(i,j)=trkele(i,j,iel)
           enddo
         enddo
-C JMB
+!C JMB
       do 10 i=1,12
         ddl(i)=sol(kloce(i))
  10   continue
-C
-C  CORRECTION FOR NORMAL REFERENCE
-C
+!C
+!C  CORRECTION FOR NORMAL REFERENCE
+!C
       if(kconn(iel,3).lt.kconn(iel,1)) then
          ddl(10)=-ddl(10)
       endif
       if(kconn(iel,5).lt.kconn(iel,3)) then
          ddl(11)=-ddl(11)
       endif
-C mr BIG BUG      if(kconn(iel,1).lt.kconn(iel,3)) then
+!C mr BIG BUG      if(kconn(iel,1).lt.kconn(iel,3)) then
       if(kconn(iel,1).lt.kconn(iel,5)) then
          ddl(12)=-ddl(12)
       endif
@@ -402,9 +386,9 @@ C mr BIG BUG      if(kconn(iel,1).lt.kconn(iel,3)) then
             ddl(12+i)=ddl(12+i)+tr(i,k)*ddl(k)
  25      continue
  20   continue
-C
-C calculate the (XI,ETA) coordinates from (X,Y)
-C
+!C
+!C calculate the (XI,ETA) coordinates from (X,Y)
+!C
       x0=x(0)
       y0=y(0)
       if(isub.eq.1) then
@@ -428,9 +412,9 @@ C
       do 30 i=1,10
          ddlsub(i)=ddl(klocs(isub,i))
  30   continue
-C
-C  EVALUATION OF SHAPE FUNCTIONS AT SOLUTION POINT
-C
+!C
+!C  EVALUATION OF SHAPE FUNCTIONS AT SOLUTION POINT
+!C
       tjac(1,1)=x1-x0
       tjac(2,1)=x2-x0
       tjac(1,2)=y1-y0
@@ -443,9 +427,9 @@ C
       xi=tjaci(1,1)*(xp-x0)+tjaci(2,1)*(yp-y0)
       eta=tjaci(1,2)*(xp-x0)+tjaci(2,2)*(yp-y0)
       call ep2(xi,eta,ep)
-C
-C  TRANSFORMATION FROM GLOBAL TO REFERENCE COORDINATE SYSTEM
-C
+!C
+!C  TRANSFORMATION FROM GLOBAL TO REFERENCE COORDINATE SYSTEM
+!C
       dist12=sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2))
       p1=(y2-y1)*(x1+x2-deux*x0)-(x2-x1)*(y1+y2-deux*y0)
       p1=p1/(sqrt(deux)*dist12)
@@ -481,7 +465,7 @@ C
          val=val+vc*ep(i)
  100  continue
 
-C --- Code Added for Version 2.2  (RS 22 March 94) ---
+!C --- Code Added for Version 2.2  (RS 22 March 94) ---
 
       IF (IREG.EQ.1) THEN
          IF (IFIRST.EQ.1) THEN
@@ -500,40 +484,39 @@ C --- Code Added for Version 2.2  (RS 22 March 94) ---
             CLOSE (22)
             IFIRST = 0
          ENDIF
-c          val=val
+!c          val=val
          VAL = VAL + A0 + A1*XP + A2*YP
-C test: only reference valye
-c         VAL=A0 + A1*XP + A2*YP
+!C test: only reference valye
+!c         VAL=A0 + A1*XP + A2*YP
       ENDIF
 
-C --- End of Added Code ---
-C JMB???????? what does this added code mean?????? check for ispec history
-C when putting out also in discrete locations. There is no need to fill in 
-C the regular grid when asking for local values only (effet de bord assure...)
-c      if(ispec.ge.1) then
-c        ix=nint((xp-xori)/dx)
-c        iy=nint((yp-yori)/dy)
-c        tgrds(ix,iy)=val
-c      endif
+!C --- End of Added Code ---
+!C JMB???????? what does this added code mean?????? check for ispec history
+!C when putting out also in discrete locations. There is no need to fill in
+!C the regular grid when asking for local values only (effet de bord assure...)
+!c      if(ispec.ge.1) then
+!c        ix=nint((xp-xori)/dx)
+!c        iy=nint((yp-yori)/dy)
+!c        tgrds(ix,iy)=val
+!c      endif
       return
       end
 
 
 
-      subroutine extrt3(xp,yp,iel,isub,tcoog,kconn,kloce,klocs,sol,
-     &                 tcele,val,tgrds,ipr,trkele)
-C
-C  EXTRACTION OF THE SOLUTION FROM AN ELEMENT WITH ITYP=3
-C  !!!!!!  A CHANGE OF COORDINATES (FROM GLOBAL TO REFERENCE SYSTEM)
-C            IS COMPULSORY                               !!!!!!!!!!!
-C
+      subroutine extrt3(xp,yp,iel,isub,tcoog,kconn,kloce,klocs,sol,tcele,val,tgrds,ipr,trkele)
+!C
+!C  EXTRACTION OF THE SOLUTION FROM AN ELEMENT WITH ITYP=3
+!C  !!!!!!  A CHANGE OF COORDINATES (FROM GLOBAL TO REFERENCE SYSTEM)
+!C            IS COMPULSORY                               !!!!!!!!!!!
+!C
       include'divapre.h'
       include'divainc.h'
-      dimension tcoog(nnt1,2),kconn(nelt,nnel),kloce(nddle),klocs(4,10),
-     &          sol(nddlt),tr(3,16),ddl(19),x(0:4),y(0:4),ddlsub(10),
-     &          tjac(2,2),tjaci(2,2),wk(10,10),tgrds(nx,ny),
-     &          tcele(nelt,2),ep(10)
-     &          ,TRKELE(3,12,*)
+      dimension tcoog(nnt1,2),kconn(nelt,nnel),kloce(nddle),klocs(4,10),  &
+               sol(nddlt),tr(3,16),ddl(19),x(0:4),y(0:4),ddlsub(10),      &
+               tjac(2,2),tjaci(2,2),wk(10,10),tgrds(nx,ny),                &
+               tcele(nelt,2),ep(10)                                         &
+               ,TRKELE(3,12,*)
 
       REAL*4 XMEAN, A0, A1, A2
       INTEGER IFIRST
@@ -557,25 +540,25 @@ C
       x(0)=tcele(iel,1)
       y(0)=tcele(iel,2)
       call calloc(iel,kloce,nddle,kconn,l(lklink),ipr)
-c      read(32,rec=iel) tr
-C JMB
-c      read(32,rec=iel) tr
-c            if(iel.gt.JMBELE) then
-c        write(*,*) 'INCREASE JMBELE to at least',IEL
-c        stop
-c        endif
+!c      read(32,rec=iel) tr
+!C JMB
+!c      read(32,rec=iel) tr
+!c            if(iel.gt.JMBELE) then
+!c        write(*,*) 'INCREASE JMBELE to at least',IEL
+!c        stop
+!c        endif
         do i=1,3
          do j=1,12
           tr(i,j)=trkele(i,j,iel)
           enddo
         enddo
-C JMB
+!C JMB
       do 10 i=1,16
         ddl(i)=sol(kloce(i))
  10   continue
-C
-C  CORRECTION FOR NORMAL REFERENCE
-C
+!C
+!C  CORRECTION FOR NORMAL REFERENCE
+!C
       if(kconn(iel,3).lt.kconn(iel,1)) then
          ddl(13)=-ddl(13)
       endif
@@ -594,9 +577,9 @@ C
             ddl(16+i)=ddl(16+i)+tr(i,k)*ddl(k)
  25      continue
  20   continue
-C
-C calculate the (XI,ETA) coordinates from (X,Y)
-C
+!C
+!C calculate the (XI,ETA) coordinates from (X,Y)
+!C
       x0=x(0)
       y0=y(0)
       if(isub.eq.1) then
@@ -626,9 +609,9 @@ C
       do 30 i=1,10
          ddlsub(i)=ddl(klocs(isub,i))
  30   continue
-C
-C  EVALUATION OF SHAPE FUNCTIONS AT SOLUTION POINT
-C
+!C
+!C  EVALUATION OF SHAPE FUNCTIONS AT SOLUTION POINT
+!C
       tjac(1,1)=x1-x0
       tjac(2,1)=x2-x0
       tjac(1,2)=y1-y0
@@ -641,9 +624,9 @@ C
       xi=tjaci(1,1)*(xp-x0)+tjaci(2,1)*(yp-y0)
       eta=tjaci(1,2)*(xp-x0)+tjaci(2,2)*(yp-y0)
       call ep2(xi,eta,ep)
-C
-C  TRANSFORMATION FROM GLOBAL TO REFERENCE COORDINATE SYSTEM
-C
+!C
+!C  TRANSFORMATION FROM GLOBAL TO REFERENCE COORDINATE SYSTEM
+!C
       dist12=sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2))
       p1=(y2-y1)*(x1+x2-deux*x0)-(x2-x1)*(y1+y2-deux*y0)
       p1=p1/(sqrt(deux)*dist12)
@@ -679,7 +662,7 @@ C
          val=val+vc*ep(i)
  100  continue
 
-C --- Code Added for Version 2.2  (RS 22 March 94) ---
+!C --- Code Added for Version 2.2  (RS 22 March 94) ---
 
       IF (IREG.EQ.1) THEN
          IF (IFIRST.EQ.1) THEN
@@ -701,15 +684,15 @@ C --- Code Added for Version 2.2  (RS 22 March 94) ---
          VAL = VAL + A0 + A1*XP + A2*YP
       ENDIF
 
-C --- End of Added Code ---
+!C --- End of Added Code ---
 
 
-C Also strange when extraction in localized points... need to add some test here
-c      if(ispec.ge.1) then
-c        ix=nint((xp-xori)/dx)
-c        iy=nint((yp-yori)/dy)
-c        tgrds(ix,iy)=val
-c      endif
+!C Also strange when extraction in localized points... need to add some test here
+!c      if(ispec.ge.1) then
+!c        ix=nint((xp-xori)/dx)
+!c        iy=nint((yp-yori)/dy)
+!c        tgrds(ix,iy)=val
+!c      endif
       return
       end
 
@@ -717,16 +700,16 @@ c      endif
 
 
       subroutine genf80(tcoog,kconn,kntc,tcele,ipr)
-C
-C  THIS ROUTINE GENERATES A LIST OF POINTS (X,Y,IEL,ISUB) ON A REGULAR
-C  GRID, WHERE THE SOLUTION IS REQUIRED
-C
+!C
+!C  THIS ROUTINE GENERATES A LIST OF POINTS (X,Y,IEL,ISUB) ON A REGULAR
+!C  GRID, WHERE THE SOLUTION IS REQUIRED
+!C
       include'divapre.h'
       include'divainc.h'
       dimension tcoog(nnt1,2),kconn(nelt,nnel),tcele(nelt,2)
-C
-C  FOR ITYP = 2 ...
-C
+!C
+!C  FOR ITYP = 2 ...
+!C
       if(ityp.eq.2) then
       do 10 i=1,nx
          do 15 j=1,ny
@@ -739,22 +722,21 @@ C
             call llxy(xori,yyy)
             x=xori+i*dx*cos(y*RPI/180.)
             endif
-Cmr            if (icoordchange.ne.0) call llxy(x,y)
+!Cmr            if (icoordchange.ne.0) call llxy(x,y)
             if (opti.eq.1) then 		! (SvL)
-               call locpt2opti(x,y,tcoog,kconn,iel,isub,kntc,
-     &                         ipr)
+               call locpt2opti(x,y,tcoog,kconn,iel,isub,kntc,ipr)
             endif
             if (opti.eq.0) then 
                call locpt2(x,y,tcoog,kconn,iel,isub,ipr)
             endif
             write(80,*)x,y,iel,isub
-cmr            write(6,*)'create 80 ',x,y,iel,isub
+!cmr            write(6,*)'create 80 ',x,y,iel,isub
  15      continue
  10   continue
       endif
-C
-C  FOR ITYP = 3 ...
-C
+!C
+!C  FOR ITYP = 3 ...
+!C
       if(ityp.eq.3) then
       do 110 i=1,nx
          do 115 j=1,ny
@@ -766,10 +748,9 @@ C
             call llxy(xori,yyy)
             x=xori+i*dx*cos(y*RPI/180.)
             endif
-Cmr            if (icoordchange.ne.0) call llxy(x,y)
+!Cmr            if (icoordchange.ne.0) call llxy(x,y)
             if (opti.eq.1) then 		! (SvL)
-               call locpt3opti(x,y,tcoog,kconn,tcele,iel,isub,
-     &                         kntc,ipr)
+               call locpt3opti(x,y,tcoog,kconn,tcele,iel,isub,kntc,ipr)
             endif
             if (opti.eq.0) then 
                call locpt3(x,y,tcoog,kconn,tcele,iel,isub,ipr)

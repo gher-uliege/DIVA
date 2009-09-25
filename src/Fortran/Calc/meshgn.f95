@@ -1,24 +1,24 @@
-C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-C
-C   SUBROUTINE LIST:
-C     -  MESHGN (MODULE)
-C     -  COUNTN (count the number of nodes, interfaces .. to be created
-C     -  GENTPO (generate the topology of the finite element mesh;
-C                then, create the topological file on unit 11)
-C
-C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-C                                                                      C
-C                             MESHGN MODULE                            C
-C       Generates a square finite element mesh on a regular grid       C
-C                                                                      C
-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+!C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+!C
+!C   SUBROUTINE LIST:
+!C     -  MESHGN (MODULE)
+!C     -  COUNTN (count the number of nodes, interfaces .. to be created
+!C     -  GENTPO (generate the topology of the finite element mesh;
+!C                then, create the topological file on unit 11)
+!C
+!C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+!C                                                                      C
+!C                             MESHGN MODULE                            C
+!C       Generates a square finite element mesh on a regular grid       C
+!C                                                                      C
+!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       subroutine meshgn(ipr)
       include'divapre.h'
       include'divainc.h'
-C
-C  INPUT OF GENERAL DATA
-C
+!C
+!C  INPUT OF GENERAL DATA
+!C
       read(10,*) deltax
       read(10,*) deltay
       read(10,*) nex
@@ -29,10 +29,10 @@ C
       if(ipr.gt.0) write(6,*) ' X-number of finite elements :',nex
       if(ipr.gt.0) write(6,*) ' Y-number of finite elements :',ney
       if(ipr.gt.0) write(6,*) ' Read/creat topology matrix ? :',imatrx
-C
-C ALLOCATION OF STORAGE TABLES:
-C  ==> KTPOL   : MATRIX FOR TOPOLOGICAL INFORMATION
-C
+!C
+!C ALLOCATION OF STORAGE TABLES:
+!C  ==> KTPOL   : MATRIX FOR TOPOLOGICAL INFORMATION
+!C
       ll=(2+nex)*(2+ney)
       call allody(ll,0,'ktpol',lktpol,ipr)
       call countn(l(lktpol))
@@ -40,46 +40,45 @@ C
       if(ipr.gt.0) write(6,*) ' Total number of interfaces   :',nnint
       if(ipr.gt.0) write(6,*) ' Total number of nodes        :',nnt
       if(ipr.gt.0) write(6,*) ' Total number of elements     :',nelt
-C
-C ALLOCATION OF STORAGE TABLES:
-C  ==> KLINK(I)    : OPTIMAL POSITION OF NODE (I) IN THE SEQUENCE OF DOF
-C  ==> KSORT(IPOSI): NODE ID IN POSITION (I) IN THE SEQUENCE OF NODES
-C  ==> TCOOG(I,*)  : TABLE OF ABSLUTE COORDINATES OF NODE (I)
-C
+!C
+!C ALLOCATION OF STORAGE TABLES:
+!C  ==> KLINK(I)    : OPTIMAL POSITION OF NODE (I) IN THE SEQUENCE OF DOF
+!C  ==> KSORT(IPOSI): NODE ID IN POSITION (I) IN THE SEQUENCE OF NODES
+!C  ==> TCOOG(I,*)  : TABLE OF ABSLUTE COORDINATES OF NODE (I)
+!C
       call allody(nnt,0,'klink',lklink,ipr)
       call allody(nnt,0,'ksort',lksort,ipr)
       call allody(2*nnt1,1,'tcoog',ltcoog,ipr)
-C
-C ALLOCATION OF STORAGE TABLES:
-C  ==> KSKYH (I)   :CUMULATED HEIGHT OF STIFFNESS MATRIX COLUMN
-C  ==> KCONN (I,*) :CONNECTIVITY TABLE BETWEEN ELEMENTS AND NODES
-C  ==> KLOCE (I)   :LOCALIZATION OF ONE ELEMENT IN THE STRUCTURE
-C
-C FINITE ELEMENT ITYP=2 (FVD) (see: SANDER, Ph.D. Dissertation, 1969)
-C
+!C
+!C ALLOCATION OF STORAGE TABLES:
+!C  ==> KSKYH (I)   :CUMULATED HEIGHT OF STIFFNESS MATRIX COLUMN
+!C  ==> KCONN (I,*) :CONNECTIVITY TABLE BETWEEN ELEMENTS AND NODES
+!C  ==> KLOCE (I)   :LOCALIZATION OF ONE ELEMENT IN THE STRUCTURE
+!C
+!C FINITE ELEMENT ITYP=2 (FVD) (see: SANDER, Ph.D. Dissertation, 1969)
+!C
       if(ityp.eq.2) then
          nnel=6
          nddle=12
          nddlt=3*nnt1+nnint
       endif
-C
-C FINITE ELEMENT ITYP=3 (FVD) (see: SANDER, Ph.D. Dissertation, 1969)
-C
+!C
+!C FINITE ELEMENT ITYP=3 (FVD) (see: SANDER, Ph.D. Dissertation, 1969)
+!C
       if(ityp.eq.3) then
          nnel=8
          nddle=16
          nddlt=3*nnt1+nnint
-C SPACE ALLOCATION FOR CENTER OF ELEMENT (CALCULTED ONCE)
+!C SPACE ALLOCATION FOR CENTER OF ELEMENT (CALCULTED ONCE)
          call allody(2*nelt,1,'tcele',ltcele,ipr)
       endif
-C
-C WHATEVER THE TYPE OF ELEMENT ...
-C
+!C
+!C WHATEVER THE TYPE OF ELEMENT ...
+!C
       if(ipr.gt.0) write(6,*) ' Total number of deg. of frd. :',nddlt
       call allody(nddlt+1,0,'kskyh',lkskyh,ipr)
       call allody(nnel*nelt,0,'kconn',lkconn,ipr)
-      call gentpo(s(ltcoog),l(lkconn),l(lklink),l(lksort),
-     &            s(ltcele),l(lktpol),ipr)
+      call gentpo(s(ltcoog),l(lkconn),l(lklink),l(lksort),s(ltcele),l(lktpol),ipr)
       call allody(nddle,0,'kloce',lkloce,ipr)
       call calsky(l(lkskyh),l(lkconn),l(lklink),l(lkloce),ipr)
       return
@@ -91,12 +90,12 @@ C
       include'divapre.h'
       include'divainc.h'
       dimension ktpol(0:nex+1,0:ney+1)
-C
-C  READ OR CREATE THE TOPOLOGY MATRIX KTPOL:
-C    ktpol(i,j) = -1   ==> no element has to be created;
-C                  0   ==> an element must be created;
-C                  iel ==> element iel has been created;
-C
+!C
+!C  READ OR CREATE THE TOPOLOGY MATRIX KTPOL:
+!C    ktpol(i,j) = -1   ==> no element has to be created;
+!C                  0   ==> an element must be created;
+!C                  iel ==> element iel has been created;
+!C
       do 20 i=0,nex+1
          ktpol(i,0)=-1
          ktpol(i,ney+1)=-1
@@ -118,9 +117,9 @@ C
  30      continue
       endif
  400  format(100(i2))
-C
-C  INSPECT EVERY POSSIBILITY
-C
+!C
+!C  INSPECT EVERY POSSIBILITY
+!C
       nelt=0
       nnt1=0
       nnint=0
@@ -129,25 +128,21 @@ C
             if(ktpol(i,j).eq.0) then
             nelt=nelt+1
             ktpol(i,j)=nelt
-C               FIRST NODE
-            if(ktpol(i-1,j).le.0.and.ktpol(i-1,j-1).le.0.and.
-     &         ktpol(i,j-1).le.0) nnt1=nnt1+1
-C               FIRST INTERFACE
+!C               FIRST NODE
+            if(ktpol(i-1,j).le.0.and.ktpol(i-1,j-1).le.0.and.ktpol(i,j-1).le.0) nnt1=nnt1+1
+!C               FIRST INTERFACE
             if(ktpol(i,j-1).le.0) nnint=nnint+1
-C               SECONT NODE
-            if(ktpol(i+1,j).le.0.and.ktpol(i+1,j-1).le.0.and.
-     &         ktpol(i,j-1).le.0) nnt1=nnt1+1
-C               SECOND INTERFACE
+!C               SECONT NODE
+            if(ktpol(i+1,j).le.0.and.ktpol(i+1,j-1).le.0.and.ktpol(i,j-1).le.0) nnt1=nnt1+1
+!C               SECOND INTERFACE
             if(ktpol(i+1,j).le.0) nnint=nnint+1
-C               THIRD NODE
-            if(ktpol(i+1,j).le.0.and.ktpol(i+1,j+1).le.0.and.
-     &         ktpol(i,j+1).le.0) nnt1=nnt1+1
-C               THIRD INTERFACE
+!C               THIRD NODE
+            if(ktpol(i+1,j).le.0.and.ktpol(i+1,j+1).le.0.and.ktpol(i,j+1).le.0) nnt1=nnt1+1
+!C               THIRD INTERFACE
             if(ktpol(i,j+1).le.0) nnint=nnint+1
-C               FOURTH NODE
-            if(ktpol(i-1,j).le.0.and.ktpol(i-1,j+1).le.0.and.
-     &         ktpol(i,j+1).le.0) nnt1=nnt1+1
-C               FOURTH INTERFACE
+!C               FOURTH NODE
+            if(ktpol(i-1,j).le.0.and.ktpol(i-1,j+1).le.0.and.ktpol(i,j+1).le.0) nnt1=nnt1+1
+!C               FOURTH INTERFACE
             if(ktpol(i-1,j).le.0) nnint=nnint+1
             endif
  110     continue
@@ -161,16 +156,15 @@ C               FOURTH INTERFACE
 
 
       subroutine gentpo(tcoog,kconn,klink,ksort,tcele,ktpol,ipr)
-C
-C  I/O OF TOPOLOGIC DATA SET
-C
+!C
+!C  I/O OF TOPOLOGIC DATA SET
+!C
       include'divapre.h'
       include'divainc.h'
-      dimension tcoog(nnt1,2),kconn(nelt,nnel),klink(nnt),ksort(nnt),
-     &          tcele(nelt,2),ktpol(0:nex+1,0:ney+1)
-C
-C  RE-INITIATE THE TOPOLOGY MATRIX
-C
+      dimension tcoog(nnt1,2),kconn(nelt,nnel),klink(nnt),ksort(nnt),tcele(nelt,2),ktpol(0:nex+1,0:ney+1)
+!C
+!C  RE-INITIATE THE TOPOLOGY MATRIX
+!C
       do 10 i=1,nex
         do 15 j=1,ney
            if(ktpol(i,j).gt.0) ktpol(i,j)=0
@@ -187,9 +181,8 @@ C
             tcele(nelt,1)=(i-1)*deltax+deltax*0.5
             tcele(nelt,2)=(j-1)*deltay+deltay*0.5
             ktpol(i,j)=nelt
-C               FIRST NODE
-            if(ktpol(i-1,j).le.0.and.ktpol(i-1,j-1).le.0.and.
-     &         ktpol(i,j-1).le.0) then
+!C               FIRST NODE
+            if(ktpol(i-1,j).le.0.and.ktpol(i-1,j-1).le.0.and.ktpol(i,j-1).le.0) then
                nns=nns+1
                ipos=ipos+1
                ksort(ipos)=nns
@@ -213,7 +206,7 @@ C               FIRST NODE
                kconn(nelt,1)=kconn(iel,7)
                goto 112
             endif
-C               FIRST INTERFACE
+!C               FIRST INTERFACE
  112         if(ktpol(i,j-1).le.0) then
                 nni=nni+1
                 ipos=ipos+1
@@ -226,9 +219,8 @@ C               FIRST INTERFACE
                 kconn(nelt,2)=kconn(iel,6)
                 goto 113
              endif
-C               SECOND NODE
- 113         if(ktpol(i,j-1).le.0.and.ktpol(i+1,j-1).le.0.and.
-     &          ktpol(i+1,j).le.0) then
+!C               SECOND NODE
+ 113         if(ktpol(i,j-1).le.0.and.ktpol(i+1,j-1).le.0.and.ktpol(i+1,j).le.0) then
                 nns=nns+1
                 ipos=ipos+1
                 ksort(ipos)=nns
@@ -252,7 +244,7 @@ C               SECOND NODE
                 kconn(nelt,3)=kconn(iel,1)
                 goto 114
              endif
-C               SECOND INTERFACE
+!C               SECOND INTERFACE
  114         if(ktpol(i+1,j).le.0) then
                 nni=nni+1
                 ipos=ipos+1
@@ -265,9 +257,8 @@ C               SECOND INTERFACE
                 kconn(nelt,4)=kconn(iel,8)
                 goto 115
              endif
-C               THIRD NODE
- 115         if(ktpol(i+1,j).le.0.and.ktpol(i+1,j+1).le.0.and.
-     &          ktpol(i,j+1).le.0) then
+!C               THIRD NODE
+ 115         if(ktpol(i+1,j).le.0.and.ktpol(i+1,j+1).le.0.and.ktpol(i,j+1).le.0) then
                 nns=nns+1
                 ipos=ipos+1
                 ksort(ipos)=nns
@@ -291,7 +282,7 @@ C               THIRD NODE
                 kconn(nelt,5)=kconn(iel,3)
                 goto 116
              endif
-C               THIRD INTERFACE
+!C               THIRD INTERFACE
  116         if(ktpol(i,j+1).le.0) then
                 nni=nni+1
                 ipos=ipos+1
@@ -304,9 +295,8 @@ C               THIRD INTERFACE
                 kconn(nelt,6)=kconn(iel,2)
                 goto 117
              endif
-C               FOURTH NODE
- 117         if(ktpol(i,j+1).le.0.and.ktpol(i-1,j+1).le.0.and.
-     &          ktpol(i-1,j).le.0) then
+!C               FOURTH NODE
+ 117         if(ktpol(i,j+1).le.0.and.ktpol(i-1,j+1).le.0.and.ktpol(i-1,j).le.0) then
                 nns=nns+1
                 ipos=ipos+1
                 ksort(ipos)=nns
@@ -330,7 +320,7 @@ C               FOURTH NODE
                 kconn(nelt,7)=kconn(iel,5)
                 goto 118
              endif
-C               FOURTH INTERFACE
+!C               FOURTH INTERFACE
  118         if(ktpol(i-1,j).le.0) then
                 nni=nni+1
                 ipos=ipos+1
@@ -348,9 +338,9 @@ C               FOURTH INTERFACE
  25      continue
  20   continue
 
-C
-C  CONSTRUCTION OF KLINK VECTOR; FOR TYPE 2 OR 3: FDV ELEMENT
-C
+!C
+!C  CONSTRUCTION OF KLINK VECTOR; FOR TYPE 2 OR 3: FDV ELEMENT
+!C
       if(ityp.eq.2.or.ityp.eq.3) then
          ilink=1
          do 40 iposi=1,nnt
@@ -360,9 +350,9 @@ C
             if(inod.le.nnt1) ilink=ilink+2
  40      continue
       endif
-C
-C OUTPUT OF TOPOLOGICAL DATA / CREATE THE FORT.11 FILE
-C
+!C
+!C OUTPUT OF TOPOLOGICAL DATA / CREATE THE FORT.11 FILE
+!C
       if(ipr.ge.3) then
          write(6,*)' List of vertex nodes id, X and Y positions'
          write(6,*)' ------------------------------------------'
@@ -385,8 +375,7 @@ C
            write(11,916) (kconn(i,j),j=1,nnel)
            write(6,915) i,(tcele(i,j),j=1,2),(kconn(i,j),j=1,nnel)
          endif
- 915     format(' Elt:',i5,' Center:',2(f7.1),
-     &          ' Nodes:',10(i5))
+ 915     format(' Elt:',i5,' Center:',2(f7.1),' Nodes:',10(i5))
  916     format(10(i6,' '))
  195  continue
       close(11)

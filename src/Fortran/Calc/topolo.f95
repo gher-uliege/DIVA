@@ -1,22 +1,22 @@
-C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-C
-C   SUBROUTINE LIST:
-C     -  TOPOLO (MODULE)
-C     -  RDTOPO (read the topology of the finite element mesh: unit 11)
-C
-C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-C                                                                      C
-C                             TOPOL0 MODULE                            C
-C       Description of the topology of the finite element grid         C
-C                                                                      C
-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+!C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+!C
+!C   SUBROUTINE LIST:
+!C     -  TOPOLO (MODULE)
+!C     -  RDTOPO (read the topology of the finite element mesh: unit 11)
+!C
+!C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+!C                                                                      C
+!C                             TOPOL0 MODULE                            C
+!C       Description of the topology of the finite element grid         C
+!C                                                                      C
+!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       subroutine topolo(ipr)
       include'divapre.h'
       include'divainc.h'
-C
-C  INPUT OF GENERAL DATA
-C
+!C
+!C  INPUT OF GENERAL DATA
+!C
       read(10,*) nnt1
       if(ipr.gt.0) write(6,*) ' Total number of vertex nodes :',nnt1
       read(10,*) nnint
@@ -25,41 +25,41 @@ C
       if(ipr.gt.0) write(6,*) ' Total number of nodes        :',nnt
       read(10,*) nelt
       if(ipr.gt.0) write(6,*) ' Total number of elements     :',nelt
-C
-C ALLOCATION OF STORAGE TABLES:
-C  ==> KLINK(I)    : OPTIMAL POSITION OF NODE (I) IN THE SEQUENCE OF DOF
-C  ==> KSORT(IPOSI): NODE ID IN POSITION (I) IN THE SEQUENCE OF NODES
-C  ==> TCOOG(I,*)  : TABLE OF ABSLUTE COORDINATES OF NODE (I)
-C
+!C
+!C ALLOCATION OF STORAGE TABLES:
+!C  ==> KLINK(I)    : OPTIMAL POSITION OF NODE (I) IN THE SEQUENCE OF DOF
+!C  ==> KSORT(IPOSI): NODE ID IN POSITION (I) IN THE SEQUENCE OF NODES
+!C  ==> TCOOG(I,*)  : TABLE OF ABSLUTE COORDINATES OF NODE (I)
+!C
       call allody(nnt,0,'klink',lklink,ipr)
       call allody(nnt,0,'ksort',lksort,ipr)
       call allody(2*nnt1,1,'tcoog',ltcoog,ipr)
-C
-C ALLOCATION OF STORAGE TABLES:
-C  ==> KSKYH (I)   :CUMULATED HEIGHT OF STIFFNESS MATRIX COLUMN
-C  ==> KCONN (I,*) :CONNECTIVITY TABLE BETWEEN ELEMENTS AND NODES
-C  ==> KLOCE (I)   :LOCALIZATION OF ONE ELEMENT IN THE STRUCTURE
-C
-C FINITE ELEMENT ITYP=2 (FVD) (see: SANDER, Ph.D. Dissertation, 1969)
-C
+!C
+!C ALLOCATION OF STORAGE TABLES:
+!C  ==> KSKYH (I)   :CUMULATED HEIGHT OF STIFFNESS MATRIX COLUMN
+!C  ==> KCONN (I,*) :CONNECTIVITY TABLE BETWEEN ELEMENTS AND NODES
+!C  ==> KLOCE (I)   :LOCALIZATION OF ONE ELEMENT IN THE STRUCTURE
+!C
+!C FINITE ELEMENT ITYP=2 (FVD) (see: SANDER, Ph.D. Dissertation, 1969)
+!C
       if(ityp.eq.2) then
          nnel=6
          nddle=12
          nddlt=3*nnt1+nnint
       endif
-C
-C FINITE ELEMENT ITYP=3 (FVD) (see: SANDER, Ph.D. Dissertation, 1969)
-C
+!C
+!C FINITE ELEMENT ITYP=3 (FVD) (see: SANDER, Ph.D. Dissertation, 1969)
+!C
       if(ityp.eq.3) then
          nnel=8
          nddle=16
          nddlt=3*nnt1+nnint
-C SPACE ALLOCATION FOR CENTER OF ELEMENT (CALCULATED ONCE)
+!C SPACE ALLOCATION FOR CENTER OF ELEMENT (CALCULATED ONCE)
          call allody(2*nelt,1,'tcele',ltcele,ipr)
       endif
-C
-C WHATEVER THE TYPE OF ELEMENT ...
-C
+!C
+!C WHATEVER THE TYPE OF ELEMENT ...
+!C
       if(ipr.gt.0) write(6,*) ' Total number of deg. of frd. :',nddlt
       call allody(nddlt+1,0,'kskyh',lkskyh,ipr)
       call allody(nnel*nelt,0,'kconn',lkconn,ipr)
@@ -73,13 +73,11 @@ C
       endif
       bidon=0
       
-      call rdtopo(s(ltcoog),l(lkconn),l(lklink),l(lksort),
-     &            bidon,ipr)
+      call rdtopo(s(ltcoog),l(lkconn),l(lklink),l(lksort),bidon,ipr)
       
                        else
       
-      call rdtopo(s(ltcoog),l(lkconn),l(lklink),l(lksort),
-     &            s(ltcele),ipr)
+      call rdtopo(s(ltcoog),l(lkconn),l(lklink),l(lksort),s(ltcele),ipr)
       endif
  321  continue
       if (icoordchange.ne.0) call topollxy(s(ltcoog),ipr)
@@ -90,35 +88,34 @@ C
       end
 
       subroutine rdtopo(tcoog,kconn,klink,ksort,tcele,ipr)
-C
-C  I/O OF TOPOLOGIC DATA SET
-C
+!C
+!C  I/O OF TOPOLOGIC DATA SET
+!C
       include'divapre.h'
       include'divainc.h'
-      dimension tcoog(nnt1,2),kconn(nelt,nnel),klink(nnt),ksort(nnt),
-     &          tcele(nelt,2)
-C
-C  INPUT OF ID and COORDINATES of VERTEX NODES
-C
+      dimension tcoog(nnt1,2),kconn(nelt,nnel),klink(nnt),ksort(nnt),tcele(nelt,2)
+!C
+!C  INPUT OF ID and COORDINATES of VERTEX NODES
+!C
       do 10 i=1,nnt1
          read(11,*) ksort(i),tcoog(i,1),tcoog(i,2)
  10   continue
-C
-C  INPUT OF ID of INTERFACE NODES
-C
+!C
+!C  INPUT OF ID of INTERFACE NODES
+!C
       do 20 i=1+nnt1,nnt
          read(11,*) ksort(i)
  20   continue
-C
-C  INPUT OF CONNECTIVITY TABLE
-C
+!C
+!C  INPUT OF CONNECTIVITY TABLE
+!C
       do 30 i=1,nelt
          read(11,*) (kconn(i,j),j=1,nnel)
  30   continue
-C
-C  RE-DEFINE KCONN IF ELEMENTS ARE NOT LEFT-AREA ORIENTED
-C              NECESSARY WHEN ITYP = 2 OR 3
-C
+!C
+!C  RE-DEFINE KCONN IF ELEMENTS ARE NOT LEFT-AREA ORIENTED
+!C              NECESSARY WHEN ITYP = 2 OR 3
+!C
       if(ityp.eq.2) then
          zero=0.
          do 35 iel=1,nelt
@@ -178,9 +175,9 @@ C
             endif
  36      continue
       endif
-C
-C  CONSTRUCTION OF KLINK VECTOR; FOR TYPE 2 OR 3: FDV ELEMENT
-C
+!C
+!C  CONSTRUCTION OF KLINK VECTOR; FOR TYPE 2 OR 3: FDV ELEMENT
+!C
       if(ityp.eq.2.or.ityp.eq.3) then
          ilink=1
          do 40 iposi=1,nnt
@@ -190,9 +187,9 @@ C
             if(inod.le.nnt1) ilink=ilink+2
  40      continue
       endif
-C
-C OUTPUT OF TOPOLOGICAL DATA
-C
+!C
+!C OUTPUT OF TOPOLOGICAL DATA
+!C
       if(ipr.ge.3) then
          write(6,*)' List of vertex nodes id, X and Y positions'
          write(6,*)' ------------------------------------------'
@@ -214,8 +211,7 @@ C
             write(6,*)' ----------------------------------------------'
             do 115 i=1,nelt
               write(6,915) i,(tcele(i,j),j=1,2),(kconn(i,j),j=1,nnel)
- 915          format(' Element:',i4,' Center:',2(f7.1),
-     &               ' Nodes:',10(i4))
+ 915          format(' Element:',i4,' Center:',2(f7.1),' Nodes:',10(i4))
  115        continue
          endif
       endif

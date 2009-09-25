@@ -1,4 +1,4 @@
-C test divacovar
+!C test divacovar
       
       if(ipipe.eq.1) then
       call pingpong(0,0,0)
@@ -14,18 +14,18 @@ C test divacovar
       close(61)
       call pingpong(0,1,0)
       iillmm=iillmm+1
-c      write(6,*) '???kernel',iillmm
+!c      write(6,*) '???kernel',iillmm
       endif
       
       
       do 101 i=1,ndata
-c         read(59,*) corre
-C peut etre l'ordre est modifie (meme surement), indirection?
-C
-c         tdata(i,3)=corre*varbak
+!c         read(59,*) corre
+!C peut etre l'ordre est modifie (meme surement), indirection?
+!C
+!c         tdata(i,3)=corre*varbak
           tdata(i,3)=tdata(i,3)*varbak
  101   continue
 
-C      write(6,*) 'Covariance retrieved',xjjj,yjjj,corre
+!C      write(6,*) 'Covariance retrieved',xjjj,yjjj,corre
       C0C0C0=corre
       return
