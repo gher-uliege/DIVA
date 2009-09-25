@@ -28,9 +28,8 @@
        goto 101
  200   continue
        trace=trace/i
-       write(23,999) cvval,sqrt(err/i),vardata,trace,
-     & sqrt(errb/i),0.0,float(i)
-C23456
+       write(23,999) cvval,sqrt(err/i),vardata,trace,sqrt(errb/i),0.0,float(i)
+!C23456
  999  format(7(E11.4))
        stop 
        end 

@@ -34,20 +34,20 @@
        read(20,*,end=200,err=200) x,y,val,w
        endif
        i=i+1
-c       write(6,*) 'ii',i,x,y,ndata,ic(i)
+!c       write(6,*) 'ii',i,x,y,ndata,ic(i)
        if(i.gt.ndata) then
         i=ndata
         write(6,*) 'Problem with data file (last line?)'
         goto 200
         endif
-C reduced data
+!C reduced data
        if(ic(i).eq.0) then
        if (ncol.eq.3) then
        write(44,*) x,y,val
                       else
        write(44,76) x,y,val,w                      
        endif
-C reference data
+!C reference data
                       else
        if (ncol.eq.3) then
        write(45,*) x,y,val

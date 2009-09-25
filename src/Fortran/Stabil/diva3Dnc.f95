@@ -1,8 +1,7 @@
-      SUBROUTINE NC_3DFILE
-     &(var,verr,dbins,clo,cla,im4,jm4,km,dep,valexu,
-     &var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
-     &file_name,var_shname,var_lgname,
-     &err_shname,err_lgname,var_units, title_string)
+      SUBROUTINE NC_3DFILE(var,verr,dbins,clo,cla,im4,jm4,km,dep,valexu, &
+     var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,                  &
+     file_name,var_shname,var_lgname,                                    &
+     err_shname,err_lgname,var_units, title_string)
 !
        IMPLICIT NONE
 !
@@ -13,17 +12,14 @@
         integer*4                           :: im4,jm4
 !!        integer                             :: im4,jm4
         integer                             :: im,jm,km
-        real*4                              :: valexu, 
-     &var_min,var_max,ver_min,ver_max,dbin_min,dbin_max
+        real*4                              :: valexu,var_min,var_max,ver_min,ver_max,dbin_min,dbin_max
 !
         real*4  ,dimension(im4,jm4,km)        :: var,verr,dbins
         real*4  ,dimension(im4)              :: clo
         real*4  ,dimension(jm4)              :: cla
         real*4  ,dimension(km)              :: dep
 !
-	character (len=*)     :: file_name, title_string
-     &                         , var_shname,var_lgname,var_units
-     &                         , err_shname,err_lgname
+	character (len=*)     :: file_name, title_string, var_shname,var_lgname,var_units, err_shname,err_lgname
 !
 	integer  ,dimension(3)              :: dim
 	integer                             :: id1,id2,id3
@@ -128,29 +124,25 @@
       ! Give attributes to coordinate variables 
       !-----------------------------------------
 !
-      status=nf_put_att_text(ncid,idlon,'units',
-     &              LEN_TRIM('degrees_east'),'degrees_east')
+      status=nf_put_att_text(ncid,idlon,'units',LEN_TRIM('degrees_east'),'degrees_east')
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_3DFILE att lon'
       ENDIF
 
-      status=nf_put_att_text(ncid,idlat,'units',
-     &               LEN_TRIM('degrees_north'),'degrees_north')
+      status=nf_put_att_text(ncid,idlat,'units',LEN_TRIM('degrees_north'),'degrees_north')
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_3DFILE att lat'
       ENDIF
 
-      status=nf_put_att_text(ncid,idlev,'units',LEN_TRIM('meters'),
-     &                                                   'meters')
+      status=nf_put_att_text(ncid,idlev,'units',LEN_TRIM('meters'),'meters')
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_3DFILE att lev units'
       ENDIF
 
-      status=nf_put_att_text(ncid,idlev,'positive',LEN_TRIM('down'),
-     &                                                      'down')
+      status=nf_put_att_text(ncid,idlev,'positive',LEN_TRIM('down'),'down')
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_3DFILE att lev positive'
@@ -170,36 +162,31 @@
          STOP 'Stopped in NC_3DFILE def var'
       ENDIF
 
-      status=nf_put_att_text(ncid,id1,'long_name',
-     &                 LEN_TRIM(var_lgname),TRIM(var_lgname))
+      status=nf_put_att_text(ncid,id1,'long_name',LEN_TRIM(var_lgname),TRIM(var_lgname))
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_3DFILE att lgname'
       ENDIF
 
-      status=nf_put_att_text(ncid,id1,'units',
-     &                 LEN_TRIM(var_units),TRIM(var_units))
+      status=nf_put_att_text(ncid,id1,'units',LEN_TRIM(var_units),TRIM(var_units))
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_3DFILE att units'
       ENDIF
 !
-      status=nf_put_att_real(ncid,id1,'valid_min',
-     &                                   nf_float,1,var_min)
+      status=nf_put_att_real(ncid,id1,'valid_min',nf_float,1,var_min)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_3DFILE att valex'
       ENDIF
 !
-      status=nf_put_att_real(ncid,id1,'valid_max',
-     &                                   nf_float,1,var_max)
+      status=nf_put_att_real(ncid,id1,'valid_max',nf_float,1,var_max)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_3DFILE att valex'
       ENDIF
 !
-      status=nf_put_att_real(ncid,id1,'missing_value',
-     &                                   nf_float,1,valexu)
+      status=nf_put_att_real(ncid,id1,'missing_value',nf_float,1,valexu)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_3DFILE att valex'
@@ -212,8 +199,7 @@
          STOP 'Stopped in NC_3DFILE def err'
       ENDIF
 
-      status=nf_put_att_text(ncid,id2,'long_name',
-     &                 LEN_TRIM(err_lgname),TRIM(err_lgname))
+      status=nf_put_att_text(ncid,id2,'long_name',LEN_TRIM(err_lgname),TRIM(err_lgname))
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_3DFILE att errlgname'
@@ -227,22 +213,19 @@
 !x      ENDIF
 
 !
-      status=nf_put_att_real(ncid,id2,'valid_min',
-     &                                   nf_float,1,ver_min)
+      status=nf_put_att_real(ncid,id2,'valid_min',nf_float,1,ver_min)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_3DFILE att valex'
       ENDIF
 !
-      status=nf_put_att_real(ncid,id2,'valid_max',
-     &                                   nf_float,1,ver_max)
+      status=nf_put_att_real(ncid,id2,'valid_max',nf_float,1,ver_max)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_3DFILE att valex'
       ENDIF
 !
-      status=nf_put_att_real(ncid,id2,'missing_value',
-     &                                   nf_float,1,valexu)
+      status=nf_put_att_real(ncid,id2,'missing_value',nf_float,1,valexu)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_3DFILE att valexerr'
@@ -254,23 +237,20 @@
          STOP 'Stopped in NC_3DFILE def err'
       ENDIF
 
-      status=nf_put_att_text(ncid,id3,'long_name',
-     &              LEN_TRIM('data bins'),'data bins')
+      status=nf_put_att_text(ncid,id3,'long_name',LEN_TRIM('data bins'),'data bins')
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_3DFILE att errlgname'
       ENDIF
 
 ! 
-      status=nf_put_att_real(ncid,id3,'valid_min',
-     &                                   nf_float,1,dbin_min)
+      status=nf_put_att_real(ncid,id3,'valid_min',nf_float,1,dbin_min)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_3DFILE att valex'
       ENDIF
 !
-      status=nf_put_att_real(ncid,id3,'valid_max',
-     &                                   nf_float,1,dbin_max)
+      status=nf_put_att_real(ncid,id3,'valid_max',nf_float,1,dbin_max)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_3DFILE att valex'
@@ -282,8 +262,7 @@
 !x         STOP 'Stopped in NC_3DFILE att errunits'
 !x      ENDIF
 !
-      status=nf_put_att_real(ncid,id3,'missing_value',
-     &                                   nf_float,1,valexu)
+      status=nf_put_att_real(ncid,id3,'missing_value',nf_float,1,valexu)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_3DFILE att valexerr'
@@ -293,8 +272,7 @@
       !Put global attributes
       !----------------------
 !
-      status=nf_put_att_text(ncid,NF_GLOBAL,'title',
-     &                 LEN_TRIM(title_string),TRIM(title_string))
+      status=nf_put_att_text(ncid,NF_GLOBAL,'title',LEN_TRIM(title_string),TRIM(title_string))
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_3DFILE att title'

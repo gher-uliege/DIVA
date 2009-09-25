@@ -1,26 +1,26 @@
-C ----------------------------------------------------
-C     GENERATEUR DE MAILLAGE 2D MULTIPLEMENT CONNNEXE 
-C       PAR LA TRIANGULATION DE DELAUNAY
-C
-C  PROGRAMMATION : BERTIN, ORBAN (AOUT 93)
-C  ADAPTATION    : SCHOENAUEN    (DECEMBRE 93)
-C  
-C  Regrouping of gener.a and reorg.a
-C      sorting optimization and english version: 
-C       BECKERS SIRJACOBS (2006)
-C ----------------------------------------------------
+!C ----------------------------------------------------
+!C     GENERATEUR DE MAILLAGE 2D MULTIPLEMENT CONNNEXE
+!C       PAR LA TRIANGULATION DE DELAUNAY
+!C
+!C  PROGRAMMATION : BERTIN, ORBAN (AOUT 93)
+!C  ADAPTATION    : SCHOENAUEN    (DECEMBRE 93)
+!C
+!C  Regrouping of gener.a and reorg.a
+!C      sorting optimization and english version:
+!C       BECKERS SIRJACOBS (2006)
+!C ----------------------------------------------------
 
       IMPLICIT NONE
 
       INTEGER*4 NMAX,MMAX,NCMAX,NRMAX
 
       PARAMETER(NMAX=400000,MMAX=400000,NCMAX=1000,NRMAX=100)
-C     PARAMETER(NMAX=10000,MMAX=10000,NCMAX=100,NRMAX=10)
+!C     PARAMETER(NMAX=10000,MMAX=10000,NCMAX=100,NRMAX=10)
 
-C     NMAX: NOMBRE MAXIMUM DE NOEUD
-C     MMAX: NOMBRE MAXIMUM DE MAILLE 
-C     NCMAX: NOMBRE MAXIMUM DE CONTOUR
-C     NRMAX: NOMBRE MAXIMUM DE REGION A DENSITE VARIABLE
+!C     NMAX: NOMBRE MAXIMUM DE NOEUD
+!C     MMAX: NOMBRE MAXIMUM DE MAILLE
+!C     NCMAX: NOMBRE MAXIMUM DE CONTOUR
+!C     NRMAX: NOMBRE MAXIMUM DE REGION A DENSITE VARIABLE
 
       real*8 X(NMAX),Y(NMAX),NOEUD(NMAX,2),S
       real*8 NEWPT(NMAX,3),XMAX,XMIN,YMAX,YMIN
@@ -39,25 +39,23 @@ C     NRMAX: NOMBRE MAXIMUM DE REGION A DENSITE VARIABLE
       real*8 rlatmin,rlatmax,rlonmean,rlatmean,dxkm,dykm,rpi
       real*8 rcoordchange
       integer isspheric, icoordchange
-      COMMON/COORDCH/rlatmin,rlatmax,rlonmean,rlatmean,dxkm,dykm,RPI,
-     & rcoordchange,isspheric,icoordchange
+      COMMON/COORDCH/rlatmin,rlatmax,rlonmean,rlatmean,dxkm,dykm,RPI,rcoordchange,isspheric,icoordchange
       RPI=2*ASIN(1.)
       write(6,*) 'Pi:',RPI
-      P=0
       
       if(iodv.eq.1) then
-c**rs
+!c**rs
       open(11,file='meshgen.prm')
-c**rs      OPEN(UNIT=11,FILE='fort.11')
-c**rs
+!c**rs      OPEN(UNIT=11,FILE='fort.11')
+!c**rs
       else
       OPEN(UNIT=11,FILE='fort.11')
       endif
             READ(11,*) P
 
-C     11 : FICHIER QUI CONTIENT LES PARAMETRES. SI P=1 : LONG. CARACT VARIABLE
-C     12 : CONTIENT LES DONNEES SUR LES REGIONS A MAILLER DIFFEREMENT
-      NR=0
+!C     11 : FICHIER QUI CONTIENT LES PARAMETRES. SI P=1 : LONG. CARACT VARIABLE
+!C     12 : CONTIENT LES DONNEES SUR LES REGIONS A MAILLER DIFFEREMENT
+
       IF(P.EQ.1) THEN
       K=0
       OPEN(UNIT=12,FILE='fort.12')
@@ -74,18 +72,18 @@ C     12 : CONTIENT LES DONNEES SUR LES REGIONS A MAILLER DIFFEREMENT
       ENDIF
   
       READ(11,*) S
-C       S  : LONGUEUR CARATERISTIQUE (LUE DANS 11)
+!C       S  : LONGUEUR CARATERISTIQUE (LUE DANS 11)
 
       NO=0
       MA=0
       J=0
 
-C     DETERMINATION DE X,YMIN ET X,YMAX ET LECTURE DES 
-C      PT DE CONTOURS DANS UN FICHIER 10
+!C     DETERMINATION DE X,YMIN ET X,YMAX ET LECTURE DES
+!C      PT DE CONTOURS DANS UN FICHIER 10
       if(iodv.eq.1) then
-c**rs
+!c**rs
       open(10,file='domain.checked')
-c**rs      OPEN(UNIT=10,FILE='fort.10')
+!c**rs      OPEN(UNIT=10,FILE='fort.10')
       else
       OPEN(UNIT=10,FILE='fort.10')
       endif
@@ -111,7 +109,7 @@ c**rs      OPEN(UNIT=10,FILE='fort.10')
           XMAX=MAX(XMAX,X(J))
           YMIN=MIN(YMIN,Y(J))
           YMAX=MAX(YMAX,Y(J))
-C JMBB: no need to keep two identical points...
+!C JMBB: no need to keep two identical points...
           if(j.gt.1) then
           if(abs(x(j)-x(j-1)).lt.0.000001*abs(x(j)+x(j-1))) then
           if(abs(y(j)-y(j-1)).lt.0.000001*abs(y(j)+y(j-1))) then
@@ -121,13 +119,11 @@ C JMBB: no need to keep two identical points...
           endif
           endif
           endif
-C Dernier=premier??
+!C Dernier=premier??
           if((K.EQ.N).and.(PPTC(i).GT.2)) then
           
-          if(abs(x(j)-x(j-PPTC(i)+1)).lt.0.000001
-     &         *abs(x(j)+x(j-PPTC(i)+1))) then
-          if(abs(y(j)-y(j-PPTC(i)+1)).lt.0.000001
-     &         *abs(y(j)+y(j-PPTC(i)+1))) then
+          if(abs(x(j)-x(j-PPTC(i)+1)).lt.0.000001*abs(x(j)+x(j-PPTC(i)+1))) then
+          if(abs(y(j)-y(j-PPTC(i)+1)).lt.0.000001*abs(y(j)+y(j-PPTC(i)+1))) then
           write(6,*) 'Found  identical points at start and end ', I, J
           j=j-1
           PPTC(i)=PPTC(i)-1
@@ -135,13 +131,13 @@ C Dernier=premier??
           endif
           
           endif
-C JMBE
+!C JMBE
 40       CONTINUE
 30    CONTINUE
       CLOSE(10)
       N=J
 
-C Now implement coordinate change on the N points and Density regions if ncessessary
+!C Now implement coordinate change on the N points and Density regions if ncessessary
 
       icoordchange=0
       isspheric=0
@@ -157,8 +153,8 @@ C Now implement coordinate change on the N points and Density regions if ncesses
       write(6,*) 'Coordinates',icoordchange,isspheric,rcoordchange
       write(6,*) 'Testing double precision'
 
-C
-C FIND LAT MIN, LAT MAX
+!C
+!C FIND LAT MIN, LAT MAX
       if (icoordchange.lt.0) then
       write(6,*) 'Anisotropic case'
       rlonmin=Xmin
@@ -229,15 +225,15 @@ C FIND LAT MIN, LAT MAX
       endif
       
       endif
-C end coordinate change
+!C end coordinate change
       
       
       
       
       
       
-C     RAJOUT DE POINT DANS LE CONTOUR SI LA DISTANCE ENTRE 
-C      DEUX POINTS DIFFERE BCP (+ DE 2*) DE LA LONGUEUR CARACT.
+!C     RAJOUT DE POINT DANS LE CONTOUR SI LA DISTANCE ENTRE
+!C      DEUX POINTS DIFFERE BCP (+ DE 2*) DE LA LONGUEUR CARACT.
  
       NP=0
       NPC=0
@@ -254,7 +250,7 @@ C      DEUX POINTS DIFFERE BCP (+ DE 2*) DE LA LONGUEUR CARACT.
        ENDIF
 
        L=S
-c       write(6,*) 'Length scale (after coordinate change)',L
+!c       write(6,*) 'Length scale (after coordinate change)',L
        
        IF(P.EQ.1) THEN
        XP=(X(A)+X(B))/2
@@ -263,7 +259,7 @@ c       write(6,*) 'Length scale (after coordinate change)',L
        ENDIF
        D=SQRT(1.D0*(X(A)-X(B))**2+1.D0*(Y(A)-Y(B))**2)
        M=INT(D/L)
-c       write(6,*) M,D,L,A,B,X(A),X(B)
+!c       write(6,*) M,D,L,A,B,X(A),X(B)
        IF((D/L).LT.(.5)) K=K+1 
        IF(M.GT.1) THEN
           DO 60 J=1,(M-1)
@@ -296,22 +292,22 @@ c       write(6,*) M,D,L,A,B,X(A),X(B)
         WRITE(*,'(A)')  ' please increase NMAX'
         STOP
       ENDIF
-c      write(6,*) 'Contours',NP,N
-c      do i=1,NP
-c       write(6,*) 'NEWPT',(NEWPT(i,jj),jj=1,3)
-c       enddo
+!c      write(6,*) 'Contours',NP,N
+!c      do i=1,NP
+!c       write(6,*) 'NEWPT',(NEWPT(i,jj),jj=1,3)
+!c       enddo
      
       IF(NP.GE.1) THEN
         DO 70 I=N,1,-1
             M=0
 80          continue
-C JMB?????  
+!C JMB?????
             if(NP.LT.1) then
-c            write(6,*) '????',NP,I,N,M
+!c            write(6,*) '????',NP,I,N,M
             M=0
             goto 70
             endif 
-c JMBE
+!c JMBE
             IF((NEWPT(NP,1).EQ.I)) THEN
              X(I+NP)=NEWPT(NP,2)
              Y(I+NP)=NEWPT(NP,3)
@@ -328,12 +324,12 @@ c JMBE
       N=N+NP2
       IF(K.GT.0) THEN
         WRITE(*,'(A)') 'Warning, contour is too fine'
-c        WRITE(*,'(A)') ' DE L, ET CE N FOIS, OU N VAUT:'
+!c        WRITE(*,'(A)') ' DE L, ET CE N FOIS, OU N VAUT:'
         WRITE(*,*) K
       ENDIF
 
       L=S
-C     CREATION DE LA BOITE 
+!C     CREATION DE LA BOITE
       
 
       DX=XMAX-XMIN
@@ -361,15 +357,15 @@ C     CREATION DE LA BOITE
       MAILLE(2,6)=0
       MA=2
 
-c      write(6,*) 'PPTC',(PPTC(K),K=1,NC)
-c      do i=1,N
-c            write(6,*) 'X,Y',X(I),Y(I)
-c      enddo
-c      do i=1,NO
-c            write(6,*) 'node',NOEUD(I,1),NOEUD(I,2)
-c            enddo
+!c      write(6,*) 'PPTC',(PPTC(K),K=1,NC)
+!c      do i=1,N
+!c            write(6,*) 'X,Y',X(I),Y(I)
+!c      enddo
+!c      do i=1,NO
+!c            write(6,*) 'node',NOEUD(I,1),NOEUD(I,2)
+!c            enddo
       
-C     AJOUT DES POINTS DE CONTOUR
+!C     AJOUT DES POINTS DE CONTOUR
       WRITE(*,'(A)') 'ADDING CONTOUR POINTS'
       WRITE(*,*) N
 
@@ -379,17 +375,17 @@ C     AJOUT DES POINTS DE CONTOUR
         YP=Y(I)
         write(19,*) X(I),Y(I)
         CALL NEWNO(MAILLE,NOEUD,NMAX,MMAX,NO,MA,XP,YP,MP)
-c       write(6,*) 'treated node',I,'out of',N, L
+!c       write(6,*) 'treated node',I,'out of',N, L
 90    CONTINUE
-c      write(6,*) 'fini newno'
-c      CALL SORTIE(MAILLE,NOEUD,NMAX,MMAX,NO,MA)
+!c      write(6,*) 'fini newno'
+!c      CALL SORTIE(MAILLE,NOEUD,NMAX,MMAX,NO,MA)
 
       CALL AJOUT(MAILLE,NOEUD,NMAX,MMAX,NO,MA,N,NC,PPTC,NCMAX)
 
-c      write(6,*) 'PPTCa',(PPTC(K),K=1,NC)
+!c      write(6,*) 'PPTCa',(PPTC(K),K=1,NC)
 
 
-C     ELIMINATION DES MAILLES DE BOITE
+!C     ELIMINATION DES MAILLES DE BOITE
       WRITE(*,'(A)') 'ELIMINATION OF ELEMENTS'
 
       I=1
@@ -407,9 +403,9 @@ C     ELIMINATION DES MAILLES DE BOITE
       GOTO 100
 130   CONTINUE
 
-C ------------------------------------------
-C     ELIMINATION DES 4 NOEUDS DE LA BOITE.
-C ------------------------------------------
+!C ------------------------------------------
+!C     ELIMINATION DES 4 NOEUDS DE LA BOITE.
+!C ------------------------------------------
 
       DO 140 I=1,(NO-4)
         NOEUD(I,1)=NOEUD(I+4,1)
@@ -422,16 +418,16 @@ C ------------------------------------------
 150   CONTINUE
       NO=NO-4
 
-C ------------------------------------------
-C     ELIMINATION DES MAILLE DE CONCAVITE
-C ------------------------------------------
+!C ------------------------------------------
+!C     ELIMINATION DES MAILLE DE CONCAVITE
+!C ------------------------------------------
       WRITE(*,'(A)') 'ELIMINATION OF CONCAVE ELEMENTS'
 
-C     DETECTION DES MAILLES D'ENTRéE DE CONCAVITE
-Ctest
-c      CALL SORTIE(MAILLE,NOEUD,NMAX,MMAX,NO,MA)
-c      stop
-C???
+!C     DETECTION DES MAILLES D'ENTRéE DE CONCAVITE
+!Ctest
+!c      CALL SORTIE(MAILLE,NOEUD,NMAX,MMAX,NO,MA)
+!c      stop
+!C???
       I=1
 170   J=1
 180      A=MAILLE(I,J)
@@ -443,7 +439,7 @@ C???
        F=0
        E=1
        IF((A.LE.PPTC(1)).AND.(B.LE.PPTC(1))) THEN
-CJMB: means they are on the outer boundary??
+!CJMB: means they are on the outer boundary??
            IF(A.EQ.PPTC(1)) E=1-PPTC(1)
            IF((MAILLE(I,J+3).EQ.0).AND.((A+E).NE.B)) F=1 
        ELSE
@@ -451,18 +447,18 @@ CJMB: means they are on the outer boundary??
              IF(A.EQ.(F+1)) E=1-PPTC(K)
              F=F+PPTC(K)
 190          CONTINUE
-C JMB??? E=1-PPTC means point A is the first one of a contour
-c           write(6,*) '??',I,J,F,E
-c           IF(A.EQ.(B+E)) THEN
+!C JMB??? E=1-PPTC means point A is the first one of a contour
+!c           write(6,*) '??',I,J,F,E
+!c           IF(A.EQ.(B+E)) THEN
            IF(A.EQ.(B+E)) THEN
              F=1
-c             write(6,*) 'Need to eliminate??'
-c             write(6,*) A,B,I,J,E
-c             write(6,*) (MAILLE(I,J),J=1,6)
+!c             write(6,*) 'Need to eliminate??'
+!c             write(6,*) A,B,I,J,E
+!c             write(6,*) (MAILLE(I,J),J=1,6)
            ENDIF
        ENDIF
        IF(F.EQ.1) THEN
-c           write(6,*) 'Elimination of mesh',MA,NC,I
+!c           write(6,*) 'Elimination of mesh',MA,NC,I
             CALL DELMACONC(MAILLE,PPTC,MMAX,NCMAX,MA,NC,I)
             
            I=0
@@ -484,36 +480,35 @@ c           write(6,*) 'Elimination of mesh',MA,NC,I
        STOP
       ENDIF
  
-C -----------------
-C     RAFFINAGE
-C -----------------
+!C -----------------
+!C     RAFFINAGE
+!C -----------------
 
       WRITE(*,'(A)') 'REFINEMENT'
-      CALL RAFFIN1(MAILLE,NOEUD,NMAX,MMAX,NO,MA,S
-     &,G,KN,NR,NRMAX,KNMAX,P)
+      CALL RAFFIN1(MAILLE,NOEUD,NMAX,MMAX,NO,MA,S,G,KN,NR,NRMAX,KNMAX,P)
 
-C --------------
-C     LISSAGE
-C --------------
+!C --------------
+!C     LISSAGE
+!C --------------
 
       WRITE(*,'(A)') 'SMOOTHING OF GRID'
       CALL LISSAGE(MAILLE,NOEUD,NMAX,MMAX,NO,MA,N)
 
-C --------------
-C     SORTIE
-C --------------
+!C --------------
+!C     SORTIE
+!C --------------
 
-C      CALL SORTIE(MAILLE,NOEUD,NMAX,MMAX,NO,MA)
+!C      CALL SORTIE(MAILLE,NOEUD,NMAX,MMAX,NO,MA)
       CALL REORG(MAILLE,NOEUD,NMAX,MMAX,NO,MA,NTRI)
       stop 'FINISHED'
       END
 
-C --------------------------------------
-C     SOUS-ROUTINE   SORTIE
-C --------------------------------------
+!C --------------------------------------
+!C     SOUS-ROUTINE   SORTIE
+!C --------------------------------------
       SUBROUTINE SORTIE(MAILLE,NOEUD,NMAX,MMAX,NO,MA)
 
-C     SORTIE DES RESULTATS DANS DES FICHIERS 20 ET 21
+!C     SORTIE DES RESULTATS DANS DES FICHIERS 20 ET 21
 
       IMPLICIT NONE
       INTEGER*4 NMAX,MMAX,NO,MA,I,J,MAILLE(MMAX,6)
@@ -529,30 +524,28 @@ C     SORTIE DES RESULTATS DANS DES FICHIERS 20 ET 21
            WRITE(20,*) I,NOEUD(I,1),NOEUD(I,2)
 10    CONTINUE
       DO 20 J=1,MA
-       WRITE(20,*) J,MAILLE(J,1),MAILLE(J,2),MAILLE(J,3),
-     &      MAILLE(J,4),MAILLE(J,5),MAILLE(J,6)
+       WRITE(20,*) J,MAILLE(J,1),MAILLE(J,2),MAILLE(J,3),MAILLE(J,4),MAILLE(J,5),MAILLE(J,6)
 20    CONTINUE
       CLOSE(20)
 
       RETURN
       END
 
-C --------------------------------------
-C     SOUS-ROUTINE   MLOC
-C --------------------------------------
+!C --------------------------------------
+!C     SOUS-ROUTINE   MLOC
+!C --------------------------------------
 
       SUBROUTINE MLOC(MAILLE,NOEUD,NMAX,MMAX,R,M,XP,YP,I)
 
-C     LOCALISE A QUELLE MAILLE APPARTIENT LE FUTUR NOEUD XP,YP
-C      ET DETERMINE LES MAILLES QUI SERONT AFFECTEES PAR SON 
-C      INTRODUCTION
+!C     LOCALISE A QUELLE MAILLE APPARTIENT LE FUTUR NOEUD XP,YP
+!C      ET DETERMINE LES MAILLES QUI SERONT AFFECTEES PAR SON
+!C      INTRODUCTION
 
       IMPLICIT NONE
       INTEGER*4 NPOURR,NPOURT
       PARAMETER(NPOURR=50000)
       PARAMETER(NPOURT=50000)
-      INTEGER*4 NMAX,MMAX,R(NPOURR),M,I,T(NPOURT),B(4),L,J,
-     & MAILLE(MMAX,6)
+      INTEGER*4 NMAX,MMAX,R(NPOURR),M,I,T(NPOURT),B(4),L,J,MAILLE(MMAX,6)
       real*8 NOEUD(NMAX,2),XP,YP
       REAL*8 X1,Y1,Y2,X2,Z1,Z2,Z3,Z4,A1,A2,A3,C1
       INTEGER*4 S,A(NPOURT),N,K,F,P,SW
@@ -563,7 +556,7 @@ C      INTRODUCTION
       NY=YP
 
 
-C     I : MAILLE QUI CONTIENT LE PT XP,YP : A DETERMINER
+!C     I : MAILLE QUI CONTIENT LE PT XP,YP : A DETERMINER
 
 10    B(1)=MAILLE(I,1)
       B(4)=B(1)
@@ -584,8 +577,8 @@ C     I : MAILLE QUI CONTIENT LE PT XP,YP : A DETERMINER
         ENDIF
 20    CONTINUE
 
-C     UTILISATION DU TEST DU CERCLE CIRCONSCRIT A LA MAILLE
-C      POUR REPERTORIER LES MAILLES A MODIFIER
+!C     UTILISATION DU TEST DU CERCLE CIRCONSCRIT A LA MAILLE
+!C      POUR REPERTORIER LES MAILLES A MODIFIER
 
       M=1
       N=1
@@ -614,7 +607,7 @@ C      POUR REPERTORIER LES MAILLES A MODIFIER
 40    CONTINUE
       N=N-1
       IF(N.LT.1) THEN
-C      write(6,*) ' so what??',N
+!C      write(6,*) ' so what??',N
       goto 100
       endif
       IF (A(N).EQ.0) N=N-1
@@ -625,11 +618,11 @@ C      write(6,*) ' so what??',N
       X2=1.D0*NOEUD(MAILLE(A(N),3),1)-NOEUD(MAILLE(A(N),2),1)
       Y1=1.D0*NOEUD(MAILLE(A(N),2),2)-NOEUD(MAILLE(A(N),1),2)
       Y2=1.D0*NOEUD(MAILLE(A(N),3),2)-NOEUD(MAILLE(A(N),2),2)
-C TEST?
-C      Z1=1.D0*NOEUD(MAILLE(A(N),1),1)**2-NOEUD(MAILLE(A(N),2),1)**2 
-C      Z2=1.D0*NOEUD(MAILLE(A(N),1),2)**2-NOEUD(MAILLE(A(N),2),2)**2
-C      Z3=1.D0*NOEUD(MAILLE(A(N),2),2)**2-NOEUD(MAILLE(A(N),3),2)**2
-C      Z4=1.D0*NOEUD(MAILLE(A(N),2),1)**2-NOEUD(MAILLE(A(N),3),1)**2 
+!C TEST?
+!C      Z1=1.D0*NOEUD(MAILLE(A(N),1),1)**2-NOEUD(MAILLE(A(N),2),1)**2
+!C      Z2=1.D0*NOEUD(MAILLE(A(N),1),2)**2-NOEUD(MAILLE(A(N),2),2)**2
+!C      Z3=1.D0*NOEUD(MAILLE(A(N),2),2)**2-NOEUD(MAILLE(A(N),3),2)**2
+!C      Z4=1.D0*NOEUD(MAILLE(A(N),2),1)**2-NOEUD(MAILLE(A(N),3),1)**2
       
       Z1=1.D0*NOEUD(MAILLE(A(N),1),1)-NOEUD(MAILLE(A(N),2),1)
       Z2=1.D0*NOEUD(MAILLE(A(N),1),2)-NOEUD(MAILLE(A(N),2),2)
@@ -668,14 +661,14 @@ C      Z4=1.D0*NOEUD(MAILLE(A(N),2),1)**2-NOEUD(MAILLE(A(N),3),1)**2
       RETURN
       END
 
-C --------------------------------------
-C     SOUS-ROUTINE   NEWMA
-C --------------------------------------
+!C --------------------------------------
+!C     SOUS-ROUTINE   NEWMA
+!C --------------------------------------
 
       SUBROUTINE NEWMA(MAILLE,NOEUD,NMAX,MMAX,NO,MA,R,NM,XP,YP)
 
       IMPLICIT NONE
-C       INTRODUIT LE NOUVEAU NOEUD EN AJUSTANT LA TOPOLOGIE.
+!C       INTRODUIT LE NOUVEAU NOEUD EN AJUSTANT LA TOPOLOGIE.
       INTEGER*4 NPOURR,NPOURC
       PARAMETER(NPOURR=50000,NPOURC=50000)
       INTEGER*4 NMAX,MMAX,MA,NO,R(NPOURR),NM,T,MAILLE(MMAX,6)
@@ -683,15 +676,15 @@ C       INTRODUIT LE NOUVEAU NOEUD EN AJUSTANT LA TOPOLOGIE.
       INTEGER*4 I,J,K,L,CE(NPOURC,2),MTEMP(NPOURC,5),A,B,C
       integer*4 MV(NPOURC,2)
       if((nm+2).gt.npourc) stop 'jmbtest failed, increase npourc'
-CJMB the problem is probably in this routine
+!CJMB the problem is probably in this routine
       L=0
       NO=NO+1
       NOEUD(NO,1)=XP
       NOEUD(NO,2)=YP
       
-c      write(6,*) 'Working on NM triangles', NM
+!c      write(6,*) 'Working on NM triangles', NM
 
-C     BALAYAGE DES NM MAILLES POUR TROUVER LES BORDS DU SOUS-MAILLAGE NM
+!C     BALAYAGE DES NM MAILLES POUR TROUVER LES BORDS DU SOUS-MAILLAGE NM
 
       DO 10 I=1,NM
        DO 20 K=4,6
@@ -699,11 +692,11 @@ C     BALAYAGE DES NM MAILLES POUR TROUVER LES BORDS DU SOUS-MAILLAGE NM
 30           IF((MAILLE(R(I),K).NE.R(J)).AND.(J.LE.NM)) THEN
 
 
-C                  WRITE(*,*) I,R(I),MAILLE(R(I),K),K,J,R(J)
+!C                  WRITE(*,*) I,R(I),MAILLE(R(I),K),K,J,R(J)
                J=J+1
                GOTO 30
              ENDIF
-CJMB Previous test makes no sense to me??? only stoppend when J.LT.NM???
+!CJMB Previous test makes no sense to me??? only stoppend when J.LT.NM???
              IF(J.GT.NM) THEN
                L=L+1
                CE(L,1)=I
@@ -712,10 +705,10 @@ CJMB Previous test makes no sense to me??? only stoppend when J.LT.NM???
 20       CONTINUE
 10    CONTINUE
 
-C     TEST POUR VOIR SI ...
-c      do i=1,L
-c      write(6,*) 'CE??',CE(i,1),CE(i,2)
-c      enddo
+!C     TEST POUR VOIR SI ...
+!c      do i=1,L
+!c      write(6,*) 'CE??',CE(i,1),CE(i,2)
+!c      enddo
 
       IF(L.NE.(NM+2)) THEN
           WRITE(*,*) '??????',NO,R(1),L,NM+2,'??????'
@@ -723,7 +716,7 @@ c      enddo
           STOP
       ENDIF
 
-C     CREATION DES NOUVELLES MAILLES DANS UN TABLEAU MTEMP (PROVISOIRE)
+!C     CREATION DES NOUVELLES MAILLES DANS UN TABLEAU MTEMP (PROVISOIRE)
       if (L.GT.NPOURC) STOP 'INCREASE NPOURC'
       DO 40 I=1,L
        C=CE(I,1)
@@ -733,25 +726,25 @@ C     CREATION DES NOUVELLES MAILLES DANS UN TABLEAU MTEMP (PROVISOIRE)
             MA=MA+1
             MTEMP(I,1)=MA
        ENDIF
-C JMB MTEMP(I,1): mesh number
+!C JMB MTEMP(I,1): mesh number
        A=CE(I,2)
        DO 50 K=1,2
             B=K-4
             IF((A+B).GT.3) B=B-3
             MTEMP(I,K+1)=MAILLE(R(C),A+B)
-C JMB MTEMP(I,2) and MTEMP(I,3) numbers of the nodes on the boundary segment?
+!C JMB MTEMP(I,2) and MTEMP(I,3) numbers of the nodes on the boundary segment?
 50       CONTINUE
        MTEMP(I,4)=NO
-C Central node !
-c       write(6,*) 'NO',NO
+!C Central node !
+!c       write(6,*) 'NO',NO
        MTEMP(I,5)=MAILLE(R(C),A)
-C where to find the pointer to the external meshes
+!C where to find the pointer to the external meshes
 40    CONTINUE
 
-C     MISE A JOUR DE LA TOPOLOGIE
+!C     MISE A JOUR DE LA TOPOLOGIE
 
-C        PRIMO : REORGANISATION DE MTEMP
-C 
+!C        PRIMO : REORGANISATION DE MTEMP
+!C
       DO 60 I=1,(NM+1)
        A=I
        B=I+1
@@ -776,10 +769,10 @@ C
             GOTO 70
 90            CONTINUE
        ENDIF
-C JMB OK, found the sequence of connecting segments (convex hull)
+!C JMB OK, found the sequence of connecting segments (convex hull)
 60    CONTINUE
 
-C       SECUNDO : REORGANISATION DES MAILLES VOISINES AU SOUS-MAILLAGE
+!C       SECUNDO : REORGANISATION DES MAILLES VOISINES AU SOUS-MAILLAGE
 
       A=0
       DO 100 I=1,L
@@ -789,8 +782,7 @@ C       SECUNDO : REORGANISATION DES MAILLES VOISINES AU SOUS-MAILLAGE
             IF( MAILLE(MTEMP(I,5) ,J).EQ.R(C) ) THEN
                T=0
                DO 120 K=1,A
-                   IF((MV(K,1).EQ.MTEMP(I,5)).AND.(MV(K,2)
-     &                         .EQ.J)) T=1
+                   IF((MV(K,1).EQ.MTEMP(I,5)).AND.(MV(K,2).EQ.J)) T=1
 120                CONTINUE
                IF(T.EQ.0) THEN
                   A=A+1
@@ -803,7 +795,7 @@ C       SECUNDO : REORGANISATION DES MAILLES VOISINES AU SOUS-MAILLAGE
        ENDIF
 100   CONTINUE
 
-C       TERTIO : REORGANISATION DES MAILLES EN FONCTION DE MTEMP 
+!C       TERTIO : REORGANISATION DES MAILLES EN FONCTION DE MTEMP
       if((nm+2).gt.npourc) stop 'jmbtestmaille failed'
       DO 130 I=1,(NM+2)
        A=MTEMP(I,1)
@@ -820,23 +812,23 @@ C       TERTIO : REORGANISATION DES MAILLES EN FONCTION DE MTEMP
             ELSE
             MAILLE(A,5)=MTEMP(I+1,1)
        ENDIF
-c       write(6,*) '??? Central node',MAILLE(A,3),A
-c       write(6,*) 'central',NOEUD(MAILLE(A,3),1),NOEUD(MAILLE(A,3),2)
+!c       write(6,*) '??? Central node',MAILLE(A,3),A
+!c       write(6,*) 'central',NOEUD(MAILLE(A,3),1),NOEUD(MAILLE(A,3),2)
 130    CONTINUE
 
       RETURN
       END
  
 
-C --------------------------------------
-C     SOUS-ROUTINE   NEWNO
-C --------------------------------------
+!C --------------------------------------
+!C     SOUS-ROUTINE   NEWNO
+!C --------------------------------------
 
       SUBROUTINE NEWNO(MAILLE,NOEUD,NMAX,MMAX,NO,MA,XP,YP,I)
 
       IMPLICIT NONE
-C       INTRODUIT LE NOUVEAU NOEUD ( LOCALISATION DE CELUI-CI
-C           ET INTRODUCTION DANS LE MAILLAGE )
+!C       INTRODUIT LE NOUVEAU NOEUD ( LOCALISATION DE CELUI-CI
+!C           ET INTRODUCTION DANS LE MAILLAGE )
       INTEGER*4 NPOURR,jj
       PARAMETER(NPOURR=50000)
       INTEGER*4 NMAX,MMAX,NO,MA,R(NPOURR),NM,I,MAILLE(MMAX,6)
@@ -847,38 +839,38 @@ C           ET INTRODUCTION DANS LE MAILLAGE )
       IF(MA.GE.MMAX) STOP 'TROP DE MAILLES, REDEFINIR MMAX'
       IF(NO.GE.NMAX) STOP 'TROP DE NOEUDS, REDEFINIR NMAX'
 
-c     write(6,*) 'before mloc'
+!c     write(6,*) 'before mloc'
       CALL MLOC(MAILLE,NOEUD,NMAX,MMAX,R,NM,XP,YP,I)
-c      write(6,*) 'before newma'
-c      do jj=1,NM
-c      write(6,*) 'RR?',R(jj)
-c      write(6,*) noeud(maille(r(jj),1),1),noeud(maille(r(jj),1),2)
-c      write(6,*) noeud(maille(r(jj),2),1),noeud(maille(r(jj),2),2)
-c      write(6,*) noeud(maille(r(jj),3),1),noeud(maille(r(jj),3),2)
-c       enddo
-c       write(6,*) 'into newma',ma
+!c      write(6,*) 'before newma'
+!c      do jj=1,NM
+!c      write(6,*) 'RR?',R(jj)
+!c      write(6,*) noeud(maille(r(jj),1),1),noeud(maille(r(jj),1),2)
+!c      write(6,*) noeud(maille(r(jj),2),1),noeud(maille(r(jj),2),2)
+!c      write(6,*) noeud(maille(r(jj),3),1),noeud(maille(r(jj),3),2)
+!c       enddo
+!c       write(6,*) 'into newma',ma
       CALL NEWMA(MAILLE,NOEUD,NMAX,MMAX,NO,MA,R,NM,XP,YP)
-c      write(6,*) 'out of newma',ma
+!c      write(6,*) 'out of newma',ma
       RETURN
       END 
 
-C --------------------------------------
-C     SOUS-ROUTINE   DELMA
-C --------------------------------------
+!C --------------------------------------
+!C     SOUS-ROUTINE   DELMA
+!C --------------------------------------
 
       SUBROUTINE DELMA(MAILLE,MMAX,MA,NM)
 
       IMPLICIT NONE
 
-C     SUPPRIME LA MAILLE NM DU TABLEAU
+!C     SUPPRIME LA MAILLE NM DU TABLEAU
 
       INTEGER*4 MMAX,MA,NM,I,J
       INTEGER*4 MAILLE(MMAX,6)
 
       DO 10 I=4,6
        IF(MAILLE(NM,I).NE.0) THEN
-C JMB For meshes that had a pointer towards them from NM
-C the reverse pointer needs to be eliminated 
+!C JMB For meshes that had a pointer towards them from NM
+!C the reverse pointer needs to be eliminated
        DO 20 J=4,6
             IF(MAILLE(MAILLE(NM,I),J).EQ.NM) THEN
                   MAILLE(MAILLE(NM,I),J)=0
@@ -886,11 +878,11 @@ C the reverse pointer needs to be eliminated
 20       CONTINUE
        ENDIF
 10    CONTINUE 
-C JMB only reorganise if NM is not the last mesh, 
-C   otherwise MA->MA-1 is enough
+!C JMB only reorganise if NM is not the last mesh,
+!C   otherwise MA->MA-1 is enough
       IF(NM.LT.MA) THEN
-C Move MA into NM position and modify pointers to MA 
-C to pointers into NM
+!C Move MA into NM position and modify pointers to MA
+!C to pointers into NM
              DO 30 I=4,6
            IF(MAILLE(MA,I).NE.0) THEN
              DO 40 J=4,6
@@ -900,37 +892,36 @@ C to pointers into NM
 40           CONTINUE
            ENDIF
 30        CONTINUE
-C move the triangle into NM position
+!C move the triangle into NM position
         DO 50 I=1,6
             MAILLE(NM,I)=MAILLE(MA,I)
 50        CONTINUE
       ENDIF
-c      write(6,*) 'number of elements',MA
+!c      write(6,*) 'number of elements',MA
       MA=MA-1
       RETURN
       END
 
 
 
-C --------------------------------------
-C     SOUS-ROUTINE   RAFFIN1
-C --------------------------------------
+!C --------------------------------------
+!C     SOUS-ROUTINE   RAFFIN1
+!C --------------------------------------
 
-       SUBROUTINE RAFFIN1(MAILLE,NOEUD,NMAX,MMAX,NO,MA,S
-     &,G,KN,NR,NRMAX,KNMAX,P)
+       SUBROUTINE RAFFIN1(MAILLE,NOEUD,NMAX,MMAX,NO,MA,S,G,KN,NR,NRMAX,KNMAX,P)
 
-C     RAFFINAGE DU MAILLAGES PAR INTRODUCTION DE NOUVEAU
-C      NOEUD AU CENTRE DE GRAVITE DES MAILLES DE SURFACE
-C      SUPERIEURES A LA SURFACE CARACTERISTIQUE A UN 
-C      FACTEUR C PRES. 'C' EST LU DANS UN FICHIER 11
+!C     RAFFINAGE DU MAILLAGES PAR INTRODUCTION DE NOUVEAU
+!C      NOEUD AU CENTRE DE GRAVITE DES MAILLES DE SURFACE
+!C      SUPERIEURES A LA SURFACE CARACTERISTIQUE A UN
+!C      FACTEUR C PRES. 'C' EST LU DANS UN FICHIER 11
 
       
       IMPLICIT NONE
       INTEGER*4 I,P,NRMAX,NR
       INTEGER*4 NMAX,MMAX,MA,NO,KNMAX(NRMAX),MAILLE(MMAX,6)
-c      real*8 NOEUD(NMAX,2),XP,YP,XM,YM,X1,Y1,X2,Y2,X3,Y3
-c      real*8 A,B,C,D,E,F,AR,L,KN(NMAX,2),G(NRMAX),S
-CJMB
+!c      real*8 NOEUD(NMAX,2),XP,YP,XM,YM,X1,Y1,X2,Y2,X3,Y3
+!c      real*8 A,B,C,D,E,F,AR,L,KN(NMAX,2),G(NRMAX),S
+!CJMB
       REAL*8 X1,X2,X3,Y1,Y2,Y3,B,D,E,F,A,XM,YM,AR
       real*8 NOEUD(NMAX,2),XP,YP
       real*8 C,L,KN(NMAX,2),G(NRMAX),S
@@ -939,7 +930,7 @@ CJMB
      
        I=0
 10     I=I+1
-c       write(6,*) 'node ',i
+!c       write(6,*) 'node ',i
        IF(I.EQ.MA) GOTO 20 
        X1=NOEUD(MAILLE(I,1),1)
        X2=NOEUD(MAILLE(I,2),1)
@@ -957,13 +948,13 @@ c       write(6,*) 'node ',i
        XP=(X3+2*XM)/3
        YP=(Y3+2*YM)/3
        L=S
-c       write(6,*) '??L,A',L,A
+!c       write(6,*) '??L,A',L,A
        IF (P.EQ.1) CALL RAFLOC(KN,NR,NRMAX,KNMAX,G,XP,YP,L,NMAX) 
-c       write(6,*) '??Lafter,A',L,A
+!c       write(6,*) '??Lafter,A',L,A
        AR=L*L*SQRT(3.D0)*C/4
        IF(A.GE.AR) THEN
-c          write(6,*) 'Adding node',AR,L,C,A
-c          write(6,*) 'Coord',X1,X2,X3,y1,y2,y3
+!c          write(6,*) 'Adding node',AR,L,C,A
+!c          write(6,*) 'Coord',X1,X2,X3,y1,y2,y3
           CALL NEWNO(MAILLE,NOEUD,NMAX,MMAX,NO,MA,XP,YP,I)
           I=1
        ENDIF
@@ -972,42 +963,41 @@ c          write(6,*) 'Coord',X1,X2,X3,y1,y2,y3
       RETURN
       END
 
-C --------------------------------------
-C     SOUS-ROUTINE   DELMACONC
-C --------------------------------------
+!C --------------------------------------
+!C     SOUS-ROUTINE   DELMACONC
+!C --------------------------------------
 
       SUBROUTINE DELMACONC(MAILLE,PPTC,MMAX,NCMAX,MA,NC,MAC)
 
       IMPLICIT NONE
 
-C     SUPPRIME LES MAILLES DE CONCAVITE CORRESPONDANTS LA MAILLE D'ENTREE MAC
-C JMB: par methode de virus? en trouver un et puis verifier les mailles voisines?
-C  
+!C     SUPPRIME LES MAILLES DE CONCAVITE CORRESPONDANTS LA MAILLE D'ENTREE MAC
+!C JMB: par methode de virus? en trouver un et puis verifier les mailles voisines?
+!C
 
       integer jm1,jm2
       parameter(jm1=20000,jm2=40000)
       INTEGER*4 MMAX,MA,MAC,I,J,K,NT,NV,MAILLE(MMAX,6)
-      INTEGER*4 ATEST(jm1),LMA(jm2),N1,N2,E,F,M,NCMAX,PPTC(NCMAX)
-     & ,NC,L
-c      write(6,*) 'into delmaconc',NC,MAC,PPTC(NC)
-c      do i=1,MA
-c      write(6,*) (MAILLE(I,J),j=1,6)
-c      enddo
+      INTEGER*4 ATEST(jm1),LMA(jm2),N1,N2,E,F,M,NCMAX,PPTC(NCMAX),NC,L
+!c      write(6,*) 'into delmaconc',NC,MAC,PPTC(NC)
+!c      do i=1,MA
+!c      write(6,*) (MAILLE(I,J),j=1,6)
+!c      enddo
       I=1
       L=1
       LMA(1)=MAC
-C JMBTEST brutal:
-C  
-c      goto 100
+!C JMBTEST brutal:
+!C
+!c      goto 100
       
-C end test
+!C end test
       ATEST(1)=MAC 
 10    NT=ATEST(I)
-c      write(6,*) 'loop 10',i
+!c      write(6,*) 'loop 10',i
       I=I-1
       J=1
 20    IF(LMA(J).EQ.NT) GOTO 30
-c      write(6,*) 'loop 20',i,j,L,LMA(J),NT
+!c      write(6,*) 'loop 20',i,j,L,LMA(J),NT
       J=J+1
       IF(J.GT.L) THEN
         L=L+1
@@ -1022,7 +1012,7 @@ c      write(6,*) 'loop 20',i,j,L,LMA(J),NT
 60    IF(MAILLE(NV,K).EQ.NT)  GOTO 70
       K=K+1 
       GOTO 60
-C  K MAILLE(NV,K) now is the place that points to NT
+!C  K MAILLE(NV,K) now is the place that points to NT
 70    N1=MAILLE(NT,J-3)
       IF(J.LT.6) THEN 
         N2=MAILLE(NT,J-2)
@@ -1039,7 +1029,7 @@ C  K MAILLE(NV,K) now is the place that points to NT
         GOTO 50
       ELSE
         I=I+1
-c        write(6,*) 'Loop',I
+!c        write(6,*) 'Loop',I
         ATEST(I)=NV
         MAILLE(NT,J)=0
         MAILLE(NV,K)=0
@@ -1047,28 +1037,28 @@ c        write(6,*) 'Loop',I
 50    CONTINUE
 40    CONTINUE
 90    IF(I.LT.1) GOTO 100
-C ????
-C      IF(I.LE.1) GOTO 100
-C????
+!C ????
+!C      IF(I.LE.1) GOTO 100
+!C????
       GOTO 10
 100   DO 110 I=1,L
        DO 120 J=1,L
           IF(LMA(J).EQ.MA) LMA(J)=LMA(I)
 120      CONTINUE
-c      write(6,*) 'into delma',I,MA,LMA(I)
+!c      write(6,*) 'into delma',I,MA,LMA(I)
       CALL DELMA(MAILLE,MMAX,MA,LMA(I))
 110   CONTINUE
       RETURN
       END
-
-C --------------------------------------
-C     SOUS-ROUTINE   LISSAGE
-C --------------------------------------
+!
+!C --------------------------------------
+!C     SOUS-ROUTINE   LISSAGE
+!C --------------------------------------
 
        SUBROUTINE LISSAGE(MAILLE,NOEUD,NMAX,MMAX,NO,MA,N)
 
-C     LISSAGE DU MAILLAGE 
-C       ON LE 'LISSERA' NL FOIS, OU NL EST LU DANS UN FICHIER 11
+!C     LISSAGE DU MAILLAGE
+!C       ON LE 'LISSERA' NL FOIS, OU NL EST LU DANS UN FICHIER 11
 
       IMPLICIT NONE
       integer*4 jm1
@@ -1093,7 +1083,6 @@ C       ON LE 'LISSERA' NL FOIS, OU NL EST LU DANS UN FICHIER 11
            GOTO 40
 60           J=J+1
            GOTO 30    
-CJM got a triangle that has node I involved
 50           M=M+1
            if(M.GT.JM1) THEN
            write(6,*) 'increase JM1'
@@ -1151,13 +1140,13 @@ CJM got a triangle that has node I involved
                V0=max(V0,abs((N3)*(N3)))
                V0=V0*0.5E-1
                IF (V.LT.V0) THEN
-C               write(6,*) 'No change',I
+!C               write(6,*) 'No change',I
                T=0
                goto 140
                ENDIF
-               
-            
-130          CONTINUE
+
+           
+130          CONTINUE  
 140        continue
            IF (T.EQ.1) THEN
             D=MAX(D,SQRT((NOEUD(I,1)-NXOLD)**2+(NOEUD(I,2)-NYOLD)**2))
@@ -1171,16 +1160,16 @@ C               write(6,*) 'No change',I
       RETURN
       END
 
-C --------------------------------------
-C     SOUS-ROUTINE   RAFLOC
-C --------------------------------------
+!C --------------------------------------
+!C     SOUS-ROUTINE   RAFLOC
+!C --------------------------------------
 
       SUBROUTINE RAFLOC(KN,NR,NRMAX,KNMAX,G,XP,YP,L,NMAX)
 
       IMPLICIT NONE
 
-C     LOCALISE A QUELLE REGION APPARTIENT LE PT XP,YP ET RETOURNE
-C      LA VALEUR DE L CORRESPONDANTE (INCHANGEE SI EN DEHORS D'UNE REGION)
+!C     LOCALISE A QUELLE REGION APPARTIENT LE PT XP,YP ET RETOURNE
+!C      LA VALEUR DE L CORRESPONDANTE (INCHANGEE SI EN DEHORS D'UNE REGION)
 
       
       INTEGER*4 I,J,T,M,N,NR,NRMAX,NMAX,KNMAX(NRMAX)
@@ -1217,15 +1206,15 @@ C      LA VALEUR DE L CORRESPONDANTE (INCHANGEE SI EN DEHORS D'UNE REGION)
       RETURN
       END
  
-C --------------------------------------
-C     SOUS-ROUTINE   AJOUT
-C --------------------------------------
+!C --------------------------------------
+!C     SOUS-ROUTINE   AJOUT
+!C --------------------------------------
 
       SUBROUTINE AJOUT(MAILLE,NOEUD,NMAX,MMAX,NO,MA,N,NC,PPTC,NCMAX)
 
       IMPLICIT NONE
 
-C     RAJOUTE UN POINT SI DEUX POINTS DE CONTOUR NE SONT PAS RELIES
+!C     RAJOUTE UN POINT SI DEUX POINTS DE CONTOUR NE SONT PAS RELIES
 
      
       INTEGER*4 I,J,K,M,NO,MA,NMAX,NCMAX,MMAX,MAILLE(MMAX,6)
@@ -1239,10 +1228,10 @@ C     RAJOUTE UN POINT SI DEUX POINTS DE CONTOUR NE SONT PAS RELIES
       Q=-10000000
  
       L=1
-c      if (ichange.eq.0) goto 500
+!c      if (ichange.eq.0) goto 500
  888  continue
       
-c      DO 50 L=1,NC
+!c      DO 50 L=1,NC
        if(L.GT.NC) GOTO 50
        
        R=P
@@ -1253,7 +1242,7 @@ c      DO 50 L=1,NC
         i=r+1
  112    if(i.gt.P) goto 40
         
-c       DO 40 I=R+1,P
+!c       DO 40 I=R+1,P
 5          DO 30 J=1,MA 
             DO 20 K=1,3
               IF (MAILLE(J,K).EQ.I) THEN
@@ -1272,22 +1261,22 @@ c       DO 40 I=R+1,P
           CALL NEWNO(MAILLE,NOEUD,NMAX,MMAX,NO,MA,XP,YP,MP)
          write(6,*) 'Need to resort grid'
           CALL RENUM(MAILLE,NOEUD,NMAX,MMAX,NO,MA,I) 
-C Test        
-c              write(6,*) 'stop?'
-c              read(5,*) istop
-c              if (istop.eq.1) then
-c              CALL SORTIE(MAILLE,NOEUD,NMAX,MMAX,NO,MA)
-c              stop
-c              endif
+!C Test
+!c              write(6,*) 'stop?'
+!c              read(5,*) istop
+!c              if (istop.eq.1) then
+!c              CALL SORTIE(MAILLE,NOEUD,NMAX,MMAX,NO,MA)
+!c              stop
+!c              endif
           PPTC(L)=PPTC(L)+1
           N=N+1
           P=P+1
           ichange=1
-c test
+!c test
           i=r+1
          GOTO 5
 35         J=1
-c       write(6,*) 'Contour test',I,N,P
+!c       write(6,*) 'Contour test',I,N,P
        i=i+1
        goto 112
 40     CONTINUE
@@ -1303,16 +1292,16 @@ c       write(6,*) 'Contour test',I,N,P
       RETURN
       END
 
-C --------------------------------------
-C     SOUS-ROUTINE   RENUM
-C --------------------------------------
+!C --------------------------------------
+!C     SOUS-ROUTINE   RENUM
+!C --------------------------------------
 
       SUBROUTINE  RENUM(MAILLE,NOEUD,NMAX,MMAX,NO,MA,I)
       
       IMPLICIT NONE
 
-C     REORGANISE LES TABLEAUX NOEUD ET MAILLE DE FACON
-C     A CE QUE LES NOEUD SOIENT DANS L'ORDRE
+!C     REORGANISE LES TABLEAUX NOEUD ET MAILLE DE FACON
+!C     A CE QUE LES NOEUD SOIENT DANS L'ORDRE
 
 
       INTEGER*4 I,NO,MA,NMAX,MMAX,MAILLE(MMAX,6),M,J,K,S,L
@@ -1354,27 +1343,27 @@ C     A CE QUE LES NOEUD SOIENT DANS L'ORDRE
       END
 
       subroutine REORG(MAILLE,NOEUD,NMAX,MMAX,NO,MA,NTRI)
-C ------------------------------------------------------------------
-C ---                                                            ---
-C ---   REORGANISATION DE LA LISTE DES NOEUDS ET DES MAILLES     ---
-C ---   ET CREATION DES NOEUDS D'INTERFACE                       ---
-C ---                                                            ---
-C ---                                                            ---
-C ---  ADAPTATION :  SCHOENAUEN 25/01/94                         ---
-C ---                                                            ---
-C ---   Version Officielle :                                     ---
-C ---       7 MARS 94 :  sortie fort.24 devient fort.23          ---
-C ------------------------------------------------------------------
+!C ------------------------------------------------------------------
+!C ---                                                            ---
+!C ---   REORGANISATION DE LA LISTE DES NOEUDS ET DES MAILLES     ---
+!C ---   ET CREATION DES NOEUDS D'INTERFACE                       ---
+!C ---                                                            ---
+!C ---                                                            ---
+!C ---  ADAPTATION :  SCHOENAUEN 25/01/94                         ---
+!C ---                                                            ---
+!C ---   Version Officielle :                                     ---
+!C ---       7 MARS 94 :  sortie fort.24 devient fort.23          ---
+!C ------------------------------------------------------------------
 
       IMPLICIT NONE
       INTEGER*4 NMAX,MMAX
       integer NW,JMBOPT
       PARAMETER(NW=1000000)
       REAL*8 XX(NW)
-C      PARAMETER(NMAX=00,MMAX=100000)
+!C      PARAMETER(NMAX=00,MMAX=100000)
 
-C ---  NMAX: NOMBRE MAX DE NOEUDS
-C ---  MMAX: NOMBRE MAX DE MAILLES
+!C ---  NMAX: NOMBRE MAX DE NOEUDS
+!C ---  MMAX: NOMBRE MAX DE MAILLES
 
       real*8 NOEUD(NMAX,2),X1,X2,Y1,Y2,X,Y
 
@@ -1385,38 +1374,37 @@ C ---  MMAX: NOMBRE MAX DE MAILLES
       real*8 rcoordchange
       integer isspheric, icoordchange
       real*8 xxx,yyy
-      COMMON/COORDCH/rlatmin,rlatmax,rlonmean,rlatmean,dxkm,dykm,RPI,
-     & rcoordchange,isspheric,icoordchange
+      COMMON/COORDCH/rlatmin,rlatmax,rlonmean,rlatmean,dxkm,dykm,RPI,rcoordchange,isspheric,icoordchange
 
-C --- LECTURE DES TABLEAUX DE MAILLES ET DE NOEUDS
+!C --- LECTURE DES TABLEAUX DE MAILLES ET DE NOEUDS
 
 
       include'iodv.h'
 
       WRITE(*,'(A)') 'REORGANISATION OF GRID'
       
-C      OPEN(UNIT=21,FILE='fort.21')
-C      READ(21,*) NO
-C      READ(21,*) MA
-C      CLOSE(21)
+!C      OPEN(UNIT=21,FILE='fort.21')
+!C      READ(21,*) NO
+!C      READ(21,*) MA
+!C      CLOSE(21)
 
       IF(NO.GT.NMAX) STOP 'Too many nodes increase NMAX'
       IF(MA.GT.MMAX) STOP 'Too many elements, increase MMAX'
       IF(NO.GT.NW) STOP 'Too many nodes increase NW'
  
       
-C      OPEN(UNIT=20,file='fort.20')
-C      DO 10 I=1,NO
-C        READ(20,*) JJ,NOEUD(JJ,1),NOEUD(JJ,2)
-C10    CONTINUE
+!C      OPEN(UNIT=20,file='fort.20')
+!C      DO 10 I=1,NO
+!C        READ(20,*) JJ,NOEUD(JJ,1),NOEUD(JJ,2)
+!C10    CONTINUE
 
-C      DO 20 I=1,MA
-C        READ(20,*) JJ,MAILLE(JJ,1),MAILLE(JJ,2),
-C     &   MAILLE(JJ,3),MAILLE(JJ,4),MAILLE(JJ,5),MAILLE(JJ,6)
-C20    CONTINUE
-C      CLOSE(20)
+!C      DO 20 I=1,MA
+!C        READ(20,*) JJ,MAILLE(JJ,1),MAILLE(JJ,2),
+!C     &   MAILLE(JJ,3),MAILLE(JJ,4),MAILLE(JJ,5),MAILLE(JJ,6)
+!C20    CONTINUE
+!C      CLOSE(20)
 
-C --- INTRODUCTION DES NOEUDS D'INTERFACE
+!C --- INTRODUCTION DES NOEUDS D'INTERFACE
 
       NS=NO
       DO 70 I=1,MA
@@ -1446,11 +1434,10 @@ C --- INTRODUCTION DES NOEUDS D'INTERFACE
 
                 DO 40 L=4,6
                    if (MAILLE(I,J+3).LE.0) then
-c                   write(6,*) '???JM',MAILLE(I,J+3),I,J
+!c                   write(6,*) '???JM',MAILLE(I,J+3),I,J
                    goto 40
                    endif
-                   IF(MAILLE(MAILLE(I,J+3),L).EQ.I)
-     &                 MAILLE(MAILLE(I,J+3),L)=-NO
+                   IF(MAILLE(MAILLE(I,J+3),L).EQ.I) MAILLE(MAILLE(I,J+3),L)=-NO
 40              CONTINUE
 
                 MAILLE(I,J+3)=-NO
@@ -1458,7 +1445,7 @@ c                   write(6,*) '???JM',MAILLE(I,J+3),I,J
 60       CONTINUE
 70    CONTINUE
 
-C --- TRI DES NOEUDS,  DANS UN TABLEAU NTRI
+!C --- TRI DES NOEUDS,  DANS UN TABLEAU NTRI
       JMBOPT=1
       IF (JMBOPT.EQ.1) THEN
       DO  I=1,NO
@@ -1467,7 +1454,7 @@ C --- TRI DES NOEUDS,  DANS UN TABLEAU NTRI
       ENDDO
       call QS2I1R(XX,NTRI,NO)
                        
-C JMB COULD BE optimised?
+!C JMB COULD BE optimised?
                        ELSE
 
       write(6,*) 'Going to sort nodes'
@@ -1475,7 +1462,7 @@ C JMB COULD BE optimised?
          NTRI(I)=I
 80    CONTINUE
 
-C ---  PREMIER TRI SUIVANT X
+!C ---  PREMIER TRI SUIVANT X
 
 90    IND=0
 
@@ -1495,7 +1482,7 @@ C ---  PREMIER TRI SUIVANT X
 
       IF(IND.EQ.1) GOTO 90
 
-C --- TRI DES X IDENTIQUES SUIVANT Y
+!C --- TRI DES X IDENTIQUES SUIVANT Y
 
       I=1
 
@@ -1523,9 +1510,9 @@ C --- TRI DES X IDENTIQUES SUIVANT Y
       endif
       
          X1=NOEUD(NTRI(J),1)
-CJMB         
+!CJMB
       if(J+1.GT.NO) goto 130    
-C JMB
+!C JMB
       if (ntri(j+1).eq.0) then
       write(6,*) '?xxxd',j+1
       goto 1202
@@ -1559,18 +1546,18 @@ C JMB
          ENDIF
 
          IF(I.GT.NO) GOTO 150
-C??JMBB
+!C??JMBB
          IF(I.GE.NO-1) GOTO 150
          GOTO 110
 150   CONTINUE
-C
+!C
       ENDIF
       write(6,*) 'Finished sorting'
-C --- SORTIE DES RESULTATS DANS LE FORMAT ...
-c**rs
+!C --- SORTIE DES RESULTATS DANS LE FORMAT ...
+!c**rs
       if(iodv.eq.1) then
       open(22,file='fort.11')
-c**rs      OPEN(UNIT=22,file='fort.22')
+!c**rs      OPEN(UNIT=22,file='fort.22')
       else
       OPEN(UNIT=22,file='fort.22')
       endif
@@ -1586,8 +1573,7 @@ c**rs      OPEN(UNIT=22,file='fort.22')
 160   CONTINUE
 
       DO 170 I=1,MA
-         WRITE(22,*) MAILLE(I,1),MAILLE(I,4),MAILLE(I,2)
-     &       ,MAILLE(I,5),MAILLE(I,3),MAILLE(I,6)
+         WRITE(22,*) MAILLE(I,1),MAILLE(I,4),MAILLE(I,2),MAILLE(I,5),MAILLE(I,3),MAILLE(I,6)
 170   CONTINUE
       CLOSE(22)
 
@@ -1603,58 +1589,58 @@ c**rs      OPEN(UNIT=22,file='fort.22')
 
       
       subroutine QS2I1R (IA,JA,N)
-C=============================================================================
-C *** DESCRIPTION (from www.netlib.org)
-C     Written by Rondall E Jones
-C     Modified by John A. Wisniewski to use the Singleton QUICKSORT
-C     algorithm. date 18 November 1976.
-C
-C     Further modified by David K. Kahaner
-C     National Bureau of Standards
-C     August, 1981
-C
-C     Even further modification made to bring the code up to the
-C     Fortran 77 level and make it more readable and to carry
-C     along one integer array and one real*8 array during the sort by
-C     Mark K. Seager
-C     Lawrence Livermore National Laboratory
-C     November, 1987
-C     This routine was adapted from the ISORT routine.
-C
-C     ABSTRACT
-C         This routine sorts an  array IA and makes the same
-C         interchanges in the integer array JA 
-C         The array IA may be sorted in increasing order
-C         A slightly modified quicksort algorithm is used.
-C
-C     DESCRIPTION OF PARAMETERS
-C        IA -  array of values to be sorted.
-C        JA - Integer array to be carried along.
-C     
-C         N - Number of values in integer array IA to be sorted.
-
-C     .. Scalar Arguments ..
+!C=============================================================================
+!C *** DESCRIPTION (from www.netlib.org)
+!C     Written by Rondall E Jones
+!C     Modified by John A. Wisniewski to use the Singleton QUICKSORT
+!C     algorithm. date 18 November 1976.
+!C
+!C     Further modified by David K. Kahaner
+!C     National Bureau of Standards
+!C     August, 1981
+!C
+!C     Even further modification made to bring the code up to the
+!C     Fortran 77 level and make it more readable and to carry
+!C     along one integer array and one real*8 array during the sort by
+!C     Mark K. Seager
+!C     Lawrence Livermore National Laboratory
+!C     November, 1987
+!C     This routine was adapted from the ISORT routine.
+!C
+!C     ABSTRACT
+!C         This routine sorts an  array IA and makes the same
+!C         interchanges in the integer array JA
+!C         The array IA may be sorted in increasing order
+!C         A slightly modified quicksort algorithm is used.
+!C
+!C     DESCRIPTION OF PARAMETERS
+!C        IA -  array of values to be sorted.
+!C        JA - Integer array to be carried along.
+!C
+!C         N - Number of values in integer array IA to be sorted.
+!
+!C     .. Scalar Arguments ..
       implicit none
       INTEGER N
-C     .. Array Arguments ..
+!C     .. Array Arguments ..
       real*8  IA(N) 
       integer*4 JA(N)
-C     .. Local Scalars ..
+!C     .. Local Scalars ..
       real*8 R 
       INTEGER*4 I,  IJ,  J, JJT, JT, K, L, M,NN
       REAL*8   IIT,  IT
-C     .. Local Arrays ..
+!C     .. Local Arrays ..
       INTEGER*4 IL(21), IU(21)
 
-C --- FIRST EXECUTABLE STATEMENT  QS2I1R ---
+!C --- FIRST EXECUTABLE STATEMENT  QS2I1R ---
       NN=N
       if (N.EQ.1) then
       write(6,*) 'No need to sort a single data point'
       return
       endif
 
-C     Sort IA and carry JA and A along.
-C     And now...Just a little black magic...
+!C     Sort IA and carry JA and A along.
+!C     And now...Just a little black magic...
       M = 1
       I = 1
       J = NN
@@ -1666,13 +1652,13 @@ C     And now...Just a little black magic...
       ENDIF
  225  K = I
 
-C     Select a central element of the array and save it in location
-C     it, jt, at.
+!C     Select a central element of the array and save it in location
+!C     it, jt, at.
       IJ = I + INT ((J-I)*R)
       IT = IA(IJ)
       JT = JA(IJ)
 
-C     If first element of array is greater than it, interchange with it.
+!C     If first element of array is greater than it, interchange with it.
       IF( IA(I).GT.IT ) THEN
          IA(IJ) = IA(I)
          IA(I)  = IT
@@ -1683,7 +1669,7 @@ C     If first element of array is greater than it, interchange with it.
       ENDIF
       L=J
 
-C     If last element of array is less than it, swap with it.
+!C     If last element of array is less than it, swap with it.
       IF( IA(J).LT.IT ) THEN
          IA(IJ) = IA(J)
          IA(J)  = IT
@@ -1692,7 +1678,7 @@ C     If last element of array is less than it, swap with it.
          JA(J)  = JT
          JT     = JA(IJ)
 
-C     If first element of array is greater than it, swap with it.
+!C     If first element of array is greater than it, swap with it.
          IF ( IA(I).GT.IT ) THEN
             IA(IJ) = IA(I)
             IA(I)  = IT
@@ -1703,17 +1689,17 @@ C     If first element of array is greater than it, swap with it.
          ENDIF
       ENDIF
 
-C     Find an element in the second half of the array which is
-C     smaller than it.
+!C     Find an element in the second half of the array which is
+!C     smaller than it.
   240 L=L-1
       IF( IA(L).GT.IT ) GO TO 240
 
-C     Find an element in the first half of the array which is
-C     greater than it.
+!C     Find an element in the first half of the array which is
+!C     greater than it.
   245 K=K+1
       IF( IA(K).LT.IT ) GO TO 245
 
-C     Interchange these elements.
+!C     Interchange these elements.
       IF( K.LE.L ) THEN
          IIT   = IA(L)
          IA(L) = IA(K)
@@ -1724,7 +1710,7 @@ C     Interchange these elements.
          GOTO 240
       ENDIF
 
-C     Save upper and lower subscripts of the array yet to be sorted.
+!C     Save upper and lower subscripts of the array yet to be sorted.
       IF( L-I.GT.J-K ) THEN
          IL(M) = I
          IU(M) = L
@@ -1738,7 +1724,7 @@ C     Save upper and lower subscripts of the array yet to be sorted.
       ENDIF
       GO TO 260
 
-C     Begin again on another portion of the unsorted array.
+!C     Begin again on another portion of the unsorted array.
   255 M = M-1
       IF( M.EQ.0 ) GO TO 300
       I = IL(M)
@@ -1763,7 +1749,7 @@ C     Begin again on another portion of the unsorted array.
 
  300  CONTINUE
       RETURN
-C=============================================================================
+!C=============================================================================
       END
 
 
@@ -1773,8 +1759,7 @@ C=============================================================================
       real*8 rlatmin,rlatmax,rlonmean,rlatmean,dxkm,dykm,rpi
       real*8 rcoordchange,x,y,xxx,dyyy
       integer isspheric, icoordchange
-      COMMON/COORDCH/rlatmin,rlatmax,rlonmean,rlatmean,dxkm,dykm,RPI,
-     & rcoordchange,isspheric,icoordchange
+      COMMON/COORDCH/rlatmin,rlatmax,rlonmean,rlatmean,dxkm,dykm,RPI,rcoordchange,isspheric,icoordchange
       if(isspheric.eq.1)  then
       dyyy=(rlatmax-rlatmin)/1000.
       xxx=max(cos(y*RPI/180.),cos(RPI/2-dyyy*RPI/180.))
@@ -1783,7 +1768,7 @@ C=============================================================================
       x=(x-rlonmean)*dxkm
       y=(y-rlatmean)*dykm
       endif
-C      write(6,*) 'AFT x,y',x,y
+!C      write(6,*) 'AFT x,y',x,y
 
       return
       end
@@ -1792,8 +1777,7 @@ C      write(6,*) 'AFT x,y',x,y
       real*8 rlatmin,rlatmax,rlonmean,rlatmean,dxkm,dykm,rpi
       real*8 rcoordchange,x,y,xxx,dyyy
       integer isspheric, icoordchange
-      COMMON/COORDCH/rlatmin,rlatmax,rlonmean,rlatmean,dxkm,dykm,RPI,
-     & rcoordchange,isspheric,icoordchange
+      COMMON/COORDCH/rlatmin,rlatmax,rlonmean,rlatmean,dxkm,dykm,RPI,rcoordchange,isspheric,icoordchange
       
       if(isspheric.eq.1)  then
       dyyy=(rlatmax-rlatmin)/1000.

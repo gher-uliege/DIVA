@@ -1,4 +1,4 @@
-C
+!C
         REAL*4 U(5000000)
         REAL*4 V(5000000)
         REAL*8 W8
@@ -12,20 +12,18 @@ C
         read(20,*) a4,b4
         ipr=4
         nw=imax*jmax
-C        valexw = valexu 
+!C        valexw = valexu
         WRITE(6,*) ' VALEUR D EXCLUSION POUR B: ',VALEXU
         WRITE(6,*) ' VALEUR D EXCLUSION POUR X: ',VALEXW
 
-        call usum(u,v,valexu,imax,jmax,kmax,a1,b1,a2,b2,
-     &      a3,b3,a4,b4)
+        call usum(u,v,valexu,imax,jmax,kmax,a1,b1,a2,b2,a3,b3,a4,b4)
         CALL UWRITC(12,W8,U,VALEXU,IPR,IMAX,JMAX,KMAX,NW)
         CALL UWRITC(13,W8,V,VALEXU,IPR,IMAX,JMAX,KMAX,NW)
         STOP
         END
 
-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-        subroutine usum(u,v,valexu,imax,jmax,kmax,a1,b1,a2,b2,
-     &     a3,b3,a4,b4)
+!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+        subroutine usum(u,v,valexu,imax,jmax,kmax,a1,b1,a2,b2,a3,b3,a4,b4)
         real*4 u(imax,jmax,kmax),v(imax,jmax,kmax)
         do k=1,kmax
          do j=1,jmax
@@ -41,5 +39,5 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
         enddo
         return
         end
-        INCLUDE '../Extensions/ureadc.f'
-        INCLUDE '../Extensions/uwritc.f'
+        INCLUDE '../Extensions/ureadc.f95'
+        INCLUDE '../Extensions/uwritc.f95'

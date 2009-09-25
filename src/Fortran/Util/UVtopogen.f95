@@ -22,7 +22,7 @@
       call ureadc(12,c8,topo,valex,iprecr,imax,jmax,kmax,nbmotr)
       write(6,*) 'out of reading',imax,jmax
       read (5,*) icoordchange
-C NEED TO READ IN ICOORDCHANGE if ONE, change DX and DY, otherwise leave as is
+!C NEED TO READ IN ICOORDCHANGE if ONE, change DX and DY, otherwise leave as is
       if (icoordchange.eq.1) then
       rlonmin=X1
       rlonmax=X1+(M-1)*DX
@@ -50,13 +50,13 @@ C NEED TO READ IN ICOORDCHANGE if ONE, change DX and DY, otherwise leave as is
       vn=vname//"."//depth
       open(file=un,unit=98,form="unformatted")
       open(file=vn,unit=99,form="unformatted")
-C call the velocity generation hre
+!C call the velocity generation hre
       call uvg(topo,U,V,UNN,VNN,M,N,z,dx,dy,valex)
       close(99)
       close(98)
       goto 1
  99   continue
-C output info file: no, just copy the topoinfo file !
+!C output info file: no, just copy the topoinfo file !
       stop
       end
       
@@ -65,7 +65,7 @@ C output info file: no, just copy the topoinfo file !
       real*8 c8,DMEAN
       real*4 valex
       
-C Calculate mean depth
+!C Calculate mean depth
       DMEAN=0
       IMEAN=0
       DMIN=0
@@ -81,15 +81,15 @@ C Calculate mean depth
       endif
       enddo
       enddo
-C Take D to be a fraction of this mean depth
-C   
+!C Take D to be a fraction of this mean depth
+!C
       if(imean.gt.0) then
       D=DMEAN/imean/5.
       else
       D=DMIN/imin/5.
       endif
 
-C Calculate centered gradients, reduced by distance to level
+!C Calculate centered gradients, reduced by distance to level
       do j=2,N-1
       do i=2,M-1
       xi=(z-topo(i,j))/D
@@ -103,7 +103,7 @@ C Calculate centered gradients, reduced by distance to level
       v(i,j)=-(topo(i+1,j)-topo(i-1,j))*FACTEUR/DX
       enddo
       enddo
-C fill boundaries
+!C fill boundaries
        do i=1,M
        U(i,1)=U(i,2)
        U(i,N)=U(i,N-1)
@@ -117,9 +117,9 @@ C fill boundaries
        V(M,j)=V(M-1,j)
        enddo
        
-C now filter
+!C now filter
                     NTIMES=sqrt(sqrt(M*N*1.)+1.)/2.+1.
-C             NTIMES=0
+!C             NTIMES=0
              do nn=1,NTIMES
              
              
@@ -152,7 +152,7 @@ C             NTIMES=0
              enddo
        
        
-C save in fort.98 and .99
+!C save in fort.98 and .99
        MN=M*N
        KM=1
        IPRE=4
@@ -166,34 +166,34 @@ C save in fort.98 and .99
        end
 
       Subroutine UREADC(iu,c8,c4,valexr,iprecr,imaxr,jmaxr,kmaxr,nbmotr)
-C                ======
-C-----------------------------------------------------------------------
-C Reads the field C(I,J,K) from fortran unit iu
-C returns the field in the array c4 if the returned iprecr=4
-C returns the field in the array c8 if the returned iprecr=8
-C returns the values if imaxr,jmaxr,kmaxr found in the file
-C
-C JMB 6/3/91
-C-----------------------------------------------------------------------
-C
+!C                ======
+!C-----------------------------------------------------------------------
+!C Reads the field C(I,J,K) from fortran unit iu
+!C returns the field in the array c4 if the returned iprecr=4
+!C returns the field in the array c8 if the returned iprecr=8
+!C returns the values if imaxr,jmaxr,kmaxr found in the file
+!C
+!C JMB 6/3/91
+!C-----------------------------------------------------------------------
+!C
       PARAMETER(KBLANC=10)
       real*4 c4(*)
       real*8 c8(*)
 
-C in the calling routin you can specify the following equivalence to
-C save memory space:
-C      equivalence(c,c4)
+!C in the calling routin you can specify the following equivalence to
+!C save memory space:
+!C      equivalence(c,c4)
 
-C      equivalence(c,c8)
-C
-C skip KBLANC lines
+!C      equivalence(c,c8)
+!C
+!C skip KBLANC lines
        do 1 kb=1,KBLANC
         read(iu,ERR=99)
  1     continue
-C
+!C
         read(iu) imaxc,jmaxc,kmaxc,iprec,nbmots,valexc
-C
-C pass the values read to the calling routine
+!C
+!C pass the values read to the calling routine
         iprecr=iprec
         imaxr=imaxc
         jmaxr=jmaxc
@@ -201,31 +201,31 @@ C pass the values read to the calling routine
         nbmotr=nbmots
         valexr=valexc
 
-C      print *, 'iprecr=', iprec
-C      print *, 'imaxr=', imaxc
-C      print *, 'jmaxr=', jmaxc
-C      print *, 'kmaxr=', kmaxc
-C      print *, 'nbmotr=', nbmots
-C      print *, 'valexr=', valexc
+!C      print *, 'iprecr=', iprec
+!C      print *, 'imaxr=', imaxc
+!C      print *, 'jmaxr=', jmaxc
+!C      print *, 'kmaxr=', kmaxc
+!C      print *, 'nbmotr=', nbmots
+!C      print *, 'valexr=', valexc
 
 
-C
-C compute the number of full records to read and the remaining words
+!C
+!C compute the number of full records to read and the remaining words
         nl=(imaxc*jmaxc*kmaxc)/nbmots
         ir=imaxc*jmaxc*kmaxc-nbmots*nl
         ide=0
-C
+!C
 
-C if pathological case, read only four values C0 and DCI,DCJ,DCK
-C and return
-C them as the two four elements of the array
+!C if pathological case, read only four values C0 and DCI,DCJ,DCK
+!C and return
+!C them as the two four elements of the array
         if(imaxc.lt.0.or.jmaxc.lt.0.or.kmaxc.lt.0) then
          nl=0
          ir=4
         endif
-C
-C
-C single precision
+!C
+!C
+!C single precision
         if(iprec.eq.4) then
          do 10 kl=1,nl
           read(iu,ERR=99,END=100) (c4(ide+kc),kc=1,nbmots)
@@ -233,8 +233,8 @@ C single precision
  10      continue
           read(iu,ERR=99,END=100) (c4(ide+kc),kc=1,ir)
                        else
-C
-C double precision
+!C
+!C double precision
         if(iprec.eq.8) then
          do 20 kl=1,nl
           read(iu,ERR=99,END=100) (c8(ide+kc),kc=1,nbmots)
@@ -245,7 +245,7 @@ C double precision
          goto 99
          endif
          endif
-C
+!C
          return
  99      continue
          write(*,*) 'Data error in UREADC, not a conform file'
@@ -259,35 +259,35 @@ C
          
        
       Subroutine UWRITC(iu,c8,c4,valex8,ipre8,imaxc,jmaxc,kmaxc,nbmots)
-c                ======
-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-c writes the field C(I,J,K)  into fortran unit iu 
-c writes the field in the array c4 if iprecr=4
-c writes the field in the array c8 if iprecr=8
-c
-c The KBLANC blank lines are at the disposal of the user
-c JMB 6/3/92
-c
-c IF c(i,j,k)=NaN or infinity, it is replaced by VALEX! 
-c
-c 
-c RS 12/1/93
-c
-c If nbmots = -1  then write only 1 data record
-c     (only for non-degenerated data)
-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-c
+!c                ======
+!cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+!c writes the field C(I,J,K)  into fortran unit iu
+!c writes the field in the array c4 if iprecr=4
+!c writes the field in the array c8 if iprecr=8
+!c
+!c The KBLANC blank lines are at the disposal of the user
+!c JMB 6/3/92
+!c
+!c IF c(i,j,k)=NaN or infinity, it is replaced by VALEX!
+!c
+!c
+!c RS 12/1/93
+!c
+!c If nbmots = -1  then write only 1 data record
+!c     (only for non-degenerated data)
+!cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+!c
       PARAMETER(KBLANC=10)
       real*4 c4(*)
       real*8 c8(*)
       real*4 valex8
       real*4 valexc
-c in the calling routin you can specify the following equivalence to
-c save memory space:
-c      equivalence(c,c4)
-c      equivalence(c,c8)
-c
-c Putting  Valex where not numbers
+!c in the calling routin you can specify the following equivalence to
+!c save memory space:
+!c      equivalence(c,c4)
+!c      equivalence(c,c8)
+!c
+!c Putting  Valex where not numbers
        z=0.
        un=1.
        ich=0
@@ -299,10 +299,10 @@ c Putting  Valex where not numbers
        do k=1,kmaxc
         do j=1,jmaxc
          do i=1,imaxc
-c         if( c4(ioff).eq.(z/z) ) goto 1010 
-c         if( c4(ioff).eq.(un/z) ) goto 1010 
-c         if( c4(ioff).eq.(-z/z) ) goto 1010 
-c         if( c4(ioff).eq.(-un/z) ) goto 1010 
+!c         if( c4(ioff).eq.(z/z) ) goto 1010
+!c         if( c4(ioff).eq.(un/z) ) goto 1010
+!c         if( c4(ioff).eq.(-z/z) ) goto 1010
+!c         if( c4(ioff).eq.(-un/z) ) goto 1010
          goto 1011
  1010     continue
           c4(ioff)=valex8
@@ -319,30 +319,30 @@ c         if( c4(ioff).eq.(-un/z) ) goto 1010
        endif
        valexc=valex8
        iprec=4
-c
-c skip KBLANC lines
-C        write(6,*) iu,imaxc,jmaxc,kmaxc,iprec,nbmots,valexc
+!c
+!c skip KBLANC lines
+!C        write(6,*) iu,imaxc,jmaxc,kmaxc,iprec,nbmots,valexc
        do 1 kb=1,KBLANC
         write(iu,ERR=99)
  1     continue
-c
+!c
         write(iu) imaxc,jmaxc,kmaxc,iprec,nbmots,valexc
-c
-c compute the number of full records to read and the remaining words
+!c
+!c compute the number of full records to read and the remaining words
         nl=(imaxc*jmaxc*kmaxc)/nbmots
         ir=imaxc*jmaxc*kmaxc-nbmots*nl
         ide=0
-c
-c if pathological case, write only four values C0 and DCI,DCJ,DCK found 
-c as the two four elements of the array so that C(I,J,K) =
-c C0 + I * DCI + J * DCJ + K * DCK
+!c
+!c if pathological case, write only four values C0 and DCI,DCJ,DCK found
+!c as the two four elements of the array so that C(I,J,K) =
+!c C0 + I * DCI + J * DCJ + K * DCK
         if(imaxc.lt.0.or.jmaxc.lt.0.or.kmaxc.lt.0) then
          nl=0
          ir=4
         endif
-c
-c
-c single precision
+!c
+!c
+!c single precision
         if(iprec.eq.4) then
          do 10 kl=1,nl
           write(iu,ERR=99) ((c4(ide+kc)),kc=1,nbmots)
@@ -350,8 +350,8 @@ c single precision
  10      continue
           write(iu,ERR=99) ((c4(ide+kc)),kc=1,ir)
                        else
-c
-c double precision
+!c
+!c double precision
         if(iprec.eq.8) then
          do 20 kl=1,nl
           write (iu,ERR=99) (c8(ide+kc),kc=1,nbmots)
@@ -362,7 +362,7 @@ c double precision
            goto 99
          endif
          endif
-c
+!c
          return
  99      continue
          write(*,*) 'Data error in UWRITC, not a conform file'

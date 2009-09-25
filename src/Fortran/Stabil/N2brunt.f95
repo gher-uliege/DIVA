@@ -1,5 +1,4 @@
-      subroutine N2brunt
-     &     (valex,imax,jmax,maxt,Z,ict,alpha,beta,T,S,N2,rmsp,rmsn)
+      subroutine N2brunt(valex,imax,jmax,maxt,Z,ict,alpha,beta,T,S,N2,rmsp,rmsn)
       implicit none
 !
 ! in : z, T, S fields

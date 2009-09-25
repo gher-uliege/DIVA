@@ -9,10 +9,10 @@
        no=0
        eps=0.00001
        valex=-9999.
-c      read(13,*,end=123)xori,yori
-c         read(13,*)dx,dy
-c         read(13,*)nx,ny
-c         read(13,*)valex 
+!c      read(13,*,end=123)xori,yori
+!c         read(13,*)dx,dy
+!c         read(13,*)nx,ny
+!c         read(13,*)valex
        read(5,*) valex      
        nnn=0
  1     continue
@@ -23,16 +23,13 @@ c         read(13,*)valex
        nnn=nnn+1
        
        
-       if( (abs(x-xe).gt.eps*abs(x)).or.
-     &     (abs(x-xa).gt.eps*abs(x)).or.
-     &     (abs(y-ye).gt.eps*abs(y)).or.
-     &     (abs(y-ya).gt.eps*abs(y)) ) then
+       if( (abs(x-xe).gt.eps*abs(x)).or.(abs(x-xa).gt.eps*abs(x)).or.(abs(y-ye).gt.eps*abs(y)).or.(abs(y-ya).gt.eps*abs(y)) ) then
        write(6,*) 'Incoherent files'
        write(6,*) 'difference found in record',nnn
        stop
        endif
-c       if (abs(da-valex).le.eps*abs(valex)) goto 1
-c       if (abs(e-valex).le.eps*abs(valex)) goto 1
+!c       if (abs(da-valex).le.eps*abs(valex)) goto 1
+!c       if (abs(e-valex).le.eps*abs(valex)) goto 1
        
        n=n+1
        if(n.gt.imax) stop 'increase imax'
@@ -51,7 +48,7 @@ c       if (abs(e-valex).le.eps*abs(valex)) goto 1
        dad(n)=d
        ed(n)=10000+dd(n)
        endif
-C sort the outliers?
+!C sort the outliers?
        goto 1
  9999  continue
        if (n.eq.0) stop 'Problem in input?'
@@ -59,19 +56,18 @@ C sort the outliers?
        do i=n,1,-1
        if (abs(dd(iw(i))-dad(iw(i))).gt.2*ed(iw(i))) then
        if (abs(dd(iw(i))-dad(iw(i))).gt.3*ed(iw(i))) then
-c        write(66,*) xd(i),yd(i),dd(i),dad(i),
-c     & ed(i),abs(dd(i)-dad(i))/ed(i),iw(i)
+!c        write(66,*) xd(i),yd(i),dd(i),dad(i),
+!c     & ed(i),abs(dd(i)-dad(i))/ed(i),iw(i)
         
-        write(66,1234) sa(i),iw(i),xd(iw(i)),yd(iw(i)),dd(iw(i))
-     & , dad(iw(i)),ed(iw(i))
+        write(66,1234) sa(i),iw(i),xd(iw(i)),yd(iw(i)),dd(iw(i)), dad(iw(i)),ed(iw(i))
 
      
             endif
         no=no+1
        endif
-C       write(6,*) 'Test passed',x,y,d,da,e
-C       goto 1
-C 123   continue
+!C       write(6,*) 'Test passed',x,y,d,da,e
+!C       goto 1
+!C 123   continue
        enddo
   123  continue 
        do i=1,n
@@ -89,25 +85,21 @@ C 123   continue
        endif
        if(no.le.(0.05*n)) then
        write(6,*) 'There are a usual number of outliers',no,' out of',n
-       write(66,*) 'There are a usual number of outliers at 2 s:',no,
-     & ' out of',n
+       write(66,*) 'There are a usual number of outliers at 2 s:',no,' out of',n
        
        endif
-       write(66,*) 'Points with value of first column larger than 3 are
-     &suspect, if there are more than ', n*0.003, ' of them'
-c normalized test, rather then mean and variance, med and mad
+       write(66,*) 'Points with value of first column larger than 3 are suspect, if there are more than ', n*0.003, ' of them'
+!c normalized test, rather then mean and variance, med and mad
        call madmed(s,mad,med,n,iw)
        
        
        do i=n,1,-1
        if (s(i).gt.3*mad) then
-c       write(6,*) s(i)/mad,iw(i),xd(iw(i)),yd(iw(i)),dd(iw(i))
-        write(67,1234) s(i)/mad,iw(i),xd(iw(i)),yd(iw(i)),dd(iw(i))
-     & , dad(iw(i)),ed(iw(i))
+!c       write(6,*) s(i)/mad,iw(i),xd(iw(i)),yd(iw(i)),dd(iw(i))
+        write(67,1234) s(i)/mad,iw(i),xd(iw(i)),yd(iw(i)),dd(iw(i)) , dad(iw(i)),ed(iw(i))
        endif
        enddo
-       write(67,*) 'Points with value of first column larger than 3 are
-     &suspect, if there are more than ', n*0.003, ' of them'
+       write(67,*) 'Points with value of first column larger than 3 are suspect, if there are more than ', n*0.003, ' of them'
        
        write(6,*) 'relative biais in misfits is',med
        write(66,*) 'relative biais in misfits is',med
@@ -154,58 +146,58 @@ c       write(6,*) s(i)/mad,iw(i),xd(iw(i)),yd(iw(i)),dd(iw(i))
        
         
       subroutine QS2I1R (IA,JA,N)
-C=============================================================================
-C *** DESCRIPTION (from www.netlib.org)
-C     Written by Rondall E Jones
-C     Modified by John A. Wisniewski to use the Singleton QUICKSORT
-C     algorithm. date 18 November 1976.
-C
-C     Further modified by David K. Kahaner
-C     National Bureau of Standards
-C     August, 1981
-C
-C     Even further modification made to bring the code up to the
-C     Fortran 77 level and make it more readable and to carry
-C     along one integer array and one real array during the sort by
-C     Mark K. Seager
-C     Lawrence Livermore National Laboratory
-C     November, 1987
-C     This routine was adapted from the ISORT routine.
-C
-C     ABSTRACT
-C         This routine sorts an  array IA and makes the same
-C         interchanges in the integer array JA 
-C         The array IA may be sorted in increasing order
-C         A slightly modified quicksort algorithm is used.
-C
-C     DESCRIPTION OF PARAMETERS
-C        IA -  array of values to be sorted.
-C        JA - Integer array to be carried along.
-C     
-C         N - Number of values in integer array IA to be sorted.
+!C=============================================================================
+!C *** DESCRIPTION (from www.netlib.org)
+!C     Written by Rondall E Jones
+!C     Modified by John A. Wisniewski to use the Singleton QUICKSORT
+!C     algorithm. date 18 November 1976.
+!C
+!C     Further modified by David K. Kahaner
+!C     National Bureau of Standards
+!C     August, 1981
+!C
+!C     Even further modification made to bring the code up to the
+!C     Fortran 77 level and make it more readable and to carry
+!C     along one integer array and one real array during the sort by
+!C     Mark K. Seager
+!C     Lawrence Livermore National Laboratory
+!C     November, 1987
+!C     This routine was adapted from the ISORT routine.
+!C
+!C     ABSTRACT
+!C         This routine sorts an  array IA and makes the same
+!C         interchanges in the integer array JA
+!C         The array IA may be sorted in increasing order
+!C         A slightly modified quicksort algorithm is used.
+!C
+!C     DESCRIPTION OF PARAMETERS
+!C        IA -  array of values to be sorted.
+!C        JA - Integer array to be carried along.
+!C
+!C         N - Number of values in integer array IA to be sorted.
 
-C     .. Scalar Arguments ..
+!C     .. Scalar Arguments ..
       implicit none
       INTEGER N
-C     .. Array Arguments ..
+!C     .. Array Arguments ..
       real*8  IA(N) 
       integer*4 JA(N)
-C     .. Local Scalars ..
+!C     .. Local Scalars ..
       REAL*4 R 
       INTEGER*4 I,  IJ,  J, JJT, JT, K, L, M,NN
       REAL*8   IIT,  IT
-C     .. Local Arrays ..
+!C     .. Local Arrays ..
       INTEGER*4 IL(21), IU(21)
 
-C --- FIRST EXECUTABLE STATEMENT  QS2I1R ---
+!C --- FIRST EXECUTABLE STATEMENT  QS2I1R ---
       NN=N
       if (N.EQ.1) then
       write(6,*) 'No need to sort a single data point'
       return
       endif
 
-C     Sort IA and carry JA and A along.
-C     And now...Just a little black magic...
+!C     Sort IA and carry JA and A along.
+!C     And now...Just a little black magic...
       M = 1
       I = 1
       J = NN
@@ -217,13 +209,13 @@ C     And now...Just a little black magic...
       ENDIF
  225  K = I
 
-C     Select a central element of the array and save it in location
-C     it, jt, at.
+!C     Select a central element of the array and save it in location
+!C     it, jt, at.
       IJ = I + INT ((J-I)*R)
       IT = IA(IJ)
       JT = JA(IJ)
 
-C     If first element of array is greater than it, interchange with it.
+!C     If first element of array is greater than it, interchange with it.
       IF( IA(I).GT.IT ) THEN
          IA(IJ) = IA(I)
          IA(I)  = IT
@@ -234,7 +226,7 @@ C     If first element of array is greater than it, interchange with it.
       ENDIF
       L=J
 
-C     If last element of array is less than it, swap with it.
+!C     If last element of array is less than it, swap with it.
       IF( IA(J).LT.IT ) THEN
          IA(IJ) = IA(J)
          IA(J)  = IT
@@ -243,7 +235,7 @@ C     If last element of array is less than it, swap with it.
          JA(J)  = JT
          JT     = JA(IJ)
 
-C     If first element of array is greater than it, swap with it.
+!C     If first element of array is greater than it, swap with it.
          IF ( IA(I).GT.IT ) THEN
             IA(IJ) = IA(I)
             IA(I)  = IT
@@ -254,17 +246,17 @@ C     If first element of array is greater than it, swap with it.
          ENDIF
       ENDIF
 
-C     Find an element in the second half of the array which is
-C     smaller than it.
+!C     Find an element in the second half of the array which is
+!C     smaller than it.
   240 L=L-1
       IF( IA(L).GT.IT ) GO TO 240
 
-C     Find an element in the first half of the array which is
-C     greater than it.
+!C     Find an element in the first half of the array which is
+!C     greater than it.
   245 K=K+1
       IF( IA(K).LT.IT ) GO TO 245
 
-C     Interchange these elements.
+!C     Interchange these elements.
       IF( K.LE.L ) THEN
          IIT   = IA(L)
          IA(L) = IA(K)
@@ -275,7 +267,7 @@ C     Interchange these elements.
          GOTO 240
       ENDIF
 
-C     Save upper and lower subscripts of the array yet to be sorted.
+!C     Save upper and lower subscripts of the array yet to be sorted.
       IF( L-I.GT.J-K ) THEN
          IL(M) = I
          IU(M) = L
@@ -289,7 +281,7 @@ C     Save upper and lower subscripts of the array yet to be sorted.
       ENDIF
       GO TO 260
 
-C     Begin again on another portion of the unsorted array.
+!C     Begin again on another portion of the unsorted array.
   255 M = M-1
       IF( M.EQ.0 ) GO TO 300
       I = IL(M)
@@ -314,7 +306,7 @@ C     Begin again on another portion of the unsorted array.
 
  300  CONTINUE
       RETURN
-C=============================================================================
+!C=============================================================================
       END
 
 

@@ -21,8 +21,7 @@
         real*4 w5(ns,nl)
         do j=1,nl
          do i=1,ns
-         read(20,*,end=99,err=99) 
-     & w1(i,j),cv(i,j),w2(i,j),w3(i,j),w4(i,j),w5(i,j),w(i,j)
+         read(20,*,end=99,err=99) w1(i,j),cv(i,j),w2(i,j),w3(i,j),w4(i,j),w5(i,j),w(i,j)
          enddo
         enddo
         do kk=1,3
@@ -32,8 +31,7 @@
          jm=max(j-1,1)
          a=sqrt(w(i,jp)/(w(i,j)+w(i,jp)))
          b=sqrt(w(i,jm)/(w(i,j)+w(i,jm)))
-         cvf(i,j)=cv(i,j)
-     &    +0.25*(a*(cv(i,jp)-cv(i,j))-b*(cv(i,j)-cv(i,jm)))
+         cvf(i,j)=cv(i,j)+0.25*(a*(cv(i,jp)-cv(i,j))-b*(cv(i,j)-cv(i,jm)))
          enddo
         enddo
         do j=1,nl
@@ -47,8 +45,7 @@
         
         do j=1,nl
          do i=1,ns
-         write(21,60) 
-     & w1(i,j),cvf(i,j),w2(i,j),w3(i,j),w4(i,j),w5(i,j),w(i,j)
+         write(21,60) w1(i,j),cvf(i,j),w2(i,j),w3(i,j),w4(i,j),w5(i,j),w(i,j)
          enddo
         enddo
         

@@ -2,42 +2,39 @@
       character*100 batname,inname
       real*8 c8
 
-c     batname='/home/walrave/Modb/Travail/DATA/adr.GHER.bat'
-c     inname='/home/walrave/Modb/Travail/RESULTS/adr.res'
+!c     batname='/home/walrave/Modb/Travail/DATA/adr.GHER.bat'
+!c     inname='/home/walrave/Modb/Travail/RESULTS/adr.res'
       read(5,'(A)')batname
       read(5,'(A)')inname
 
       open (unit=9,file=batname,form='unformatted')
-      call ureadc(9,C8,BAT,valexbat,iprbat,imaxbat,jmaxbat,kmaxbat,
-     +            nbbat)
+      call ureadc(9,C8,BAT,valexbat,iprbat,imaxbat,jmaxbat,kmaxbat,nbbat)
       close (9)
 
       open (unit=10,file=inname,form='unformatted')
       call ureadc(10,C8,IN,valexin,iprin,imaxin,jmaxin,kmaxin,nbin)
       close (10)
 
-      call MASK2(BAT,IN,imaxbat,jmaxbat,valexbat,
-     +           valexin,iprin,imaxin,jmaxin,kmaxin,nbin)
+      call MASK2(BAT,IN,imaxbat,jmaxbat,valexbat,valexin,iprin,imaxin,jmaxin,kmaxin,nbin)
 
       end
 
-C***************************************************************
+!C***************************************************************
 
-      subroutine MASK2(BAT,IN,imaxbat,jmaxbat,valexbat,
-     +           valexin,iprin,imaxin,jmaxin,kmaxin,nbin)
+      subroutine MASK2(BAT,IN,imaxbat,jmaxbat,valexbat,valexin,iprin,imaxin,jmaxin,kmaxin,nbin)
 
       integer*4 nbdepth,i,j,k
-      real*4 indepth(300),BAT(imaxbat,jmaxbat),IN(imaxin,jmaxin,kmaxin),
-     +       xbatmin,xbatmax,
-     +       ybatmin,ybatmax,xinmin,xinmax,yinmin,yinmax,dxbat,dybat,
-     +       dxin,dyin,xin,yin,zin
+      real*4 indepth(300),BAT(imaxbat,jmaxbat),IN(imaxin,jmaxin,kmaxin),    &
+            xbatmin,xbatmax,                                                &
+            ybatmin,ybatmax,xinmin,xinmax,yinmin,yinmax,dxbat,dybat,        &
+            dxin,dyin,xin,yin,zin
       character*100 batinfo,ininfo,outname
             real*8 c8
 
 
-c     batinfo='/home/walrave/Modb/Travail/DATA/adr.GHER.bat.info'
-c     ininfo='/home/walrave/Modb/Travail/RESULTS/adr.res.info'
-c     outname='/home/walrave/Modb/Travail/RESULTS/adr.res.tmp'
+!c     batinfo='/home/walrave/Modb/Travail/DATA/adr.GHER.bat.info'
+!c     ininfo='/home/walrave/Modb/Travail/RESULTS/adr.res.info'
+!c     outname='/home/walrave/Modb/Travail/RESULTS/adr.res.tmp'
       read(5,'(A)')batinfo
       read(5,'(A)')ininfo
       read(5,'(A)')outname
@@ -62,13 +59,13 @@ c     outname='/home/walrave/Modb/Travail/RESULTS/adr.res.tmp'
       endif
       close (12)
 
-      if ((xinmin .LT. xbatmin) .OR. (yinmin .LT. ybatmin) .OR.
-     +    (xinmax .GT. xbatmax) .OR. (yinmax .GT. ybatmax)) then
-c        write(6,*)'ERROR 1'
+      if ((xinmin .LT. xbatmin) .OR. (yinmin .LT. ybatmin) .OR.  &
+         (xinmax .GT. xbatmax) .OR. (yinmax .GT. ybatmax)) then
+!c        write(6,*)'ERROR 1'
         write(6,*)'WARNING 1'
-c mr
-	write(6,*) xinmin,xbatmin,yinmin,ybatmin
-     +             xinmax,xbatmax,yinmax,ybatmax
+!c mr
+	write(6,*) xinmin,xbatmin,yinmin,ybatmin,   &
+                  xinmax,xbatmax,yinmax,ybatmax
       endif
 
       dxbat=(xbatmax-xbatmin)/float(imaxbat-1)
@@ -84,16 +81,16 @@ c mr
       xin=xinmin+(float(i-1)*dxin)
       yin=yinmin+(float(j-1)*dyin)
 
-      if ((xin .LE. xbatmin) .OR. (yin .LE. ybatmin) .OR.
-     +    (xin .GE. xbatmax) .OR. (yin .GE. ybatmax)) then
-c        write(6,*)'WARNING 1',xin,yin
+      if ((xin .LE. xbatmin) .OR. (yin .LE. ybatmin) .OR. &
+         (xin .GE. xbatmax) .OR. (yin .GE. ybatmax)) then
+!c        write(6,*)'WARNING 1',xin,yin
         IN(i,j,k)=valexin
-c mr
+!c mr
       endif
 
       if (IN(i,j,k) .NE. valexin) then
-        call CALDEPTH (xin,yin,zin,BAT,imaxbat,jmaxbat,valexbat,
-     +                 dxbat,dybat,xbatmin,ybatmin)
+        call CALDEPTH (xin,yin,zin,BAT,imaxbat,jmaxbat,valexbat, &
+                      dxbat,dybat,xbatmin,ybatmin)
         if (zin .LT. indepth(kmaxin-k+1)) then
           IN(i,j,k)=valexin
         endif
@@ -109,22 +106,21 @@ c mr
 
       end
 
-      include "ureadc.f"
-      include "uwritc.f"
+      include "ureadc.f95"
+      include "uwritc.f95"
 
-C***************************************************************
+!C***************************************************************
 
-      SUBROUTINE CALDEPTH(x,y,z,BAT,imax,jmax,valex,dxbat,dybat,
-     +                    xbatmin,ybatmin)
+      SUBROUTINE CALDEPTH(x,y,z,BAT,imax,jmax,valex,dxbat,dybat,xbatmin,ybatmin)
 
-      real*4 ireal,jreal,ifrac,jfrac,x1,y1,z1,x2,y2,z2,x3,y3,z3,
-     +       XX1,YY1,ZZ1,XX2,YY2,ZZ2,XX3,YY3,ZZ3,I,z,
-     +       BAT(imax,jmax)
-C    +       dxbat,dybat,xbatmin,ybatmin,BAT(*),valex,x,y
+      real*4 ireal,jreal,ifrac,jfrac,x1,y1,z1,x2,y2,z2,x3,y3,z3,   &
+            XX1,YY1,ZZ1,XX2,YY2,ZZ2,XX3,YY3,ZZ3,I,z,              &
+            BAT(imax,jmax)
+!C    +       dxbat,dybat,xbatmin,ybatmin,BAT(*),valex,x,y
 
       integer ip1,jp1,ip2,jp2,ip3,jp3,iint,jint
 
-C     calcul des 3 points de BAT les plus proches du point a calculer
+!C     calcul des 3 points de BAT les plus proches du point a calculer
 
       ireal = 1.+(x-xbatmin)/dxbat
       jreal = 1.+(y-ybatmin)/dybat
@@ -140,7 +136,7 @@ C     calcul des 3 points de BAT les plus proches du point a calculer
         jp1=jint
         ip2=iint+1
         jp2=jint+1
-        if (jfrac . GT. .5) then
+        if (jfrac .GT. .5) then
           ip3=iint
           jp3=jint+1
         else
@@ -161,8 +157,8 @@ C     calcul des 3 points de BAT les plus proches du point a calculer
         endif
       endif
 
-C     calcul de la profondeur du point dans
-C     le plan definit par les 3 points de BAT
+!C     calcul de la profondeur du point dans
+!C     le plan definit par les 3 points de BAT
 
       x1=xbatmin+(ip1-1)*dxbat
       y1=ybatmin+(jp1-1)*dybat

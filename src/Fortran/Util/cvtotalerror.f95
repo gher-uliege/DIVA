@@ -20,8 +20,7 @@
        datavart=datavart+datavar*nd
        goto 101
  200   continue
-       write(22,76) cvval,sqrt(errt/i),datavart/j,
-     & sqrt(errt)/i,0.0,0.0,float(i)
+       write(22,76) cvval,sqrt(errt/i),datavart/j,sqrt(errt)/i,0.0,0.0,float(i)
  76   FORMAT(7(E11.4))
        stop 
        end 

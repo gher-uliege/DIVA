@@ -11,20 +11,13 @@
       real*8                           :: W8
       REAL*4, DIMENSION(:) ,    ALLOCATABLE :: U,U3,W3
 !
-      REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: z_watercolumn
-     &                                      ,  Z, dep
-      REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: XLON,YLAT
-     &                                     , VALEXU,CORLEN,SN,VARBAK
+      REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: z_watercolumn,  Z, dep
+      REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: XLON,YLAT, VALEXU,CORLEN,SN,VARBAK
 !
-      REAL*4 ,DIMENSION(:,:),    ALLOCATABLE :: resmax1,resmin1
-     &                                        , varbot, verbot
-     &                                        , varb1, varb2
-     &                                     , mskbot,mskb1,mskb2,mskber
+      REAL*4 ,DIMENSION(:,:),    ALLOCATABLE :: resmax1,resmin1, varbot, verbot, varb1, varb2, mskbot,mskb1,mskb2,mskber
       REAL*4 ,DIMENSION(2,1)                 :: clbnds
 !
-      REAL*4 , DIMENSION(:,:,:),  ALLOCATABLE :: var, var1, var2
-     &                                         , verr,reler,dbins
-     &                                         , obins,rlfield
+      REAL*4 , DIMENSION(:,:,:),  ALLOCATABLE :: var, var1, var2, verr,reler,dbins, obins,rlfield
 !
       integer,DIMENSION(:,:,:),  ALLOCATABLE :: mask,mask1,mask2,masker
 !
@@ -35,12 +28,12 @@
       integer                   :: ICOOC, IREG, ISPEC
       integer                   :: nm,xm1,xm2,xy1,xy2
 !
-      real*4                     :: zz, time_val,VALEXC,
-     &              var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
-     &              vbt_min,vbt_max,var1_min,var1_max,
-     &              vbt1_min,vbt1_max,vbt2_min,vbt2_max,
-     &              var2_min,var2_max,verel_min,verel_max,
-     &              obin_min,obin_max,rl_min,rl_max,x,y,xr,yr
+      real*4                     :: zz, time_val,VALEXC,                   &
+                   var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,      &
+                   vbt_min,vbt_max,var1_min,var1_max,                      &
+                   vbt1_min,vbt1_max,vbt2_min,vbt2_max,                    &
+                   var2_min,var2_max,verel_min,verel_max,                  &
+                   obin_min,obin_max,rl_min,rl_max,x,y,xr,yr
 !
       real*4                     :: xorig, yorig, dx, dy, xend, yend
 !
@@ -49,8 +42,7 @@
       CHARACTER (len=22)         :: DEPTHS
       CHARACTER (len=99)         :: VARFILEIN
       CHARACTER (len=255)        :: file_name,Ref_time, ncliste
-      character (len=255)        :: title_string, cellmeth
-     &                            , INSTITUT,PRODUCTION,SOURCE,COMMENT
+      character (len=255)        :: title_string, cellmeth, INSTITUT,PRODUCTION,SOURCE,COMMENT
       CHARACTER (len=99)         :: var_shname,var_name,var_cfname
       character (len=99)         :: var_lgname
       character (len=20)         :: var_units,vrb_units
@@ -109,8 +101,7 @@
         xy1 = 0
         xy2 = 0
         WRITE(Ref_time,'("Months since xxxx-01-01 ")')
-        WRITE(cellmeth,'(
-     &"time: mean within month time: mean over years")')
+        WRITE(cellmeth,'("time: mean within month time: mean over years")')
         close(2)
         INSTITUT = 'Not specified'
         PRODUCTION = 'Not specified'
@@ -149,8 +140,7 @@
         yy1 = var_shname(chlen-12:chlen-9)
         if(yy1(1:4) .EQ. 'xxxx') yy1='1850'
         if(yy2(1:4) .EQ. 'xxxx') yy2='2050'
-        WRITE(Ref_time,
-     &'("Months since ",a,"-01-01")'),yy1(1:4) ! ,yy2(1:4) 
+        WRITE(Ref_time,'("Months since ",a,"-01-01")'),yy1(1:4) ! ,yy2(1:4)
 !x     &'("Months since ",a," until ",a)'),yy1(1:4) ,yy2(1:4) 
         read (mm1,'(I2.2)') xm1
         read (mm2,'(I2.2)') xm2
@@ -162,25 +152,20 @@
         else
            nm = xm2 - xm1 + 1
         endif
-        time_val = 12*(nint(float(xy2)-float(xy1))/2)
-     &                        +float(xm1-1)+float(nm)/2
+        time_val = 12*(nint(float(xy2)-float(xy1))/2)+float(xm1-1)+float(nm)/2
         clbnds(1,1)= 1.*xm1 !float(xm1)
         clbnds(2,1)= 1.*xm2 !float(xm2)
-        WRITE(cellmeth,'(
-     &"time: mean within month time: mean over years")')
+        WRITE(cellmeth,'("time: mean within month time: mean over years")')
 !     &" over years ",I4," to ",I4)')xy1,xy2
 !     &"time: mean data within months ",I2," to "
 !     &,I2," over years ",I4," to ",I4)'),xm1,xm2,xy1,xy2
       ENDIF
 !
       WRITE(vrb_units,'(a,"^2")')TRIM(var_units)
-      WRITE(VARFILEIN,
-     &'(a,".1",i4.4,".anl")')TRIM(var_shname),MINLEV
-      WRITE(file_name,'("../output/3Danalysis/",
-     &a,".1",i4.4,".1",i4.4,".anl.nc")')TRIM(var_shname),MINLEV,MAXLEV
+      WRITE(VARFILEIN,'(a,".1",i4.4,".anl")')TRIM(var_shname),MINLEV
+      WRITE(file_name,'("../output/3Danalysis/",a,".1",i4.4,".1",i4.4,".anl.nc")')TRIM(var_shname),MINLEV,MAXLEV
 !
-      IF(.NOT. ALLOCATED(z_watercolumn)) 
-     &    ALLOCATE(z_watercolumn(MAXLEV))
+      IF(.NOT. ALLOCATED(z_watercolumn))    ALLOCATE(z_watercolumn(MAXLEV))
 !
       DEPTHS='../input/contour.depth'
       OPEN(2,FILE=DEPTHS,STATUS='OLD')
@@ -218,32 +203,26 @@
          DO istep = MINLEV,MAXLEV
             klev = klev + 1
 !
-            WRITE(VARFILEIN,
-     &'("param.par.",a,".1",i4.4)')TRIM(var_shname),istep
-            WRITE(file_name,
-     &'("../input/divaparam/",a)')TRIM(VARFILEIN)
+            WRITE(VARFILEIN,'("param.par.",a,".1",i4.4)')TRIM(var_shname),istep
+            WRITE(file_name,'("../input/divaparam/",a)')TRIM(VARFILEIN)
             INQUIRE(FILE=file_name,EXIST=exist)
             IF(exist) then
               open(unit=2,file=file_name)
             ELSE
-              WRITE(VARFILEIN,
-     &'("param.par.1",i4.4)')istep
-              WRITE(file_name,
-     &'("../input/divaparam/",a)')TRIM(VARFILEIN)
+              WRITE(VARFILEIN,'("param.par.1",i4.4)')istep
+              WRITE(file_name,'("../input/divaparam/",a)')TRIM(VARFILEIN)
               INQUIRE(FILE=file_name,EXIST=exist)
               IF(exist) then
                 open(unit=2,file=file_name)
               ELSE
                 WRITE(VARFILEIN,'("param.par")')
-                WRITE(file_name,
-     &'("../input/divaparam/",a)')TRIM(VARFILEIN)
+                WRITE(file_name,'("../input/divaparam/",a)')TRIM(VARFILEIN)
               INQUIRE(FILE=file_name,EXIST=exist)
                 IF(exist) then
                   open(unit=2,file=file_name)
                 ELSE
                   WRITE(VARFILEIN,'("param.par")')
-                  WRITE(file_name,
-     &'("../input/",a)')TRIM(VARFILEIN)
+                  WRITE(file_name,'("../input/",a)')TRIM(VARFILEIN)
                   open(unit=2,file=file_name)
                 ENDIF
               ENDIF
@@ -328,8 +307,7 @@
       DO istep = MINLEV,MAXLEV
         klev = klev + 1
         valexu(klev) = valexc
-        WRITE(VARFILEIN,
-     &'(a,".1",i4.4,".anl")')TRIM(var_shname),istep
+        WRITE(VARFILEIN,'(a,".1",i4.4,".anl")')TRIM(var_shname),istep
         divafile = '../output/3Danalysis/Fields/'//TRIM(VARFILEIN)
         INQUIRE(FILE=TRIM(divafile),EXIST=exist)
         IF(exist) THEN
@@ -362,8 +340,7 @@
       if(valexu(klev) /= valexc ) ichge = 1
       ENDDO
 !
-      if(ichge == 1) 
-     & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,VAR)
+      if(ichge == 1) CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,VAR)
 !
 !
 ! Reading error field
@@ -373,8 +350,7 @@
       DO istep = MINLEV,MAXLEV
         klev = klev + 1
         valexu(klev) = valexc
-        WRITE(VARFILEIN,
-     &'(a,".1",i4.4,".error")')TRIM(var_shname),istep
+        WRITE(VARFILEIN,'(a,".1",i4.4,".error")')TRIM(var_shname),istep
         divafile = '../output/3Danalysis/Fields/'//TRIM(VARFILEIN)
 !
         INQUIRE(FILE=TRIM(divafile),EXIST=exist)
@@ -413,11 +389,9 @@
         ENDIF
       if(valexu(klev) /= valexc ) ichge = 1
       ENDDO
-      if(ichge == 1) 
-     & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,verr)
+      if(ichge == 1) CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,verr)
 !
-      if(ichge == 1) 
-     & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,reler)
+      if(ichge == 1) CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,reler)
 !
 !
 ! Reading databins file
@@ -426,8 +400,7 @@
       DO istep = MINLEV,MAXLEV
         klev = klev + 1
         valexu(klev) = valexc
-        WRITE(VARFILEIN,
-     &'(a,".1",i4.4,".DATABINS")')TRIM(var_shname),istep
+        WRITE(VARFILEIN,'(a,".1",i4.4,".DATABINS")')TRIM(var_shname),istep
         divafile = '../input/divadata/'//TRIM(VARFILEIN)
         dbins(:,:,klev) = valexc
         INQUIRE(FILE=TRIM(divafile),EXIST=exist)
@@ -453,8 +426,7 @@
       ENDDO
 !
 !
-      if(ichge == 1) 
-     & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,dbins)
+      if(ichge == 1) CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,dbins)
 !
 ! Reading outlayersbins file
 !
@@ -465,8 +437,7 @@
       DO istep = MINLEV,MAXLEV
         klev = klev + 1
         valexu(klev) = valexc
-        WRITE(VARFILEIN,
-     &'(a,".1",i4.4,".OUTLIERBINS")')TRIM(var_shname),istep
+        WRITE(VARFILEIN,'(a,".1",i4.4,".OUTLIERBINS")')TRIM(var_shname),istep
         divafile = '../output/3Danalysis/Fields/'//TRIM(VARFILEIN)
         obins(:,:,klev) = valexc
         INQUIRE(FILE=TRIM(divafile),EXIST=exist)
@@ -491,16 +462,14 @@
       if(valexu(klev) /= valexc ) ichge = 1
       ENDDO
 !
-      if(ichge == 1) 
-     & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,obins)
+      if(ichge == 1) CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,obins)
 !
       klev = 0
       ichge = 0
       DO istep = MINLEV,MAXLEV
         klev = klev + 1
         valexu(klev) = valexc
-        WRITE(VARFILEIN,
-     &'(a,".1",i4.4,".RL")')TRIM(var_shname),istep
+        WRITE(VARFILEIN,'(a,".1",i4.4,".RL")')TRIM(var_shname),istep
         divafile = '../output/3Danalysis/Fields/'//TRIM(VARFILEIN)
         INQUIRE(FILE=TRIM(divafile),EXIST=exist)
         IF(exist) then
@@ -534,8 +503,7 @@
         if(valexu(klev) /= valexc ) ichge = 1
       ENDDO
 !
-      if(ichge == 1) 
-     & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,rlfield)
+      if(ichge == 1) CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,rlfield)
 !
 !
       varbot =  valexc
@@ -585,13 +553,11 @@
           klev = klev + 1
             DO j = 1,jmax
               DO i = 1,imax
-                IF(verr(i,j,klev) == VALEXC .OR. verr(i,j,klev) > 0.3)
-     &THEN
+                IF(verr(i,j,klev) == VALEXC .OR. verr(i,j,klev) > 0.3)THEN
                    var1(i,j,klev) = VALEXC
                    mask1(i,j,klev) = 0
                 ENDIF
-                IF(verr(i,j,klev) == VALEXC .OR. verr(i,j,klev) > 0.5)
-     &THEN
+                IF(verr(i,j,klev) == VALEXC .OR. verr(i,j,klev) > 0.5)THEN
                    var2(i,j,klev) = VALEXC
                    mask2(i,j,klev) = 0
                 ENDIF
@@ -633,10 +599,8 @@
          ENDDO
        ENDDO
 !
-      y=MAXVAL(varbot(1:imax,1:jmax),
-     &                        MASK= (mask(:,:,nk) .eq. 1))
-      x=MINVAL(varbot(1:imax,1:jmax),
-     &                        MASK= (mask(:,:,nk) .eq. 1))
+      y=MAXVAL(varbot(1:imax,1:jmax),MASK= (mask(:,:,nk) .eq. 1))
+      x=MINVAL(varbot(1:imax,1:jmax),MASK= (mask(:,:,nk) .eq. 1))
       call jmbround(x,y,xr,yr)
       vbt_max = yr
       vbt_min = xr
@@ -654,10 +618,8 @@
       vbt2_min = xr
 !
       DO k = 1,NK
-       resmax1(1:jmax,k)=MAXVAL(var(1:imax,1:jmax,k),dim=1,
-     &                        MASK= (mask(:,:,k) .eq. 1))
-       resmin1(1:jmax,k)=MINVAL(var(1:imax,1:jmax,k),dim=1,
-     &                        MASK= (mask(:,:,k) .eq. 1))
+       resmax1(1:jmax,k)=MAXVAL(var(1:imax,1:jmax,k),dim=1,MASK= (mask(:,:,k) .eq. 1))
+       resmin1(1:jmax,k)=MINVAL(var(1:imax,1:jmax,k),dim=1,MASK= (mask(:,:,k) .eq. 1))
       ENDDO
       y = MAXVAL(resmax1)
       x = MINVAL(resmin1)
@@ -666,10 +628,8 @@
       var_min = xr
 !
       DO k = 1,NK
-       resmax1(1:jmax,k)=MAXVAL(verr(1:imax,1:jmax,k),dim=1,
-     &                        MASK= (masker(:,:,k) .eq. 1))
-       resmin1(1:jmax,k)=MINVAL(verr(1:imax,1:jmax,k),dim=1,
-     &                        MASK= (masker(:,:,k) .eq. 1))
+       resmax1(1:jmax,k)=MAXVAL(verr(1:imax,1:jmax,k),dim=1,MASK= (masker(:,:,k) .eq. 1))
+       resmin1(1:jmax,k)=MINVAL(verr(1:imax,1:jmax,k),dim=1,MASK= (masker(:,:,k) .eq. 1))
       ENDDO
       y = MAXVAL(resmax1)
       x = MINVAL(resmin1)
@@ -678,8 +638,7 @@
       ver_min = xr
 !
       DO k = 1,NK
-       resmax1(1:jmax,k)=MAXVAL(dbins(1:imax,1:jmax,k),dim=1,
-     & MASK= (dbins(:,:,k) .ge. 0.))
+       resmax1(1:jmax,k)=MAXVAL(dbins(1:imax,1:jmax,k),dim=1,MASK= (dbins(:,:,k) .ge. 0.))
       ENDDO
       y = MAXVAL(resmax1)
       x = 0.
@@ -688,10 +647,8 @@
       dbin_min = 0.
 !
       DO k = 1,NK
-       resmax1(1:jmax,k)=MAXVAL(var1(1:imax,1:jmax,k),dim=1,
-     &                        MASK= (mask1(:,:,k) .eq. 1))
-       resmin1(1:jmax,k)=MINVAL(var1(1:imax,1:jmax,k),dim=1,
-     &                        MASK= (mask1(:,:,k) .eq. 1))
+       resmax1(1:jmax,k)=MAXVAL(var1(1:imax,1:jmax,k),dim=1,MASK= (mask1(:,:,k) .eq. 1))
+       resmin1(1:jmax,k)=MINVAL(var1(1:imax,1:jmax,k),dim=1,MASK= (mask1(:,:,k) .eq. 1))
       ENDDO
       y = MAXVAL(resmax1)
       x = MINVAL(resmin1)
@@ -700,10 +657,8 @@
       var1_max = yr
 !
       DO k = 1,NK
-       resmax1(1:jmax,k)=MAXVAL(var2(1:imax,1:jmax,k),dim=1,
-     &                        MASK= (mask2(:,:,k) .eq. 1))
-       resmin1(1:jmax,k)=MINVAL(var2(1:imax,1:jmax,k),dim=1,
-     &                        MASK= (mask2(:,:,k) .eq. 1))
+       resmax1(1:jmax,k)=MAXVAL(var2(1:imax,1:jmax,k),dim=1,MASK= (mask2(:,:,k) .eq. 1))
+       resmin1(1:jmax,k)=MINVAL(var2(1:imax,1:jmax,k),dim=1,MASK= (mask2(:,:,k) .eq. 1))
       ENDDO
       y = MAXVAL(resmax1)
       x = MINVAL(resmin1)
@@ -712,10 +667,8 @@
       var2_max = yr
 !
       DO k = 1,NK
-       resmax1(1:jmax,k)=MAXVAL(reler(1:imax,1:jmax,k),dim=1,
-     &                        MASK= (masker(:,:,k) .eq. 1))
-       resmin1(1:jmax,k)=MINVAL(reler(1:imax,1:jmax,k),dim=1,
-     &                        MASK= (masker(:,:,k) .eq. 1))
+       resmax1(1:jmax,k)=MAXVAL(reler(1:imax,1:jmax,k),dim=1,MASK= (masker(:,:,k) .eq. 1))
+       resmin1(1:jmax,k)=MINVAL(reler(1:imax,1:jmax,k),dim=1,MASK= (masker(:,:,k) .eq. 1))
       ENDDO
       y = MAXVAL(resmax1)
       x = MINVAL(resmin1)
@@ -726,8 +679,7 @@
 
 
       DO k = 1,NK
-       resmax1(1:jmax,k)=MAXVAL(obins(1:imax,1:jmax,k),dim=1,
-     & MASK= (obins(:,:,k) .eq. valexc))
+       resmax1(1:jmax,k)=MAXVAL(obins(1:imax,1:jmax,k),dim=1,MASK= (obins(:,:,k) .eq. valexc))
       ENDDO
       x = 0.
       call jmbround(x,y,xr,yr)
@@ -735,8 +687,7 @@
       obin_min = 0.
 !
       DO k = 1,NK
-       resmax1(1:jmax,k)=MAXVAL(rlfield(1:imax,1:jmax,k),dim=1,
-     &                        MASK= (mask(:,:,k) .eq. 1))
+       resmax1(1:jmax,k)=MAXVAL(rlfield(1:imax,1:jmax,k),dim=1,MASK= (mask(:,:,k) .eq. 1))
       ENDDO
       y = MAXVAL(resmax1)
       x = 0.
@@ -744,8 +695,7 @@
       rl_min = xr
       rl_max = yr
 !
-      WRITE(file_name,'(
-     &a,".1",i4.4,".1",i4.4,".anl.nc")')TRIM(var_shname),MINLEV,MAXLEV
+      WRITE(file_name,'(a,".1",i4.4,".1",i4.4,".anl.nc")')TRIM(var_shname),MINLEV,MAXLEV
 
 !xx      IF(ipar == 1) then
 !xx      chlen = 1
@@ -774,8 +724,7 @@
       var_name = TRIM(var_shname)
       ENDIF
 !
-      WRITE(ncliste,'("../output/3Danalysis/",
-     &a,".3DNCliste")')TRIM(var_name)
+      WRITE(ncliste,'("../output/3Danalysis/",a,".3DNCliste")')TRIM(var_name)
         INQUIRE(FILE=TRIM(ncliste),EXIST=exist)
         if(exist) then
           close(12)
@@ -787,8 +736,7 @@
           write(12,*) TRIM(file_name),1
         endif
 !
-      WRITE(ncliste,'("../output/3Danalysis/",
-     &a,".3DNCinfo")')TRIM(var_name)
+      WRITE(ncliste,'("../output/3Danalysis/",a,".3DNCinfo")')TRIM(var_name)
         INQUIRE(FILE=TRIM(ncliste),EXIST=exist)
         if(exist) then
           close(12)
@@ -814,42 +762,37 @@
           write(12,*) "'",TRIM(Ref_time),"'"
         endif
 !
-      WRITE(file_name,'("../output/3Danalysis/",
-     &a,".1",i4.4,".1",i4.4,".anl.nc")')TRIM(var_shname),MINLEV,MAXLEV
+      WRITE(file_name,'("../output/3Danalysis/",a,".1",i4.4,".1",i4.4,".anl.nc")')TRIM(var_shname),MINLEV,MAXLEV
 !
       iun=1
-      CALL NC_4DCLIM(IMAX, JMAX,nk,ipar,iun,time_val,clbnds,
-     &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
-     &  xlon,ylat,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
-     &  var_min,var_max,vbt_min,vbt_max,ver_min,ver_max,dbin_min,
-     &  dbin_max,var1_min,var1_max,var2_min,var2_max,verel_min,
-     &  verel_max,vbt1_min,vbt1_max,vbt2_min,vbt2_max,
-     &  obin_min,obin_max,rl_min,rl_max,VALEXC,l_units,
-     &  LEN_TRIM(file_name),TRIM(file_name),
-     &  LEN_TRIM(var_cfname),TRIM(var_cfname),
-     &  LEN_TRIM(var_lgname),TRIM(var_lgname),
-     &  LEN_TRIM(var_units),TRIM(var_units),
-     &  LEN_TRIM(vrb_units),TRIM(vrb_units),
-     &  LEN_TRIM(title_string),TRIM(title_string),
-     &  LEN_TRIM(cellmeth),TRIM(cellmeth),
-     &  LEN_TRIM(Ref_time),TRIM(Ref_time),
-     &  LEN_TRIM(INSTITUT),TRIM(INSTITUT),
-     &  LEN_TRIM(PRODUCTION),TRIM(PRODUCTION),
-     &  LEN_TRIM(SOURCE),TRIM(SOURCE),
-     &  LEN_TRIM(COMMENT),TRIM(COMMENT))
+      CALL NC_4DCLIM(IMAX, JMAX,nk,ipar,iun,time_val,clbnds,                &
+       var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,     &
+       xlon,ylat,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,                     &
+       var_min,var_max,vbt_min,vbt_max,ver_min,ver_max,dbin_min,            &
+       dbin_max,var1_min,var1_max,var2_min,var2_max,verel_min,              &
+       verel_max,vbt1_min,vbt1_max,vbt2_min,vbt2_max,                       &
+       obin_min,obin_max,rl_min,rl_max,VALEXC,l_units,                      &
+       LEN_TRIM(file_name),TRIM(file_name),                                 &
+       LEN_TRIM(var_cfname),TRIM(var_cfname),                               &
+       LEN_TRIM(var_lgname),TRIM(var_lgname),                               &
+       LEN_TRIM(var_units),TRIM(var_units),                                 &
+       LEN_TRIM(vrb_units),TRIM(vrb_units),                                 &
+       LEN_TRIM(title_string),TRIM(title_string),                           &
+       LEN_TRIM(cellmeth),TRIM(cellmeth),                                   &
+       LEN_TRIM(Ref_time),TRIM(Ref_time),                                   &
+       LEN_TRIM(INSTITUT),TRIM(INSTITUT),                                   &
+       LEN_TRIM(PRODUCTION),TRIM(PRODUCTION),                               &
+       LEN_TRIM(SOURCE),TRIM(SOURCE),                                       &
+       LEN_TRIM(COMMENT),TRIM(COMMENT))
 !
-      WRITE(divafile,'("../output/3Danalysis/",
-     &a,".1",i4.4,".1",i4.4,".fieldgher.anl")')TRIM(var_shname),
-     &MINLEV,MAXLEV
+      WRITE(divafile,'("../output/3Danalysis/",a,".1",i4.4,".1",i4.4,".fieldgher.anl")')TRIM(var_shname),MINLEV,MAXLEV
       KMAX = MAXLEV-MINLEV+1
       ipr=4
       close(84)
       open (unit=84,file=TRIM(divafile),form='unformatted')
       CALL UWRITC(84,W8,U3,VALEXC,IPR,IMAX,JMAX,KMAX,IMAX)
 !
-      WRITE(divafile,'("../output/3Danalysis/",
-     &a,".1",i4.4,".1",i4.4,".errorfieldgher.anl")')TRIM(var_shname),
-     &MINLEV,MAXLEV
+      WRITE(divafile,'("../output/3Danalysis/",a,".1",i4.4,".1",i4.4,".errorfieldgher.anl")')TRIM(var_shname),MINLEV,MAXLEV
       KMAX = MAXLEV-MINLEV+1
       ipr=4
       close(84)

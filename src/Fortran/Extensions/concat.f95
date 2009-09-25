@@ -31,5 +31,5 @@
       call uwritc (10,c8,AA,VALEX,IPR,imax,jmax,kmax,imax*jmax)
       close (10)
       end  
-      include "ureadc.f"
-      include "uwritc.f"
+      include "ureadc.f95"
+      include "uwritc.f95"

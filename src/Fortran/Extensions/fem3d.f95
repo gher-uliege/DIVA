@@ -1,28 +1,28 @@
-C =====================================================================
-C =  fem3d.f  is based upon a mesh file (tpo extension) and a 
-C =           bathymetry file (regular grid in the GHER format)
-C =           and creates a result file containing informations 
-C =           if a mesh is in land or is sea for a given depth.
-C =
-C =
-C =
-C =  Walrave Stephane (GHER - University of Liege, 25/11/95)
-C =====================================================================
+!C =====================================================================
+!C =  fem3d.f  is based upon a mesh file (tpo extension) and a
+!C =           bathymetry file (regular grid in the GHER format)
+!C =           and creates a result file containing informations
+!C =           if a mesh is in land or is sea for a given depth.
+!C =
+!C =
+!C =
+!C =  Walrave Stephane (GHER - University of Liege, 25/11/95)
+!C =====================================================================
 
       implicit none
       integer n1max
       parameter(n1max=1000000)
-C     dimension nsom(n1max),xel(n1max),yel(n1max)
+!C     dimension nsom(n1max),xel(n1max),yel(n1max)
       character*12 str3
       character*20 form
       character*100 mh4,tpo,batinfo,depthname,outname,batname
       integer kmax,nb,ipr,i,k,zero,one
-      integer imax,jmax,nbdepth,nsom,nd1(n1max),nd2(n1max),
-     +        nd3(n1max),nnt1,nnint,nelt,inter,val,line(200)
-      real*4 BAT(5000000),valex,depth(200),xel(n1max),
-     +       yel(n1max),zel(n1max),xsom(n1max),ysom(n1max),zsom(n1max),
-     +       xbatmin,xbatmax,ybatmin,ybatmax,xmax,ymax,xmin,ymin,
-     +       dxbat,dybat
+      integer imax,jmax,nbdepth,nsom,nd1(n1max),nd2(n1max), &
+             nd3(n1max),nnt1,nnint,nelt,inter,val,line(200)
+      real*4 BAT(5000000),valex,depth(200),xel(n1max),                 &
+            yel(n1max),zel(n1max),xsom(n1max),ysom(n1max),zsom(n1max),&
+            xbatmin,xbatmax,ybatmin,ybatmax,xmax,ymax,xmin,ymin, &
+            dxbat,dybat
       real*8 c8
       zero=0
       one=1
@@ -81,11 +81,9 @@ C     dimension nsom(n1max),xel(n1max),yel(n1max)
         ymax=max(ymax,ysom(i))
 10    continue
 
-      if ((xmin .LT. xbatmin) .OR. (ymin .LT. ybatmin) .OR. 
-     +    (xmax .GT .xbatmax) .OR. (ymax .GT. ybatmax)) then
-c        write(6,*)'ERROR 1'
-        write(6,*)'ERROR 1',xmin,ymin,xmax,ymax,
-     + xbatmin,ybatmin,xbatmax,ybatmax
+      if ((xmin .LT. xbatmin) .OR. (ymin .LT. ybatmin) .OR. (xmax .GT. xbatmax) .OR. (ymax .GT. ybatmax)) then
+!c        write(6,*)'ERROR 1'
+        write(6,*)'ERROR 1',xmin,ymin,xmax,ymax,xbatmin,ybatmin,xbatmax,ybatmax
         stop
       endif
 
@@ -101,13 +99,11 @@ c        write(6,*)'ERROR 1'
       close(11)
 
       do i=1,nnt1
-      call CALDEPTH(xsom(i),ysom(i),zsom(i),BAT,imax,jmax,valex,
-     +              dxbat,dybat,xbatmin,ybatmin)
+      call CALDEPTH(xsom(i),ysom(i),zsom(i),BAT,imax,jmax,valex,dxbat,dybat,xbatmin,ybatmin)
       enddo
 
       do i=1,nelt
-      call CALDEPTH(xel(i),yel(i),zel(i),BAT,imax,jmax,valex,
-     +              dxbat,dybat,xbatmin,ybatmin)
+      call CALDEPTH(xel(i),yel(i),zel(i),BAT,imax,jmax,valex,dxbat,dybat,xbatmin,ybatmin)
       enddo
 
       open (unit=14,file=outname)
@@ -139,21 +135,19 @@ c        write(6,*)'ERROR 1'
 
       end
 
-C***************************************************************
+!C***************************************************************
 
-      SUBROUTINE CALDEPTH(x,y,z,BAT,imax,jmax,valex,dxbat,dybat,
-     +                    xbatmin,ybatmin)
+      SUBROUTINE CALDEPTH(x,y,z,BAT,imax,jmax,valex,dxbat,dybat,xbatmin,ybatmin)
 
-c     BUG IF SOME VAR NOT IN REAL*8 !!!!
+!c     BUG IF SOME VAR NOT IN REAL*8 !!!!
  
       real*4 ireal,jreal,ifrac,jfrac,BAT(imax,jmax),x,y,z
-      real*8 x1,y1,z1,x2,y2,z2,x3,y3,z3,
-     +       XX1,YY1,ZZ1,XX2,YY2,ZZ2,XX3,YY3,ZZ3,I
-C    +       dxbat,dybat,xbatmin,ybatmin,BAT(*),valex,x,y
+      real*8 x1,y1,z1,x2,y2,z2,x3,y3,z3,XX1,YY1,ZZ1,XX2,YY2,ZZ2,XX3,YY3,ZZ3,I
+!C    +       dxbat,dybat,xbatmin,ybatmin,BAT(*),valex,x,y
 
       integer ip1,jp1,ip2,jp2,ip3,jp3,iint,jint
 
-C     calcul des 3 points de BAT les plus proches du point a calculer
+!C     calcul des 3 points de BAT les plus proches du point a calculer
 
       ireal = 1.+(x-xbatmin)/dxbat
       jreal = 1.+(y-ybatmin)/dybat
@@ -169,7 +163,7 @@ C     calcul des 3 points de BAT les plus proches du point a calculer
         jp1=jint
         ip2=iint+1
         jp2=jint+1
-        if (jfrac . GT. .5) then
+        if (jfrac .GT. .5) then
           ip3=iint
           jp3=jint+1
         else
@@ -181,7 +175,7 @@ C     calcul des 3 points de BAT les plus proches du point a calculer
         jp1=jint
         ip2=iint
         jp2=jint+1
-        if (jfrac . GT. .5) then
+        if (jfrac .GT. .5) then
           ip3=iint+1
           jp3=jint+1
         else
@@ -190,8 +184,8 @@ C     calcul des 3 points de BAT les plus proches du point a calculer
         endif
       endif
 
-C     calcul de la profondeur du point dans
-C     le plan definit par les 3 points de BAT
+!C     calcul de la profondeur du point dans
+!C     le plan definit par les 3 points de BAT
 
       x1=xbatmin+(ip1-1)*dxbat
       y1=ybatmin+(jp1-1)*dybat
@@ -230,57 +224,57 @@ C     le plan definit par les 3 points de BAT
 
       end
 
-C***************************************************************
+!C***************************************************************
 
       Subroutine UREADC(iu,c8,c4,valexr,iprecr,imaxr,jmaxr,kmaxr,nbmotr)
-c                ======
-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-c Reads the field C(I,J,K) from fortran unit iu 
-c returns the field in the array c4 if the returned iprecr=4
-c returns the field in the array c8 if the returned iprecr=8
-c returns the values if imaxr,jmaxr,kmaxr found in the file
-c
-c JMB 6/3/91 
-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-c
+!c                ======
+!cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+!c Reads the field C(I,J,K) from fortran unit iu
+!c returns the field in the array c4 if the returned iprecr=4
+!c returns the field in the array c8 if the returned iprecr=8
+!c returns the values if imaxr,jmaxr,kmaxr found in the file
+!c
+!c JMB 6/3/91
+!cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+!c
       PARAMETER(KBLANC=10)
       real*4 c4(*)
       real*8 c8(*)
-c in the calling routin you can specify the following equivalence to
-c save memory space:
-c      equivalence(c,c4)
-c      equivalence(c,c8)
-c
-c skip KBLANC lines
+!c in the calling routin you can specify the following equivalence to
+!c save memory space:
+!c      equivalence(c,c4)
+!c      equivalence(c,c8)
+!c
+!c skip KBLANC lines
        do 1 kb=1,KBLANC
         read(iu,ERR=99)
  1     continue
-c
+!c
         read(iu) imaxc,jmaxc,kmaxc,iprec,nbmots,valexc
-c
-c pass the values read to the calling routine
+!c
+!c pass the values read to the calling routine
         iprecr=iprec
         imaxr=imaxc
         jmaxr=jmaxc
         kmaxr=kmaxc
         nbmotr=nbmots
         valexr=valexc
-c
-c compute the number of full records to read and the remaining words
+!c
+!c compute the number of full records to read and the remaining words
         nl=(imaxc*jmaxc*kmaxc)/nbmots
         ir=imaxc*jmaxc*kmaxc-nbmots*nl
         ide=0
-c
-c if pathological case, read only four values C0 and DCI,DCJ,DCK
-c and return
-c them as the two four elements of the array
+!c
+!c if pathological case, read only four values C0 and DCI,DCJ,DCK
+!c and return
+!c them as the two four elements of the array
         if(imaxc.lt.0.or.jmaxc.lt.0.or.kmaxc.lt.0) then
          nl=0
          ir=4
         endif
-c
-c
-c single precision
+!c
+!c
+!c single precision
         if(iprec.eq.4) then
          do 10 kl=1,nl
           read(iu,ERR=99,END=100) (c4(ide+kc),kc=1,nbmots)
@@ -288,8 +282,8 @@ c single precision
  10      continue
           read(iu,ERR=99,END=100) (c4(ide+kc),kc=1,ir)
                        else
-c
-c double precision
+!c
+!c double precision
         if(iprec.eq.8) then
          do 20 kl=1,nl
           read(iu,ERR=99,END=100) (c8(ide+kc),kc=1,nbmots)
@@ -300,7 +294,7 @@ c double precision
            goto 99
          endif
          endif
-c
+!c
          return
  99      continue
          write(*,*) 'Data error in UREADC, not a conform file'

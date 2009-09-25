@@ -15,47 +15,43 @@
 ! Depth distribution
       REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: z_watercolumn
 !
-      REAL*4 , DIMENSION(:,:,:),    ALLOCATABLE :: temp,psal,N2
-     &                                           , sigma,RHO,ert,ers
+      REAL*4 , DIMENSION(:,:,:),    ALLOCATABLE :: temp,psal,N2, sigma,RHO,ert,ers
       REAL*4 , DIMENSION(:,:),    ALLOCATABLE   :: alpha,beta
       REAL*4 , DIMENSION(:)    ,    ALLOCATABLE :: XLON,YLAT
 !
       REAL*4     , DIMENSION(:,:), ALLOCATABLE :: dsig, dsigma
-      REAL*4     , DIMENSION(:,:,:), ALLOCATABLE :: newtemp_lon
-     &                                          , newtemp_lat
-     &                                          , newtemp_val
-     &                                          , newtemp_wht
-     &                                          , newpsal_lon
-     &                                          , newpsal_lat
-     &                                          , newpsal_val
-     &                                          , newpsal_wht
+      REAL*4     , DIMENSION(:,:,:), ALLOCATABLE :: newtemp_lon      &
+                                               , newtemp_lat         &
+                                               , newtemp_val         &
+                                               , newtemp_wht         &
+                                               , newpsal_lon         &
+                                               , newpsal_lat         &
+                                               , newpsal_val         &
+                                               , newpsal_wht
 !
 !
-      REAL*4, DIMENSION(2)                 ::  sig
-     &                                      ,  dep, Z
-      REAL*4                               :: T1,T2,S1,S2,rmsp,rmsn
-     &                                      , TO,SO,TM,SM
-     &                                      , max_inst,EPST,EPSS,FACT
-     &                                      , FACS,FACA,FACB,ETA,KSI
-     &                                      , vlon, vlat, vval, wght
-     &                                      , NN2_max,RWN
-      REAL*4                               :: n2tild, relerr1, relerr2
-     &                                      , N2R, epsilon3, epsilon4
-     &                                      , KSI_mix, zz
-     &                                      , CorLenT, CorLenS, CorLen
-     &                                      , erc1,erc2
+      REAL*4, DIMENSION(2)                 ::  sig,  dep, Z
+      REAL*4                               :: T1,T2,S1,S2,rmsp,rmsn    &
+                                           , TO,SO,TM,SM               &
+                                           , max_inst,EPST,EPSS,FACT   &
+                                           , FACS,FACA,FACB,ETA,KSI    &
+                                           , vlon, vlat, vval, wght    &
+                                           , NN2_max,RWN
+      REAL*4                               :: n2tild, relerr1, relerr2 &
+                                           , N2R, epsilon3, epsilon4   &
+                                           , KSI_mix, zz               &
+                                           , CorLenT, CorLenS, CorLen  &
+                                           , erc1,erc2
 !
-      INTEGER,DIMENSION(:,:,:),  ALLOCATABLE :: it_newdata,is_newdata
-     &                                        , mask
-      integer*4, DIMENSION(:,:), ALLOCATABLE :: ik_instabl
-     &                                        , ij_instabl,ij_lay
-      integer                              :: i,j,k,klev,ic,icl, nl
-     &                                      , ii, jj, l,m,i1,i2,j1,j2
-     &                                      , nb_wetpoint
-     &                                      , tflag1,sflag1,iflag,ttdat
-     &                                      , datacount,layer,tsflag
-     &                                      , iter,maxit,io,ndata
-     &                                      , tflag2,sflag2
+      INTEGER,DIMENSION(:,:,:),  ALLOCATABLE :: it_newdata,is_newdata , mask
+      integer*4, DIMENSION(:,:), ALLOCATABLE :: ik_instabl, ij_instabl,ij_lay
+      integer                              :: i,j,k,klev,ic,icl, nl     &
+                                           , ii, jj, l,m,i1,i2,j1,j2    &
+                                           , nb_wetpoint                &
+                                           , tflag1,sflag1,iflag,ttdat  &
+                                           , datacount,layer,tsflag     &
+                                           , iter,maxit,io,ndata        &
+                                           , tflag2,sflag2
       integer  , DIMENSION(2)    :: psaldata_nmb,tempdata_nmb,data_nmb
 !
       integer                   :: surface_lev,top_lev,icdf
@@ -109,10 +105,8 @@
       READ(2,*) maxit
       CLOSE(2)
 !
-      WRITE(VARFILEIN,
-     &'(a,".1",i4.4,".analysis")')TRIM(var_name(1)),MINLEV
-      WRITE(DATAFILE,
-     &'(a,".1",i4.4)')TRIM(var_name(1)),MINLEV
+      WRITE(VARFILEIN,'(a,".1",i4.4,".analysis")')TRIM(var_name(1)),MINLEV
+      WRITE(DATAFILE,'(a,".1",i4.4)')TRIM(var_name(1)),MINLEV
       REPORT    = 'stbinfo.1xxxx.1xxxx'
 !
 ! reading grid data
@@ -196,8 +190,7 @@
 !
       WRITE(lnum(1:4),'(I4.4)') istep
 !
-      WRITE(VARFILEIN,
-     &'("param.par.",a,".1",i4.4)')TRIM(var_name(1)),istep
+      WRITE(VARFILEIN,'("param.par.",a,".1",i4.4)')TRIM(var_name(1)),istep
       WRITE(file_name,'("../input/divaparam/",a)')TRIM(VARFILEIN)
 !
       INQUIRE(FILE=file_name,EXIST=exist)
@@ -219,8 +212,7 @@
 !
       WRITE(lnum(1:4),'(I4.4)') istep
 !
-      WRITE(VARFILEIN,
-     &'("param.par.",a,".1",i4.4)')TRIM(var_name(2)),istep
+      WRITE(VARFILEIN,'("param.par.",a,".1",i4.4)')TRIM(var_name(2)),istep
       WRITE(file_name,'("../input/divaparam/",a)')TRIM(VARFILEIN)
 !
       INQUIRE(FILE=file_name,EXIST=exist)
@@ -262,10 +254,8 @@
 !
         DO ivar = 1,2
 !
-        WRITE(VARFINFO,
-     &'(a,".1",i4.4,".info")')TRIM(var_name(ivar)),istep
-        WRITE(file_name,
-     &'("../input/divadata/",a)')TRIM(VARFINFO)
+        WRITE(VARFINFO,'(a,".1",i4.4,".info")')TRIM(var_name(ivar)),istep
+        WRITE(file_name,'("../input/divadata/",a)')TRIM(VARFINFO)
 !
             OPEN(12,FILE=file_name)
              read(12,*)! comments
@@ -276,10 +266,8 @@
               stop
             ENDIF
 !
-        WRITE(VARFILEIN,
-     &'(a,".1",i4.4,".anl")')TRIM(var_name(ivar)),istep
-        WRITE(file_name,
-     &'("../output/3Danalysis/Fields/",a)')TRIM(VARFILEIN)
+        WRITE(VARFILEIN,'(a,".1",i4.4,".anl")')TRIM(var_name(ivar)),istep
+        WRITE(file_name,'("../output/3Danalysis/Fields/",a)')TRIM(VARFILEIN)
 !
            close(84)
            open (unit=84,file=file_name,form='unformatted')
@@ -320,8 +308,7 @@
 !
       DO j = 1,jmax
       DO i = 1,imax
-      if ((mask(i,j,1) - mask(i,j,2)) > 0 )
-     & mask(i,j,1) = mask(i,j,2)
+      if ((mask(i,j,1) - mask(i,j,2)) > 0 ) mask(i,j,1) = mask(i,j,2)
       ENDDO
       ENDDO
 !
@@ -346,8 +333,7 @@
            write(17,*) ttdat
        close(17)
 !
-       CALL albesi
-     &  (valexu,nx,ny,2,mask,dep,psal,temp,alpha,beta,RHO)
+       CALL albesi(valexu,nx,ny,2,mask,dep,psal,temp,alpha,beta,RHO)
 !
        open (unit=21,file='fort.21')
            write(21,*) alpha
@@ -396,8 +382,7 @@
          read(21,*) beta
       close(21)
 !
-      CALL N2brunt
-     &     (valexu,nx,ny,2,Z,mask,alpha,beta,temp,psal,N2,rmsp,rmsn)
+      CALL N2brunt(valexu,nx,ny,2,Z,mask,alpha,beta,temp,psal,N2,rmsp,rmsn)
 !
       DO j = 1,jmax
          DO i = 1,imax
@@ -417,8 +402,7 @@
 !
       IF(iter > maxit .OR. iflag >= 2) THEN
 !
-          write(12,*)' adddata finished performing for processing ',
-     &itrack
+          write(12,*)' adddata finished performing for processing ',itrack
           write(12,*)'positive N2 rms = ',rmsp
           write(12,*)'negative N2 rms = ',rmsn
           write(12,*)' psal data number : ',psaldata_nmb
@@ -448,10 +432,8 @@
         istep = k + layer - 1
         DO ivar = 1,2
 !
-          WRITE(VARFILEIN,
-     &'(a,".1",i4.4,".error")')TRIM(var_name(ivar)),istep
-          WRITE(file_name,
-     &'("../output/3Danalysis/Fields/",a)')TRIM(VARFILEIN)
+          WRITE(VARFILEIN,&'(a,".1",i4.4,".error")')TRIM(var_name(ivar)),istep
+          WRITE(file_name,'("../output/3Danalysis/Fields/",a)')TRIM(VARFILEIN)
 !
            close(84)
            open (unit=84,file=file_name,form='unformatted')
@@ -504,8 +486,7 @@
            read(15,*) N2R
         endif
 !
-      IF(rmsn <= relerr1*N2R .AND. ABS(NN2_max) <= relerr2*N2R
-     &                      .OR. iflag >= 2) THEN
+      IF(rmsn <= relerr1*N2R .AND. ABS(NN2_max) <= relerr2*N2R.OR. iflag >= 2) THEN
 !
 
 !
@@ -738,24 +719,18 @@
       ii = sflag2 + psaldata_nmb(2)
       jj = tflag2 + tempdata_nmb(2)
 !
-      write(12,*)'nbr of salinity data to be added for level',
-     &                                            layer+1,': ',sflag2
-      write(12,*)'nbr of temperature data to be added for level',
-     &                                            layer+1, ': ',tflag2
+      write(12,*)'nbr of salinity data to be added for level',layer+1,': ',sflag2
+      write(12,*)'nbr of temperature data to be added for level',layer+1, ': ',tflag2
 !
-      write(12,*)' new psal data number  for level',
-     &                                            layer+1,': ',ii
-      write(12,*)' new temp data number  for level',
-     &                                            layer+1,': ',jj
+      write(12,*)' new psal data number  for level',layer+1,': ',ii
+      write(12,*)' new temp data number  for level',layer+1,': ',jj
       write(12,*)' '
 !
       istep = layer + 1 
       ivar = 1
 !
-      WRITE(VARFINFO,
-     &'(a,".1",i4.4,".info")')TRIM(var_name(ivar)),istep
-      WRITE(file_name,
-     &'("../input/divadata/",a)')TRIM(VARFINFO)
+      WRITE(VARFINFO,'(a,".1",i4.4,".info")')TRIM(var_name(ivar)),istep
+      WRITE(file_name,'("../input/divadata/",a)')TRIM(VARFINFO)
 !
       close(84)
       open (unit=84,file=file_name,STATUS='old')
@@ -765,10 +740,8 @@
 !
       ivar = 2
 !
-      WRITE(VARFINFO,
-     &'(a,".1",i4.4,".info")')TRIM(var_name(ivar)),istep
-      WRITE(file_name,
-     &'("../input/divadata/",a)')TRIM(VARFINFO)
+      WRITE(VARFINFO,'(a,".1",i4.4,".info")')TRIM(var_name(ivar)),istep
+      WRITE(file_name,'("../input/divadata/",a)')TRIM(VARFINFO)
 !
       close(84)
       open (unit=84,file=file_name,STATUS='old')
@@ -780,10 +753,8 @@
 !
       ivar = 1
 !
-      WRITE(DATAFILE,
-     &'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
-      WRITE(file_name,'("../input/divadata/"
-     &,a,".1",i4.4)')TRIM(var_name(ivar)),istep
+      WRITE(DATAFILE,'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
+      WRITE(file_name,'("../input/divadata/",a,".1",i4.4)')TRIM(var_name(ivar)),istep
 !
       close(84)
       open (unit=84,file=file_name,STATUS='old',POSITION='APPEND')
@@ -801,10 +772,8 @@
 !
       ivar = 2
 !
-      WRITE(DATAFILE,
-     &'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
-      WRITE(file_name,'("../input/divadata/"
-     &,a,".1",i4.4)')TRIM(var_name(ivar)),istep
+      WRITE(DATAFILE,'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
+      WRITE(file_name,'("../input/divadata/",a,".1",i4.4)')TRIM(var_name(ivar)),istep
 !
       close(84)
       open (unit=84,file=file_name,STATUS='old',POSITION='APPEND')
@@ -827,24 +796,18 @@
       ii = sflag1 + psaldata_nmb(1)
       jj = tflag1 + tempdata_nmb(1)
 !
-      write(12,*)'nbr of salinity data to be added  for level',
-     &                                              layer,': ',sflag1
-      write(12,*)'nbr of temperature data to be added for level',
-     &                                              layer,': ',tflag1
+      write(12,*)'nbr of salinity data to be added  for level',layer,': ',sflag1
+      write(12,*)'nbr of temperature data to be added for level',layer,': ',tflag1
 !
-      write(12,*)' new psal data number  for level',
-     &                                            layer,': ',ii
-      write(12,*)' new temp data number  for level',
-     &                                            layer,': ',jj
+      write(12,*)' new psal data number  for level',layer,': ',ii
+      write(12,*)' new temp data number  for level',layer,': ',jj
       write(12,*)' '
 !
       istep = layer
       ivar = 1
 !
-      WRITE(VARFINFO,
-     &'(a,".1",i4.4,".info")')TRIM(var_name(ivar)),istep
-      WRITE(file_name,
-     &'("../input/divadata/",a)')TRIM(VARFINFO)
+      WRITE(VARFINFO,'(a,".1",i4.4,".info")')TRIM(var_name(ivar)),istep
+      WRITE(file_name,'("../input/divadata/",a)')TRIM(VARFINFO)
 !
       close(84)
       open (unit=84,file=file_name,STATUS='old')
@@ -854,10 +817,8 @@
 !
       ivar = 2
 !
-      WRITE(VARFINFO,
-     &'(a,".1",i4.4,".info")')TRIM(var_name(ivar)),istep
-      WRITE(file_name,
-     &'("../input/divadata/",a)')TRIM(VARFINFO)
+      WRITE(VARFINFO,'(a,".1",i4.4,".info")')TRIM(var_name(ivar)),istep
+      WRITE(file_name,'("../input/divadata/",a)')TRIM(VARFINFO)
 !
       close(84)
       open (unit=84,file=file_name,STATUS='old')
@@ -869,10 +830,8 @@
 !
       ivar = 1
 !
-      WRITE(DATAFILE,
-     &'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
-      WRITE(file_name,'("../input/divadata/"
-     &,a,".1",i4.4)')TRIM(var_name(ivar)),istep
+      WRITE(DATAFILE,'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
+      WRITE(file_name,'("../input/divadata/",a,".1",i4.4)')TRIM(var_name(ivar)),istep
 !
       open (unit=84,file=file_name,STATUS='old',POSITION='APPEND')
       DO j = 1,jmax
@@ -889,10 +848,8 @@
 !
       ivar = 2
 !
-      WRITE(DATAFILE,
-     &'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
-      WRITE(file_name,'("../input/divadata/"
-     &,a,".1",i4.4)')TRIM(var_name(ivar)),istep
+      WRITE(DATAFILE,'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
+      WRITE(file_name,'("../input/divadata/",a,".1",i4.4)')TRIM(var_name(ivar)),istep
 !
       open (unit=84,file=file_name,STATUS='old',POSITION='APPEND')
       DO j = 1,jmax

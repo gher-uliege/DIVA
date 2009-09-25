@@ -22,7 +22,7 @@
        endif
        
        call pingpong(IFL,0,1)
-c       call system('sleep 1')
+!c       call system('sleep 1')
        call pingpong(IFL,1,1)
        
        if (IFL.EQ.1) then
@@ -37,7 +37,7 @@ c       call system('sleep 1')
        call pingpong(IFL,1,0)
        call pingpong(IFL,0,0)
        enddo
-c       call pingpong(IFL,1,0)
+!c       call pingpong(IFL,1,0)
        else
        
        write(6,*) 'Reader'
@@ -79,23 +79,23 @@ c       call pingpong(IFL,1,0)
          integer IRW,IRWM,IFIRST,isthere,istherea
          integer irwt,irwtb,irwtc,irwtd
          common /pp/irwt,irwtb,irwtc,irwtd
-C irw=0: reader
-C irw=1: writer
-C irwm=0: read message
-C irwm=1: write message
+!C irw=0: reader
+!C irw=1: writer
+!C irwm=0: read message
+!C irwm=1: write message
 
-c          write(6,*) 'Getting into pinpong',irw,irwm,ifirst
+!c          write(6,*) 'Getting into pinpong',irw,irwm,ifirst
           if (ifirst.eq.1) then
            if(irw.eq.1) then
            write(6,*) 'Starting writer'
-C ping in write only here
+!C ping in write only here
            if(irwm.eq.0) then
            write(6,*) 'w:opening dvping to write'
            open(88,file='../dvping')
            irwt=0
            irwtd=0
 
-C pong in read only here
+!C pong in read only here
            else
            write(6,*) 'w:opening dvpong to read'
            open(89,file='../dvpong')
@@ -103,12 +103,12 @@ C pong in read only here
            endif
                         else
            write(6,*) 'Starting reader'
-C pong in write only here
+!C pong in write only here
            if(irwm.eq.1) then
            write(6,*) 'r:opening dvpong to write'
            open(89,file='dvpong')
 
-C ping in read only here
+!C ping in read only here
            else
            write(6,*) 'r:opening dvping to read'
            open(88,file='dvping')
@@ -119,19 +119,19 @@ C ping in read only here
            endif
          else
            if(irw.eq.1) then
-C ping in write only here
+!C ping in write only here
            if(irwm.eq.1) then
            irwt=irwt+1
            
            write(88,100) irwt
            call flush(88)
            else
-C pong in read only here
+!C pong in read only here
  11        continue
            
-c           call system('sleep 0.001')
+!c           call system('sleep 0.001')
            read(89,100) istherea
-c           write(6,*) 'w: waiting',istherea
+!c           write(6,*) 'w: waiting',istherea
            
            irwtd=irwtd+1
            
@@ -143,20 +143,20 @@ c           write(6,*) 'w: waiting',istherea
            endif
            endif
                         else
-C pong in write only here
+!C pong in write only here
            if(irwm.eq.1) then
            irwtc=irwtc+1
            
            write(89,100) irwtc
            call flush(89)
-C ping in read only here
+!C ping in read only here
            else
            
  111       continue
            
-c           call system('sleep 0.001')
+!c           call system('sleep 0.001')
            read(88,100) isthere
-c           write(6,*) 'r: waiting',isthere
+!c           write(6,*) 'r: waiting',isthere
            
            irwtb=irwtb+1
            if(isthere.ne.irwtb) then
@@ -166,11 +166,11 @@ c           write(6,*) 'r: waiting',isthere
            
            
            endif
-c           write(6,*) 'received from writer',isthere
+!c           write(6,*) 'received from writer',isthere
            endif
           endif
-c          write(6,*) 'Getting out of pinpong',irw,irwm,ifirst
-c          call system('sleep 0.001')
+!c          write(6,*) 'Getting out of pinpong',irw,irwm,ifirst
+!c          call system('sleep 0.001')
  100      format(I10)
           return
           end
@@ -181,23 +181,23 @@ c          call system('sleep 0.001')
          integer IRW,IRWM,IFIRST,isthere,istherea
          integer irwt,irwtb,irwtc,irwtd
          common /pp/irwt,irwtb,irwtc,irwtd
-C irw=0: reader
-C irw=1: writer
-C irwm=0: read message
-C irwm=1: write message
+!C irw=0: reader
+!C irw=1: writer
+!C irwm=0: read message
+!C irwm=1: write message
 
           write(6,*) 'Getting into pinpong',irw,irwm,ifirst
           if (ifirst.eq.1) then
            if(irw.eq.1) then
            write(6,*) 'Starting writer'
-C ping in write only here
+!C ping in write only here
            if(irwm.eq.0) then
            write(6,*) 'w:opening dvping to write'
            open(88,file='../dvping')
            irwt=0
            irwtd=0
 
-C pong in read only here
+!C pong in read only here
            else
            write(6,*) 'w:opening dvpong to read'
            open(89,file='../dvpong')
@@ -205,12 +205,12 @@ C pong in read only here
            endif
                         else
            write(6,*) 'Starting reader'
-C pong in write only here
+!C pong in write only here
            if(irwm.eq.1) then
            write(6,*) 'r:opening dvpong to write'
            open(89,file='dvpong')
 
-C ping in read only here
+!C ping in read only here
            else
            write(6,*) 'r:opening dvping to read'
            open(88,file='dvping')
@@ -221,19 +221,19 @@ C ping in read only here
            endif
          else
            if(irw.eq.1) then
-C ping in write only here
+!C ping in write only here
            if(irwm.eq.1) then
            irwt=irwt+1
            rewind(88)
            write(88,100) irwt
            call flush(88)
            else
-C pong in read only here
+!C pong in read only here
  11        continue
            rewind(89)
-c           call system('sleep 0.001')
+!c           call system('sleep 0.001')
            read(89,100,end=11,err=11) istherea
-c           write(6,*) 'w: waiting',istherea
+!c           write(6,*) 'w: waiting',istherea
            if(istherea.eq.0) goto 11
            irwtd=irwtd+1
            
@@ -247,20 +247,20 @@ c           write(6,*) 'w: waiting',istherea
            endif
            endif
                         else
-C pong in write only here
+!C pong in write only here
            if(irwm.eq.1) then
            irwtc=irwtc+1
            rewind(89)
            write(89,100) irwtc
            call flush(89)
-C ping in read only here
+!C ping in read only here
            else
            
  111       continue
            rewind(88)
-c           call system('sleep 0.001')
+!c           call system('sleep 0.001')
            read(88,100,end=111,err=111) isthere
-c           write(6,*) 'r: waiting',isthere
+!c           write(6,*) 'r: waiting',isthere
            if(isthere.eq.0) goto 111
            irwtb=irwtb+1
            if(isthere.ne.irwtb) then
@@ -273,11 +273,11 @@ c           write(6,*) 'r: waiting',isthere
            call flush(89)
            
            endif
-c           write(6,*) 'received from writer',isthere
+!c           write(6,*) 'received from writer',isthere
            endif
           endif
           write(6,*) 'Getting out of pinpong',irw,irwm,ifirst
-c          call system('sleep 0.001')
+!c          call system('sleep 0.001')
  100      format(I10)
           return
           end

@@ -3,7 +3,7 @@
       
       include'iodv.h'
 
-C 
+!C
       real*4 x(nmax,ncmax),y(nmax,ncmax),lc,lcm
       real*8 surf(ncmax)
       integer ip(ncmax),n,i
@@ -12,12 +12,12 @@ C
       common/rminval/rmin
       
       if(iodv.eq.1) then
-c**rs 
+!c**rs
       write(6,*) 'Opening domain.raw'
       open(10,file='domain.raw')
-c**rs
+!c**rs
       endif      
-C read the n contours (maximum number ncmax)
+!C read the n contours (maximum number ncmax)
       read(10,*,err=997) n
       do i=1,n
        read(10,*,err=998) ip(i)
@@ -26,10 +26,8 @@ C read the n contours (maximum number ncmax)
        if(j.gt.ip(i)) goto 101
        read(10,*,err=999) x(j,i),y(j,i)
        if(j.gt.1) then
-	    if(abs(x(j,i)-x(j-1,i)).lt.
-     &     0.000001*abs(x(j,i)+x(j-1,i))) then
-	    if(abs(y(j,i)-y(j-1,i)).lt.
-     &     0.000001*abs(y(j,i)+y(j-1,i))) then
+	    if(abs(x(j,i)-x(j-1,i)).lt.0.000001*abs(x(j,i)+x(j-1,i))) then
+	    if(abs(y(j,i)-y(j-1,i)).lt.0.000001*abs(y(j,i)+y(j-1,i))) then
 	    write(6,*) 'Found two succesive identical points ', I, J
 	    j=j-1
 	    ip(i)=ip(i)-1
@@ -43,7 +41,7 @@ C read the n contours (maximum number ncmax)
       enddo
       
       close(10)
-C
+!C
       write(6,*) 'Check for splitted contours'
       
  135  continue
@@ -52,10 +50,8 @@ C
       do jj=1,n
       if(ii.ne.jj.and.ip(ii).ne.0.and.ip(jj).ne.0) then
        
-      if(abs(x(1,jj)-x(ip(ii),ii)).lt.
-     &     0.000001*abs(x(1,jj)+x(ip(ii),ii))) then
-      if(abs(y(1,jj)-y(ip(ii),ii)).lt.
-     &     0.000001*abs(y(1,jj)+y(ip(ii),ii))) then
+      if(abs(x(1,jj)-x(ip(ii),ii)).lt.0.000001*abs(x(1,jj)+x(ip(ii),ii))) then
+      if(abs(y(1,jj)-y(ip(ii),ii)).lt.0.000001*abs(y(1,jj)+y(ip(ii),ii))) then
      
       write(6,*) 'Try to connect contours',ii,jj,ip(ii),ip(jj)
        do i=2,ip(jj)
@@ -77,9 +73,9 @@ C
       write(6,*) 'no splitted contour found anymore'     
  963  continue
       if(iodv.eq.1) then     
-c**rs
+!c**rs
       open(11,file='meshgen.prm')
-c**rs
+!c**rs
       endif
 
 
@@ -92,7 +88,7 @@ c**rs
     
       close(11)
 
-C Calculate bounding box
+!C Calculate bounding box
       xmin=x(1,1)
       xmax=x(1,1)
       ymin=y(1,1)
@@ -105,15 +101,15 @@ C Calculate bounding box
        ymax=max(ymax,y(j,i))
        enddo
       enddo
-C for contour i, there are ip(i) points on the contour (maximum nmax)
+!C for contour i, there are ip(i) points on the contour (maximum nmax)
       nochange=0
 
       write(6,*) 'Read successfully ',n, ' contours'
       write(6,*) 'in the box for x in ',xmin,' to ',xmax
       write(6,*) 'and y between ', ymin, ' and', ymax
 
-C Need to think about closing or not contours... and/or last segment..
-C if not closed add point do close for easier calculation
+!C Need to think about closing or not contours... and/or last segment..
+!C if not closed add point do close for easier calculation
       eps=0.000001
       do i=1,n
       isclosed=0
@@ -122,44 +118,40 @@ C if not closed add point do close for easier calculation
       isclosed=1
       endif
       endif
-C if not closed, add point
+!C if not closed, add point
       if(isclosed.eq.0) then
       write(6,*) 'Closing contour ',i,' for convencience'
       write(6,*) ip(i), ' points originally'
       ip(i)=ip(i)+1
       endif
-C make sure it is closed
+!C make sure it is closed
       x(ip(i),i)=x(1,i)
       y(ip(i),i)=y(1,i)
       enddo
 
-C Verify number of crossings of segments 
+!C Verify number of crossings of segments
       ncrossed=0
       
       do i=1,n
         do j=1,ip(i)-1
-C Check is segment of point (j,j+1) of contour (i) is crossing any other segment
-C look only at those not yet tested before
-C
+!C Check is segment of point (j,j+1) of contour (i) is crossing any other segment
+!C look only at those not yet tested before
+!C
            jjj=0
            if(j.eq.1) jjj=1
            do jj=j+2,ip(i)-1-jjj
            iscross=0
            ii=i
-             call iscrossing(x(j,i),y(j,i),x(j+1,i),y(j+1,i),
-     &                       x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),
-     &                       iscross)
+             call iscrossing(x(j,i),y(j,i),x(j+1,i),y(j+1,i),x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),iscross)
              ncrossed=ncrossed+iscross
            enddo
 
            
-C          on other contours
+!C          on other contours
            do ii=i+1,n
              do jj=1,ip(ii)-1
              iscross=0
-             call iscrossing(x(j,i),y(j,i),x(j+1,i),y(j+1,i),
-     &                       x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),
-     &                       iscross)
+             call iscrossing(x(j,i),y(j,i),x(j+1,i),y(j+1,i),x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),iscross)
              ncrossed=ncrossed+iscross
              enddo
            enddo
@@ -170,7 +162,7 @@ C          on other contours
 
       write(6,*) 'we found ',ncrossed, ' crossings'
 
-C Check for "idendical points" and "close" points
+!C Check for "idendical points" and "close" points
        identical=0
        nclose=0
       do i=1,n
@@ -193,11 +185,10 @@ C Check for "idendical points" and "close" points
         enddo
        enddo
       enddo
-      write(6,*) ' number of couple of points that are identical '
-     & ,identical
+      write(6,*) ' number of couple of points that are identical ',identical
       write(6,*) ' number of couples of close points', nclose
-C
-C  
+!C
+!C
       write(6,*) 'Try to eliminate identical points'
       ntries=0
  1030 continue
@@ -227,7 +218,7 @@ C
           y(jj,ii)=(y(jjm1,ii)+2*y(jj,ii)+y(jj+1,ii))/4
           
           if (ntries.gt.100) then
-C Eliminate points
+!C Eliminate points
           do jjjj=j,ip(i)-1
           x(jjjj,i)=x(jjjj+1,i)
           y(jjjj,i)=y(jjjj+1,i)
@@ -266,65 +257,63 @@ C Eliminate points
         write(6,*) 'Signed surface of contour ',i, ': ',surf(i)/2 
        enddo
        write(6,*) 'Total signed surface ',AREA/2,' (+: anticlockwise)'
-       write(6,*) 'Estimated nb of elements : ',
-     &    NINT(ABS(AREA/(RLLC*RLLC)))
+       write(6,*) 'Estimated nb of elements : ',NINT(ABS(AREA/(RLLC*RLLC)))
        
           
-C 
+!C
       
-C while there has been any change on the contour points loop over contours
+!C while there has been any change on the contour points loop over contours
  1    continue
-c      do i=1,n
-c      write(6,*) ip(i),i
-c      enddo
+!c      do i=1,n
+!c      write(6,*) ip(i),i
+!c      enddo
       if (nochange.eq.1) goto 99
       nochange=1
       
       i=0
  10   continue
       i=i+1
-c      write(6,*) 'loop over i',i,nochange
+!c      write(6,*) 'loop over i',i,nochange
 
-C when i > n finished a loop over all contours, try again      
+!C when i > n finished a loop over all contours, try again
       if(i.gt.n) goto 1
       if(ip(i).eq.0) goto 10
-C now look into contour i
+!C now look into contour i
       if(ip(i).le.4) then
-C if one segment too short, eliminate contour
+!C if one segment too short, eliminate contour
          dist1=(x(1,i)-x(2,i))**2+(y(1,i)-y(2,i))**2
          dist2=(x(3,i)-x(2,i))**2+(y(3,i)-y(2,i))**2
          dist3=(x(1,i)-x(3,i))**2+(y(1,i)-y(3,i))**2
-         if ((dist1.le.rmin).or.
-     &         (dist2.le.rmin).or.(dist3.le.rmin)) then
+         if ((dist1.le.rmin).or.(dist2.le.rmin).or.(dist3.le.rmin)) then
          nochange=0
          ip(i)=0
          endif
-C next contour
+!C next contour
       goto 10   
       endif
 
 
-C 
+!C
       j=0
-C 
+!C
  11   continue
       j=j+1
       if (j.gt.ip(i)-1) goto 10
       
       dist=(x(j,i)-x(j+1,i))**2+(y(j,i)-y(j+1,i))**2
-c      if(i.eq.9) write(6,*) 'dist??',dist,rmin
+!c      if(i.eq.9) write(6,*) 'dist??',dist,rmin
       if (dist.gt.rmin) goto 11
-C if small distance between points: candidate for elimination
+!C if small distance between points: candidate for elimination
       ifix1=0
       ifix2=0
-       if(
-     &   ((x(j,i).eq.xmin).or.(x(j,i).eq.xmax)).or.
-     &   ((y(j,i).eq.ymin).or.(y(j,i).eq.ymax))
-     &  ) ifix1=1
-      if(
-     &   ((x(j+1,i).eq.xmin).or.(x(j+1,i).eq.xmax)).or.
-     &   ((y(j+1,i).eq.ymin).or.(y(j+1,i).eq.ymax))
-     &  ) ifix2=1
+       if(                                             &
+        ((x(j,i).eq.xmin).or.(x(j,i).eq.xmax)).or.    &
+        ((y(j,i).eq.ymin).or.(y(j,i).eq.ymax))        &
+       ) ifix1=1
+      if(                                                 &
+        ((x(j+1,i).eq.xmin).or.(x(j+1,i).eq.xmax)).or.   &
+        ((y(j+1,i).eq.ymin).or.(y(j+1,i).eq.ymax))       &
+       ) ifix2=1
       
       if (j.eq.1) ifix1=1
       if (j.eq.(ip(i)-1)) ifix2=1    
@@ -343,41 +332,33 @@ C if small distance between points: candidate for elimination
       xnew=0.5*(x(j,i)+x(j+1,i))
       ynew=0.5*(y(j,i)+y(j+1,i))
  55   continue
-C
-C now check if when replacing point j with new values and
-C dropping j+1, the two new segments do not cross the others
+!C
+!C now check if when replacing point j with new values and
+!C dropping j+1, the two new segments do not cross the others
       iscross=0
-C check on crossing
+!C check on crossing
 
 
-C          on other contours
+!C          on other contours
            do ii=1,n
              if (ii.eq.i) goto 33
              do jj=1,ip(ii)-1
              
              if((j.gt.1).and.(j.lt.(ip(i)-1))) then
-             call iscrossing(x(j-1,i),y(j-1,i),xnew,ynew,
-     &                       x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),
-     &                       iscross)
+             call iscrossing(x(j-1,i),y(j-1,i),xnew,ynew,x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),iscross)
              if (iscross.eq.1) goto 33
-             call iscrossing(x(j+2,i),y(j+2,i),xnew,ynew,
-     &                       x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),
-     &                       iscross)
+             call iscrossing(x(j+2,i),y(j+2,i),xnew,ynew,x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),iscross)
              if (iscross.eq.1) goto 33
              endif
              
              if(j.eq.1) then
-             call iscrossing(x(3,i),y(3,i),xnew,ynew,
-     &                       x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),
-     &                       iscross)
+             call iscrossing(x(3,i),y(3,i),xnew,ynew,x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),iscross)
              if (iscross.eq.1) goto 33
              endif
              
              
              if(j.eq.(ip(i)-1)) then
-             call iscrossing(x(j-1,i),y(j-1,i),xnew,ynew,
-     &                       x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),
-     &                       iscross)
+             call iscrossing(x(j-1,i),y(j-1,i),xnew,ynew,x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),iscross)
              if (iscross.eq.1) goto 33
              endif
              
@@ -391,96 +372,84 @@ C          on other contours
            write(6,*) 'some crossing with other contour'
            endif
             if(icross.eq.1) goto 44
-C Now check on contour itself:
+!C Now check on contour itself:
        ii=i
-c      write(6,*) 'need to add a test on contour itself'
-C if they cross, better not change
-c
-c For the left segment
+!c      write(6,*) 'need to add a test on contour itself'
+!C if they cross, better not change
+!c
+!c For the left segment
       if (j.eq.1) then
              do jj=4,ip(i)-2
-             call iscrossing(x(3,i),y(3,i),xnew,ynew,
-     &                       x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),
-     &                       iscross)
-c             if(iscross.eq.1) then
-c             write(6,*) 'a',iscross,jj,j
-c             endif
+             call iscrossing(x(3,i),y(3,i),xnew,ynew,x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),iscross)
+!c             if(iscross.eq.1) then
+!c             write(6,*) 'a',iscross,jj,j
+!c             endif
              if (iscross.eq.1) goto 44
              enddo
                   else
              jjj=0
              if(j.eq.2) jjj=1
              do jj=j+2,ip(i)-1-jjj
-             call iscrossing(x(j-1,i),y(j-1,i),xnew,ynew,
-     &                       x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),
-     &                       iscross)
-c             if(iscross.eq.1) then
-c             write(6,*) 'b',iscross,jj,j
-c             endif
+             call iscrossing(x(j-1,i),y(j-1,i),xnew,ynew,x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),iscross)
+!c             if(iscross.eq.1) then
+!c             write(6,*) 'b',iscross,jj,j
+!c             endif
              if (iscross.eq.1) goto 44
              enddo
              jjj=0
              if(j.eq.ip(i)-1) jjj=1
              do jj=1+jjj,j-3
-             call iscrossing(x(j-1,i),y(j-1,i),xnew,ynew,
-     &                       x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),
-     &                       iscross)
-c             if(iscross.eq.1) then
-c             write(6,*) 'c',iscross,jj,j
-c             endif
+             call iscrossing(x(j-1,i),y(j-1,i),xnew,ynew,x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),iscross)
+!c             if(iscross.eq.1) then
+!c             write(6,*) 'c',iscross,jj,j
+!c             endif
              if (iscross.eq.1) goto 44
              enddo  
       endif
       
-C For right segment
+!C For right segment
       if (j.eq. (ip(i)-1)) then
              do jj=2,ip(i)-4
-             call iscrossing(x(j-1,i),y(j-1,i),xnew,ynew,
-     &                       x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),
-     &                       iscross)
-c             if(iscross.eq.1) then
-c             write(6,*) 'd',iscross,jj,j
-c             endif
+             call iscrossing(x(j-1,i),y(j-1,i),xnew,ynew,x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),iscross)
+!c             if(iscross.eq.1) then
+!c             write(6,*) 'd',iscross,jj,j
+!c             endif
              if (iscross.eq.1) goto 44
              enddo
                   else
              jjj=0
              if (j.eq.ip(i)-2) jjj=1
              do jj=1+jjj,j-2
-             call iscrossing(x(j+2,i),y(j+2,i),xnew,ynew,
-     &                       x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),
-     &                       iscross)
-c             if(iscross.eq.1) then
-c             write(6,*) 'e',iscross,jj,j
-c             endif
+             call iscrossing(x(j+2,i),y(j+2,i),xnew,ynew,x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),iscross)
+!c             if(iscross.eq.1) then
+!c             write(6,*) 'e',iscross,jj,j
+!c             endif
              if (iscross.eq.1) goto 44
              enddo
              jjj=0
              if(j.eq.1) jjj=1
              do jj=j+3,ip(i)-1-jjj
-             call iscrossing(x(j+2,i),y(j+2,i),xnew,ynew,
-     &                       x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),
-     &                       iscross)
-c             if(iscross.eq.1) then
-c             write(6,*) 'f',iscross,jj,j
-c             endif
+             call iscrossing(x(j+2,i),y(j+2,i),xnew,ynew,x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii), iscross)
+!c             if(iscross.eq.1) then
+!c             write(6,*) 'f',iscross,jj,j
+!c             endif
              if (iscross.eq.1) goto 44
              enddo
       endif
 
  44   continue
-c       if (iscross.eq.1) then
-c        write(6,*) 'point cannot be eliminated otherwise new crossings'
-c       endif
+!c       if (iscross.eq.1) then
+!c        write(6,*) 'point cannot be eliminated otherwise new crossings'
+!c       endif
       if (iscross.eq.1) goto 11
       
-C they do not cross
+!C they do not cross
 
 
       
 
  
-C OK, point to eliminate
+!C OK, point to eliminate
       nochange=0
       x(j,i)=xnew
       y(j,i)=ynew
@@ -490,42 +459,40 @@ C OK, point to eliminate
       enddo
       ip(i)=ip(i)-1
       
-C ok, point eliminated, goto next contour
+!C ok, point eliminated, goto next contour
       goto 10
       
       
 
-C try next point on same contour      
+!C try next point on same contour
       goto 11
-C
-C
+!C
+!C
  50   continue
-C try next contour
+!C try next contour
       goto 10      
       
       
  99   continue
-C no change in point positions anymore
-C perform final check on contour segments crossing
-C If no elimination (possible error in detection): uncomment line
-C     GOTO 4356
+!C no change in point positions anymore
+!C perform final check on contour segments crossing
+!C If no elimination (possible error in detection): uncomment line
+!C     GOTO 4356
  8854 continue
-C Verify number of crossings of segments 
+!C Verify number of crossings of segments
       ncrossed=0
       write(6,*) 'Starting checks again'
       do i=1,n
         do j=1,ip(i)-1
-C Check is segment of point (j,j+1) of contour (i) is crossing any other segment
-C look only at those not yet tested before
-C
+!C Check is segment of point (j,j+1) of contour (i) is crossing any other segment
+!C look only at those not yet tested before
+!C
            jjj=0
            if(j.eq.1) jjj=1
            do jj=j+2,ip(i)-1-jjj
            iscross=0
            ii=i
-             call iscrossing(x(j,i),y(j,i),x(j+1,i),y(j+1,i),
-     &                       x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),
-     &                       iscross)
+             call iscrossing(x(j,i),y(j,i),x(j+1,i),y(j+1,i),x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),iscross)
              ncrossed=ncrossed+iscross
              if(iscross.eq.1) then
              write(6,*) 'scrossed',i,j,ii,jj,jjj,ip(i),ncrossed
@@ -543,14 +510,12 @@ C
        write(6,*) 'On other contours'
        do i=1,n
         do j=1,ip(i)-1
-C     
-c     on other contours
+!C
+!c     on other contours
            do ii=i+1,n
              do jj=1,ip(ii)-1
              iscross=0
-             call iscrossing(x(j,i),y(j,i),x(j+1,i),y(j+1,i),
-     &                       x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),
-     &                       iscross)
+             call iscrossing(x(j,i),y(j,i),x(j+1,i),y(j+1,i),x(jj,ii),y(jj,ii),x(jj+1,ii),y(jj+1,ii),iscross)
              ncrossed=ncrossed+iscross
              if(iscross.eq.1) then 
              write(6,*) 'crossed',i,j,ii,jj,ncrossed
@@ -583,9 +548,9 @@ c     on other contours
          if (abs(x(j,i)-x(jj,ii)).lt.(eps*abs(x(j,i)+x(jj,ii)))) then
          if (abs(y(j,i)-y(jj,ii)).lt.(eps*abs(y(j,i)+y(jj,ii)))) then
           identical=identical+1
-c          write(6,*) 'identical points: '
-c          write(6,*)  'contour ', i, ' point ',j
-c          write(6,*)  'with contour ', ii, ' point ',jj
+!c          write(6,*) 'identical points: '
+!c          write(6,*)  'contour ', i, ' point ',j
+!c          write(6,*)  'with contour ', ii, ' point ',jj
          endif
          endif
          dist=(x(j,i)-x(jj,ii))**2+(y(j,i)-y(jj,ii))**2
@@ -595,8 +560,7 @@ c          write(6,*)  'with contour ', ii, ' point ',jj
         enddo
        enddo
       enddo
-      write(6,*) ' number of after rearranging are identical 
-     & after elimination',identical
+      write(6,*) ' number of after rearranging are identical after elimination',identical
       write(6,*) ' number of couples of remaining close points', nclose
 
       AREA=0
@@ -606,19 +570,18 @@ c          write(6,*)  'with contour ', ii, ' point ',jj
          surf(i)=surf(i)+(y(j+1,i)-y(j,i))*(x(j+1,i)+x(j,i))
         enddo
         AREA=AREA+surf(i)
-c        write(6,*) 'Signed surface of contour ',i, ': ',surf(i)/2 
+!c        write(6,*) 'Signed surface of contour ',i, ': ',surf(i)/2
        enddo
        write(6,*) 'Total signed surface ',AREA/2,' (+: anticlockwise)'
-       write(6,*) 'Estimated nb of elements : ',
-     & NINT(ABS(AREA/(RLLC*RLLC)))
+       write(6,*) 'Estimated nb of elements : ',NINT(ABS(AREA/(RLLC*RLLC)))
       write(6,*) 'Eliminating areas less of 0.01 percent of area'
       do i=1,n
       if (abs(surf(i)).lt.0.0001*abs(AREA)) then
       ip(i)=0
       endif
       enddo
-C write out only contours with at least three points and
-C     GOTO 8421
+!C write out only contours with at least three points and
+!C     GOTO 8421
       write(6,*) 'Now try to drop small areas with crossing',ncrossed
    
       ncrossec=0
@@ -629,14 +592,14 @@ C     GOTO 8421
       ii=ncr(jjj,3)
       jj=ncr(jjj,4)
       write(6,*) 'Areas of contours',i,ii,surf(i),surf(ii)
-C Better : for contours that cross, swith tails of contours (and copy last points)
-C For self-crossing: split the contour into two (add new contour at end)
+!C Better : for contours that cross, swith tails of contours (and copy last points)
+!C For self-crossing: split the contour into two (add new contour at end)
 
        if(surf(ii).ne.0.and.surf(i).ne.0) then
         if(n+1.gt.ncmax) stop 'increase ncmax'
         ncrossec=ncrossec+1
          if(i.ne.ii) then
-C two different contours
+!C two different contours
           write(6,*) 'rearranging tails of contours',i,ii
           write(6,*) 'points',j,jj,ip(i),ip(ii)
           write(6,*) 'Should also cross again later:'
@@ -669,7 +632,7 @@ C two different contours
           isjj=1
           endif
           if(j2.eq.j1+1) then
-C just drop point j2
+!C just drop point j2
           do jjjjj=j2+1,ip(i)
           x(jjjjj-1,i)=x(jjjjj,i)
           y(jjjjj-1,i)=y(jjjjj,i)
@@ -680,7 +643,7 @@ C just drop point j2
           
           endif
           if(jj2.eq.jj1+1) then
-C just drop point jj2
+!C just drop point jj2
           do jjjjj=jj2+1,ip(ii)
           x(jjjjj-1,ii)=x(jjjjj,ii)
           y(jjjjj-1,ii)=y(jjjjj,ii)
@@ -691,7 +654,7 @@ C just drop point jj2
           
           endif
           if(j1.eq.j2+1) then
-C just drop point j2
+!C just drop point j2
           do jjjjj=j1+1,ip(i)
           x(jjjjj-1,i)=x(jjjjj,i)
           y(jjjjj-1,i)=y(jjjjj,i)
@@ -702,7 +665,7 @@ C just drop point j2
           
           endif
           if(jj1.eq.jj2+1) then
-C just drop point jj2
+!C just drop point jj2
           do jjjjj=jj1+1,ip(ii)
           x(jjjjj-1,ii)=x(jjjjj,ii)
           y(jjjjj-1,ii)=y(jjjjj,ii)
@@ -715,33 +678,33 @@ C just drop point jj2
           
           
                     
-C If both are at the end, reorder and hope it turns out next time:
-c          if(j.eq.ip(i)-1.) then
-c          
-c          do jjjjj=1,ip(i)-1
-c          x(jjjjj,i)=x(jjjjj+1,i)
-c          y(jjjjj,i)=y(jjjjj+1,i)
-c          enddo
-c          x(ip(i),i)=x(1,i)
-c          y(ip(i),i)=y(1,i)
-c          
-c          
-c          ncrossec=1
-c          goto 8854
-c          endif
-c          if(jj.eq.ip(ii)-1.) then
-c          do jjjjj=1,ip(ii)-1
-c          x(jjjjj,ii)=x(jjjjj+1,ii)
-c          y(jjjjj,ii)=y(jjjjj+1,ii)
-c          enddo
-c          x(ip(ii),ii)=x(1,ii)
-c          y(ip(ii),ii)=y(1,ii)
-c          
-c          ncrossec=1
-c          goto 8854
-c          endif
+!C If both are at the end, reorder and hope it turns out next time:
+!c          if(j.eq.ip(i)-1.) then
+!c
+!c          do jjjjj=1,ip(i)-1
+!c          x(jjjjj,i)=x(jjjjj+1,i)
+!c          y(jjjjj,i)=y(jjjjj+1,i)
+!c          enddo
+!c          x(ip(i),i)=x(1,i)
+!c          y(ip(i),i)=y(1,i)
+!c
+!c
+!c          ncrossec=1
+!c          goto 8854
+!c          endif
+!c          if(jj.eq.ip(ii)-1.) then
+!c          do jjjjj=1,ip(ii)-1
+!c          x(jjjjj,ii)=x(jjjjj+1,ii)
+!c          y(jjjjj,ii)=y(jjjjj+1,ii)
+!c          enddo
+!c          x(ip(ii),ii)=x(1,ii)
+!c          y(ip(ii),ii)=y(1,ii)
+!c
+!c          ncrossec=1
+!c          goto 8854
+!c          endif
 
-C Save one tail if ii into working array
+!C Save one tail if ii into working array
           if(isj.eq.1.and.isjj.eq.1) then
           
           
@@ -749,19 +712,19 @@ C Save one tail if ii into working array
           x(jjjj,n+1)=x(jjjj,ii)
           y(jjjj,n+1)=y(jjjj,ii)
           enddo
-C now put tail of i on ii
+!C now put tail of i on ii
           do jjjj=j1+1,ip(i)-1
           jjjjj=jj1+jjjj-j1
           x(jjjjj,ii)=x(jjjj,i)
           y(jjjjj,ii)=y(jjjj,i)
           enddo
-C then put saved tail on i
+!C then put saved tail on i
           do jjjj=jj1+1,ip(ii)-1
           jjjjj=j1+jjjj-jj1
           x(jjjjj,i)=x(jjjj,n+1)
           y(jjjjj,i)=y(jjjj,n+1)
           enddo
-C adapt number of points
+!C adapt number of points
           iold=ip(i)
           iiold=ip(ii)
           ip(i)=j1+iiold-jj1
@@ -777,19 +740,19 @@ C adapt number of points
           x(jjjj,n+1)=x(jjjj,ii)
           y(jjjj,n+1)=y(jjjj,ii)
           enddo
-C now put tail of i on ii
+!C now put tail of i on ii
           do jjjj=j2+1,ip(i)-1
           jjjjj=jj2+jjjj-j2
           x(jjjjj,ii)=x(jjjj,i)
           y(jjjjj,ii)=y(jjjj,i)
           enddo
-C then put saved tail on i
+!C then put saved tail on i
           do jjjj=jj2+1,ip(ii)-1
           jjjjj=j2+jjjj-jj2
           x(jjjjj,i)=x(jjjj,n+1)
           y(jjjjj,i)=y(jjjj,n+1)
           enddo
-C adapt number of points
+!C adapt number of points
           iold=ip(i)
           iiold=ip(ii)
           ip(i)=j2+iiold-jj2
@@ -817,7 +780,7 @@ C adapt number of points
           
           
           if(isj.eq.1.and.isjj.eq.-1) then
-C momentarely return contour
+!C momentarely return contour
           write(6,*) 'Returning contour',i,ii,j,jj
           do jjjjj=1,ip(ii)/2
           tr=x(jjjjj,ii)
@@ -836,19 +799,19 @@ C momentarely return contour
           x(jjjj,n+1)=x(jjjj,ii)
           y(jjjj,n+1)=y(jjjj,ii)
           enddo
-C now put tail of i on ii
+!C now put tail of i on ii
           do jjjj=j1+1,ip(i)-1
           jjjjj=jj1+jjjj-j1
           x(jjjjj,ii)=x(jjjj,i)
           y(jjjjj,ii)=y(jjjj,i)
           enddo
-C then put saved tail on i
+!C then put saved tail on i
           do jjjj=jj1+1,ip(ii)-1
           jjjjj=j1+jjjj-jj1
           x(jjjjj,i)=x(jjjj,n+1)
           y(jjjjj,i)=y(jjjj,n+1)
           enddo
-C adapt number of points
+!C adapt number of points
           iold=ip(i)
           iiold=ip(ii)
           ip(i)=j1+iiold-jj1
@@ -863,19 +826,19 @@ C adapt number of points
           x(jjjj,n+1)=x(jjjj,ii)
           y(jjjj,n+1)=y(jjjj,ii)
           enddo
-C now put tail of i on ii
+!C now put tail of i on ii
           do jjjj=j2+1,ip(i)-1
           jjjjj=jj2+jjjj-j2
           x(jjjjj,ii)=x(jjjj,i)
           y(jjjjj,ii)=y(jjjj,i)
           enddo
-C then put saved tail on i
+!C then put saved tail on i
           do jjjj=jj2+1,ip(ii)-1
           jjjjj=j2+jjjj-jj2
           x(jjjjj,i)=x(jjjj,n+1)
           y(jjjjj,i)=y(jjjj,n+1)
           enddo
-C adapt number of points
+!C adapt number of points
           iold=ip(i)
           iiold=ip(ii)
           ip(i)=j2+iiold-jj2
@@ -889,7 +852,7 @@ C adapt number of points
           if(ip(ii).ne.0) then
           x(ip(ii),ii)=x(1,ii)
           y(ip(ii),ii)=y(1,ii)
-C  return contour
+!C  return contour
           do jjjjj=1,ip(ii)/2
           tr=x(jjjjj,ii)
           x(jjjjj,ii)=x(ip(ii)-jjjjj+1,ii)
@@ -903,7 +866,7 @@ C  return contour
           endif
                     
 
-C close contours to make sure         
+!C close contours to make sure
           if(ip(i).ne.0) then
           x(ip(i),i)=x(1,i)
           y(ip(i),i)=y(1,i)
@@ -913,11 +876,11 @@ C close contours to make sure
           y(ip(ii),ii)=y(1,ii)
           endif
           else
-C Self crossing contour, eliminate for the moment.
+!C Self crossing contour, eliminate for the moment.
           write(6,*) 'Cutting contour in two',i,j,jj
-c          ip(i)=0
-c          goto 8854
-C self crossing
+!c          ip(i)=0
+!c          goto 8854
+!C self crossing
          isj=1
          if(j.gt.jj) then
          jjjjj=j
@@ -927,7 +890,7 @@ C self crossing
          write(6,*) '==================='
          write(6,*) '===========????===='
          endif
-C new contour
+!C new contour
          do jjjjj=j+1,jj
           x(jjjjj-j,n+1)=x(jjjjj,i)
           y(jjjjj-j,n+1)=y(jjjjj,i)
@@ -935,7 +898,7 @@ C new contour
          ip(n+1)=jj-j+1
          x(ip(n+1),n+1)=x(1,n+1)
          y(ip(n+1),n+1)=y(1,n+1)
-C return new contour
+!C return new contour
           do jjjjj=1,ip(n+1)/2
           tr=x(jjjjj,n+1)
           x(jjjjj,n+1)=x(ip(n+1)-jjjjj+1,n+1)
@@ -945,13 +908,13 @@ C return new contour
           y(ip(n+1)-jjjjj+1,n+1)=tr
           enddo
          if(ip(n+1).le.3) ip(n+1)=0
-C rest of contour remains, but needs to be copied
+!C rest of contour remains, but needs to be copied
          write(6,*) 'Added a contour',ip(n+1)
          n=n+1
          write(6,*) 'n',n,ip(n)
-c         do jjjjj=1,ip(n)
-c         write(6,*) x(jjjjj,n),y(jjjjj,n)
-c         enddo
+!c         do jjjjj=1,ip(n)
+!c         write(6,*) x(jjjjj,n),y(jjjjj,n)
+!c         enddo
          
          do jjjjj=jj+1,ip(i)
          jjjjjj=j+jjjjj-jj
@@ -961,32 +924,32 @@ c         enddo
          ip(i)=ip(i)-(jj-j)
          if(ip(i).le.3) ip(i)=0
          write(6,*) 'shortened contour',ip(i)        
-c         do jjjjj=1,ip(i)
-c         write(6,*) x(jjjjj,i),y(jjjjj,i)
-c         enddo
+!c         do jjjjj=1,ip(i)
+!c         write(6,*) x(jjjjj,i),y(jjjjj,i)
+!c         enddo
          endif
        goto 8854
        endif
 
 
-C      if(abs(surf(ii)).gt.abs(surf(i))) then
-C      ip(i)=0
-C      else
-C      ip(ii)=0
-C      endif
-C      if(surf(i).ne.0.and.surf(ii).ne.0) then
-c      ncrossec=ncrossec+1
-c      endif
+!C      if(abs(surf(ii)).gt.abs(surf(i))) then
+!C      ip(i)=0
+!C      else
+!C      ip(ii)=0
+!C      endif
+!C      if(surf(i).ne.0.and.surf(ii).ne.0) then
+!c      ncrossec=ncrossec+1
+!c      endif
       enddo
       if (ncrossec.gt.0) goto 8854
       
-C Finally, check sign ordering of contours contained within others:
+!C Finally, check sign ordering of contours contained within others:
 
-C     
+!C
       nnt=0
  8421 continue
-C continue until no incoherence anymore
-C but stop after 10000 iterations?
+!C continue until no incoherence anymore
+!C but stop after 10000 iterations?
       if(nnt.ge.10000) goto 4433
       nnt=nnt+1
       itopo=0
@@ -996,7 +959,7 @@ C but stop after 10000 iterations?
        enddo
       enddo
       do i=1,n
-C Check if within any other contour
+!C Check if within any other contour
       iscont=0
       if (ip(i).ne.0) then
       
@@ -1018,7 +981,7 @@ C Check if within any other contour
       endif
       enddo
       
-C start with those only with one parent
+!C start with those only with one parent
       iscont=0
  9991 continue
       iscont=iscont+1
@@ -1062,11 +1025,11 @@ C start with those only with one parent
       
       if(itopo.ne.0) goto 8421      
  4433 continue
-C do not write out the artificial closing point
+!C do not write out the artificial closing point
       if(iodv.eq.1) then
-c**rs
+!c**rs
       open(30,file='domain.checked')
-c**rs
+!c**rs
       endif
       nc=0
       do i=1,n
@@ -1075,7 +1038,7 @@ c**rs
       write(30,*) nc
       do i=1,n
       if (ip(i).ge.4) then
-C no last point
+!C no last point
         write(30,*) ip(i)-1
         do j=1,ip(i)-1
          write(30,*) x(j,i),y(j,i)
@@ -1112,9 +1075,9 @@ C no last point
       if (min(y1,y2).gt.max(y3,y4)) return
       if (max(x1,x2).lt.min(x3,x4)) return
       if (max(y1,y2).lt.min(y3,y4)) return
-C else look for intersection
-C (x,y)=x1+xi(x2-x1),y1+xi(y2-y1)
-C (x,y)=x3+eta(x4-x3),y3+eta(y4-y3)
+!C else look for intersection
+!C (x,y)=x1+xi(x2-x1),y1+xi(y2-y1)
+!C (x,y)=x3+eta(x4-x3),y3+eta(y4-y3)
       a= (x2-x1)
       b=-(x4-x3)
       e= x3-x1
@@ -1124,7 +1087,7 @@ C (x,y)=x3+eta(x4-x3),y3+eta(y4-y3)
       det=a*d-b*c
       vv=abs(a)+abs(b)+abs(c)+abs(d)
       if(abs(det).lt.0.0000001*vv) then
-C Parallel lines, calcute distance of point (x1,y1) to the second line
+!C Parallel lines, calcute distance of point (x1,y1) to the second line
       den=((x4-x3)**2+(y4-y3)**2)
       if (den.eq.0) then
       dist=0 
@@ -1134,20 +1097,20 @@ C Parallel lines, calcute distance of point (x1,y1) to the second line
       endif
       write(6,*) 'Distance ', dist
        if (dist.le.0.001*rmin) then
-C because alreadt checked to be in the same box, if zero distance,
+!C because alreadt checked to be in the same box, if zero distance,
        write(6,*) 'overlapping segments'
        write(6,*) x1,y1,x2,y2
        write(6,*) x3,y3,x4,y4
-C move one laterally
+!C move one laterally
        dxxx=-(y2-y1)
        dyyy=(x2-x1)
        dist=sqrt(dxxx*dxxx+dyyy*dyyy)
        dxxx=dxxx/dist*0.01*rmin
        dyyy=dyyy/dist*0.01*rmin
-c       x1=x1+dxxx
-c       x2=x2+dxxx
-c       y1=y1+dyyy
-c       y2=y2+dyyy
+!c       x1=x1+dxxx
+!c       x2=x2+dxxx
+!c       y1=y1+dyyy
+!c       y2=y2+dyyy
        
        write(6,*) 'moved to',rmin,dxxx,dyyy
        write(6,*) x1,y1,x2,y2
@@ -1186,11 +1149,10 @@ c       y2=y2+dyyy
       dyt=(yc(i+1)-y)
       
       III=sign(1.D0,dx*dyt-dxt*dy)
-      wangle=wangle+III*dacos(
-     &(dx*dxt+dy*dyt)/(dsqrt((dx*dx+dy*dy)*(dxt*dxt+dyt*dyt))))
+      wangle=wangle+III*dacos((dx*dxt+dy*dyt)/(dsqrt((dx*dx+dy*dy)*(dxt*dxt+dyt*dyt))))
       
       enddo
-c      write(6,*) 'Surf',surf,ip,wangle
+!c      write(6,*) 'Surf',surf,ip,wangle
       
       if(abs(wangle).le.0.1) iflag=0
       return

@@ -11,7 +11,7 @@
       stop
       end
       subroutine msum(A,B,C,N,M,valex)
-c      real*4 A(N,M),B(N,M),C(N,M)
+!c      real*4 A(N,M),B(N,M),C(N,M)
       real*4 A(M,N),B(M,N),C(M,N)
       do i=1,M
       do j=1,N
@@ -26,7 +26,7 @@ c      real*4 A(N,M),B(N,M),C(N,M)
       
 
       SUBROUTINE IMPMAT(A,L,M,NDIM,IUCT)
-C     ==================================
+!C     ==================================
       
       DIMENSION A(NDIM,M)
       K=1
@@ -45,7 +45,7 @@ C     ==================================
       
 
       SUBROUTINE RDMAT(A,L,M,NDIM,IUCT)
-C     ==================================
+!C     ==================================
       
       DIMENSION A(NDIM,M)
       K=1

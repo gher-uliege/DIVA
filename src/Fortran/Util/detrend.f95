@@ -1,5 +1,5 @@
        parameter(icl=50,imax=1000000,ig=5)
-C First; data index, second: class index, third: group index
+!C First; data index, second: class index, third: group index
        real*4 d(imax*icl)
        real*4 da(imax*icl)
        real*4 w(imax*icl)
@@ -21,7 +21,7 @@ C First; data index, second: class index, third: group index
        write(6,*) ' or increase IG in detrend.f and recompile'
        stop
        endif
-C make a 2 pass algo
+!C make a 2 pass algo
        do j=1,ig
        do i=1,icl
        ic(i,j)=0
@@ -40,7 +40,7 @@ C make a 2 pass algo
        do k=1,MG
        ii=indi(k)
        iclm(k)=max(iclm(k),ii)
-C       write(6,*) k,iclm(k)
+!C       write(6,*) k,iclm(k)
        ic(ii,k)=ic(ii,k)+1
        ipoint(ic(ii,k),ii,k)=ndata
        enddo
@@ -51,12 +51,12 @@ C       write(6,*) k,iclm(k)
        rms3=rms3+ww
        goto 1
  99    continue
-C now subtract
+!C now subtract
        write(6,*) 'Summary'
        write(6,*) 'Data',ndata
        write(6,*) 'Groups',MG
        write(6,*) 'Classes',(iclm(k),k=1,MG)
-C first group
+!C first group
        do k=1,MG
        ijmclass=iclm(k)
        do i=1,iclm(k)
@@ -67,7 +67,7 @@ C first group
        wm(i,k)=wm(i,k)+w(indy)
        enddo
        if (wm(i,k).eq.0.) then
-C  no data in class
+!C  no data in class
        write(6,*) 'No data in class',i, 'group',k
        rm(i,k)=0.
        ijmclass=ijmclass-1
@@ -95,14 +95,14 @@ C  no data in class
        enddo
        close(97)
        rewind(97)
-C now subtract from data
+!C now subtract from data
        do i=1,iclm(k)
        do jj=1,ic(i,k)
        indy=ipoint(jj,i,k)
        d(indy)=d(indy)-rm(i,k)
        enddo
        enddo
-C now next group
+!C now next group
        enddo
        rewind(88)
 

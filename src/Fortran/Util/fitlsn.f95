@@ -47,8 +47,7 @@
         write(6,*) 'Linear regression '
         call linreg(x,y,d,n)
         endif
-        call lfit(x,y,d,n,rl,sn,varbak,work,w2,w3,iw,icoord,rcoord
-     & ,nsamp,rqual)
+        call lfit(x,y,d,n,rl,sn,varbak,work,w2,w3,iw,icoord,rcoord,nsamp,rqual)
         if(icoord.eq.1) then
         RL=RL/6400*180/3.14
         endif
@@ -67,10 +66,8 @@
         write(66,*) 'Quality of the fit (0: bad 1: good)'
         write(66,*) rqual
         if (icoord.ge.1) then
-        write(66,*) 'For information: correlation length in km is',
-     &      RL*6400.*3.14/180.
-        write(6,*) 'For information: correlation length in km is',
-     &      RL*6400.*3.14/180.
+        write(66,*) 'For information: correlation length in km is',RL*6400.*3.14/180.
+        write(6,*) 'For information: correlation length in km is',RL*6400.*3.14/180.
 
              endif
         stop
@@ -99,10 +96,8 @@
         return
         end
         
-        subroutine lfit(x,y,d,n,rl,sn,varbak,work
-C23456
-     &    ,w2,w3,iw,icoord,rcoord,nsamp,rqual)
-c
+        subroutine lfit(x,y,d,n,rl,sn,varbak,work,w2,w3,iw,icoord,rcoord,nsamp,rqual)
+
         real*8 x(n),y(n),d(n)
         real*8 work(n),maxdist
         real*8 w2(n),w3(n)
@@ -185,7 +180,7 @@ c
          j=nint((n-1)*randf())+1
  4444    continue
          i=nint((n-1)*randf())+1
-C         write(6,*) '??',i,j
+!C         write(6,*) '??',i,j
          if(i.eq.j) goto 4444
          if(icoord.eq.0.or.icoord.eq.1) then
          dist=(x(i)-x(j))**2+(y(i)-y(j))**2
@@ -238,8 +233,7 @@ C         write(6,*) '??',i,j
         if(nsamp.eq.0) then
         write(6,*) 'Average number of pairs in each bin', rn*rn/nbmax/2
         else
-        write(6,*) 'Average number of pairs in each bin', 
-     &      nsamp*nsamp/nbmax/2
+        write(6,*) 'Average number of pairs in each bin', nsamp*nsamp/nbmax/2
         endif
         do ii=1,nbmax
         work(ii)=0
@@ -294,14 +288,14 @@ C         write(6,*) '??',i,j
          work(nn)=work(nn)/iw(nn)
          w2(nn)=w2(nn)/iw(nn)-work(nn)**2
          if(w2(nn).gt.0) w3(nn)=1/w2(nn)**2*(iw(nn)-1)
-C Uniform weight
+!C Uniform weight
          w3mean=w3mean+w3(nn)
         endif
         enddo
         do nn=1,nbmax
         w3(nn)=w3mean/nbmax+w3(nn)
-c        w3(nn)=1./nn
-c        w3(nn)=exp(-(nn-10)**2/100))
+!c        w3(nn)=1./nn
+!c        w3(nn)=exp(-(nn-10)**2/100))
         enddo
         
         do jj=1,3
@@ -316,8 +310,7 @@ c        w3(nn)=exp(-(nn-10)**2/100))
         
         do nn=1,nbmax
         nnp=min(nbmax,nn+1)
-        write(99,147) (nn-1)*ddist,work(nn),iw(nn),2*w2(nn)/
-     &    sqrt((max(iw(nn),1.D0))),w3(nn)
+        write(99,147) (nn-1)*ddist,work(nn),iw(nn),2*w2(nn)/sqrt((max(iw(nn),1.D0))),w3(nn)
  147    format(5(E14.6))
         if ((ifo.eq.0).and.(iw(nn).ne.0).and.(work(nn).lt.0)) then
         write(6,*) 'First zero crossing',nn*ddist
@@ -329,8 +322,8 @@ c        w3(nn)=exp(-(nn-10)**2/100))
         
         write(55,*) 'set xrange[',0,':',1.2*rlz,']'
         
-C Now try to fit Bessel function using only the data from ddist to zero-crossing.
-C Then extrapolate to zero to get S/N ratio                
+!C Now try to fit Bessel function using only the data from ddist to zero-crossing.
+!C Then extrapolate to zero to get S/N ratio
         write(6,*) 'Now trying to fit Bessel covariance function'
         errmin=1.E35
         VAR=variance
@@ -347,7 +340,7 @@ C Then extrapolate to zero to get S/N ratio
         do jj=1,1
          do ii=1,1000
          RLtest=RLz/10+(ii-1)*RLz/500.
-C         VARTEST=Variance*jj/200.
+!C         VARTEST=Variance*jj/200.
         
         
         if (np.lt.10) then
@@ -359,15 +352,13 @@ C         VARTEST=Variance*jj/200.
         VAR=0.01*Variance
         SN=VAR/(Variance-VAR+1.E-10)
         iwr=1
-        call forfit(x0,dx,work(nstart),w2(nstart),np,RL,VAR,err,iwr,
-     &    w3(nstart))
+        call forfit(x0,dx,work(nstart),w2(nstart),np,RL,VAR,err,iwr,w3(nstart))
         return
         
         endif
         iwr=0
-        call forfit(x0,dx,work(nstart),w2(nstart),np,RLtest,
-     & VARtest,err,iwr,w3(nstart))
-C        write(6,*) 'RL??',RLtest,VARtest,err,errmin
+        call forfit(x0,dx,work(nstart),w2(nstart),np,RLtest,VARtest,err,iwr,w3(nstart))
+!C        write(6,*) 'RL??',RLtest,VARtest,err,errmin
         if (err.lt.errmin) then
                
         RL=RLtest
@@ -390,8 +381,7 @@ C        write(6,*) 'RL??',RLtest,VARtest,err,errmin
         rqual=1-sqrt(errmin)/VAR
         varbak=var
         iwr=1
-        call forfit(x0,dx,work(nstart),w2(nstart),np,RL,VAR,err,iwr,
-     &    w3(nstart))
+        call forfit(x0,dx,work(nstart),w2(nstart),np,RL,VAR,err,iwr,w3(nstart))
         
         return
         end
@@ -400,7 +390,7 @@ C        write(6,*) 'RL??',RLtest,VARtest,err,errmin
         real*8 c(n)
         real*8 w2(n),w3(n),ww3
         real*8 bessk1
-C        write(6,*) RL,dx,n,var
+!C        write(6,*) RL,dx,n,var
         err=0
         errb=0
         do i=1,n
@@ -409,9 +399,9 @@ C        write(6,*) RL,dx,n,var
         err=err+c(i)*w3(i)
         
         enddo
-C        write(6,*) 'TestVAR',err/errb
+!C        write(6,*) 'TestVAR',err/errb
         VAR=err/errb
-c       
+!c
         
         err=0
         errb=0
@@ -425,9 +415,9 @@ c
         write(98,147) eps*RL,c(i),var*eps*bessk1(eps),w3(i)
         endif
         enddo
-c        write(6,*) 'during fitting',err,RL,VAR,n
+!c        write(6,*) 'during fitting',err,RL,VAR,n
         
-C       
+!C
  147    format(4(E16.7))
         err=err/ww3
         return
@@ -437,10 +427,8 @@ C
       
       implicit real*8 (a-h,o-z)
       real*4 x
-      DATA P1,P2,P3,P4,P5,P6,P7/1.0D0,0.15443144D0,-0.67278579D0,
-     &     -0.18156897D0,-0.1919402D-1,-0.110404D-2,-0.4686D-4/
-      DATA Q1,Q2,Q3,Q4,Q5,Q6,Q7/1.25331414D0,0.23498619D0,-0.3655620D-1,
-     &     0.1504268D-1,-0.780353D-2,0.325614D-2,-0.68245D-3/
+      DATA P1,P2,P3,P4,P5,P6,P7/1.0D0,0.15443144D0,-0.67278579D0,-0.18156897D0,-0.1919402D-1,-0.110404D-2,-0.4686D-4/
+      DATA Q1,Q2,Q3,Q4,Q5,Q6,Q7/1.25331414D0,0.23498619D0,-0.3655620D-1,0.1504268D-1,-0.780353D-2,0.325614D-2,-0.68245D-3/
 
       EXTERNAL BESSI1
 
@@ -448,27 +436,23 @@ C
 
       IF(X.LE.2.0) THEN
          Y = X * X * 0.25
-         BESSK1 = (LOG(X/2.0)*BESSI1(X))+(1.0/X)*(P1+Y*(P2+Y*(P3+
-     &             Y*(P4+Y*(P5+Y*(P6+Y*P7))))))
+         BESSK1 = (LOG(X/2.0)*BESSI1(X))+(1.0/X)*(P1+Y*(P2+Y*(P3+Y*(P4+Y*(P5+Y*(P6+Y*P7))))))
       ELSE
          Y = 2.0 / X
-         BESSK1 = (EXP(-X)/SQRT(X))*(Q1+Y*(Q2+Y*(Q3+
-     &             Y*(Q4+Y*(Q5+Y*(Q6+Y*Q7))))))
+         BESSK1 = (EXP(-X)/SQRT(X))*(Q1+Y*(Q2+Y*(Q3+Y*(Q4+Y*(Q5+Y*(Q6+Y*Q7))))))
       ENDIF
       RETURN
       END
 
-C=========================================================================
+!C=========================================================================
       function bessi1(X)
 
             implicit real*8 (a-h,o-z)
             real*4 x
 
-      DATA P1,P2,P3,P4,P5,P6,P7/0.5D0,0.87890594D0,0.51498869D0,
-     &     0.15084934D0,0.2658733D-1,0.301532D-2,0.32411D-3/
-      DATA Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9/0.39894228D0,-0.3988024D-1,
-     &     -0.362018D-2,0.163801D-2,-0.1031555D-1,0.2282967D-1,
-     &     -0.2895312D-1,0.1787654D-1,-0.420059D-2/
+      DATA P1,P2,P3,P4,P5,P6,P7/0.5D0,0.87890594D0,0.51498869D0,0.15084934D0,0.2658733D-1,0.301532D-2,0.32411D-3/
+      DATA Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9/0.39894228D0,-0.3988024D-1,-0.362018D-2,0.163801D-2,-0.1031555D-1,0.2282967D-1, &
+          -0.2895312D-1,0.1787654D-1,-0.420059D-2/
 
       IF(ABS(X).LT.3.75) THEN
          Y = X*X / (3.75*3.75)
@@ -476,8 +460,7 @@ C=========================================================================
       ELSE
          AX = ABS(X)
          Y = 3.75 / AX
-         BESSI1 = (EXP(AX)/SQRT(AX))*(Q1+Y*(Q2+Y*(Q3+
-     &             Y*(Q4+Y*(Q5+Y*(Q6+Y*(Q7+Y*(Q8+Y*Q9))))))))
+         BESSI1 = (EXP(AX)/SQRT(AX))*(Q1+Y*(Q2+Y*(Q3+Y*(Q4+Y*(Q5+Y*(Q6+Y*(Q7+Y*(Q8+Y*Q9))))))))
          IF(X.LT.0.) BESSI1 = - BESSI1
       ENDIF
 
@@ -493,10 +476,10 @@ C=========================================================================
       REAL*4 A(NP,NP), B(NP)
 
       INTEGER*4 INDX(NP)
-C JMB I put D as REAL??
+!C JMB I put D as REAL??
       REAL*4 D
         
-C Compute Mean Value
+!C Compute Mean Value
          TOTDAT = 0.
          SX  = 0.
          SY  = 0.
@@ -544,8 +527,7 @@ C Compute Mean Value
          
          
          DO 21 I = 1,NDATA
-            dd(I)=dd(I) 
-     &                  -B(1) - B(2) * x(I) - B(3) * y(I)
+            dd(I)=dd(I) -B(1) - B(2) * x(I) - B(3) * y(I)
 21       CONTINUE
          DO 22 I=1,3
             D = D*A(I,I)
@@ -562,13 +544,13 @@ C Compute Mean Value
       END
               
 
-C -------------------------------------------------
-C --- LUDCMP & LUBKSB :
-C ---                   LU Matrix Decomposition
-C ---                   and Backward Substitution
-C ---
-C --- Numerical Recipies (c)
-C -------------------------------------------------
+!C -------------------------------------------------
+!C --- LUDCMP & LUBKSB :
+!C ---                   LU Matrix Decomposition
+!C ---                   and Backward Substitution
+!C ---
+!C --- Numerical Recipies (c)
+!C -------------------------------------------------
 
       SUBROUTINE LUDCMP(A,N,NP,INDX,D)
       PARAMETER (NMAX=100,TINY=1.0E-20)
@@ -612,10 +594,10 @@ C -------------------------------------------------
             AAMAX=DUM
           ENDIF
 16      CONTINUE
-C JMB???
+!C JMB???
         imax=N
-c        write(6,*) 'ludcmp',imax
-C JMBE
+!c        write(6,*) 'ludcmp',imax
+!C JMBE
         IF (J.NE.IMAX)THEN
           DO 17 K=1,N
             DUM=A(IMAX,K)
@@ -653,7 +635,7 @@ C JMBE
       RETURN
       END
 
-C ----------------------------------------------
+!C ----------------------------------------------
 
       SUBROUTINE LUBKSB(A,N,NP,INDX,B)
       DIMENSION A(NP,NP),INDX(N),B(N)

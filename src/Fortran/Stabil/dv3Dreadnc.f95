@@ -1,12 +1,12 @@
 !
-      SUBROUTINE NC_RD3DCL(im4,jm4,km,ipar,time_val,clbnds,
-     &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
-     &  clo,cla,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
-     &  var_min,var_max,vbt_min,vbt_max,ver_min,ver_max,dbin_min,
-     &  dbin_max,var1_min,var1_max,var2_min,var2_max,verel_min,
-     &  verel_max,vbt1_min,vbt1_max,vbt2_min,vbt2_max,
-     &  obin_min,obin_max,rl_min,rl_max,VALEXC,
-     &  file_name,var_shname)
+      SUBROUTINE NC_RD3DCL(im4,jm4,km,ipar,time_val,clbnds,                  &
+       var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,      &
+       clo,cla,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,                        &
+       var_min,var_max,vbt_min,vbt_max,ver_min,ver_max,dbin_min,             &
+       dbin_max,var1_min,var1_max,var2_min,var2_max,verel_min,               &
+       verel_max,vbt1_min,vbt1_max,vbt2_min,vbt2_max,                        &
+       obin_min,obin_max,rl_min,rl_max,VALEXC,                               &
+       file_name,var_shname)
 !     &  cellmeth,var_units,vrb_units,l_units,Ref_time,
 !     &  title_string,INSTITUTION,PRODUCTION,SOURCE,COMMENT)
 !
@@ -18,41 +18,41 @@
 !
         integer                             :: im4,jm4
         integer                             :: im,jm,km,ipar
-        real*4                              :: valexc, 
-     &            var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
-     &            vbt_min,vbt_max,var1_min,var1_max,clen_min,clen_max,
-     &            var2_min,var2_max,verel_min,verel_max,
-     &            vbt1_min,vbt1_max,vbt2_min,vbt2_max,
-     &            obin_min,obin_max,rl_min,rl_max
+        real*4                              :: valexc,                   &
+                 var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,      &
+                 vbt_min,vbt_max,var1_min,var1_max,clen_min,clen_max,    &
+                 var2_min,var2_max,verel_min,verel_max,                  &
+                 vbt1_min,vbt1_max,vbt2_min,vbt2_max,                    &
+                 obin_min,obin_max,rl_min,rl_max
         real*4                              :: hrss,time_val
 !
-        real*4  ,dimension(im4,jm4,km)        :: var, var1, var2
-     &                                       , Verr,reler,dbins
-     &                                       , obins,rlfield
+        real*4  ,dimension(im4,jm4,km)        :: var, var1, var2         &
+                                            , Verr,reler,dbins           &
+                                            , obins,rlfield
         real*4  ,dimension(im4,jm4)          :: varbot,varb1,varb2
 !
-        real*4  ,dimension(2,1)              :: clbnds
-     &                                        ,climatology_bounds
+        real*4  ,dimension(2,1)              :: clbnds                   &
+                                             ,climatology_bounds
 !   
         real*4  ,dimension(im4)              :: clo
         real*4  ,dimension(jm4)              :: cla
-        real*4  ,dimension(km)               :: dep, valexu
-     &                                       , CORLEN, SN, VARBAK
+        real*4  ,dimension(km)               :: dep, valexu              &
+                                            , CORLEN, SN, VARBAK
 !
 	character (len=*)     :: file_name,var_shname
 	character (len=255)     :: vrb_units,var_lgname,var_units
-	character (len=255)     :: title_string, Ref_time,cellmeth
-     &                         , INSTITUTION,PRODUCTION,SOURCE,COMMENT
+	character (len=255)     :: title_string, Ref_time,cellmeth       &
+                              , INSTITUTION,PRODUCTION,SOURCE,COMMENT
         character (len=20), DIMENSION(2)           :: l_units
-!
-	character (len=256)   :: err_shname,err_lgname
-     &                         , var1_shname,var1_lgname
-     &                         , var2_shname,var2_lgname
-     &                         , rer_shname,rer_lgname
-     &                         , varb1_shname,varb1_lgname
-     &                         , varb2_shname,varb2_lgname
-     &                         , vbt_shname,vbt_lgname
-     &                         , string256
+!                                                                        &
+	character (len=256)   :: err_shname,err_lgname                    &
+                              , var1_shname,var1_lgname                  &
+                              , var2_shname,var2_lgname                  &
+                              , rer_shname,rer_lgname                    &
+                              , varb1_shname,varb1_lgname                &
+                              , varb2_shname,varb2_lgname                &
+                              , vbt_shname,vbt_lgname                    &
+                              , string256
 !
       integer  ,dimension(2)              :: cbdim, pardim
       integer  ,dimension(2)              :: stpar, prcnt
@@ -60,9 +60,9 @@
       integer  ,dimension(3)              :: star2, coun2
       integer  ,dimension(4)              :: dim
       integer  ,dimension(4)              :: start, count
-      integer                         :: id1,id1_1,id1_2,id2,id2_1
-     &                                 , id3,id3_1,id4,id2d1,id2d2,id2d3
-     &                                 , id0_1,id0_2,id0_3,idcb
+      integer                         :: id1,id1_1,id1_2,id2,id2_1         &
+                                      , id3,id3_1,id4,id2d1,id2d2,id2d3    &
+                                      , id0_1,id0_2,id0_3,idcb
       integer                             :: timeid,idtime, icdf
 !
       integer                 :: IREG,ISPEC,ICOOC
@@ -213,8 +213,7 @@
          STOP 'Stopped in NC_READ3DCL def clbnds'
       ENDIF
 !
-      status = nf_get_att_real(ncid,idcb,'climatology_bounds',
-     &                            clbnds)
+      status = nf_get_att_real(ncid,idcb,'climatology_bounds',clbnds)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_READ3DCL put clbnds'

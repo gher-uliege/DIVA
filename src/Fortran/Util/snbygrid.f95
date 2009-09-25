@@ -62,13 +62,12 @@
       endif
       write(6,*) 'Average number of points per bin',np/(nx*1.*ny)
       Mmin=30
-      call sncalc(work(1),work(1+ns),work(1+2*ns),work(1+3*ns)
-     &    ,work(1+4*ns),work(1+5*ns)
-     &    ,nx,ny,np,x,y,d,x0,dx,y0,dy,xscale,Mmin,RL)
+      call sncalc(work(1),work(1+ns),work(1+2*ns),work(1+3*ns)   &
+         ,work(1+4*ns),work(1+5*ns)                              &
+         ,nx,ny,np,x,y,d,x0,dx,y0,dy,xscale,Mmin,RL)
       stop
       end
-      subroutine sncalc(rnd,var,rmean,alpha,xmass,ymass
-     &    ,nxd,nyd,np,x,y,d,x0,dx,y0,dy,scale,Mmin,RL)
+      subroutine sncalc(rnd,var,rmean,alpha,xmass,ymass,nxd,nyd,np,x,y,d,x0,dx,y0,dy,scale,Mmin,RL)
       include'../Calc/divapre.h'
       real*8 rnd(nxd,nyd)
       real*8 var(nxd,nyd)
@@ -105,7 +104,7 @@
       do i=1,np
       ig=(x(i)-x0)/dx+1
       jg=(y(i)-y0)/dy+1
-c      write(6,*) ig,jg,x(i),y(i),x0,y0
+!c      write(6,*) ig,jg,x(i),y(i),x0,y0
       if(ig.lt.1) goto 999
       if(jg.lt.1) goto 999
       if(ig.gt.nx) goto 999
@@ -119,7 +118,7 @@ c      write(6,*) ig,jg,x(i),y(i),x0,y0
       igb=(x(j)-x0)/dx+1
       jgb=(y(j)-y0)/dy+1
       if((igb.eq.ig).and.(jgb.eq.jg)) then
-C on same bin
+!C on same bin
        
        
        dist=sqrt((x(i)-x(j))**2*scale**2+(y(i)-y(j))**2)
@@ -142,7 +141,7 @@ C on same bin
        enddo
  999   continue
       enddo
-C Use all boxes with more than Mmin points
+!C Use all boxes with more than Mmin points
       NREL=0
       VARBAK=0
       VARTOT=0
@@ -165,11 +164,11 @@ C Use all boxes with more than Mmin points
       E(NREL,1)=1
       E(NREL,2)=alpha(i,j)
       VARBAK=VARBAK+rmean(i,j)*rmean(i,j)
-c      write(6,*) var(i,j),i,j,rnd(i,j),rmean(i,j)
+!c      write(6,*) var(i,j),i,j,rnd(i,j),rmean(i,j)
       endif
       enddo
       enddo
-C Other approach, double loop and double sum as in note      
+!C Other approach, double loop and double sum as in note
       varvar=0
       alpalp=0
       do i=1,nx
@@ -227,7 +226,7 @@ C Other approach, double loop and double sum as in note
       rm=rm+d(i)
       enddo
       vartot2=vartot2/np-(rm/np)**2
-c      write(6,*) 'Check',varbak,NREL,varvar
+!c      write(6,*) 'Check',varbak,NREL,varvar
       
       
       VARTOT=VARTOT/(2*np*np)
@@ -259,7 +258,7 @@ c      write(6,*) 'Check',varbak,NREL,varvar
       ee=0
       ff=0
       do l=1,NREL
-c      write(6,*) '?',W(l),E(l,1),E(l,2),b(l)
+!c      write(6,*) '?',W(l),E(l,1),E(l,2),b(l)
       aa=aa+E(l,1)/W(l)*E(l,1)
       bb=bb+E(l,1)/W(l)*E(l,2)
       cc=cc+E(l,2)/W(l)*E(l,1)
@@ -307,7 +306,7 @@ c      write(6,*) '?',W(l),E(l,1),E(l,2),b(l)
       return
       end
       subroutine tabess
-C=============================================================================
+!C=============================================================================
       include'../Calc/divapre.h'
       real*8 tbess(40000),eps,bessk1
       common/tabbess/tbess
@@ -317,19 +316,17 @@ C=============================================================================
       eps=eps+0.0005
          tbess(i)=eps*bessk1(eps)
  10   continue
-C=============================================================================
+!C=============================================================================
       return                                                            
       end                                                               
-C=======================================================================
+!C=======================================================================
       function bessk1(X)
       
       include'../Calc/divapre.h'
       EXTERNAL BESSI1
 
-      DATA P1,P2,P3,P4,P5,P6,P7/1.0D0,0.15443144D0,-0.67278579D0,
-     &     -0.18156897D0,-0.1919402D-1,-0.110404D-2,-0.4686D-4/
-      DATA Q1,Q2,Q3,Q4,Q5,Q6,Q7/1.25331414D0,0.23498619D0,-0.3655620D-1,
-     &     0.1504268D-1,-0.780353D-2,0.325614D-2,-0.68245D-3/
+      DATA P1,P2,P3,P4,P5,P6,P7/1.0D0,0.15443144D0,-0.67278579D0,-0.18156897D0,-0.1919402D-1,-0.110404D-2,-0.4686D-4/
+      DATA Q1,Q2,Q3,Q4,Q5,Q6,Q7/1.25331414D0,0.23498619D0,-0.3655620D-1,0.1504268D-1,-0.780353D-2,0.325614D-2,-0.68245D-3/
 
 
 
@@ -337,26 +334,22 @@ C=======================================================================
 
       IF(X.LE.2.0) THEN
          Y = X * X * 0.25
-         BESSK1 = (LOG(X/2.0)*BESSI1(X))+(1.0/X)*(P1+Y*(P2+Y*(P3+
-     &             Y*(P4+Y*(P5+Y*(P6+Y*P7))))))
+         BESSK1 = (LOG(X/2.0)*BESSI1(X))+(1.0/X)*(P1+Y*(P2+Y*(P3+Y*(P4+Y*(P5+Y*(P6+Y*P7))))))
       ELSE
          Y = 2.0 / X
-         BESSK1 = (EXP(-X)/SQRT(X))*(Q1+Y*(Q2+Y*(Q3+
-     &             Y*(Q4+Y*(Q5+Y*(Q6+Y*Q7))))))
+         BESSK1 = (EXP(-X)/SQRT(X))*(Q1+Y*(Q2+Y*(Q3+Y*(Q4+Y*(Q5+Y*(Q6+Y*Q7))))))
       ENDIF
       RETURN
       END
 
-C=========================================================================
+!C=========================================================================
       function bessi1(X)
 
       include'../Calc/divapre.h'
 
-      DATA P1,P2,P3,P4,P5,P6,P7/0.5D0,0.87890594D0,0.51498869D0,
-     &     0.15084934D0,0.2658733D-1,0.301532D-2,0.32411D-3/
-      DATA Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9/0.39894228D0,-0.3988024D-1,
-     &     -0.362018D-2,0.163801D-2,-0.1031555D-1,0.2282967D-1,
-     &     -0.2895312D-1,0.1787654D-1,-0.420059D-2/
+      DATA P1,P2,P3,P4,P5,P6,P7/0.5D0,0.87890594D0,0.51498869D0,0.15084934D0,0.2658733D-1,0.301532D-2,0.32411D-3/
+      DATA Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9/0.39894228D0,-0.3988024D-1,-0.362018D-2,0.163801D-2,-0.1031555D-1,0.2282967D-1, &
+          -0.2895312D-1,0.1787654D-1,-0.420059D-2/
 
       IF(ABS(X).LT.3.75) THEN
          Y = X*X / (3.75*3.75)
@@ -364,8 +357,7 @@ C=========================================================================
       ELSE
          AX = ABS(X)
          Y = 3.75 / AX
-         BESSI1 = (EXP(AX)/SQRT(AX))*(Q1+Y*(Q2+Y*(Q3+
-     &             Y*(Q4+Y*(Q5+Y*(Q6+Y*(Q7+Y*(Q8+Y*Q9))))))))
+         BESSI1 = (EXP(AX)/SQRT(AX))*(Q1+Y*(Q2+Y*(Q3+Y*(Q4+Y*(Q5+Y*(Q6+Y*(Q7+Y*(Q8+Y*Q9))))))))
          IF(X.LT.0.) BESSI1 = - BESSI1
       ENDIF
 
@@ -380,10 +372,10 @@ C=========================================================================
       REAL*4 A(NP,NP), B(NP)
 
       INTEGER*4 INDX(NP)
-C JMB I put D as REAL??
+!C JMB I put D as REAL??
       REAL*4 D
         
-C Compute Mean Value
+!C Compute Mean Value
          TOTDAT = 0.
          SX  = 0.
          SY  = 0.
@@ -431,8 +423,7 @@ C Compute Mean Value
          
          
          DO 21 I = 1,NDATA
-            dd(I)=dd(I) 
-     &                  -B(1) - B(2) * x(I) - B(3) * y(I)
+            dd(I)=dd(I) -B(1) - B(2) * x(I) - B(3) * y(I)
 21       CONTINUE
          DO 22 I=1,3
             D = D*A(I,I)
@@ -449,13 +440,13 @@ C Compute Mean Value
       END
               
 
-C -------------------------------------------------
-C --- LUDCMP & LUBKSB :
-C ---                   LU Matrix Decomposition
-C ---                   and Backward Substitution
-C ---
-C --- Numerical Recipies (c)
-C -------------------------------------------------
+!C -------------------------------------------------
+!C --- LUDCMP & LUBKSB :
+!C ---                   LU Matrix Decomposition
+!C ---                   and Backward Substitution
+!C ---
+!C --- Numerical Recipies (c)
+!C -------------------------------------------------
 
       SUBROUTINE LUDCMP(A,N,NP,INDX,D)
       PARAMETER (NMAX=100,TINY=1.0E-20)
@@ -499,10 +490,10 @@ C -------------------------------------------------
             AAMAX=DUM
           ENDIF
 16      CONTINUE
-C JMB???
+!C JMB???
         imax=N
-c        write(6,*) 'ludcmp',imax
-C JMBE
+!c        write(6,*) 'ludcmp',imax
+!C JMBE
         IF (J.NE.IMAX)THEN
           DO 17 K=1,N
             DUM=A(IMAX,K)
@@ -540,7 +531,7 @@ C JMBE
       RETURN
       END
 
-C ----------------------------------------------
+!C ----------------------------------------------
 
       SUBROUTINE LUBKSB(A,N,NP,INDX,B)
       DIMENSION A(NP,NP),INDX(N),B(N)

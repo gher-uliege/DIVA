@@ -3,7 +3,7 @@
       
       
 
-C 
+!C
       real*4 x(nmax,ncmax),y(nmax,ncmax),lc,lcm
       real*8 surf(ncmax),asurf(ncmax)
       integer*4 iplace(ncmax)
@@ -12,7 +12,7 @@ C
       real rmin
       common/rminval/rmin
       
-C read the n contours (maximum number ncmax)
+!C read the n contours (maximum number ncmax)
       read(66,*) n
       if(n.gt.ncmax) then
       write(6,*) 'Sorry, please increase ncmax'
@@ -36,10 +36,10 @@ C read the n contours (maximum number ncmax)
       enddo
       
       close(10)
-C
+!C
 
-C Need to think about closing or not contours... and/or last segment..
-C if not closed add point do close for easier calculation
+!C Need to think about closing or not contours... and/or last segment..
+!C if not closed add point do close for easier calculation
       eps=0.000001
       xmin=x(1,1)
       xmax=x(1,1)
@@ -52,13 +52,13 @@ C if not closed add point do close for easier calculation
       isclosed=1
       endif
       endif
-C if not closed, add point
+!C if not closed, add point
       if(isclosed.eq.0) then
-c      write(6,*) 'Closing contour ',i,' for convencience'
-c      write(6,*) ip(i), ' points originally'
+!c      write(6,*) 'Closing contour ',i,' for convencience'
+!c      write(6,*) ip(i), ' points originally'
       ip(i)=ip(i)+1
       endif
-C make sure it is closed
+!C make sure it is closed
       x(ip(i),i)=x(1,i)
       y(ip(i),i)=y(1,i)
       enddo
@@ -77,10 +77,10 @@ C make sure it is closed
          surf(i)=surf(i)+(y(j+1,i)-y(j,i))*(x(j+1,i)+x(j,i))
         enddo
         AREA=AREA+surf(i)
-c        write(6,*) 'Signed surface of contour ',i, ': ',surf(i)/2 
+!c        write(6,*) 'Signed surface of contour ',i, ': ',surf(i)/2
         asurf(i)=abs(surf(i))
        enddo
-c       write(6,*) 'Total signed surface ',AREA/2,' (+: anticlockwise)'
+!c       write(6,*) 'Total signed surface ',AREA/2,' (+: anticlockwise)'
        call QS2I1R(asurf,iplace,n)
        
        open(46,file='dvcoastlinetailer')
@@ -97,8 +97,7 @@ c       write(6,*) 'Total signed surface ',AREA/2,' (+: anticlockwise)'
         
         write(67,*)
         write(67,*)
-        write(46,'(A,I3,A,I2,A)') 'plot ''fort.67'' index',
-     &     0, ' using 1:2 with filledcurves ls ', 2,' t ''''  \\'
+        write(46,'(A,I3,A,I2,A)') 'plot ''fort.67'' index',0, ' using 1:2 with filledcurves ls ', 2,' t ''''  \\'
        
        
        do k=n,1,-1
@@ -110,12 +109,10 @@ c       write(6,*) 'Total signed surface ',AREA/2,' (+: anticlockwise)'
         icol=1
         if(surf(iplace(k)).lt.0) icol=2
         if(k.eq.1) then
-        write(46,'(A,I5,A,I2,A)') ',''fort.67'' index',
-     & n-k+1, ' using 1:2 with filledcurves ls ', icol,' title '''' '
+        write(46,'(A,I5,A,I2,A)') ',''fort.67'' index',n-k+1, ' using 1:2 with filledcurves ls ', icol,' title '''' '
         endif
         if(k.gt.1) then
-        write(46,'(A,I5,A,I2,A)') ',''fort.67'' index',
-     &n-k+1, ' using 1:2 with filledcurves ls ', icol,' title '''' \\'
+        write(46,'(A,I5,A,I2,A)') ',''fort.67'' index',n-k+1, ' using 1:2 with filledcurves ls ', icol,' title '''' \\'
         endif
        enddo
        stop
@@ -124,58 +121,58 @@ c       write(6,*) 'Total signed surface ',AREA/2,' (+: anticlockwise)'
        
         
       subroutine QS2I1R (IA,JA,N)
-C=============================================================================
-C *** DESCRIPTION (from www.netlib.org)
-C     Written by Rondall E Jones
-C     Modified by John A. Wisniewski to use the Singleton QUICKSORT
-C     algorithm. date 18 November 1976.
-C
-C     Further modified by David K. Kahaner
-C     National Bureau of Standards
-C     August, 1981
-C
-C     Even further modification made to bring the code up to the
-C     Fortran 77 level and make it more readable and to carry
-C     along one integer array and one real array during the sort by
-C     Mark K. Seager
-C     Lawrence Livermore National Laboratory
-C     November, 1987
-C     This routine was adapted from the ISORT routine.
-C
-C     ABSTRACT
-C         This routine sorts an  array IA and makes the same
-C         interchanges in the integer array JA 
-C         The array IA may be sorted in increasing order
-C         A slightly modified quicksort algorithm is used.
-C
-C     DESCRIPTION OF PARAMETERS
-C        IA -  array of values to be sorted.
-C        JA - Integer array to be carried along.
-C     
-C         N - Number of values in integer array IA to be sorted.
-
-C     .. Scalar Arguments ..
+!C=============================================================================
+!C *** DESCRIPTION (from www.netlib.org)
+!C     Written by Rondall E Jones
+!C     Modified by John A. Wisniewski to use the Singleton QUICKSORT
+!C     algorithm. date 18 November 1976.
+!C
+!C     Further modified by David K. Kahaner
+!C     National Bureau of Standards
+!C     August, 1981
+!C
+!C     Even further modification made to bring the code up to the
+!C     Fortran 77 level and make it more readable and to carry
+!C     along one integer array and one real array during the sort by
+!C     Mark K. Seager
+!C     Lawrence Livermore National Laboratory
+!C     November, 1987
+!C     This routine was adapted from the ISORT routine.
+!C
+!C     ABSTRACT
+!C         This routine sorts an  array IA and makes the same
+!C         interchanges in the integer array JA
+!C         The array IA may be sorted in increasing order
+!C         A slightly modified quicksort algorithm is used.
+!C
+!C     DESCRIPTION OF PARAMETERS
+!C        IA -  array of values to be sorted.
+!C        JA - Integer array to be carried along.
+!C
+!C         N - Number of values in integer array IA to be sorted.
+!
+!C     .. Scalar Arguments ..
       implicit none
       INTEGER N
-C     .. Array Arguments ..
+!C     .. Array Arguments ..
       real*8  IA(N) 
       integer*4 JA(N)
-C     .. Local Scalars ..
+!C     .. Local Scalars ..
       REAL*4 R 
       INTEGER*4 I,  IJ,  J, JJT, JT, K, L, M,NN
       REAL*8   IIT,  IT
-C     .. Local Arrays ..
+!C     .. Local Arrays ..
       INTEGER*4 IL(21), IU(21)
 
-C --- FIRST EXECUTABLE STATEMENT  QS2I1R ---
+!C --- FIRST EXECUTABLE STATEMENT  QS2I1R ---
       NN=N
       if (N.EQ.1) then
       write(6,*) 'No need to sort a single data point'
       return
       endif
 
-C     Sort IA and carry JA and A along.
-C     And now...Just a little black magic...
+!C     Sort IA and carry JA and A along.
+!C     And now...Just a little black magic...
       M = 1
       I = 1
       J = NN
@@ -187,13 +184,13 @@ C     And now...Just a little black magic...
       ENDIF
  225  K = I
 
-C     Select a central element of the array and save it in location
-C     it, jt, at.
+!C     Select a central element of the array and save it in location
+!C     it, jt, at.
       IJ = I + INT ((J-I)*R)
       IT = IA(IJ)
       JT = JA(IJ)
 
-C     If first element of array is greater than it, interchange with it.
+!C     If first element of array is greater than it, interchange with it.
       IF( IA(I).GT.IT ) THEN
          IA(IJ) = IA(I)
          IA(I)  = IT
@@ -204,7 +201,7 @@ C     If first element of array is greater than it, interchange with it.
       ENDIF
       L=J
 
-C     If last element of array is less than it, swap with it.
+!C     If last element of array is less than it, swap with it.
       IF( IA(J).LT.IT ) THEN
          IA(IJ) = IA(J)
          IA(J)  = IT
@@ -213,7 +210,7 @@ C     If last element of array is less than it, swap with it.
          JA(J)  = JT
          JT     = JA(IJ)
 
-C     If first element of array is greater than it, swap with it.
+!C     If first element of array is greater than it, swap with it.
          IF ( IA(I).GT.IT ) THEN
             IA(IJ) = IA(I)
             IA(I)  = IT
@@ -224,17 +221,17 @@ C     If first element of array is greater than it, swap with it.
          ENDIF
       ENDIF
 
-C     Find an element in the second half of the array which is
-C     smaller than it.
+!C     Find an element in the second half of the array which is
+!C     smaller than it.
   240 L=L-1
       IF( IA(L).GT.IT ) GO TO 240
 
-C     Find an element in the first half of the array which is
-C     greater than it.
+!C     Find an element in the first half of the array which is
+!C     greater than it.
   245 K=K+1
       IF( IA(K).LT.IT ) GO TO 245
 
-C     Interchange these elements.
+!C     Interchange these elements.
       IF( K.LE.L ) THEN
          IIT   = IA(L)
          IA(L) = IA(K)
@@ -245,7 +242,7 @@ C     Interchange these elements.
          GOTO 240
       ENDIF
 
-C     Save upper and lower subscripts of the array yet to be sorted.
+!C     Save upper and lower subscripts of the array yet to be sorted.
       IF( L-I.GT.J-K ) THEN
          IL(M) = I
          IU(M) = L
@@ -259,7 +256,7 @@ C     Save upper and lower subscripts of the array yet to be sorted.
       ENDIF
       GO TO 260
 
-C     Begin again on another portion of the unsorted array.
+!C     Begin again on another portion of the unsorted array.
   255 M = M-1
       IF( M.EQ.0 ) GO TO 300
       I = IL(M)
@@ -284,7 +281,7 @@ C     Begin again on another portion of the unsorted array.
 
  300  CONTINUE
       RETURN
-C=============================================================================
+!C=============================================================================
       END
 
 

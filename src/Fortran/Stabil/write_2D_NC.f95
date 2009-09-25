@@ -1,6 +1,5 @@
 !
-      SUBROUTINE NC_OUTDAT2D(klev,iter,rec,TP,SA,N2,SIG
-     &                       ,clo,cla,dep,im4,jm4,valexu)
+      SUBROUTINE NC_OUTDAT2D(klev,iter,rec,TP,SA,N2,SIG,clo,cla,dep,im4,jm4,valexu)
 !
        IMPLICIT NONE
 !
@@ -157,8 +156,7 @@
 
 !       print*,'create the file 4',num
 
-	status=nf_put_att_real(ncid,id1(num),'missing_value'
-     &  ,nf_float,1,valexu)
+	status=nf_put_att_real(ncid,id1(num),'missing_value',nf_float,1,valexu)
 	if (status .ne. nf_noerr) call handle_err(status)
 
 	enddo
@@ -188,8 +186,7 @@
 
 !       print*,'create the file 4',num
 
-	status=nf_put_att_real(ncid,id1(num),'missing_value'
-     &  ,nf_float,1,valexu)
+	status=nf_put_att_real(ncid,id1(num),'missing_value',nf_float,1,valexu)
 	if (status .ne. nf_noerr) call handle_err(status)
 
 	enddo
@@ -198,8 +195,7 @@
 	!Put global attributes
 	!----------------------
 
-	status=nf_put_att_text(ncid,NF_GLOBAL,'title',35
-     &,		' DIVA: Hydrostatic stabilisation ')
+	status=nf_put_att_text(ncid,NF_GLOBAL,'title',35,		' DIVA: Hydrostatic stabilisation ')
 
 	!--------------------
 	!End define mode

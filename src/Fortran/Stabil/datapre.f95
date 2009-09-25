@@ -1,12 +1,11 @@
-************************************************************************
+!************************************************************************
       PROGRAM DATAPRE
-************************************************************************
+!************************************************************************
 !
       IMPLICIT NONE
 !
       INTEGER :: i,ivar, istep,LEVELS,nbccol
-      INTEGER :: fnum,lev,first_level,last_level
-     &,ndata
+      INTEGER :: fnum,lev,first_level,last_level,ndata
 !
 !      INTEGER, DIMENSION(:),    ALLOCATABLE  :: FNUMBERS
       REAL*4 :: lon,lat,val, wght
@@ -42,20 +41,14 @@
 
          DO istep = first_level,last_level  !1,LEVELS
 !
-           WRITE(VARFILEIN,
-     &'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
-           WRITE(datafile,
-     &'("../input/divadata/",a)')TRIM(VARFILEIN)
+           WRITE(VARFILEIN,'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
+           WRITE(datafile,'("../input/divadata/",a)')TRIM(VARFILEIN)
 !
-           WRITE(VARFILEOU,
-     &'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
-           WRITE(divafile,
-     &'("./data/",a)')TRIM(VARFILEOU)
+           WRITE(VARFILEOU,'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
+           WRITE(divafile,'("./data/",a)')TRIM(VARFILEOU)
 !
-           WRITE(VARFINFO,
-     &'(a,".1",i4.4,".info")')TRIM(var_name(ivar)),istep
-           WRITE(infodata,
-     &'("./data/",a)')TRIM(VARFINFO)
+           WRITE(VARFINFO,'(a,".1",i4.4,".info")')TRIM(var_name(ivar)),istep
+           WRITE(infodata,'("./data/",a)')TRIM(VARFINFO)
 !
             OPEN(10, FILE=datafile, STATUS='OLD')
             OPEN(11, FILE=divafile)

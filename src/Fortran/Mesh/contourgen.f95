@@ -32,19 +32,15 @@
  88   format(I5)
       cn=coastname//"."//depth
       open(file=cn,unit=99)
-      call contourg(topo,
-     &   ic(1),ic(1+(M+2)*(N+2)),ic(1+2*(M+2)*(N+2)),M+2,N+2,Z,
-     &   x1,y1,dx,dy,valex)
+      call contourg(topo,ic(1),ic(1+(M+2)*(N+2)),ic(1+2*(M+2)*(N+2)),M+2,N+2,Z,x1,y1,dx,dy,valex)
       close(99)
       
       goto 1
  99   continue
-C output at $z=0$ anyway
+!C output at $z=0$ anyway
       z=0
       open(file=coastname,unit=99)
-      call contourg(topo,
-     &   ic(1),ic(1+(M+2)*(N+2)),ic(1+2*(M+2)*(N+2)),M+2,N+2,Z,
-     &   x1,y1,dx,dy,valex)
+      call contourg(topo,ic(1),ic(1+(M+2)*(N+2)),ic(1+2*(M+2)*(N+2)),M+2,N+2,Z,x1,y1,dx,dy,valex)
       close(99)
       
       stop
@@ -58,8 +54,8 @@ C output at $z=0$ anyway
       integer npc(ncm)
       
       
-C 
-C Add border of zeros around the real grid
+!C
+!C Add border of zeros around the real grid
       do i=1,M
       do j=1,N
       IX(i,j)=0
@@ -68,18 +64,18 @@ C Add border of zeros around the real grid
       enddo
       enddo
       
-C Read depth for mask (here negative value for etopo5)
-c      read(70,*) DD
+!!C Read depth for mask (here negative value for etopo5)
+!c      read(70,*) DD
       write(6,*) 'Contour on z=',z
       DD=z
-C Create mask
+!C Create mask
       do i=2,M-1
        do j=2,N-1
        if (TOPO(I-1,J-1).EQ.VALEX) then
        IC(I,J)=0
        else
       if(TOPO(I-1,J-1).GT.DD) IC(I,J)=1
-c        IC(I,J)=1
+!c        IC(I,J)=1
        endif
        enddo
       enddo
@@ -94,16 +90,14 @@ c        IC(I,J)=1
       write(6,*) 'Starting'
       call allcontours(IC,IX,IY,M,N,xx,yy,npc,nc,nmax,ncm)
 
-C
-C For points with equal last point equals first point: islands or interior basin.
+!C
+!C For points with equal last point equals first point: islands or interior basin.
 
       do jj=1,nc
        npp=abs(npc(jj))
-       if (abs(xx(1,jj)-xx(npp,jj)).lt.0.00001
-     & *abs(xx(1,jj)+xx(npp,jj))) then
-       if (abs(yy(1,jj)-yy(npp,jj)).lt.0.00001
-     & *abs(yy(1,jj)+yy(npp,jj))) then
-C island
+       if (abs(xx(1,jj)-xx(npp,jj)).lt.0.00001 *abs(xx(1,jj)+xx(npp,jj))) then
+       if (abs(yy(1,jj)-yy(npp,jj)).lt.0.00001 *abs(yy(1,jj)+yy(npp,jj))) then
+!C island
        if(npc(jj).gt.1) then
        npc(jj)=npc(jj)-1
        endif
@@ -117,15 +111,15 @@ C island
 
      
      
-C23456
-C for contour arriving at the boundary: need to close with corners of grid:
-C if positive contour at those corners that are missing
+!C23456
+!C for contour arriving at the boundary: need to close with corners of grid:
+!C if positive contour at those corners that are missing
 
  19   continue
       enddo
-C For dimensional coordinates, finally add origin and delta x.
-C xx and yy are 1,1 for the first grid point center
-C
+!C For dimensional coordinates, finally add origin and delta x.
+!C xx and yy are 1,1 for the first grid point center
+!C
       write(99,*) nc
       do jj=1,nc
        write(99,*) abs(npc(jj))
@@ -141,7 +135,7 @@ C
       end
 
       SUBROUTINE READTOPO (A,IMAX,JMAX)
-C ----------------------------------------
+!C ----------------------------------------
       INTEGER IMAX,JMAX
       REAL*4 A(IMAX,JMAX)
 
@@ -164,16 +158,16 @@ C ----------------------------------------
       integer*2 IC(M,N),IX(M,N),IY(M,N)
       real*4 xx(nmax,ncm),yy(nmax,ncm)
       integer npc(ncm)
-C Need to check seeds and signs of seeds..
+!C Need to check seeds and signs of seeds..
       nc=0
-C Now interior cases only
+!C Now interior cases only
       
       do j=2,N-1
       do i=1,M-1
       icase=0
       if (IX(i,j).eq.0) then
       if ((IC(i,j).eq.0).and.(IC(i+1,j).EQ.1)) then
-C found a new seed
+!C found a new seed
        icase=1
 
        isig=1
@@ -186,13 +180,12 @@ C found a new seed
       endif
       endif
       
-C23456
+!C23456
       if (icase.ne.0) then
-c       write(6,*) 'new seed',i,j,icase
+!c       write(6,*) 'new seed',i,j,icase
        iin=i
        jin=j
-       call nextcontour(iin,jin,icase,xx(1,nc+1),yy(1,nc+1),np,
-     & IC,M,N,IX,IY,nmax)
+       call nextcontour(iin,jin,icase,xx(1,nc+1),yy(1,nc+1),np, IC,M,N,IX,IY,nmax)
        nc=nc+1
        if(nc.gt.ncm) STOP 'increase ncm'
        npc(nc)=np*isig
@@ -208,7 +201,7 @@ c       write(6,*) 'new seed',i,j,icase
       icase=0
       if (IY(i,j).eq.0) then
       if ((IC(i,j).eq.0).and.(IC(i,j+1).EQ.1)) then
-C found a new seed
+!C found a new seed
        icase=3
        isig=-1
        endif
@@ -218,13 +211,12 @@ C found a new seed
       endif
       endif
       
-C23456
+!C23456
       if (icase.ne.0) then
-c       write(6,*) 'new seed',i,j,icase
+!c       write(6,*) 'new seed',i,j,icase
        iin=i
        jin=j
-       call nextcontour(iin,jin,icase,xx(1,nc+1),yy(1,nc+1),np,
-     & IC,M,N,IX,IY,nmax)
+       call nextcontour(iin,jin,icase,xx(1,nc+1),yy(1,nc+1),np, IC,M,N,IX,IY,nmax)
        nc=nc+1
        npc(nc)=np*isig
        
@@ -239,17 +231,17 @@ c       write(6,*) 'new seed',i,j,icase
       
       subroutine nextcontour(i,j,icase,xc,yc,np,IC,M,N,IX,IY,nmax)
       integer*2 ic(M,N),IX(M,N),IY(M,N)
-C IX(i,j) mask to mark that interface i,j -i+1,j was treated
+!C IX(i,j) mask to mark that interface i,j -i+1,j was treated
       real*4 xc(nmax),yc(nmax)
       np=0
  
  1    continue
       call nextpoint(i,j,icase,xn,yn,in,jn,icasen,IC,M,N)
-C Stop if new point is on a boarder or already treated
+!C Stop if new point is on a boarder or already treated
       np=np+1
       xc(np)=xn
       yc(np)=yn
-c      write(6,*) xn,yn,i,j,icase,icasen,in,jn
+!c      write(6,*) xn,yn,i,j,icase,icasen,in,jn
       if(icasen.eq.1) then
       if(IX(in,jn).eq.1) return
       IX(in,jn)=1
@@ -288,15 +280,15 @@ c      write(6,*) xn,yn,i,j,icase,icasen,in,jn
       
       subroutine nextpoint(i,j,icase,xn,yn,in,jn,icasen,IC,M,N)
       integer*2 ic(M,N)
-C 4 situations 
-C
-C    between i and i+1
-C     
-c      write(6,*) 'icase',i,j,icase
-C      from  below
+!C 4 situations
+!C
+!C    between i and i+1
+!C
+!c      write(6,*) 'icase',i,j,icase
+!C      from  below
       if (icase.eq.1) then
       call nextiter(IC(i,j),IC(i+1,j),IC(i+1,j+1),IC(i,j+1),IY)
-c       write(6,*) '???',i,j,IY
+!c       write(6,*) '???',i,j,IY
        if(IY.EQ.5) then
          icasen=3
          in=i+1
@@ -337,13 +329,13 @@ c       write(6,*) '???',i,j,IY
        endif
       endif
 
-C  
+!C
       if (icase.eq.2) then
-C      from above
+!C      from above
       call nextiter(IC(i+1,j),IC(i,j),IC(i,j-1),IC(i+1,j-1),IY)
-c        write(6,*) '!!!??',i,j,IY
+!c        write(6,*) '!!!??',i,j,IY
        if(IY.EQ.5) then
-c         write(6,*) '!!!'
+!c         write(6,*) '!!!'
          icasen=4
          in=i
          jn=j-1
@@ -386,10 +378,10 @@ c         write(6,*) '!!!'
 
         
        endif 
-C   between j and j+1        
-C
+!C   between j and j+1
+!C
        if (icase.eq.3) then
-c       from left
+!c       from left
        call nextiter(IC(i,j+1),IC(i,j),IC(i+1,j),IC(i+1,j+1),IY)
  
        
@@ -439,7 +431,7 @@ c       from left
        endif
        
        if (icase.eq.4) then
-c       from right
+!c       from right
        call nextiter(IC(i,j),IC(i,j+1),IC(i-1,j+1),IC(i-1,j),IY)
         
        
@@ -450,10 +442,10 @@ c       from right
          yn=j+1
          if(IC(i,j).eq.0) then
          xn=i-0.75
-c         xn=i-0.25
+!c         xn=i-0.25
                           else
          xn=i-0.25
-c         xn=i-0.75
+!c         xn=i-0.75
          endif
          return
        endif
@@ -487,20 +479,20 @@ c         xn=i-0.75
         endif
         stop '???????'
         end
-C
+!C
         subroutine nextiter(I1,I2,I3,I4,IY)
         integer*2 I1,I2,I3,I4
 
-C  4   6    3
-C
-C   7      5
-C
-C  1   x   2
-C
-C We are in x and come from below.
-C output says if to go to interface 5, 6 or 7
-C 
-C either zero is to left coming from below:
+!C  4   6    3
+!C
+!C   7      5
+!C
+!C  1   x   2
+!C
+!C We are in x and come from below.
+!C output says if to go to interface 5, 6 or 7
+!C
+!C either zero is to left coming from below:
        if(I1.EQ.0) THEN
 
        If  (I4.EQ.1) then
@@ -519,7 +511,7 @@ C either zero is to left coming from below:
        endif
        
        ELSE
-C or zero is to right coming from below:
+!C or zero is to right coming from below:
        
        If  (I3.EQ.1) then
         IY=5
@@ -542,34 +534,34 @@ C or zero is to right coming from below:
        end
 
       Subroutine UREADC(iu,c8,c4,valexr,iprecr,imaxr,jmaxr,kmaxr,nbmotr)
-C                ======
-C-----------------------------------------------------------------------
-C Reads the field C(I,J,K) from fortran unit iu
-C returns the field in the array c4 if the returned iprecr=4
-C returns the field in the array c8 if the returned iprecr=8
-C returns the values if imaxr,jmaxr,kmaxr found in the file
-C
-C JMB 6/3/91
-C-----------------------------------------------------------------------
-C
+!C                ======
+!C-----------------------------------------------------------------------
+!C Reads the field C(I,J,K) from fortran unit iu
+!C returns the field in the array c4 if the returned iprecr=4
+!C returns the field in the array c8 if the returned iprecr=8
+!C returns the values if imaxr,jmaxr,kmaxr found in the file
+!C
+!C JMB 6/3/91
+!C-----------------------------------------------------------------------
+!C
       PARAMETER(KBLANC=10)
       real*4 c4(*)
       real*8 c8(*)
 
-C in the calling routin you can specify the following equivalence to
-C save memory space:
-C      equivalence(c,c4)
-
-C      equivalence(c,c8)
-C
-C skip KBLANC lines
+!C in the calling routin you can specify the following equivalence to
+!C save memory space:
+!C      equivalence(c,c4)
+!
+!C      equivalence(c,c8)
+!C
+!C skip KBLANC lines
        do 1 kb=1,KBLANC
         read(iu,ERR=99)
  1     continue
-C
+!C
         read(iu) imaxc,jmaxc,kmaxc,iprec,nbmots,valexc
-C
-C pass the values read to the calling routine
+!C
+!C pass the values read to the calling routine
         iprecr=iprec
         imaxr=imaxc
         jmaxr=jmaxc
@@ -577,31 +569,31 @@ C pass the values read to the calling routine
         nbmotr=nbmots
         valexr=valexc
 
-C      print *, 'iprecr=', iprec
-C      print *, 'imaxr=', imaxc
-C      print *, 'jmaxr=', jmaxc
-C      print *, 'kmaxr=', kmaxc
-C      print *, 'nbmotr=', nbmots
-C      print *, 'valexr=', valexc
+!C      print *, 'iprecr=', iprec
+!C      print *, 'imaxr=', imaxc
+!C      print *, 'jmaxr=', jmaxc
+!C      print *, 'kmaxr=', kmaxc
+!C      print *, 'nbmotr=', nbmots
+!C      print *, 'valexr=', valexc
 
 
-C
-C compute the number of full records to read and the remaining words
+!C
+!C compute the number of full records to read and the remaining words
         nl=(imaxc*jmaxc*kmaxc)/nbmots
         ir=imaxc*jmaxc*kmaxc-nbmots*nl
         ide=0
-C
+!C
 
-C if pathological case, read only four values C0 and DCI,DCJ,DCK
-C and return
-C them as the two four elements of the array
+!C if pathological case, read only four values C0 and DCI,DCJ,DCK
+!C and return
+!C them as the two four elements of the array
         if(imaxc.lt.0.or.jmaxc.lt.0.or.kmaxc.lt.0) then
          nl=0
          ir=4
         endif
-C
-C
-C single precision
+!C
+!C
+!C single precision
         if(iprec.eq.4) then
          do 10 kl=1,nl
           read(iu,ERR=99,END=100) (c4(ide+kc),kc=1,nbmots)
@@ -609,8 +601,8 @@ C single precision
  10      continue
           read(iu,ERR=99,END=100) (c4(ide+kc),kc=1,ir)
                        else
-C
-C double precision
+!C
+!C double precision
         if(iprec.eq.8) then
          do 20 kl=1,nl
           read(iu,ERR=99,END=100) (c8(ide+kc),kc=1,nbmots)
@@ -621,7 +613,7 @@ C double precision
          goto 99
          endif
          endif
-C
+!C
          return
  99      continue
          write(*,*) 'Data error in UREADC, not a conform file'

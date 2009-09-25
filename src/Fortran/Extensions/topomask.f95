@@ -1,4 +1,4 @@
-C
+!C
         REAL*4 U(5000000)
         REAL*4 V(5000000)
         REAL*4 W(5000000)
@@ -9,7 +9,7 @@ C
         read(5,'(A)')in1
         read(5,'(A)')in2
         read(5,'(A)')out
-C READING U,V FIELDS ---------------------------------------
+!C READING U,V FIELDS ---------------------------------------
 
         open (unit=10,file=in1,form='unformatted')
         open (unit=11,file=in2,form='unformatted')
@@ -20,7 +20,7 @@ C READING U,V FIELDS ---------------------------------------
         
         ipr=4
         nw=imax*jmax
-C        valexw = valexu 
+!C        valexw = valexu
         WRITE(6,*) ' VALEUR D EXCLUSION POUR B: ',VALEXU
         WRITE(6,*) ' VALEUR D EXCLUSION POUR X: ',VALEXW
 
@@ -31,7 +31,7 @@ C        valexw = valexu
         STOP
         END
 
-CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
         subroutine usum(u,v,w,valexu,imax,jmax,kmax)
         real*4 u(imax,jmax,kmax),v(imax,jmax,kmax)
         real*4 w(imax,jmax,kmax)
@@ -45,5 +45,5 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
         enddo
         return
         end
-        INCLUDE 'ureadc.f'
-        INCLUDE 'uwritc.f'
+        INCLUDE 'ureadc.f95'
+        INCLUDE 'uwritc.f95'

@@ -13,8 +13,7 @@
       real*8                           :: W8
       REAL*4, DIMENSION(:) ,    ALLOCATABLE :: U,W
 !
-      REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: z_watercolumn
-     &                                      ,  Z, dep
+      REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: z_watercolumn,  Z, dep
       REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: XLON,YLAT
 !
       REAL*4 ,DIMENSION(:,:),    ALLOCATABLE :: resmax1,resmin1
@@ -28,8 +27,7 @@
       integer                   :: NX, NY, NK, ndata, nl
       integer*4                   :: KMAX, ipr, nw, IMAX, JMAX
 !!      integer                   :: KMAX, ipr, nw, IMAX, JMAX
-      real*4                      :: VALEXU, zz,
-     &var_min,var_max,ver_min,ver_max,dbin_min,dbin_max
+      real*4                      :: VALEXU, zz,var_min,var_max,ver_min,ver_max,dbin_min,dbin_max
       real*4                      :: xorig, yorig, dx, dy, xend, yend
 !
       CHARACTER (len=255)        :: divafile,comments
@@ -86,13 +84,10 @@
       WRITE(err_name,'("err",a)')TRIM(var_name)
       WRITE(err_lgname,'(a,".error.reference")')TRIM(var_lgname)
 !
-      WRITE(VARFILEIN,
-     &'(a,".1",i4.4,".ref")')TRIM(var_name),MINLEV
-      WRITE(file_name,'("../output/3Danalysis/",
-     &a,".1",i4.4,".1",i4.4,".ref.nc")')TRIM(var_name),MINLEV,MAXLEV
+      WRITE(VARFILEIN,'(a,".1",i4.4,".ref")')TRIM(var_name),MINLEV
+      WRITE(file_name,'("../output/3Danalysis/",a,".1",i4.4,".1",i4.4,".ref.nc")')TRIM(var_name),MINLEV,MAXLEV
 !
-      IF(.NOT. ALLOCATED(z_watercolumn)) 
-     &    ALLOCATE(z_watercolumn(MAXLEV))
+      IF(.NOT. ALLOCATED(z_watercolumn))    ALLOCATE(z_watercolumn(MAXLEV))
 !
       DEPTHS='../input/contour.depth'
       OPEN(2,FILE=DEPTHS,STATUS='OLD')
@@ -146,8 +141,7 @@
       kuw = 0
       DO istep = MINLEV,MAXLEV
         klev = klev + 1
-        WRITE(VARFILEIN,
-     &'(a,".1",i4.4,".ref")')TRIM(var_name),istep
+        WRITE(VARFILEIN,'(a,".1",i4.4,".ref")')TRIM(var_name),istep
         divafile = '../output/3Danalysis/Fields/'//TRIM(VARFILEIN)
         close(84)
         open (unit=84,file=TRIM(divafile),form='unformatted')
@@ -170,8 +164,7 @@
       klev = 0
       DO istep = MINLEV,MAXLEV
         klev = klev + 1
-        WRITE(VARFILEIN,
-     &'(a,".1",i4.4,".error.ref")')TRIM(var_name),istep
+        WRITE(VARFILEIN,'(a,".1",i4.4,".error.ref")')TRIM(var_name),istep
         divafile = '../output/3Danalysis/Fields/'//TRIM(VARFILEIN)
 !
         INQUIRE(FILE=TRIM(divafile),EXIST=exist)
@@ -196,8 +189,7 @@
       klev = 0
       DO istep = MINLEV,MAXLEV
         klev = klev + 1
-        WRITE(VARFILEIN,
-     &'(a,".1",i4.4,".DATABINS")')TRIM(var_name),istep
+        WRITE(VARFILEIN,'(a,".1",i4.4,".DATABINS")')TRIM(var_name),istep
         divafile = '../input/divadata/'//TRIM(VARFILEIN)
         close(84)
         open (unit=84,file=TRIM(divafile),form='unformatted')
@@ -246,41 +238,33 @@
       ENDDO
 !
       DO k = 1,NK
-       resmax1(1:jmax,k)=MAXVAL(var(1:imax,1:jmax,k),dim=1,
-     &                        MASK= (mask(:,:,k) .eq. 1))
-       resmin1(1:jmax,k)=MINVAL(var(1:imax,1:jmax,k),dim=1,
-     &                        MASK= (mask(:,:,k) .eq. 1))
+       resmax1(1:jmax,k)=MAXVAL(var(1:imax,1:jmax,k),dim=1,MASK= (mask(:,:,k) .eq. 1))
+       resmin1(1:jmax,k)=MINVAL(var(1:imax,1:jmax,k),dim=1,MASK= (mask(:,:,k) .eq. 1))
       ENDDO
       var_max = MAXVAL(resmax1)
       var_min = MINVAL(resmin1)
 
       DO k = 1,NK
-       resmax1(1:jmax,k)=MAXVAL(verr(1:imax,1:jmax,k),dim=1,
-     &                        MASK= (mask(:,:,k) .eq. 1))
-       resmin1(1:jmax,k)=MINVAL(verr(1:imax,1:jmax,k),dim=1,
-     &                        MASK= (mask(:,:,k) .eq. 1))
+       resmax1(1:jmax,k)=MAXVAL(verr(1:imax,1:jmax,k),dim=1,MASK= (mask(:,:,k) .eq. 1))
+       resmin1(1:jmax,k)=MINVAL(verr(1:imax,1:jmax,k),dim=1,MASK= (mask(:,:,k) .eq. 1))
       ENDDO
       ver_max = MAXVAL(resmax1)
       ver_min = MINVAL(resmin1)
 
       DO k = 1,NK
-       resmax1(1:jmax,k)=MAXVAL(dbins(1:imax,1:jmax,k),dim=1,
-     & MASK= (dbins(:,:,k) .ge. 0.))
+       resmax1(1:jmax,k)=MAXVAL(dbins(1:imax,1:jmax,k),dim=1,MASK= (dbins(:,:,k) .ge. 0.))
       ENDDO
       dbin_max = MAXVAL(resmax1)
       dbin_min = 0.
 
 !
-      CALL NC_3DFILE
-     &  (var,verr,dbins,xlon,ylat,imax,jmax,nk,dep,valexu,
-     &  var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
-     &  TRIM(file_name),TRIM(var_name),TRIM(var_lgname),
-     &  TRIM(err_name),TRIM(err_lgname),
-     &  TRIM(var_units), TRIM(title_string))
+      CALL NC_3DFILE(var,verr,dbins,xlon,ylat,imax,jmax,nk,dep,valexu,   &
+       var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,                &
+       TRIM(file_name),TRIM(var_name),TRIM(var_lgname),                  &
+       TRIM(err_name),TRIM(err_lgname),                                  &
+       TRIM(var_units), TRIM(title_string))
 !
-      WRITE(divafile,'("../output/3Danalysis/",
-     &a,".1",i4.4,".1",i4.4,".fieldgher.ref")')TRIM(var_name),
-     &MINLEV,MAXLEV
+      WRITE(divafile,'("../output/3Danalysis/",a,".1",i4.4,".1",i4.4,".fieldgher.ref")')TRIM(var_name),MINLEV,MAXLEV
       KMAX = MAXLEV-MINLEV+1
       ipr=4
       close(84)

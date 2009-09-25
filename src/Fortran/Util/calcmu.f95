@@ -29,9 +29,9 @@
         write(6,*) 'Data, 3 columns, hence without relative weights'
  150  continue
         read(44,*,end=200)  x,y,val
-C	write(6,*) x,y,val,w
+!C	write(6,*) x,y,val,w
         write(20,*) x,y,val,w*unsk*SNR/(RL*RL)
-c         write(20,*) x,y,val,w*8*SNR/(RL*RL)
+!c         write(20,*) x,y,val,w*8*SNR/(RL*RL)
         goto 150
 
 	else
@@ -39,9 +39,9 @@ c         write(20,*) x,y,val,w*8*SNR/(RL*RL)
         write(6,*) 'Data, 4 columns, using relative weights'
  160  continue
         read(44,*,end=200)  x,y,val,w
-C	write(6,*) x,y,val,w
+!C	write(6,*) x,y,val,w
         write(20,*) x,y,val,w*unsk*SNR/(RL*RL)
-c        write(20,*) x,y,val,w*8*SNR/(RL*RL)
+!c        write(20,*) x,y,val,w*8*SNR/(RL*RL)
 	goto 160
 
 	endif

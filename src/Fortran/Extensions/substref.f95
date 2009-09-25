@@ -17,7 +17,7 @@
         read (11,*)        x0,y0,phi0
         if (phi.eq.-9999.0.or.phi0.eq.-9999.0) then
          write(12,*)        x ,y, -9999.0 
-C         write(6,*)        x ,y, -9999.0 
+!C         write(6,*)        x ,y, -9999.0
         else 
          phi = phi - phi0
          write(12,*)        x ,y ,phi

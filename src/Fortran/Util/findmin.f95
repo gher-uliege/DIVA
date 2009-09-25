@@ -80,57 +80,57 @@
        end
        
       subroutine QS2I1R (IA,JA,N)
-C=============================================================================
-C *** DESCRIPTION (from www.netlib.org)
-C     Written by Rondall E Jones
-C     Modified by John A. Wisniewski to use the Singleton QUICKSORT
-C     algorithm. date 18 November 1976.
-C
-C     Further modified by David K. Kahaner
-C     National Bureau of Standards
-C     August, 1981
-C
-C     Even further modification made to bring the code up to the
-C     Fortran 77 level and make it more readable and to carry
-C     along one integer array and one real array during the sort by
-C     Mark K. Seager
-C     Lawrence Livermore National Laboratory
-C     November, 1987
-C     This routine was adapted from the ISORT routine.
-C
-C     ABSTRACT
-C         This routine sorts an integer array IA and makes the same
-C         interchanges in the integer array JA and the real array A.
-C         The array IA may be sorted in increasing order or decreasing
-C         order.  A slightly modified quicksort algorithm is used.
-C
-C     DESCRIPTION OF PARAMETERS
-C        IA - Integer array of values to be sorted.
-C        JA - Integer array to be carried along.
-C         A - Real array to be carried along.
-C         N - Number of values in integer array IA to be sorted.
+!C=============================================================================
+!C *** DESCRIPTION (from www.netlib.org)
+!C     Written by Rondall E Jones
+!C     Modified by John A. Wisniewski to use the Singleton QUICKSORT
+!C     algorithm. date 18 November 1976.
+!C
+!C     Further modified by David K. Kahaner
+!C     National Bureau of Standards
+!C     August, 1981
+!C
+!C     Even further modification made to bring the code up to the
+!C     Fortran 77 level and make it more readable and to carry
+!C     along one integer array and one real array during the sort by
+!C     Mark K. Seager
+!C     Lawrence Livermore National Laboratory
+!C     November, 1987
+!C     This routine was adapted from the ISORT routine.
+!C
+!C     ABSTRACT
+!C         This routine sorts an integer array IA and makes the same
+!C         interchanges in the integer array JA and the real array A.
+!C         The array IA may be sorted in increasing order or decreasing
+!C         order.  A slightly modified quicksort algorithm is used.
+!C
+!C     DESCRIPTION OF PARAMETERS
+!C        IA - Integer array of values to be sorted.
+!C        JA - Integer array to be carried along.
+!C         A - Real array to be carried along.
+!C         N - Number of values in integer array IA to be sorted.
 
-C     .. Scalar Arguments ..
+!C     .. Scalar Arguments ..
       INTEGER N
-C     .. Array Arguments ..
+!C     .. Array Arguments ..
       real*4 IA(N), JA(N)
-C     .. Local Scalars ..
+!C     .. Local Scalars ..
       REAL R 
       REAL*4  IIT, IT,  JJT, JT
       INTEGER IJ
-C     .. Local Arrays ..
+!C     .. Local Arrays ..
       INTEGER IL(21), IU(21),I,J,K,NN,L,M
       
 
-C --- FIRST EXECUTABLE STATEMENT  QS2I1R ---
+!C --- FIRST EXECUTABLE STATEMENT  QS2I1R ---
       NN=N
       if (N.EQ.1) then
       write(6,*) 'No need to sort a single data point'
       return
       endif
 
-C     Sort IA and carry JA and A along.
-C     And now...Just a little black magic...
+!C     Sort IA and carry JA and A along.
+!C     And now...Just a little black magic...
       M = 1
       I = 1
       J = NN
@@ -142,13 +142,13 @@ C     And now...Just a little black magic...
       ENDIF
  225  K = I
 
-C     Select a central element of the array and save it in location
-C     it, jt, at.
+!C     Select a central element of the array and save it in location
+!C     it, jt, at.
       IJ = I + INT ((J-I)*R)
       IT = IA(IJ)
       JT = JA(IJ)
 
-C     If first element of array is greater than it, interchange with it.
+!C     If first element of array is greater than it, interchange with it.
       IF( IA(I).GT.IT ) THEN
          IA(IJ) = IA(I)
          IA(I)  = IT
@@ -159,7 +159,7 @@ C     If first element of array is greater than it, interchange with it.
       ENDIF
       L=J
 
-C     If last element of array is less than it, swap with it.
+!C     If last element of array is less than it, swap with it.
       IF( IA(J).LT.IT ) THEN
          IA(IJ) = IA(J)
          IA(J)  = IT
@@ -168,7 +168,7 @@ C     If last element of array is less than it, swap with it.
          JA(J)  = JT
          JT     = JA(IJ)
 
-C     If first element of array is greater than it, swap with it.
+!C     If first element of array is greater than it, swap with it.
          IF ( IA(I).GT.IT ) THEN
             IA(IJ) = IA(I)
             IA(I)  = IT
@@ -179,17 +179,17 @@ C     If first element of array is greater than it, swap with it.
          ENDIF
       ENDIF
 
-C     Find an element in the second half of the array which is
-C     smaller than it.
+!C     Find an element in the second half of the array which is
+!C     smaller than it.
   240 L=L-1
       IF( IA(L).GT.IT ) GO TO 240
 
-C     Find an element in the first half of the array which is
-C     greater than it.
+!C     Find an element in the first half of the array which is
+!C     greater than it.
   245 K=K+1
       IF( IA(K).LT.IT ) GO TO 245
 
-C     Interchange these elements.
+!C     Interchange these elements.
       IF( K.LE.L ) THEN
          IIT   = IA(L)
          IA(L) = IA(K)
@@ -200,7 +200,7 @@ C     Interchange these elements.
          GOTO 240
       ENDIF
 
-C     Save upper and lower subscripts of the array yet to be sorted.
+!C     Save upper and lower subscripts of the array yet to be sorted.
       IF( L-I.GT.J-K ) THEN
          IL(M) = I
          IU(M) = L
@@ -214,7 +214,7 @@ C     Save upper and lower subscripts of the array yet to be sorted.
       ENDIF
       GO TO 260
 
-C     Begin again on another portion of the unsorted array.
+!C     Begin again on another portion of the unsorted array.
   255 M = M-1
       IF( M.EQ.0 ) GO TO 300
       I = IL(M)
@@ -239,5 +239,5 @@ C     Begin again on another portion of the unsorted array.
 
  300  CONTINUE
       RETURN
-C=============================================================================
+!C=============================================================================
       END

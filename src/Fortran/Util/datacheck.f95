@@ -1,4 +1,4 @@
-C read the n contours (maximum number ncmax)
+!C read the n contours (maximum number ncmax)
       integer*4 idata,idatan
       xmin=1E36
       ymin=xmin

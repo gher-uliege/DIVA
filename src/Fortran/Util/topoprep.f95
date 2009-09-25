@@ -63,7 +63,7 @@
       write(20,*) dy
       write(20,*) M
       write(20,*) N
-c make large enough grid
+!c make large enough grid
       write(30,*) 1
       write(30,*) 4
       write(30,*) x1-dx,y1-dx
