@@ -1,0 +1,8 @@
+for jj in `ls *.f95`
+do
+echo $jj
+ifort -O $jj   -o `basename $jj .f95`.a  -L/home/psangra/netcdf-3.6.1/lib -lnetcdf -I/home/psangra/AGRIF/Roms_tools/netcdf_ifc/
+done
+mv *.a ../../../bin/
+
+

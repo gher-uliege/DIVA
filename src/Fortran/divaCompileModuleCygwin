@@ -1,0 +1,79 @@
+#!/bin/bash
+
+
+
+echo ====================================
+echo ====================================
+echo ==                                ==
+echo ==   Compilation of DIVA Modules  ==
+echo ==                                ==
+echo ====================================
+echo ====================================
+echo ' '
+
+# Definition of the compiler and options
+compiler=g95
+flag='-O3 -Wall -Wimplicit-none -c'
+
+# Definition of preprocessor options if needed
+preprocessor='-cpp'
+preprocessorFlag='-D=_BATCH_MODE'
+preprocessorFlag=$preprocessorFlag' -DINTEGERType=INTEGER*8 -DREALType=REAL*8'
+
+baseDir=$PWD
+
+echo =====================
+echo =====================
+echo = Compiling Modules =
+echo =====================
+echo =====================
+echo ' '
+
+moduleDir=$baseDir/Module
+moduleLib=$baseDir/Module/lib
+
+rm $moduleLib/*
+
+cd $moduleDir
+
+echo =============================================
+echo = Copying all Modules in the same directory =
+echo =============================================
+for kk in `ls`
+do
+if [ -d "$kk" ]
+then
+if [ "$kk" != "lib" ]
+then
+  echo    =============================
+  echo    = Entering in module $kk
+  echo    =============================
+  echo ' '
+cp ./$kk/*.f95 .
+cp ./$kk/*.h .
+fi
+fi
+done
+
+echo =====================
+echo = Compiling modules =
+echo =====================
+
+for ii in `ls *.f95`
+do
+    echo 'Compiling '$ii
+    $compiler $flag $preprocessor $preprocessorFlag $ii
+done
+mv *.o $moduleLib
+mv *.mod $moduleLib
+
+rm *.f95
+rm *.h
+
+echo --------------------
+echo Compilation finished
+echo --------------------
+echo ' '
+
+cd $baseDir
+

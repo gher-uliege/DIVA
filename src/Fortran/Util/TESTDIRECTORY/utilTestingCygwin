@@ -1,0 +1,218 @@
+#!/bin/bash
+
+
+
+echo =============================================
+echo =============================================
+echo ==                                         ==
+echo ==   Procedure to test programs in : UTIL  ==
+echo ==                                         ==
+echo =============================================
+echo =============================================
+echo ' '
+
+# Definition of the compiler and options
+compiler=g95
+flag='-O3 -Wall -Wimplicit-none'
+
+# Definition of preprocessor options if needed
+preprocessor='-cpp'
+preprocessorFlag='-D=_BATCH_MODE'
+preprocessorFlag=$preprocessorFlag' -DINTEGERType=INTEGER*8 -DREALType=REAL*8'
+
+#Definition of libraries for modules
+moduleLibraryDir='../../Module/lib'
+moduleLibraryObject=$moduleLibraryDir/*.o
+moduleLibrary='-I '$moduleLibraryDir
+
+echo Testing procedure in progress...
+echo ================================
+rm ./testing.log
+
+extension=.f95
+osUsed=cygwin
+
+# Chech program : alpha.a
+# -----------------------
+fileToCheck=alpha
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+$compiler $flag $preprocessor $preprocessorFlag ../$fileToCheck$extension $moduleLibraryObject $moduleLibrary -o $fileToCheck.a >> testing.log 
+correlationLength=0.8
+penalisation=1
+echo $correlationLength $penalisation | ./$fileToCheck.a >> testing.log 
+diff -s ./fort.12 ./OUTPUTS/fort.12.$fileToCheck.$osUsed >> testing.log
+rm ./fort.12
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : calcest.a
+# -------------------------
+fileToCheck=calcest
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+$compiler $flag $preprocessor $preprocessorFlag ../$fileToCheck$extension $moduleLibraryObject $moduleLibrary -o $fileToCheck.a >> testing.log
+nbOfColumn=3
+generalizedCrossValidator=10.34
+tracea=0.85
+cp ./INPUTS/fort.443.$fileToCheck.$osUsed ./fort.44
+echo $nbOfColumn $generalizedCrossValidator $tracea | ./$fileToCheck.a >> testing.log
+diff -s ./fort.76 ./OUTPUTS/fort.763.$fileToCheck.$osUsed >> testing.log
+rm ./fort.76
+rm ./fort.44
+
+nbOfColumn=4
+cp ./INPUTS/fort.444.$fileToCheck.$osUsed ./fort.44
+echo $nbOfColumn $generalizedCrossValidator $tracea | ./$fileToCheck.a >> testing.log
+diff -s ./fort.76 ./OUTPUTS/fort.764.$fileToCheck.$osUsed >> testing.log
+rm ./fort.76
+rm ./fort.44
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : calcestbis.a
+# ----------------------------
+fileToCheck=calcestbis
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+$compiler $flag $preprocessor $preprocessorFlag ../$fileToCheck$extension $moduleLibraryObject $moduleLibrary -o $fileToCheck.a >> testing.log
+signalToNoise=1
+nbOfColumn=3
+tracea=0.85
+variance=0.75
+cp ./INPUTS/fort.443.$fileToCheck.$osUsed ./fort.44
+echo $signalToNoise $nbOfColumn $tracea $variance | ./$fileToCheck.a >> testing.log
+diff -s ./fort.76 ./OUTPUTS/fort.763.$fileToCheck.$osUsed >> testing.log
+rm ./fort.76
+rm ./fort.44
+
+nbOfColumn=4
+cp ./INPUTS/fort.444.$fileToCheck.$osUsed ./fort.44
+echo $signalToNoise $nbOfColumn $tracea $variance | ./$fileToCheck.a >> testing.log
+diff -s ./fort.76 ./OUTPUTS/fort.764.$fileToCheck.$osUsed >> testing.log
+rm ./fort.76
+rm ./fort.44
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : calcmu.a
+# ----------------------------
+fileToCheck=calcmu
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+$compiler $flag $preprocessor $preprocessorFlag ../$fileToCheck$extension $moduleLibraryObject $moduleLibrary -o $fileToCheck.a >> testing.log
+correlationLength=0.8
+signalToNoise=1
+nbOfColumn=3
+xi=16
+cp ./INPUTS/fort.443.$fileToCheck.$osUsed ./fort.44
+echo $correlationLength $signalToNoise $nbOfColumn $xi | ./$fileToCheck.a >> testing.log
+diff -s ./fort.20 ./OUTPUTS/fort.203.1.$fileToCheck.$osUsed >> testing.log
+rm ./fort.20
+rm ./fort.44
+
+nbOfColumn=4
+cp ./INPUTS/fort.444.$fileToCheck.$osUsed ./fort.44
+echo $correlationLength $signalToNoise $nbOfColumn $xi | ./$fileToCheck.a >> testing.log
+diff -s ./fort.20 ./OUTPUTS/fort.204.1.$fileToCheck.$osUsed >> testing.log
+rm ./fort.20
+rm ./fort.44
+
+nbOfColumn=3
+xi=1
+cp ./INPUTS/fort.443.$fileToCheck.$osUsed ./fort.44
+echo $correlationLength $signalToNoise $nbOfColumn $xi | ./$fileToCheck.a >> testing.log
+diff -s ./fort.20 ./OUTPUTS/fort.203.2.$fileToCheck.$osUsed >> testing.log
+rm ./fort.20
+rm ./fort.44
+
+nbOfColumn=4
+cp ./INPUTS/fort.444.$fileToCheck.$osUsed ./fort.44
+echo $correlationLength $signalToNoise $nbOfColumn $xi | ./$fileToCheck.a >> testing.log
+diff -s ./fort.20 ./OUTPUTS/fort.204.2.$fileToCheck.$osUsed >> testing.log
+rm ./fort.20
+rm ./fort.44
+
+nbOfColumn=3
+xi=0.5
+cp ./INPUTS/fort.443.$fileToCheck.$osUsed ./fort.44
+echo $correlationLength $signalToNoise $nbOfColumn $xi | ./$fileToCheck.a >> testing.log
+diff -s ./fort.20 ./OUTPUTS/fort.203.3.$fileToCheck.$osUsed >> testing.log
+rm ./fort.20
+rm ./fort.44
+
+nbOfColumn=4
+cp ./INPUTS/fort.444.$fileToCheck.$osUsed ./fort.44
+echo $correlationLength $signalToNoise $nbOfColumn $xi | ./$fileToCheck.a >> testing.log
+diff -s ./fort.20 ./OUTPUTS/fort.204.3.$fileToCheck.$osUsed >> testing.log
+rm ./fort.20
+rm ./fort.44
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : cverror.a
+# ----------------------------
+fileToCheck=cverror
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+$compiler $flag $preprocessor $preprocessorFlag ../$fileToCheck$extension $moduleLibraryObject $moduleLibrary -o $fileToCheck.a >> testing.log
+exclusionValue=999.
+cp ./INPUTS/fort.20.$fileToCheck.$osUsed ./fort.20
+cp ./INPUTS/fort.21.$fileToCheck.$osUsed ./fort.21
+echo $exclusionValue | ./$fileToCheck.a >> testing.log
+diff -s ./fort.22 ./OUTPUTS/fort.22.$fileToCheck.$osUsed >> testing.log
+rm ./fort.20
+rm ./fort.21
+rm ./fort.22
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : cverroraii.a
+# ----------------------------
+fileToCheck=cverroraii
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+$compiler $flag $preprocessor $preprocessorFlag ../$fileToCheck$extension $moduleLibraryObject $moduleLibrary -o $fileToCheck.a >> testing.log
+exclusionValue=999.
+variableData=12.63
+cp ./INPUTS/fort.20.$fileToCheck.$osUsed ./fort.20
+cp ./INPUTS/fort.21.$fileToCheck.$osUsed ./fort.21
+cp ./INPUTS/fort.22.$fileToCheck.$osUsed ./fort.22
+cp ./INPUTS/fort.33.$fileToCheck.$osUsed ./fort.33
+echo $exclusionValue $variableData| ./$fileToCheck.a >> testing.log
+diff -s ./fort.23 ./OUTPUTS/fort.23.$fileToCheck.$osUsed >> testing.log
+rm ./fort.20
+rm ./fort.21
+rm ./fort.22
+rm ./fort.23
+rm ./fort.33
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+echo Testing procedure finished
+echo ==========================
+echo Check 'testing.log'
+ 

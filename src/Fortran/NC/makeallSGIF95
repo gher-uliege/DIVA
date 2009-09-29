@@ -1,0 +1,6 @@
+for jj in `ls *.f95`
+do
+echo $jj
+f95 -O $jj   -o `basename $jj .f95`.a -L/u/mc/Diva/lib -lnetcdf -I/u/mc/Diva/include
+done
+mv *.a ../../../bin/SGI

@@ -1,0 +1,6 @@
+for jj in `ls *.f95`
+do
+echo $jj
+f95 -O3 -mno-cygwin $jj   -o `basename $jj .f95`.a
+done
+mv *.a ../../../bin

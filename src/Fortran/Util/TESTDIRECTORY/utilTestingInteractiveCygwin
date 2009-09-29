@@ -1,0 +1,40 @@
+#!/bin/bash
+
+
+
+echo ==========================================
+echo ==========================================
+echo ==                                      ==
+echo ==   Compilation of a specific program  ==
+echo ==                                      ==
+echo ==========================================
+echo ==========================================
+echo ' '
+
+# Definition of the compiler and options
+compiler=g95
+flag='-O3 -Wall -Wimplicit-none'
+
+# Definition of preprocessor options if needed
+preprocessor='-cpp'
+preprocessorFlag='-D=_INTERACTIVE_MODE_'
+preprocessorFlag=$preprocessorFlag' -DINTEGERType=INTEGER*8 -DREALType=REAL*8'
+
+#Definition of libraries for modules
+moduleLibraryDir='../../Module/lib'
+moduleLibraryObject=$moduleLibraryDir/*.o
+moduleLibrary='-I '$moduleLibraryDir
+
+echo Testing procedure in progress...
+echo ================================
+extension=.f95
+
+fileToCheck=$1
+echo Test : $fileToCheck
+echo ------
+
+$compiler $flag $preprocessor $preprocessorFlag ../$fileToCheck$extension $moduleLibraryObject $moduleLibrary  -o $fileToCheck.a
+
+echo Compilation finished
+echo ====================
+echo You can run the program : $fileToCheck.a 
