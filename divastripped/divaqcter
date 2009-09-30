@@ -60,7 +60,7 @@ if [ -f ../output/diva.log ] ; then
 fi
 
 echo $TRACEA 
-echo $lc $snr $nbccol $GCVVAL $TRACEA  | ../../bin/calcest.a >> diva.log
+echo $nbccol $GCVVAL $TRACEA  | ../../bin/calcest.a >> diva.log
 
 if [ $? -ne 0 ];then
 echo ' '
