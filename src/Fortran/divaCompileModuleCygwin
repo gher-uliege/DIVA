@@ -18,7 +18,7 @@ flag='-O3 -Wall -Wimplicit-none -c'
 # Definition of preprocessor options if needed
 preprocessor='-cpp'
 preprocessorFlag='-D=_BATCH_MODE'
-preprocessorFlag=$preprocessorFlag' -DINTEGERType=INTEGER*8 -DREALType=REAL*8'
+preprocessorFlag=$preprocessorFlag' -DINTEGERType=INTEGER -DREALType=REAL*8'
 
 baseDir=$PWD
 

@@ -144,7 +144,7 @@ MODULE logicalUnitManager
 !     Declaration
 !     - - - - - -
       INTEGERType, INTENT(IN) :: iStart, iEnd
-      INTEGER :: i1
+      INTEGERType :: i1
 
 !     Body
 !     - - -
@@ -162,7 +162,7 @@ MODULE logicalUnitManager
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1
+      INTEGERType :: i1
       TYPE (logicalUnit), INTENT(OUT), POINTER :: number
 
 !     Body

@@ -18,7 +18,7 @@ flag='-O3 -Wall -Wimplicit-none'
 # Definition of preprocessor options if needed
 preprocessor='-cpp'
 preprocessorFlag='-D=_BATCH_MODE'
-preprocessorFlag=$preprocessorFlag' -DINTEGERType=INTEGER*8 -DREALType=REAL*8'
+preprocessorFlag=$preprocessorFlag' -DINTEGERType=INTEGER -DREALType=REAL*8'
 
 #Definition of libraries for modules
 moduleLibraryDir='../../Module/lib'
@@ -208,6 +208,56 @@ rm ./fort.21
 rm ./fort.22
 rm ./fort.23
 rm ./fort.33
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : cvtotalerror.a
+# -------------------------------
+fileToCheck=cvtotalerror
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+$compiler $flag $preprocessor $preprocessorFlag ../$fileToCheck$extension $moduleLibraryObject $moduleLibrary -o $fileToCheck.a >> testing.log
+crossValidationValue=10.12
+cp ./INPUTS/fort.20.$fileToCheck.$osUsed ./fort.20
+cp ./INPUTS/fort.21.$fileToCheck.$osUsed ./fort.21
+echo $crossValidationValue | ./$fileToCheck.a >> testing.log
+diff -s ./fort.22 ./OUTPUTS/fort.22.$fileToCheck.$osUsed >> testing.log
+rm ./fort.20
+rm ./fort.21
+rm ./fort.22
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : datadiff.a
+# ---------------------------
+fileToCheck=datadiff
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+$compiler $flag $preprocessor $preprocessorFlag ../$fileToCheck$extension $moduleLibraryObject $moduleLibrary -o $fileToCheck.a >> testing.log
+nbOfColumn=3
+exclusionValue=999.
+cp ./INPUTS/fort.443.$fileToCheck.$osUsed ./fort.44
+cp ./INPUTS/fort.453.$fileToCheck.$osUsed ./fort.45
+echo $nbOfColumn $exclusionValue | ./$fileToCheck.a >> testing.log
+diff -s ./fort.46 ./OUTPUTS/fort.463.$fileToCheck.$osUsed >> testing.log
+rm ./fort.44
+rm ./fort.46
+
+nbOfColumn=4
+cp ./INPUTS/fort.444.$fileToCheck.$osUsed ./fort.44
+echo $nbOfColumn $exclusionValue | ./$fileToCheck.a >> testing.log
+diff -s ./fort.46 ./OUTPUTS/fort.464.$fileToCheck.$osUsed >> testing.log
+rm ./fort.44
+rm ./fort.45
+rm ./fort.46
 
 rm ./$fileToCheck.*
 echo ' ' >> testing.log

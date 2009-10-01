@@ -1,4 +1,3 @@
-
 PROGRAM calcest
 
 ! Module
@@ -34,8 +33,8 @@ PROGRAM calcest
 #undef _INTERACTIVE_MODE_
 #endif
 
-!     Read information about the length scale and penalisation for the gradients
-!     --------------------------------------------------------------------------
+!     Read information
+!     ----------------
 !     1) In interactive mode
 !     - - - - - - - - - - - -
 #ifdef _INTERACTIVE_MODE_

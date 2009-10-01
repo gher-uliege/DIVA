@@ -1,4 +1,4 @@
-G95 module created on Tue Sep 29 22:35:30 2009 from moduleDIVA.f95
+G95 module created on Thu Oct  1 23:58:13 2009 from moduleDIVA.f95
 If you edit this, you'll get what you deserve.
 module-version 8
 (() () () () () () () () () () () () () () () () () () () () ())
@@ -29,7 +29,7 @@ DECL NONE NONE SUBROUTINE INVOKED) (PROCEDURE 0) 0 0 (9 NONE 10 NONE) ()
 MODULE-PROC DECL NONE NONE SUBROUTINE INVOKED) (PROCEDURE 0) 0 0 () () ()
 '' () ())
 7 'logicalunit' 'logicalunitmanager' 1 ((DERIVED UNKNOWN UNKNOWN UNKNOWN
-NONE NONE) (UNKNOWN) 0 0 () () () '' ((12 'unit' (INTEGER 8) () () 0 0 0
+NONE NONE) (UNKNOWN) 0 0 () () () '' ((12 'unit' (INTEGER 4) () () 0 0 0
 ()) (13 'isused' (LOGICAL 4) () () 0 0 0 ())) PUBLIC ())
 14 'logicalunitmanager' 'logicalunitmanager' 1 ((MODULE UNKNOWN UNKNOWN
 UNKNOWN NONE NONE) (UNKNOWN) 0 0 () () () '' () ())
@@ -40,11 +40,11 @@ NONE FUNCTION) (UNKNOWN) 0 0 () () () '' () ())
 17 'true' 'logicalunitmanager' 1 ((PARAMETER UNKNOWN UNKNOWN UNKNOWN
 NONE NONE) (LOGICAL 4) 0 0 () (CONSTANT (LOGICAL 4) 0 1) () () '' () ())
 10 'iend' '' 18 ((VARIABLE IN UNKNOWN UNKNOWN NONE NONE DUMMY) (INTEGER
-8) 0 0 () () () '' () ())
+4) 0 0 () () () '' () ())
 9 'istart' '' 18 ((VARIABLE IN UNKNOWN UNKNOWN NONE NONE DUMMY) (
-INTEGER 8) 0 0 () () () '' () ())
+INTEGER 4) 0 0 () () () '' () ())
 7 'logicalunit' 'logicalunitmanager' 1 ((DERIVED UNKNOWN UNKNOWN UNKNOWN
-NONE NONE) (UNKNOWN) 0 0 () () () '' ((12 'unit' (INTEGER 8) () () 0 0 0
+NONE NONE) (UNKNOWN) 0 0 () () () '' ((12 'unit' (INTEGER 4) () () 0 0 0
 ()) (13 'isused' (LOGICAL 4) () () 0 0 0 ())) PUBLIC ())
 )
 

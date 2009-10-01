@@ -1,4 +1,4 @@
-G95 module created on Tue Sep 29 22:35:30 2009 from moduleFile.f95
+G95 module created on Thu Oct  1 23:58:13 2009 from moduleFile.f95
 If you edit this, you'll get what you deserve.
 module-version 8
 (() () () () () () () () () () () () () () () () () () () () ())
@@ -36,7 +36,7 @@ LOGICAL 4) () () 0 0 0 ())) PUBLIC ())
 UNKNOWN NONE NONE) (INTEGER 4) 0 0 () (CONSTANT (INTEGER 4) 0 '131') ()
 () '' () ())
 28 'getfileunit' 'modulefile' 1 ((PROCEDURE UNKNOWN MODULE-PROC DECL
-NONE NONE FUNCTION) (INTEGER 8) 0 0 (29 NONE) () () '' () ())
+NONE NONE FUNCTION) (INTEGER 4) 0 0 (29 NONE) () () '' () ())
 30 'getlogicalunit' 'logicalunitmanager' 1 ((PROCEDURE UNKNOWN
 MODULE-PROC DECL NONE NONE POINTER FUNCTION) (DERIVED 23) 0 0 () () () ''
 () ())
@@ -51,7 +51,7 @@ NONE NONE SUBROUTINE INVOKED) (PROCEDURE 0) 0 0 (36 NONE) () () '' () ())
 37 'isfileopened' 'modulefile' 1 ((PROCEDURE UNKNOWN MODULE-PROC DECL
 NONE NONE FUNCTION) (LOGICAL 4) 0 0 (38 NONE) () () '' () ())
 23 'logicalunit' 'logicalunitmanager' 1 ((DERIVED UNKNOWN UNKNOWN
-UNKNOWN NONE NONE) (UNKNOWN) 0 0 () () () '' ((39 'unit' (INTEGER 8) ()
+UNKNOWN NONE NONE) (UNKNOWN) 0 0 () () () '' ((39 'unit' (INTEGER 4) ()
 () 0 0 0 ()) (40 'isused' (LOGICAL 4) () () 0 0 0 ())) PUBLIC ())
 41 'logicalunitmanager' 'logicalunitmanager' 1 ((MODULE UNKNOWN UNKNOWN
 UNKNOWN NONE NONE) (UNKNOWN) 0 0 () () () '' () ())
@@ -79,13 +79,13 @@ DUMMY) (LOGICAL 4) 0 0 () () () '' () ())
 36 'targetfile' '' 54 ((VARIABLE INOUT UNKNOWN UNKNOWN NONE NONE DUMMY)
 (DERIVED 21) 0 0 () () () '' () ())
 33 'iend' '' 55 ((VARIABLE IN UNKNOWN UNKNOWN NONE NONE DUMMY) (INTEGER
-8) 0 0 () () () '' () ())
+4) 0 0 () () () '' () ())
 32 'istart' '' 55 ((VARIABLE IN UNKNOWN UNKNOWN NONE NONE DUMMY) (
-INTEGER 8) 0 0 () () () '' () ())
+INTEGER 4) 0 0 () () () '' () ())
 29 'targetfile' '' 56 ((VARIABLE INOUT UNKNOWN UNKNOWN NONE NONE DUMMY)
 (DERIVED 21) 0 0 () () () '' () ())
 23 'logicalunit' 'logicalunitmanager' 1 ((DERIVED UNKNOWN UNKNOWN
-UNKNOWN NONE NONE) (UNKNOWN) 0 0 () () () '' ((39 'unit' (INTEGER 8) ()
+UNKNOWN NONE NONE) (UNKNOWN) 0 0 () () () '' ((39 'unit' (INTEGER 4) ()
 () 0 0 0 ()) (40 'isused' (LOGICAL 4) () () 0 0 0 ())) PUBLIC ())
 18 'unit' '' 57 ((VARIABLE IN UNKNOWN UNKNOWN NONE NONE OPTIONAL POINTER
 DUMMY) (DERIVED 23) 0 0 () () () '' () ())

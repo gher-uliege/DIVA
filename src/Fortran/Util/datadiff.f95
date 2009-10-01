@@ -1,36 +1,176 @@
-      
-	read(5,*,end=99)  nbcol
-	read(5,*,end=99)  valex
- 99   continue
-	
-	if (nbcol.eq.3) then
+PROGRAM datadiff
 
-        write(6,*) '3col'
- 150  continue
-        read(44,*,end=200)  x,y,val
-        read(45,*,end=200)  x,y,val1
-        diff=val-val1
-        if (abs(val1-valex).lt.0.00001*abs(valex)) diff=0
-        write(46,*) x,y,diff
-                goto 150
+! Module
+! ======
+  USE moduleDIVA
+  USE moduleFile
 
-	else
+! Include file
+! ============
+   include 'constantParameter.h'
+   include 'ioParameter.h'
 
-        write(6,*) '4col'
- 160  continue
-        read(44,*,end=200)  x,y,val,w
-        read(45,*,end=200)  x,y,val1
-        diff=val-val1
-        if (abs(val1-valex).lt.0.00001*abs(valex)) diff=0
+! Declaration
+! ===========
+   INTEGERType :: inputFileUnit1, inputFileUnit2, outputFileUnit, nbOfColumn
+   REALType    :: exclusionValue
 
-        write(46,*) x,y,diff,w
-        
-	goto 160
+   Type(file) :: outputFile, inputFile1, inputFile2
 
-	endif
+! ==================
+! ==================
+! == Main program ==
+! ==================
+! ==================
 
- 200  continue
-        stop
-        end
+!  Always start the DIVA context
+!  =============================
+   CALL createDIVAContext()
+
+!  Body
+!  ====
+#ifdef _BATCH_MODE_
+#undef _INTERACTIVE_MODE_
+#endif
+
+!     Read information
+!     ----------------
+!     1) In interactive mode
+!     - - - - - - - - - - - -
+#ifdef _INTERACTIVE_MODE_
+   WRITE(stdOutput,*) 'Please enter the number of column in the data file'
+   READ(stdInput,*) nbOfColumn
+   WRITE(stdOutput,*) 'Please enter the exclusion value'
+   READ(stdInput,*) exclusionValue
+
+!     2) In batch mode
+!     - - - - - - - - -
+#else
+   READ(stdInput,*,END=30) nbOfColumn,exclusionValue
+30 CONTINUE
+
+#endif
+
+#ifdef _INTERACTIVE_MODE_
+   WRITE(stdOutput,*) 'Number of column in data file,exclusion value'
+   WRITE(stdOutput,*) nbOfColumn,exclusionValue
+#endif
 
 
+!    Opening file to read and to write
+!    ---------------------------------
+   CALL createFile(inputFile1,'fort.44',getLogicalUnit())
+   CALL openFile(inputFile1)
+   inputFileUnit1 = getFileUnit(inputFile1)
+
+   CALL createFile(inputFile2,'fort.45',getLogicalUnit())
+   CALL openFile(inputFile2)
+   inputFileUnit2 = getFileUnit(inputFile2)
+
+   CALL createFile(outputFile,'fort.46',getLogicalUnit())
+   CALL openFile(outputFile)
+   outputFileUnit = getFileUnit(outputFile)
+
+!    Main procedure
+!    --------------
+
+    SELECT CASE (nbOfColumn)
+       CASE (ithree)
+#ifdef _INTERACTIVE_MODE_
+          WRITE(stdOutput,*) 'number of column in data file'
+          WRITE(stdOutput,*) '3col'
+          WRITE(stdOutput,*) 'Data hence without relative weights'
+#endif
+          CALL computeForThreeColumn(inputFileUnit1,inputFileUnit2,outputFileUnit,exclusionValue)
+       CASE (ifour)
+#ifdef _INTERACTIVE_MODE_
+          WRITE(stdOutput,*) 'number of column in data file'
+          WRITE(stdOutput,*) '4col'
+          WRITE(stdOutput,*) 'Data using relative weights'
+#endif
+          CALL computeForFourColumn(inputFileUnit1,inputFileUnit2,outputFileUnit,exclusionValue)
+    END SELECT
+
+   CALL closeFile(inputFile1)
+   CALL closeFile(inputFile2)
+   CALL closeFile(outputFile)
+
+!  Always finalise the DIVA context
+!  ================================
+   CALL finaliseDIVAContext()
+
+! ============================================================
+! ============================================================
+! ============================================================
+! ===                                                      ===
+! ===                                                      ===
+! ===                  Program procedures                  ===
+! ===                                                      ===
+! ===                                                      ===
+! ============================================================
+! ============================================================
+! ============================================================
+ CONTAINS
+
+! Procedure 1 : compute data based on three column data file
+! -----------------------------------------------------------
+ SUBROUTINE computeForThreeColumn(inputFileUnit1,inputFileUnit2,outputFileUnit,exclusionValue)
+
+!     Declaration
+!     - - - - - -
+      INTEGERType, INTENT(IN) :: inputFileUnit1, inputFileUnit2, outputFileUnit
+      REALType, INTENT(IN)    :: exclusionValue
+      REALType :: xValue, yValue, dataValue1, dataValue2, difference
+      REALType, PARAMETER :: tolerance = 1.D-5
+
+!     Body
+!     - - -
+      DO
+          READ(inputFileUnit1,*,END=100)  xValue, yValue, dataValue1
+          READ(inputFileUnit2,*,END=100)  xValue, yValue, dataValue2
+          difference = dataValue1 - dataValue2
+          
+          IF ( abs( dataValue2 - exclusionValue) < tolerance * abs(exclusionValue) ) THEN
+             difference = zero
+          END IF
+          
+          WRITE(outputFileUnit,*) xValue, yValue,difference
+          
+      END DO
+
+ 100   CONTINUE
+
+ END SUBROUTINE
+
+! Procedure 2 : compute data based on four column data file
+! -----------------------------------------------------------
+ SUBROUTINE computeForFourColumn(inputFileUnit1,inputFileUnit2,outputFileUnit,exclusionValue)
+
+!     Declaration
+!     - - - - - -
+      INTEGERType, INTENT(IN) :: inputFileUnit1, inputFileUnit2, outputFileUnit
+      REALType, INTENT(IN)    :: exclusionValue
+      REALType :: xValue, yValue, dataValue1, dataValue2, weight, difference
+      REALType, PARAMETER :: tolerance = 1.D-5
+
+!     Body
+!     - - -
+      DO
+          READ(inputFileUnit1,*,END=100)  xValue, yValue, dataValue1, weight
+          READ(inputFileUnit2,*,END=100)  xValue, yValue, dataValue2
+          difference = dataValue1 - dataValue2
+
+          IF ( abs( dataValue2 - exclusionValue) < tolerance * abs(exclusionValue) ) THEN
+             difference = zero
+          END IF
+
+          WRITE(outputFileUnit,*) xValue, yValue,difference, weight
+
+      END DO
+
+ 100   CONTINUE
+
+ END SUBROUTINE
+
+
+END PROGRAM datadiff

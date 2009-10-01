@@ -1,4 +1,4 @@
-G95 module created on Tue Sep 29 22:35:29 2009 from logicalUnitManager.f95
+G95 module created on Thu Oct  1 23:58:13 2009 from logicalUnitManager.f95
 If you edit this, you'll get what you deserve.
 module-version 8
 (() () () () () () () () () () () () () () () () () () () () ())
@@ -25,7 +25,7 @@ DECL NONE NONE SUBROUTINE INVOKED) (PROCEDURE 0) 0 0 (7 NONE 8 NONE) ()
 MODULE-PROC DECL NONE NONE SUBROUTINE INVOKED) (PROCEDURE 0) 0 0 () () ()
 '' () ())
 5 'logicalunit' 'logicalunitmanager' 1 ((DERIVED UNKNOWN UNKNOWN UNKNOWN
-NONE NONE) (UNKNOWN) 0 0 () () () '' ((10 'unit' (INTEGER 8) () () 0 0 0
+NONE NONE) (UNKNOWN) 0 0 () () () '' ((10 'unit' (INTEGER 4) () () 0 0 0
 ()) (11 'isused' (LOGICAL 4) () () 0 0 0 ())) PUBLIC ())
 12 'logicalunitmanager' 'logicalunitmanager' 1 ((MODULE UNKNOWN UNKNOWN
 UNKNOWN NONE NONE) (UNKNOWN) 0 0 () () () '' () ())
@@ -33,12 +33,12 @@ UNKNOWN NONE NONE) (UNKNOWN) 0 0 () () () '' () ())
 NONE FUNCTION) (UNKNOWN) 0 0 () () () '' () ())
 14 'true' 'logicalunitmanager' 1 ((PARAMETER UNKNOWN UNKNOWN UNKNOWN
 NONE NONE) (LOGICAL 4) 0 0 () (CONSTANT (LOGICAL 4) 0 1) () () '' () ())
-8 'iend' '' 15 ((VARIABLE IN UNKNOWN UNKNOWN NONE NONE DUMMY) (INTEGER 8)
+8 'iend' '' 15 ((VARIABLE IN UNKNOWN UNKNOWN NONE NONE DUMMY) (INTEGER 4)
 0 0 () () () '' () ())
 7 'istart' '' 15 ((VARIABLE IN UNKNOWN UNKNOWN NONE NONE DUMMY) (
-INTEGER 8) 0 0 () () () '' () ())
+INTEGER 4) 0 0 () () () '' () ())
 5 'logicalunit' 'logicalunitmanager' 1 ((DERIVED UNKNOWN UNKNOWN UNKNOWN
-NONE NONE) (UNKNOWN) 0 0 () () () '' ((10 'unit' (INTEGER 8) () () 0 0 0
+NONE NONE) (UNKNOWN) 0 0 () () () '' ((10 'unit' (INTEGER 4) () () 0 0 0
 ()) (11 'isused' (LOGICAL 4) () () 0 0 0 ())) PUBLIC ())
 )
 

@@ -1,4 +1,4 @@
 TYPE logicalUnit
-   INTEGER*8 :: unit
+   INTEGER :: unit
    LOGICAL :: isUsed
 END TYPE logicalUnit
