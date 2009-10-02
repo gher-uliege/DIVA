@@ -12,7 +12,7 @@ PROGRAM datadiff
 
 ! Declaration
 ! ===========
-   INTEGERType :: inputFileUnit1, inputFileUnit2, outputFileUnit, nbOfColumn
+   INTEGER :: inputFileUnit1, inputFileUnit2, outputFileUnit, nbOfColumn
    REALType    :: exclusionValue
 
    Type(file) :: outputFile, inputFile1, inputFile2
@@ -118,7 +118,7 @@ PROGRAM datadiff
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: inputFileUnit1, inputFileUnit2, outputFileUnit
+      INTEGER, INTENT(IN) :: inputFileUnit1, inputFileUnit2, outputFileUnit
       REALType, INTENT(IN)    :: exclusionValue
       REALType :: xValue, yValue, dataValue1, dataValue2, difference
       REALType, PARAMETER :: tolerance = 1.D-5
@@ -148,7 +148,7 @@ PROGRAM datadiff
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: inputFileUnit1, inputFileUnit2, outputFileUnit
+      INTEGER, INTENT(IN) :: inputFileUnit1, inputFileUnit2, outputFileUnit
       REALType, INTENT(IN)    :: exclusionValue
       REALType :: xValue, yValue, dataValue1, dataValue2, weight, difference
       REALType, PARAMETER :: tolerance = 1.D-5

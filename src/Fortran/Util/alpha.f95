@@ -12,9 +12,9 @@ PROGRAM Alpha0_Alpha1
 
 ! Declaration
 ! ===========
-   INTEGERType :: fileUnit
+   INTEGER :: fileUnit
    REALType    :: gradientPenalisation, lengthScale
-   Type(file) :: outputFile
+   TYPE(file) :: outputFile
 
 ! ==================
 ! ==================

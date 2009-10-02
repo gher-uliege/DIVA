@@ -12,7 +12,7 @@ PROGRAM calcest
 
 ! Declaration
 ! ===========
-   INTEGERType :: inputFileUnit, outputFileUnit, nbOfColumn
+   INTEGER :: inputFileUnit, outputFileUnit, nbOfColumn
    REALType    :: generalizedCrossValidator, tracea
    
    Type(file) :: outputFile, inputFile
@@ -112,7 +112,7 @@ PROGRAM calcest
  
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: inputFileUnit, outputFileUnit
+      INTEGER, INTENT(IN) :: inputFileUnit, outputFileUnit
       REALType, INTENT(IN)    :: generalizedCrossValidator, tracea
       REALType :: xValue, yValue, dataValue
 
@@ -133,7 +133,7 @@ PROGRAM calcest
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: inputFileUnit, outputFileUnit
+      INTEGER, INTENT(IN) :: inputFileUnit, outputFileUnit
       REALType, INTENT(IN)    :: generalizedCrossValidator, tracea
       REALType :: xValue, yValue, dataValue, weight
 

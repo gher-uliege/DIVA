@@ -15,10 +15,10 @@ MODULE moduleVector
 ! ============
 #ifndef _MODULE_VECTOR_
 #define _MODULE_VECTOR_
+   include 'vector.h'
    include 'ioParameter.h'
    include 'constantParameter.h'
    include 'logicalParameter.h'
-   include 'vector.h'
 #endif
 
 ! Declaration
@@ -30,14 +30,15 @@ MODULE moduleVector
 
 !  Memory part
 !  -----------
-   INTEGERType, PRIVATE, PARAMETER :: defaultIncreaseSize = 100
+   INTEGER, PRIVATE, PARAMETER :: defaultIncreaseSize = 100
+   INTEGER, PRIVATE :: increaseSize
    TYPE (vector), PRIVATE :: internalWorkingVector
 
 ! Procedures status
 ! =================
    PUBLIC :: vectorCreate, printInformation, vectorDestroy, vectorSetSize, vectorGetSize, vectorSetToZero, vectorSetToValue, &
              vectorNorm1, vectorNorm2, vectorNormInfinity, vectorSqrt, vectorSum, vectorMin, vectorMax, vectorInsertValue, &
-             vectorAddValue, vectorScale, vectorDot, vectorGetValue
+             vectorAddValue, vectorScale, vectorDot, vectorGetValue,initialise, vectorSetMemoryIncreaseSize
 
 !  General part
 !  ------------
@@ -75,6 +76,16 @@ MODULE moduleVector
 ! ============================================================
 ! ===            External procedure ("PUBLIC")             ===
 ! ============================================================
+
+! Procedure 0 : initialisation
+! ----------------------------
+  SUBROUTINE initialise()
+
+!     Body
+!     - - -
+      CALL vectorSetMemoryIncreaseSize(defaultIncreaseSize)
+
+  END SUBROUTINE
 
 ! Procedure 1 : create the vector
 ! -------------------------------
@@ -140,7 +151,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: dim
+      INTEGER, INTENT(IN) :: dim
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
@@ -164,7 +175,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: dim
+      INTEGER :: dim
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
@@ -386,7 +397,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: position
+      INTEGER, INTENT(IN) :: position
       REALType, INTENT(IN) :: val
 
 !     Pointer filling procedure
@@ -410,7 +421,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: position
+      INTEGER, INTENT(IN) :: position
       REALType, INTENT(IN) :: val
 
 !     Pointer filling procedure
@@ -482,7 +493,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: i1
+      INTEGER, INTENT(IN) :: i1
       REALType :: val
 
 !     Pointer filling procedure
@@ -500,6 +511,20 @@ MODULE moduleVector
 
   END FUNCTION
 
+! Procedure 20 : define the extra size for allocate vector
+! --------------------------------------------------------
+  SUBROUTINE vectorSetMemoryIncreaseSize(extraSize)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: extraSize
+
+!     Body
+!     - - -
+      increaseSize = extraSize
+      
+  END SUBROUTINE
+  
 ! ============================================================
 ! ============================================================
 ! ============================================================
@@ -587,7 +612,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: ivalue
+      INTEGER, INTENT(IN) :: ivalue
 
 !     Body
 !     - - -
@@ -601,7 +626,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: ivalue
+      INTEGER, INTENT(IN) :: ivalue
 
 !     Body
 !     - - -
@@ -629,7 +654,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: newSize
+      INTEGER :: newSize
 
 !     Body
 !     - - -
@@ -639,7 +664,7 @@ MODULE moduleVector
                 newSize = memoryGetSize()
                 CALL memoryStockIntermediateVector()
                 CALL memoryDestructor()
-                CALL memorySetAllocatedSize(newSize+defaultIncreaseSize)
+                CALL memorySetAllocatedSize(newSize+increaseSize)
                 CALL memorySetSize(newSize)
                 CALL memoryAllocateMemory()
                 CALL memoryTransferIntermediateVectorToVector()
@@ -667,7 +692,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: size
+      INTEGER :: size
 
 !     Body
 !     - - -
@@ -681,7 +706,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: size
+      INTEGER :: size
 
 !     Body
 !     - - -
@@ -695,8 +720,8 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: i1
-      INTEGERType :: allocationSize
+      INTEGER :: i1
+      INTEGER :: allocationSize
 
 !     Body
 !     - - -
@@ -722,8 +747,8 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: i1
-      INTEGERType ::  workingSize
+      INTEGER :: i1
+      INTEGER ::  workingSize
 
 !     Body
 !     - - -
@@ -762,7 +787,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: i1
+      INTEGER, INTENT(IN) :: i1
       REALType :: val
 
 !     Body
@@ -791,11 +816,11 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: dim
+      INTEGER :: dim
 
 !     Body
 !     - - -
-      dim = defaultIncreaseSize
+      dim = increaseSize
 
   END FUNCTION
 
@@ -805,7 +830,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: i1, size
+      INTEGER :: i1, size
 
 !     Body
 !     - - -
@@ -842,7 +867,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: position
+      INTEGER, INTENT(IN) :: position
       REALType, POINTER :: ptr
 
 !     Body
@@ -884,7 +909,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: i1, size
+      INTEGER :: i1, size
       REALType, INTENT(IN) :: val
 
 !     Body
@@ -903,7 +928,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: position
+      INTEGER, INTENT(IN) :: position
       REALType, INTENT(IN) :: val
 
 !     Body
@@ -920,7 +945,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: position
+      INTEGER, INTENT(IN) :: position
       REALType, INTENT(IN) :: val
       REALType, POINTER :: ptr
 
@@ -956,7 +981,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: i1, size
+      INTEGER :: i1, size
       REALType :: val
 
 !     Body
@@ -976,7 +1001,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: i1, size
+      INTEGER :: i1, size
       REALType :: val
       REALType, POINTER :: ptr
 
@@ -1000,7 +1025,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: i1, size
+      INTEGER :: i1, size
       REALType :: val
 
 !     Body
@@ -1020,7 +1045,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: i1, size
+      INTEGER :: i1, size
       REALType :: val
 
 !     Body
@@ -1040,7 +1065,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: i1, size
+      INTEGER :: i1, size
       REALType, POINTER :: ptr
 
 !     Body
@@ -1060,7 +1085,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: i1, size
+      INTEGER :: i1, size
       REALType :: val
 
 !     Body
@@ -1080,7 +1105,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: i1, size
+      INTEGER :: i1, size
       REALType :: val
 
 !     Body
@@ -1100,7 +1125,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: i1, size
+      INTEGER :: i1, size
       REALType :: val
       REALType, POINTER :: ptr
 
@@ -1121,7 +1146,7 @@ MODULE moduleVector
   
 !     Declaration
 !     - - - - - -
-      INTEGERType :: i1, size
+      INTEGER :: i1, size
       REALType :: val
 
 !     Body

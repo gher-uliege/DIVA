@@ -14,6 +14,8 @@ MODULE moduleDIVA
 ! Include file
 ! ============
    USE logicalUnitManager, initialiseLogicalUnitManager => initialiseDefault, deleteLogicalUnitDataBase => destructor
+   USE moduleChrono, ONLY : initialiseChrono => initialise
+   USE moduleVector, ONLY : initialiseVector => initialise
 
 ! Procedures status
 ! =================
@@ -43,6 +45,8 @@ MODULE moduleDIVA
 !     Body
 !     - - -
       CALL initialiseLogicalUnitManager()
+      CALL initialiseChrono()
+      CALL initialiseVector()
 
    END SUBROUTINE
 

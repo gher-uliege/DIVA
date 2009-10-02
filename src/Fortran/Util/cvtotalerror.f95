@@ -12,7 +12,7 @@ PROGRAM cvtotalerror
 
 ! Declaration
 ! ===========
-   INTEGERType :: inputFileUnit1, inputFileUnit2, outputFileUnit, numberOfData
+   INTEGER :: inputFileUnit1, inputFileUnit2, outputFileUnit, numberOfData
    REALType    ::  errorValue, crossValidationValue, dataVart
 
    Type(file) :: outputFile, inputFile1, inputFile2
@@ -96,9 +96,9 @@ PROGRAM cvtotalerror
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: inputFileUnit1, inputFileUnit2
-      INTEGERType, INTENT(OUT) :: numberOfData
-      INTEGERType :: i1, number1, number2
+      INTEGER, INTENT(IN) :: inputFileUnit1, inputFileUnit2
+      INTEGER, INTENT(OUT) :: numberOfData
+      INTEGER :: i1, number1, number2
 
       REALType, INTENT(OUT)   :: errorValue, dataVart
       REALType :: dataValue1, dataValue2
@@ -130,7 +130,7 @@ PROGRAM cvtotalerror
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: outputFileUnit, numberOfData
+      INTEGER, INTENT(IN) :: outputFileUnit, numberOfData
       REALType, INTENT(IN)    :: errorValue, dataVart, crossValidationValue
 
 !     Body

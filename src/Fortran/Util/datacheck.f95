@@ -12,7 +12,7 @@ PROGRAM datacheck
 
 ! Declaration
 ! ===========
-   INTEGERType :: inputFileUnit, outputFileUnit
+   INTEGER :: inputFileUnit, outputFileUnit
    REALType    :: xMin,xMax,yMin,yMax
    LOGICAL     :: icheck
 
@@ -76,8 +76,8 @@ PROGRAM datacheck
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: inputFileUnit
-      INTEGERType :: i1, i2, istop, numberOfData
+      INTEGER, INTENT(IN) :: inputFileUnit
+      INTEGER :: i1, i2, istop, numberOfData
 
       REALType, INTENT(OUT)   :: xMin,xMax,yMin,yMax
       REALType :: xValue, yValue
@@ -126,7 +126,7 @@ PROGRAM datacheck
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: outputFileUnit
+      INTEGER, INTENT(IN) :: outputFileUnit
       REALType, INTENT(IN)    :: xMin,xMax,yMin,yMax
       LOGICAL, INTENT(IN)     :: icheck
 

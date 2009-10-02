@@ -1,0 +1,53 @@
+#!/bin/bash
+
+
+
+echo =============================================
+echo =============================================
+echo ==                                         ==
+echo == Procedure to test programs in : MODULE  ==
+echo ==                                         ==
+echo =============================================
+echo =============================================
+echo ' '
+
+# Definition of the compiler and options
+compiler=g95
+flag='-O3 -Wall -Wimplicit-none'
+
+# Definition of preprocessor options if needed
+preprocessor='-cpp'
+preprocessorFlag='-D=_BATCH_MODE'
+preprocessorFlag=$preprocessorFlag' -DINTEGERType=INTEGER -DREALType=REAL*8'
+
+#Definition of libraries for modules
+moduleLibraryDir='../lib'
+moduleLibraryObject=$moduleLibraryDir/*.o
+moduleLibrary='-I '$moduleLibraryDir
+
+echo Testing procedure in progress...
+echo ================================
+rm ./testing.log
+
+extension=.f95
+osUsed=cygwin
+
+# Chech program : alpha.a
+# -----------------------
+fileToCheck=testVector
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+$compiler $flag $preprocessor $preprocessorFlag $fileToCheck$extension $moduleLibraryObject $moduleLibrary -o $fileToCheck.a >> testing.log 
+./$fileToCheck.a >> $fileToCheck.cygwin 
+diff -s ./$fileToCheck.cygwin ./OUTPUTS/$fileToCheck.cygwin >> testing.log
+rm ./$fileToCheck.cygwin
+rm ./$fileToCheck.a
+echo ' ' >> testing.log
+
+echo Testing procedure finished
+echo ==========================
+echo Check 'testing.log'
+ 

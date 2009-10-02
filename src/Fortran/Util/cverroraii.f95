@@ -12,7 +12,7 @@ PROGRAM cverror
 
 ! Declaration
 ! ===========
-   INTEGERType :: inputFileUnit1, inputFileUnit2, inputFileUnit3, inputFileUnit4, outputFileUnit, numberOfData
+   INTEGER :: inputFileUnit1, inputFileUnit2, inputFileUnit3, inputFileUnit4, outputFileUnit, numberOfData
    REALType    :: exclusionValue, crossValidationValue, errorValue, errorValueBis, trace, variableData
 
    Type(file) :: outputFile, inputFile1, inputFile2, inputFile3, inputFile4
@@ -109,8 +109,8 @@ PROGRAM cverror
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: inputFileUnit1, inputFileUnit2, inputFileUnit3
-      INTEGERType, INTENT(OUT) :: numberOfData
+      INTEGER, INTENT(IN) :: inputFileUnit1, inputFileUnit2, inputFileUnit3
+      INTEGER, INTENT(OUT) :: numberOfData
 
       REALType, INTENT(IN)    :: exclusionValue
       REALType, INTENT(OUT)   :: errorValue, errorValueBis, trace
@@ -149,7 +149,7 @@ PROGRAM cverror
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: outputFileUnit, numberOfData
+      INTEGER, INTENT(IN) :: outputFileUnit, numberOfData
       REALType, INTENT(IN)    :: crossValidationValue, errorValue, variableData, trace, errorValueBis
 
 !     Body
@@ -166,7 +166,7 @@ PROGRAM cverror
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: inputFileUnit
+      INTEGER, INTENT(IN) :: inputFileUnit
       REALType, INTENT(OUT)   :: variableData
 
 !     Body

@@ -18,7 +18,7 @@ flag='-O3 -Wall -Wimplicit-none -c'
 # Definition of preprocessor options if needed
 preprocessor='-cpp'
 preprocessorFlag='-D=_BATCH_MODE'
-preprocessorFlag=$preprocessorFlag' -DINTEGERType=INTEGER -DREALType=REAL*8'
+preprocessorFlag=$preprocessorFlag' -DREALType=REAL*8'
 
 baseDir=$PWD
 
@@ -45,12 +45,15 @@ if [ -d "$kk" ]
 then
 if [ "$kk" != "lib" ]
 then
+if [ "$kk" != "TESTDIRECTORY" ]
+then
   echo    =============================
   echo    = Entering in module $kk
   echo    =============================
   echo ' '
 cp ./$kk/*.f95 .
 cp ./$kk/*.h .
+fi
 fi
 fi
 done
@@ -61,9 +64,17 @@ echo =====================
 
 for ii in `ls *.f95`
 do
+if [ "$ii" != "moduleDIVA.f95" ]
+then
     echo 'Compiling '$ii
     $compiler $flag $preprocessor $preprocessorFlag $ii
+fi
 done
+
+ii=moduleDIVA.f95
+echo 'Compiling '$ii
+$compiler $flag $preprocessor $preprocessorFlag $ii
+
 mv *.o $moduleLib
 mv *.mod $moduleLib
 

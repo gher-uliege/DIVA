@@ -164,7 +164,7 @@ MODULE moduleFile
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: checkValue
+      INTEGER :: checkValue
       LOGICAL, OPTIONAL, INTENT(OUT) :: checkError
       CHARACTER(*), OPTIONAL, INTENT(IN) :: formatType
 
@@ -206,7 +206,7 @@ MODULE moduleFile
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: checkValue
+      INTEGER :: checkValue
       LOGICAL, OPTIONAL, INTENT(OUT) :: checkError
 
 !     Pointer filling procedure
@@ -286,7 +286,7 @@ MODULE moduleFile
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: unit1
+      INTEGER :: unit1
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
@@ -416,7 +416,7 @@ MODULE moduleFile
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: unit1
+      INTEGER :: unit1
 
 !     Body
 !     - - -

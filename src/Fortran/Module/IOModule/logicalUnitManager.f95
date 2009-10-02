@@ -18,9 +18,9 @@ MODULE logicalUnitManager
    
 ! Declaration
 ! ===========
-   INTEGERType, PRIVATE, PARAMETER :: iDefaultStart = 100
-   INTEGERType, PRIVATE, PARAMETER :: iDefaultEnd = 900
-   INTEGERType, PRIVATE :: numberOfData
+   INTEGER, PRIVATE, PARAMETER :: iDefaultStart = 100
+   INTEGER, PRIVATE, PARAMETER :: iDefaultEnd = 900
+   INTEGER, PRIVATE :: numberOfData
    LOGICAL, PRIVATE :: isInitialise = false
 
    TYPE (logicalUnit), PRIVATE, POINTER :: workingLogicalUnit => NULL()
@@ -52,7 +52,7 @@ MODULE logicalUnitManager
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: iStart, iEnd
+      INTEGER, INTENT(IN) :: iStart, iEnd
 
 !     Body
 !     - - -
@@ -113,7 +113,7 @@ MODULE logicalUnitManager
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: num
+      INTEGER, INTENT(IN) :: num
 
 !     Body
 !     - - -
@@ -143,8 +143,8 @@ MODULE logicalUnitManager
    
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: iStart, iEnd
-      INTEGERType :: i1
+      INTEGER, INTENT(IN) :: iStart, iEnd
+      INTEGER :: i1
 
 !     Body
 !     - - -
@@ -162,7 +162,7 @@ MODULE logicalUnitManager
 
 !     Declaration
 !     - - - - - -
-      INTEGERType :: i1
+      INTEGER :: i1
       TYPE (logicalUnit), INTENT(OUT), POINTER :: number
 
 !     Body

@@ -12,7 +12,7 @@ PROGRAM calcestbis
 
 ! Declaration
 ! ===========
-   INTEGERType :: inputFileUnit, outputFileUnit, nbOfColumn
+   INTEGER :: inputFileUnit, outputFileUnit, nbOfColumn
    REALType    :: signalToNoiseRatio, tracea, varianceBackgroundField
    REALType    :: epsilon
    
@@ -118,7 +118,7 @@ PROGRAM calcestbis
  
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: inputFileUnit, outputFileUnit
+      INTEGER, INTENT(IN) :: inputFileUnit, outputFileUnit
       REALType, INTENT(IN)    :: epsilon
       REALType :: xValue, yValue, dataValue
 
@@ -139,7 +139,7 @@ PROGRAM calcestbis
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: inputFileUnit, outputFileUnit
+      INTEGER, INTENT(IN) :: inputFileUnit, outputFileUnit
       REALType, INTENT(IN)    :: epsilon
       REALType :: xValue, yValue, dataValue, weight
 

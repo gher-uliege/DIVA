@@ -12,7 +12,7 @@ PROGRAM calcmu
 
 ! Declaration
 ! ===========
-   INTEGERType :: inputFileUnit, outputFileUnit, nbOfColumn
+   INTEGER :: inputFileUnit, outputFileUnit, nbOfColumn
    REALType    :: lengthScale, signalToNoiseRatio, xi
    REALType    :: valueToWrite, intermediateValue
    
@@ -121,7 +121,7 @@ PROGRAM calcmu
  
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: inputFileUnit, outputFileUnit
+      INTEGER, INTENT(IN) :: inputFileUnit, outputFileUnit
       REALType, INTENT(IN)    :: valueToWrite
       REALType :: xValue, yValue, dataValue
 
@@ -142,7 +142,7 @@ PROGRAM calcmu
 
 !     Declaration
 !     - - - - - -
-      INTEGERType, INTENT(IN) :: inputFileUnit, outputFileUnit
+      INTEGER, INTENT(IN) :: inputFileUnit, outputFileUnit
       REALType, INTENT(IN)    :: valueToWrite
       REALType :: xValue, yValue, dataValue, weight
 

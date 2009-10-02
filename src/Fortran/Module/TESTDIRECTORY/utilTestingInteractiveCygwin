@@ -18,7 +18,7 @@ flag='-O3 -Wall -Wimplicit-none'
 # Definition of preprocessor options if needed
 preprocessor='-cpp'
 preprocessorFlag='-D=_INTERACTIVE_MODE_'
-preprocessorFlag=$preprocessorFlag' -DINTEGERType=INTEGER -DREALType=REAL*8'
+preprocessorFlag=$preprocessorFlag' -DINTEGERType=INTEGER*8 -DREALType=REAL*8'
 
 #Definition of libraries for modules
 moduleLibraryDir='../../Module/lib'
@@ -33,7 +33,7 @@ fileToCheck=$1
 echo Test : $fileToCheck
 echo ------
 
-$compiler $flag $preprocessor $preprocessorFlag ../$fileToCheck$extension $moduleLibraryObject $moduleLibrary  -o $fileToCheck.a
+$compiler $flag $preprocessor $preprocessorFlag $fileToCheck$extension $moduleLibraryObject $moduleLibrary  -o $fileToCheck.a
 
 echo Compilation finished
 echo ====================
