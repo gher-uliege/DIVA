@@ -16,7 +16,6 @@ MODULE moduleChrono
 #ifndef _MODULE_CHRONO_
 #define _MODULE_CHRONO_
    include 'chrono.h'
-   PRIVATE
    include 'ioParameter.h'
    include 'logicalParameter.h'
 #endif
