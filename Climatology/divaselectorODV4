@@ -7,7 +7,7 @@ todepth=0
 mkdir input
 mkdir input/divadata
 #dcoordinate=Pressure
-#todepth=1
+#todepth=-1
 #todepth=1 means transformation of pressure to depth (saunder and Fofonoff)
 # For expert users, you can disactivate ODV4 to bigfile for variables if you
 # change only layer positions (put zero)
@@ -82,6 +82,28 @@ then
 delimiter="\t"
 fi
 echo Delimiter for ODV $delimiter
+
+if [ "$dcoordinate" == "Pressure" ]
+then
+zfound=$(grep -i "pressure" ODVcolumns | wc -l)
+if [ "$zfound" -le "0" ]
+then
+echo Sorry, no pressure coordinates found, will try depth
+dcoordinate=Depth
+fi
+fi
+
+
+if [ "$dcoordinate" == "Depth" ]
+then
+zfound=$(grep -i "depth" ODVcolumns | wc -l)
+if [ "$zfound" -le "0" ]
+then
+echo Sorry, no depth coordinates found, will try pressure
+dcoordinate=Pressure
+fi
+fi
+
 
 
 #First drop all bad points for a given variable and keep only metainformation, z and variable 
