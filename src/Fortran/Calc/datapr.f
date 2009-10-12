@@ -28,7 +28,9 @@ C  './drv/diva.drv' : IREG+10 INSTEAD OF IREG (SvL)
       if(ireg.lt.10) then
          opti=1
       else 
-         opti=0
+!corection 15/09/09  opti=1 dans tous les cas.
+!         opti=0
+         opti=1
 	 ireg=ireg-10
       endif
 
@@ -133,6 +135,7 @@ c            write(6,*) 'Now found',ncamax
          else 
 	    write(6,*) ' *** You asked no optimisation ***'
           endif
+      
          call findl3(l(lkelos),s(ltcoog),l(lkconn),s(ltcele),
      &               s(ltdata),ipr)
       endif
@@ -140,7 +143,6 @@ c      write(6,*) 'Space for optimization?',ncamax,ncaz
       
       nelkntc=ncax*ncay*ncaz
 C      call allody(nelkntc-1,0,'kntc',jjjjjj,99)
-      
 C --- CODE ADDED FOR 2.2 RELEASE (RS 22 MARCH 94) ---
 c      if (IREG.GT.0.AND.IREG.LT.3) then 
           call LINREG (L(LKELOS),S(LTDATA))
