@@ -68,10 +68,7 @@ echo DIVAERRS2 divadoall71 Missing file $FILENAME
 echo Please provide information file $FILENAME
 exit
 fi
-
-
-
-
+#
 ##################################################
 # loop on depth layers defined in contour.depth
 # loop on seasons devined in monthlist
@@ -105,6 +102,7 @@ isextract=0
 if [ "$isextractf" == "1" ]
 then
 isextract=1
+rm -f pressure.coordinates
 fi
 
 if [ "$isextractf" == "-1" ]
@@ -213,6 +211,12 @@ read isUVcstcomm
 read isUVcst
 read isrefcomm
 read isref
+if [ "$isref" == "1" ];then
+read yrrefcomm
+read yrref
+read mnrefcomm
+read mnref
+fi
 } < $FILENAME
 
 if [ "$isUVcst" == "1" ];then
@@ -266,9 +270,9 @@ if [ "$isref" == "1" ];then
  while [ "$lev" -le "$maxlevel" ]
  do 
  let level=10000+$lev
- cp -v './input/divarefe_all/'$var'.'$year'.0112.'$level'.ref' './input/divarefe/'$var'.'$year'.'$month'.'$level'.ref'
- cp -v './input/divarefe_all/'$var'.'$year'.0112.'$level'.ascii.ref' './input/divarefe/'$var'.'$year'.'$month'.'$level'.ascii.ref'
- cp -v './input/divarefe_all/'$var'.'$year'.0112.'$level'.datapoint.ref' './input/divarefe/'$var'.'$year'.'$month'.'$level'.datapoint.ref'
+ cp -v './input/divarefe_all/'$var'.'$yrref.$mnref.$level'.ref' './input/divarefe/'$var'.'$year'.'$month'.'$level'.ref'
+ cp -v './input/divarefe_all/'$var'.'$yrref.$mnref.$level'.ascii.ref' './input/divarefe/'$var'.'$year'.'$month'.'$level'.ascii.ref'
+ cp -v './input/divarefe_all/'$var'.'$yrref.$mnref.$level'.datapoint.ref' './input/divarefe/'$var'.'$year'.'$month'.'$level'.datapoint.ref'
  cp -v ./input/divarefe_all/GridInfo.dat  ./input/divarefe/GridInfo.dat
  let lev=$lev+1
  done
@@ -285,9 +289,6 @@ fi
 
 GMIN="1"
 GMAX="0"
-
-
-
 
 FILENAME=${var}.bounds
 
@@ -308,8 +309,6 @@ yeare=${year:4:4}
 monthb=${month:0:2}
 monthe=${month:2:2}
 
-
-
 ncolvar=$(grep -i $var ODVcolumns | awk -F "\t" '{print $3}')
 
 longvarname=$(grep -i $var ODVcolumns | awk -F "\t" '{print $1}' | awk -F " " '{print $1}')
@@ -328,9 +327,6 @@ then
 read longvarname
 } < $var.longname
 fi
-
-
-
 
 echo working on variable $var 
 echo $ncolvar
@@ -377,12 +373,17 @@ fi
 
 #
 # Prepare info3D and run diva3D
-echo strange test $iscontour $isdataclean $isoptimise $isanalysis
-if [ "$iscontour" -ne "0" ] || [ "$isdataclean" -ne "0" ] || [ "$isoptimise" -ne "0" ] || [ "$isanalysis" -ne "0" ]
+#echo strange test $iscontour $isdataclean $isoptimise $isanalysis
+
+if [ "$iscontour" -ne "0" ] || [ "$isdataclean" -ne "0" ] || [ "$isoptimise" -ne "0" ] || [ "$isanalysis" -ne "0" ] 
 then
+
+
+
 # Need to optimise the copy operation, too much movements
 # Also clean up destination directories
 # Also contour generation not needed each loop, though fast operation.
+
 rm  ${DIVADIR}/divastripped/input/*
 rm  ${DIVADIR}/divastripped/input/*/*
 rm  ${DIVADIR}/divastripped/output/*
@@ -390,8 +391,13 @@ rm  ${DIVADIR}/divastripped/output/*/*
 rm  ${DIVADIR}/divastripped/output/*/*/*
 rm  ${DIVADIR}/divastripped/divawork/*
 
-
-
+if [ "$isanalysis" -eq "2" ] ;then
+if [ -d ./input/divarefe_all ];then
+echo '>>>WARNING: ./input/divarefe_all exists, files may be rewritten'
+else
+mkdir ./input/divarefe_all
+fi
+fi
 
 cp -r ./input/* ${DIVADIR}/divastripped/input
 
@@ -412,6 +418,13 @@ mkdir -p ./input/divaparam
 mkdir -p ./input/divaUVcons
 mkdir -p ./output/3Danalysis
 
+
+if [ -f $WDIR'/output/3Danalysis/'$var'.'$year'.3DNCliste' ]; then
+ cp -v $WDIR'/output/3Danalysis/'$var'.'$year'.3DNCliste' ${DIVADIR}/divastripped/output/3Danalysis/.
+fi
+if [ -f $WDIR'/output/3Danalysis/'$var'.'$year'.3DNCinfo' ]; then
+ cp -v $WDIR'/output/3Danalysis/'$var'.'$year'.3DNCinfo' ${DIVADIR}/divastripped/output/3Danalysis/.
+fi
 
 # preparing 3Dinfo to run
 
@@ -505,6 +518,16 @@ mkdir -p ${WDIR}/output
 mkdir -p ${WDIR}/newinput
 cp -r ${DIVADIR}/divastripped/output/* ${WDIR}/output
 cp -r ${DIVADIR}/divastripped/input/* ${WDIR}/newinput
+
+if [ $iscontour -ge 2 ]; then
+if [ -d ${WDIR}/newinput/divaUVcons_all ]; then
+ cp ${WDIR}/newinput/divaUVcons/* ${WDIR}/newinput/divaUVcons_all/.
+else
+ mv ${WDIR}/newinput/divaUVcons ${WDIR}/newinput/divaUVcons_all
+endif
+fi
+fi
+
 fi
 
 cd $WDIR
@@ -526,12 +549,14 @@ echo ==================
 
 done
 
+if [ "$isanalysis" -eq "1" ]
+then
 
 echo Producing 4D netcdf files
 
 divadoNCDF
 
-
+fi
 
 echo ==================
 echo Finished
