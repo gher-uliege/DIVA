@@ -171,8 +171,11 @@ fi
 #
 if [ "$datop" -eq "1" -o "$datop" -eq "3"  -o "$datop" -ge "4" -o "$datop" -ge "5" ];then
 ./divaclean
-echo '%%%%%%%%%%%%  cleaning '$var'.'$lev' %%%%%%%%%%'
+echo '%%%%%%%%%%%%  cleaning '$var'.'$lev' %%%%% original data nmbr '$nbdat
 ./divadataclean
+ nbdat=`cat './input/data.dat' |wc -l` 
+echo 'After cleaning '$var'.'$lev'  data nmbr = '$nbdat
+
 cp -v ./input/data.dat ./input/divadata/$var.$lev
 cp -v ./input/data.beforeclean.dat ./input/divadata/$var.$lev.notclean
 fi
@@ -248,6 +251,7 @@ for i in `ls *.png`
 do
 cp -v $i ../../output/3Danalysis/GPlotsWOutlrs/$var'.'$lev'.'$i
 done
+cd ../..
 fi
 ####################
 

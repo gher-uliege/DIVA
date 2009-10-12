@@ -329,6 +329,15 @@ cp -v ./output/fieldascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.ascii.anl'
 cp -v ./output/errorfieldascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.errorascii'
 cp -v ./output/valatxyascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.valatxyasc.anl'
 fi
+if [ -f ./output/erroratxyascii.anl ];then
+cp -v ./output/erroratxyascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.erroratxyascii.anl'
+fi
+if [ -f ./output/expectederroratdatapointbis.anl ];then
+cp -v ./output/expectederroratdatapointbis.anl ./output/3Danalysis/Fields/$var'.'$lev'.erroratdatapoint'
+fi
+if [ -f ./output/fieldatdatapoint.anl ];then
+cp -v ./output/fieldatdatapoint.anl ./output/3Danalysis/Fields/$var'.'$lev'.fieldatdatapoint.anl'
+fi
 #
 if [ -f ./output/outliersbis.normalized.dat ];then
 cp -v ./output/outliersbis.normalized.dat ./output/3Danalysis/Fields/$var'.'$lev'.outliersbis.norm'
@@ -362,6 +371,7 @@ for i in `ls *.png`
 do
 cp -v $i ../../output/3Danalysis/GnuPlots/$var'.'$lev'.'$i
 done
+cd ../..
 fi
 #
 fi
@@ -414,6 +424,13 @@ done
 cd ..
 fi
 #
+if [ -d ./input/divarefe_all ] ;then
+cp -v ./output/ghertonetcdf/GridInfo.dat ./input/divarefe_all/GridInfo.dat
+cp -v ./output/fieldatdatapoint.anl.ref ./input/divarefe_all/$var'.'$lev'.datapoint.ref'
+cp -v ./output/fieldascii.anl.ref ./input/divarefe_all/$var'.'$lev'.ascii.ref'
+cp -v ./output/fieldgher.anl.ref ./input/divarefe_all/$var'.'$lev'.ref'
+fi
+
 cp -v ./output/ghertonetcdf/GridInfo.dat ./input/divarefe/GridInfo.dat
 cp -v ./output/fieldatdatapoint.anl.ref ./input/divarefe/$var'.'$lev'.datapoint.ref'
 cp -v ./output/fieldascii.anl.ref ./input/divarefe/$var'.'$lev'.ascii.ref'
@@ -425,6 +442,15 @@ cp -v ./output/fieldascii.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.ascii.
 cp -v ./output/fieldatdatapoint.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.datapoint.ref'
 cp -v ./output/fieldgher.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.ref'
 cp -v ./output/valatxyascii.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.valatxyasc.ref'
+if [ -f ./output/erroratxyascii.anl ];then
+cp -v ./output/erroratxyascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.erroratxyascii.anl'
+fi
+if [ -f ./output/expectederroratdatapointbis.anl ];then
+cp -v ./output/expectederroratdatapointbis.anl ./output/3Danalysis/Fields/$var'.'$lev'.erroratdatapoint'
+fi
+if [ -f ./output/fieldatdatapoint.anl ];then
+cp -v ./output/fieldatdatapoint.anl ./output/3Danalysis/Fields/$var'.'$lev'.fieldatdatapoint.anl'
+fi
 
 #
 if [ "$gnpl" == "1" ]
@@ -448,6 +474,7 @@ for i in `ls *.png`
 do
 cp -v $i ../../output/3Danalysis/GnuPlots/$var'.'$lev'.'$i
 done
+cd ../../
 fi
 #------------------------------------------------------------
 fi

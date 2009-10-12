@@ -703,7 +703,7 @@ fi
 
  cp -f diva.log ../.
 
-rm -f ../error*.anl
+###rm -f ../error*.anl
 fi
 
 cd ../..
