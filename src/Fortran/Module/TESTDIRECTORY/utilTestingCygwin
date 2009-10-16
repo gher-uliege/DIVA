@@ -32,8 +32,8 @@ rm ./testing.log
 extension=.f95
 osUsed=cygwin
 
-# Chech program : alpha.a
-# -----------------------
+# Chech program : testVector
+# --------------------------
 fileToCheck=testVector
 echo Test : $fileToCheck
 echo ------
@@ -45,6 +45,29 @@ $compiler $flag $preprocessor $preprocessorFlag $fileToCheck$extension $moduleLi
 diff -s ./$fileToCheck.cygwin ./OUTPUTS/$fileToCheck.cygwin >> testing.log
 rm ./$fileToCheck.cygwin
 rm ./$fileToCheck.a
+echo ' ' >> testing.log
+
+# Chech program : testReadWrite
+# -----------------------------
+fileToCheck=testReadWrite
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+$compiler $flag $preprocessor $preprocessorFlag $fileToCheck$extension $moduleLibraryObject $moduleLibrary -o $fileToCheck.a >> testing.log
+./$fileToCheck.a
+diff -s ./fort.412 ./OUTPUTS/fort.412.$fileToCheck.cygwin >> testing.log
+diff -s ./fort.413 ./OUTPUTS/fort.413.$fileToCheck.cygwin >> testing.log
+diff -s ./fort.414 ./OUTPUTS/fort.414.$fileToCheck.cygwin >> testing.log
+diff -s ./fort.415 ./OUTPUTS/fort.415.$fileToCheck.cygwin >> testing.log
+diff -s ./fort.812 ./OUTPUTS/fort.812.$fileToCheck.cygwin >> testing.log
+diff -s ./fort.813 ./OUTPUTS/fort.813.$fileToCheck.cygwin >> testing.log
+diff -s ./fort.814 ./OUTPUTS/fort.814.$fileToCheck.cygwin >> testing.log
+diff -s ./fort.815 ./OUTPUTS/fort.815.$fileToCheck.cygwin >> testing.log
+rm ./$fileToCheck.a
+rm ./fort.*
+
 echo ' ' >> testing.log
 
 echo Testing procedure finished

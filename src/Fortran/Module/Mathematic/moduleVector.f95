@@ -13,6 +13,8 @@ MODULE moduleVector
 
 ! Include file
 ! ============
+   USE moduleNorm
+   
 #ifndef _MODULE_VECTOR_
 #define _MODULE_VECTOR_
    include 'vector.h'
@@ -31,25 +33,34 @@ MODULE moduleVector
 !  Memory part
 !  -----------
    INTEGER, PRIVATE, PARAMETER :: defaultIncreaseSize = 100
+   INTEGER, PRIVATE, PARAMETER :: defaultStartingValue = 1
    INTEGER, PRIVATE :: increaseSize
    TYPE (vector), PRIVATE :: internalWorkingVector
 
+! Interface
+! =========
+   INTERFACE vectorCreate
+      MODULE PROCEDURE vectorCreateBase, vectorCreateWithDimension, vectorCreateWithDimensionAndStartingPoint
+   END INTERFACE
+   
 ! Procedures status
 ! =================
-   PUBLIC :: vectorCreate, printInformation, vectorDestroy, vectorSetSize, vectorGetSize, vectorSetToZero, vectorSetToValue, &
+   PUBLIC :: printInformation, vectorDestroy, vectorSetSize, vectorGetSize, vectorSetToZero, vectorSetToValue, &
              vectorNorm1, vectorNorm2, vectorNormInfinity, vectorSqrt, vectorSum, vectorMin, vectorMax, vectorInsertValue, &
-             vectorAddValue, vectorScale, vectorDot, vectorGetValue,initialise, vectorSetMemoryIncreaseSize
+             vectorAddValue, vectorScale, vectorDot, vectorGetValue,initialise, vectorSetMemoryIncreaseSize, vectorNorm
 
 !  General part
 !  ------------
-   PRIVATE :: setWorkingVector, setSecondWorkingVector, nullify, nullifySecond
+   PRIVATE :: vectorCreateBase, vectorCreateWithDimension, vectorCreateWithDimensionAndStartingPoint, &
+              setWorkingVector, setSecondWorkingVector, nullify, nullifySecond
 
 !  Memory part
 !  -----------
    PRIVATE :: memorySetSize, memoryAllocateVector, memoryGetSize, memoryDestructor, &
               memoryPrintInformation, memorySetAllocatedSize, memorySetAllocated, memoryAllocateMemory, memoryGetAllocatedSize, &
               memoryStockIntermediateVector, memoryTransferIntermediateVectorToVector, memoryGetValue, memoryGetAllocationStatus, &
-              memoryGetDefaultIncreaseSize, memoryVectorCreate, memoryGetPointerOnValue
+              memoryGetDefaultIncreaseSize, memoryVectorCreate, memoryGetPointerOnValue, memorySetStartingPoint, &
+              memoryGetStartingPoint, memoryGetFinalValuePosition
 
 !  Access part
 !  -----------
@@ -77,7 +88,7 @@ MODULE moduleVector
 ! ===            External procedure ("PUBLIC")             ===
 ! ============================================================
 
-! Procedure 0 : initialisation
+! Procedure 1 : initialisation
 ! ----------------------------
   SUBROUTINE initialise()
 
@@ -86,26 +97,6 @@ MODULE moduleVector
       CALL vectorSetMemoryIncreaseSize(defaultIncreaseSize)
 
   END SUBROUTINE
-
-! Procedure 1 : create the vector
-! -------------------------------
-   SUBROUTINE vectorCreate(targetVector)
-
-!     Pointer filling procedure
-!     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
-      CALL setWorkingVector(targetVector)
-
-!     Body
-!     - - -
-      CALL memoryVectorCreate()
-
-!     Nullify pointer
-!     - - - - - - - -
-      CALL nullify()
-
-   END SUBROUTINE
-
 
 ! Procedure 2 : print information on the vector
 ! ---------------------------------------------
@@ -525,6 +516,38 @@ MODULE moduleVector
       
   END SUBROUTINE
   
+! Procedure 21 : norm
+! -------------------
+  FUNCTION vectorNorm(targetVector,inormType) RESULT(val)
+
+!     Declaration
+!     - - - - - -
+      TYPE(normType), INTENT(IN) :: inormType
+      REALType :: val
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(vector), INTENT(IN) :: targetVector
+      CALL setWorkingVector(targetVector)
+
+!     Body
+!     - - -
+      IF ( inormType == normL1 ) THEN
+         val = mathVectorNorm1()
+      ELSE IF ( inormType == normL2 ) THEN
+         val = mathVectorNorm2()
+      ELSE IF ( inormType == normInfinity ) THEN
+         val = mathVectorNormInfinity()
+      ELSE
+         val = mathVectorNorm2()
+      ENDIF
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullify()
+
+  END FUNCTION
+
 ! ============================================================
 ! ============================================================
 ! ============================================================
@@ -586,6 +609,76 @@ MODULE moduleVector
 !     Body
 !     - - -
       secondWorkingVector => NULL()
+
+   END SUBROUTINE
+
+! Procedure 5 : create the vector (only vector pointer)
+! -------------------------------
+   SUBROUTINE vectorCreateBase(targetVector)
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(vector), INTENT(IN) :: targetVector
+      CALL setWorkingVector(targetVector)
+
+!     Body
+!     - - -
+      CALL memoryVectorCreate()
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullify()
+
+   END SUBROUTINE
+
+! Procedure 6 : create the vector (with dimension)
+! -------------------------------
+   SUBROUTINE vectorCreateWithDimension(targetVector, size)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: size
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(vector), INTENT(IN) :: targetVector
+      CALL setWorkingVector(targetVector)
+
+!     Body
+!     - - -
+      CALL memoryVectorCreate()
+      CALL memorySetSize(size)
+      CALL memoryAllocateVector()
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullify()
+
+   END SUBROUTINE
+
+! Procedure 6 : create the vector (with dimension and istartingValue)
+! -------------------------------
+   SUBROUTINE vectorCreateWithDimensionAndStartingPoint(targetVector, size, istartingValue)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: size, istartingValue
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(vector), INTENT(IN) :: targetVector
+      CALL setWorkingVector(targetVector)
+
+!     Body
+!     - - -
+      CALL memoryVectorCreate()
+      CALL memorySetStartingPoint(istartingValue)
+      CALL memorySetSize(size)
+      CALL memoryAllocateVector()
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullify()
 
    END SUBROUTINE
 
@@ -654,7 +747,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: newSize
+      INTEGER :: newSize, istartValue
 
 !     Body
 !     - - -
@@ -662,15 +755,17 @@ MODULE moduleVector
          CASE (.TRUE.)
             IF ( memoryGetSize() >= memoryGetAllocatedSize() ) THEN
                 newSize = memoryGetSize()
+                istartValue = memoryGetStartingPoint()
                 CALL memoryStockIntermediateVector()
                 CALL memoryDestructor()
+                CALL memorySetStartingPoint(istartValue)
                 CALL memorySetAllocatedSize(newSize+increaseSize)
                 CALL memorySetSize(newSize)
                 CALL memoryAllocateMemory()
                 CALL memoryTransferIntermediateVectorToVector()
             END IF
          CASE (.FALSE.)
-            CALL memoryAllocateMemory()
+            CALL memoryFirstAllocateMemory()
       END SELECT
 
    END SUBROUTINE
@@ -679,8 +774,27 @@ MODULE moduleVector
 ! ---------------------------------------------
   SUBROUTINE memoryAllocateMemory()
 
+!     Declaration
+!     - - - - - -
+      INTEGER :: istart, iend
+      
 !     Body
 !     - - -
+      istart = memoryGetStartingPoint()
+      iend = memoryGetFinalValuePosition(memoryGetAllocatedSize(),istart)
+      
+      ALLOCATE(workingVector%values(istart:iend))
+      CALL memorySetAllocated(true)
+
+  END SUBROUTINE
+
+! Procedure 5b : allocated memory to the vector
+! ---------------------------------------------
+  SUBROUTINE memoryFirstAllocateMemory()
+
+!     Body
+!     - - -
+      CALL memorySetAllocatedSize(ione)
       ALLOCATE(workingVector%values(memoryGetAllocatedSize()))
       CALL memorySetAllocated(true)
 
@@ -720,22 +834,25 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1
+      INTEGER :: i1, istart,iend
       INTEGER :: allocationSize
 
 !     Body
 !     - - -
       allocationSize = memoryGetAllocatedSize()
+      istart = memoryGetStartingPoint()
+      iend = memoryGetFinalValuePosition(allocationSize,istart)
 
       internalWorkingVector%nbOfData      = allocationSize
       internalWorkingVector%allocatedSize = allocationSize
+      internalWorkingVector%startValue    = istart
 
       IF ( allocationSize == izero ) RETURN
 
-      ALLOCATE(internalWorkingVector%values(allocationSize))
+      ALLOCATE(internalWorkingVector%values(istart:iend))
       internalWorkingVector%isAllocated = true
 
-      DO i1 = 1 , allocationSize
+      DO i1 = istart , iend
          internalWorkingVector%values(i1) = workingVector%values(i1)
       END DO
 
@@ -747,7 +864,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1
+      INTEGER :: i1, istart,iend
       INTEGER ::  workingSize
 
 !     Body
@@ -756,12 +873,16 @@ MODULE moduleVector
 
       IF ( workingSize == izero ) RETURN
 
-      DO i1 = 1 , workingSize
+      istart = internalWorkingVector%startValue
+      iend = memoryGetFinalValuePosition(workingSize,istart)
+
+      DO i1 = istart , iend
          workingVector%values(i1) = internalWorkingVector%values(i1)
       END DO
 
       internalWorkingVector%nbOfData      = izero
       internalWorkingVector%allocatedSize = izero
+      internalWorkingVector%startValue    = izero
       DEALLOCATE(internalWorkingVector%values)
       internalWorkingVector%isAllocated = false
 
@@ -777,6 +898,7 @@ MODULE moduleVector
       workingVector%values => NULL()
       CALL memorySetSize(izero)
       CALL memorySetAllocatedSize(izero)
+      CALL memorySetStartingPoint(ione)
       CALL memorySetAllocated(false)
 
   END SUBROUTINE
@@ -830,18 +952,22 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, size
+      INTEGER :: i1, istart, iend
 
 !     Body
 !     - - -
-      size = memoryGetSize()
+      istart = memoryGetStartingPoint()
+      iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
 
-      WRITE(stdOutput,*) 'The size of the vector is : ', size
+
+      WRITE(stdOutput,*) 'The size of the vector is : ', memoryGetSize()
       WRITE(stdOutput,*) '   The allocated memory is : ', memoryGetAllocatedSize()
       WRITE(stdOutput,*) '   Allocation status of the vector : ', memoryGetAllocationStatus()
+      WRITE(stdOutput,*) '   First position is : ', memoryGetStartingPoint()
+      WRITE(stdOutput,*) '   Last position is  : ', memoryGetFinalValuePosition(memoryGetSize(),memoryGetStartingPoint())
 
       IF (memoryGetAllocationStatus()) THEN
-         DO i1 = 1, size
+         DO i1 = istart, iend
             WRITE(stdOutput,*) 'value ',i1, ' : ', memoryGetValue(i1)
          ENDDO
       END IF
@@ -854,6 +980,7 @@ MODULE moduleVector
 
 !     Body
 !     - - -
+      CALL memorySetStartingPoint(defaultStartingValue)
       CALL memorySetSize(izero)
       CALL memorySetAllocatedSize(memoryGetDefaultIncreaseSize())
       CALL memorySetAllocated(false)
@@ -876,6 +1003,48 @@ MODULE moduleVector
 
   END FUNCTION
   
+! Procedure 17 : set the starting point of the vector
+! ---------------------------------------------------
+  SUBROUTINE memorySetStartingPoint(ivalue)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: ivalue
+
+!     Body
+!     - - -
+      workingVector%startValue = ivalue
+      
+  END SUBROUTINE
+  
+! Procedure 18 : get the starting point of the vector
+! ---------------------------------------------------
+  FUNCTION memoryGetStartingPoint() RESULT(ivalue)
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: ivalue
+
+!     Body
+!     - - -
+      ivalue = workingVector%startValue
+
+  END FUNCTION
+
+! Procedure 19 : get the final position in the vector with respect to given dimension
+! -----------------------------------------------------------------------------------
+  FUNCTION memoryGetFinalValuePosition(dim, start) RESULT(ivalue)
+  
+!     Declaration
+!     - - - - - -
+      INTEGER :: dim, start, ivalue
+
+!     Body
+!     - - -
+      ivalue = dim + start - 1
+
+  END FUNCTION
+
 ! ============================================================
 ! ============================================================
 ! ============================================================
@@ -909,14 +1078,16 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, size
+      INTEGER :: i1, istart, iend
       REALType, INTENT(IN) :: val
 
 !     Body
 !     - - -
-      size = memoryGetSize()
+      istart = memoryGetStartingPoint()
+      iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
 
-      DO i1 = 1 , size
+
+      DO i1 = istart , iend
            workingVector%values(i1) = val
       END DO
 
@@ -933,7 +1104,7 @@ MODULE moduleVector
 
 !     Body
 !     - - -
-      IF ( position > memoryGetSize() ) RETURN
+      IF ( position > memoryGetFinalValuePosition(memoryGetSize(),memoryGetStartingPoint()) ) RETURN
 
       workingVector%values(position) = val
 
@@ -951,7 +1122,7 @@ MODULE moduleVector
 
 !     Body
 !     - - -
-      IF ( position > memoryGetSize() ) RETURN
+      IF ( position > memoryGetFinalValuePosition(memoryGetSize(),memoryGetStartingPoint()) ) RETURN
 
       ptr => memoryGetPointerOnValue(position)
       ptr = ptr + val
@@ -981,15 +1152,17 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, size
+      INTEGER :: i1, istart, iend
       REALType :: val
 
 !     Body
 !     - - -
-      size = memoryGetSize()
+      istart = memoryGetStartingPoint()
+      iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
+
       val = zero
 
-      DO i1 = 1, size
+      DO i1 = istart, iend
          val = val + abs(workingVector%values(i1))
       END DO
 
@@ -1001,16 +1174,18 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, size
+      INTEGER :: i1, istart, iend
       REALType :: val
       REALType, POINTER :: ptr
 
 !     Body
 !     - - -
-      size = memoryGetSize()
+      istart = memoryGetStartingPoint()
+      iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
+
       val = zero
 
-      DO i1 = 1, size
+      DO i1 = istart, iend
          ptr => memoryGetPointerOnValue(i1)
          val = val + ptr * ptr
       END DO
@@ -1025,15 +1200,17 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, size
+      INTEGER :: i1, istart, iend
       REALType :: val
 
 !     Body
 !     - - -
-      size = memoryGetSize()
+      istart = memoryGetStartingPoint()
+      iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
+
       val = zero
 
-      DO i1 = 1, size
+      DO i1 = istart, iend
          val = max(val,abs(workingVector%values(i1)))
       END DO
 
@@ -1045,15 +1222,17 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, size
+      INTEGER :: i1, istart, iend
       REALType :: val
 
 !     Body
 !     - - -
-      size = memoryGetSize()
+      istart = memoryGetStartingPoint()
+      iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
+
       val = zero
 
-      DO i1 = 1, size
+      DO i1 = istart, iend
          val = val + workingVector%values(i1)
       END DO
 
@@ -1065,14 +1244,15 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, size
+      INTEGER :: i1, istart, iend
       REALType, POINTER :: ptr
 
 !     Body
 !     - - -
-      size = memoryGetSize()
+      istart = memoryGetStartingPoint()
+      iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
 
-      DO i1 = 1, size
+      DO i1 = istart, iend
          ptr => memoryGetPointerOnValue(i1)
          ptr = sqrt(abs(ptr))
       END DO
@@ -1085,15 +1265,17 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, size
+      INTEGER :: i1, istart, iend
       REALType :: val
 
 !     Body
 !     - - -
-      size = memoryGetSize()
+      istart = memoryGetStartingPoint()
+      iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
+
       val = posInf
 
-      DO i1 = 1, size
+      DO i1 = istart, iend
          val = min(val,workingVector%values(i1))
       END DO
 
@@ -1105,15 +1287,17 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, size
+      INTEGER :: i1, istart, iend
       REALType :: val
 
 !     Body
 !     - - -
-      size = memoryGetSize()
+      istart = memoryGetStartingPoint()
+      iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
+
       val = negInf
 
-      DO i1 = 1, size
+      DO i1 = istart, iend
          val = max(val,workingVector%values(i1))
       END DO
 
@@ -1125,15 +1309,17 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, size
+      INTEGER :: i1, istart, iend
       REALType :: val
       REALType, POINTER :: ptr
 
 !     Body
 !     - - -
-      size = memoryGetSize()
+      istart = memoryGetStartingPoint()
+      iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
 
-      DO i1 = 1, size
+
+      DO i1 = istart, iend
          ptr => memoryGetPointerOnValue(i1)
          ptr = val * ptr
       END DO
@@ -1146,18 +1332,22 @@ MODULE moduleVector
   
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, size
+      INTEGER :: i1, size, istart, iend, istart2
       REALType :: val
 
 !     Body
 !     - - -
       size = memoryGetSize()
+      istart = memoryGetStartingPoint()
+      iend = memoryGetFinalValuePosition(size,istart)
+      istart2 = secondWorkingVector%startValue
+
       val = zero
 
       IF ( size /= secondWorkingVector%nbOfData ) RETURN
 
-      DO i1 = 1, size
-          val = val + secondWorkingVector%values(i1) * workingVector%values(i1)
+      DO i1 = istart, iend
+          val = val + secondWorkingVector%values(i1-istart+istart2) * workingVector%values(i1)
       END DO
 
   END FUNCTION

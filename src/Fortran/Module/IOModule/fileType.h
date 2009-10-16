@@ -10,11 +10,13 @@ TYPE file
 !             = false if not
 ! isOpen      = true if the logical unit has opened the stream
 !             = false if not
+! formatFile  = true if formatted
+!             = false if unformatted
 
  TYPE(logicalUnit), POINTER :: logicalUnit
  CHARACTER (LEN = fileNameMaxLength) :: fileName
  LOGICAL :: isLinked
  LOGICAL :: isOpened
- 
+ LOGICAL :: formatFile
 
 END TYPE file

@@ -23,9 +23,10 @@ MODULE moduleFile
 ! Procedures status
 ! =================
    PUBLIC :: initialiseFile, defineFile, defineFileName, defineLogicalUnit, printInformation, openFile, closeFile, isFileOpened, &
-             createFile, getFileUnit
+             createFile, getFileUnit, defineFileFormat, Formatted, Unformatted, getFileFormat
    PRIVATE :: setWorkingFile, internalInitialise, internalDefineFileName, internalDefineLogicalUnit, internalPrintInformation, &
-              setIsLinked, isFileLinked, getLogicalUnit, getFileName, setIsOpened, internalIsFileOpened, nullify
+              setIsLinked, isFileLinked, getLogicalUnit, getFileName, setIsOpened, internalIsFileOpened, nullify, &
+              internalDefineFormType
 
 ! ============================================================
 ! ============================================================
@@ -65,12 +66,13 @@ MODULE moduleFile
 
 ! Procedure 2 : defining file name
 ! --------------------------------
-   SUBROUTINE defineFile(targetFile,name,unit)
+   SUBROUTINE defineFile(targetFile,name,unit,formType)
 
 !     Declaration
 !     - - - - - -
       CHARACTER(*), OPTIONAL, INTENT(IN) :: name
       TYPE(logicalUnit), OPTIONAL, POINTER, INTENT(IN)     :: unit
+      LOGICAL, OPTIONAL, INTENT(IN) :: formType
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
@@ -85,6 +87,9 @@ MODULE moduleFile
       IF ( PRESENT(unit) ) THEN
          CALL internalDefineLogicalUnit(unit)
       END IF
+      IF ( PRESENT(formType) ) THEN
+         CALL internalDefineFormType(formType)
+      ENDIF
 
 !     Nullify pointer
 !     - - - - - - - -
@@ -160,24 +165,27 @@ MODULE moduleFile
 
 ! Procedure 6 : open a logical unit
 ! ---------------------------------
-   SUBROUTINE openFile(targetFile,checkError,formatType)
+   SUBROUTINE openFile(targetFile,checkError)
 
 !     Declaration
 !     - - - - - -
       INTEGER :: checkValue
       LOGICAL, OPTIONAL, INTENT(OUT) :: checkError
-      CHARACTER(*), OPTIONAL, INTENT(IN) :: formatType
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(file), INTENT(INOUT) :: targetFile
+      TYPE(file), INTENT(IN) :: targetFile
       CALL setWorkingFile(targetFile)
 
 !     Body
 !     - - -
       SELECT CASE (isFileLinked())
       CASE (true)
-            OPEN(unit=getLogicalUnit(),file=getFileName(),iostat=checkValue,form=formatType)
+            IF ( workingFile%formatFile ) THEN
+                 OPEN(unit=getLogicalUnit(),file=getFileName(),iostat=checkValue,form='formatted')
+            ELSE
+                 OPEN(unit=getLogicalUnit(),file=getFileName(),iostat=checkValue,form='unformatted')
+            END IF
 
             IF ( PRESENT(checkError) ) THEN
                IF ( checkValue == 0 ) THEN
@@ -211,7 +219,7 @@ MODULE moduleFile
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(file), INTENT(INOUT) :: targetFile
+      TYPE(file), INTENT(IN) :: targetFile
       CALL setWorkingFile(targetFile)
 
 !     Body
@@ -264,19 +272,19 @@ MODULE moduleFile
 
 ! Procedure 9 : creating new file
 ! -------------------------------
-   SUBROUTINE createFile(targetFile,name,unit)
+   SUBROUTINE createFile(targetFile,name,unit,formType)
 
 !     Declaration
 !     - - - - - -
       CHARACTER(*), OPTIONAL, INTENT(IN) :: name
       TYPE(logicalUnit), OPTIONAL, POINTER, INTENT(IN)     :: unit
       TYPE(file), INTENT(INOUT) :: targetFile
+      LOGICAL, OPTIONAL, INTENT(IN) :: formType
 
 !     Body
 !     - - -
       CALL initialiseFile(targetFile)
-      CALL defineFile(targetFile,name,unit)
-
+      CALL defineFile(targetFile,name,unit,formType)
 
    END SUBROUTINE
 
@@ -290,7 +298,7 @@ MODULE moduleFile
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(file), INTENT(INOUT) :: targetFile
+      TYPE(file), INTENT(IN) :: targetFile
       CALL setWorkingFile(targetFile)
 
 !     Body
@@ -298,6 +306,76 @@ MODULE moduleFile
       unit1 = getLogicalUnit()
 
    END FUNCTION
+
+! Procedure 11 : defining file format
+! -----------------------------------
+   SUBROUTINE defineFileFormat(targetFile,fileFormat)
+
+!     Declaration
+!     - - - - - -
+      LOGICAL, INTENT(IN) :: fileFormat
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(file), INTENT(INOUT) :: targetFile
+      CALL setWorkingFile(targetFile)
+
+!     Body
+!     - - -
+      CALL internalDefineFormType(fileFormat)
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullify()
+
+   END SUBROUTINE
+
+! Procedure 12 : set formatted format
+! ----------------------------------
+  FUNCTION Formatted() RESULT(choice)
+
+!     Declaration
+!     - - - - - -
+      LOGICAL :: choice
+
+!     Body
+!     - - -
+      choice = true
+
+  END FUNCTION
+
+! Procedure 13 : set unformatted format
+! ----------------------------------
+  FUNCTION Unformatted() RESULT(choice)
+
+!     Declaration
+!     - - - - - -
+      LOGICAL :: choice
+
+!     Body
+!     - - -
+      choice = false
+
+  END FUNCTION
+
+! Procedure 14 : obtain the output format
+! ----------------------------------------
+  FUNCTION getFileFormat(targetFile) RESULT(choice)
+
+!     Declaration
+!     - - - - - -
+      LOGICAL :: choice
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(file), INTENT(IN) :: targetFile
+      CALL setWorkingFile(targetFile)
+
+!     Body
+!     - - -
+      choice = workingFile%formatFile
+
+  END FUNCTION
 
 ! ============================================================
 ! ===            Internal procedure ("PRIVATE")            ===
@@ -326,6 +404,7 @@ MODULE moduleFile
 !     - - -
       CALL internalDefineLogicalUnit()
       CALL internalDefineFileName(' ')
+      CALL internalDefineFormType(true)
       CALL setIsLinked(false)
       CALL setIsOpened(false)
 
@@ -475,5 +554,20 @@ MODULE moduleFile
       workingFile => NULL()
       
    END SUBROUTINE
+   
+! Procedure 13 : define the formatted of the file (true = formatted, false = unformatted)
+! ---------------------------------------------------------------------------------------
+   SUBROUTINE internalDefineFormType(choice)
+
+!     Declaration
+!     - - - - - -
+      LOGICAL, INTENT(IN) :: choice
+
+!     Body
+!     - - -
+      workingFile%formatFile = choice
+
+   END SUBROUTINE
+
    
 END MODULE moduleFile
