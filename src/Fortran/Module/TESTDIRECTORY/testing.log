@@ -1,7 +1,18 @@
 Test : testVector
 ------
-136c136
-<  Ellapsed time :  0.047000000000025466  seconds
+Files ./testVector.cygwin and ./OUTPUTS/testVector.cygwin are identical
+ 
+Test : testReadWrite
+------
+Files ./fort.412 and ./OUTPUTS/fort.412.testReadWrite.cygwin are identical
+Files ./fort.413 and ./OUTPUTS/fort.413.testReadWrite.cygwin are identical
+Files ./fort.414 and ./OUTPUTS/fort.414.testReadWrite.cygwin are identical
+11c11
+<  -2 1 1 4 6 999.
 ---
->  Ellapsed time :  0.04700000000593718  seconds
+>  -1 1 1 4 6 999.
+Files ./fort.812 and ./OUTPUTS/fort.812.testReadWrite.cygwin are identical
+Files ./fort.813 and ./OUTPUTS/fort.813.testReadWrite.cygwin are identical
+Files ./fort.814 and ./OUTPUTS/fort.814.testReadWrite.cygwin are identical
+Files ./fort.815 and ./OUTPUTS/fort.815.testReadWrite.cygwin are identical
  
