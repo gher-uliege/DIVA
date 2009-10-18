@@ -13,12 +13,13 @@ echo ' '
 
 # Definition of the compiler and options
 compiler=g95
+#flag='-O3 -Wall -Wimplicit-none -Wno-unused-vars -Wno-unset-vars'
 flag='-O3 -Wall -Wimplicit-none'
 
 # Definition of preprocessor options if needed
 preprocessor='-cpp'
-preprocessorFlag='-D=_BATCH_MODE'
-preprocessorFlag=$preprocessorFlag' -DREALType=REAL*8'
+preprocessorFlag='-D=_BATCH_MODE_'
+preprocessorFlag=$preprocessorFlag' -DINTEGERType=INTEGER -DREALType=REAL*8'
 
 #Definition of libraries for modules
 moduleLibraryDir='../../Module/lib'
@@ -258,6 +259,79 @@ diff -s ./fort.46 ./OUTPUTS/fort.464.$fileToCheck.$osUsed >> testing.log
 rm ./fort.44
 rm ./fort.45
 rm ./fort.46
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : griddef.a
+# ---------------------------
+fileToCheck=griddef
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+$compiler $flag $preprocessor $preprocessorFlag ../$fileToCheck$extension $moduleLibraryObject $moduleLibrary -o $fileToCheck.a >> testing.log
+cp ./INPUTS/fort.13.$fileToCheck.$osUsed ./fort.13
+./$fileToCheck.a >> testing.log
+diff -s ./fort.13 ./OUTPUTS/fort.13.$fileToCheck.$osUsed >> testing.log
+
+rm ./fort.13
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : lcelem.a
+# ---------------------------
+fileToCheck=lcelem
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+$compiler $flag $preprocessor $preprocessorFlag ../$fileToCheck$extension $moduleLibraryObject $moduleLibrary -o $fileToCheck.a >> testing.log
+isdens=1
+lengthScale=25.
+echo $isdens $lengthScale | ./$fileToCheck.a >> testing.log
+diff -s ./fort.11 ./OUTPUTS/fort.11.$fileToCheck.$osUsed >> testing.log
+
+rm ./fort.11
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : multiply.a
+# ---------------------------
+fileToCheck=multiply
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+$compiler $flag $preprocessor $preprocessorFlag ../$fileToCheck$extension $moduleLibraryObject $moduleLibrary -o $fileToCheck.a >> testing.log
+value1=25.
+value2=13.
+echo $value1 $value2 | ./$fileToCheck.a >> $fileToCheck.log
+diff -s ./$fileToCheck.log ./OUTPUTS/$fileToCheck.$osUsed >> testing.log
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : sumup.a
+# ---------------------------
+fileToCheck=sumup
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+$compiler $flag $preprocessor $preprocessorFlag ../$fileToCheck$extension $moduleLibraryObject $moduleLibrary -o $fileToCheck.a >> testing.log
+exclusionValue=999.
+cp ./INPUTS/fort.20.$fileToCheck.$osUsed ./fort.20
+cp ./INPUTS/fort.21.$fileToCheck.$osUsed ./fort.21
+echo $exclusionValue | ./$fileToCheck.a >> testing.log
+diff -s ./fort.22 ./OUTPUTS/fort.22.$fileToCheck.$osUsed >> testing.log
+rm ./fort.20
+rm ./fort.21
+rm ./fort.22 
 
 rm ./$fileToCheck.*
 echo ' ' >> testing.log

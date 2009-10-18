@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-
 echo ====================================
 echo ====================================
 echo ==                                ==
@@ -11,16 +9,10 @@ echo ====================================
 echo ====================================
 echo ' '
 
-# Definition of the compiler and options
-compiler=g95
-flag='-O3 -Wall -Wimplicit-none -c'
-
-# Definition of preprocessor options if needed
-preprocessor='-cpp'
-preprocessorFlag='-D=_BATCH_MODE'
-preprocessorFlag=$preprocessorFlag' -DREALType=REAL*8'
-
 baseDir=$PWD
+divaModuleLib=$baseDir/Module/lib
+
+rm $divaModuleLib/*
 
 echo =====================
 echo =====================
@@ -29,57 +21,8 @@ echo =====================
 echo =====================
 echo ' '
 
-moduleDir=$baseDir/Module
-moduleLib=$baseDir/Module/lib
-
-rm $moduleLib/*
-
-cd $moduleDir
-
-echo =============================================
-echo = Copying all Modules in the same directory =
-echo =============================================
-for kk in `ls`
-do
-if [ -d "$kk" ]
-then
-if [ "$kk" != "lib" ]
-then
-if [ "$kk" != "TESTDIRECTORY" ]
-then
-  echo    =============================
-  echo    = Entering in module $kk
-  echo    =============================
-  echo ' '
-cp ./$kk/*.f95 .
-cp ./$kk/*.h .
-fi
-fi
-fi
-done
-
-echo =====================
-echo = Compiling modules =
-echo =====================
-
-for ii in `ls *.f95`
-do
-if [ "$ii" != "moduleDIVA.f95" ]
-then
-    echo 'Compiling '$ii
-    $compiler $flag $preprocessor $preprocessorFlag $ii
-fi
-done
-
-ii=moduleDIVA.f95
-echo 'Compiling '$ii
-$compiler $flag $preprocessor $preprocessorFlag $ii
-
-mv *.o $moduleLib
-mv *.mod $moduleLib
-
-rm *.f95
-rm *.h
+cd $baseDir/Mathematic
+./divaCompileModuleMathematicCygwin
 
 echo --------------------
 echo Compilation finished

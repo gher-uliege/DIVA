@@ -1,4 +1,4 @@
-TYPE vector
+TYPE vectorReal8
     LOGICAL :: isAllocated
     INTEGER :: nbOfData
     INTEGER :: allocatedSize

@@ -11,6 +11,7 @@
    REAL*8, PARAMETER :: one     = 1.0
    REAL*8, PARAMETER :: two     = 2.0
    REAL*8, PARAMETER :: four    = 4.0
+   REAL*8, PARAMETER :: five    = 5.0
    REAL*8, PARAMETER :: sixteen = 16.0
    REAL*8, PARAMETER :: negInf  = -1.D+36
    REAL*8, PARAMETER :: posInf  = 1.D+36

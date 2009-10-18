@@ -1,4 +1,4 @@
-MODULE moduleVector
+MODULE moduleVectorReal8
 ! ============================================================
 ! ============================================================
 ! ============================================================
@@ -15,9 +15,9 @@ MODULE moduleVector
 ! ============
    USE moduleNorm
    
-#ifndef _MODULE_VECTOR_
-#define _MODULE_VECTOR_
-   include 'vector.h'
+#ifndef _MODULE_VECTOR_REAL8_
+#define _MODULE_VECTOR_REAL8_
+   include 'vectorReal8.h'
    include 'ioParameter.h'
    include 'constantParameter.h'
    include 'logicalParameter.h'
@@ -27,32 +27,26 @@ MODULE moduleVector
 ! ===========
 !  General part
 !  ------------
-   TYPE (vector), PRIVATE, POINTER :: workingVector => NULL()
-   TYPE (vector), PRIVATE, POINTER :: secondWorkingVector => NULL()
+   TYPE (vectorReal8), PRIVATE, POINTER :: workingVector => NULL()
+   TYPE (vectorReal8), PRIVATE, POINTER :: secondWorkingVector => NULL()
 
 !  Memory part
 !  -----------
    INTEGER, PRIVATE, PARAMETER :: defaultIncreaseSize = 100
    INTEGER, PRIVATE, PARAMETER :: defaultStartingValue = 1
    INTEGER, PRIVATE :: increaseSize
-   TYPE (vector), PRIVATE :: internalWorkingVector
+   TYPE (vectorReal8), PRIVATE :: internalWorkingVector
 
-! Interface
-! =========
-   INTERFACE vectorCreate
-      MODULE PROCEDURE vectorCreateBase, vectorCreateWithDimension, vectorCreateWithDimensionAndStartingPoint
-   END INTERFACE
-   
 ! Procedures status
 ! =================
    PUBLIC :: printInformation, vectorDestroy, vectorSetSize, vectorGetSize, vectorSetToZero, vectorSetToValue, &
              vectorNorm1, vectorNorm2, vectorNormInfinity, vectorSqrt, vectorSum, vectorMin, vectorMax, vectorInsertValue, &
-             vectorAddValue, vectorScale, vectorDot, vectorGetValue,initialise, vectorSetMemoryIncreaseSize, vectorNorm
+             vectorAddValue, vectorScale, vectorDot, vectorGetValue,initialise, vectorSetMemoryIncreaseSize, vectorNorm, &
+             vectorCreateBase, vectorCreateWithDimension, vectorCreateWithDimensionAndStartingPoint
 
 !  General part
 !  ------------
-   PRIVATE :: vectorCreateBase, vectorCreateWithDimension, vectorCreateWithDimensionAndStartingPoint, &
-              setWorkingVector, setSecondWorkingVector, nullify, nullifySecond
+   PRIVATE :: setWorkingVector, setSecondWorkingVector, nullify, nullifySecond
 
 !  Memory part
 !  -----------
@@ -104,7 +98,7 @@ MODULE moduleVector
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
+      TYPE(vectorReal8), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -123,7 +117,7 @@ MODULE moduleVector
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
+      TYPE(vectorReal8), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -146,7 +140,7 @@ MODULE moduleVector
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
+      TYPE(vectorReal8), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -170,7 +164,7 @@ MODULE moduleVector
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
+      TYPE(vectorReal8), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -189,7 +183,7 @@ MODULE moduleVector
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
+      TYPE(vectorReal8), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -208,11 +202,11 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      REALType, INTENT(IN) :: val
+      REAL*8, INTENT(IN) :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
+      TYPE(vectorReal8), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -231,11 +225,11 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      REALType :: val
+      REAL*8 :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
+      TYPE(vectorReal8), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -254,11 +248,11 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      REALType :: val
+      REAL*8 :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
+      TYPE(vectorReal8), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -277,11 +271,11 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      REALType :: val
+      REAL*8 :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
+      TYPE(vectorReal8), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -300,11 +294,11 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      REALType :: val
+      REAL*8 :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
+      TYPE(vectorReal8), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -323,7 +317,7 @@ MODULE moduleVector
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
+      TYPE(vectorReal8), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -342,11 +336,11 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      REALType :: val
+      REAL*8 :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
+      TYPE(vectorReal8), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -365,11 +359,11 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      REALType :: val
+      REAL*8 :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
+      TYPE(vectorReal8), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -389,11 +383,11 @@ MODULE moduleVector
 !     Declaration
 !     - - - - - -
       INTEGER, INTENT(IN) :: position
-      REALType, INTENT(IN) :: val
+      REAL*8, INTENT(IN) :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
+      TYPE(vectorReal8), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -413,11 +407,11 @@ MODULE moduleVector
 !     Declaration
 !     - - - - - -
       INTEGER, INTENT(IN) :: position
-      REALType, INTENT(IN) :: val
+      REAL*8, INTENT(IN) :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
+      TYPE(vectorReal8), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -436,11 +430,11 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      REALType, INTENT(IN) :: val
+      REAL*8, INTENT(IN) :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
+      TYPE(vectorReal8), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -459,11 +453,11 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      REALType :: val
+      REAL*8 :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector1, targetVector2
+      TYPE(vectorReal8), INTENT(IN) :: targetVector1, targetVector2
       CALL setWorkingVector(targetVector1)
       CALL setSecondWorkingVector(targetVector2)
 
@@ -485,11 +479,11 @@ MODULE moduleVector
 !     Declaration
 !     - - - - - -
       INTEGER, INTENT(IN) :: i1
-      REALType :: val
+      REAL*8 :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
+      TYPE(vectorReal8), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -523,11 +517,11 @@ MODULE moduleVector
 !     Declaration
 !     - - - - - -
       TYPE(normType), INTENT(IN) :: inormType
-      REALType :: val
+      REAL*8 :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
+      TYPE(vectorReal8), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -570,7 +564,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      TYPE(vector), INTENT(IN), TARGET :: targetVector
+      TYPE(vectorReal8), INTENT(IN), TARGET :: targetVector
 
 !     Body
 !     - - -
@@ -594,7 +588,7 @@ MODULE moduleVector
 
 !     Declaration
 !     - - - - - -
-      TYPE(vector), INTENT(IN), TARGET :: targetVector
+      TYPE(vectorReal8), INTENT(IN), TARGET :: targetVector
 
 !     Body
 !     - - -
@@ -618,7 +612,7 @@ MODULE moduleVector
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
+      TYPE(vectorReal8), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -641,7 +635,7 @@ MODULE moduleVector
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
+      TYPE(vectorReal8), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -666,7 +660,7 @@ MODULE moduleVector
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vector), INTENT(IN) :: targetVector
+      TYPE(vectorReal8), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -910,7 +904,7 @@ MODULE moduleVector
 !     Declaration
 !     - - - - - -
       INTEGER, INTENT(IN) :: i1
-      REALType :: val
+      REAL*8 :: val
 
 !     Body
 !     - - -
@@ -995,7 +989,7 @@ MODULE moduleVector
 !     Declaration
 !     - - - - - -
       INTEGER, INTENT(IN) :: position
-      REALType, POINTER :: ptr
+      REAL*8, POINTER :: ptr
 
 !     Body
 !     - - -
@@ -1079,7 +1073,7 @@ MODULE moduleVector
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, istart, iend
-      REALType, INTENT(IN) :: val
+      REAL*8, INTENT(IN) :: val
 
 !     Body
 !     - - -
@@ -1100,7 +1094,7 @@ MODULE moduleVector
 !     Declaration
 !     - - - - - -
       INTEGER, INTENT(IN) :: position
-      REALType, INTENT(IN) :: val
+      REAL*8, INTENT(IN) :: val
 
 !     Body
 !     - - -
@@ -1117,8 +1111,8 @@ MODULE moduleVector
 !     Declaration
 !     - - - - - -
       INTEGER, INTENT(IN) :: position
-      REALType, INTENT(IN) :: val
-      REALType, POINTER :: ptr
+      REAL*8, INTENT(IN) :: val
+      REAL*8, POINTER :: ptr
 
 !     Body
 !     - - -
@@ -1153,7 +1147,7 @@ MODULE moduleVector
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, istart, iend
-      REALType :: val
+      REAL*8 :: val
 
 !     Body
 !     - - -
@@ -1175,8 +1169,8 @@ MODULE moduleVector
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, istart, iend
-      REALType :: val
-      REALType, POINTER :: ptr
+      REAL*8 :: val
+      REAL*8, POINTER :: ptr
 
 !     Body
 !     - - -
@@ -1201,7 +1195,7 @@ MODULE moduleVector
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, istart, iend
-      REALType :: val
+      REAL*8 :: val
 
 !     Body
 !     - - -
@@ -1223,7 +1217,7 @@ MODULE moduleVector
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, istart, iend
-      REALType :: val
+      REAL*8 :: val
 
 !     Body
 !     - - -
@@ -1245,7 +1239,7 @@ MODULE moduleVector
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, istart, iend
-      REALType, POINTER :: ptr
+      REAL*8, POINTER :: ptr
 
 !     Body
 !     - - -
@@ -1266,7 +1260,7 @@ MODULE moduleVector
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, istart, iend
-      REALType :: val
+      REAL*8 :: val
 
 !     Body
 !     - - -
@@ -1288,7 +1282,7 @@ MODULE moduleVector
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, istart, iend
-      REALType :: val
+      REAL*8 :: val
 
 !     Body
 !     - - -
@@ -1310,8 +1304,8 @@ MODULE moduleVector
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, istart, iend
-      REALType :: val
-      REALType, POINTER :: ptr
+      REAL*8 :: val
+      REAL*8, POINTER :: ptr
 
 !     Body
 !     - - -
@@ -1333,7 +1327,7 @@ MODULE moduleVector
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, size, istart, iend, istart2
-      REALType :: val
+      REAL*8 :: val
 
 !     Body
 !     - - -
@@ -1352,7 +1346,7 @@ MODULE moduleVector
 
   END FUNCTION
 
-END MODULE moduleVector
+END MODULE moduleVectorReal8
 
 
 
