@@ -1,4 +1,5 @@
-MODULE moduleDIVA
+MODULE mathDynamicMemory
+
 ! ============================================================
 ! ============================================================
 ! ============================================================
@@ -13,13 +14,20 @@ MODULE moduleDIVA
 
 ! Include file
 ! ============
-   USE logicalUnitManager, initialiseLogicalUnitManager => initialiseDefault, deleteLogicalUnitDataBase => destructor
-   USE moduleChrono, ONLY : initialiseChrono => initialise
-   USE vectorInterface, ONLY : initialiseDynamicMemory => initialise
+   include 'ioParameter.h'
+   include 'constantParameter.h'
+   include 'logicalParameter.h'
+
+! Declaration
+! ===========
+!  Memory part
+!  -----------
+   INTEGER, PRIVATE, PARAMETER :: defaultIncreaseSize = 100
+   INTEGER, PRIVATE :: increaseSize
 
 ! Procedures status
 ! =================
-   PUBLIC :: createDIVAContext, finaliseDIVAContext
+   PUBLIC :: initialise, mathSetMemoryIncreaseSize, memoryGetDefaultIncreaseSize
 
 ! ============================================================
 ! ============================================================
@@ -38,26 +46,44 @@ MODULE moduleDIVA
 ! ===            External procedure ("PUBLIC")             ===
 ! ============================================================
 
-! Procedure 1 : initialisation of the context DIVA
-! ------------------------------------------------
-   SUBROUTINE createDIVAContext()
+! Procedure 1 : initialisation
+! ----------------------------
+  SUBROUTINE initialise()
 
 !     Body
 !     - - -
-      CALL initialiseLogicalUnitManager()
-      CALL initialiseChrono()
-      CALL initialiseDynamicMemory()
+      CALL mathSetMemoryIncreaseSize(defaultIncreaseSize)
 
-   END SUBROUTINE
+  END SUBROUTINE
 
-! Procedure 2 : finalisation of the context DIVA
-! ----------------------------------------------
-   SUBROUTINE finaliseDIVAContext()
+! Procedure 2 : define the extra size for allocate vector
+! --------------------------------------------------------
+  SUBROUTINE mathSetMemoryIncreaseSize(extraSize)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: extraSize
 
 !     Body
 !     - - -
-      CALL deleteLogicalUnitDataBase()
+      increaseSize = extraSize
+      
+  END SUBROUTINE
 
-   END SUBROUTINE
+! Procedure 3 : get default increase size for vector
+! --------------------------------------------------
+  FUNCTION memoryGetDefaultIncreaseSize() RESULT(dim)
 
-END MODULE moduleDIVA
+!     Declaration
+!     - - - - - -
+      INTEGER :: dim
+
+!     Body
+!     - - -
+      dim = increaseSize
+
+  END FUNCTION
+
+
+END MODULE mathDynamicMemory
+

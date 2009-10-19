@@ -1,0 +1,39 @@
+#!/bin/bash
+
+echo ====================================
+echo ====================================
+echo ==                                ==
+echo ==   Compilation of DIVA Modules  ==
+echo ==                                ==
+echo ====================================
+echo ====================================
+echo ' '
+
+baseDir=$PWD
+divaModuleLib=$baseDir/lib
+
+export divaModuleLib
+
+rm $divaModuleLib/*
+
+# Compilation of Mathematic module
+# =================================
+
+cd $baseDir/Mathematic
+./divaCompileModuleMathematicCygwin
+
+
+# Compilation of IO module
+# ========================
+
+cd $baseDir/IOModule
+./divaCompileIOModuleCygwin
+
+# Compilation of General module
+# =============================
+
+cd $baseDir/General
+./divaCompileModuleGeneralCygwin
+
+cd $baseDir
+

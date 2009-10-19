@@ -149,7 +149,7 @@ MODULE moduleChrono
 
 !     Declaration
 !     - - - - - -
-      REALType :: startingPoint, finishPoint
+      REAL*8 :: startingPoint, finishPoint
 
 !     Body
 !     - - -

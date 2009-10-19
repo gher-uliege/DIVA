@@ -1,4 +1,4 @@
-PROGRAM testVector
+PROGRAM testIntegerVector
 
 ! =====================================================
 ! =====================================================
@@ -107,22 +107,6 @@ INTEGER, PARAMETER :: dim = 3
   PRINT*,'======================'
   CALL checkVectorSetAddValue(vector1)
   PRINT*,' '
-  PRINT*,'checkVectorNorm'
-  PRINT*,'==============='
-  CALL checkVectorNorm(vector1)
-  PRINT*,' '
-  PRINT*,'checkVectorScale'
-  PRINT*,'================'
-  CALL checkVectorScale(vector1)
-  PRINT*,' '
-  PRINT*,'checkVectorSqrt'
-  PRINT*,'==============='
-  CALL checkVectorSqrt(vector1)
-  PRINT*,' '
-  PRINT*,'checkVectorSum'
-  PRINT*,'=============='
-  CALL checkVectorSum(vector1)
-  PRINT*,' '
   PRINT*,'checkVectorMin'
   PRINT*,'=============='
   CALL checkVectorMin(vector1)
@@ -130,10 +114,6 @@ INTEGER, PARAMETER :: dim = 3
   PRINT*,'checkVectorMax'
   PRINT*,'=============='
   CALL checkVectorMax(vector1)
-  PRINT*,' '
-  PRINT*,'checkVectorDot'
-  PRINT*,'=============='
-  CALL checkVectorDot(vector1)
   PRINT*,' '
   PRINT*,'checkVectorGetValues'
   PRINT*,'===================='
@@ -161,7 +141,7 @@ INTEGER, PARAMETER :: dim = 3
 !  Declaration
 !  -----------
    TYPE(vectorType), INTENT(INOUT) :: vector1
-   REALType, PARAMETER :: val = 25.
+   VARType, PARAMETER :: val = 25
 
 !  Body
 !  - - -
@@ -175,7 +155,7 @@ INTEGER, PARAMETER :: dim = 3
 !  Declaration
 !  -----------
    TYPE(vectorType), INTENT(INOUT) :: vector1
-   REALType, PARAMETER :: val = 15.
+   VARType, PARAMETER :: val = 15
 
 !  Body
 !  - - -
@@ -189,7 +169,7 @@ INTEGER, PARAMETER :: dim = 3
 !  Declaration
 !  -----------
    TYPE(vectorType), INTENT(INOUT) :: vector1
-   REALType, PARAMETER :: val = 45.
+   VARType, PARAMETER :: val = 45
 
 !  Body
 !  - - -
@@ -198,61 +178,6 @@ INTEGER, PARAMETER :: dim = 3
 
  END SUBROUTINE
 
- SUBROUTINE checkVectorNorm(vector1)
-
-!  Declaration
-!  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-
-!  Body
-!  - - -
-   PRINT*,'Norm L1 : ', vectorNorm1(vector1)
-   PRINT*,'Norm L2 : ', vectorNorm2(vector1)
-   PRINT*,'Norm Inf : ', vectorNormInfinity(vector1)
-   PRINT*,'Norm L1 : ', vectorNorm(vector1,normL1)
-   PRINT*,'Norm L2 : ', vectorNorm(vector1,normL2)
-   PRINT*,'Norm Inf : ', vectorNorm(vector1,normInfinity)
-
- END SUBROUTINE
-
- SUBROUTINE checkVectorScale(vector1)
-
-!  Declaration
-!  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-   REALType, PARAMETER :: val = 0.32
-
-!  Body
-!  - - -
-   CALL vectorScale(vector1,val)
-   CALL printInformation(vector1)
-
- END SUBROUTINE
-
- SUBROUTINE checkVectorSqrt(vector1)
-
-!  Declaration
-!  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-
-!  Body
-!  - - -
-   CALL vectorSqrt(vector1)
-   CALL printInformation(vector1)
-
- END SUBROUTINE
-
- SUBROUTINE checkVectorSum(vector1)
-
-!  Declaration
-!  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-
-!  Body
-!  - - -
-   PRINT*,'Vector sum : ', vectorSum(vector1)
-
- END SUBROUTINE
 
  SUBROUTINE checkVectorMin(vector1)
 
@@ -278,31 +203,12 @@ INTEGER, PARAMETER :: dim = 3
 
  END SUBROUTINE
 
- SUBROUTINE checkVectorDot(vector1)
-
-!  Declaration
-!  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-   TYPE(vectorType) :: vector2
-   REALType, PARAMETER :: val = 2.3
-
-!  Body
-!  - - -
-  CALL vectorCreate(vector2)
-  CALL vectorSetSize(vector2,vectorGetSize(vector1))
-  CALL vectorSetToValue(vector2,val)
-  CALL printInformation(vector2)
-  PRINT*,'Dot product : ', vectorDot(vector1,vector2)
-  CALL vectorDestroy(vector2)
-  
- END SUBROUTINE
-
  SUBROUTINE checkVectorGetValues(vector1)
 
 !  Declaration
 !  -----------
    TYPE(vectorType), INTENT(INOUT) :: vector1
-   REALType, DIMENSION(:), POINTER :: ptr
+   VARType, DIMENSION(:), POINTER :: ptr
    INTEGER :: istart, iend, i1
 
 !  Body
@@ -311,12 +217,12 @@ INTEGER, PARAMETER :: dim = 3
   istart = vectorGetStartIndex(vector1)
   iend = vectorGetEndIndex(vector1,istart)
   DO i1 = istart, iend
-     ptr(i1) = 23.
+     ptr(i1) = 23
   ENDDO
   
   CALL printInformation(vector1)
 
  END SUBROUTINE
 
-END PROGRAM testVector
+END PROGRAM testIntegerVector
 

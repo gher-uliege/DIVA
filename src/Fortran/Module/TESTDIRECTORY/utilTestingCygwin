@@ -11,19 +11,9 @@ echo =============================================
 echo =============================================
 echo ' '
 
-# Definition of the compiler and options
-compiler=g95
-flag='-O3 -Wall -Wimplicit-none'
-
-# Definition of preprocessor options if needed
-preprocessor='-cpp'
-preprocessorFlag='-D=_BATCH_MODE'
-preprocessorFlag=$preprocessorFlag' -DINTEGERType=INTEGER -DREALType=REAL*8'
-
-#Definition of libraries for modules
-moduleLibraryDir='../lib'
-moduleLibraryObject=$moduleLibraryDir/*.o
-moduleLibrary='-I '$moduleLibraryDir
+divaDir=../../
+divaModuleLib=../lib
+export divaModuleLib
 
 echo Testing procedure in progress...
 echo ================================
@@ -35,14 +25,81 @@ osUsed=cygwin
 # Chech program : testVector
 # --------------------------
 fileToCheck=testVector
-echo Test : $fileToCheck
+echo Test : $fileToCheck.Real8
 echo ------
-echo Test : $fileToCheck >> testing.log
+echo Test : $fileToCheck.Real8 >> testing.log
 echo ------ >> testing.log
 
-$compiler $flag $preprocessor $preprocessorFlag $fileToCheck$extension $moduleLibraryObject $moduleLibrary -o $fileToCheck.a >> testing.log 
-./$fileToCheck.a >> $fileToCheck.cygwin 
-diff -s ./$fileToCheck.cygwin ./OUTPUTS/$fileToCheck.cygwin >> testing.log
+preproFlag='-DvectorType=vectorReal8 -DREALType=REAL*8 '
+export preproFlag
+
+$divaDir/compileLinkFile $fileToCheck$extension $fileToCheck >> testing.log
+./$fileToCheck.a >> $fileToCheck.cygwin
+diff -s ./$fileToCheck.cygwin ./OUTPUTS/$fileToCheck.Real8.cygwin >> testing.log
+rm ./$fileToCheck.cygwin
+rm ./$fileToCheck.a
+echo ' ' >> testing.log
+
+fileToCheck=testVector
+echo Test : $fileToCheck.Real4
+echo ------
+echo Test : $fileToCheck.Real4 >> testing.log
+echo ------ >> testing.log
+
+preproFlag='-DvectorType=vectorReal4 -DREALType=REAL*4 '
+export preproFlag
+
+$divaDir/compileLinkFile $fileToCheck$extension $fileToCheck >> testing.log
+./$fileToCheck.a >> $fileToCheck.cygwin
+diff -s ./$fileToCheck.cygwin ./OUTPUTS/$fileToCheck.Real4.cygwin >> testing.log
+rm ./$fileToCheck.cygwin
+rm ./$fileToCheck.a
+echo ' ' >> testing.log
+
+fileToCheck=testIntegerVector
+echo Test : $fileToCheck.Integer2
+echo ------
+echo Test : $fileToCheck.Integer2 >> testing.log
+echo ------ >> testing.log
+
+preproFlag='-DvectorType=vectorInteger2 -DVARType=INTEGER*2 '
+export preproFlag
+
+$divaDir/compileLinkFile $fileToCheck$extension $fileToCheck >> testing.log
+./$fileToCheck.a >> $fileToCheck.cygwin
+diff -s ./$fileToCheck.cygwin ./OUTPUTS/$fileToCheck.Integer2.cygwin >> testing.log
+rm ./$fileToCheck.cygwin
+rm ./$fileToCheck.a
+echo ' ' >> testing.log
+
+fileToCheck=testIntegerVector
+echo Test : $fileToCheck.Integer4
+echo ------
+echo Test : $fileToCheck.Integer4 >> testing.log
+echo ------ >> testing.log
+
+preproFlag='-DvectorType=vectorInteger4 -DVARType=INTEGER*4 '
+export preproFlag
+
+$divaDir/compileLinkFile $fileToCheck$extension $fileToCheck >> testing.log
+./$fileToCheck.a >> $fileToCheck.cygwin
+diff -s ./$fileToCheck.cygwin ./OUTPUTS/$fileToCheck.Integer4.cygwin >> testing.log
+rm ./$fileToCheck.cygwin
+rm ./$fileToCheck.a
+echo ' ' >> testing.log
+
+fileToCheck=testIntegerVector
+echo Test : $fileToCheck.Integer8
+echo ------
+echo Test : $fileToCheck.Integer8 >> testing.log
+echo ------ >> testing.log
+
+preproFlag='-DvectorType=vectorInteger8 -DVARType=INTEGER*8 '
+export preproFlag
+
+$divaDir/compileLinkFile $fileToCheck$extension $fileToCheck >> testing.log
+./$fileToCheck.a >> $fileToCheck.cygwin
+diff -s ./$fileToCheck.cygwin ./OUTPUTS/$fileToCheck.Integer8.cygwin >> testing.log
 rm ./$fileToCheck.cygwin
 rm ./$fileToCheck.a
 echo ' ' >> testing.log
@@ -55,7 +112,7 @@ echo ------
 echo Test : $fileToCheck >> testing.log
 echo ------ >> testing.log
 
-$compiler $flag $preprocessor $preprocessorFlag $fileToCheck$extension $moduleLibraryObject $moduleLibrary -o $fileToCheck.a >> testing.log
+$divaDir/compileLinkFile $fileToCheck$extension $fileToCheck >> testing.log
 ./$fileToCheck.a
 diff -s ./fort.412 ./OUTPUTS/fort.412.$fileToCheck.cygwin >> testing.log
 diff -s ./fort.413 ./OUTPUTS/fort.413.$fileToCheck.cygwin >> testing.log

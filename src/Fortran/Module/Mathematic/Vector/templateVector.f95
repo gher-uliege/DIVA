@@ -1,4 +1,5 @@
-MODULE moduleVectorReal8
+MODULE template
+
 ! ============================================================
 ! ============================================================
 ! ============================================================
@@ -14,35 +15,29 @@ MODULE moduleVectorReal8
 ! Include file
 ! ============
    USE moduleNorm
+   USE mathDynamicMemory
+   USE templatevectorType
    
-#ifndef _MODULE_VECTOR_REAL8_
-#define _MODULE_VECTOR_REAL8_
-   include 'vectorReal8.h'
-   include 'ioParameter.h'
-   include 'constantParameter.h'
-   include 'logicalParameter.h'
-#endif
-
 ! Declaration
 ! ===========
+
 !  General part
 !  ------------
-   TYPE (vectorReal8), PRIVATE, POINTER :: workingVector => NULL()
-   TYPE (vectorReal8), PRIVATE, POINTER :: secondWorkingVector => NULL()
+   TYPE (vectorType), PRIVATE, POINTER :: workingVector => NULL()
+   TYPE (vectorType), PRIVATE, POINTER :: secondWorkingVector => NULL()
 
 !  Memory part
 !  -----------
-   INTEGER, PRIVATE, PARAMETER :: defaultIncreaseSize = 100
    INTEGER, PRIVATE, PARAMETER :: defaultStartingValue = 1
-   INTEGER, PRIVATE :: increaseSize
-   TYPE (vectorReal8), PRIVATE :: internalWorkingVector
+   TYPE (vectorType), PRIVATE :: internalWorkingVector
 
 ! Procedures status
 ! =================
    PUBLIC :: printInformation, vectorDestroy, vectorSetSize, vectorGetSize, vectorSetToZero, vectorSetToValue, &
              vectorNorm1, vectorNorm2, vectorNormInfinity, vectorSqrt, vectorSum, vectorMin, vectorMax, vectorInsertValue, &
-             vectorAddValue, vectorScale, vectorDot, vectorGetValue,initialise, vectorSetMemoryIncreaseSize, vectorNorm, &
-             vectorCreateBase, vectorCreateWithDimension, vectorCreateWithDimensionAndStartingPoint
+             vectorAddValue, vectorScale, vectorDot, vectorGetValue, vectorNorm, &
+             vectorCreateBase, vectorCreateWithDimension, vectorCreateWithDimensionAndStartingPoint, vectorGetValues, &
+             vectorGetStartIndex, vectorGetEndIndex
 
 !  General part
 !  ------------
@@ -53,8 +48,8 @@ MODULE moduleVectorReal8
    PRIVATE :: memorySetSize, memoryAllocateVector, memoryGetSize, memoryDestructor, &
               memoryPrintInformation, memorySetAllocatedSize, memorySetAllocated, memoryAllocateMemory, memoryGetAllocatedSize, &
               memoryStockIntermediateVector, memoryTransferIntermediateVectorToVector, memoryGetValue, memoryGetAllocationStatus, &
-              memoryGetDefaultIncreaseSize, memoryVectorCreate, memoryGetPointerOnValue, memorySetStartingPoint, &
-              memoryGetStartingPoint, memoryGetFinalValuePosition
+              memoryVectorCreate, memoryGetPointerOnValue, memorySetStartingPoint, &
+              memoryGetStartingPoint, memoryGetFinalValuePosition, memoryGetValues
 
 !  Access part
 !  -----------
@@ -82,23 +77,37 @@ MODULE moduleVectorReal8
 ! ===            External procedure ("PUBLIC")             ===
 ! ============================================================
 
-! Procedure 1 : initialisation
-! ----------------------------
-  SUBROUTINE initialise()
+! Procedure 1 : get reference to pointer containing the values
+! ------------------------------------------------------------
+
+   FUNCTION vectorGetValues(targetVector) RESULT(ptr)
+
+!     Declaration
+!     - - - - - -
+      VARType, DIMENSION(:), POINTER :: ptr
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(vectorType), INTENT(IN), TARGET :: targetVector
+      CALL setWorkingVector(targetVector)
 
 !     Body
 !     - - -
-      CALL vectorSetMemoryIncreaseSize(defaultIncreaseSize)
+      ptr => memoryGetValues()
 
-  END SUBROUTINE
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullify()
 
+   END FUNCTION
+   
 ! Procedure 2 : print information on the vector
 ! ---------------------------------------------
    SUBROUTINE printInformation(targetVector)
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector
+      TYPE(vectorType), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -117,7 +126,7 @@ MODULE moduleVectorReal8
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector
+      TYPE(vectorType), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -140,7 +149,7 @@ MODULE moduleVectorReal8
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector
+      TYPE(vectorType), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -164,7 +173,7 @@ MODULE moduleVectorReal8
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector
+      TYPE(vectorType), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -183,7 +192,7 @@ MODULE moduleVectorReal8
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector
+      TYPE(vectorType), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -202,11 +211,11 @@ MODULE moduleVectorReal8
 
 !     Declaration
 !     - - - - - -
-      REAL*8, INTENT(IN) :: val
+      VARType, INTENT(IN) :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector
+      TYPE(vectorType), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -225,11 +234,11 @@ MODULE moduleVectorReal8
 
 !     Declaration
 !     - - - - - -
-      REAL*8 :: val
+      VARType :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector
+      TYPE(vectorType), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -248,11 +257,11 @@ MODULE moduleVectorReal8
 
 !     Declaration
 !     - - - - - -
-      REAL*8 :: val
+      VARType :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector
+      TYPE(vectorType), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -271,11 +280,11 @@ MODULE moduleVectorReal8
 
 !     Declaration
 !     - - - - - -
-      REAL*8 :: val
+      VARType :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector
+      TYPE(vectorType), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -294,11 +303,11 @@ MODULE moduleVectorReal8
 
 !     Declaration
 !     - - - - - -
-      REAL*8 :: val
+      VARType :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector
+      TYPE(vectorType), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -317,7 +326,7 @@ MODULE moduleVectorReal8
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector
+      TYPE(vectorType), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -336,11 +345,11 @@ MODULE moduleVectorReal8
 
 !     Declaration
 !     - - - - - -
-      REAL*8 :: val
+      VARType :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector
+      TYPE(vectorType), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -359,11 +368,11 @@ MODULE moduleVectorReal8
 
 !     Declaration
 !     - - - - - -
-      REAL*8 :: val
+      VARType :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector
+      TYPE(vectorType), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -383,11 +392,11 @@ MODULE moduleVectorReal8
 !     Declaration
 !     - - - - - -
       INTEGER, INTENT(IN) :: position
-      REAL*8, INTENT(IN) :: val
+      VARType, INTENT(IN) :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector
+      TYPE(vectorType), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -407,11 +416,11 @@ MODULE moduleVectorReal8
 !     Declaration
 !     - - - - - -
       INTEGER, INTENT(IN) :: position
-      REAL*8, INTENT(IN) :: val
+      VARType, INTENT(IN) :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector
+      TYPE(vectorType), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -430,11 +439,11 @@ MODULE moduleVectorReal8
 
 !     Declaration
 !     - - - - - -
-      REAL*8, INTENT(IN) :: val
+      VARType, INTENT(IN) :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector
+      TYPE(vectorType), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -453,11 +462,11 @@ MODULE moduleVectorReal8
 
 !     Declaration
 !     - - - - - -
-      REAL*8 :: val
+      VARType :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector1, targetVector2
+      TYPE(vectorType), INTENT(IN) :: targetVector1, targetVector2
       CALL setWorkingVector(targetVector1)
       CALL setSecondWorkingVector(targetVector2)
 
@@ -479,11 +488,11 @@ MODULE moduleVectorReal8
 !     Declaration
 !     - - - - - -
       INTEGER, INTENT(IN) :: i1
-      REAL*8 :: val
+      VARType :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector
+      TYPE(vectorType), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -496,32 +505,18 @@ MODULE moduleVectorReal8
 
   END FUNCTION
 
-! Procedure 20 : define the extra size for allocate vector
-! --------------------------------------------------------
-  SUBROUTINE vectorSetMemoryIncreaseSize(extraSize)
-
-!     Declaration
-!     - - - - - -
-      INTEGER, INTENT(IN) :: extraSize
-
-!     Body
-!     - - -
-      increaseSize = extraSize
-      
-  END SUBROUTINE
-  
-! Procedure 21 : norm
+! Procedure 20 : norm
 ! -------------------
   FUNCTION vectorNorm(targetVector,inormType) RESULT(val)
 
 !     Declaration
 !     - - - - - -
       TYPE(normType), INTENT(IN) :: inormType
-      REAL*8 :: val
+      VARType :: val
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector
+      TYPE(vectorType), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -539,6 +534,41 @@ MODULE moduleVectorReal8
 !     Nullify pointer
 !     - - - - - - - -
       CALL nullify()
+
+  END FUNCTION
+
+! Procedure 21 : get start index
+! ------------------------------
+  FUNCTION vectorGetStartIndex(targetVector) RESULT(i1)
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: i1
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(vectorType), INTENT(IN) :: targetVector
+      CALL setWorkingVector(targetVector)
+      
+      i1 = memoryGetStartingPoint()
+
+  END FUNCTION
+
+! Procedure 22 : get end index
+! ------------------------------
+  FUNCTION vectorGetEndIndex(targetVector,istart) RESULT(i1)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: istart
+      INTEGER :: i1
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(vectorType), INTENT(IN) :: targetVector
+      CALL setWorkingVector(targetVector)
+
+      i1 = memoryGetFinalValuePosition(memoryGetSize(),istart)
 
   END FUNCTION
 
@@ -564,7 +594,7 @@ MODULE moduleVectorReal8
 
 !     Declaration
 !     - - - - - -
-      TYPE(vectorReal8), INTENT(IN), TARGET :: targetVector
+      TYPE(vectorType), INTENT(IN), TARGET :: targetVector
 
 !     Body
 !     - - -
@@ -588,7 +618,7 @@ MODULE moduleVectorReal8
 
 !     Declaration
 !     - - - - - -
-      TYPE(vectorReal8), INTENT(IN), TARGET :: targetVector
+      TYPE(vectorType), INTENT(IN), TARGET :: targetVector
 
 !     Body
 !     - - -
@@ -612,7 +642,7 @@ MODULE moduleVectorReal8
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector
+      TYPE(vectorType), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -635,7 +665,7 @@ MODULE moduleVectorReal8
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector
+      TYPE(vectorType), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -660,7 +690,7 @@ MODULE moduleVectorReal8
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      TYPE(vectorReal8), INTENT(IN) :: targetVector
+      TYPE(vectorType), INTENT(IN) :: targetVector
       CALL setWorkingVector(targetVector)
 
 !     Body
@@ -753,7 +783,7 @@ MODULE moduleVectorReal8
                 CALL memoryStockIntermediateVector()
                 CALL memoryDestructor()
                 CALL memorySetStartingPoint(istartValue)
-                CALL memorySetAllocatedSize(newSize+increaseSize)
+                CALL memorySetAllocatedSize(newSize+memoryGetDefaultIncreaseSize())
                 CALL memorySetSize(newSize)
                 CALL memoryAllocateMemory()
                 CALL memoryTransferIntermediateVectorToVector()
@@ -904,7 +934,7 @@ MODULE moduleVectorReal8
 !     Declaration
 !     - - - - - -
       INTEGER, INTENT(IN) :: i1
-      REAL*8 :: val
+      VARType :: val
 
 !     Body
 !     - - -
@@ -926,21 +956,7 @@ MODULE moduleVectorReal8
 
   END FUNCTION
 
-! Procedure 13 : get default increase size for vector
-! ---------------------------------------------------
-  FUNCTION memoryGetDefaultIncreaseSize() RESULT(dim)
-
-!     Declaration
-!     - - - - - -
-      INTEGER :: dim
-
-!     Body
-!     - - -
-      dim = increaseSize
-
-  END FUNCTION
-
-! Procedure 14 : print information on the vector
+! Procedure 13 : print information on the vector
 ! ---------------------------------------------
    SUBROUTINE memoryPrintInformation()
 
@@ -968,7 +984,7 @@ MODULE moduleVectorReal8
 
    END SUBROUTINE
 
-! Procedure 15 : create the vector
+! Procedure 14 : create the vector
 ! ---------------------------------
    SUBROUTINE memoryVectorCreate()
 
@@ -982,14 +998,14 @@ MODULE moduleVectorReal8
 
    END SUBROUTINE
 
-! Procedure 16 : get the pointer on a value
+! Procedure 15 : get the pointer on a value
 ! -----------------------------------------
   FUNCTION memoryGetPointerOnValue(position) RESULT(ptr)
 
 !     Declaration
 !     - - - - - -
       INTEGER, INTENT(IN) :: position
-      REAL*8, POINTER :: ptr
+      VARType, POINTER :: ptr
 
 !     Body
 !     - - -
@@ -997,7 +1013,7 @@ MODULE moduleVectorReal8
 
   END FUNCTION
   
-! Procedure 17 : set the starting point of the vector
+! Procedure 16 : set the starting point of the vector
 ! ---------------------------------------------------
   SUBROUTINE memorySetStartingPoint(ivalue)
 
@@ -1011,7 +1027,7 @@ MODULE moduleVectorReal8
       
   END SUBROUTINE
   
-! Procedure 18 : get the starting point of the vector
+! Procedure 17 : get the starting point of the vector
 ! ---------------------------------------------------
   FUNCTION memoryGetStartingPoint() RESULT(ivalue)
 
@@ -1025,19 +1041,35 @@ MODULE moduleVectorReal8
 
   END FUNCTION
 
-! Procedure 19 : get the final position in the vector with respect to given dimension
+! Procedure 18 : get the final position in the vector with respect to given dimension
 ! -----------------------------------------------------------------------------------
   FUNCTION memoryGetFinalValuePosition(dim, start) RESULT(ivalue)
   
 !     Declaration
 !     - - - - - -
-      INTEGER :: dim, start, ivalue
+      INTEGER, INTENT(IN) :: dim, start
+      INTEGER :: ivalue
 
 !     Body
 !     - - -
       ivalue = dim + start - 1
 
   END FUNCTION
+
+! Procedure 19 : get reference to pointer containing the values
+! ------------------------------------------------------------
+
+   FUNCTION memoryGetValues() RESULT(ptr)
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      VARType, DIMENSION(:), POINTER :: ptr
+
+!     Body
+!     - - -
+      ptr => workingVector%values
+
+   END FUNCTION
 
 ! ============================================================
 ! ============================================================
@@ -1060,9 +1092,21 @@ MODULE moduleVectorReal8
 ! ---------------------------------
   SUBROUTINE accessVectorSetToZero()
 
+!     Declaration
+!     - - - - - -
+      INTEGER :: i1, istart, iend
+      VARType, DIMENSION(:), POINTER :: ptr
+
 !     Body
 !     - - -
-      workingVector%values = zero
+      istart = memoryGetStartingPoint()
+      iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
+
+      ptr =>  memoryGetValues()
+
+      DO i1 = istart , iend
+           ptr(i1) = zero
+      END DO
 
   END SUBROUTINE
 
@@ -1073,16 +1117,18 @@ MODULE moduleVectorReal8
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, istart, iend
-      REAL*8, INTENT(IN) :: val
+      VARType, INTENT(IN) :: val
+      VARType, DIMENSION(:), POINTER :: ptr
 
 !     Body
 !     - - -
       istart = memoryGetStartingPoint()
       iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
 
+      ptr =>  memoryGetValues()
 
       DO i1 = istart , iend
-           workingVector%values(i1) = val
+           ptr(i1) = val
       END DO
 
   END SUBROUTINE
@@ -1094,7 +1140,7 @@ MODULE moduleVectorReal8
 !     Declaration
 !     - - - - - -
       INTEGER, INTENT(IN) :: position
-      REAL*8, INTENT(IN) :: val
+      VARType, INTENT(IN) :: val
 
 !     Body
 !     - - -
@@ -1111,8 +1157,8 @@ MODULE moduleVectorReal8
 !     Declaration
 !     - - - - - -
       INTEGER, INTENT(IN) :: position
-      REAL*8, INTENT(IN) :: val
-      REAL*8, POINTER :: ptr
+      VARType, INTENT(IN) :: val
+      VARType, POINTER :: ptr
 
 !     Body
 !     - - -
@@ -1147,7 +1193,8 @@ MODULE moduleVectorReal8
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, istart, iend
-      REAL*8 :: val
+      VARType :: val
+      VARType, DIMENSION(:), POINTER :: ptr
 
 !     Body
 !     - - -
@@ -1155,9 +1202,10 @@ MODULE moduleVectorReal8
       iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
 
       val = zero
+      ptr =>  memoryGetValues()
 
       DO i1 = istart, iend
-         val = val + abs(workingVector%values(i1))
+         val = val + abs(ptr(i1))
       END DO
 
   END FUNCTION
@@ -1169,8 +1217,9 @@ MODULE moduleVectorReal8
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, istart, iend
-      REAL*8 :: val
-      REAL*8, POINTER :: ptr
+      VARType :: val
+      VARType, POINTER :: ptr
+      VARType, DIMENSION(:), POINTER :: ptr1
 
 !     Body
 !     - - -
@@ -1178,9 +1227,10 @@ MODULE moduleVectorReal8
       iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
 
       val = zero
+      ptr1 =>  memoryGetValues()
 
       DO i1 = istart, iend
-         ptr => memoryGetPointerOnValue(i1)
+         ptr => ptr1(i1)
          val = val + ptr * ptr
       END DO
       
@@ -1195,7 +1245,8 @@ MODULE moduleVectorReal8
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, istart, iend
-      REAL*8 :: val
+      VARType :: val
+      VARType, DIMENSION(:), POINTER :: ptr
 
 !     Body
 !     - - -
@@ -1203,9 +1254,10 @@ MODULE moduleVectorReal8
       iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
 
       val = zero
+      ptr =>  memoryGetValues()
 
       DO i1 = istart, iend
-         val = max(val,abs(workingVector%values(i1)))
+         val = max(val,abs(ptr(i1)))
       END DO
 
   END FUNCTION
@@ -1217,7 +1269,8 @@ MODULE moduleVectorReal8
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, istart, iend
-      REAL*8 :: val
+      VARType :: val
+      VARType, DIMENSION(:), POINTER :: ptr
 
 !     Body
 !     - - -
@@ -1225,9 +1278,10 @@ MODULE moduleVectorReal8
       iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
 
       val = zero
+      ptr =>  memoryGetValues()
 
       DO i1 = istart, iend
-         val = val + workingVector%values(i1)
+         val = val + ptr(i1)
       END DO
 
   END FUNCTION
@@ -1239,15 +1293,18 @@ MODULE moduleVectorReal8
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, istart, iend
-      REAL*8, POINTER :: ptr
+      VARType, POINTER :: ptr
+      VARType, DIMENSION(:), POINTER :: ptr1
 
 !     Body
 !     - - -
       istart = memoryGetStartingPoint()
       iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
 
+      ptr1 =>  memoryGetValues()
+
       DO i1 = istart, iend
-         ptr => memoryGetPointerOnValue(i1)
+         ptr => ptr1(i1)
          ptr = sqrt(abs(ptr))
       END DO
 
@@ -1260,17 +1317,20 @@ MODULE moduleVectorReal8
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, istart, iend
-      REAL*8 :: val
+      VARType :: val
+      VARType, DIMENSION(:), POINTER :: ptr1
 
 !     Body
 !     - - -
       istart = memoryGetStartingPoint()
       iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
 
-      val = posInf
+      ptr1 =>  memoryGetValues()
 
-      DO i1 = istart, iend
-         val = min(val,workingVector%values(i1))
+      val = ptr1(istart)
+
+      DO i1 = istart + 1, iend
+         val = min(val,ptr1(i1))
       END DO
 
   END FUNCTION
@@ -1282,17 +1342,20 @@ MODULE moduleVectorReal8
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, istart, iend
-      REAL*8 :: val
+      VARType :: val
+      VARType, DIMENSION(:), POINTER :: ptr1
 
 !     Body
 !     - - -
       istart = memoryGetStartingPoint()
       iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
 
-      val = negInf
+      ptr1 =>  memoryGetValues()
 
-      DO i1 = istart, iend
-         val = max(val,workingVector%values(i1))
+      val = ptr1(istart)
+
+      DO i1 = istart + 1, iend
+         val = max(val,ptr1(i1))
       END DO
 
   END FUNCTION
@@ -1304,17 +1367,19 @@ MODULE moduleVectorReal8
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, istart, iend
-      REAL*8 :: val
-      REAL*8, POINTER :: ptr
+      VARType :: val
+      VARType, POINTER :: ptr
+      VARType, DIMENSION(:), POINTER :: ptr1
 
 !     Body
 !     - - -
       istart = memoryGetStartingPoint()
       iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
 
-
+      ptr1 => memoryGetValues()
+      
       DO i1 = istart, iend
-         ptr => memoryGetPointerOnValue(i1)
+         ptr => ptr1(i1)
          ptr = val * ptr
       END DO
 
@@ -1327,7 +1392,10 @@ MODULE moduleVectorReal8
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, size, istart, iend, istart2
-      REAL*8 :: val
+      VARType :: val
+      VARType, DIMENSION(:), POINTER :: ptr1
+      VARType, DIMENSION(:), POINTER :: ptr2
+
 
 !     Body
 !     - - -
@@ -1336,17 +1404,18 @@ MODULE moduleVectorReal8
       iend = memoryGetFinalValuePosition(size,istart)
       istart2 = secondWorkingVector%startValue
 
+      ptr1 => memoryGetValues()
+      ptr2 => secondWorkingVector%values
+      
       val = zero
 
       IF ( size /= secondWorkingVector%nbOfData ) RETURN
 
       DO i1 = istart, iend
-          val = val + secondWorkingVector%values(i1-istart+istart2) * workingVector%values(i1)
+          val = val + ptr2(i1-istart+istart2) * ptr1(i1)
       END DO
 
   END FUNCTION
 
-END MODULE moduleVectorReal8
-
-
+END MODULE template
 

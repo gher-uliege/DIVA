@@ -1,9 +1,31 @@
-Test : testVector
+Test : testVector.Real8
 ------
-Files ./testVector.cygwin and ./OUTPUTS/testVector.cygwin are identical
+Compiling  testVector
+Files ./testVector.cygwin and ./OUTPUTS/testVector.Real8.cygwin are identical
+ 
+Test : testVector.Real4
+------
+Compiling  testVector
+Files ./testVector.cygwin and ./OUTPUTS/testVector.Real4.cygwin are identical
+ 
+Test : testIntegerVector.Integer2
+------
+Compiling  testIntegerVector
+Files ./testIntegerVector.cygwin and ./OUTPUTS/testIntegerVector.Integer2.cygwin are identical
+ 
+Test : testIntegerVector.Integer4
+------
+Compiling  testIntegerVector
+Files ./testIntegerVector.cygwin and ./OUTPUTS/testIntegerVector.Integer4.cygwin are identical
+ 
+Test : testIntegerVector.Integer8
+------
+Compiling  testIntegerVector
+Files ./testIntegerVector.cygwin and ./OUTPUTS/testIntegerVector.Integer8.cygwin are identical
  
 Test : testReadWrite
 ------
+Compiling  testReadWrite
 Files ./fort.412 and ./OUTPUTS/fort.412.testReadWrite.cygwin are identical
 Files ./fort.413 and ./OUTPUTS/fort.413.testReadWrite.cygwin are identical
 Files ./fort.414 and ./OUTPUTS/fort.414.testReadWrite.cygwin are identical

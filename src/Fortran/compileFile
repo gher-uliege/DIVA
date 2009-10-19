@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Definition of the compiler and options
+compiler=g95
+#flag='-O3 -Wall -Wimplicit-none -c'
+flag='-O3 -Wall -Wimplicit-none -Wno-unset-vars -Wno-unused-vars -c'
+
+# Definition of preprocessor options if needed
+preprocessor='-cpp'
+preprocessorFlag='-D=_BATCH_MODE_ '$preproFlag
+
+#Definition of the librairy directory
+libraryDir='-I'$divaModuleLib
+#libraryObj=$divaModuleLib/*.o
+libraryObj=''
+
+library=$libraryDir' '$associateDir
+
+echo 'Compiling ' $2
+$compiler $flag $preprocessor $preprocessorFlag $library $libraryObj $1 -o $2.o
+
