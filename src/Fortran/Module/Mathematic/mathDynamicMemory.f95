@@ -14,9 +14,9 @@ MODULE mathDynamicMemory
 
 ! Include file
 ! ============
-   include 'ioParameter.h'
-   include 'constantParameter.h'
-   include 'logicalParameter.h'
+   INCLUDE 'ioParameter.h'
+   INCLUDE 'constantParameter.h'
+   INCLUDE 'logicalParameter.h'
 
 ! Declaration
 ! ===========

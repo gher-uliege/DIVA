@@ -30,7 +30,7 @@ echo ------
 echo Test : $fileToCheck.Real8 >> testing.log
 echo ------ >> testing.log
 
-preproFlag='-DvectorType=vectorReal8 -DREALType=REAL*8 '
+preproFlag='-DvectorType=vectorReal8 -DVARType=REAL(KIND=8) '
 export preproFlag
 
 $divaDir/compileLinkFile $fileToCheck$extension $fileToCheck >> testing.log
@@ -46,7 +46,7 @@ echo ------
 echo Test : $fileToCheck.Real4 >> testing.log
 echo ------ >> testing.log
 
-preproFlag='-DvectorType=vectorReal4 -DREALType=REAL*4 '
+preproFlag='-DvectorType=vectorReal4 -DVARType=REAL(KIND=4) '
 export preproFlag
 
 $divaDir/compileLinkFile $fileToCheck$extension $fileToCheck >> testing.log
@@ -62,7 +62,7 @@ echo ------
 echo Test : $fileToCheck.Integer2 >> testing.log
 echo ------ >> testing.log
 
-preproFlag='-DvectorType=vectorInteger2 -DVARType=INTEGER*2 '
+preproFlag='-DvectorType=vectorInteger2 -DVARType=INTEGER(KIND=2) '
 export preproFlag
 
 $divaDir/compileLinkFile $fileToCheck$extension $fileToCheck >> testing.log
@@ -78,7 +78,7 @@ echo ------
 echo Test : $fileToCheck.Integer4 >> testing.log
 echo ------ >> testing.log
 
-preproFlag='-DvectorType=vectorInteger4 -DVARType=INTEGER*4 '
+preproFlag='-DvectorType=vectorInteger4 -DVARType=INTEGER(KIND=4) '
 export preproFlag
 
 $divaDir/compileLinkFile $fileToCheck$extension $fileToCheck >> testing.log
@@ -94,7 +94,7 @@ echo ------
 echo Test : $fileToCheck.Integer8 >> testing.log
 echo ------ >> testing.log
 
-preproFlag='-DvectorType=vectorInteger8 -DVARType=INTEGER*8 '
+preproFlag='-DvectorType=vectorInteger8 -DVARType=INTEGER(KIND=8) '
 export preproFlag
 
 $divaDir/compileLinkFile $fileToCheck$extension $fileToCheck >> testing.log

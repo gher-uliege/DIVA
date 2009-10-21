@@ -26,6 +26,8 @@ INTEGER, PARAMETER :: dim = 3
 
 !   1) testing the creation procedure
 !   ---------------------------------
+  CALL vectorSetMemoryIncreaseSize(5)
+  
 !    1.1) Basic creation procedure
 !    - - - - - - - - - - - - - - -
   CALL vectorCreate(vector1)
@@ -118,6 +120,10 @@ INTEGER, PARAMETER :: dim = 3
   PRINT*,'checkVectorGetValues'
   PRINT*,'===================='
   CALL checkVectorGetValues(vector1)
+  PRINT*,' '
+  PRINT*,'checkVectorSetSize'
+  PRINT*,'=================='
+  CALL checkVectorSetSize(vector1)
   PRINT*,' '
 
 
@@ -221,6 +227,37 @@ INTEGER, PARAMETER :: dim = 3
   ENDDO
   
   CALL printInformation(vector1)
+
+ END SUBROUTINE
+
+ SUBROUTINE checkVectorSetSize(vector1)
+
+!  Declaration
+!  -----------
+   TYPE(vectorType), INTENT(INOUT) :: vector1
+   VARType, DIMENSION(:), POINTER :: ptr
+   INTEGER :: istart, iend, i1
+   VARType, PARAMETER :: val = 2
+   VARType, PARAMETER :: val2 = -3
+   VARType, PARAMETER :: val3 = 4
+
+!  Body
+!  - - -
+  istart = vectorGetStartIndex(vector1)
+  iend = vectorGetEndIndex(vector1,istart)
+
+   CALL vectorSetToValue(vector1,val)
+   CALL printInformation(vector1)
+
+   DO i1 = istart - 2 , istart - 1
+       CALL vectorInsertValue(vector1,i1,val2)
+   ENDDO
+
+   DO i1 = iend + 1 , iend + 2
+       CALL vectorInsertValue(vector1,i1,val3)
+   ENDDO
+
+   CALL printInformation(vector1)
 
  END SUBROUTINE
 

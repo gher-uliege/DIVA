@@ -83,7 +83,6 @@ MODULE moduleReadWrite
       REAL*4, INTENT(IN) :: exclusionValue
 
       INTEGER :: nbOfWordsToUse
-      REAL*8 :: real8Entries(ione)
 
 !     Body
 !     - - -
@@ -92,7 +91,7 @@ MODULE moduleReadWrite
           nbOfWordsToUse = nbOfWords
       END IF
       
-      CALL uwritcReal4(fileToWrite,real8Entries,vector,exclusionValue,ifour,nbOfData,ione,ione,nbOfWordsToUse)
+      CALL uwritcReal4(fileToWrite,vector,exclusionValue,ifour,nbOfData,ione,ione,nbOfWordsToUse)
 
    END SUBROUTINE
 
@@ -109,7 +108,6 @@ MODULE moduleReadWrite
       REAL*8, INTENT(IN) :: exclusionValue
 
       INTEGER :: nbOfWordsToUse
-      REAL*4 :: real4Entries(ione)
 
 !     Body
 !     - - -
@@ -118,7 +116,7 @@ MODULE moduleReadWrite
           nbOfWordsToUse = nbOfWords
       END IF
 
-      CALL uwritcReal8(fileToWrite,vector,real4Entries,exclusionValue,ieight,nbOfData,ione,ione,nbOfWordsToUse)
+      CALL uwritcReal8(fileToWrite,vector,exclusionValue,ieight,nbOfData,ione,ione,nbOfWordsToUse)
 
    END SUBROUTINE
 
@@ -135,7 +133,6 @@ MODULE moduleReadWrite
       REAL*4, INTENT(IN) :: exclusionValue
 
       INTEGER :: nbOfWordsToUse
-      REAL*8 :: real8Entries(ione)
 
 !     Body
 !     - - -
@@ -144,7 +141,7 @@ MODULE moduleReadWrite
           nbOfWordsToUse = nbOfWords
       END IF
 
-      CALL uwritcReal4(fileToWrite,real8Entries,matrix,exclusionValue,ifour,nbOfDataI,nbOfDataJ,ione,nbOfWordsToUse)
+      CALL uwritcReal4(fileToWrite,matrix,exclusionValue,ifour,nbOfDataI,nbOfDataJ,ione,nbOfWordsToUse)
 
    END SUBROUTINE
 
@@ -161,7 +158,6 @@ MODULE moduleReadWrite
       REAL*8, INTENT(IN) :: exclusionValue
 
       INTEGER :: nbOfWordsToUse
-      REAL*4 :: real4Entries(ione)
 
 !     Body
 !     - - -
@@ -170,7 +166,7 @@ MODULE moduleReadWrite
           nbOfWordsToUse = nbOfWords
       END IF
 
-      CALL uwritcReal8(fileToWrite,matrix,real4Entries,exclusionValue,ieight,nbOfDataI,nbOfDataJ,ione,nbOfWordsToUse)
+      CALL uwritcReal8(fileToWrite,matrix,exclusionValue,ieight,nbOfDataI,nbOfDataJ,ione,nbOfWordsToUse)
 
    END SUBROUTINE
 
@@ -187,7 +183,6 @@ MODULE moduleReadWrite
       REAL*4, INTENT(IN) :: exclusionValue
 
       INTEGER :: nbOfWordsToUse
-      REAL*8 :: real8Entries(ione)
 
 !     Body
 !     - - -
@@ -196,7 +191,7 @@ MODULE moduleReadWrite
           nbOfWordsToUse = nbOfWords
       END IF
 
-      CALL uwritcReal4(fileToWrite,real8Entries,matrix,exclusionValue,ifour,nbOfDataI,nbOfDataJ,nbOfDataK,nbOfWordsToUse)
+      CALL uwritcReal4(fileToWrite,matrix,exclusionValue,ifour,nbOfDataI,nbOfDataJ,nbOfDataK,nbOfWordsToUse)
 
    END SUBROUTINE
 
@@ -213,7 +208,6 @@ MODULE moduleReadWrite
       REAL*8, INTENT(IN) :: exclusionValue
       
       INTEGER :: nbOfWordsToUse
-      REAL*4 :: real4Entries(ione)
 
 !     Body
 !     - - -
@@ -221,13 +215,13 @@ MODULE moduleReadWrite
       IF ( PRESENT(nbOfWords) ) THEN
           nbOfWordsToUse = nbOfWords
       END IF
-      CALL uwritcReal8(fileToWrite,matrix,real4Entries,exclusionValue,ieight,nbOfDataI,nbOfDataJ,nbOfDataK,nbOfWordsToUse)
+      CALL uwritcReal8(fileToWrite,matrix,exclusionValue,ieight,nbOfDataI,nbOfDataJ,nbOfDataK,nbOfWordsToUse)
 
    END SUBROUTINE
 
 ! Procedure 7 : basic uwritc procedure for real*4 entries
 ! -------------------------------------------------------
-   SUBROUTINE uwritcReal4(fileToWrite,real8Entries,real4Entries,exclusionValue,iprecision,nbOfDataI,nbOfDataJ,nbOfDataK,nbOfWords)
+   SUBROUTINE uwritcReal4(fileToWrite,real4Entries,exclusionValue,iprecision,nbOfDataI,nbOfDataJ,nbOfDataK,nbOfWords)
 
 !     Declaration
 !     - - - - - -
@@ -237,7 +231,6 @@ MODULE moduleReadWrite
       INTEGER, INTENT(INOUT) :: nbOfWords
       REAL*4, INTENT(IN) :: exclusionValue
       REAL*4, INTENT(IN) :: real4Entries(*)
-      REAL*8, INTENT(IN) :: real8Entries(*)
 
       LOGICAL :: checkWritingProcedure, fileFormat
       INTEGER :: i1, i2, i3, numberOfFullRecord, remainingWords, logicalUnit, icheckError
@@ -315,7 +308,7 @@ MODULE moduleReadWrite
 
 ! Procedure 8 : basic uwritc procedure for real*4 entries
 ! -------------------------------------------------------
-   SUBROUTINE uwritcReal8(fileToWrite,real8Entries,real4Entries,exclusionValue,iprecision,nbOfDataI,nbOfDataJ,nbOfDataK,nbOfWords)
+   SUBROUTINE uwritcReal8(fileToWrite,real8Entries,exclusionValue,iprecision,nbOfDataI,nbOfDataJ,nbOfDataK,nbOfWords)
 
 !     Declaration
 !     - - - - - -
@@ -324,7 +317,6 @@ MODULE moduleReadWrite
       INTEGER, INTENT(IN) :: nbOfDataI, nbOfDataJ, nbOfDataK, iprecision
       INTEGER, INTENT(INOUT) :: nbOfWords
       REAL*8, INTENT(IN) :: exclusionValue
-      REAL*4, INTENT(IN) :: real4Entries(*)
       REAL*8, INTENT(IN) :: real8Entries(*)
 
       LOGICAL :: checkWritingProcedure, fileFormat
@@ -612,7 +604,7 @@ MODULE moduleReadWrite
 !     - - -
 
       CALL ureadcReal8(fileToRead,vector,exclusionValue8,isMatrixRegular,nbOfData)
-      exclusionValue = exclusionValue8
+      exclusionValue = REAL(exclusionValue8,KIND=4)
 
       SELECT CASE (isMatrixRegular)
          CASE (true)
@@ -670,7 +662,7 @@ MODULE moduleReadWrite
 !     - - -
 
       CALL ureadcReal8(fileToRead,vector,exclusionValue8,isMatrixRegular,nbOfDataI,nbOfDataJ)
-      exclusionValue = exclusionValue8
+      exclusionValue = REAL(exclusionValue8,KIND=4)
 
       SELECT CASE (isMatrixRegular)
          CASE (true)
@@ -727,7 +719,7 @@ MODULE moduleReadWrite
 !     - - -
 
       CALL ureadcReal8(fileToRead,vector,exclusionValue8,isMatrixRegular,nbOfDataI,nbOfDataJ,nbOfDataK)
-      exclusionValue = exclusionValue8
+      exclusionValue = REAL(exclusionValue8,KIND=4)
 
       SELECT CASE (isMatrixRegular)
          CASE (true)
@@ -768,7 +760,7 @@ MODULE moduleReadWrite
             exclusionValue = exclusionValue4
             CALL fillEntryReal4To4(nbOfWords,internalReal4Entries,realEntries)
          CASE (ieight)
-            exclusionValue = exclusionValue8
+            exclusionValue = REAL(exclusionValue8,KIND=4)
             CALL fillEntryReal8To4(nbOfWords,internalReal8Entries,realEntries)
       END SELECT
 
@@ -1179,7 +1171,7 @@ MODULE moduleReadWrite
       INTEGER, INTENT(IN) :: nbOfWords
 
       REAL*4, DIMENSION(:), INTENT(INOUT), POINTER :: internalRealEntries
-      REAL*4, DIMENSION(:), INTENT(OUT), POINTER :: realEntries
+      REAL*4, DIMENSION(:), POINTER :: realEntries
 
       INTEGER :: i1
 
@@ -1204,7 +1196,7 @@ MODULE moduleReadWrite
       INTEGER, INTENT(IN) :: nbOfWords
 
       REAL*4, DIMENSION(:), INTENT(INOUT), POINTER :: internalRealEntries
-      REAL*8, DIMENSION(:), INTENT(OUT), POINTER :: realEntries
+      REAL*8, DIMENSION(:), POINTER :: realEntries
 
       INTEGER :: i1
 
@@ -1229,7 +1221,7 @@ MODULE moduleReadWrite
       INTEGER, INTENT(IN) :: nbOfWords
 
       REAL*8, DIMENSION(:), INTENT(INOUT), POINTER :: internalRealEntries
-      REAL*4, DIMENSION(:), INTENT(OUT), POINTER :: realEntries
+      REAL*4, DIMENSION(:), POINTER :: realEntries
 
       INTEGER :: i1
 
@@ -1238,7 +1230,7 @@ MODULE moduleReadWrite
       ALLOCATE(realEntries(nbOfWords))
 
       DO i1 = 1, nbOfWords
-         realEntries(i1) = internalRealEntries(i1)
+         realEntries(i1) = REAL(internalRealEntries(i1),KIND=4)
       END DO
 
       DEALLOCATE(internalRealEntries)
@@ -1254,7 +1246,7 @@ MODULE moduleReadWrite
       INTEGER, INTENT(IN) :: nbOfWords
 
       REAL*8, DIMENSION(:), INTENT(INOUT), POINTER :: internalRealEntries
-      REAL*8, DIMENSION(:), INTENT(OUT), POINTER :: realEntries
+      REAL*8, DIMENSION(:), POINTER :: realEntries
 
       INTEGER :: i1
 
@@ -1313,7 +1305,7 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1, i2, i3, i4
       INTEGER, INTENT(IN) :: nbOfDataI,nbOfDataJ,nbOfDataK
-      REAL*8, DIMENSION(:,:,:), POINTER, INTENT(OUT) :: matrix
+      REAL*8, DIMENSION(:,:,:), POINTER :: matrix
       REAL*8, DIMENSION(:), INTENT(INOUT), POINTER :: vector
 
 !     Body
@@ -1343,7 +1335,7 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1, i2, i3
       INTEGER, INTENT(IN) :: nbOfDataI,nbOfDataJ,nbOfDataK
-      REAL*8, DIMENSION(:,:,:), POINTER, INTENT(OUT) :: matrix
+      REAL*8, DIMENSION(:,:,:), POINTER :: matrix
       REAL*8, DIMENSION(:), INTENT(INOUT), POINTER :: vector
       REAL*8 :: initialCoordinate, DX, DY, DZ
 
@@ -1376,7 +1368,7 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1, i2, i3, i4
       INTEGER, INTENT(IN) :: nbOfDataI,nbOfDataJ,nbOfDataK
-      REAL*4, DIMENSION(:,:,:), POINTER, INTENT(OUT) :: matrix
+      REAL*4, DIMENSION(:,:,:), POINTER :: matrix
       REAL*4, DIMENSION(:), INTENT(INOUT), POINTER :: vector
 
 !     Body
@@ -1406,7 +1398,7 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1, i2, i3
       INTEGER, INTENT(IN) :: nbOfDataI,nbOfDataJ,nbOfDataK
-      REAL*4, DIMENSION(:,:,:), POINTER, INTENT(OUT) :: matrix
+      REAL*4, DIMENSION(:,:,:), POINTER :: matrix
       REAL*4, DIMENSION(:), INTENT(INOUT), POINTER :: vector
       REAL*4 :: initialCoordinate, DX, DY, DZ
 
@@ -1439,7 +1431,7 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1, i2, i4
       INTEGER, INTENT(IN) :: nbOfDataI,nbOfDataJ
-      REAL*8, DIMENSION(:,:), POINTER, INTENT(OUT) :: matrix
+      REAL*8, DIMENSION(:,:), POINTER :: matrix
       REAL*8, DIMENSION(:), INTENT(INOUT), POINTER :: vector
 
 !     Body
@@ -1467,7 +1459,7 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1, i2
       INTEGER, INTENT(IN) :: nbOfDataI,nbOfDataJ
-      REAL*8, DIMENSION(:,:), POINTER, INTENT(OUT) :: matrix
+      REAL*8, DIMENSION(:,:), POINTER :: matrix
       REAL*8, DIMENSION(:), INTENT(INOUT), POINTER :: vector
       REAL*8 :: initialCoordinate, DX, DY
 
@@ -1497,7 +1489,7 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1, i2, i4
       INTEGER, INTENT(IN) :: nbOfDataI,nbOfDataJ
-      REAL*4, DIMENSION(:,:), POINTER, INTENT(OUT) :: matrix
+      REAL*4, DIMENSION(:,:), POINTER :: matrix
       REAL*4, DIMENSION(:), INTENT(INOUT), POINTER :: vector
 
 !     Body
@@ -1525,7 +1517,7 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1, i2
       INTEGER, INTENT(IN) :: nbOfDataI,nbOfDataJ
-      REAL*4, DIMENSION(:,:), POINTER, INTENT(OUT) :: matrix
+      REAL*4, DIMENSION(:,:), POINTER :: matrix
       REAL*4, DIMENSION(:), INTENT(INOUT), POINTER :: vector
       REAL*4 :: initialCoordinate, DX, DY
 
@@ -1555,7 +1547,7 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1, i4
       INTEGER, INTENT(IN) :: nbOfDataI
-      REAL*8, DIMENSION(:), POINTER, INTENT(OUT) :: matrix
+      REAL*8, DIMENSION(:), POINTER :: matrix
       REAL*8, DIMENSION(:), INTENT(INOUT), POINTER :: vector
 
 !     Body
@@ -1581,7 +1573,7 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1
       INTEGER, INTENT(IN) :: nbOfDataI
-      REAL*8, DIMENSION(:), POINTER, INTENT(OUT) :: matrix
+      REAL*8, DIMENSION(:), POINTER :: matrix
       REAL*8, DIMENSION(:), INTENT(INOUT), POINTER :: vector
       REAL*8 :: initialCoordinate, DX
 
@@ -1608,7 +1600,7 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1, i4
       INTEGER, INTENT(IN) :: nbOfDataI
-      REAL*4, DIMENSION(:), POINTER, INTENT(OUT) :: matrix
+      REAL*4, DIMENSION(:), POINTER :: matrix
       REAL*4, DIMENSION(:), INTENT(INOUT), POINTER :: vector
 
 !     Body
@@ -1634,7 +1626,7 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1
       INTEGER, INTENT(IN) :: nbOfDataI
-      REAL*4, DIMENSION(:), POINTER, INTENT(OUT) :: matrix
+      REAL*4, DIMENSION(:), POINTER :: matrix
       REAL*4, DIMENSION(:), INTENT(INOUT), POINTER :: vector
       REAL*4 :: initialCoordinate, DX
 

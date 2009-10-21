@@ -1,7 +1,7 @@
  checkVectorSetToZero
  ====================
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  1
     Last position is  :  3
@@ -12,7 +12,7 @@
  checkVectorSetToValue
  =====================
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  1
     Last position is  :  3
@@ -23,7 +23,7 @@
  checkVectorSetInsertValue
  =========================
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  1
     Last position is  :  3
@@ -34,7 +34,7 @@
  checkVectorSetAddValue
  ======================
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  1
     Last position is  :  3
@@ -54,7 +54,7 @@
  checkVectorScale
  ================
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  1
     Last position is  :  3
@@ -65,7 +65,7 @@
  checkVectorSqrt
  ===============
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  1
     Last position is  :  3
@@ -88,7 +88,7 @@
  checkVectorDot
  ==============
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  1
     Last position is  :  3
@@ -100,7 +100,7 @@
  checkVectorGetValues
  ====================
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  1
     Last position is  :  3
@@ -108,10 +108,33 @@
  value  2  :  23.
  value  3  :  23.
   
+ checkVectorSetSize
+ ==================
+ The size of the vector is :  3
+    The allocated memory is :  8
+    Allocation status of the vector :  T
+    First position is :  1
+    Last position is  :  3
+ value  1  :  2.299999952316284
+ value  2  :  2.299999952316284
+ value  3  :  2.299999952316284
+ The size of the vector is :  7
+    The allocated memory is :  10
+    Allocation status of the vector :  T
+    First position is :  -1
+    Last position is  :  5
+ value  -1  :  -3.299999952316284
+ value  0  :  -3.299999952316284
+ value  1  :  2.299999952316284
+ value  2  :  2.299999952316284
+ value  3  :  2.299999952316284
+ value  4  :  3.299999952316284
+ value  5  :  3.299999952316284
+  
  checkVectorSetToZero
  ====================
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  1
     Last position is  :  3
@@ -122,7 +145,7 @@
  checkVectorSetToValue
  =====================
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  1
     Last position is  :  3
@@ -133,7 +156,7 @@
  checkVectorSetInsertValue
  =========================
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  1
     Last position is  :  3
@@ -144,7 +167,7 @@
  checkVectorSetAddValue
  ======================
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  1
     Last position is  :  3
@@ -164,7 +187,7 @@
  checkVectorScale
  ================
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  1
     Last position is  :  3
@@ -175,7 +198,7 @@
  checkVectorSqrt
  ===============
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  1
     Last position is  :  3
@@ -198,7 +221,7 @@
  checkVectorDot
  ==============
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  1
     Last position is  :  3
@@ -210,7 +233,7 @@
  checkVectorGetValues
  ====================
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  1
     Last position is  :  3
@@ -218,10 +241,33 @@
  value  2  :  23.
  value  3  :  23.
   
+ checkVectorSetSize
+ ==================
+ The size of the vector is :  3
+    The allocated memory is :  8
+    Allocation status of the vector :  T
+    First position is :  1
+    Last position is  :  3
+ value  1  :  2.299999952316284
+ value  2  :  2.299999952316284
+ value  3  :  2.299999952316284
+ The size of the vector is :  7
+    The allocated memory is :  10
+    Allocation status of the vector :  T
+    First position is :  -1
+    Last position is  :  5
+ value  -1  :  -3.299999952316284
+ value  0  :  -3.299999952316284
+ value  1  :  2.299999952316284
+ value  2  :  2.299999952316284
+ value  3  :  2.299999952316284
+ value  4  :  3.299999952316284
+ value  5  :  3.299999952316284
+  
  checkVectorSetToZero
  ====================
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  -1
     Last position is  :  1
@@ -232,7 +278,7 @@
  checkVectorSetToValue
  =====================
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  -1
     Last position is  :  1
@@ -243,7 +289,7 @@
  checkVectorSetInsertValue
  =========================
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  -1
     Last position is  :  1
@@ -254,7 +300,7 @@
  checkVectorSetAddValue
  ======================
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  -1
     Last position is  :  1
@@ -274,7 +320,7 @@
  checkVectorScale
  ================
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  -1
     Last position is  :  1
@@ -285,7 +331,7 @@
  checkVectorSqrt
  ===============
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  -1
     Last position is  :  1
@@ -308,7 +354,7 @@
  checkVectorDot
  ==============
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  1
     Last position is  :  3
@@ -320,7 +366,7 @@
  checkVectorGetValues
  ====================
  The size of the vector is :  3
-    The allocated memory is :  103
+    The allocated memory is :  8
     Allocation status of the vector :  T
     First position is :  -1
     Last position is  :  1
@@ -328,6 +374,29 @@
  value  0  :  23.
  value  1  :  23.
   
+ checkVectorSetSize
+ ==================
+ The size of the vector is :  3
+    The allocated memory is :  8
+    Allocation status of the vector :  T
+    First position is :  -1
+    Last position is  :  1
+ value  -1  :  2.299999952316284
+ value  0  :  2.299999952316284
+ value  1  :  2.299999952316284
+ The size of the vector is :  7
+    The allocated memory is :  10
+    Allocation status of the vector :  T
+    First position is :  -3
+    Last position is  :  3
+ value  -3  :  -3.299999952316284
+ value  -2  :  -3.299999952316284
+ value  -1  :  2.299999952316284
+ value  0  :  2.299999952316284
+ value  1  :  2.299999952316284
+ value  2  :  3.299999952316284
+ value  3  :  3.299999952316284
+  
  checkVectorSetToZero
  ====================
  The size of the vector is :  3
@@ -438,6 +507,29 @@
  value  2  :  23.
  value  3  :  23.
   
+ checkVectorSetSize
+ ==================
+ The size of the vector is :  3
+    The allocated memory is :  3
+    Allocation status of the vector :  T
+    First position is :  1
+    Last position is  :  3
+ value  1  :  2.299999952316284
+ value  2  :  2.299999952316284
+ value  3  :  2.299999952316284
+ The size of the vector is :  7
+    The allocated memory is :  7
+    Allocation status of the vector :  T
+    First position is :  -1
+    Last position is  :  5
+ value  -1  :  -3.299999952316284
+ value  0  :  -3.299999952316284
+ value  1  :  2.299999952316284
+ value  2  :  2.299999952316284
+ value  3  :  2.299999952316284
+ value  4  :  3.299999952316284
+ value  5  :  3.299999952316284
+  
  checkVectorSetToZero
  ====================
  The size of the vector is :  3
@@ -547,6 +639,29 @@
  value  1  :  23.
  value  2  :  23.
  value  3  :  23.
+  
+ checkVectorSetSize
+ ==================
+ The size of the vector is :  3
+    The allocated memory is :  3
+    Allocation status of the vector :  T
+    First position is :  1
+    Last position is  :  3
+ value  1  :  2.299999952316284
+ value  2  :  2.299999952316284
+ value  3  :  2.299999952316284
+ The size of the vector is :  7
+    The allocated memory is :  7
+    Allocation status of the vector :  T
+    First position is :  -1
+    Last position is  :  5
+ value  -1  :  -3.299999952316284
+ value  0  :  -3.299999952316284
+ value  1  :  2.299999952316284
+ value  2  :  2.299999952316284
+ value  3  :  2.299999952316284
+ value  4  :  3.299999952316284
+ value  5  :  3.299999952316284
   
  checkVectorSetToZero
  ====================
@@ -657,4 +772,27 @@
  value  -1  :  23.
  value  0  :  23.
  value  1  :  23.
+  
+ checkVectorSetSize
+ ==================
+ The size of the vector is :  3
+    The allocated memory is :  3
+    Allocation status of the vector :  T
+    First position is :  -1
+    Last position is  :  1
+ value  -1  :  2.299999952316284
+ value  0  :  2.299999952316284
+ value  1  :  2.299999952316284
+ The size of the vector is :  7
+    The allocated memory is :  7
+    Allocation status of the vector :  T
+    First position is :  -3
+    Last position is  :  3
+ value  -3  :  -3.299999952316284
+ value  -2  :  -3.299999952316284
+ value  -1  :  2.299999952316284
+ value  0  :  2.299999952316284
+ value  1  :  2.299999952316284
+ value  2  :  3.299999952316284
+ value  3  :  3.299999952316284
   

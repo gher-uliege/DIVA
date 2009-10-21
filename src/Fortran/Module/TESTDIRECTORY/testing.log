@@ -29,10 +29,7 @@ Compiling  testReadWrite
 Files ./fort.412 and ./OUTPUTS/fort.412.testReadWrite.cygwin are identical
 Files ./fort.413 and ./OUTPUTS/fort.413.testReadWrite.cygwin are identical
 Files ./fort.414 and ./OUTPUTS/fort.414.testReadWrite.cygwin are identical
-11c11
-<  -2 1 1 4 6 999.
----
->  -1 1 1 4 6 999.
+Files ./fort.415 and ./OUTPUTS/fort.415.testReadWrite.cygwin are identical
 Files ./fort.812 and ./OUTPUTS/fort.812.testReadWrite.cygwin are identical
 Files ./fort.813 and ./OUTPUTS/fort.813.testReadWrite.cygwin are identical
 Files ./fort.814 and ./OUTPUTS/fort.814.testReadWrite.cygwin are identical
