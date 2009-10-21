@@ -1,41 +1,32 @@
 #!/bin/bash
 
+
 preproFlag='-DtemplatevectorType=vectorReal8Definition -DvectorType=vectorReal8 -DVARType=REAL(KIND=8) '
-associateDir=''
 export preproFlag
-export associateDir
 moduleName=vectorReal8Definition
 
 $divaDir/compileFile moduleVector.f95 $moduleName
 
 preproFlag='-DtemplatevectorType=vectorReal4Definition -DvectorType=vectorReal4 -DVARType=REAL(KIND=4) '
-associateDir=''
 export preproFlag
-export associateDir
 moduleName=vectorReal4Definition
 
 $divaDir/compileFile moduleVector.f95 $moduleName
 
 preproFlag='-DtemplatevectorType=vectorInteger2Definition -DvectorType=vectorInteger2 -DVARType=INTEGER(KIND=2) '
-associateDir=''
 export preproFlag
-export associateDir
 moduleName=vectorInteger2Definition
 
 $divaDir/compileFile moduleVector.f95 $moduleName
 
 preproFlag='-DtemplatevectorType=vectorInteger4Definition -DvectorType=vectorInteger4 -DVARType=INTEGER(KIND=4) '
-associateDir=''
 export preproFlag
-export associateDir
 moduleName=vectorInteger4Definition
 
 $divaDir/compileFile moduleVector.f95 $moduleName
 
 preproFlag='-DtemplatevectorType=vectorInteger8Definition -DvectorType=vectorInteger8 -DVARType=INTEGER(KIND=8) '
-associateDir=''
 export preproFlag
-export associateDir
 moduleName=vectorInteger8Definition
 
 $divaDir/compileFile moduleVector.f95 $moduleName
@@ -45,45 +36,35 @@ mv *.o $divaModuleLib
 
 preproFlag='-DtemplatevectorType=vectorReal8Definition -DtemplateBasicVector=basicVectorReal8 -Dtemplate=moduleVectorReal8 '
 preproFlag=$preproFlag' -DvectorType=vectorReal8 -DVARType=REAL(KIND=8) '
-associateDir='-I'$divaDir'/Module/General -I'$divaDir'/Module/IOModule '
 export preproFlag
-export associateDir
 moduleName=basicVectorReal8
 
 $divaDir/compileFile templateBasicVector.f95 $moduleName
 
 preproFlag='-DtemplatevectorType=vectorReal4Definition -DtemplateBasicVector=basicVectorReal4 -Dtemplate=moduleVectorReal4 '
 preproFlag=$preproFlag' -DvectorType=vectorReal4 -DVARType=REAL(KIND=4) '
-associateDir='-I'$divaDir'/Module/General -I'$divaDir'/Module/IOModule '
 export preproFlag
-export associateDir
 moduleName=basicVectorReal4
 
 $divaDir/compileFile templateBasicVector.f95 $moduleName
 
 preproFlag='-DtemplatevectorType=vectorInteger2Definition -DtemplateBasicVector=basicVectorInteger2 -Dtemplate=moduleVectorInteger2 '
 preproFlag=$preproFlag' -DvectorType=vectorInteger2 -DVARType=INTEGER(KIND=2) '
-associateDir='-I'$divaDir'/Module/General -I'$divaDir'/Module/IOModule '
 export preproFlag
-export associateDir
 moduleName=basicVectorInteger2
 
 $divaDir/compileFile templateBasicVector.f95 $moduleName
 
 preproFlag='-DtemplatevectorType=vectorInteger4Definition -DtemplateBasicVector=basicVectorInteger4 -Dtemplate=moduleVectorInteger4 '
 preproFlag=$preproFlag' -DvectorType=vectorInteger4 -DVARType=INTEGER(KIND=4) '
-associateDir='-I'$divaDir'/Module/General -I'$divaDir'/Module/IOModule '
 export preproFlag
-export associateDir
 moduleName=basicVectorInteger4
 
 $divaDir/compileFile templateBasicVector.f95 $moduleName
 
 preproFlag='-DtemplatevectorType=vectorInteger8Definition -DtemplateBasicVector=basicVectorInteger8 -Dtemplate=moduleVectorInteger8 '
 preproFlag=$preproFlag' -DvectorType=vectorInteger8 -DVARType=INTEGER(KIND=8) '
-associateDir='-I'$divaDir'/Module/General -I'$divaDir'/Module/IOModule '
 export preproFlag
-export associateDir
 moduleName=basicVectorInteger8
 
 $divaDir/compileFile templateBasicVector.f95 $moduleName
@@ -93,45 +74,35 @@ mv *.o $divaModuleLib
 
 preproFlag='-DtemplateBasicVector=basicVectorReal8 -Dtemplate=moduleVectorReal8 -DvectorType=vectorReal8 -DVARType=REAL(KIND=8) '
 preproFlag=$preproFlag' -DtemplatevectorType=vectorReal8Definition'
-associateDir='-I'$divaDir'/Module/General -I'$divaDir'/Module/IOModule '
 export preproFlag
-export associateDir
 moduleName=moduleVectorReal8
 
 $divaDir/compileFile templateVector.f95 $moduleName
 
 preproFlag='-DtemplateBasicVector=basicVectorReal4 -Dtemplate=moduleVectorReal4 -DvectorType=vectorReal4 -DVARType=REAL(KIND=4) '
 preproFlag=$preproFlag' -DtemplatevectorType=vectorReal4Definition'
-associateDir='-I'$divaDir'/Module/General -I'$divaDir'/Module/IOModule '
 export preproFlag
-export associateDir
 moduleName=moduleVectorReal4
 
 $divaDir/compileFile templateVector.f95 $moduleName
 
 preproFlag='-DtemplateBasicVector=basicVectorInteger2 -Dtemplate=moduleVectorInteger2 -DvectorType=vectorInteger2 -DVARType=INTEGER(KIND=2) '
 preproFlag=$preproFlag' -DtemplatevectorType=vectorInteger2Definition'
-associateDir='-I'$divaDir'/Module/General -I'$divaDir'/Module/IOModule '
 export preproFlag
-export associateDir
 moduleName=moduleVectorInteger2
 
 $divaDir/compileFile templateIntegerVector.f95 $moduleName
 
 preproFlag='-DtemplateBasicVector=basicVectorInteger4 -Dtemplate=moduleVectorInteger4 -DvectorType=vectorInteger4 -DVARType=INTEGER(KIND=4) '
 preproFlag=$preproFlag' -DtemplatevectorType=vectorInteger4Definition'
-associateDir='-I'$divaDir'/Module/General -I'$divaDir'/Module/IOModule '
 export preproFlag
-export associateDir
 moduleName=moduleVectorInteger4
 
 $divaDir/compileFile templateIntegerVector.f95 $moduleName
 
 preproFlag='-DtemplateBasicVector=basicVectorInteger8 -Dtemplate=moduleVectorInteger8 -DvectorType=vectorInteger8 -DVARType=INTEGER(KIND=8) '
 preproFlag=$preproFlag' -DtemplatevectorType=vectorInteger8Definition'
-associateDir='-I'$divaDir'/Module/General -I'$divaDir'/Module/IOModule '
 export preproFlag
-export associateDir
 moduleName=moduleVectorInteger8
 
 $divaDir/compileFile templateIntegerVector.f95 $moduleName
@@ -139,12 +110,7 @@ $divaDir/compileFile templateIntegerVector.f95 $moduleName
 mv *.mod $divaModuleLib
 mv *.o $divaModuleLib
 
-preproFlag=''
-associateDir=''
-export preproFlag
-export associateDir
 moduleName=vectorInterface
-
 $divaDir/compileFile $moduleName.f95 $moduleName
 
 mv *.mod $divaModuleLib

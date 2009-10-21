@@ -2,7 +2,7 @@
 
 # Definition of the compiler and options
 compiler=g95
-flag='-O3 -Wall -Wimplicit-none -pedantic -fbounds-check -ftrace=full -Wno-unused-vars -Wno-unset-vars -march=pentium4 -finteger=0 -freal=zero -fpointer=null -c'
+flag='-O3 -Wall -Wimplicit-none -pedantic -fbounds-check -ftrace=full -Wno-unused-vars -Wno-unset-vars -march=pentium4 -finteger=0 -freal=zero -fpointer=null'
 
 # Definition of preprocessor options if needed
 preprocessor='-cpp'
@@ -10,9 +10,8 @@ preprocessorFlag='-D=_BATCH_MODE_ '$preproFlag
 
 #Definition of the librairy directory
 libraryDir='-I'$divaModuleLib
-
-library=$libraryDir' '$associateDir
+libraryObj=$divaModuleLib/*.o
 
 echo 'Compiling ' $2
-$compiler $flag $preprocessor $preprocessorFlag $library $1 -o $2.o
+$compiler $flag $preprocessor $preprocessorFlag $libraryDir $libraryObj $1 -o $2.a
 
