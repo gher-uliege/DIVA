@@ -549,7 +549,7 @@ MODULE templateBasicVector
 !     Declaration
 !     - - - - - -
       INTEGER :: newSize, istartValue, istart
-      INTEGER, DIMENSION(1) :: istartTab,iendTab
+      INTEGER, DIMENSION(1) :: istartTab
 
 !     Body
 !     - - -
@@ -648,7 +648,6 @@ MODULE templateBasicVector
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, istart,iend
-      INTEGER :: allocationSize
       INTEGER, DIMENSION(1) :: istartTab,iendTab
 
 !     Body
@@ -673,7 +672,6 @@ MODULE templateBasicVector
 !     Declaration
 !     - - - - - -
       INTEGER :: i1, istart,iend
-      INTEGER ::  workingSize
       INTEGER, DIMENSION(1) :: istartTab,iendTab
 
 !     Body
@@ -757,7 +755,7 @@ MODULE templateBasicVector
 
       IF (memoryGetAllocationStatus()) THEN
          DO i1 = istart, iend
-            WRITE(stdOutput,*) 'value ',i1, ' : ', memoryGetValue(i1)
+            WRITE(stdOutput,*) 'value(',i1, ') = ', memoryGetValue(i1)
          ENDDO
       END IF
 
@@ -873,19 +871,11 @@ MODULE templateBasicVector
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, istart, iend
-      VARType, DIMENSION(:), POINTER :: ptr
+      VARType, PARAMETER :: val = 0
 
 !     Body
 !     - - -
-      istart = memoryGetStartingPoint()
-      iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
-
-      ptr =>  memoryGetValues()
-
-      DO i1 = istart , iend
-           ptr(i1) = izero
-      END DO
+      CALL accessVectorSetToValue(val)
 
   END SUBROUTINE
 

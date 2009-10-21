@@ -23,11 +23,15 @@ MODULE mathDynamicMemory
 !  Memory part
 !  -----------
    INTEGER, PRIVATE, PARAMETER :: defaultIncreaseSize = 100
-   INTEGER, PRIVATE :: increaseSize
+   INTEGER, PRIVATE, PARAMETER :: defaultIncreaseSizeX = 10
+   INTEGER, PRIVATE, PARAMETER :: defaultIncreaseSizeY = 10
+   INTEGER, PRIVATE, PARAMETER :: defaultIncreaseSizeZ = 10
+   INTEGER, PRIVATE :: increaseSize, increaseSizeX, increaseSizeY, increaseSizeZ
 
 ! Procedures status
 ! =================
-   PUBLIC :: initialise, mathSetMemoryIncreaseSize, memoryGetDefaultIncreaseSize
+   PUBLIC :: initialise, mathSetMemoryIncreaseSize, memoryGetDefaultIncreaseSize, memoryGetDefaultIncreaseSizeX, &
+             memoryGetDefaultIncreaseSizeY
 
 ! ============================================================
 ! ============================================================
@@ -53,20 +57,30 @@ MODULE mathDynamicMemory
 !     Body
 !     - - -
       CALL mathSetMemoryIncreaseSize(defaultIncreaseSize)
+      CALL mathSetMemoryIncreaseSize(defaultIncreaseSizeX,defaultIncreaseSizeY,defaultIncreaseSizeZ)
 
   END SUBROUTINE
 
-! Procedure 2 : define the extra size for allocate vector
-! --------------------------------------------------------
-  SUBROUTINE mathSetMemoryIncreaseSize(extraSize)
+! Procedure 2 : define the extra size for allocate vector/array
+! -------------------------------------------------------------
+  SUBROUTINE mathSetMemoryIncreaseSize(extraSizeX, extraSizeY, extraSizeZ)
 
 !     Declaration
 !     - - - - - -
-      INTEGER, INTENT(IN) :: extraSize
+      INTEGER, INTENT(IN) :: extraSizeX
+      INTEGER, OPTIONAL, INTENT(IN) :: extraSizeY, extraSizeZ
 
 !     Body
 !     - - -
-      increaseSize = extraSize
+      IF ( PRESENT(extraSizeY) ) THEN
+         increaseSizeX = extraSizeX
+         increaseSizeY = extraSizeY
+         IF ( PRESENT(extraSizeZ) ) THEN
+            increaseSizeZ = extraSizeZ
+         END IF
+      ELSE
+         increaseSize = extraSizeX
+      END IF
       
   END SUBROUTINE
 
@@ -84,6 +98,47 @@ MODULE mathDynamicMemory
 
   END FUNCTION
 
+! Procedure 4 : get default increase size for array
+! --------------------------------------------------
+  FUNCTION memoryGetDefaultIncreaseSizeX() RESULT(dim)
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: dim
+
+!     Body
+!     - - -
+      dim = increaseSizeX
+
+  END FUNCTION
+
+! Procedure 5 : get default increase size for array
+! --------------------------------------------------
+  FUNCTION memoryGetDefaultIncreaseSizeY() RESULT(dim)
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: dim
+
+!     Body
+!     - - -
+      dim = increaseSizeY
+
+  END FUNCTION
+
+! Procedure 4 : get default increase size for array
+! --------------------------------------------------
+  FUNCTION memoryGetDefaultIncreaseSizeZ() RESULT(dim)
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: dim
+
+!     Body
+!     - - -
+      dim = increaseSizeZ
+
+  END FUNCTION
 
 END MODULE mathDynamicMemory
 

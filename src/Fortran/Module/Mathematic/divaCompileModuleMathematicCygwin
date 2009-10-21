@@ -41,5 +41,15 @@ echo ' '
 cd $baseDir/Vector
 ./divaCompileModuleVectorCygwin
 
+echo ===========================
+echo ===========================
+echo = Compiling Matrix Module =
+echo ===========================
+echo ===========================
+echo ' '
+
+cd $baseDir/Matrix
+./divaCompileModuleArrayCygwin
+
 cd $baseDir
 

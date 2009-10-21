@@ -2,7 +2,8 @@
 
 # Definition of the compiler and options
 compiler=g95
-flag='-O3 -Wall -Wimplicit-none -pedantic -fbounds-check -ftrace=full -Wno-unused-vars -Wno-unset-vars -march=pentium4 -finteger=0 -freal=zero -fpointer=null -c'
+flag='-O3 -Wall -Wimplicit-none -pedantic -fbounds-check -ftrace=full -march=pentium4 -finteger=0 -freal=zero -fpointer=null -c'
+#flag='-O3 -Wall -Wimplicit-none -pedantic -fbounds-check -ftrace=full -Wno-unused-vars -Wno-unset-vars -march=pentium4 -finteger=0 -freal=zero -fpointer=null -c'
 
 # Definition of preprocessor options if needed
 preprocessor='-cpp'

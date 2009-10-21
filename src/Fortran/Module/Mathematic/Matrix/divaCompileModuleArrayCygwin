@@ -1,0 +1,118 @@
+#!/bin/bash
+
+
+preproFlag='-DtemplatearrayType=array2DReal8Definition -DarrayType=array2DReal8 -DVARType=REAL(KIND=8) '
+export preproFlag
+moduleName=array2DReal8Definition
+
+$divaDir/compileFile moduleArray2D.f95 $moduleName
+
+preproFlag='-DtemplatearrayType=array2DReal4Definition -DarrayType=array2DReal4 -DVARType=REAL(KIND=4) '
+export preproFlag
+moduleName=array2DReal4Definition
+
+$divaDir/compileFile moduleArray2D.f95 $moduleName
+
+preproFlag='-DtemplatearrayType=array2DInteger2Definition -DarrayType=array2DInteger2 -DVARType=INTEGER(KIND=2) '
+export preproFlag
+moduleName=array2DInteger2Definition
+
+$divaDir/compileFile moduleArray2D.f95 $moduleName
+
+preproFlag='-DtemplatearrayType=array2DInteger4Definition -DarrayType=array2DInteger4 -DVARType=INTEGER(KIND=4) '
+export preproFlag
+moduleName=array2DInteger4Definition
+
+$divaDir/compileFile moduleArray2D.f95 $moduleName
+
+preproFlag='-DtemplatearrayType=array2DInteger8Definition -DarrayType=array2DInteger8 -DVARType=INTEGER(KIND=8) '
+export preproFlag
+moduleName=array2DInteger8Definition
+
+$divaDir/compileFile moduleArray2D.f95 $moduleName
+
+mv *.mod $divaModuleLib
+mv *.o $divaModuleLib
+
+preproFlag='-DtemplatearrayType=array2DReal8Definition -DtemplateBasicArray=basicArray2DReal8 -Dtemplate=moduleArray2DReal8 '
+preproFlag=$preproFlag' -DarrayType=array2DReal8 -DVARType=REAL(KIND=8) '
+export preproFlag
+moduleName=basicArray2DReal8
+
+$divaDir/compileFile templateBasicArray2D.f95 $moduleName
+
+preproFlag='-DtemplatearrayType=array2DReal4Definition -DtemplateBasicArray=basicArray2DReal4 -Dtemplate=moduleArray2DReal4 '
+preproFlag=$preproFlag' -DarrayType=array2DReal4 -DVARType=REAL(KIND=4) '
+export preproFlag
+moduleName=basicArray2DReal4
+
+$divaDir/compileFile templateBasicArray2D.f95 $moduleName
+
+preproFlag='-DtemplatearrayType=array2DInteger2Definition -DtemplateBasicArray=basicArray2DInteger2 -Dtemplate=moduleArray2DInteger2 '
+preproFlag=$preproFlag' -DarrayType=array2DInteger2 -DVARType=INTEGER(KIND=2) '
+export preproFlag
+moduleName=basicArray2DInteger2
+
+$divaDir/compileFile templateBasicArray2D.f95 $moduleName
+
+preproFlag='-DtemplatearrayType=array2DInteger4Definition -DtemplateBasicArray=basicArray2DInteger4 -Dtemplate=moduleArray2DInteger4 '
+preproFlag=$preproFlag' -DarrayType=array2DInteger4 -DVARType=INTEGER(KIND=4) '
+export preproFlag
+moduleName=basicArray2DInteger4
+
+$divaDir/compileFile templateBasicArray2D.f95 $moduleName
+
+preproFlag='-DtemplatearrayType=array2DInteger8Definition -DtemplateBasicArray=basicArray2DInteger8 -Dtemplate=moduleArray2DInteger8 '
+preproFlag=$preproFlag' -DarrayType=array2DInteger8 -DVARType=INTEGER(KIND=8) '
+export preproFlag
+moduleName=basicArray2DInteger8
+
+$divaDir/compileFile templateBasicArray2D.f95 $moduleName
+
+mv *.mod $divaModuleLib
+mv *.o $divaModuleLib
+
+preproFlag='-DtemplateBasicArray=basicArray2DReal8 -Dtemplate=moduleArray2DReal8 -DarrayType=array2DReal8 -DVARType=REAL(KIND=8) '
+preproFlag=$preproFlag' -DtemplatearrayType=array2DReal8Definition'
+export preproFlag
+moduleName=moduleArray2DReal8
+
+$divaDir/compileFile templateArray2D.f95 $moduleName
+
+preproFlag='-DtemplateBasicArray=basicArray2DReal4 -Dtemplate=moduleArray2DReal4 -DarrayType=array2DReal4 -DVARType=REAL(KIND=4) '
+preproFlag=$preproFlag' -DtemplatearrayType=array2DReal4Definition'
+export preproFlag
+moduleName=moduleArray2DReal4
+
+$divaDir/compileFile templateArray2D.f95 $moduleName
+
+preproFlag='-DtemplateBasicArray=basicArray2DInteger2 -Dtemplate=moduleArray2DInteger2 -DarrayType=array2DInteger2 -DVARType=INTEGER(KIND=2) '
+preproFlag=$preproFlag' -DtemplatearrayType=array2DInteger2Definition'
+export preproFlag
+moduleName=moduleArray2DInteger2
+
+$divaDir/compileFile templateIntegerArray2D.f95 $moduleName
+
+preproFlag='-DtemplateBasicArray=basicArray2DInteger4 -Dtemplate=moduleArray2DInteger4 -DarrayType=array2DInteger4 -DVARType=INTEGER(KIND=4) '
+preproFlag=$preproFlag' -DtemplatearrayType=array2DInteger4Definition'
+export preproFlag
+moduleName=moduleArray2DInteger4
+
+$divaDir/compileFile templateIntegerArray2D.f95 $moduleName
+
+preproFlag='-DtemplateBasicArray=basicArray2DInteger8 -Dtemplate=moduleArray2DInteger8 -DarrayType=array2DInteger8 -DVARType=INTEGER(KIND=8) '
+preproFlag=$preproFlag' -DtemplatearrayType=array2DInteger8Definition'
+export preproFlag
+moduleName=moduleArray2DInteger8
+
+$divaDir/compileFile templateIntegerArray2D.f95 $moduleName
+
+mv *.mod $divaModuleLib
+mv *.o $divaModuleLib
+
+moduleName=matrixInterface
+$divaDir/compileFile $moduleName.f95 $moduleName
+
+mv *.mod $divaModuleLib
+mv *.o $divaModuleLib
+
