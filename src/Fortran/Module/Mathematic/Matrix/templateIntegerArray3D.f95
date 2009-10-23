@@ -1,4 +1,4 @@
-MODULE templatearrayType
+MODULE template
 
 ! ============================================================
 ! ============================================================
@@ -12,17 +12,15 @@ MODULE templatearrayType
 ! ============================================================
 ! ============================================================
 
-! Declaration
-! ===========
-!  Vector type
-!  -----------
-   TYPE arrayType
-       LOGICAL :: isAllocated
-       INTEGER :: nbOfDataX, nbOfDataY
-       INTEGER :: allocatedSizeX, allocatedSizeY
-       INTEGER :: startValueX, startValueY
-       VARType, DIMENSION(:,:), POINTER :: values
-   END TYPE
-   
-END MODULE templatearrayType
+! Include file
+! ============
+   USE templatearrayType
+   USE templateBasicArray, ONLY : &
+             printInformation, arrayDestroy, arraySetSize, arrayGetSizeX, arrayGetSizeY, arrayGetSizeZ, &
+             arraySetToZero, arraySetToValue, arrayMin, arrayMax, arrayInsertValue, arrayAddValue, arrayGetValue, &
+             arrayCreateBase, arrayCreateWithDimension, arrayCreateWithDimensionAndStartingPoint, arrayGetValues, &
+             arrayGetStartIndexX, arrayGetEndIndexX, arrayGetStartIndexY, arrayGetEndIndexY, arrayGetStartIndexZ, arrayGetEndIndexZ
+
+
+END MODULE template
 

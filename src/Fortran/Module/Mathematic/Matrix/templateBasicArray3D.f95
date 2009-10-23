@@ -28,6 +28,7 @@ MODULE templateBasicArray
 !  -----------
    INTEGER, PRIVATE, PARAMETER :: defaultStartingValueX = 1
    INTEGER, PRIVATE, PARAMETER :: defaultStartingValueY = 1
+   INTEGER, PRIVATE, PARAMETER :: defaultStartingValueZ = 1
    TYPE (arrayType), PRIVATE :: internalWorkingArray
 
 ! Procedures status
@@ -35,18 +36,20 @@ MODULE templateBasicArray
 
 !  General part
 !  ------------
-   PUBLIC :: printInformation, arrayDestroy, arraySetSize, arrayGetSizeX, arrayGetSizeY, arraySetToZero, arraySetToValue, &
-             arrayMin, arrayMax, arrayInsertValue, arrayAddValue, arrayGetValue, &
+   PUBLIC :: printInformation, arrayDestroy, arraySetSize, arrayGetSizeX, arrayGetSizeY, arrayGetSizeZ, arraySetToZero, &
+             arraySetToValue, arrayMin, arrayMax, arrayInsertValue, arrayAddValue, arrayGetValue, &
              arrayCreateBase, arrayCreateWithDimension, arrayCreateWithDimensionAndStartingPoint, arrayGetValues, &
-             arrayGetStartIndexX, arrayGetStartIndexY, arrayGetEndIndexX, arrayGetEndIndexY, setWorkingArray, nullify
+             arrayGetStartIndexX, arrayGetStartIndexY, arrayGetEndIndexX, arrayGetEndIndexY, arrayGetStartIndexZ, &
+             arrayGetEndIndexZ, setWorkingArray, nullify
 
 !  Memory part
 !  -----------
    PUBLIC ::  memoryGetSizeX,  memoryGetStartingPointX, memoryGetFinalValuePosition, memoryGetValues, &
-              memoryGetSizeY,  memoryGetStartingPointY
+              memoryGetSizeY,  memoryGetStartingPointY, &
+              memoryGetSizeZ,  memoryGetStartingPointZ
    PRIVATE ::  memorySetSize, memoryAllocateArray, memoryDestructor, &
               memoryPrintInformation, memorySetAllocatedSize, memorySetAllocated, memoryAllocateMemory, &
-              memoryGetAllocatedSizeX, memoryGetAllocatedSizeY, &
+              memoryGetAllocatedSizeX, memoryGetAllocatedSizeY, memoryGetAllocatedSizeZ, &
               memoryStockIntermediateArray, memoryTransferIntermediateArrayToArray, memoryGetValue, memoryGetAllocationStatus, &
               memoryArrayCreate, memoryGetPointerOnValue, memorySetStartingPoint
 
@@ -133,11 +136,11 @@ MODULE templateBasicArray
 
 ! Procedure 4 : create the array (with dimension)
 ! -------------------------------
-   SUBROUTINE arrayCreateWithDimension(targetArray, sizeX, sizeY)
+   SUBROUTINE arrayCreateWithDimension(targetArray, sizeX, sizeY, sizeZ)
 
 !     Declaration
 !     - - - - - -
-      INTEGER, INTENT(IN) :: sizeX, sizeY
+      INTEGER, INTENT(IN) :: sizeX, sizeY, sizeZ
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
@@ -147,7 +150,7 @@ MODULE templateBasicArray
 !     Body
 !     - - -
       CALL memoryArrayCreate()
-      CALL memorySetSize(sizeX,sizeY)
+      CALL memorySetSize(sizeX,sizeY,sizeZ)
       CALL memoryAllocateArray()
 
 !     Nullify pointer
@@ -158,11 +161,12 @@ MODULE templateBasicArray
 
 ! Procedure 5 : create the array (with dimension and istartingValue)
 ! -------------------------------
-   SUBROUTINE arrayCreateWithDimensionAndStartingPoint(targetArray, sizeX, sizeY, istartingValueX, istartingValueY)
+   SUBROUTINE arrayCreateWithDimensionAndStartingPoint(targetArray, sizeX, sizeY, sizeZ, istartingValueX, istartingValueY, &
+                                                       istartingValueZ)
 
 !     Declaration
 !     - - - - - -
-      INTEGER, INTENT(IN) :: sizeX, sizeY, istartingValueX, istartingValueY
+      INTEGER, INTENT(IN) :: sizeX, sizeY, sizeZ, istartingValueX, istartingValueY, istartingValueZ
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
@@ -172,8 +176,8 @@ MODULE templateBasicArray
 !     Body
 !     - - -
       CALL memoryArrayCreate()
-      CALL memorySetStartingPoint(istartingValueX,istartingValueY)
-      CALL memorySetSize(sizeX,sizeY)
+      CALL memorySetStartingPoint(istartingValueX,istartingValueY,istartingValueZ)
+      CALL memorySetSize(sizeX,sizeY,sizeZ)
       CALL memoryAllocateArray()
 
 !     Nullify pointer
@@ -189,7 +193,7 @@ MODULE templateBasicArray
 
 !     Declaration
 !     - - - - - -
-      VARType, DIMENSION(:,:), POINTER :: ptr
+      VARType, DIMENSION(:,:,:), POINTER :: ptr
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
@@ -225,7 +229,7 @@ MODULE templateBasicArray
 
    END SUBROUTINE
 
-! Procedure 9 : destruction of the array
+! Procedure 8 : destruction of the array
 ! ---------------------------------------
    SUBROUTINE arrayDestroy(targetArray)
 
@@ -246,11 +250,11 @@ MODULE templateBasicArray
 
 ! Procedure 9 : define the size of the array
 ! -------------------------------------------
-  SUBROUTINE arraySetSize(targetArray,dimX,dimY)
+  SUBROUTINE arraySetSize(targetArray,dimX,dimY,dimZ)
 
 !     Declaration
 !     - - - - - -
-      INTEGER, INTENT(IN) :: dimX,dimY
+      INTEGER, INTENT(IN) :: dimX,dimY,dimZ
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
@@ -259,7 +263,7 @@ MODULE templateBasicArray
 
 !     Body
 !     - - -
-      CALL memorySetSize(dimX,dimY)
+      CALL memorySetSize(dimX,dimY,dimZ)
       CALL memoryAllocateArray()
 
 !     Nullify pointer
@@ -291,7 +295,7 @@ MODULE templateBasicArray
 
   END FUNCTION
 
-  ! Procedure 11 : get the size Y of the array
+! Procedure 11 : get the size Y of the array
 ! -------------------------------------------
   FUNCTION arrayGetSizeY(targetArray) RESULT(dim)
 
@@ -314,7 +318,30 @@ MODULE templateBasicArray
 
   END FUNCTION
 
-! Procedure 12 : set 0 to each entry
+! Procedure 12 : get the size Z of the array
+! -------------------------------------------
+  FUNCTION arrayGetSizeZ(targetArray) RESULT(dim)
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: dim
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(arrayType), INTENT(IN) :: targetArray
+      CALL setWorkingArray(targetArray)
+
+!     Body
+!     - - -
+      dim = memoryGetSizeZ()
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullify()
+
+  END FUNCTION
+
+! Procedure 13 : set 0 to each entry
 ! ---------------------------------
   SUBROUTINE arraySetToZero(targetArray)
 
@@ -333,7 +360,7 @@ MODULE templateBasicArray
 
   END SUBROUTINE
 
-! Procedure 13 : set "value" to each entry
+! Procedure 14 : set "value" to each entry
 ! ---------------------------------------
   SUBROUTINE arraySetToValue(targetArray,val)
 
@@ -356,7 +383,7 @@ MODULE templateBasicArray
 
   END SUBROUTINE
 
-! Procedure 14 : min value
+! Procedure 15 : min value
 ! -----------------------
   FUNCTION arrayMin(targetArray) RESULT(val)
 
@@ -379,7 +406,7 @@ MODULE templateBasicArray
 
   END FUNCTION
 
-! Procedure 15 : max value
+! Procedure 16 : max value
 ! -----------------------
   FUNCTION arrayMax(targetArray) RESULT(val)
 
@@ -402,13 +429,13 @@ MODULE templateBasicArray
 
   END FUNCTION
 
-! Procedure 16 : insert value in array (scracth the previous one)
+! Procedure 17 : insert value in array (scracth the previous one)
 ! ---------------------------------------------------------------
-  SUBROUTINE arrayInsertValue(targetArray,positionX,positionY,val)
+  SUBROUTINE arrayInsertValue(targetArray,positionX,positionY,positionZ,val)
 
 !     Declaration
 !     - - - - - -
-      INTEGER, INTENT(IN) :: positionX, positionY
+      INTEGER, INTENT(IN) :: positionX, positionY, positionZ
       VARType, INTENT(IN) :: val
 
 !     Pointer filling procedure
@@ -418,7 +445,7 @@ MODULE templateBasicArray
 
 !     Body
 !     - - -
-      CALL accessArrayInsertValue(positionX, positionY,val)
+      CALL accessArrayInsertValue(positionX, positionY, positionZ, val)
 
 !     Nullify pointer
 !     - - - - - - - -
@@ -426,13 +453,13 @@ MODULE templateBasicArray
 
   END SUBROUTINE
 
-! Procedure 17 : add value in array (value = old value + new value)
+! Procedure 18 : add value in array (value = old value + new value)
 ! -----------------------------------------------------------------
-  SUBROUTINE arrayAddValue(targetArray,positionX,positionY,val)
+  SUBROUTINE arrayAddValue(targetArray,positionX,positionY,positionZ,val)
 
 !     Declaration
 !     - - - - - -
-      INTEGER, INTENT(IN) :: positionX, positionY
+      INTEGER, INTENT(IN) :: positionX, positionY, positionZ
       VARType, INTENT(IN) :: val
 
 !     Pointer filling procedure
@@ -442,7 +469,7 @@ MODULE templateBasicArray
 
 !     Body
 !     - - -
-      CALL accessArrayAddValue(positionX, positionY,val)
+      CALL accessArrayAddValue(positionX, positionY, positionZ,val)
 
 !     Nullify pointer
 !     - - - - - - - -
@@ -450,13 +477,13 @@ MODULE templateBasicArray
 
   END SUBROUTINE
 
-! Procedure 18 : get the value in the array
+! Procedure 19 : get the value in the array
 ! ------------------------------------------
-  FUNCTION arrayGetValue(targetArray,i1,i2) RESULT(val)
+  FUNCTION arrayGetValue(targetArray,positionX,positionY,positionZ) RESULT(val)
 
 !     Declaration
 !     - - - - - -
-      INTEGER, INTENT(IN) :: i1,i2
+      INTEGER, INTENT(IN) :: positionX, positionY, positionZ
       VARType :: val
 
 !     Pointer filling procedure
@@ -466,7 +493,7 @@ MODULE templateBasicArray
 
 !     Body
 !     - - -
-      val = memoryGetValue(i1,i2)
+      val = memoryGetValue(positionX, positionY, positionZ)
 
 !     Nullify pointer
 !     - - - - - - - -
@@ -474,7 +501,7 @@ MODULE templateBasicArray
 
   END FUNCTION
 
-! Procedure 19 : get start index
+! Procedure 20 : get start index
 ! ------------------------------
   FUNCTION arrayGetStartIndexX(targetArray) RESULT(i1)
 
@@ -491,7 +518,7 @@ MODULE templateBasicArray
 
   END FUNCTION
 
-! Procedure 20 : get start index
+! Procedure 21 : get start index
 ! ------------------------------
   FUNCTION arrayGetStartIndexY(targetArray) RESULT(i1)
 
@@ -508,7 +535,24 @@ MODULE templateBasicArray
 
   END FUNCTION
 
-! Procedure 21 : get end index
+! Procedure 22 : get start index
+! ------------------------------
+  FUNCTION arrayGetStartIndexZ(targetArray) RESULT(i1)
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: i1
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(arrayType), INTENT(IN) :: targetArray
+      CALL setWorkingArray(targetArray)
+
+      i1 = memoryGetStartingPointZ()
+
+  END FUNCTION
+
+! Procedure 23 : get end index
 ! ------------------------------
   FUNCTION arrayGetEndIndexX(targetArray,istart) RESULT(i1)
 
@@ -526,7 +570,7 @@ MODULE templateBasicArray
 
   END FUNCTION
 
-! Procedure 22 : get end index
+! Procedure 24 : get end index
 ! ------------------------------
   FUNCTION arrayGetEndIndexY(targetArray,istart) RESULT(i1)
 
@@ -541,6 +585,24 @@ MODULE templateBasicArray
       CALL setWorkingArray(targetArray)
 
       i1 = memoryGetFinalValuePosition(memoryGetSizeY(),istart)
+
+  END FUNCTION
+
+! Procedure 25 : get end index
+! ------------------------------
+  FUNCTION arrayGetEndIndexZ(targetArray,istart) RESULT(i1)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: istart
+      INTEGER :: i1
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(arrayType), INTENT(IN) :: targetArray
+      CALL setWorkingArray(targetArray)
+
+      i1 = memoryGetFinalValuePosition(memoryGetSizeZ(),istart)
 
   END FUNCTION
 
@@ -563,31 +625,33 @@ MODULE templateBasicArray
 
 ! Procedure 1 : define the size of the array
 ! -------------------------------------------
-   SUBROUTINE memorySetSize(ivalue1,ivalue2)
+   SUBROUTINE memorySetSize(ivalue1,ivalue2,ivalue3)
 
 !     Declaration
 !     - - - - - -
-      INTEGER, INTENT(IN) :: ivalue1,ivalue2
+      INTEGER, INTENT(IN) :: ivalue1,ivalue2,ivalue3
 
 !     Body
 !     - - -
       workingArray%nbOfDataX = ivalue1
       workingArray%nbOfDataY = ivalue2
+      workingArray%nbOfDataZ = ivalue3
 
    END SUBROUTINE
 
 ! Procedure 2 : define the allocated size of the array
 ! ------------------------------------------------------
-   SUBROUTINE memorySetAllocatedSize(ivalue1,ivalue2)
+   SUBROUTINE memorySetAllocatedSize(ivalue1,ivalue2,ivalue3)
 
 !     Declaration
 !     - - - - - -
-      INTEGER, INTENT(IN) :: ivalue1,ivalue2
+      INTEGER, INTENT(IN) :: ivalue1,ivalue2,ivalue3
 
 !     Body
 !     - - -
       workingArray%allocatedSizeX = ivalue1
       workingArray%allocatedSizeY = ivalue2
+      workingArray%allocatedSizeZ = ivalue3
 
    END SUBROUTINE
 
@@ -611,8 +675,8 @@ MODULE templateBasicArray
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: newSizeX, newSizeY, istartValueX, istartValueY, istartX, istartY
-      INTEGER, DIMENSION(2) :: istartTab
+      INTEGER :: newSizeX, newSizeY, newSizeZ, istartValueX, istartValueY, istartValueZ, istartX, istartY, istartZ
+      INTEGER, DIMENSION(3) :: istartTab
 
 !     Body
 !     - - -
@@ -621,19 +685,25 @@ MODULE templateBasicArray
             istartTab = lbound(workingArray%values)
             istartX = istartTab(1)
             istartY = istartTab(2)
+            istartZ = istartTab(3)
             istartValueX = memoryGetStartingPointX()
             istartValueY = memoryGetStartingPointY()
+            istartValueZ = memoryGetStartingPointZ()
 
             IF ((memoryGetSizeX() >= memoryGetAllocatedSizeX()).OR.(istartValueX<istartX) &
                 .OR. &
-                (memoryGetSizeY() >= memoryGetAllocatedSizeY()).OR.(istartValueY<istartY)) THEN
+                (memoryGetSizeY() >= memoryGetAllocatedSizeY()).OR.(istartValueY<istartY)&
+                .OR. &
+                (memoryGetSizeZ() >= memoryGetAllocatedSizeZ()).OR.(istartValueZ<istartZ)) THEN
                 newSizeX = memoryGetSizeX()
                 newSizeY = memoryGetSizeY()
+                newSizeZ = memoryGetSizeZ()
                 CALL memoryStockIntermediateArray()
                 CALL memoryDestructor()
-                CALL memorySetStartingPoint(istartValueX,istartValueY)
-                CALL memorySetAllocatedSize(newSizeX+memoryGetDefaultIncreaseSizeX(),newSizeY+memoryGetDefaultIncreaseSizeY())
-                CALL memorySetSize(newSizeX,newSizeY)
+                CALL memorySetStartingPoint(istartValueX,istartValueY,istartValueZ)
+                CALL memorySetAllocatedSize(newSizeX+memoryGetDefaultIncreaseSizeX(),newSizeY+memoryGetDefaultIncreaseSizeY(), &
+                                            newSizeZ+memoryGetDefaultIncreaseSizeZ())
+                CALL memorySetSize(newSizeX,newSizeY,newSizeZ)
                 CALL memoryAllocateMemory()
                 CALL memoryTransferIntermediateArrayToArray()
             END IF
@@ -649,7 +719,7 @@ MODULE templateBasicArray
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: istartX, iendX, istartY, iendY
+      INTEGER :: istartX, iendX, istartY, iendY, istartZ, iendZ
       
 !     Body
 !     - - -
@@ -657,8 +727,10 @@ MODULE templateBasicArray
       iendX = memoryGetFinalValuePosition(memoryGetAllocatedSizeX(),istartX)
       istartY = memoryGetStartingPointY()
       iendY = memoryGetFinalValuePosition(memoryGetAllocatedSizeY(),istartY)
+      istartZ = memoryGetStartingPointZ()
+      iendZ = memoryGetFinalValuePosition(memoryGetAllocatedSizeZ(),istartZ)
 
-      ALLOCATE(workingArray%values(istartX:iendX,istartY:iendY))
+      ALLOCATE(workingArray%values(istartX:iendX,istartY:iendY,istartZ:iendZ))
       CALL memorySetAllocated(true)
 
   END SUBROUTINE
@@ -669,7 +741,7 @@ MODULE templateBasicArray
 
 !     Body
 !     - - -
-      CALL memorySetAllocatedSize(ione,ione)
+      CALL memorySetAllocatedSize(ione,ione,ione)
       CALL memoryAllocateMemory()
 
   END SUBROUTINE
@@ -702,7 +774,21 @@ MODULE templateBasicArray
 
    END FUNCTION
 
-! Procedure 9 : getting the array size
+! Procedure 9 : getting the allocated memory size
+! ------------------------------------------------
+  FUNCTION memoryGetAllocatedSizeZ() RESULT(size)
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: size
+
+!     Body
+!     - - -
+      size = workingArray%allocatedSizeZ
+
+   END FUNCTION
+
+! Procedure 10 : getting the array size
 ! --------------------------------------
   FUNCTION memoryGetSizeX() RESULT(size)
 
@@ -716,7 +802,7 @@ MODULE templateBasicArray
 
    END FUNCTION
 
-! Procedure 10 : getting the array size
+! Procedure 11 : getting the array size
 ! --------------------------------------
   FUNCTION memoryGetSizeY() RESULT(size)
 
@@ -730,14 +816,28 @@ MODULE templateBasicArray
 
    END FUNCTION
 
-! Procedure 11 : transfer data from workingArray to secondworkingArray
+! Procedure 12 : getting the array size
+! --------------------------------------
+  FUNCTION memoryGetSizeZ() RESULT(size)
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: size
+
+!     Body
+!     - - -
+      size = workingArray%nbOfDataZ
+
+   END FUNCTION
+
+! Procedure 13 : transfer data from workingArray to secondworkingArray
 ! ----------------------------------------------------------------------
   SUBROUTINE memoryStockIntermediateArray()
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, istartX,iendX, istartY,iendY
-      INTEGER, DIMENSION(2) :: istartTab,iendTab
+      INTEGER :: i1, i2, i3, istartX,iendX, istartY,iendY, istartZ,iendZ
+      INTEGER, DIMENSION(3) :: istartTab,iendTab
 
 !     Body
 !     - - -
@@ -745,27 +845,31 @@ MODULE templateBasicArray
       iendTab = ubound(workingArray%values)
       istartX = istartTab(1)
       istartY = istartTab(2)
+      istartZ = istartTab(3)
       iendX = iendTab(1)
       iendY = iendTab(2)
+      iendZ = iendTab(3)
 
-      ALLOCATE(internalWorkingArray%values(istartX:iendX,istartY:iendY))
+      ALLOCATE(internalWorkingArray%values(istartX:iendX,istartY:iendY,istartZ:iendZ))
 
       DO i1 = istartX , iendX
        DO i2 = istartY , iendY
-         internalWorkingArray%values(i1,i2) = workingArray%values(i1,i2)
+        DO i3 = istartZ , iendZ
+         internalWorkingArray%values(i1,i2,i3) = workingArray%values(i1,i2,i3)
+        END DO
        END DO
       END DO
 
   END SUBROUTINE
 
-! Procedure 12 : transfer data from secondworkingArray to workingArray
+! Procedure 14 : transfer data from secondworkingArray to workingArray
 ! -----------------------------------------------------------------------
   SUBROUTINE memoryTransferIntermediateArrayToArray()
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, istartX,iendX, istartY,iendY
-      INTEGER, DIMENSION(2) :: istartTab,iendTab
+      INTEGER :: i1, i2, i3, istartX,iendX, istartY,iendY, istartZ,iendZ
+      INTEGER, DIMENSION(3) :: istartTab,iendTab
 
 !     Body
 !     - - -
@@ -773,12 +877,16 @@ MODULE templateBasicArray
       iendTab = ubound(internalWorkingArray%values)
       istartX = istartTab(1)
       istartY = istartTab(2)
+      istartZ = istartTab(3)
       iendX = iendTab(1)
       iendY = iendTab(2)
+      iendZ = iendTab(3)
 
       DO i1 = istartX , iendX
        DO i2 = istartY , iendY
-         workingArray%values(i1,i2) = internalWorkingArray%values(i1,i2)
+        DO i3 = istartZ , iendZ
+         workingArray%values(i1,i2,i3) = internalWorkingArray%values(i1,i2,i3)
+        END DO
        END DO
       END DO
 
@@ -786,7 +894,7 @@ MODULE templateBasicArray
 
   END SUBROUTINE
 
-! Procedure 13 : deallocation of the memory
+! Procedure 15 : deallocation of the memory
 ! ------------------------------------------
   SUBROUTINE memoryDestructor()
 
@@ -794,29 +902,29 @@ MODULE templateBasicArray
 !     - - -
       DEALLOCATE(workingArray%values)
       workingArray%values => NULL()
-      CALL memorySetSize(izero,izero)
-      CALL memorySetAllocatedSize(izero,izero)
-      CALL memorySetStartingPoint(ione,ione)
+      CALL memorySetSize(izero,izero,izero)
+      CALL memorySetAllocatedSize(izero,izero,izero)
+      CALL memorySetStartingPoint(ione,ione,ione)
       CALL memorySetAllocated(false)
 
   END SUBROUTINE
 
-! Procedure 14 : get the value in the array
+! Procedure 16 : get the value in the array
 ! ------------------------------------------
-  FUNCTION memoryGetValue(i1,i2) RESULT(val)
+  FUNCTION memoryGetValue(i1,i2,i3) RESULT(val)
 
 !     Declaration
 !     - - - - - -
-      INTEGER, INTENT(IN) :: i1,i2
+      INTEGER, INTENT(IN) :: i1,i2,i3
       VARType :: val
 
 !     Body
 !     - - -
-      val = workingArray%values(i1,i2)
+      val = workingArray%values(i1,i2,i3)
 
   END FUNCTION
 
-! Procedure 15 : get the allocation status
+! Procedure 17 : get the allocation status
 ! ----------------------------------------
   FUNCTION memoryGetAllocationStatus() RESULT(status)
 
@@ -830,13 +938,13 @@ MODULE templateBasicArray
 
   END FUNCTION
 
-! Procedure 16 : print information on the vector
+! Procedure 18 : print information on the vector
 ! ---------------------------------------------
    SUBROUTINE memoryPrintInformation()
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, istartX, iendX, istartY, iendY
+      INTEGER :: i1, i2, i3, istartX,iendX, istartY,iendY, istartZ,iendZ
 
 !     Body
 !     - - -
@@ -844,70 +952,78 @@ MODULE templateBasicArray
       iendX = memoryGetFinalValuePosition(memoryGetSizeX(),istartX)
       istartY = memoryGetStartingPointY()
       iendY = memoryGetFinalValuePosition(memoryGetSizeY(),istartY)
+      istartZ = memoryGetStartingPointZ()
+      iendZ = memoryGetFinalValuePosition(memoryGetSizeZ(),istartZ)
 
 
-      WRITE(stdOutput,*) 'The size of the array is : ', memoryGetSizeX(), ' ', memoryGetSizeY()
-      WRITE(stdOutput,*) '   The allocated memory is : ', memoryGetAllocatedSizeX(), ' ',  memoryGetAllocatedSizeY()
+      WRITE(stdOutput,*) 'The size of the array is : ', memoryGetSizeX(), ' ', memoryGetSizeY(), ' ', memoryGetSizeZ()
+      WRITE(stdOutput,*) '   The allocated memory is : ', memoryGetAllocatedSizeX(), ' ',  memoryGetAllocatedSizeY() &
+                                                                                   , ' ',  memoryGetAllocatedSizeZ()
       WRITE(stdOutput,*) '   Allocation status of the vector : ', memoryGetAllocationStatus()
-      WRITE(stdOutput,*) '   First positions are : ', memoryGetStartingPointX(),' ', memoryGetStartingPointY()
+      WRITE(stdOutput,*) '   First positions are : ', memoryGetStartingPointX(),' ', memoryGetStartingPointY()  &
+                                                                               ,' ', memoryGetStartingPointZ()
       WRITE(stdOutput,*) '   Last positions are  : ', memoryGetFinalValuePosition(memoryGetSizeX(),memoryGetStartingPointX()),' ',&
-                                                      memoryGetFinalValuePosition(memoryGetSizeY(),memoryGetStartingPointY())
+                                                      memoryGetFinalValuePosition(memoryGetSizeY(),memoryGetStartingPointY()),' ',&
+                                                      memoryGetFinalValuePosition(memoryGetSizeZ(),memoryGetStartingPointZ())
 
       IF (memoryGetAllocationStatus()) THEN
          DO i1 = istartX, iendX
           DO i2 = istartY, iendY
-            WRITE(stdOutput,*) 'value(',i1,',',i2,') = ', memoryGetValue(i1,i2)
+           DO i3 = istartZ, iendZ
+            WRITE(stdOutput,*) 'value(',i1,',',i2,',',i3,') = ', memoryGetValue(i1,i2,i3)
+           ENDDO
           ENDDO
          ENDDO
       END IF
 
    END SUBROUTINE
 
-! Procedure 17 : create the array
+! Procedure 19 : create the array
 ! ---------------------------------
    SUBROUTINE memoryArrayCreate()
 
 !     Body
 !     - - -
-      CALL memorySetStartingPoint(defaultStartingValueX,defaultStartingValueY)
-      CALL memorySetSize(izero,izero)
-      CALL memorySetAllocatedSize(memoryGetDefaultIncreaseSizeX(),memoryGetDefaultIncreaseSizeY())
+      CALL memorySetStartingPoint(defaultStartingValueX,defaultStartingValueY,defaultStartingValueZ)
+      CALL memorySetSize(izero,izero,izero)
+      CALL memorySetAllocatedSize(memoryGetDefaultIncreaseSizeX(),memoryGetDefaultIncreaseSizeY(),memoryGetDefaultIncreaseSizeZ())
       CALL memorySetAllocated(false)
       CALL memoryAllocateArray()
 
    END SUBROUTINE
 
-! Procedure 18 : get the pointer on a value
+! Procedure 20 : get the pointer on a value
 ! -----------------------------------------
-  FUNCTION memoryGetPointerOnValue(positionX,positionY) RESULT(ptr)
+  FUNCTION memoryGetPointerOnValue(positionX,positionY,positionZ) RESULT(ptr)
 
 !     Declaration
 !     - - - - - -
-      INTEGER, INTENT(IN) :: positionX,positionY
+      INTEGER, INTENT(IN) :: positionX,positionY,positionZ
       VARType, POINTER :: ptr
 
 !     Body
 !     - - -
-      ptr => workingArray%values(positionX,positionY)
+      ptr => workingArray%values(positionX,positionY,positionZ)
 
   END FUNCTION
   
-! Procedure 19 : set the starting point of the array
+! Procedure 21 : set the starting point of the array
 ! ---------------------------------------------------
-  SUBROUTINE memorySetStartingPoint(ivalueX,ivalueY)
+  SUBROUTINE memorySetStartingPoint(ivalueX,ivalueY,ivalueZ)
 
 !     Declaration
 !     - - - - - -
-      INTEGER, INTENT(IN) :: ivalueX,ivalueY
+      INTEGER, INTENT(IN) :: ivalueX,ivalueY,ivalueZ
 
 !     Body
 !     - - -
       workingArray%startValueX = ivalueX
       workingArray%startValueY = ivalueY
+      workingArray%startValueZ = ivalueZ
 
   END SUBROUTINE
   
-! Procedure 20: get the starting point of the array
+! Procedure 22 : get the starting point of the array
 ! ---------------------------------------------------
   FUNCTION memoryGetStartingPointX() RESULT(ivalue)
 
@@ -921,7 +1037,7 @@ MODULE templateBasicArray
 
   END FUNCTION
 
-! Procedure 21 : get the starting point of the array
+! Procedure 23 : get the starting point of the array
 ! ---------------------------------------------------
   FUNCTION memoryGetStartingPointY() RESULT(ivalue)
 
@@ -935,7 +1051,21 @@ MODULE templateBasicArray
 
   END FUNCTION
 
-! Procedure 22 : get the final position in the array with respect to given dimension
+! Procedure 24 : get the starting point of the array
+! ---------------------------------------------------
+  FUNCTION memoryGetStartingPointZ() RESULT(ivalue)
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: ivalue
+
+!     Body
+!     - - -
+      ivalue = workingArray%startValueZ
+
+  END FUNCTION
+
+! Procedure 25 : get the final position in the array with respect to given dimension
 ! -----------------------------------------------------------------------------------
   FUNCTION memoryGetFinalValuePosition(dim, start) RESULT(ivalue)
   
@@ -950,14 +1080,14 @@ MODULE templateBasicArray
 
   END FUNCTION
 
-! Procedure 23 : get reference to pointer containing the values
+! Procedure 26 : get reference to pointer containing the values
 ! ------------------------------------------------------------
 
    FUNCTION memoryGetValues() RESULT(ptr)
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
-      VARType, DIMENSION(:,:), POINTER :: ptr
+      VARType, DIMENSION(:,:,:), POINTER :: ptr
 
 !     Body
 !     - - -
@@ -1002,8 +1132,8 @@ MODULE templateBasicArray
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, istartX, iendX, istartY, iendY
-      VARType, DIMENSION(:,:), POINTER :: ptr
+      INTEGER :: i1, i2, i3, istartX, iendX, istartY, iendY, istartZ, iendZ
+      VARType, DIMENSION(:,:,:), POINTER :: ptr
       VARType, INTENT(IN) :: val
 
 !     Body
@@ -1012,12 +1142,16 @@ MODULE templateBasicArray
       iendX = memoryGetFinalValuePosition(memoryGetSizeX(),istartX)
       istartY = memoryGetStartingPointY()
       iendY = memoryGetFinalValuePosition(memoryGetSizeY(),istartY)
+      istartZ = memoryGetStartingPointZ()
+      iendZ = memoryGetFinalValuePosition(memoryGetSizeZ(),istartZ)
 
       ptr =>  memoryGetValues()
 
       DO i1 = istartX , iendX
        DO i2 = istartY , iendY
-           ptr(i1,i2) = val
+        DO i3 = istartZ , iendZ
+           ptr(i1,i2,i3) = val
+        END DO
        END DO
       END DO
 
@@ -1025,46 +1159,51 @@ MODULE templateBasicArray
 
 ! Procedure 3 : insert value in array (scracth the previous one)
 ! ---------------------------------------------------------------
-  SUBROUTINE accessArrayInsertValue(positionX,positionY,val)
+  SUBROUTINE accessArrayInsertValue(positionX,positionY,positionZ,val)
 
 !     Declaration
 !     - - - - - -
-      INTEGER, INTENT(IN) :: positionX,positionY
-      INTEGER :: istartX, iendX, istartY, iendY
+      INTEGER, INTENT(IN) :: positionX, positionY, positionZ
+      INTEGER :: istartX, iendX, istartY, iendY, istartZ, iendZ
       VARType, INTENT(IN) :: val
 
 !     Body
 !     - - -
       istartX = memoryGetStartingPointX()
       istartY = memoryGetStartingPointY()
-      IF ( ( positionX < istartX ).OR.( positionY < istartY) ) THEN
-         CALL memorySetStartingPoint(positionX,positionY)
-         CALL memorySetSize(istartX-positionX+memoryGetSizeX(),istartY-positionY+memoryGetSizeY())
+      istartZ = memoryGetStartingPointZ()
+      
+      IF ( ( positionX < istartX ).OR.( positionY < istartY).OR.( positionZ < istartZ) ) THEN
+         CALL memorySetStartingPoint(positionX,positionY,positionZ)
+         CALL memorySetSize(istartX-positionX+memoryGetSizeX(),istartY-positionY+memoryGetSizeY(), &
+                            istartZ-positionZ+memoryGetSizeZ())
          CALL memoryAllocateArray()
          GOTO 30
       ENDIF
       
       iendX = memoryGetFinalValuePosition(memoryGetSizeX(),istartX)
       iendY = memoryGetFinalValuePosition(memoryGetSizeY(),istartY)
-      
-      IF ( ( positionX > iendX ).OR.( positionY > iendY ) ) THEN
-         CALL memorySetSize(positionX-iendX + memoryGetSizeX(),positionY-iendY + memoryGetSizeY())
+      iendZ = memoryGetFinalValuePosition(memoryGetSizeZ(),istartZ)
+
+      IF ( ( positionX > iendX ).OR.( positionY > iendY ).OR.( positionZ > iendZ ) ) THEN
+         CALL memorySetSize(positionX-iendX + memoryGetSizeX(),positionY-iendY + memoryGetSizeY(), &
+                            positionZ-iendZ + memoryGetSizeZ())
          CALL memoryAllocateArray()
       ENDIF
 
 30    CONTINUE
-      workingArray%values(positionX,positionY) = val
+      workingArray%values(positionX,positionY,positionZ) = val
 
   END SUBROUTINE
 
 ! Procedure 4 : add value in array (value = old value + new value)
 ! -----------------------------------------------------------------
-  SUBROUTINE accessArrayAddValue(positionX,positionY,val)
+  SUBROUTINE accessArrayAddValue(positionX,positionY,positionZ,val)
 
 !     Declaration
 !     - - - - - -
-      INTEGER, INTENT(IN) :: positionX,positionY
-      INTEGER :: istartX, iendX, istartY, iendY
+      INTEGER, INTENT(IN) :: positionX, positionY, positionZ
+      INTEGER :: istartX, iendX, istartY, iendY, istartZ, iendZ
       VARType, INTENT(IN) :: val
       VARType, POINTER :: ptr
 
@@ -1074,13 +1213,17 @@ MODULE templateBasicArray
       IF ( positionX < istartX ) RETURN
       istartY = memoryGetStartingPointY()
       IF ( positionY < istartY ) RETURN
+      istartZ = memoryGetStartingPointZ()
+      IF ( positionZ < istartZ ) RETURN
 
       iendX = memoryGetFinalValuePosition(memoryGetSizeX(),istartX)
       IF ( positionX > iendX ) RETURN
       iendY = memoryGetFinalValuePosition(memoryGetSizeY(),istartY)
       IF ( positionY > iendY ) RETURN
+      iendZ = memoryGetFinalValuePosition(memoryGetSizeZ(),istartZ)
+      IF ( positionZ > iendZ ) RETURN
 
-      ptr => memoryGetPointerOnValue(positionX,positionY)
+      ptr => memoryGetPointerOnValue(positionX,positionY,positionZ)
       ptr = ptr + val
 
   END SUBROUTINE
@@ -1107,24 +1250,28 @@ MODULE templateBasicArray
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, istartX, iendX, istartY, iendY
+      INTEGER :: i1, i2, i3, istartX, iendX, istartY, iendY, istartZ, iendZ
       VARType :: val
-      VARType, DIMENSION(:,:), POINTER :: ptr
+      VARType, DIMENSION(:,:,:), POINTER :: ptr
 
 !     Body
 !     - - -
       istartX = memoryGetStartingPointX()
       istartY = memoryGetStartingPointY()
+      istartZ = memoryGetStartingPointZ()
       iendX = memoryGetFinalValuePosition(memoryGetSizeX(),istartX)
       iendY = memoryGetFinalValuePosition(memoryGetSizeY(),istartY)
+      iendZ = memoryGetFinalValuePosition(memoryGetSizeZ(),istartZ)
 
       ptr =>  memoryGetValues()
       
-      val = ptr(istartX,istartY)
+      val = ptr(istartX,istartY,istartZ)
 
       DO i1 = istartX , iendX
        DO i2 = istartY , iendY
-         val = min(val,ptr(i1,i2))
+        DO i3 = istartZ , iendZ
+         val = min(val,ptr(i1,i2,i3))
+        END DO
        END DO
       END DO
 
@@ -1136,24 +1283,28 @@ MODULE templateBasicArray
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, istartX, iendX, istartY, iendY
+      INTEGER :: i1, i2, i3, istartX, iendX, istartY, iendY, istartZ, iendZ
       VARType :: val
-      VARType, DIMENSION(:,:), POINTER :: ptr
+      VARType, DIMENSION(:,:,:), POINTER :: ptr
 
 !     Body
 !     - - -
       istartX = memoryGetStartingPointX()
       istartY = memoryGetStartingPointY()
+      istartZ = memoryGetStartingPointZ()
       iendX = memoryGetFinalValuePosition(memoryGetSizeX(),istartX)
       iendY = memoryGetFinalValuePosition(memoryGetSizeY(),istartY)
+      iendZ = memoryGetFinalValuePosition(memoryGetSizeZ(),istartZ)
 
       ptr =>  memoryGetValues()
 
-      val = ptr(istartX,istartY)
+      val = ptr(istartX,istartY,istartZ)
 
       DO i1 = istartX , iendX
        DO i2 = istartY , iendY
-         val = max(val,ptr(i1,i2))
+        DO i3 = istartZ , iendZ
+         val = max(val,ptr(i1,i2,i3))
+        END DO
        END DO
       END DO
 

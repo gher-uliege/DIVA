@@ -17,12 +17,12 @@ MODULE template
    USE moduleNorm
    USE templatearrayType
    USE templateBasicArray, ONLY : &
-             printInformation, arrayDestroy, arraySetSize, arrayGetSizeX, arrayGetSizeY, arraySetToZero, arraySetToValue, &
-             arrayMin, arrayMax, arrayInsertValue, arrayAddValue, arrayGetValue, &
+             printInformation, arrayDestroy, arraySetSize, arrayGetSizeX, arrayGetSizeY, arrayGetSizeZ, arraySetToZero, &
+             arraySetToValue, arrayMin, arrayMax, arrayInsertValue, arrayAddValue, arrayGetValue, &
              arrayCreateBase, arrayCreateWithDimension, arrayCreateWithDimensionAndStartingPoint, arrayGetValues, &
-             arrayGetStartIndexX, arrayGetEndIndexX, arrayGetStartIndexY, arrayGetEndIndexY, &
-             memoryGetSizeX, memoryGetSizeY, memoryGetStartingPointX, memoryGetStartingPointY, memoryGetFinalValuePosition, &
-             memoryGetValues, setWorkingArray, nullify
+             arrayGetStartIndexX, arrayGetEndIndexX, arrayGetStartIndexY, arrayGetEndIndexY, arrayGetStartIndexZ, &
+             arrayGetEndIndexZ, memoryGetSizeX, memoryGetSizeY, memoryGetSizeZ, memoryGetStartingPointX, memoryGetStartingPointY, &
+             memoryGetStartingPointZ, memoryGetFinalValuePosition, memoryGetValues, setWorkingArray, nullify
 
 ! Include file
 ! ============
@@ -250,9 +250,9 @@ MODULE template
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, istartX, iendX, istartY, iendY
+      INTEGER :: i1, i2, i3, istartX, iendX, istartY, iendY, istartZ, iendZ
       VARType :: val
-      VARType, DIMENSION(:,:), POINTER :: ptr
+      VARType, DIMENSION(:,:,:), POINTER :: ptr
 
 !     Body
 !     - - -
@@ -260,13 +260,17 @@ MODULE template
       iendX = memoryGetFinalValuePosition(memoryGetSizeX(),istartX)
       istartY = memoryGetStartingPointY()
       iendY = memoryGetFinalValuePosition(memoryGetSizeY(),istartY)
+      istartZ = memoryGetStartingPointZ()
+      iendZ = memoryGetFinalValuePosition(memoryGetSizeZ(),istartZ)
 
       val = zero
       ptr =>  memoryGetValues()
 
       DO i1 = istartX, iendX
        DO i2 = istartY, iendY
-         val = val + abs(ptr(i1,i2))
+        DO i3 = istartZ, iendZ
+         val = val + abs(ptr(i1,i2,i3))
+        END DO
        END DO
       END DO
 
@@ -278,10 +282,10 @@ MODULE template
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, istartX, iendX, istartY, iendY
+      INTEGER :: i1, i2, i3, istartX, iendX, istartY, iendY, istartZ, iendZ
       VARType :: val
       VARType, POINTER :: ptr
-      VARType, DIMENSION(:,:), POINTER :: ptr1
+      VARType, DIMENSION(:,:,:), POINTER :: ptr1
 
 !     Body
 !     - - -
@@ -289,14 +293,18 @@ MODULE template
       iendX = memoryGetFinalValuePosition(memoryGetSizeX(),istartX)
       istartY = memoryGetStartingPointY()
       iendY = memoryGetFinalValuePosition(memoryGetSizeY(),istartY)
+      istartZ = memoryGetStartingPointZ()
+      iendZ = memoryGetFinalValuePosition(memoryGetSizeZ(),istartZ)
 
       val = zero
       ptr1 =>  memoryGetValues()
 
       DO i1 = istartX, iendX
        DO i2 = istartY, iendY
-         ptr => ptr1(i1,i2)
+        DO i3 = istartZ, iendZ
+         ptr => ptr1(i1,i2,i3)
          val = val + ptr * ptr
+        END DO
        END DO
       END DO
       
@@ -310,9 +318,9 @@ MODULE template
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, istartX, iendX, istartY, iendY
+      INTEGER :: i1, i2, i3, istartX, iendX, istartY, iendY, istartZ, iendZ
       VARType :: val
-      VARType, DIMENSION(:,:), POINTER :: ptr
+      VARType, DIMENSION(:,:,:), POINTER :: ptr
 
 !     Body
 !     - - -
@@ -320,13 +328,17 @@ MODULE template
       iendX = memoryGetFinalValuePosition(memoryGetSizeX(),istartX)
       istartY = memoryGetStartingPointY()
       iendY = memoryGetFinalValuePosition(memoryGetSizeY(),istartY)
+      istartZ = memoryGetStartingPointZ()
+      iendZ = memoryGetFinalValuePosition(memoryGetSizeZ(),istartZ)
 
       val = zero
       ptr =>  memoryGetValues()
 
       DO i1 = istartX, iendX
        DO i2 = istartY, iendY
-         val = max(val,abs(ptr(i1,i2)))
+        DO i3 = istartZ, iendZ
+         val = max(val,abs(ptr(i1,i2,i3)))
+        END DO
        END DO
       END DO
 
@@ -338,9 +350,9 @@ MODULE template
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, istartX, iendX, istartY, iendY
+      INTEGER :: i1, i2, i3, istartX, iendX, istartY, iendY, istartZ, iendZ
       VARType :: val
-      VARType, DIMENSION(:,:), POINTER :: ptr
+      VARType, DIMENSION(:,:,:), POINTER :: ptr
 
 !     Body
 !     - - -
@@ -348,13 +360,17 @@ MODULE template
       iendX = memoryGetFinalValuePosition(memoryGetSizeX(),istartX)
       istartY = memoryGetStartingPointY()
       iendY = memoryGetFinalValuePosition(memoryGetSizeY(),istartY)
+      istartZ = memoryGetStartingPointZ()
+      iendZ = memoryGetFinalValuePosition(memoryGetSizeZ(),istartZ)
 
       val = zero
       ptr =>  memoryGetValues()
 
       DO i1 = istartX, iendX
        DO i2 = istartY, iendY
-         val = val + ptr(i1,i2)
+        DO i3 = istartZ, iendZ
+         val = val + ptr(i1,i2,i3)
+        END DO
        END DO
       END DO
 
@@ -366,9 +382,9 @@ MODULE template
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, istartX, iendX, istartY, iendY
+      INTEGER :: i1, i2, i3, istartX, iendX, istartY, iendY, istartZ, iendZ
       VARType, POINTER :: ptr
-      VARType, DIMENSION(:,:), POINTER :: ptr1
+      VARType, DIMENSION(:,:,:), POINTER :: ptr1
 
 !     Body
 !     - - -
@@ -376,13 +392,17 @@ MODULE template
       iendX = memoryGetFinalValuePosition(memoryGetSizeX(),istartX)
       istartY = memoryGetStartingPointY()
       iendY = memoryGetFinalValuePosition(memoryGetSizeY(),istartY)
+      istartZ = memoryGetStartingPointZ()
+      iendZ = memoryGetFinalValuePosition(memoryGetSizeZ(),istartZ)
 
       ptr1 =>  memoryGetValues()
 
       DO i1 = istartX, iendX
        DO i2 = istartY, iendY
-         ptr => ptr1(i1,i2)
+        DO i3 = istartZ, iendZ
+         ptr => ptr1(i1,i2,i3)
          ptr = sqrt(abs(ptr))
+        END DO
        END DO
       END DO
 
@@ -394,10 +414,10 @@ MODULE template
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, istartX, iendX, istartY, iendY
+      INTEGER :: i1, i2, i3, istartX, iendX, istartY, iendY, istartZ, iendZ
       VARType :: val
       VARType, POINTER :: ptr
-      VARType, DIMENSION(:,:), POINTER :: ptr1
+      VARType, DIMENSION(:,:,:), POINTER :: ptr1
 
 !     Body
 !     - - -
@@ -405,13 +425,17 @@ MODULE template
       iendX = memoryGetFinalValuePosition(memoryGetSizeX(),istartX)
       istartY = memoryGetStartingPointY()
       iendY = memoryGetFinalValuePosition(memoryGetSizeY(),istartY)
+      istartZ = memoryGetStartingPointZ()
+      iendZ = memoryGetFinalValuePosition(memoryGetSizeZ(),istartZ)
 
       ptr1 => memoryGetValues()
       
       DO i1 = istartX, iendX
        DO i2 = istartY, iendY
-         ptr => ptr1(i1,i2)
+        DO i3 = istartZ, iendZ
+         ptr => ptr1(i1,i2,i3)
          ptr = val * ptr
+        END DO
        END DO
       END DO
 
