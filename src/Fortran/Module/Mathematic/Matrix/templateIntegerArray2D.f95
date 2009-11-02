@@ -17,7 +17,7 @@ MODULE template
    USE templatearrayType
    USE templateBasicArray, ONLY : &
              printInformation, arrayDestroy, arraySetSize, arrayGetSizeX, arrayGetSizeY, arraySetToZero, arraySetToValue, &
-             arrayMin, arrayMax, arrayInsertValue, arrayAddValue, arrayGetValue, &
+             arrayMin, arrayMax, arrayInsertValue, arrayAddValue, arrayGetValue, arraySetIncreaseSize, &
              arrayCreateBase, arrayCreateWithDimension, arrayCreateWithDimensionAndStartingPoint, arrayGetValues, &
              arrayGetStartIndexX, arrayGetEndIndexX, arrayGetStartIndexY, arrayGetEndIndexY
 

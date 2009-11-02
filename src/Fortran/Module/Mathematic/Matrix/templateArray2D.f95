@@ -20,7 +20,7 @@ MODULE template
              printInformation, arrayDestroy, arraySetSize, arrayGetSizeX, arrayGetSizeY, arraySetToZero, arraySetToValue, &
              arrayMin, arrayMax, arrayInsertValue, arrayAddValue, arrayGetValue, &
              arrayCreateBase, arrayCreateWithDimension, arrayCreateWithDimensionAndStartingPoint, arrayGetValues, &
-             arrayGetStartIndexX, arrayGetEndIndexX, arrayGetStartIndexY, arrayGetEndIndexY, &
+             arrayGetStartIndexX, arrayGetEndIndexX, arrayGetStartIndexY, arrayGetEndIndexY, arraySetIncreaseSize, &
              memoryGetSizeX, memoryGetSizeY, memoryGetStartingPointX, memoryGetStartingPointY, memoryGetFinalValuePosition, &
              memoryGetValues, setWorkingArray, nullify
 

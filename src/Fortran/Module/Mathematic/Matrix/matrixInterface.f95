@@ -19,7 +19,7 @@ MODULE matrixInterface
    USE array2DReal4Definition
    USE array2DReal8Definition
 
-   USE array3DInteger3Definition
+   USE array3DInteger2Definition
    USE array3DInteger4Definition
    USE array3DInteger8Definition
    USE array3DReal4Definition
@@ -44,7 +44,8 @@ MODULE matrixInterface
                                  array2DGetStartIndexXInteger2 => arrayGetStartIndexX, &
                                  array2DGetEndIndexXInteger2 => arrayGetEndIndexX ,&
                                  array2DGetStartIndexYInteger2 => arrayGetStartIndexY, &
-                                 array2DGetEndIndexYInteger2 => arrayGetEndIndexY
+                                 array2DGetEndIndexYInteger2 => arrayGetEndIndexY, &
+                                 array2DSetIncreaseSizeInteger2 => arraySetIncreaseSize
 
    USE moduleArray2DInteger4, ONLY : array2DprintInformationInteger4 => printInformation,    &
                                  array2DDestroyInteger4    =>  arrayDestroy,      &
@@ -65,7 +66,8 @@ MODULE matrixInterface
                                  array2DGetStartIndexXInteger4 => arrayGetStartIndexX, &
                                  array2DGetEndIndexXInteger4 => arrayGetEndIndexX, &
                                  array2DGetStartIndexYInteger4 => arrayGetStartIndexY, &
-                                 array2DGetEndIndexYInteger4 => arrayGetEndIndexY
+                                 array2DGetEndIndexYInteger4 => arrayGetEndIndexY, &
+                                 array2DSetIncreaseSizeInteger4 => arraySetIncreaseSize
 
    USE moduleArray2DInteger8, ONLY : array2DprintInformationInteger8 => printInformation,    &
                                  array2DDestroyInteger8    =>  arrayDestroy,      &
@@ -86,7 +88,8 @@ MODULE matrixInterface
                                  array2DGetStartIndexXInteger8 => arrayGetStartIndexX, &
                                  array2DGetEndIndexXInteger8 => arrayGetEndIndexX, &
                                  array2DGetStartIndexYInteger8 => arrayGetStartIndexY, &
-                                 array2DGetEndIndexYInteger8 => arrayGetEndIndexY
+                                 array2DGetEndIndexYInteger8 => arrayGetEndIndexY, &
+                                 array2DSetIncreaseSizeInteger8 => arraySetIncreaseSize
 
    USE moduleArray2DReal4, ONLY : array2DprintInformationReal4 => printInformation,    &
                                  array2DDestroyReal4    =>  arrayDestroy,      &
@@ -114,7 +117,8 @@ MODULE matrixInterface
                                  array2DGetStartIndexXReal4 => arrayGetStartIndexX, &
                                  array2DGetEndIndexXReal4 => arrayGetEndIndexX,    &
                                  array2DGetStartIndexYReal4 => arrayGetStartIndexY, &
-                                 array2DGetEndIndexYReal4 => arrayGetEndIndexY
+                                 array2DGetEndIndexYReal4 => arrayGetEndIndexY, &
+                                 array2DSetIncreaseSizeReal4 => arraySetIncreaseSize
 
    USE moduleArray2DReal8, ONLY : array2DprintInformationReal8 => printInformation,    &
                                  array2DDestroyReal8    =>  arrayDestroy,      &
@@ -142,7 +146,8 @@ MODULE matrixInterface
                                  array2DGetStartIndexXReal8 => arrayGetStartIndexX, &
                                  array2DGetEndIndexXReal8 => arrayGetEndIndexX, &
                                  array2DGetStartIndexYReal8 => arrayGetStartIndexY, &
-                                 array2DGetEndIndexYReal8 => arrayGetEndIndexY
+                                 array2DGetEndIndexYReal8 => arrayGetEndIndexY, &
+                                 array2DSetIncreaseSizeReal8 => arraySetIncreaseSize
 
    USE moduleArray3DInteger2, ONLY : array3DprintInformationInteger2 => printInformation,    &
                                  array3DDestroyInteger2    =>  arrayDestroy,      &
@@ -166,7 +171,8 @@ MODULE matrixInterface
                                  array3DGetStartIndexYInteger2 => arrayGetStartIndexY, &
                                  array3DGetEndIndexYInteger2 => arrayGetEndIndexY, &
                                  array3DGetStartIndexZInteger2 => arrayGetStartIndexZ, &
-                                 array3DGetEndIndexZInteger2 => arrayGetEndIndexZ
+                                 array3DGetEndIndexZInteger2 => arrayGetEndIndexZ, &
+                                 array3DSetIncreaseSizeInteger2 => arraySetIncreaseSize
 
    USE moduleArray3DInteger4, ONLY : array3DprintInformationInteger4 => printInformation,    &
                                  array3DDestroyInteger4    =>  arrayDestroy,      &
@@ -190,7 +196,8 @@ MODULE matrixInterface
                                  array3DGetStartIndexYInteger4 => arrayGetStartIndexY, &
                                  array3DGetEndIndexYInteger4 => arrayGetEndIndexY, &
                                  array3DGetStartIndexZInteger4 => arrayGetStartIndexZ, &
-                                 array3DGetEndIndexZInteger4 => arrayGetEndIndexZ
+                                 array3DGetEndIndexZInteger4 => arrayGetEndIndexZ, &
+                                 array3DSetIncreaseSizeInteger4 => arraySetIncreaseSize
 
    USE moduleArray3DInteger8, ONLY : array3DprintInformationInteger8 => printInformation,    &
                                  array3DDestroyInteger8    =>  arrayDestroy,      &
@@ -214,7 +221,8 @@ MODULE matrixInterface
                                  array3DGetStartIndexYInteger8 => arrayGetStartIndexY, &
                                  array3DGetEndIndexYInteger8 => arrayGetEndIndexY, &
                                  array3DGetStartIndexZInteger8 => arrayGetStartIndexZ, &
-                                 array3DGetEndIndexZInteger8 => arrayGetEndIndexZ
+                                 array3DGetEndIndexZInteger8 => arrayGetEndIndexZ, &
+                                 array3DSetIncreaseSizeInteger8 => arraySetIncreaseSize
 
    USE moduleArray3DReal4, ONLY : array3DprintInformationReal4 => printInformation,    &
                                  array3DDestroyReal4    =>  arrayDestroy,      &
@@ -245,7 +253,8 @@ MODULE matrixInterface
                                  array3DGetStartIndexYReal4 => arrayGetStartIndexY, &
                                  array3DGetEndIndexYReal4 => arrayGetEndIndexY, &
                                  array3DGetStartIndexZReal4 => arrayGetStartIndexZ, &
-                                 array3DGetEndIndexZReal4 => arrayGetEndIndexZ
+                                 array3DGetEndIndexZReal4 => arrayGetEndIndexZ, &
+                                 array3DSetIncreaseSizeReal4 => arraySetIncreaseSize
 
    USE moduleArray3DReal8, ONLY : array3DprintInformationReal8 => printInformation,    &
                                  array3DDestroyReal8    =>  arrayDestroy,      &
@@ -276,13 +285,14 @@ MODULE matrixInterface
                                  array3DGetStartIndexYReal8 => arrayGetStartIndexY, &
                                  array3DGetEndIndexYReal8 => arrayGetEndIndexY, &
                                  array3DGetStartIndexZReal8 => arrayGetStartIndexZ, &
-                                 array3DGetEndIndexZReal8 => arrayGetEndIndexZ
+                                 array3DGetEndIndexZReal8 => arrayGetEndIndexZ, &
+                                 array3DSetIncreaseSizeReal8 => arraySetIncreaseSize
 
    USE mathDynamicMemory, ONLY : initialiseDynamicMemory => initialise, mathSetMemoryIncreaseSize
    
 ! Procedures status
 ! =================
-   PUBLIC :: initialise, arraySetMemoryIncreaseSize
+   PUBLIC :: initialise, arraySetDefaultMemoryIncreaseSize
 
 ! Interface
 ! =========
@@ -459,6 +469,13 @@ MODULE matrixInterface
                        array3DGetEndIndexZInteger2, array3DGetEndIndexZInteger4, array3DGetEndIndexZInteger8
    END INTERFACE
 
+   INTERFACE matrixSetIncreaseSize
+      MODULE PROCEDURE array2DSetIncreaseSizeReal8, array2DSetIncreaseSizeReal4, &
+                       array2DSetIncreaseSizeInteger2, array2DSetIncreaseSizeInteger4, array2DSetIncreaseSizeInteger8, &
+                       array3DSetIncreaseSizeReal8, array3DSetIncreaseSizeReal4, &
+                       array3DSetIncreaseSizeInteger2, array3DSetIncreaseSizeInteger4, array3DSetIncreaseSizeInteger8
+   END INTERFACE
+
 ! ============================================================
 ! ============================================================
 ! ============================================================
@@ -488,7 +505,7 @@ MODULE matrixInterface
 
 ! Procedure 2 : define the extra size for allocate array
 ! --------------------------------------------------------
-  SUBROUTINE arraySetMemoryIncreaseSize(extraSizeX,extraSizeY,extraSizeZ)
+  SUBROUTINE arraySetDefaultMemoryIncreaseSize(extraSizeX,extraSizeY,extraSizeZ)
 
 !     Declaration
 !     - - - - - -

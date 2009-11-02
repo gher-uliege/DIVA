@@ -21,6 +21,7 @@ MODULE templatevectorType
        INTEGER :: nbOfData
        INTEGER :: allocatedSize
        INTEGER :: startValue
+       INTEGER :: increaseSize
        VARType, DIMENSION(:), POINTER :: values
    END TYPE
    

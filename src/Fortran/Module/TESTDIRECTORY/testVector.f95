@@ -26,7 +26,12 @@ INTEGER, PARAMETER :: dim = 3
 
 !   1) testing the creation procedure
 !   ---------------------------------
-  CALL vectorSetMemoryIncreaseSize(5)
+  CALL vectorSetDefaultMemoryIncreaseSize(5)
+  
+  PRINT*,'checkAllocationMemoryProcedure'
+  PRINT*,'=============================='
+  CALL checkAllocationMemoryProcedure()
+  PRINT*,' '
 
 !    1.1) Basic creation procedure
 !    - - - - - - - - - - - - - - -
@@ -50,7 +55,7 @@ INTEGER, PARAMETER :: dim = 3
 
 !    1.4) Basic creation procedure with optimal size
 !    - - - - - - - - - - - - - - - - - - - - - - - -
-  CALL vectorSetMemoryIncreaseSize(0)
+  CALL vectorSetDefaultMemoryIncreaseSize(0)
 
   CALL vectorCreate(vector1)
   CALL vectorSetSize(vector1,dim)
@@ -352,6 +357,30 @@ INTEGER, PARAMETER :: dim = 3
    ENDDO
 
    CALL printInformation(vector1)
+
+ END SUBROUTINE
+
+ SUBROUTINE checkAllocationMemoryProcedure()
+ 
+!  Declaration
+!  -----------
+   TYPE(vectorType) :: vector1
+
+!  Body
+!  - - -
+   CALL vectorCreate(vector1)
+   CALL vectorSetSize(vector1,3)
+   CALL vectorSetToZero(vector1)
+   CALL printInformation(vector1)
+   CALL vectorSetIncreaseSize(vector1,0)
+   CALL vectorSetSize(vector1,9)
+   CALL vectorSetToZero(vector1)
+   CALL printInformation(vector1)
+   CALL vectorSetIncreaseSize(vector1,-1)
+   CALL vectorSetSize(vector1,10)
+   CALL vectorSetToZero(vector1)
+   CALL printInformation(vector1)
+   CALL vectorDestroy(vector1)
 
  END SUBROUTINE
 

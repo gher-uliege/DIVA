@@ -40,7 +40,7 @@ MODULE templateBasicArray
              arraySetToValue, arrayMin, arrayMax, arrayInsertValue, arrayAddValue, arrayGetValue, &
              arrayCreateBase, arrayCreateWithDimension, arrayCreateWithDimensionAndStartingPoint, arrayGetValues, &
              arrayGetStartIndexX, arrayGetStartIndexY, arrayGetEndIndexX, arrayGetEndIndexY, arrayGetStartIndexZ, &
-             arrayGetEndIndexZ, setWorkingArray, nullify
+             arrayGetEndIndexZ, setWorkingArray, nullify, arraySetIncreaseSize
 
 !  Memory part
 !  -----------
@@ -51,7 +51,8 @@ MODULE templateBasicArray
               memoryPrintInformation, memorySetAllocatedSize, memorySetAllocated, memoryAllocateMemory, &
               memoryGetAllocatedSizeX, memoryGetAllocatedSizeY, memoryGetAllocatedSizeZ, &
               memoryStockIntermediateArray, memoryTransferIntermediateArrayToArray, memoryGetValue, memoryGetAllocationStatus, &
-              memoryArrayCreate, memoryGetPointerOnValue, memorySetStartingPoint
+              memoryArrayCreate, memoryGetPointerOnValue, memorySetStartingPoint, memoryGetIncreaseSizeX, memorySetIncreaseSize, &
+              memoryGetIncreaseSizeY, memoryGetIncreaseSizeZ
 
 !  Access part
 !  -----------
@@ -606,6 +607,38 @@ MODULE templateBasicArray
 
   END FUNCTION
 
+! Procedure 26 : define the increase size
+! ----------------------------------------
+  SUBROUTINE arraySetIncreaseSize(targetArray,sizeX,sizeY,sizeZ)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: sizeX, sizeY, sizeZ
+      INTEGER :: dimX, dimY, dimZ
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(arrayType), INTENT(IN) :: targetArray
+      CALL setWorkingArray(targetArray)
+
+      dimX = sizeX
+      dimY = sizeY
+      dimZ = sizeZ
+
+      IF ( sizeX < 0 ) THEN
+         dimX = memoryGetDefaultIncreaseSizeX()
+      END IF
+      IF ( sizeY < 0 ) THEN
+         dimY = memoryGetDefaultIncreaseSizeY()
+      END IF
+      IF ( sizeZ < 0 ) THEN
+         dimZ = memoryGetDefaultIncreaseSizeZ()
+      END IF
+
+      CALL memorySetIncreaseSize(dimX,dimY,dimZ)
+
+  END SUBROUTINE
+
 ! ============================================================
 ! ============================================================
 ! ============================================================
@@ -701,8 +734,8 @@ MODULE templateBasicArray
                 CALL memoryStockIntermediateArray()
                 CALL memoryDestructor()
                 CALL memorySetStartingPoint(istartValueX,istartValueY,istartValueZ)
-                CALL memorySetAllocatedSize(newSizeX+memoryGetDefaultIncreaseSizeX(),newSizeY+memoryGetDefaultIncreaseSizeY(), &
-                                            newSizeZ+memoryGetDefaultIncreaseSizeZ())
+                CALL memorySetAllocatedSize(newSizeX+memoryGetIncreaseSizeX(),newSizeY+memoryGetIncreaseSizeY(), &
+                                            newSizeZ+memoryGetIncreaseSizeZ())
                 CALL memorySetSize(newSizeX,newSizeY,newSizeZ)
                 CALL memoryAllocateMemory()
                 CALL memoryTransferIntermediateArrayToArray()
@@ -904,6 +937,7 @@ MODULE templateBasicArray
       workingArray%values => NULL()
       CALL memorySetSize(izero,izero,izero)
       CALL memorySetAllocatedSize(izero,izero,izero)
+      CALL memorySetIncreaseSize(memoryGetDefaultIncreaseSizeX(),memoryGetDefaultIncreaseSizeY(),memoryGetDefaultIncreaseSizeZ())
       CALL memorySetStartingPoint(ione,ione,ione)
       CALL memorySetAllocated(false)
 
@@ -959,6 +993,8 @@ MODULE templateBasicArray
       WRITE(stdOutput,*) 'The size of the array is : ', memoryGetSizeX(), ' ', memoryGetSizeY(), ' ', memoryGetSizeZ()
       WRITE(stdOutput,*) '   The allocated memory is : ', memoryGetAllocatedSizeX(), ' ',  memoryGetAllocatedSizeY() &
                                                                                    , ' ',  memoryGetAllocatedSizeZ()
+      WRITE(stdOutput,*) '   The increase allocation memory is : ', memoryGetIncreaseSizeX(),' ', memoryGetIncreaseSizeY() &
+                                                                                            ,' ', memoryGetIncreaseSizeZ()
       WRITE(stdOutput,*) '   Allocation status of the vector : ', memoryGetAllocationStatus()
       WRITE(stdOutput,*) '   First positions are : ', memoryGetStartingPointX(),' ', memoryGetStartingPointY()  &
                                                                                ,' ', memoryGetStartingPointZ()
@@ -986,7 +1022,8 @@ MODULE templateBasicArray
 !     - - -
       CALL memorySetStartingPoint(defaultStartingValueX,defaultStartingValueY,defaultStartingValueZ)
       CALL memorySetSize(izero,izero,izero)
-      CALL memorySetAllocatedSize(memoryGetDefaultIncreaseSizeX(),memoryGetDefaultIncreaseSizeY(),memoryGetDefaultIncreaseSizeZ())
+      CALL memorySetIncreaseSize(memoryGetDefaultIncreaseSizeX(),memoryGetDefaultIncreaseSizeY(),memoryGetDefaultIncreaseSizeZ())
+      CALL memorySetAllocatedSize(memoryGetIncreaseSizeX(),memoryGetIncreaseSizeY(),memoryGetIncreaseSizeZ())
       CALL memorySetAllocated(false)
       CALL memoryAllocateArray()
 
@@ -1094,6 +1131,64 @@ MODULE templateBasicArray
       ptr => workingArray%values
 
    END FUNCTION
+
+! Procedure 27 : set the increase size for memory allocation
+! ----------------------------------------------------------
+  SUBROUTINE memorySetIncreaseSize(sizeX,sizeY,sizeZ)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: sizeX, sizeY, sizeZ
+
+!     Body
+!     - - -
+      workingArray%increaseSizeX = sizeX
+      workingArray%increaseSizeY = sizeY
+      workingArray%increaseSizeZ = sizeZ
+
+  END SUBROUTINE
+
+! Procedure 28 : get the increase size for memory allocation
+! ----------------------------------------------------------
+  FUNCTION memoryGetIncreaseSizeX() RESULT(size)
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: size
+
+!     Body
+!     - - -
+      size = workingArray%increaseSizeX
+
+  END FUNCTION
+
+! Procedure 29 : get the increase size for memory allocation
+! ----------------------------------------------------------
+  FUNCTION memoryGetIncreaseSizeY() RESULT(size)
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: size
+
+!     Body
+!     - - -
+      size = workingArray%increaseSizeY
+
+  END FUNCTION
+
+! Procedure 30 : get the increase size for memory allocation
+! ----------------------------------------------------------
+  FUNCTION memoryGetIncreaseSizeZ() RESULT(size)
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: size
+
+!     Body
+!     - - -
+      size = workingArray%increaseSizeZ
+
+  END FUNCTION
 
 ! ============================================================
 ! ============================================================

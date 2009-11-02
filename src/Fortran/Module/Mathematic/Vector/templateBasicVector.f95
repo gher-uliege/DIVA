@@ -37,7 +37,8 @@ MODULE templateBasicVector
    PUBLIC :: printInformation, vectorDestroy, vectorSetSize, vectorGetSize, vectorSetToZero, vectorSetToValue, &
              vectorMin, vectorMax, vectorInsertValue, vectorAddValue, vectorGetValue, &
              vectorCreateBase, vectorCreateWithDimension, vectorCreateWithDimensionAndStartingPoint, vectorGetValues, &
-             vectorGetStartIndex, vectorGetEndIndex, setWorkingVector, nullify
+             vectorGetStartIndex, vectorGetEndIndex, setWorkingVector, nullify, vectorSetIncreaseSize, &
+             vectorAbsMin, vectorAbsMax
 
 !  Memory part
 !  -----------
@@ -45,7 +46,7 @@ MODULE templateBasicVector
    PRIVATE ::  memorySetSize, memoryAllocateVector, memoryDestructor, &
               memoryPrintInformation, memorySetAllocatedSize, memorySetAllocated, memoryAllocateMemory, memoryGetAllocatedSize, &
               memoryStockIntermediateVector, memoryTransferIntermediateVectorToVector, memoryGetValue, memoryGetAllocationStatus, &
-              memoryVectorCreate, memoryGetPointerOnValue, memorySetStartingPoint
+              memoryVectorCreate, memoryGetPointerOnValue, memorySetStartingPoint, memoryGetIncreaseSize, memorySetIncreaseSize
 
 !  Access part
 !  -----------
@@ -53,7 +54,7 @@ MODULE templateBasicVector
    
 !  Mathematic part
 !  ---------------
-   PRIVATE ::  mathVectorMin, mathVectorMax
+   PRIVATE ::  mathVectorMin, mathVectorMax, mathVectorAbsMin, mathVectorAbsMax
 
 ! ============================================================
 ! ============================================================
@@ -179,7 +180,7 @@ MODULE templateBasicVector
 
    END SUBROUTINE
 
-! Procedure 1 : get reference to pointer containing the values
+! Procedure 6 : get reference to pointer containing the values
 ! ------------------------------------------------------------
 
    FUNCTION vectorGetValues(targetVector) RESULT(ptr)
@@ -203,7 +204,7 @@ MODULE templateBasicVector
 
    END FUNCTION
 
-! Procedure 2 : print information on the vector
+! Procedure 7 : print information on the vector
 ! ---------------------------------------------
    SUBROUTINE printInformation(targetVector)
 
@@ -222,7 +223,7 @@ MODULE templateBasicVector
 
    END SUBROUTINE
 
-! Procedure 3 : destruction of the vector
+! Procedure 8 : destruction of the vector
 ! ---------------------------------------
    SUBROUTINE vectorDestroy(targetVector)
 
@@ -241,7 +242,7 @@ MODULE templateBasicVector
 
    END SUBROUTINE
 
-! Procedure 4 : define the size of the vector
+! Procedure 9 : define the size of the vector
 ! -------------------------------------------
   SUBROUTINE vectorSetSize(targetVector,dim)
 
@@ -265,7 +266,7 @@ MODULE templateBasicVector
 
   END SUBROUTINE
 
-! Procedure 5 : get the size of the vector
+! Procedure 10 : get the size of the vector
 ! -------------------------------------------
   FUNCTION vectorGetSize(targetVector) RESULT(dim)
 
@@ -288,7 +289,7 @@ MODULE templateBasicVector
 
   END FUNCTION
 
-! Procedure 6 : set 0 to each entry
+! Procedure 11 : set 0 to each entry
 ! ---------------------------------
   SUBROUTINE vectorSetToZero(targetVector)
 
@@ -307,7 +308,7 @@ MODULE templateBasicVector
 
   END SUBROUTINE
 
-! Procedure 7 : set "value" to each entry
+! Procedure 12 : set "value" to each entry
 ! ---------------------------------------
   SUBROUTINE vectorSetToValue(targetVector,val)
 
@@ -330,7 +331,7 @@ MODULE templateBasicVector
 
   END SUBROUTINE
 
-! Procedure 8 : min value
+! Procedure 13 : min value
 ! -----------------------
   FUNCTION vectorMin(targetVector) RESULT(val)
 
@@ -353,7 +354,7 @@ MODULE templateBasicVector
 
   END FUNCTION
 
-! Procedure 9 : max value
+! Procedure 14 : max value
 ! -----------------------
   FUNCTION vectorMax(targetVector) RESULT(val)
 
@@ -376,7 +377,7 @@ MODULE templateBasicVector
 
   END FUNCTION
 
-! Procedure 10 : insert value in vector (scracth the previous one)
+! Procedure 15 : insert value in vector (scracth the previous one)
 ! ---------------------------------------------------------------
   SUBROUTINE vectorInsertValue(targetVector,position,val)
 
@@ -400,7 +401,7 @@ MODULE templateBasicVector
 
   END SUBROUTINE
 
-! Procedure 11 : add value in vector (value = old value + new value)
+! Procedure 16 : add value in vector (value = old value + new value)
 ! -----------------------------------------------------------------
   SUBROUTINE vectorAddValue(targetVector,position,val)
 
@@ -424,7 +425,7 @@ MODULE templateBasicVector
 
   END SUBROUTINE
 
-! Procedure 12 : get the value in the vector
+! Procedure 17 : get the value in the vector
 ! ------------------------------------------
   FUNCTION vectorGetValue(targetVector,i1) RESULT(val)
 
@@ -448,7 +449,7 @@ MODULE templateBasicVector
 
   END FUNCTION
 
-! Procedure 13 : get start index
+! Procedure 18 : get start index
 ! ------------------------------
   FUNCTION vectorGetStartIndex(targetVector) RESULT(i1)
 
@@ -465,7 +466,7 @@ MODULE templateBasicVector
 
   END FUNCTION
 
-! Procedure 14 : get end index
+! Procedure 19 : get end index
 ! ------------------------------
   FUNCTION vectorGetEndIndex(targetVector,istart) RESULT(i1)
 
@@ -480,6 +481,76 @@ MODULE templateBasicVector
       CALL setWorkingVector(targetVector)
 
       i1 = memoryGetFinalValuePosition(memoryGetSize(),istart)
+
+  END FUNCTION
+
+! Procedure 20 : define the increase size
+! ----------------------------------------
+  SUBROUTINE vectorSetIncreaseSize(targetVector,size)
+  
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: size
+      INTEGER :: dim
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(vectorType), INTENT(IN) :: targetVector
+      CALL setWorkingVector(targetVector)
+
+      dim = size
+      
+      IF ( size < 0 ) THEN
+         dim = memoryGetDefaultIncreaseSize()
+      END IF
+      
+      CALL memorySetIncreaseSize(dim)
+      
+  END SUBROUTINE
+  
+! Procedure 21 : min abs(value)
+! -----------------------
+  FUNCTION vectorAbsMin(targetVector) RESULT(val)
+
+!     Declaration
+!     - - - - - -
+      VARType :: val
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(vectorType), INTENT(IN) :: targetVector
+      CALL setWorkingVector(targetVector)
+
+!     Body
+!     - - -
+      val = mathVectorAbsMin()
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullify()
+
+  END FUNCTION
+
+! Procedure 22 : max abs(value)
+! -----------------------
+  FUNCTION vectorAbsMax(targetVector) RESULT(val)
+
+!     Declaration
+!     - - - - - -
+      VARType :: val
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(vectorType), INTENT(IN) :: targetVector
+      CALL setWorkingVector(targetVector)
+
+!     Body
+!     - - -
+      val = mathVectorAbsMax()
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullify()
 
   END FUNCTION
 
@@ -564,7 +635,7 @@ MODULE templateBasicVector
                 CALL memoryStockIntermediateVector()
                 CALL memoryDestructor()
                 CALL memorySetStartingPoint(istartValue)
-                CALL memorySetAllocatedSize(newSize+memoryGetDefaultIncreaseSize())
+                CALL memorySetAllocatedSize(newSize+memoryGetIncreaseSize())
                 CALL memorySetSize(newSize)
                 CALL memoryAllocateMemory()
                 CALL memoryTransferIntermediateVectorToVector()
@@ -593,7 +664,7 @@ MODULE templateBasicVector
 
   END SUBROUTINE
 
-! Procedure 5b : allocated memory to the vector
+! Procedure 6 : allocated memory to the vector
 ! ---------------------------------------------
   SUBROUTINE memoryFirstAllocateMemory()
 
@@ -613,7 +684,7 @@ MODULE templateBasicVector
 
   END SUBROUTINE
 
-! Procedure 6 : getting the allocated memory size
+! Procedure 7 : getting the allocated memory size
 ! ------------------------------------------------
   FUNCTION memoryGetAllocatedSize() RESULT(size)
 
@@ -627,7 +698,7 @@ MODULE templateBasicVector
 
    END FUNCTION
 
-! Procedure 7 : getting the vector size
+! Procedure 8 : getting the vector size
 ! --------------------------------------
   FUNCTION memoryGetSize() RESULT(size)
 
@@ -641,7 +712,7 @@ MODULE templateBasicVector
 
    END FUNCTION
 
-! Procedure 8 : transfer data from workingVector to secondWorkingVector
+! Procedure 9 : transfer data from workingVector to secondWorkingVector
 ! ----------------------------------------------------------------------
   SUBROUTINE memoryStockIntermediateVector()
 
@@ -665,7 +736,7 @@ MODULE templateBasicVector
 
   END SUBROUTINE
 
-! Procedure 9 : transfer data from secondWorkingVector to workingVector
+! Procedure 10 : transfer data from secondWorkingVector to workingVector
 ! -----------------------------------------------------------------------
   SUBROUTINE memoryTransferIntermediateVectorToVector()
 
@@ -689,7 +760,7 @@ MODULE templateBasicVector
 
   END SUBROUTINE
 
-! Procedure 10 : deallocation of the memory
+! Procedure 11 : deallocation of the memory
 ! ------------------------------------------
   SUBROUTINE memoryDestructor()
 
@@ -699,12 +770,13 @@ MODULE templateBasicVector
       workingVector%values => NULL()
       CALL memorySetSize(izero)
       CALL memorySetAllocatedSize(izero)
+      CALL memorySetIncreaseSize(memoryGetDefaultIncreaseSize())
       CALL memorySetStartingPoint(ione)
       CALL memorySetAllocated(false)
 
   END SUBROUTINE
 
-! Procedure 11 : get the value in the vector
+! Procedure 12 : get the value in the vector
 ! ------------------------------------------
   FUNCTION memoryGetValue(i1) RESULT(val)
 
@@ -719,7 +791,7 @@ MODULE templateBasicVector
 
   END FUNCTION
 
-! Procedure 12 : get the allocation status
+! Procedure 13 : get the allocation status
 ! ----------------------------------------
   FUNCTION memoryGetAllocationStatus() RESULT(status)
 
@@ -733,7 +805,7 @@ MODULE templateBasicVector
 
   END FUNCTION
 
-! Procedure 13 : print information on the vector
+! Procedure 14 : print information on the vector
 ! ---------------------------------------------
    SUBROUTINE memoryPrintInformation()
 
@@ -749,6 +821,7 @@ MODULE templateBasicVector
 
       WRITE(stdOutput,*) 'The size of the vector is : ', memoryGetSize()
       WRITE(stdOutput,*) '   The allocated memory is : ', memoryGetAllocatedSize()
+      WRITE(stdOutput,*) '   The increase allocation memory is : ', memoryGetIncreaseSize()
       WRITE(stdOutput,*) '   Allocation status of the vector : ', memoryGetAllocationStatus()
       WRITE(stdOutput,*) '   First position is : ', memoryGetStartingPoint()
       WRITE(stdOutput,*) '   Last position is  : ', memoryGetFinalValuePosition(memoryGetSize(),memoryGetStartingPoint())
@@ -761,7 +834,7 @@ MODULE templateBasicVector
 
    END SUBROUTINE
 
-! Procedure 14 : create the vector
+! Procedure 15 : create the vector
 ! ---------------------------------
    SUBROUTINE memoryVectorCreate()
 
@@ -769,13 +842,14 @@ MODULE templateBasicVector
 !     - - -
       CALL memorySetStartingPoint(defaultStartingValue)
       CALL memorySetSize(izero)
-      CALL memorySetAllocatedSize(memoryGetDefaultIncreaseSize())
+      CALL memorySetIncreaseSize(memoryGetDefaultIncreaseSize())
+      CALL memorySetAllocatedSize(memoryGetIncreaseSize())
       CALL memorySetAllocated(false)
       CALL memoryAllocateVector()
 
    END SUBROUTINE
 
-! Procedure 15 : get the pointer on a value
+! Procedure 16 : get the pointer on a value
 ! -----------------------------------------
   FUNCTION memoryGetPointerOnValue(position) RESULT(ptr)
 
@@ -790,7 +864,7 @@ MODULE templateBasicVector
 
   END FUNCTION
   
-! Procedure 16 : set the starting point of the vector
+! Procedure 17 : set the starting point of the vector
 ! ---------------------------------------------------
   SUBROUTINE memorySetStartingPoint(ivalue)
 
@@ -804,7 +878,7 @@ MODULE templateBasicVector
       
   END SUBROUTINE
   
-! Procedure 17 : get the starting point of the vector
+! Procedure 18 : get the starting point of the vector
 ! ---------------------------------------------------
   FUNCTION memoryGetStartingPoint() RESULT(ivalue)
 
@@ -818,7 +892,7 @@ MODULE templateBasicVector
 
   END FUNCTION
 
-! Procedure 18 : get the final position in the vector with respect to given dimension
+! Procedure 19 : get the final position in the vector with respect to given dimension
 ! -----------------------------------------------------------------------------------
   FUNCTION memoryGetFinalValuePosition(dim, start) RESULT(ivalue)
   
@@ -833,9 +907,8 @@ MODULE templateBasicVector
 
   END FUNCTION
 
-! Procedure 19 : get reference to pointer containing the values
+! Procedure 20 : get reference to pointer containing the values
 ! ------------------------------------------------------------
-
    FUNCTION memoryGetValues() RESULT(ptr)
 
 !     Pointer filling procedure
@@ -847,6 +920,34 @@ MODULE templateBasicVector
       ptr => workingVector%values
 
    END FUNCTION
+
+! Procedure 21 : set the increase size for memory allocation
+! ----------------------------------------------------------
+  SUBROUTINE memorySetIncreaseSize(size)
+  
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: size
+
+!     Body
+!     - - -
+      workingVector%increaseSize = size
+      
+  END SUBROUTINE
+  
+! Procedure 22 : get the increase size for memory allocation
+! ----------------------------------------------------------
+  FUNCTION memoryGetIncreaseSize() RESULT(size)
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: size
+
+!     Body
+!     - - -
+      size = workingVector%increaseSize
+
+  END FUNCTION
 
 ! ============================================================
 ! ============================================================
@@ -998,7 +1099,7 @@ MODULE templateBasicVector
 
   END FUNCTION
 
-! Procedure 2 : min value
+! Procedure 2 : max value
 ! -----------------------
   FUNCTION mathVectorMax() RESULT(val)
 
@@ -1019,6 +1120,56 @@ MODULE templateBasicVector
 
       DO i1 = istart + 1, iend
          val = max(val,ptr(i1))
+      END DO
+
+  END FUNCTION
+
+! Procedure 3 : min abs(value)
+! ----------------------------
+  FUNCTION mathVectorAbsMin() RESULT(val)
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: i1, istart, iend
+      VARType :: val
+      VARType, DIMENSION(:), POINTER :: ptr
+
+!     Body
+!     - - -
+      istart = memoryGetStartingPoint()
+      iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
+
+      ptr =>  memoryGetValues()
+
+      val = abs(ptr(istart))
+
+      DO i1 = istart + 1 , iend
+         val = min(val,abs(ptr(i1)))
+      END DO
+
+  END FUNCTION
+
+! Procedure 4 : max abs(value)
+! ---------------------------
+  FUNCTION mathVectorAbsMax() RESULT(val)
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: i1, istart, iend
+      VARType :: val
+      VARType, DIMENSION(:), POINTER :: ptr
+
+!     Body
+!     - - -
+      istart = memoryGetStartingPoint()
+      iend = memoryGetFinalValuePosition(memoryGetSize(),istart)
+
+      ptr =>  memoryGetValues()
+
+      val = abs(ptr(istart))
+
+      DO i1 = istart + 1, iend
+         val = max(val,abs(ptr(i1)))
       END DO
 
   END FUNCTION

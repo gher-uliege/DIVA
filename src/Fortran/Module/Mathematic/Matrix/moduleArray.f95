@@ -31,16 +31,19 @@ MODULE templatearrayType
        INTEGER :: nbOfDataX
        INTEGER :: allocatedSizeX
        INTEGER :: startValueX
+       INTEGER :: increaseSizeX
 
 #ifdef _ARRAY_2D_DEFINITION_
        INTEGER :: nbOfDataY
        INTEGER :: allocatedSizeY
        INTEGER :: startValueY
+       INTEGER :: increaseSizeY
 #endif
 #ifdef _ARRAY_3D_DEFINITION_
        INTEGER :: nbOfDataZ
        INTEGER :: allocatedSizeZ
        INTEGER :: startValueZ
+       INTEGER :: increaseSizeZ
 #endif
 
 #ifdef _ARRAY_2D_

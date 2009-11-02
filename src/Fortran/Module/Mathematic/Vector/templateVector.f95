@@ -20,9 +20,9 @@ MODULE template
              printInformation, vectorDestroy, vectorSetSize, vectorGetSize, vectorSetToZero, vectorSetToValue, &
              vectorMin, vectorMax, vectorInsertValue, vectorAddValue, vectorGetValue, &
              vectorCreateBase, vectorCreateWithDimension, vectorCreateWithDimensionAndStartingPoint, vectorGetValues, &
-             vectorGetStartIndex, vectorGetEndIndex, &
+             vectorGetStartIndex, vectorGetEndIndex, vectorSetIncreaseSize, &
              memoryGetSize,  memoryGetStartingPoint, memoryGetFinalValuePosition, memoryGetValues, &
-             setWorkingVector, nullify
+             setWorkingVector, nullify, vectorAbsMin, vectorAbsMax
 
 ! Include file
 ! ============

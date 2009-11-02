@@ -27,6 +27,8 @@ MODULE vectorInterface
                                  vectorSetToValueInteger2 =>  vectorSetToValue,   &
                                  vectorMinInteger2        =>  vectorMin,          &
                                  vectorMaxInteger2        =>  vectorMax,          &
+                                 vectorAbsMinInteger2        =>  vectorAbsMin,        &
+                                 vectorAbsMaxInteger2        =>  vectorAbsMax,        &
                                  vectorInsertValueInteger2   =>  vectorInsertValue,   &
                                  vectorAddValueInteger2   =>  vectorAddValue,     &
                                  vectorGetValueInteger2   =>  vectorGetValue,     &
@@ -35,7 +37,8 @@ MODULE vectorInterface
                                  vectorCreateWithDimensionAndStartingPointInteger2 =>  vectorCreateWithDimensionAndStartingPoint, &
                                  vectorGetValuesInteger2  => vectorGetValues,        &
                                  vectorGetStartIndexInteger2 => vectorGetStartIndex, &
-                                 vectorGetEndIndexInteger2 => vectorGetEndIndex
+                                 vectorGetEndIndexInteger2 => vectorGetEndIndex, &
+                                 vectorSetIncreaseSizeInteger2 => vectorSetIncreaseSize
 
    USE moduleVectorInteger4, ONLY : printInformationInteger4 => printInformation,    &
                                  vectorDestroyInteger4    =>  vectorDestroy,      &
@@ -45,6 +48,8 @@ MODULE vectorInterface
                                  vectorSetToValueInteger4 =>  vectorSetToValue,   &
                                  vectorMinInteger4        =>  vectorMin,          &
                                  vectorMaxInteger4        =>  vectorMax,          &
+                                 vectorAbsMinInteger4        =>  vectorAbsMin,        &
+                                 vectorAbsMaxInteger4        =>  vectorAbsMax,        &
                                  vectorInsertValueInteger4   =>  vectorInsertValue,   &
                                  vectorAddValueInteger4   =>  vectorAddValue,     &
                                  vectorGetValueInteger4   =>  vectorGetValue,     &
@@ -53,7 +58,8 @@ MODULE vectorInterface
                                  vectorCreateWithDimensionAndStartingPointInteger4 =>  vectorCreateWithDimensionAndStartingPoint, &
                                  vectorGetValuesInteger4  => vectorGetValues,        &
                                  vectorGetStartIndexInteger4 => vectorGetStartIndex, &
-                                 vectorGetEndIndexInteger4 => vectorGetEndIndex
+                                 vectorGetEndIndexInteger4 => vectorGetEndIndex, &
+                                 vectorSetIncreaseSizeInteger4 => vectorSetIncreaseSize
 
    USE moduleVectorInteger8, ONLY : printInformationInteger8 => printInformation,    &
                                  vectorDestroyInteger8    =>  vectorDestroy,      &
@@ -63,6 +69,8 @@ MODULE vectorInterface
                                  vectorSetToValueInteger8 =>  vectorSetToValue,   &
                                  vectorMinInteger8        =>  vectorMin,          &
                                  vectorMaxInteger8        =>  vectorMax,          &
+                                 vectorAbsMinInteger8        =>  vectorAbsMin,        &
+                                 vectorAbsMaxInteger8        =>  vectorAbsMax,        &
                                  vectorInsertValueInteger8   =>  vectorInsertValue,   &
                                  vectorAddValueInteger8   =>  vectorAddValue,     &
                                  vectorGetValueInteger8   =>  vectorGetValue,     &
@@ -71,7 +79,8 @@ MODULE vectorInterface
                                  vectorCreateWithDimensionAndStartingPointInteger8 =>  vectorCreateWithDimensionAndStartingPoint, &
                                  vectorGetValuesInteger8  => vectorGetValues,        &
                                  vectorGetStartIndexInteger8 => vectorGetStartIndex, &
-                                 vectorGetEndIndexInteger8 => vectorGetEndIndex
+                                 vectorGetEndIndexInteger8 => vectorGetEndIndex, &
+                                 vectorSetIncreaseSizeInteger8 => vectorSetIncreaseSize
 
    USE moduleVectorReal4, ONLY : printInformationReal4 => printInformation,    &
                                  vectorDestroyReal4    =>  vectorDestroy,      &
@@ -86,6 +95,8 @@ MODULE vectorInterface
                                  vectorSumReal4        =>  vectorSum,          &
                                  vectorMinReal4        =>  vectorMin,          &
                                  vectorMaxReal4        =>  vectorMax,          &
+                                 vectorAbsMinReal4       =>  vectorAbsMin,        &
+                                 vectorAbsMaxReal4       =>  vectorAbsMax,        &
                                  vectorInsertValueReal4   =>  vectorInsertValue,   &
                                  vectorAddValueReal4   =>  vectorAddValue,     &
                                  vectorScaleReal4      =>  vectorScale,        &
@@ -97,7 +108,8 @@ MODULE vectorInterface
                                  vectorCreateWithDimensionAndStartingPointReal4 =>  vectorCreateWithDimensionAndStartingPoint, &
                                  vectorGetValuesReal4  => vectorGetValues,        &
                                  vectorGetStartIndexReal4 => vectorGetStartIndex, &
-                                 vectorGetEndIndexReal4 => vectorGetEndIndex
+                                 vectorGetEndIndexReal4 => vectorGetEndIndex, &
+                                 vectorSetIncreaseSizeReal4 => vectorSetIncreaseSize
 
    USE moduleVectorReal8, ONLY : printInformationReal8 => printInformation,    &
                                  vectorDestroyReal8    =>  vectorDestroy,      &
@@ -112,6 +124,8 @@ MODULE vectorInterface
                                  vectorSumReal8        =>  vectorSum,          &
                                  vectorMinReal8        =>  vectorMin,          &
                                  vectorMaxReal8        =>  vectorMax,          &
+                                 vectorAbsMinReal8       =>  vectorAbsMin,        &
+                                 vectorAbsMaxReal8       =>  vectorAbsMax,        &
                                  vectorInsertValueReal8   =>  vectorInsertValue,   &
                                  vectorAddValueReal8   =>  vectorAddValue,     &
                                  vectorScaleReal8      =>  vectorScale,        &
@@ -123,13 +137,14 @@ MODULE vectorInterface
                                  vectorCreateWithDimensionAndStartingPointReal8 =>  vectorCreateWithDimensionAndStartingPoint, &
                                  vectorGetValuesReal8  => vectorGetValues,        &
                                  vectorGetStartIndexReal8 => vectorGetStartIndex, &
-                                 vectorGetEndIndexReal8 => vectorGetEndIndex
+                                 vectorGetEndIndexReal8 => vectorGetEndIndex, &
+                                 vectorSetIncreaseSizeReal8 => vectorSetIncreaseSize
 
    USE mathDynamicMemory, ONLY : initialiseDynamicMemory => initialise, mathSetMemoryIncreaseSize
    
 ! Procedures status
 ! =================
-   PUBLIC :: initialise, vectorSetMemoryIncreaseSize
+   PUBLIC :: initialise, vectorSetDefaultMemoryIncreaseSize
 
 ! Interface
 ! =========
@@ -201,6 +216,15 @@ MODULE vectorInterface
                        vectorMaxInteger2, vectorMaxInteger4, vectorMaxInteger8
    END INTERFACE
 
+   INTERFACE vectorAbsMin
+      MODULE PROCEDURE vectorAbsMinReal8, vectorAbsMinReal4, &
+                       vectorAbsMinInteger2, vectorAbsMinInteger4, vectorAbsMinInteger8
+   END INTERFACE
+
+   INTERFACE vectorAbsMax
+      MODULE PROCEDURE vectorAbsMaxReal8, vectorAbsMaxReal4, &
+                       vectorAbsMaxInteger2, vectorAbsMaxInteger4, vectorAbsMaxInteger8
+   END INTERFACE
    INTERFACE vectorInsertValue
       MODULE PROCEDURE vectorInsertValueReal8, vectorInsertValueReal4, &
                        vectorInsertValueInteger2, vectorInsertValueInteger4, vectorInsertValueInteger8
@@ -242,6 +266,11 @@ MODULE vectorInterface
       MODULE PROCEDURE vectorGetEndIndexReal8, vectorGetEndIndexReal4, &
                        vectorGetEndIndexInteger2, vectorGetEndIndexInteger4, vectorGetEndIndexInteger8
    END INTERFACE
+   
+   INTERFACE vectorSetIncreaseSize
+      MODULE PROCEDURE vectorSetIncreaseSizeReal8, vectorSetIncreaseSizeReal4, &
+                       vectorSetIncreaseSizeInteger2, vectorSetIncreaseSizeInteger4, vectorSetIncreaseSizeInteger8
+   END INTERFACE
 
 ! ============================================================
 ! ============================================================
@@ -272,7 +301,7 @@ MODULE vectorInterface
 
 ! Procedure 2 : define the extra size for allocate vector
 ! --------------------------------------------------------
-  SUBROUTINE vectorSetMemoryIncreaseSize(extraSize)
+  SUBROUTINE vectorSetDefaultMemoryIncreaseSize(extraSize)
 
 !     Declaration
 !     - - - - - -

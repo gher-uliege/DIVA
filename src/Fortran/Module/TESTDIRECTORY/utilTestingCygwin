@@ -36,6 +36,7 @@ export preproFlag
 $divaDir/compileLinkFile $fileToCheck$extension $fileToCheck >> testing.log
 ./$fileToCheck.a >> $fileToCheck.cygwin
 diff -s ./$fileToCheck.cygwin ./OUTPUTS/$fileToCheck.Real8.cygwin >> testing.log
+mv ./$fileToCheck.cygwin ./$fileToCheck.Real8.cygwin
 rm ./$fileToCheck.cygwin
 rm ./$fileToCheck.a
 echo ' ' >> testing.log
@@ -52,6 +53,7 @@ export preproFlag
 $divaDir/compileLinkFile $fileToCheck$extension $fileToCheck >> testing.log
 ./$fileToCheck.a >> $fileToCheck.cygwin
 diff -s ./$fileToCheck.cygwin ./OUTPUTS/$fileToCheck.Real4.cygwin >> testing.log
+mv ./$fileToCheck.cygwin ./$fileToCheck.Real4.cygwin
 rm ./$fileToCheck.cygwin
 rm ./$fileToCheck.a
 echo ' ' >> testing.log
@@ -68,6 +70,7 @@ export preproFlag
 $divaDir/compileLinkFile $fileToCheck$extension $fileToCheck >> testing.log
 ./$fileToCheck.a >> $fileToCheck.cygwin
 diff -s ./$fileToCheck.cygwin ./OUTPUTS/$fileToCheck.Integer2.cygwin >> testing.log
+mv ./$fileToCheck.cygwin ./$fileToCheck.Integer2.cygwin
 rm ./$fileToCheck.cygwin
 rm ./$fileToCheck.a
 echo ' ' >> testing.log
@@ -84,6 +87,7 @@ export preproFlag
 $divaDir/compileLinkFile $fileToCheck$extension $fileToCheck >> testing.log
 ./$fileToCheck.a >> $fileToCheck.cygwin
 diff -s ./$fileToCheck.cygwin ./OUTPUTS/$fileToCheck.Integer4.cygwin >> testing.log
+mv ./$fileToCheck.cygwin ./$fileToCheck.Integer4.cygwin
 rm ./$fileToCheck.cygwin
 rm ./$fileToCheck.a
 echo ' ' >> testing.log
@@ -100,6 +104,7 @@ export preproFlag
 $divaDir/compileLinkFile $fileToCheck$extension $fileToCheck >> testing.log
 ./$fileToCheck.a >> $fileToCheck.cygwin
 diff -s ./$fileToCheck.cygwin ./OUTPUTS/$fileToCheck.Integer8.cygwin >> testing.log
+mv ./$fileToCheck.cygwin ./$fileToCheck.Integer8.cygwin
 rm ./$fileToCheck.cygwin
 rm ./$fileToCheck.a
 echo ' ' >> testing.log

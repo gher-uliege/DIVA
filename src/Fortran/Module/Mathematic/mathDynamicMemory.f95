@@ -22,7 +22,7 @@ MODULE mathDynamicMemory
 ! ===========
 !  Memory part
 !  -----------
-   INTEGER, PRIVATE, PARAMETER :: defaultIncreaseSize = 100
+   INTEGER, PRIVATE, PARAMETER :: defaultIncreaseSize = 10
    INTEGER, PRIVATE, PARAMETER :: defaultIncreaseSizeX = 10
    INTEGER, PRIVATE, PARAMETER :: defaultIncreaseSizeY = 10
    INTEGER, PRIVATE, PARAMETER :: defaultIncreaseSizeZ = 10
