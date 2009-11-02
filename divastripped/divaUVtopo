@@ -1,6 +1,14 @@
 #!/bin/bash
 
-
+ifull=0
+if [ "$#" == "1" ]
+then
+if [ "$1" == "-full" ]
+then
+echo //// Full topographic advection
+ifull=1
+fi
+fi
 
 echo //////////////////////////////////////////////
 echo     Anisotropic correlation along topography
@@ -55,7 +63,7 @@ if [ -f ../output/diva.log ] ; then
  cp -f ../output/diva.log .
 fi
 
-echo $icoord | ../../bin/UVtopogen.a >> diva.log
+echo $icoord $ifull | ../../bin/UVtopogen.a >> diva.log
 
 if [ $? -ne 0 ];then
 echo ' '
