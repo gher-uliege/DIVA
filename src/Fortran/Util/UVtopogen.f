@@ -21,7 +21,7 @@
       write(6,*) 'into ureadc',M,N
       call ureadc(12,c8,topo,valex,iprecr,imax,jmax,kmax,nbmotr)
       write(6,*) 'out of reading',imax,jmax
-      read (5,*) icoordchange
+      read (5,*) icoordchange,ifull
 C NEED TO READ IN ICOORDCHANGE if ONE, change DX and DY, otherwise leave as is
       if (icoordchange.eq.1) then
       rlonmin=X1
@@ -98,6 +98,7 @@ C Calculate centered gradients, reduced by distance to level
       FACTEUR=exp(-xi*xi)
       endif
       
+      if (ifull.eq.1) FACTEUR=1
       
       u(i,j)=(topo(i,j+1)-topo(i,j-1))*FACTEUR/DY
       v(i,j)=-(topo(i+1,j)-topo(i-1,j))*FACTEUR/DX
