@@ -71,7 +71,7 @@ MODULE moduleFile
 !     Declaration
 !     - - - - - -
       CHARACTER(*), OPTIONAL, INTENT(IN) :: name
-      TYPE(logicalUnit), OPTIONAL, POINTER, INTENT(IN)     :: unit
+      TYPE(logicalUnit), OPTIONAL, POINTER     :: unit
       LOGICAL, OPTIONAL, INTENT(IN) :: formType
 
 !     Pointer filling procedure
@@ -127,7 +127,7 @@ MODULE moduleFile
 
 !     Declaration
 !     - - - - - -
-      TYPE(logicalUnit), OPTIONAL, POINTER, INTENT(IN)     :: unit
+      TYPE(logicalUnit), OPTIONAL, POINTER     :: unit
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
@@ -277,7 +277,7 @@ MODULE moduleFile
 !     Declaration
 !     - - - - - -
       CHARACTER(*), OPTIONAL, INTENT(IN) :: name
-      TYPE(logicalUnit), OPTIONAL, POINTER, INTENT(IN)     :: unit
+      TYPE(logicalUnit), OPTIONAL, POINTER     :: unit
       TYPE(file), INTENT(INOUT) :: targetFile
       LOGICAL, OPTIONAL, INTENT(IN) :: formType
 
@@ -430,7 +430,7 @@ MODULE moduleFile
 
 !     Declaration
 !     - - - - - -
-      TYPE(logicalUnit), OPTIONAL, POINTER, INTENT(IN)     :: unit
+      TYPE(logicalUnit), OPTIONAL, POINTER     :: unit
 
 !     Body
 !     - - -

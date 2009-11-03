@@ -10,14 +10,20 @@ echo ============================
 echo ' '
 
 divaDir=$PWD
+divaModuleLib=$divaDir/Module/lib
 
+export divaModuleLib
 export divaDir
+
+# Definition of the compiler, options,...
+# =======================================
+source $divaDir/compileBaseGFortran
 
 # Compilation of modules
 # ======================
 
 cd $divaDir/Module
-./divaCompileModuleCygwin
+source ./divaCompileModule
 
 echo ' '
 echo --------------------

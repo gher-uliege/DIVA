@@ -1,0 +1,35 @@
+#!/bin/bash
+
+echo ============================
+echo ============================
+echo ==                        ==
+echo ==   Compilation of DIVA  ==
+echo ==                        ==
+echo ============================
+echo ============================
+echo ' '
+
+divaDir=$PWD
+divaModuleLib=$divaDir/Module/lib
+
+export divaModuleLib
+export divaDir
+
+# Definition of the compiler, options,...
+# =======================================
+source $divaDir/compileBaseG95
+
+# Compilation of modules
+# ======================
+
+cd $divaDir/Module
+source ./divaCompileModule
+
+echo ' '
+echo --------------------
+echo Compilation finished
+echo --------------------
+echo ' '
+
+cd $divaDir
+

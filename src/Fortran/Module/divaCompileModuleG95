@@ -20,20 +20,20 @@ rm $divaModuleLib/*
 # =================================
 
 cd $baseDir/Mathematic
-./divaCompileModuleMathematicCygwin
+source ./divaCompileModuleMathematicG95
 
 
 # Compilation of IO module
 # ========================
 
 cd $baseDir/IOModule
-./divaCompileIOModuleCygwin
+source ./divaCompileIOModuleG95
 
 # Compilation of General module
 # =============================
 
 cd $baseDir/General
-./divaCompileModuleGeneralCygwin
+source ./divaCompileModuleGeneralG95
 
 cd $baseDir
 

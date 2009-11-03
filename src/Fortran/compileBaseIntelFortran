@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Definition of the compiler and options
+# ======================================
+compiler=ifort
+
+flag='-fast -warn all -c '
+
+export compiler
+export flag
+
+
+# Definition of preprocessor options if needed
+# ============================================
+preprocessor='-cpp'
+preprocessorFlag='-D=_BATCH_MODE_ -D=_INTELF90_ '$preproFlag
+
+export preprocessor
+export preprocessorFlag
+
+
+# Definition of the library directory
+# ====================================
+libraryDir='-I'$divaModuleLib
+libraryObj=$divaModuleLib/*.o
+
+export libraryDir
+export libraryObj

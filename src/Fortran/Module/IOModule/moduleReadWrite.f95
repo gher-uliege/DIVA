@@ -52,6 +52,10 @@ MODULE moduleReadWrite
              fillReal4Std2DDegeneratedMatrix, fillReal8Std1DRegularMatrix, fillReal8Std1DDegeneratedMatrix, &
              fillReal4Std1DRegularMatrix, fillReal4Std1DDegeneratedMatrix
 
+#ifdef _GFORTRAN_
+  PRIVATE :: isNotANumber8,isNotANumber4
+#endif
+
 ! ============================================================
 ! ============================================================
 ! ============================================================
@@ -70,7 +74,7 @@ MODULE moduleReadWrite
 ! ============================================================
 
 
-! Procedure 1 : write standard vector of real*4 in GHER format
+! Procedure 1 : write standard vector of REAL(KIND=4) in GHER format
 ! -------------------------------------------------------------
    SUBROUTINE writeReal4StdVector(fileToWrite,vector,exclusionValue,nbOfData,nbOfWords)
 
@@ -79,8 +83,8 @@ MODULE moduleReadWrite
       TYPE(file), INTENT(IN) :: fileToWrite
       INTEGER, INTENT(IN) :: nbOfData
       INTEGER, OPTIONAL, INTENT(INOUT) :: nbOfWords
-      REAL*4, INTENT(IN) :: vector(*)
-      REAL*4, INTENT(IN) :: exclusionValue
+      REAL(KIND=4), INTENT(IN) :: vector(*)
+      REAL(KIND=4), INTENT(IN) :: exclusionValue
 
       INTEGER :: nbOfWordsToUse
 
@@ -95,7 +99,7 @@ MODULE moduleReadWrite
 
    END SUBROUTINE
 
-! Procedure 2 : write standard vector of real*8 in GHER format
+! Procedure 2 : write standard vector of REAL(KIND=8) in GHER format
 ! -------------------------------------------------------------
    SUBROUTINE writeReal8StdVector(fileToWrite,vector,exclusionValue,nbOfData,nbOfWords)
 
@@ -104,8 +108,8 @@ MODULE moduleReadWrite
       TYPE(file), INTENT(IN) :: fileToWrite
       INTEGER, INTENT(IN) :: nbOfData
       INTEGER, OPTIONAL, INTENT(INOUT) :: nbOfWords
-      REAL*8, INTENT(IN) :: vector(*)
-      REAL*8, INTENT(IN) :: exclusionValue
+      REAL(KIND=8), INTENT(IN) :: vector(*)
+      REAL(KIND=8), INTENT(IN) :: exclusionValue
 
       INTEGER :: nbOfWordsToUse
 
@@ -120,7 +124,7 @@ MODULE moduleReadWrite
 
    END SUBROUTINE
 
-! Procedure 3 : write standard matrix (i,j) of real*4 in GHER format
+! Procedure 3 : write standard matrix (i,j) of REAL(KIND=4) in GHER format
 ! ------------------------------------------------------------------
    SUBROUTINE writeReal4Std2DMatrix(fileToWrite,matrix,exclusionValue,nbOfDataI,nbOfDataJ,nbOfWords)
 
@@ -129,8 +133,8 @@ MODULE moduleReadWrite
       TYPE(file), INTENT(IN) :: fileToWrite
       INTEGER, INTENT(IN) :: nbOfDataI,nbOfDataJ
       INTEGER, OPTIONAL, INTENT(INOUT) :: nbOfWords
-      REAL*4, INTENT(IN) :: matrix(nbOfDataI,nbOfDataJ)
-      REAL*4, INTENT(IN) :: exclusionValue
+      REAL(KIND=4), INTENT(IN) :: matrix(nbOfDataI,nbOfDataJ)
+      REAL(KIND=4), INTENT(IN) :: exclusionValue
 
       INTEGER :: nbOfWordsToUse
 
@@ -145,7 +149,7 @@ MODULE moduleReadWrite
 
    END SUBROUTINE
 
-! Procedure 4 : write standard matrix (i,j) of real*8 in GHER format
+! Procedure 4 : write standard matrix (i,j) of REAL(KIND=8) in GHER format
 ! ------------------------------------------------------------------
    SUBROUTINE writeReal8Std2DMatrix(fileToWrite,matrix,exclusionValue,nbOfDataI,nbOfDataJ,nbOfWords)
 
@@ -154,8 +158,8 @@ MODULE moduleReadWrite
       TYPE(file), INTENT(IN) :: fileToWrite
       INTEGER, INTENT(IN) :: nbOfDataI,nbOfDataJ
       INTEGER, OPTIONAL, INTENT(INOUT) :: nbOfWords
-      REAL*8, INTENT(IN) :: matrix(nbOfDataI,nbOfDataJ)
-      REAL*8, INTENT(IN) :: exclusionValue
+      REAL(KIND=8), INTENT(IN) :: matrix(nbOfDataI,nbOfDataJ)
+      REAL(KIND=8), INTENT(IN) :: exclusionValue
 
       INTEGER :: nbOfWordsToUse
 
@@ -170,7 +174,7 @@ MODULE moduleReadWrite
 
    END SUBROUTINE
 
-! Procedure 5 : write standard matrix (i,j,k) of real*4 in GHER format
+! Procedure 5 : write standard matrix (i,j,k) of REAL(KIND=4) in GHER format
 ! --------------------------------------------------------------------
    SUBROUTINE writeReal4Std3DMatrix(fileToWrite,matrix,exclusionValue,nbOfDataI,nbOfDataJ,nbOfDataK,nbOfWords)
 
@@ -179,8 +183,8 @@ MODULE moduleReadWrite
       TYPE(file), INTENT(IN) :: fileToWrite
       INTEGER, INTENT(IN) :: nbOfDataI, nbOfDataJ, nbOfDataK
       INTEGER, OPTIONAL, INTENT(INOUT) :: nbOfWords
-      REAL*4, INTENT(IN) :: matrix(nbOfDataI,nbOfDataJ,nbOfDataK)
-      REAL*4, INTENT(IN) :: exclusionValue
+      REAL(KIND=4), INTENT(IN) :: matrix(nbOfDataI,nbOfDataJ,nbOfDataK)
+      REAL(KIND=4), INTENT(IN) :: exclusionValue
 
       INTEGER :: nbOfWordsToUse
 
@@ -195,7 +199,7 @@ MODULE moduleReadWrite
 
    END SUBROUTINE
 
-! Procedure 6 : write standard matrix (i,j,k) of real*8 in GHER format
+! Procedure 6 : write standard matrix (i,j,k) of REAL(KIND=8) in GHER format
 ! --------------------------------------------------------------------
    SUBROUTINE writeReal8Std3DMatrix(fileToWrite,matrix,exclusionValue,nbOfDataI,nbOfDataJ,nbOfDataK,nbOfWords)
 
@@ -204,8 +208,8 @@ MODULE moduleReadWrite
       TYPE(file), INTENT(IN) :: fileToWrite
       INTEGER, INTENT(IN) :: nbOfDataI, nbOfDataJ, nbOfDataK
       INTEGER, OPTIONAL, INTENT(INOUT) :: nbOfWords
-      REAL*8, INTENT(IN) :: matrix(nbOfDataI,nbOfDataJ,nbOfDataK)
-      REAL*8, INTENT(IN) :: exclusionValue
+      REAL(KIND=8), INTENT(IN) :: matrix(nbOfDataI,nbOfDataJ,nbOfDataK)
+      REAL(KIND=8), INTENT(IN) :: exclusionValue
       
       INTEGER :: nbOfWordsToUse
 
@@ -219,7 +223,7 @@ MODULE moduleReadWrite
 
    END SUBROUTINE
 
-! Procedure 7 : basic uwritc procedure for real*4 entries
+! Procedure 7 : basic uwritc procedure for REAL(KIND=4) entries
 ! -------------------------------------------------------
    SUBROUTINE uwritcReal4(fileToWrite,real4Entries,exclusionValue,iprecision,nbOfDataI,nbOfDataJ,nbOfDataK,nbOfWords)
 
@@ -229,8 +233,8 @@ MODULE moduleReadWrite
       TYPE(file), INTENT(IN) :: fileToWrite
       INTEGER, INTENT(IN) :: nbOfDataI, nbOfDataJ, nbOfDataK, iprecision
       INTEGER, INTENT(INOUT) :: nbOfWords
-      REAL*4, INTENT(IN) :: exclusionValue
-      REAL*4, INTENT(IN) :: real4Entries(*)
+      REAL(KIND=4), INTENT(IN) :: exclusionValue
+      REAL(KIND=4), INTENT(IN) :: real4Entries(*)
 
       LOGICAL :: checkWritingProcedure, fileFormat
       INTEGER :: i1, i2, i3, numberOfFullRecord, remainingWords, logicalUnit, icheckError
@@ -306,7 +310,7 @@ MODULE moduleReadWrite
 
    END SUBROUTINE
 
-! Procedure 8 : basic uwritc procedure for real*4 entries
+! Procedure 8 : basic uwritc procedure for REAL(KIND=4) entries
 ! -------------------------------------------------------
    SUBROUTINE uwritcReal8(fileToWrite,real8Entries,exclusionValue,iprecision,nbOfDataI,nbOfDataJ,nbOfDataK,nbOfWords)
 
@@ -316,8 +320,8 @@ MODULE moduleReadWrite
       TYPE(file), INTENT(IN) :: fileToWrite
       INTEGER, INTENT(IN) :: nbOfDataI, nbOfDataJ, nbOfDataK, iprecision
       INTEGER, INTENT(INOUT) :: nbOfWords
-      REAL*8, INTENT(IN) :: exclusionValue
-      REAL*8, INTENT(IN) :: real8Entries(*)
+      REAL(KIND=8), INTENT(IN) :: exclusionValue
+      REAL(KIND=8), INTENT(IN) :: real8Entries(*)
 
       LOGICAL :: checkWritingProcedure, fileFormat
       INTEGER :: i1, i2, i3, numberOfFullRecord, remainingWords, logicalUnit, icheckError
@@ -417,10 +421,10 @@ MODULE moduleReadWrite
 !     Declaration
 !     - - - - - -
       INTEGER, INTENT(IN) :: nbOfWords
-      REAL*4, INTENT(IN) :: exclusionValue
-      REAL*4, INTENT(IN), TARGET :: real4Entries(*)
+      REAL(KIND=4), INTENT(IN) :: exclusionValue
+      REAL(KIND=4), INTENT(IN), TARGET :: real4Entries(*)
       
-      REAL*4, POINTER :: ptr
+      REAL(KIND=4), POINTER :: ptr
       INTEGER :: icheck, i1
 
 !     Body
@@ -430,7 +434,11 @@ MODULE moduleReadWrite
       DO i1 = 1, nbOfWords
         ptr => real4Entries(i1)
         
+#ifdef _GFORTRAN_
+        IF ( isNotANumber4(ptr) ) THEN
+#else
         IF ( isnan(ptr) ) THEN
+#endif
            ptr = exclusionValue
            icheck = icheck + ione
         END IF
@@ -481,10 +489,10 @@ MODULE moduleReadWrite
 !     Declaration
 !     - - - - - -
       INTEGER, INTENT(IN) :: nbOfWords
-      REAL*8, INTENT(IN) :: exclusionValue
-      REAL*8, INTENT(IN), TARGET :: real8Entries(*)
+      REAL(KIND=8), INTENT(IN) :: exclusionValue
+      REAL(KIND=8), INTENT(IN), TARGET :: real8Entries(*)
 
-      REAL*8, POINTER :: ptr
+      REAL(KIND=8), POINTER :: ptr
       INTEGER :: icheck, i1
 
 !     Body
@@ -494,7 +502,11 @@ MODULE moduleReadWrite
       DO i1 = 1, nbOfWords
         ptr => real8Entries(i1)
 
+#ifdef _GFORTRAN_
+        IF ( isNotANumber8(ptr) ) THEN
+#else
         IF ( isnan(ptr) ) THEN
+#endif
            ptr = exclusionValue
            icheck = icheck + ione
         END IF
@@ -557,7 +569,7 @@ MODULE moduleReadWrite
 ! ============================================================
 
 
-! Procedure 0 : read standard vector of real*4 in GHER format
+! Procedure 0 : read standard vector of REAL(KIND=4) in GHER format
 ! -------------------------------------------------------------
    SUBROUTINE readReal4StdVector(fileToRead,matrix,exclusionValue,nbOfData)
 
@@ -565,9 +577,9 @@ MODULE moduleReadWrite
 !     - - - - - -
       TYPE(file), INTENT(IN) :: fileToRead
       INTEGER, INTENT(OUT) :: nbOfData
-      REAL*4, DIMENSION(:), POINTER, INTENT(OUT) :: matrix
-      REAL*4, DIMENSION(:), POINTER :: vector
-      REAL*4, INTENT(OUT) :: exclusionValue
+      REAL(KIND=4), DIMENSION(:), POINTER :: matrix
+      REAL(KIND=4), DIMENSION(:), POINTER :: vector
+      REAL(KIND=4), INTENT(OUT) :: exclusionValue
 
       LOGICAL :: isMatrixRegular
 
@@ -585,7 +597,7 @@ MODULE moduleReadWrite
 
    END SUBROUTINE
 
-! Procedure 1 : read standard vector of real*8 in GHER format
+! Procedure 1 : read standard vector of REAL(KIND=8) in GHER format
 ! -------------------------------------------------------------
    SUBROUTINE readReal8StdVector(fileToRead,matrix,exclusionValue,nbOfData)
 
@@ -593,10 +605,10 @@ MODULE moduleReadWrite
 !     - - - - - -
       TYPE(file), INTENT(IN) :: fileToRead
       INTEGER, INTENT(OUT) :: nbOfData
-      REAL*8, DIMENSION(:), POINTER, INTENT(OUT) :: matrix
-      REAL*8, DIMENSION(:), POINTER :: vector
-      REAL*8 :: exclusionValue8
-      REAL*4, INTENT(OUT) :: exclusionValue
+      REAL(KIND=8), DIMENSION(:), POINTER :: matrix
+      REAL(KIND=8), DIMENSION(:), POINTER :: vector
+      REAL(KIND=8) :: exclusionValue8
+      REAL(KIND=4), INTENT(OUT) :: exclusionValue
 
       LOGICAL :: isMatrixRegular
 
@@ -615,7 +627,7 @@ MODULE moduleReadWrite
 
    END SUBROUTINE
 
-! Procedure 2 : read standard matrix (i,j) of real*4 in GHER format
+! Procedure 2 : read standard matrix (i,j) of REAL(KIND=4) in GHER format
 ! ------------------------------------------------------------------
    SUBROUTINE readReal4Std2DMatrix(fileToRead,matrix,exclusionValue,nbOfDataI,nbOfDataJ)
 
@@ -623,9 +635,9 @@ MODULE moduleReadWrite
 !     - - - - - -
       TYPE(file), INTENT(IN) :: fileToRead
       INTEGER, INTENT(OUT) :: nbOfDataI,nbOfDataJ
-      REAL*4, DIMENSION(:,:), POINTER, INTENT(OUT) :: matrix
-      REAL*4, DIMENSION(:), POINTER :: vector
-      REAL*4, INTENT(OUT) :: exclusionValue
+      REAL(KIND=4), DIMENSION(:,:), POINTER :: matrix
+      REAL(KIND=4), DIMENSION(:), POINTER :: vector
+      REAL(KIND=4), INTENT(OUT) :: exclusionValue
 
       LOGICAL :: isMatrixRegular
 
@@ -643,7 +655,7 @@ MODULE moduleReadWrite
 
    END SUBROUTINE
 
-! Procedure 3 : read standard matrix (i,j) of real*8 in GHER format
+! Procedure 3 : read standard matrix (i,j) of REAL(KIND=8) in GHER format
 ! ------------------------------------------------------------------
    SUBROUTINE readReal8Std2DMatrix(fileToRead,matrix,exclusionValue,nbOfDataI,nbOfDataJ)
 
@@ -651,10 +663,10 @@ MODULE moduleReadWrite
 !     - - - - - -
       TYPE(file), INTENT(IN) :: fileToRead
       INTEGER, INTENT(OUT) :: nbOfDataI,nbOfDataJ
-      REAL*8, DIMENSION(:,:), POINTER, INTENT(OUT) :: matrix
-      REAL*8, DIMENSION(:), POINTER :: vector
-      REAL*4, INTENT(OUT) :: exclusionValue
-      REAL*8 :: exclusionValue8
+      REAL(KIND=8), DIMENSION(:,:), POINTER :: matrix
+      REAL(KIND=8), DIMENSION(:), POINTER :: vector
+      REAL(KIND=4), INTENT(OUT) :: exclusionValue
+      REAL(KIND=8) :: exclusionValue8
 
       LOGICAL :: isMatrixRegular
 
@@ -673,7 +685,7 @@ MODULE moduleReadWrite
 
    END SUBROUTINE
 
-! Procedure 4 : read standard matrix (i,j,k) of real*4 in GHER format
+! Procedure 4 : read standard matrix (i,j,k) of REAL(KIND=4) in GHER format
 ! --------------------------------------------------------------------
    SUBROUTINE readReal4Std3DMatrix(fileToRead,matrix,exclusionValue,nbOfDataI,nbOfDataJ,nbOfDataK)
 
@@ -681,9 +693,9 @@ MODULE moduleReadWrite
 !     - - - - - -
       TYPE(file), INTENT(IN) :: fileToRead
       INTEGER, INTENT(OUT) :: nbOfDataI,nbOfDataJ,nbOfDataK
-      REAL*4, DIMENSION(:,:,:), POINTER, INTENT(OUT) :: matrix
-      REAL*4, DIMENSION(:), POINTER :: vector
-      REAL*4, INTENT(OUT) :: exclusionValue
+      REAL(KIND=4), DIMENSION(:,:,:), POINTER :: matrix
+      REAL(KIND=4), DIMENSION(:), POINTER :: vector
+      REAL(KIND=4), INTENT(OUT) :: exclusionValue
 
       LOGICAL :: isMatrixRegular
 
@@ -701,7 +713,7 @@ MODULE moduleReadWrite
 
    END SUBROUTINE
 
-! Procedure 5 : read standard matrix (i,j,k) of real*8 in GHER format
+! Procedure 5 : read standard matrix (i,j,k) of REAL(KIND=8) in GHER format
 ! --------------------------------------------------------------------
    SUBROUTINE readReal8Std3DMatrix(fileToRead,matrix,exclusionValue,nbOfDataI,nbOfDataJ,nbOfDataK)
 
@@ -709,10 +721,10 @@ MODULE moduleReadWrite
 !     - - - - - -
       TYPE(file), INTENT(IN) :: fileToRead
       INTEGER, INTENT(OUT) :: nbOfDataI,nbOfDataJ,nbOfDataK
-      REAL*8, DIMENSION(:,:,:), POINTER, INTENT(OUT) :: matrix
-      REAL*8, DIMENSION(:), POINTER :: vector
-      REAL*4, INTENT(OUT) :: exclusionValue
-      REAL*8 :: exclusionValue8
+      REAL(KIND=8), DIMENSION(:,:,:), POINTER :: matrix
+      REAL(KIND=8), DIMENSION(:), POINTER :: vector
+      REAL(KIND=4), INTENT(OUT) :: exclusionValue
+      REAL(KIND=8) :: exclusionValue8
       LOGICAL :: isMatrixRegular
 
 !     Body
@@ -730,7 +742,7 @@ MODULE moduleReadWrite
 
    END SUBROUTINE
 
-! Procedure 6 : basic ureadc procedure for real*4 entries
+! Procedure 6 : basic ureadc procedure for REAL(KIND=4) entries
 ! -------------------------------------------------------
    SUBROUTINE ureadcReal4(fileToRead,realEntries,exclusionValue,isMatrixRegular,nbOfDataI,nbOfWords,nbOfDataJ,nbOfDataK)
 
@@ -739,15 +751,15 @@ MODULE moduleReadWrite
       TYPE(file), INTENT(IN) :: fileToRead
       INTEGER, INTENT(OUT) :: nbOfDataI
       INTEGER, OPTIONAL, INTENT(OUT) :: nbOfWords, nbOfDataJ, nbOfDataK
-      REAL*4, INTENT(OUT) :: exclusionValue
-      REAL*4, INTENT(OUT), DIMENSION(:), POINTER :: realEntries
+      REAL(KIND=4), INTENT(OUT) :: exclusionValue
+      REAL(KIND=4), DIMENSION(:), POINTER :: realEntries
       LOGICAL, INTENT(OUT) :: isMatrixRegular
 
       INTEGER :: iprecision
-      REAL*4, DIMENSION(:), POINTER :: internalReal4Entries
-      REAL*8, DIMENSION(:), POINTER :: internalReal8Entries
-      REAL*4 :: exclusionValue4
-      REAL*8 :: exclusionValue8
+      REAL(KIND=4), DIMENSION(:), POINTER :: internalReal4Entries
+      REAL(KIND=8), DIMENSION(:), POINTER :: internalReal8Entries
+      REAL(KIND=4) :: exclusionValue4
+      REAL(KIND=8) :: exclusionValue8
 
 
 !     Body
@@ -768,7 +780,7 @@ MODULE moduleReadWrite
 
    END SUBROUTINE
 
-! Procedure 7 : basic ureadc procedure for real*8 entries
+! Procedure 7 : basic ureadc procedure for REAL(KIND=8) entries
 ! -------------------------------------------------------
    SUBROUTINE ureadcReal8(fileToRead,realEntries,exclusionValue,isMatrixRegular,nbOfDataI,nbOfWords,nbOfDataJ,nbOfDataK)
 
@@ -777,15 +789,15 @@ MODULE moduleReadWrite
       TYPE(file), INTENT(IN) :: fileToRead
       INTEGER, INTENT(OUT) :: nbOfDataI
       INTEGER, OPTIONAL, INTENT(OUT) :: nbOfWords, nbOfDataJ, nbOfDataK
-      REAL*8, INTENT(OUT) :: exclusionValue
-      REAL*8, INTENT(OUT), DIMENSION(:), POINTER :: realEntries
+      REAL(KIND=8), INTENT(OUT) :: exclusionValue
+      REAL(KIND=8), DIMENSION(:), POINTER :: realEntries
       LOGICAL, INTENT(OUT) :: isMatrixRegular
 
       INTEGER :: iprecision
-      REAL*4, DIMENSION(:), POINTER :: internalReal4Entries
-      REAL*8, DIMENSION(:), POINTER :: internalReal8Entries
-      REAL*4 :: exclusionValue4
-      REAL*8 :: exclusionValue8
+      REAL(KIND=4), DIMENSION(:), POINTER :: internalReal4Entries
+      REAL(KIND=8), DIMENSION(:), POINTER :: internalReal8Entries
+      REAL(KIND=4) :: exclusionValue4
+      REAL(KIND=8) :: exclusionValue8
 
 !     Body
 !     - - -
@@ -815,10 +827,10 @@ MODULE moduleReadWrite
       TYPE(file), INTENT(IN) :: fileToRead
       INTEGER, INTENT(OUT) :: nbOfDataI, nbOfDataJ, nbOfDataK, iprecision
       INTEGER, INTENT(OUT) :: nbOfWords
-      REAL*4, INTENT(OUT), DIMENSION(:), POINTER :: real4Entries
-      REAL*8, INTENT(OUT), DIMENSION(:), POINTER :: real8Entries
-      REAL*4 :: exclusionValue4
-      REAL*8 :: exclusionValue8
+      REAL(KIND=4), DIMENSION(:), POINTER :: real4Entries
+      REAL(KIND=8), DIMENSION(:), POINTER :: real8Entries
+      REAL(KIND=4) :: exclusionValue4
+      REAL(KIND=8) :: exclusionValue8
 
       LOGICAL :: fileFormat, checkReadingProcedure
       INTEGER :: numberOfFullRecord, remainingWords, logicalUnit, icheckError, icheckEnd
@@ -846,7 +858,7 @@ MODULE moduleReadWrite
       END IF
 
 !         read exclusion value    (this separation in the reading procedure of the exclusion value allows possibility to define
-!         --  --  --  --  --  --    real*4 or real*8 exclusion value (not use yet, currently, exclusion value is always real*4))
+!         --  --  --  --  --  --    REAL(KIND=4) or REAL(KIND=8) exclusion value (not use yet, currently, exclusion value is always REAL(KIND=4)))
 !      SELECT CASE (iprecision)
 !         CASE (ifour)
 !            CALL readExclusionValue4(logicalUnit,fileFormat,exclusionValue4,icheckError)
@@ -970,7 +982,7 @@ MODULE moduleReadWrite
 
    END SUBROUTINE
 
-! Procedure 11 : read exclusion value (real*4)
+! Procedure 11 : read exclusion value (REAL(KIND=4))
 ! -----------------------------------
   SUBROUTINE readExclusionValue4(logicalUnit,fileFormat,exclusionValue,icheckError)
 
@@ -980,7 +992,7 @@ MODULE moduleReadWrite
       INTEGER, INTENT(IN) :: logicalUnit
       INTEGER :: nbOfDataI, nbOfDataJ, nbOfDataK, nbOfWords, iprecision
       INTEGER, INTENT(OUT) :: icheckError
-      REAL*4, INTENT(OUT) :: exclusionValue
+      REAL(KIND=4), INTENT(OUT) :: exclusionValue
 
 !     Body
 !     - - -
@@ -1003,7 +1015,7 @@ MODULE moduleReadWrite
 
   END SUBROUTINE
 
-! Procedure 11 : read exclusion value (real*4)
+! Procedure 11 : read exclusion value (REAL(KIND=4))
 ! -----------------------------------
   SUBROUTINE readExclusionValue8(logicalUnit,fileFormat,exclusionValue,icheckError)
 
@@ -1013,7 +1025,7 @@ MODULE moduleReadWrite
       INTEGER, INTENT(IN) :: logicalUnit
       INTEGER :: nbOfDataI, nbOfDataJ, nbOfDataK, nbOfWords, iprecision
       INTEGER, INTENT(OUT) :: icheckError
-      REAL*8, INTENT(OUT) :: exclusionValue
+      REAL(KIND=8), INTENT(OUT) :: exclusionValue
 
 !     Body
 !     - - -
@@ -1067,7 +1079,7 @@ MODULE moduleReadWrite
 
    END SUBROUTINE
 
-! Procedure 14 : read data (real*4)
+! Procedure 14 : read data (REAL(KIND=4))
 ! ------------------------
   SUBROUTINE readData4(logicalUnit,fileFormat,realEntries,numberOfFullRecord,nbOfWords,remainingWords,icheckError,icheckEnd)
 
@@ -1077,7 +1089,7 @@ MODULE moduleReadWrite
       INTEGER, INTENT(IN) :: logicalUnit, numberOfFullRecord, remainingWords, nbOfWords
       INTEGER :: i1, i2, i3
       INTEGER, INTENT(OUT) :: icheckError,icheckEnd
-      REAL*4, INTENT(OUT), DIMENSION(:), POINTER :: realEntries
+      REAL(KIND=4), DIMENSION(:), POINTER :: realEntries
 
 !     Body
 !     - - -
@@ -1115,7 +1127,7 @@ MODULE moduleReadWrite
 
    END SUBROUTINE
 
-! Procedure 15 : read data (real*8)
+! Procedure 15 : read data (REAL(KIND=8))
 ! ------------------------
   SUBROUTINE readData8(logicalUnit,fileFormat,realEntries,numberOfFullRecord,nbOfWords,remainingWords,icheckError,icheckEnd)
 
@@ -1125,7 +1137,7 @@ MODULE moduleReadWrite
       INTEGER, INTENT(IN) :: logicalUnit, numberOfFullRecord, remainingWords, nbOfWords
       INTEGER :: i1, i2, i3
       INTEGER, INTENT(OUT) :: icheckError,icheckEnd
-      REAL*8, INTENT(OUT), DIMENSION(:), POINTER :: realEntries
+      REAL(KIND=8), DIMENSION(:), POINTER :: realEntries
 
 !     Body
 !     - - -
@@ -1162,7 +1174,7 @@ MODULE moduleReadWrite
 
    END SUBROUTINE
 
-! Procedure 16 : fill data vector (real*4) with reading value (real*4)
+! Procedure 16 : fill data vector (REAL(KIND=4)) with reading value (REAL(KIND=4))
 ! --------------------------------------------------------------------
   SUBROUTINE fillEntryReal4To4(nbOfWords,internalRealEntries,realEntries)
 
@@ -1170,8 +1182,8 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER, INTENT(IN) :: nbOfWords
 
-      REAL*4, DIMENSION(:), INTENT(INOUT), POINTER :: internalRealEntries
-      REAL*4, DIMENSION(:), POINTER :: realEntries
+      REAL(KIND=4), DIMENSION(:), POINTER :: internalRealEntries
+      REAL(KIND=4), DIMENSION(:), POINTER :: realEntries
 
       INTEGER :: i1
 
@@ -1187,7 +1199,7 @@ MODULE moduleReadWrite
 
   END SUBROUTINE
 
-! Procedure 17 : fill data vector (real*8) with reading value (real*4)
+! Procedure 17 : fill data vector (REAL(KIND=8)) with reading value (REAL(KIND=4))
 ! --------------------------------------------------------------------
   SUBROUTINE fillEntryReal4To8(nbOfWords,internalRealEntries,realEntries)
 
@@ -1195,8 +1207,8 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER, INTENT(IN) :: nbOfWords
 
-      REAL*4, DIMENSION(:), INTENT(INOUT), POINTER :: internalRealEntries
-      REAL*8, DIMENSION(:), POINTER :: realEntries
+      REAL(KIND=4), DIMENSION(:), POINTER :: internalRealEntries
+      REAL(KIND=8), DIMENSION(:), POINTER :: realEntries
 
       INTEGER :: i1
 
@@ -1212,7 +1224,7 @@ MODULE moduleReadWrite
 
   END SUBROUTINE
 
-! Procedure 18 : fill data vector (real*4) with reading value (real*8)
+! Procedure 18 : fill data vector (REAL(KIND=4)) with reading value (REAL(KIND=8))
 ! --------------------------------------------------------------------
   SUBROUTINE fillEntryReal8To4(nbOfWords,internalRealEntries,realEntries)
 
@@ -1220,8 +1232,8 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER, INTENT(IN) :: nbOfWords
 
-      REAL*8, DIMENSION(:), INTENT(INOUT), POINTER :: internalRealEntries
-      REAL*4, DIMENSION(:), POINTER :: realEntries
+      REAL(KIND=8), DIMENSION(:), POINTER :: internalRealEntries
+      REAL(KIND=4), DIMENSION(:), POINTER :: realEntries
 
       INTEGER :: i1
 
@@ -1237,7 +1249,7 @@ MODULE moduleReadWrite
 
   END SUBROUTINE
 
-! Procedure 19 : fill data vector (real*8) with reading value (real*8)
+! Procedure 19 : fill data vector (REAL(KIND=8)) with reading value (REAL(KIND=8))
 ! --------------------------------------------------------------------
   SUBROUTINE fillEntryReal8To8(nbOfWords,internalRealEntries,realEntries)
 
@@ -1245,8 +1257,8 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER, INTENT(IN) :: nbOfWords
 
-      REAL*8, DIMENSION(:), INTENT(INOUT), POINTER :: internalRealEntries
-      REAL*8, DIMENSION(:), POINTER :: realEntries
+      REAL(KIND=8), DIMENSION(:), POINTER :: internalRealEntries
+      REAL(KIND=8), DIMENSION(:), POINTER :: realEntries
 
       INTEGER :: i1
 
@@ -1297,7 +1309,7 @@ MODULE moduleReadWrite
 
   END SUBROUTINE
 
-! Procedure 22 : fill 3D real*8 regular matrix
+! Procedure 22 : fill 3D REAL(KIND=8) regular matrix
 ! --------------------------------------------
   SUBROUTINE fillReal8Std3DRegularMatrix(matrix,vector,nbOfDataI,nbOfDataJ,nbOfDataK)
 
@@ -1305,8 +1317,8 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1, i2, i3, i4
       INTEGER, INTENT(IN) :: nbOfDataI,nbOfDataJ,nbOfDataK
-      REAL*8, DIMENSION(:,:,:), POINTER :: matrix
-      REAL*8, DIMENSION(:), INTENT(INOUT), POINTER :: vector
+      REAL(KIND=8), DIMENSION(:,:,:), POINTER :: matrix
+      REAL(KIND=8), DIMENSION(:), POINTER :: vector
 
 !     Body
 !     - - -
@@ -1327,7 +1339,7 @@ MODULE moduleReadWrite
       DEALLOCATE(vector)
   END SUBROUTINE
 
- ! Procedure 23 : fill 3D real*8 degenerated matrix
+ ! Procedure 23 : fill 3D REAL(KIND=8) degenerated matrix
 ! --------------------------------------------------
   SUBROUTINE fillReal8Std3DDegeneratedMatrix(matrix,vector,nbOfDataI,nbOfDataJ,nbOfDataK)
 
@@ -1335,9 +1347,9 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1, i2, i3
       INTEGER, INTENT(IN) :: nbOfDataI,nbOfDataJ,nbOfDataK
-      REAL*8, DIMENSION(:,:,:), POINTER :: matrix
-      REAL*8, DIMENSION(:), INTENT(INOUT), POINTER :: vector
-      REAL*8 :: initialCoordinate, DX, DY, DZ
+      REAL(KIND=8), DIMENSION(:,:,:), POINTER :: matrix
+      REAL(KIND=8), DIMENSION(:), POINTER :: vector
+      REAL(KIND=8) :: initialCoordinate, DX, DY, DZ
 
 !     Body
 !     - - -
@@ -1360,7 +1372,7 @@ MODULE moduleReadWrite
 
   END SUBROUTINE
 
-! Procedure 24 : fill 3D real*4 regular matrix
+! Procedure 24 : fill 3D REAL(KIND=4) regular matrix
 ! --------------------------------------------
   SUBROUTINE fillReal4Std3DRegularMatrix(matrix,vector,nbOfDataI,nbOfDataJ,nbOfDataK)
 
@@ -1368,8 +1380,8 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1, i2, i3, i4
       INTEGER, INTENT(IN) :: nbOfDataI,nbOfDataJ,nbOfDataK
-      REAL*4, DIMENSION(:,:,:), POINTER :: matrix
-      REAL*4, DIMENSION(:), INTENT(INOUT), POINTER :: vector
+      REAL(KIND=4), DIMENSION(:,:,:), POINTER :: matrix
+      REAL(KIND=4), DIMENSION(:), POINTER :: vector
 
 !     Body
 !     - - -
@@ -1390,7 +1402,7 @@ MODULE moduleReadWrite
       DEALLOCATE(vector)
   END SUBROUTINE
 
- ! Procedure 25 : fill 3D real*4 degenerated matrix
+ ! Procedure 25 : fill 3D REAL(KIND=4) degenerated matrix
 ! --------------------------------------------------
   SUBROUTINE fillReal4Std3DDegeneratedMatrix(matrix,vector,nbOfDataI,nbOfDataJ,nbOfDataK)
 
@@ -1398,9 +1410,9 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1, i2, i3
       INTEGER, INTENT(IN) :: nbOfDataI,nbOfDataJ,nbOfDataK
-      REAL*4, DIMENSION(:,:,:), POINTER :: matrix
-      REAL*4, DIMENSION(:), INTENT(INOUT), POINTER :: vector
-      REAL*4 :: initialCoordinate, DX, DY, DZ
+      REAL(KIND=4), DIMENSION(:,:,:), POINTER :: matrix
+      REAL(KIND=4), DIMENSION(:), POINTER :: vector
+      REAL(KIND=4) :: initialCoordinate, DX, DY, DZ
 
 !     Body
 !     - - -
@@ -1423,7 +1435,7 @@ MODULE moduleReadWrite
 
   END SUBROUTINE
 
-! Procedure 26 : fill 2D real*8 regular matrix
+! Procedure 26 : fill 2D REAL(KIND=8) regular matrix
 ! --------------------------------------------
   SUBROUTINE fillReal8Std2DRegularMatrix(matrix,vector,nbOfDataI,nbOfDataJ)
 
@@ -1431,8 +1443,8 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1, i2, i4
       INTEGER, INTENT(IN) :: nbOfDataI,nbOfDataJ
-      REAL*8, DIMENSION(:,:), POINTER :: matrix
-      REAL*8, DIMENSION(:), INTENT(INOUT), POINTER :: vector
+      REAL(KIND=8), DIMENSION(:,:), POINTER :: matrix
+      REAL(KIND=8), DIMENSION(:), POINTER :: vector
 
 !     Body
 !     - - -
@@ -1451,7 +1463,7 @@ MODULE moduleReadWrite
       DEALLOCATE(vector)
   END SUBROUTINE
 
- ! Procedure 27 : fill 2D real*8 degenerated matrix
+ ! Procedure 27 : fill 2D REAL(KIND=8) degenerated matrix
 ! --------------------------------------------------
   SUBROUTINE fillReal8Std2DDegeneratedMatrix(matrix,vector,nbOfDataI,nbOfDataJ)
 
@@ -1459,9 +1471,9 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1, i2
       INTEGER, INTENT(IN) :: nbOfDataI,nbOfDataJ
-      REAL*8, DIMENSION(:,:), POINTER :: matrix
-      REAL*8, DIMENSION(:), INTENT(INOUT), POINTER :: vector
-      REAL*8 :: initialCoordinate, DX, DY
+      REAL(KIND=8), DIMENSION(:,:), POINTER :: matrix
+      REAL(KIND=8), DIMENSION(:), POINTER :: vector
+      REAL(KIND=8) :: initialCoordinate, DX, DY
 
 !     Body
 !     - - -
@@ -1481,7 +1493,7 @@ MODULE moduleReadWrite
 
   END SUBROUTINE
 
-! Procedure 28 : fill 2D real*4 regular matrix
+! Procedure 28 : fill 2D REAL(KIND=4) regular matrix
 ! --------------------------------------------
   SUBROUTINE fillReal4Std2DRegularMatrix(matrix,vector,nbOfDataI,nbOfDataJ)
 
@@ -1489,8 +1501,8 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1, i2, i4
       INTEGER, INTENT(IN) :: nbOfDataI,nbOfDataJ
-      REAL*4, DIMENSION(:,:), POINTER :: matrix
-      REAL*4, DIMENSION(:), INTENT(INOUT), POINTER :: vector
+      REAL(KIND=4), DIMENSION(:,:), POINTER :: matrix
+      REAL(KIND=4), DIMENSION(:), POINTER :: vector
 
 !     Body
 !     - - -
@@ -1509,7 +1521,7 @@ MODULE moduleReadWrite
       DEALLOCATE(vector)
   END SUBROUTINE
 
- ! Procedure 29 : fill 2D real*4 degenerated matrix
+ ! Procedure 29 : fill 2D REAL(KIND=4) degenerated matrix
 ! --------------------------------------------------
   SUBROUTINE fillReal4Std2DDegeneratedMatrix(matrix,vector,nbOfDataI,nbOfDataJ)
 
@@ -1517,9 +1529,9 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1, i2
       INTEGER, INTENT(IN) :: nbOfDataI,nbOfDataJ
-      REAL*4, DIMENSION(:,:), POINTER :: matrix
-      REAL*4, DIMENSION(:), INTENT(INOUT), POINTER :: vector
-      REAL*4 :: initialCoordinate, DX, DY
+      REAL(KIND=4), DIMENSION(:,:), POINTER :: matrix
+      REAL(KIND=4), DIMENSION(:), POINTER :: vector
+      REAL(KIND=4) :: initialCoordinate, DX, DY
 
 !     Body
 !     - - -
@@ -1539,7 +1551,7 @@ MODULE moduleReadWrite
 
   END SUBROUTINE
 
-! Procedure 30 : fill 1D real*8 regular matrix
+! Procedure 30 : fill 1D REAL(KIND=8) regular matrix
 ! --------------------------------------------
   SUBROUTINE fillReal8Std1DRegularMatrix(matrix,vector,nbOfDataI)
 
@@ -1547,8 +1559,8 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1, i4
       INTEGER, INTENT(IN) :: nbOfDataI
-      REAL*8, DIMENSION(:), POINTER :: matrix
-      REAL*8, DIMENSION(:), INTENT(INOUT), POINTER :: vector
+      REAL(KIND=8), DIMENSION(:), POINTER :: matrix
+      REAL(KIND=8), DIMENSION(:), POINTER :: vector
 
 !     Body
 !     - - -
@@ -1565,7 +1577,7 @@ MODULE moduleReadWrite
       DEALLOCATE(vector)
   END SUBROUTINE
 
- ! Procedure 31 : fill 2D real*8 degenerated matrix
+ ! Procedure 31 : fill 2D REAL(KIND=8) degenerated matrix
 ! --------------------------------------------------
   SUBROUTINE fillReal8Std1DDegeneratedMatrix(matrix,vector,nbOfDataI)
 
@@ -1573,9 +1585,9 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1
       INTEGER, INTENT(IN) :: nbOfDataI
-      REAL*8, DIMENSION(:), POINTER :: matrix
-      REAL*8, DIMENSION(:), INTENT(INOUT), POINTER :: vector
-      REAL*8 :: initialCoordinate, DX
+      REAL(KIND=8), DIMENSION(:), POINTER :: matrix
+      REAL(KIND=8), DIMENSION(:), POINTER :: vector
+      REAL(KIND=8) :: initialCoordinate, DX
 
 !     Body
 !     - - -
@@ -1592,7 +1604,7 @@ MODULE moduleReadWrite
 
   END SUBROUTINE
 
-! Procedure 32 : fill 1D real*4 regular matrix
+! Procedure 32 : fill 1D REAL(KIND=4) regular matrix
 ! --------------------------------------------
   SUBROUTINE fillReal4Std1DRegularMatrix(matrix,vector,nbOfDataI)
 
@@ -1600,8 +1612,8 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1, i4
       INTEGER, INTENT(IN) :: nbOfDataI
-      REAL*4, DIMENSION(:), POINTER :: matrix
-      REAL*4, DIMENSION(:), INTENT(INOUT), POINTER :: vector
+      REAL(KIND=4), DIMENSION(:), POINTER :: matrix
+      REAL(KIND=4), DIMENSION(:), POINTER :: vector
 
 !     Body
 !     - - -
@@ -1618,7 +1630,7 @@ MODULE moduleReadWrite
       DEALLOCATE(vector)
   END SUBROUTINE
 
- ! Procedure 33 : fill 2D real*4 degenerated matrix
+! Procedure 33 : fill 2D REAL(KIND=4) degenerated matrix
 ! --------------------------------------------------
   SUBROUTINE fillReal4Std1DDegeneratedMatrix(matrix,vector,nbOfDataI)
 
@@ -1626,9 +1638,9 @@ MODULE moduleReadWrite
 !     - - - - - -
       INTEGER :: i1
       INTEGER, INTENT(IN) :: nbOfDataI
-      REAL*4, DIMENSION(:), POINTER :: matrix
-      REAL*4, DIMENSION(:), INTENT(INOUT), POINTER :: vector
-      REAL*4 :: initialCoordinate, DX
+      REAL(KIND=4), DIMENSION(:), POINTER :: matrix
+      REAL(KIND=4), DIMENSION(:), POINTER :: vector
+      REAL(KIND=4) :: initialCoordinate, DX
 
 !     Body
 !     - - -
@@ -1645,5 +1657,96 @@ MODULE moduleReadWrite
 
   END SUBROUTINE
 
+! Procedure 34 : check if value is not a number (only for GFORTRAN)
+! -----------------------------------------------------------------
+#ifdef _GFORTRAN_
+  FUNCTION isNotANumber4(value) RESULT(check)
+
+!     Declaration
+!     - - - - - -
+      REAL(KIND=4) :: numerator, denominator, ratio
+      REAL(KIND=4), INTENT(IN) :: value
+      LOGICAL :: check
+
+!     Body
+!     - - -
+      check = false
+
+      numerator = 1.
+      denominator = 0.
+      ratio = numerator / denominator
+      IF ( value == ratio ) THEN
+         check = true
+         RETURN
+      END IF
+
+      ratio = (-1.) * ratio
+      IF ( value == ratio ) THEN
+         check = true
+         RETURN
+      END IF
+
+      numerator = 0.
+      ratio = numerator / denominator
+      IF ( value == ratio ) THEN
+         check = true
+         RETURN
+      END IF
+
+      ratio = (-1.) * ratio
+      IF ( value == ratio ) THEN
+         check = true
+         RETURN
+      END IF
+
+  END FUNCTION
+
+#endif
+
+! Procedure 35 : check if value is not a number (only for GFORTRAN)
+! -----------------------------------------------------------------
+#ifdef _GFORTRAN_
+  FUNCTION isNotANumber8(value) RESULT(check)
+
+!     Declaration
+!     - - - - - -
+      REAL(KIND=8) :: numerator, denominator, ratio
+      REAL(KIND=8), INTENT(IN) :: value
+      LOGICAL :: check
+
+!     Body
+!     - - -
+      check = false
+
+      numerator = 1.
+      denominator = 0.
+      ratio = numerator / denominator
+      IF ( value == ratio ) THEN
+         check = true
+         RETURN
+      END IF
+
+      ratio = (-1.) * ratio
+      IF ( value == ratio ) THEN
+         check = true
+         RETURN
+      END IF
+
+      numerator = 0.
+      ratio = numerator / denominator
+      IF ( value == ratio ) THEN
+         check = true
+         RETURN
+      END IF
+
+      ratio = (-1.) * ratio
+      IF ( value == ratio ) THEN
+         check = true
+         RETURN
+      END IF
+
+  END FUNCTION
+
+#endif
 
 END MODULE moduleReadWrite

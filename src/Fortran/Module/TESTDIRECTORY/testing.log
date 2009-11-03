@@ -1,7 +1,9 @@
 Test : testVector.Real8
 ------
 Compiling  testVector
-1,40d0
+1,43d0
+<  checkAllocationMemoryProcedure
+<  ==============================
 <  The size of the vector is :  3
 <     The allocated memory is :  8
 <     The increase allocation memory is :  5
@@ -12,8 +14,8 @@ Compiling  testVector
 <  value( 2 ) =  0.
 <  value( 3 ) =  0.
 <  The size of the vector is :  9
-<     The allocated memory is :  9
-<     The increase allocation memory is :  0
+<     The allocated memory is :  14
+<     The increase allocation memory is :  5
 <     Allocation status of the vector :  T
 <     First position is :  1
 <     Last position is  :  9
@@ -27,7 +29,7 @@ Compiling  testVector
 <  value( 8 ) =  0.
 <  value( 9 ) =  0.
 <  The size of the vector is :  10
-<     The allocated memory is :  15
+<     The allocated memory is :  14
 <     The increase allocation memory is :  5
 <     Allocation status of the vector :  T
 <     First position is :  1
@@ -42,9 +44,10 @@ Compiling  testVector
 <  value( 8 ) =  0.
 <  value( 9 ) =  0.
 <  value( 10 ) =  0.
-45d4
+<   
+48d4
 <     The increase allocation memory is :  5
-49,51c8,10
+52,54c8,10
 <  value( 1 ) =  0.
 <  value( 2 ) =  0.
 <  value( 3 ) =  0.
@@ -52,9 +55,9 @@ Compiling  testVector
 >  value  1  :  0.
 >  value  2  :  0.
 >  value  3  :  0.
-57d15
+60d15
 <     The increase allocation memory is :  5
-61,63c19,21
+64,66c19,21
 <  value( 1 ) =  25.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -62,9 +65,9 @@ Compiling  testVector
 >  value  1  :  25.
 >  value  2  :  25.
 >  value  3  :  25.
-69d26
+72d26
 <     The increase allocation memory is :  5
-73,75c30,32
+76,78c30,32
 <  value( 1 ) =  15.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -72,9 +75,9 @@ Compiling  testVector
 >  value  1  :  15.
 >  value  2  :  25.
 >  value  3  :  25.
-81d37
+84d37
 <     The increase allocation memory is :  5
-85,87c41,43
+88,90c41,43
 <  value( 1 ) =  60.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -82,9 +85,9 @@ Compiling  testVector
 >  value  1  :  60.
 >  value  2  :  25.
 >  value  3  :  25.
-102d57
+105d57
 <     The increase allocation memory is :  5
-106,108c61,63
+109,111c61,63
 <  value( 1 ) =  19.199999570846558
 <  value( 2 ) =  7.999999821186066
 <  value( 3 ) =  7.999999821186066
@@ -92,9 +95,9 @@ Compiling  testVector
 >  value  1  :  19.199999570846558
 >  value  2  :  7.999999821186066
 >  value  3  :  7.999999821186066
-114d68
+117d68
 <     The increase allocation memory is :  5
-118,120c72,74
+121,123c72,74
 <  value( 1 ) =  4.381780411071116
 <  value( 2 ) =  2.8284270931360536
 <  value( 3 ) =  2.8284270931360536
@@ -102,9 +105,9 @@ Compiling  testVector
 >  value  1  :  4.381780411071116
 >  value  2  :  2.8284270931360536
 >  value  3  :  2.8284270931360536
-138d91
+141d91
 <     The increase allocation memory is :  5
-142,144c95,97
+145,147c95,97
 <  value( 1 ) =  2.299999952316284
 <  value( 2 ) =  2.299999952316284
 <  value( 3 ) =  2.299999952316284
@@ -112,9 +115,9 @@ Compiling  testVector
 >  value  1  :  2.299999952316284
 >  value  2  :  2.299999952316284
 >  value  3  :  2.299999952316284
-151d103
+154d103
 <     The increase allocation memory is :  5
-155,157c107,109
+158,160c107,109
 <  value( 1 ) =  23.
 <  value( 2 ) =  23.
 <  value( 3 ) =  23.
@@ -122,9 +125,9 @@ Compiling  testVector
 >  value  1  :  23.
 >  value  2  :  23.
 >  value  3  :  23.
-163d114
+166d114
 <     The increase allocation memory is :  5
-167,169c118,120
+170,172c118,120
 <  value( 1 ) =  2.299999952316284
 <  value( 2 ) =  2.299999952316284
 <  value( 3 ) =  2.299999952316284
@@ -132,9 +135,9 @@ Compiling  testVector
 >  value  1  :  2.299999952316284
 >  value  2  :  2.299999952316284
 >  value  3  :  2.299999952316284
-172d122
+175d122
 <     The increase allocation memory is :  5
-176,182c126,132
+179,185c126,132
 <  value( -1 ) =  -3.299999952316284
 <  value( 0 ) =  -3.299999952316284
 <  value( 1 ) =  2.299999952316284
@@ -150,9 +153,9 @@ Compiling  testVector
 >  value  3  :  2.299999952316284
 >  value  4  :  3.299999952316284
 >  value  5  :  3.299999952316284
-188d137
+191d137
 <     The increase allocation memory is :  5
-192,194c141,143
+195,197c141,143
 <  value( 1 ) =  0.
 <  value( 2 ) =  0.
 <  value( 3 ) =  0.
@@ -160,9 +163,9 @@ Compiling  testVector
 >  value  1  :  0.
 >  value  2  :  0.
 >  value  3  :  0.
-200d148
+203d148
 <     The increase allocation memory is :  5
-204,206c152,154
+207,209c152,154
 <  value( 1 ) =  25.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -170,9 +173,9 @@ Compiling  testVector
 >  value  1  :  25.
 >  value  2  :  25.
 >  value  3  :  25.
-212d159
+215d159
 <     The increase allocation memory is :  5
-216,218c163,165
+219,221c163,165
 <  value( 1 ) =  15.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -180,9 +183,9 @@ Compiling  testVector
 >  value  1  :  15.
 >  value  2  :  25.
 >  value  3  :  25.
-224d170
+227d170
 <     The increase allocation memory is :  5
-228,230c174,176
+231,233c174,176
 <  value( 1 ) =  60.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -190,9 +193,9 @@ Compiling  testVector
 >  value  1  :  60.
 >  value  2  :  25.
 >  value  3  :  25.
-245d190
+248d190
 <     The increase allocation memory is :  5
-249,251c194,196
+252,254c194,196
 <  value( 1 ) =  19.199999570846558
 <  value( 2 ) =  7.999999821186066
 <  value( 3 ) =  7.999999821186066
@@ -200,9 +203,9 @@ Compiling  testVector
 >  value  1  :  19.199999570846558
 >  value  2  :  7.999999821186066
 >  value  3  :  7.999999821186066
-257d201
+260d201
 <     The increase allocation memory is :  5
-261,263c205,207
+264,266c205,207
 <  value( 1 ) =  4.381780411071116
 <  value( 2 ) =  2.8284270931360536
 <  value( 3 ) =  2.8284270931360536
@@ -210,9 +213,9 @@ Compiling  testVector
 >  value  1  :  4.381780411071116
 >  value  2  :  2.8284270931360536
 >  value  3  :  2.8284270931360536
-281d224
+284d224
 <     The increase allocation memory is :  5
-285,287c228,230
+288,290c228,230
 <  value( 1 ) =  2.299999952316284
 <  value( 2 ) =  2.299999952316284
 <  value( 3 ) =  2.299999952316284
@@ -220,9 +223,9 @@ Compiling  testVector
 >  value  1  :  2.299999952316284
 >  value  2  :  2.299999952316284
 >  value  3  :  2.299999952316284
-294d236
+297d236
 <     The increase allocation memory is :  5
-298,300c240,242
+301,303c240,242
 <  value( 1 ) =  23.
 <  value( 2 ) =  23.
 <  value( 3 ) =  23.
@@ -230,9 +233,9 @@ Compiling  testVector
 >  value  1  :  23.
 >  value  2  :  23.
 >  value  3  :  23.
-306d247
+309d247
 <     The increase allocation memory is :  5
-310,312c251,253
+313,315c251,253
 <  value( 1 ) =  2.299999952316284
 <  value( 2 ) =  2.299999952316284
 <  value( 3 ) =  2.299999952316284
@@ -240,9 +243,9 @@ Compiling  testVector
 >  value  1  :  2.299999952316284
 >  value  2  :  2.299999952316284
 >  value  3  :  2.299999952316284
-315d255
+318d255
 <     The increase allocation memory is :  5
-319,325c259,265
+322,328c259,265
 <  value( -1 ) =  -3.299999952316284
 <  value( 0 ) =  -3.299999952316284
 <  value( 1 ) =  2.299999952316284
@@ -258,9 +261,9 @@ Compiling  testVector
 >  value  3  :  2.299999952316284
 >  value  4  :  3.299999952316284
 >  value  5  :  3.299999952316284
-331d270
+334d270
 <     The increase allocation memory is :  5
-335,337c274,276
+338,340c274,276
 <  value( -1 ) =  0.
 <  value( 0 ) =  0.
 <  value( 1 ) =  0.
@@ -268,9 +271,9 @@ Compiling  testVector
 >  value  -1  :  0.
 >  value  0  :  0.
 >  value  1  :  0.
-343d281
+346d281
 <     The increase allocation memory is :  5
-347,349c285,287
+350,352c285,287
 <  value( -1 ) =  25.
 <  value( 0 ) =  25.
 <  value( 1 ) =  25.
@@ -278,9 +281,9 @@ Compiling  testVector
 >  value  -1  :  25.
 >  value  0  :  25.
 >  value  1  :  25.
-355d292
+358d292
 <     The increase allocation memory is :  5
-359,361c296,298
+362,364c296,298
 <  value( -1 ) =  25.
 <  value( 0 ) =  25.
 <  value( 1 ) =  15.
@@ -288,9 +291,9 @@ Compiling  testVector
 >  value  -1  :  25.
 >  value  0  :  25.
 >  value  1  :  15.
-367d303
+370d303
 <     The increase allocation memory is :  5
-371,373c307,309
+374,376c307,309
 <  value( -1 ) =  25.
 <  value( 0 ) =  25.
 <  value( 1 ) =  60.
@@ -298,9 +301,9 @@ Compiling  testVector
 >  value  -1  :  25.
 >  value  0  :  25.
 >  value  1  :  60.
-388d323
+391d323
 <     The increase allocation memory is :  5
-392,394c327,329
+395,397c327,329
 <  value( -1 ) =  7.999999821186066
 <  value( 0 ) =  7.999999821186066
 <  value( 1 ) =  19.199999570846558
@@ -308,9 +311,9 @@ Compiling  testVector
 >  value  -1  :  7.999999821186066
 >  value  0  :  7.999999821186066
 >  value  1  :  19.199999570846558
-400d334
+403d334
 <     The increase allocation memory is :  5
-404,406c338,340
+407,409c338,340
 <  value( -1 ) =  2.8284270931360536
 <  value( 0 ) =  2.8284270931360536
 <  value( 1 ) =  4.381780411071116
@@ -318,9 +321,9 @@ Compiling  testVector
 >  value  -1  :  2.8284270931360536
 >  value  0  :  2.8284270931360536
 >  value  1  :  4.381780411071116
-424d357
+427d357
 <     The increase allocation memory is :  5
-428,430c361,363
+431,433c361,363
 <  value( 1 ) =  2.299999952316284
 <  value( 2 ) =  2.299999952316284
 <  value( 3 ) =  2.299999952316284
@@ -328,9 +331,9 @@ Compiling  testVector
 >  value  1  :  2.299999952316284
 >  value  2  :  2.299999952316284
 >  value  3  :  2.299999952316284
-437d369
+440d369
 <     The increase allocation memory is :  5
-441,443c373,375
+444,446c373,375
 <  value( -1 ) =  23.
 <  value( 0 ) =  23.
 <  value( 1 ) =  23.
@@ -338,9 +341,9 @@ Compiling  testVector
 >  value  -1  :  23.
 >  value  0  :  23.
 >  value  1  :  23.
-449d380
+452d380
 <     The increase allocation memory is :  5
-453,455c384,386
+456,458c384,386
 <  value( -1 ) =  2.299999952316284
 <  value( 0 ) =  2.299999952316284
 <  value( 1 ) =  2.299999952316284
@@ -348,9 +351,9 @@ Compiling  testVector
 >  value  -1  :  2.299999952316284
 >  value  0  :  2.299999952316284
 >  value  1  :  2.299999952316284
-458d388
+461d388
 <     The increase allocation memory is :  5
-462,468c392,398
+465,471c392,398
 <  value( -3 ) =  -3.299999952316284
 <  value( -2 ) =  -3.299999952316284
 <  value( -1 ) =  2.299999952316284
@@ -366,9 +369,9 @@ Compiling  testVector
 >  value  1  :  2.299999952316284
 >  value  2  :  3.299999952316284
 >  value  3  :  3.299999952316284
-474d403
+477d403
 <     The increase allocation memory is :  0
-478,480c407,409
+481,483c407,409
 <  value( 1 ) =  0.
 <  value( 2 ) =  0.
 <  value( 3 ) =  0.
@@ -376,9 +379,9 @@ Compiling  testVector
 >  value  1  :  0.
 >  value  2  :  0.
 >  value  3  :  0.
-486d414
+489d414
 <     The increase allocation memory is :  0
-490,492c418,420
+493,495c418,420
 <  value( 1 ) =  25.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -386,9 +389,9 @@ Compiling  testVector
 >  value  1  :  25.
 >  value  2  :  25.
 >  value  3  :  25.
-498d425
+501d425
 <     The increase allocation memory is :  0
-502,504c429,431
+505,507c429,431
 <  value( 1 ) =  15.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -396,9 +399,9 @@ Compiling  testVector
 >  value  1  :  15.
 >  value  2  :  25.
 >  value  3  :  25.
-510d436
+513d436
 <     The increase allocation memory is :  0
-514,516c440,442
+517,519c440,442
 <  value( 1 ) =  60.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -406,9 +409,9 @@ Compiling  testVector
 >  value  1  :  60.
 >  value  2  :  25.
 >  value  3  :  25.
-531d456
+534d456
 <     The increase allocation memory is :  0
-535,537c460,462
+538,540c460,462
 <  value( 1 ) =  19.199999570846558
 <  value( 2 ) =  7.999999821186066
 <  value( 3 ) =  7.999999821186066
@@ -416,9 +419,9 @@ Compiling  testVector
 >  value  1  :  19.199999570846558
 >  value  2  :  7.999999821186066
 >  value  3  :  7.999999821186066
-543d467
+546d467
 <     The increase allocation memory is :  0
-547,549c471,473
+550,552c471,473
 <  value( 1 ) =  4.381780411071116
 <  value( 2 ) =  2.8284270931360536
 <  value( 3 ) =  2.8284270931360536
@@ -426,9 +429,9 @@ Compiling  testVector
 >  value  1  :  4.381780411071116
 >  value  2  :  2.8284270931360536
 >  value  3  :  2.8284270931360536
-567d490
+570d490
 <     The increase allocation memory is :  0
-571,573c494,496
+574,576c494,496
 <  value( 1 ) =  2.299999952316284
 <  value( 2 ) =  2.299999952316284
 <  value( 3 ) =  2.299999952316284
@@ -436,9 +439,9 @@ Compiling  testVector
 >  value  1  :  2.299999952316284
 >  value  2  :  2.299999952316284
 >  value  3  :  2.299999952316284
-580d502
+583d502
 <     The increase allocation memory is :  0
-584,586c506,508
+587,589c506,508
 <  value( 1 ) =  23.
 <  value( 2 ) =  23.
 <  value( 3 ) =  23.
@@ -446,9 +449,9 @@ Compiling  testVector
 >  value  1  :  23.
 >  value  2  :  23.
 >  value  3  :  23.
-592d513
+595d513
 <     The increase allocation memory is :  0
-596,598c517,519
+599,601c517,519
 <  value( 1 ) =  2.299999952316284
 <  value( 2 ) =  2.299999952316284
 <  value( 3 ) =  2.299999952316284
@@ -456,9 +459,9 @@ Compiling  testVector
 >  value  1  :  2.299999952316284
 >  value  2  :  2.299999952316284
 >  value  3  :  2.299999952316284
-601d521
+604d521
 <     The increase allocation memory is :  0
-605,611c525,531
+608,614c525,531
 <  value( -1 ) =  -3.299999952316284
 <  value( 0 ) =  -3.299999952316284
 <  value( 1 ) =  2.299999952316284
@@ -474,9 +477,9 @@ Compiling  testVector
 >  value  3  :  2.299999952316284
 >  value  4  :  3.299999952316284
 >  value  5  :  3.299999952316284
-617d536
+620d536
 <     The increase allocation memory is :  0
-621,623c540,542
+624,626c540,542
 <  value( 1 ) =  0.
 <  value( 2 ) =  0.
 <  value( 3 ) =  0.
@@ -484,9 +487,9 @@ Compiling  testVector
 >  value  1  :  0.
 >  value  2  :  0.
 >  value  3  :  0.
-629d547
+632d547
 <     The increase allocation memory is :  0
-633,635c551,553
+636,638c551,553
 <  value( 1 ) =  25.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -494,9 +497,9 @@ Compiling  testVector
 >  value  1  :  25.
 >  value  2  :  25.
 >  value  3  :  25.
-641d558
+644d558
 <     The increase allocation memory is :  0
-645,647c562,564
+648,650c562,564
 <  value( 1 ) =  15.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -504,9 +507,9 @@ Compiling  testVector
 >  value  1  :  15.
 >  value  2  :  25.
 >  value  3  :  25.
-653d569
+656d569
 <     The increase allocation memory is :  0
-657,659c573,575
+660,662c573,575
 <  value( 1 ) =  60.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -514,9 +517,9 @@ Compiling  testVector
 >  value  1  :  60.
 >  value  2  :  25.
 >  value  3  :  25.
-674d589
+677d589
 <     The increase allocation memory is :  0
-678,680c593,595
+681,683c593,595
 <  value( 1 ) =  19.199999570846558
 <  value( 2 ) =  7.999999821186066
 <  value( 3 ) =  7.999999821186066
@@ -524,9 +527,9 @@ Compiling  testVector
 >  value  1  :  19.199999570846558
 >  value  2  :  7.999999821186066
 >  value  3  :  7.999999821186066
-686d600
+689d600
 <     The increase allocation memory is :  0
-690,692c604,606
+693,695c604,606
 <  value( 1 ) =  4.381780411071116
 <  value( 2 ) =  2.8284270931360536
 <  value( 3 ) =  2.8284270931360536
@@ -534,9 +537,9 @@ Compiling  testVector
 >  value  1  :  4.381780411071116
 >  value  2  :  2.8284270931360536
 >  value  3  :  2.8284270931360536
-710d623
+713d623
 <     The increase allocation memory is :  0
-714,716c627,629
+717,719c627,629
 <  value( 1 ) =  2.299999952316284
 <  value( 2 ) =  2.299999952316284
 <  value( 3 ) =  2.299999952316284
@@ -544,9 +547,9 @@ Compiling  testVector
 >  value  1  :  2.299999952316284
 >  value  2  :  2.299999952316284
 >  value  3  :  2.299999952316284
-723d635
+726d635
 <     The increase allocation memory is :  0
-727,729c639,641
+730,732c639,641
 <  value( 1 ) =  23.
 <  value( 2 ) =  23.
 <  value( 3 ) =  23.
@@ -554,9 +557,9 @@ Compiling  testVector
 >  value  1  :  23.
 >  value  2  :  23.
 >  value  3  :  23.
-735d646
+738d646
 <     The increase allocation memory is :  0
-739,741c650,652
+742,744c650,652
 <  value( 1 ) =  2.299999952316284
 <  value( 2 ) =  2.299999952316284
 <  value( 3 ) =  2.299999952316284
@@ -564,9 +567,9 @@ Compiling  testVector
 >  value  1  :  2.299999952316284
 >  value  2  :  2.299999952316284
 >  value  3  :  2.299999952316284
-744d654
+747d654
 <     The increase allocation memory is :  0
-748,754c658,664
+751,757c658,664
 <  value( -1 ) =  -3.299999952316284
 <  value( 0 ) =  -3.299999952316284
 <  value( 1 ) =  2.299999952316284
@@ -582,9 +585,9 @@ Compiling  testVector
 >  value  3  :  2.299999952316284
 >  value  4  :  3.299999952316284
 >  value  5  :  3.299999952316284
-760d669
+763d669
 <     The increase allocation memory is :  0
-764,766c673,675
+767,769c673,675
 <  value( -1 ) =  0.
 <  value( 0 ) =  0.
 <  value( 1 ) =  0.
@@ -592,9 +595,9 @@ Compiling  testVector
 >  value  -1  :  0.
 >  value  0  :  0.
 >  value  1  :  0.
-772d680
+775d680
 <     The increase allocation memory is :  0
-776,778c684,686
+779,781c684,686
 <  value( -1 ) =  25.
 <  value( 0 ) =  25.
 <  value( 1 ) =  25.
@@ -602,9 +605,9 @@ Compiling  testVector
 >  value  -1  :  25.
 >  value  0  :  25.
 >  value  1  :  25.
-784d691
+787d691
 <     The increase allocation memory is :  0
-788,790c695,697
+791,793c695,697
 <  value( -1 ) =  25.
 <  value( 0 ) =  25.
 <  value( 1 ) =  15.
@@ -612,9 +615,9 @@ Compiling  testVector
 >  value  -1  :  25.
 >  value  0  :  25.
 >  value  1  :  15.
-796d702
+799d702
 <     The increase allocation memory is :  0
-800,802c706,708
+803,805c706,708
 <  value( -1 ) =  25.
 <  value( 0 ) =  25.
 <  value( 1 ) =  60.
@@ -622,9 +625,9 @@ Compiling  testVector
 >  value  -1  :  25.
 >  value  0  :  25.
 >  value  1  :  60.
-817d722
+820d722
 <     The increase allocation memory is :  0
-821,823c726,728
+824,826c726,728
 <  value( -1 ) =  7.999999821186066
 <  value( 0 ) =  7.999999821186066
 <  value( 1 ) =  19.199999570846558
@@ -632,9 +635,9 @@ Compiling  testVector
 >  value  -1  :  7.999999821186066
 >  value  0  :  7.999999821186066
 >  value  1  :  19.199999570846558
-829d733
+832d733
 <     The increase allocation memory is :  0
-833,835c737,739
+836,838c737,739
 <  value( -1 ) =  2.8284270931360536
 <  value( 0 ) =  2.8284270931360536
 <  value( 1 ) =  4.381780411071116
@@ -642,9 +645,9 @@ Compiling  testVector
 >  value  -1  :  2.8284270931360536
 >  value  0  :  2.8284270931360536
 >  value  1  :  4.381780411071116
-853d756
+856d756
 <     The increase allocation memory is :  0
-857,859c760,762
+860,862c760,762
 <  value( 1 ) =  2.299999952316284
 <  value( 2 ) =  2.299999952316284
 <  value( 3 ) =  2.299999952316284
@@ -652,9 +655,9 @@ Compiling  testVector
 >  value  1  :  2.299999952316284
 >  value  2  :  2.299999952316284
 >  value  3  :  2.299999952316284
-866d768
+869d768
 <     The increase allocation memory is :  0
-870,872c772,774
+873,875c772,774
 <  value( -1 ) =  23.
 <  value( 0 ) =  23.
 <  value( 1 ) =  23.
@@ -662,9 +665,9 @@ Compiling  testVector
 >  value  -1  :  23.
 >  value  0  :  23.
 >  value  1  :  23.
-878d779
+881d779
 <     The increase allocation memory is :  0
-882,884c783,785
+885,887c783,785
 <  value( -1 ) =  2.299999952316284
 <  value( 0 ) =  2.299999952316284
 <  value( 1 ) =  2.299999952316284
@@ -672,9 +675,9 @@ Compiling  testVector
 >  value  -1  :  2.299999952316284
 >  value  0  :  2.299999952316284
 >  value  1  :  2.299999952316284
-887d787
+890d787
 <     The increase allocation memory is :  0
-891,897c791,797
+894,900c791,797
 <  value( -3 ) =  -3.299999952316284
 <  value( -2 ) =  -3.299999952316284
 <  value( -1 ) =  2.299999952316284
@@ -694,7 +697,9 @@ Compiling  testVector
 Test : testVector.Real4
 ------
 Compiling  testVector
-1,40d0
+1,43d0
+<  checkAllocationMemoryProcedure
+<  ==============================
 <  The size of the vector is :  3
 <     The allocated memory is :  8
 <     The increase allocation memory is :  5
@@ -705,8 +710,8 @@ Compiling  testVector
 <  value( 2 ) =  0.
 <  value( 3 ) =  0.
 <  The size of the vector is :  9
-<     The allocated memory is :  9
-<     The increase allocation memory is :  0
+<     The allocated memory is :  14
+<     The increase allocation memory is :  5
 <     Allocation status of the vector :  T
 <     First position is :  1
 <     Last position is  :  9
@@ -720,7 +725,7 @@ Compiling  testVector
 <  value( 8 ) =  0.
 <  value( 9 ) =  0.
 <  The size of the vector is :  10
-<     The allocated memory is :  15
+<     The allocated memory is :  14
 <     The increase allocation memory is :  5
 <     Allocation status of the vector :  T
 <     First position is :  1
@@ -735,9 +740,10 @@ Compiling  testVector
 <  value( 8 ) =  0.
 <  value( 9 ) =  0.
 <  value( 10 ) =  0.
-45d4
+<   
+48d4
 <     The increase allocation memory is :  5
-49,51c8,10
+52,54c8,10
 <  value( 1 ) =  0.
 <  value( 2 ) =  0.
 <  value( 3 ) =  0.
@@ -745,9 +751,9 @@ Compiling  testVector
 >  value  1  :  0.
 >  value  2  :  0.
 >  value  3  :  0.
-57d15
+60d15
 <     The increase allocation memory is :  5
-61,63c19,21
+64,66c19,21
 <  value( 1 ) =  25.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -755,9 +761,9 @@ Compiling  testVector
 >  value  1  :  25.
 >  value  2  :  25.
 >  value  3  :  25.
-69d26
+72d26
 <     The increase allocation memory is :  5
-73,75c30,32
+76,78c30,32
 <  value( 1 ) =  15.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -765,9 +771,9 @@ Compiling  testVector
 >  value  1  :  15.
 >  value  2  :  25.
 >  value  3  :  25.
-81d37
+84d37
 <     The increase allocation memory is :  5
-85,87c41,43
+88,90c41,43
 <  value( 1 ) =  60.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -775,9 +781,9 @@ Compiling  testVector
 >  value  1  :  60.
 >  value  2  :  25.
 >  value  3  :  25.
-102d57
+105d57
 <     The increase allocation memory is :  5
-106,108c61,63
+109,111c61,63
 <  value( 1 ) =  19.199999
 <  value( 2 ) =  8.
 <  value( 3 ) =  8.
@@ -785,9 +791,9 @@ Compiling  testVector
 >  value  1  :  19.199999
 >  value  2  :  8.
 >  value  3  :  8.
-114d68
+117d68
 <     The increase allocation memory is :  5
-118,120c72,74
+121,123c72,74
 <  value( 1 ) =  4.38178
 <  value( 2 ) =  2.828427
 <  value( 3 ) =  2.828427
@@ -795,9 +801,9 @@ Compiling  testVector
 >  value  1  :  4.38178
 >  value  2  :  2.828427
 >  value  3  :  2.828427
-138d91
+141d91
 <     The increase allocation memory is :  5
-142,144c95,97
+145,147c95,97
 <  value( 1 ) =  2.3
 <  value( 2 ) =  2.3
 <  value( 3 ) =  2.3
@@ -805,9 +811,9 @@ Compiling  testVector
 >  value  1  :  2.3
 >  value  2  :  2.3
 >  value  3  :  2.3
-151d103
+154d103
 <     The increase allocation memory is :  5
-155,157c107,109
+158,160c107,109
 <  value( 1 ) =  23.
 <  value( 2 ) =  23.
 <  value( 3 ) =  23.
@@ -815,9 +821,9 @@ Compiling  testVector
 >  value  1  :  23.
 >  value  2  :  23.
 >  value  3  :  23.
-163d114
+166d114
 <     The increase allocation memory is :  5
-167,169c118,120
+170,172c118,120
 <  value( 1 ) =  2.3
 <  value( 2 ) =  2.3
 <  value( 3 ) =  2.3
@@ -825,9 +831,9 @@ Compiling  testVector
 >  value  1  :  2.3
 >  value  2  :  2.3
 >  value  3  :  2.3
-172d122
+175d122
 <     The increase allocation memory is :  5
-176,182c126,132
+179,185c126,132
 <  value( -1 ) =  -3.3
 <  value( 0 ) =  -3.3
 <  value( 1 ) =  2.3
@@ -843,9 +849,9 @@ Compiling  testVector
 >  value  3  :  2.3
 >  value  4  :  3.3
 >  value  5  :  3.3
-188d137
+191d137
 <     The increase allocation memory is :  5
-192,194c141,143
+195,197c141,143
 <  value( 1 ) =  0.
 <  value( 2 ) =  0.
 <  value( 3 ) =  0.
@@ -853,9 +859,9 @@ Compiling  testVector
 >  value  1  :  0.
 >  value  2  :  0.
 >  value  3  :  0.
-200d148
+203d148
 <     The increase allocation memory is :  5
-204,206c152,154
+207,209c152,154
 <  value( 1 ) =  25.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -863,9 +869,9 @@ Compiling  testVector
 >  value  1  :  25.
 >  value  2  :  25.
 >  value  3  :  25.
-212d159
+215d159
 <     The increase allocation memory is :  5
-216,218c163,165
+219,221c163,165
 <  value( 1 ) =  15.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -873,9 +879,9 @@ Compiling  testVector
 >  value  1  :  15.
 >  value  2  :  25.
 >  value  3  :  25.
-224d170
+227d170
 <     The increase allocation memory is :  5
-228,230c174,176
+231,233c174,176
 <  value( 1 ) =  60.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -883,9 +889,9 @@ Compiling  testVector
 >  value  1  :  60.
 >  value  2  :  25.
 >  value  3  :  25.
-245d190
+248d190
 <     The increase allocation memory is :  5
-249,251c194,196
+252,254c194,196
 <  value( 1 ) =  19.199999
 <  value( 2 ) =  8.
 <  value( 3 ) =  8.
@@ -893,9 +899,9 @@ Compiling  testVector
 >  value  1  :  19.199999
 >  value  2  :  8.
 >  value  3  :  8.
-257d201
+260d201
 <     The increase allocation memory is :  5
-261,263c205,207
+264,266c205,207
 <  value( 1 ) =  4.38178
 <  value( 2 ) =  2.828427
 <  value( 3 ) =  2.828427
@@ -903,9 +909,9 @@ Compiling  testVector
 >  value  1  :  4.38178
 >  value  2  :  2.828427
 >  value  3  :  2.828427
-281d224
+284d224
 <     The increase allocation memory is :  5
-285,287c228,230
+288,290c228,230
 <  value( 1 ) =  2.3
 <  value( 2 ) =  2.3
 <  value( 3 ) =  2.3
@@ -913,9 +919,9 @@ Compiling  testVector
 >  value  1  :  2.3
 >  value  2  :  2.3
 >  value  3  :  2.3
-294d236
+297d236
 <     The increase allocation memory is :  5
-298,300c240,242
+301,303c240,242
 <  value( 1 ) =  23.
 <  value( 2 ) =  23.
 <  value( 3 ) =  23.
@@ -923,9 +929,9 @@ Compiling  testVector
 >  value  1  :  23.
 >  value  2  :  23.
 >  value  3  :  23.
-306d247
+309d247
 <     The increase allocation memory is :  5
-310,312c251,253
+313,315c251,253
 <  value( 1 ) =  2.3
 <  value( 2 ) =  2.3
 <  value( 3 ) =  2.3
@@ -933,9 +939,9 @@ Compiling  testVector
 >  value  1  :  2.3
 >  value  2  :  2.3
 >  value  3  :  2.3
-315d255
+318d255
 <     The increase allocation memory is :  5
-319,325c259,265
+322,328c259,265
 <  value( -1 ) =  -3.3
 <  value( 0 ) =  -3.3
 <  value( 1 ) =  2.3
@@ -951,9 +957,9 @@ Compiling  testVector
 >  value  3  :  2.3
 >  value  4  :  3.3
 >  value  5  :  3.3
-331d270
+334d270
 <     The increase allocation memory is :  5
-335,337c274,276
+338,340c274,276
 <  value( -1 ) =  0.
 <  value( 0 ) =  0.
 <  value( 1 ) =  0.
@@ -961,9 +967,9 @@ Compiling  testVector
 >  value  -1  :  0.
 >  value  0  :  0.
 >  value  1  :  0.
-343d281
+346d281
 <     The increase allocation memory is :  5
-347,349c285,287
+350,352c285,287
 <  value( -1 ) =  25.
 <  value( 0 ) =  25.
 <  value( 1 ) =  25.
@@ -971,9 +977,9 @@ Compiling  testVector
 >  value  -1  :  25.
 >  value  0  :  25.
 >  value  1  :  25.
-355d292
+358d292
 <     The increase allocation memory is :  5
-359,361c296,298
+362,364c296,298
 <  value( -1 ) =  25.
 <  value( 0 ) =  25.
 <  value( 1 ) =  15.
@@ -981,9 +987,9 @@ Compiling  testVector
 >  value  -1  :  25.
 >  value  0  :  25.
 >  value  1  :  15.
-367d303
+370d303
 <     The increase allocation memory is :  5
-371,373c307,309
+374,376c307,309
 <  value( -1 ) =  25.
 <  value( 0 ) =  25.
 <  value( 1 ) =  60.
@@ -991,9 +997,9 @@ Compiling  testVector
 >  value  -1  :  25.
 >  value  0  :  25.
 >  value  1  :  60.
-388d323
+391d323
 <     The increase allocation memory is :  5
-392,394c327,329
+395,397c327,329
 <  value( -1 ) =  8.
 <  value( 0 ) =  8.
 <  value( 1 ) =  19.199999
@@ -1001,9 +1007,9 @@ Compiling  testVector
 >  value  -1  :  8.
 >  value  0  :  8.
 >  value  1  :  19.199999
-400d334
+403d334
 <     The increase allocation memory is :  5
-404,406c338,340
+407,409c338,340
 <  value( -1 ) =  2.828427
 <  value( 0 ) =  2.828427
 <  value( 1 ) =  4.38178
@@ -1011,9 +1017,9 @@ Compiling  testVector
 >  value  -1  :  2.828427
 >  value  0  :  2.828427
 >  value  1  :  4.38178
-424d357
+427d357
 <     The increase allocation memory is :  5
-428,430c361,363
+431,433c361,363
 <  value( 1 ) =  2.3
 <  value( 2 ) =  2.3
 <  value( 3 ) =  2.3
@@ -1021,9 +1027,9 @@ Compiling  testVector
 >  value  1  :  2.3
 >  value  2  :  2.3
 >  value  3  :  2.3
-437d369
+440d369
 <     The increase allocation memory is :  5
-441,443c373,375
+444,446c373,375
 <  value( -1 ) =  23.
 <  value( 0 ) =  23.
 <  value( 1 ) =  23.
@@ -1031,9 +1037,9 @@ Compiling  testVector
 >  value  -1  :  23.
 >  value  0  :  23.
 >  value  1  :  23.
-449d380
+452d380
 <     The increase allocation memory is :  5
-453,455c384,386
+456,458c384,386
 <  value( -1 ) =  2.3
 <  value( 0 ) =  2.3
 <  value( 1 ) =  2.3
@@ -1041,9 +1047,9 @@ Compiling  testVector
 >  value  -1  :  2.3
 >  value  0  :  2.3
 >  value  1  :  2.3
-458d388
+461d388
 <     The increase allocation memory is :  5
-462,468c392,398
+465,471c392,398
 <  value( -3 ) =  -3.3
 <  value( -2 ) =  -3.3
 <  value( -1 ) =  2.3
@@ -1059,9 +1065,9 @@ Compiling  testVector
 >  value  1  :  2.3
 >  value  2  :  3.3
 >  value  3  :  3.3
-474d403
+477d403
 <     The increase allocation memory is :  0
-478,480c407,409
+481,483c407,409
 <  value( 1 ) =  0.
 <  value( 2 ) =  0.
 <  value( 3 ) =  0.
@@ -1069,9 +1075,9 @@ Compiling  testVector
 >  value  1  :  0.
 >  value  2  :  0.
 >  value  3  :  0.
-486d414
+489d414
 <     The increase allocation memory is :  0
-490,492c418,420
+493,495c418,420
 <  value( 1 ) =  25.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -1079,9 +1085,9 @@ Compiling  testVector
 >  value  1  :  25.
 >  value  2  :  25.
 >  value  3  :  25.
-498d425
+501d425
 <     The increase allocation memory is :  0
-502,504c429,431
+505,507c429,431
 <  value( 1 ) =  15.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -1089,9 +1095,9 @@ Compiling  testVector
 >  value  1  :  15.
 >  value  2  :  25.
 >  value  3  :  25.
-510d436
+513d436
 <     The increase allocation memory is :  0
-514,516c440,442
+517,519c440,442
 <  value( 1 ) =  60.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -1099,9 +1105,9 @@ Compiling  testVector
 >  value  1  :  60.
 >  value  2  :  25.
 >  value  3  :  25.
-531d456
+534d456
 <     The increase allocation memory is :  0
-535,537c460,462
+538,540c460,462
 <  value( 1 ) =  19.199999
 <  value( 2 ) =  8.
 <  value( 3 ) =  8.
@@ -1109,9 +1115,9 @@ Compiling  testVector
 >  value  1  :  19.199999
 >  value  2  :  8.
 >  value  3  :  8.
-543d467
+546d467
 <     The increase allocation memory is :  0
-547,549c471,473
+550,552c471,473
 <  value( 1 ) =  4.38178
 <  value( 2 ) =  2.828427
 <  value( 3 ) =  2.828427
@@ -1119,9 +1125,9 @@ Compiling  testVector
 >  value  1  :  4.38178
 >  value  2  :  2.828427
 >  value  3  :  2.828427
-567d490
+570d490
 <     The increase allocation memory is :  0
-571,573c494,496
+574,576c494,496
 <  value( 1 ) =  2.3
 <  value( 2 ) =  2.3
 <  value( 3 ) =  2.3
@@ -1129,9 +1135,9 @@ Compiling  testVector
 >  value  1  :  2.3
 >  value  2  :  2.3
 >  value  3  :  2.3
-580d502
+583d502
 <     The increase allocation memory is :  0
-584,586c506,508
+587,589c506,508
 <  value( 1 ) =  23.
 <  value( 2 ) =  23.
 <  value( 3 ) =  23.
@@ -1139,9 +1145,9 @@ Compiling  testVector
 >  value  1  :  23.
 >  value  2  :  23.
 >  value  3  :  23.
-592d513
+595d513
 <     The increase allocation memory is :  0
-596,598c517,519
+599,601c517,519
 <  value( 1 ) =  2.3
 <  value( 2 ) =  2.3
 <  value( 3 ) =  2.3
@@ -1149,9 +1155,9 @@ Compiling  testVector
 >  value  1  :  2.3
 >  value  2  :  2.3
 >  value  3  :  2.3
-601d521
+604d521
 <     The increase allocation memory is :  0
-605,611c525,531
+608,614c525,531
 <  value( -1 ) =  -3.3
 <  value( 0 ) =  -3.3
 <  value( 1 ) =  2.3
@@ -1167,9 +1173,9 @@ Compiling  testVector
 >  value  3  :  2.3
 >  value  4  :  3.3
 >  value  5  :  3.3
-617d536
+620d536
 <     The increase allocation memory is :  0
-621,623c540,542
+624,626c540,542
 <  value( 1 ) =  0.
 <  value( 2 ) =  0.
 <  value( 3 ) =  0.
@@ -1177,9 +1183,9 @@ Compiling  testVector
 >  value  1  :  0.
 >  value  2  :  0.
 >  value  3  :  0.
-629d547
+632d547
 <     The increase allocation memory is :  0
-633,635c551,553
+636,638c551,553
 <  value( 1 ) =  25.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -1187,9 +1193,9 @@ Compiling  testVector
 >  value  1  :  25.
 >  value  2  :  25.
 >  value  3  :  25.
-641d558
+644d558
 <     The increase allocation memory is :  0
-645,647c562,564
+648,650c562,564
 <  value( 1 ) =  15.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -1197,9 +1203,9 @@ Compiling  testVector
 >  value  1  :  15.
 >  value  2  :  25.
 >  value  3  :  25.
-653d569
+656d569
 <     The increase allocation memory is :  0
-657,659c573,575
+660,662c573,575
 <  value( 1 ) =  60.
 <  value( 2 ) =  25.
 <  value( 3 ) =  25.
@@ -1207,9 +1213,9 @@ Compiling  testVector
 >  value  1  :  60.
 >  value  2  :  25.
 >  value  3  :  25.
-674d589
+677d589
 <     The increase allocation memory is :  0
-678,680c593,595
+681,683c593,595
 <  value( 1 ) =  19.199999
 <  value( 2 ) =  8.
 <  value( 3 ) =  8.
@@ -1217,9 +1223,9 @@ Compiling  testVector
 >  value  1  :  19.199999
 >  value  2  :  8.
 >  value  3  :  8.
-686d600
+689d600
 <     The increase allocation memory is :  0
-690,692c604,606
+693,695c604,606
 <  value( 1 ) =  4.38178
 <  value( 2 ) =  2.828427
 <  value( 3 ) =  2.828427
@@ -1227,9 +1233,9 @@ Compiling  testVector
 >  value  1  :  4.38178
 >  value  2  :  2.828427
 >  value  3  :  2.828427
-710d623
+713d623
 <     The increase allocation memory is :  0
-714,716c627,629
+717,719c627,629
 <  value( 1 ) =  2.3
 <  value( 2 ) =  2.3
 <  value( 3 ) =  2.3
@@ -1237,9 +1243,9 @@ Compiling  testVector
 >  value  1  :  2.3
 >  value  2  :  2.3
 >  value  3  :  2.3
-723d635
+726d635
 <     The increase allocation memory is :  0
-727,729c639,641
+730,732c639,641
 <  value( 1 ) =  23.
 <  value( 2 ) =  23.
 <  value( 3 ) =  23.
@@ -1247,9 +1253,9 @@ Compiling  testVector
 >  value  1  :  23.
 >  value  2  :  23.
 >  value  3  :  23.
-735d646
+738d646
 <     The increase allocation memory is :  0
-739,741c650,652
+742,744c650,652
 <  value( 1 ) =  2.3
 <  value( 2 ) =  2.3
 <  value( 3 ) =  2.3
@@ -1257,9 +1263,9 @@ Compiling  testVector
 >  value  1  :  2.3
 >  value  2  :  2.3
 >  value  3  :  2.3
-744d654
+747d654
 <     The increase allocation memory is :  0
-748,754c658,664
+751,757c658,664
 <  value( -1 ) =  -3.3
 <  value( 0 ) =  -3.3
 <  value( 1 ) =  2.3
@@ -1275,9 +1281,9 @@ Compiling  testVector
 >  value  3  :  2.3
 >  value  4  :  3.3
 >  value  5  :  3.3
-760d669
+763d669
 <     The increase allocation memory is :  0
-764,766c673,675
+767,769c673,675
 <  value( -1 ) =  0.
 <  value( 0 ) =  0.
 <  value( 1 ) =  0.
@@ -1285,9 +1291,9 @@ Compiling  testVector
 >  value  -1  :  0.
 >  value  0  :  0.
 >  value  1  :  0.
-772d680
+775d680
 <     The increase allocation memory is :  0
-776,778c684,686
+779,781c684,686
 <  value( -1 ) =  25.
 <  value( 0 ) =  25.
 <  value( 1 ) =  25.
@@ -1295,9 +1301,9 @@ Compiling  testVector
 >  value  -1  :  25.
 >  value  0  :  25.
 >  value  1  :  25.
-784d691
+787d691
 <     The increase allocation memory is :  0
-788,790c695,697
+791,793c695,697
 <  value( -1 ) =  25.
 <  value( 0 ) =  25.
 <  value( 1 ) =  15.
@@ -1305,9 +1311,9 @@ Compiling  testVector
 >  value  -1  :  25.
 >  value  0  :  25.
 >  value  1  :  15.
-796d702
+799d702
 <     The increase allocation memory is :  0
-800,802c706,708
+803,805c706,708
 <  value( -1 ) =  25.
 <  value( 0 ) =  25.
 <  value( 1 ) =  60.
@@ -1315,9 +1321,9 @@ Compiling  testVector
 >  value  -1  :  25.
 >  value  0  :  25.
 >  value  1  :  60.
-817d722
+820d722
 <     The increase allocation memory is :  0
-821,823c726,728
+824,826c726,728
 <  value( -1 ) =  8.
 <  value( 0 ) =  8.
 <  value( 1 ) =  19.199999
@@ -1325,9 +1331,9 @@ Compiling  testVector
 >  value  -1  :  8.
 >  value  0  :  8.
 >  value  1  :  19.199999
-829d733
+832d733
 <     The increase allocation memory is :  0
-833,835c737,739
+836,838c737,739
 <  value( -1 ) =  2.828427
 <  value( 0 ) =  2.828427
 <  value( 1 ) =  4.38178
@@ -1335,9 +1341,9 @@ Compiling  testVector
 >  value  -1  :  2.828427
 >  value  0  :  2.828427
 >  value  1  :  4.38178
-853d756
+856d756
 <     The increase allocation memory is :  0
-857,859c760,762
+860,862c760,762
 <  value( 1 ) =  2.3
 <  value( 2 ) =  2.3
 <  value( 3 ) =  2.3
@@ -1345,9 +1351,9 @@ Compiling  testVector
 >  value  1  :  2.3
 >  value  2  :  2.3
 >  value  3  :  2.3
-866d768
+869d768
 <     The increase allocation memory is :  0
-870,872c772,774
+873,875c772,774
 <  value( -1 ) =  23.
 <  value( 0 ) =  23.
 <  value( 1 ) =  23.
@@ -1355,9 +1361,9 @@ Compiling  testVector
 >  value  -1  :  23.
 >  value  0  :  23.
 >  value  1  :  23.
-878d779
+881d779
 <     The increase allocation memory is :  0
-882,884c783,785
+885,887c783,785
 <  value( -1 ) =  2.3
 <  value( 0 ) =  2.3
 <  value( 1 ) =  2.3
@@ -1365,9 +1371,9 @@ Compiling  testVector
 >  value  -1  :  2.3
 >  value  0  :  2.3
 >  value  1  :  2.3
-887d787
+890d787
 <     The increase allocation memory is :  0
-891,897c791,797
+894,900c791,797
 <  value( -3 ) =  -3.3
 <  value( -2 ) =  -3.3
 <  value( -1 ) =  2.3
@@ -1387,7 +1393,9 @@ Compiling  testVector
 Test : testIntegerVector.Integer2
 ------
 Compiling  testIntegerVector
-1,24d0
+1,43d0
+<  checkAllocationMemoryProcedure
+<  ==============================
 <  The size of the vector is :  3
 <     The allocated memory is :  8
 <     The increase allocation memory is :  5
@@ -1398,8 +1406,8 @@ Compiling  testIntegerVector
 <  value( 2 ) =  0
 <  value( 3 ) =  0
 <  The size of the vector is :  9
-<     The allocated memory is :  9
-<     The increase allocation memory is :  0
+<     The allocated memory is :  14
+<     The increase allocation memory is :  5
 <     Allocation status of the vector :  T
 <     First position is :  1
 <     Last position is  :  9
@@ -1412,9 +1420,26 @@ Compiling  testIntegerVector
 <  value( 7 ) =  0
 <  value( 8 ) =  0
 <  value( 9 ) =  0
-29d4
+<  The size of the vector is :  10
+<     The allocated memory is :  14
 <     The increase allocation memory is :  5
-33,35c8,10
+<     Allocation status of the vector :  T
+<     First position is :  1
+<     Last position is  :  10
+<  value( 1 ) =  0
+<  value( 2 ) =  0
+<  value( 3 ) =  0
+<  value( 4 ) =  0
+<  value( 5 ) =  0
+<  value( 6 ) =  0
+<  value( 7 ) =  0
+<  value( 8 ) =  0
+<  value( 9 ) =  0
+<  value( 10 ) =  0
+<   
+48d4
+<     The increase allocation memory is :  5
+52,54c8,10
 <  value( 1 ) =  0
 <  value( 2 ) =  0
 <  value( 3 ) =  0
@@ -1422,9 +1447,9 @@ Compiling  testIntegerVector
 >  value  1  :  0
 >  value  2  :  0
 >  value  3  :  0
-41d15
+60d15
 <     The increase allocation memory is :  5
-45,47c19,21
+64,66c19,21
 <  value( 1 ) =  25
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -1432,9 +1457,9 @@ Compiling  testIntegerVector
 >  value  1  :  25
 >  value  2  :  25
 >  value  3  :  25
-53d26
+72d26
 <     The increase allocation memory is :  5
-57,59c30,32
+76,78c30,32
 <  value( 1 ) =  15
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -1442,9 +1467,9 @@ Compiling  testIntegerVector
 >  value  1  :  15
 >  value  2  :  25
 >  value  3  :  25
-65d37
+84d37
 <     The increase allocation memory is :  5
-69,71c41,43
+88,90c41,43
 <  value( 1 ) =  60
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -1452,9 +1477,9 @@ Compiling  testIntegerVector
 >  value  1  :  60
 >  value  2  :  25
 >  value  3  :  25
-85d56
+104d56
 <     The increase allocation memory is :  5
-89,91c60,62
+108,110c60,62
 <  value( 1 ) =  23
 <  value( 2 ) =  23
 <  value( 3 ) =  23
@@ -1462,9 +1487,9 @@ Compiling  testIntegerVector
 >  value  1  :  23
 >  value  2  :  23
 >  value  3  :  23
-97d67
+116d67
 <     The increase allocation memory is :  5
-101,103c71,73
+120,122c71,73
 <  value( 1 ) =  2
 <  value( 2 ) =  2
 <  value( 3 ) =  2
@@ -1472,9 +1497,9 @@ Compiling  testIntegerVector
 >  value  1  :  2
 >  value  2  :  2
 >  value  3  :  2
-106d75
+125d75
 <     The increase allocation memory is :  5
-110,116c79,85
+129,135c79,85
 <  value( -1 ) =  -3
 <  value( 0 ) =  -3
 <  value( 1 ) =  2
@@ -1490,9 +1515,9 @@ Compiling  testIntegerVector
 >  value  3  :  2
 >  value  4  :  4
 >  value  5  :  4
-122d90
+141d90
 <     The increase allocation memory is :  5
-126,128c94,96
+145,147c94,96
 <  value( 1 ) =  0
 <  value( 2 ) =  0
 <  value( 3 ) =  0
@@ -1500,9 +1525,9 @@ Compiling  testIntegerVector
 >  value  1  :  0
 >  value  2  :  0
 >  value  3  :  0
-134d101
+153d101
 <     The increase allocation memory is :  5
-138,140c105,107
+157,159c105,107
 <  value( 1 ) =  25
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -1510,9 +1535,9 @@ Compiling  testIntegerVector
 >  value  1  :  25
 >  value  2  :  25
 >  value  3  :  25
-146d112
+165d112
 <     The increase allocation memory is :  5
-150,152c116,118
+169,171c116,118
 <  value( 1 ) =  15
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -1520,9 +1545,9 @@ Compiling  testIntegerVector
 >  value  1  :  15
 >  value  2  :  25
 >  value  3  :  25
-158d123
+177d123
 <     The increase allocation memory is :  5
-162,164c127,129
+181,183c127,129
 <  value( 1 ) =  60
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -1530,9 +1555,9 @@ Compiling  testIntegerVector
 >  value  1  :  60
 >  value  2  :  25
 >  value  3  :  25
-178d142
+197d142
 <     The increase allocation memory is :  5
-182,184c146,148
+201,203c146,148
 <  value( 1 ) =  23
 <  value( 2 ) =  23
 <  value( 3 ) =  23
@@ -1540,9 +1565,9 @@ Compiling  testIntegerVector
 >  value  1  :  23
 >  value  2  :  23
 >  value  3  :  23
-190d153
+209d153
 <     The increase allocation memory is :  5
-194,196c157,159
+213,215c157,159
 <  value( 1 ) =  2
 <  value( 2 ) =  2
 <  value( 3 ) =  2
@@ -1550,9 +1575,9 @@ Compiling  testIntegerVector
 >  value  1  :  2
 >  value  2  :  2
 >  value  3  :  2
-199d161
+218d161
 <     The increase allocation memory is :  5
-203,209c165,171
+222,228c165,171
 <  value( -1 ) =  -3
 <  value( 0 ) =  -3
 <  value( 1 ) =  2
@@ -1568,9 +1593,9 @@ Compiling  testIntegerVector
 >  value  3  :  2
 >  value  4  :  4
 >  value  5  :  4
-215d176
+234d176
 <     The increase allocation memory is :  5
-219,221c180,182
+238,240c180,182
 <  value( -1 ) =  0
 <  value( 0 ) =  0
 <  value( 1 ) =  0
@@ -1578,9 +1603,9 @@ Compiling  testIntegerVector
 >  value  -1  :  0
 >  value  0  :  0
 >  value  1  :  0
-227d187
+246d187
 <     The increase allocation memory is :  5
-231,233c191,193
+250,252c191,193
 <  value( -1 ) =  25
 <  value( 0 ) =  25
 <  value( 1 ) =  25
@@ -1588,9 +1613,9 @@ Compiling  testIntegerVector
 >  value  -1  :  25
 >  value  0  :  25
 >  value  1  :  25
-239d198
+258d198
 <     The increase allocation memory is :  5
-243,245c202,204
+262,264c202,204
 <  value( -1 ) =  25
 <  value( 0 ) =  25
 <  value( 1 ) =  15
@@ -1598,9 +1623,9 @@ Compiling  testIntegerVector
 >  value  -1  :  25
 >  value  0  :  25
 >  value  1  :  15
-251d209
+270d209
 <     The increase allocation memory is :  5
-255,257c213,215
+274,276c213,215
 <  value( -1 ) =  25
 <  value( 0 ) =  25
 <  value( 1 ) =  60
@@ -1608,9 +1633,9 @@ Compiling  testIntegerVector
 >  value  -1  :  25
 >  value  0  :  25
 >  value  1  :  60
-271d228
+290d228
 <     The increase allocation memory is :  5
-275,277c232,234
+294,296c232,234
 <  value( -1 ) =  23
 <  value( 0 ) =  23
 <  value( 1 ) =  23
@@ -1618,9 +1643,9 @@ Compiling  testIntegerVector
 >  value  -1  :  23
 >  value  0  :  23
 >  value  1  :  23
-283d239
+302d239
 <     The increase allocation memory is :  5
-287,289c243,245
+306,308c243,245
 <  value( -1 ) =  2
 <  value( 0 ) =  2
 <  value( 1 ) =  2
@@ -1628,9 +1653,9 @@ Compiling  testIntegerVector
 >  value  -1  :  2
 >  value  0  :  2
 >  value  1  :  2
-292d247
+311d247
 <     The increase allocation memory is :  5
-296,302c251,257
+315,321c251,257
 <  value( -3 ) =  -3
 <  value( -2 ) =  -3
 <  value( -1 ) =  2
@@ -1646,9 +1671,9 @@ Compiling  testIntegerVector
 >  value  1  :  2
 >  value  2  :  4
 >  value  3  :  4
-308d262
+327d262
 <     The increase allocation memory is :  0
-312,314c266,268
+331,333c266,268
 <  value( 1 ) =  0
 <  value( 2 ) =  0
 <  value( 3 ) =  0
@@ -1656,9 +1681,9 @@ Compiling  testIntegerVector
 >  value  1  :  0
 >  value  2  :  0
 >  value  3  :  0
-320d273
+339d273
 <     The increase allocation memory is :  0
-324,326c277,279
+343,345c277,279
 <  value( 1 ) =  25
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -1666,9 +1691,9 @@ Compiling  testIntegerVector
 >  value  1  :  25
 >  value  2  :  25
 >  value  3  :  25
-332d284
+351d284
 <     The increase allocation memory is :  0
-336,338c288,290
+355,357c288,290
 <  value( 1 ) =  15
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -1676,9 +1701,9 @@ Compiling  testIntegerVector
 >  value  1  :  15
 >  value  2  :  25
 >  value  3  :  25
-344d295
+363d295
 <     The increase allocation memory is :  0
-348,350c299,301
+367,369c299,301
 <  value( 1 ) =  60
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -1686,9 +1711,9 @@ Compiling  testIntegerVector
 >  value  1  :  60
 >  value  2  :  25
 >  value  3  :  25
-364d314
+383d314
 <     The increase allocation memory is :  0
-368,370c318,320
+387,389c318,320
 <  value( 1 ) =  23
 <  value( 2 ) =  23
 <  value( 3 ) =  23
@@ -1696,9 +1721,9 @@ Compiling  testIntegerVector
 >  value  1  :  23
 >  value  2  :  23
 >  value  3  :  23
-376d325
+395d325
 <     The increase allocation memory is :  0
-380,382c329,331
+399,401c329,331
 <  value( 1 ) =  2
 <  value( 2 ) =  2
 <  value( 3 ) =  2
@@ -1706,9 +1731,9 @@ Compiling  testIntegerVector
 >  value  1  :  2
 >  value  2  :  2
 >  value  3  :  2
-385d333
+404d333
 <     The increase allocation memory is :  0
-389,395c337,343
+408,414c337,343
 <  value( -1 ) =  -3
 <  value( 0 ) =  -3
 <  value( 1 ) =  2
@@ -1724,9 +1749,9 @@ Compiling  testIntegerVector
 >  value  3  :  2
 >  value  4  :  4
 >  value  5  :  4
-401d348
+420d348
 <     The increase allocation memory is :  0
-405,407c352,354
+424,426c352,354
 <  value( 1 ) =  0
 <  value( 2 ) =  0
 <  value( 3 ) =  0
@@ -1734,9 +1759,9 @@ Compiling  testIntegerVector
 >  value  1  :  0
 >  value  2  :  0
 >  value  3  :  0
-413d359
+432d359
 <     The increase allocation memory is :  0
-417,419c363,365
+436,438c363,365
 <  value( 1 ) =  25
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -1744,9 +1769,9 @@ Compiling  testIntegerVector
 >  value  1  :  25
 >  value  2  :  25
 >  value  3  :  25
-425d370
+444d370
 <     The increase allocation memory is :  0
-429,431c374,376
+448,450c374,376
 <  value( 1 ) =  15
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -1754,9 +1779,9 @@ Compiling  testIntegerVector
 >  value  1  :  15
 >  value  2  :  25
 >  value  3  :  25
-437d381
+456d381
 <     The increase allocation memory is :  0
-441,443c385,387
+460,462c385,387
 <  value( 1 ) =  60
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -1764,9 +1789,9 @@ Compiling  testIntegerVector
 >  value  1  :  60
 >  value  2  :  25
 >  value  3  :  25
-457d400
+476d400
 <     The increase allocation memory is :  0
-461,463c404,406
+480,482c404,406
 <  value( 1 ) =  23
 <  value( 2 ) =  23
 <  value( 3 ) =  23
@@ -1774,9 +1799,9 @@ Compiling  testIntegerVector
 >  value  1  :  23
 >  value  2  :  23
 >  value  3  :  23
-469d411
+488d411
 <     The increase allocation memory is :  0
-473,475c415,417
+492,494c415,417
 <  value( 1 ) =  2
 <  value( 2 ) =  2
 <  value( 3 ) =  2
@@ -1784,9 +1809,9 @@ Compiling  testIntegerVector
 >  value  1  :  2
 >  value  2  :  2
 >  value  3  :  2
-478d419
+497d419
 <     The increase allocation memory is :  0
-482,488c423,429
+501,507c423,429
 <  value( -1 ) =  -3
 <  value( 0 ) =  -3
 <  value( 1 ) =  2
@@ -1802,9 +1827,9 @@ Compiling  testIntegerVector
 >  value  3  :  2
 >  value  4  :  4
 >  value  5  :  4
-494d434
+513d434
 <     The increase allocation memory is :  0
-498,500c438,440
+517,519c438,440
 <  value( -1 ) =  0
 <  value( 0 ) =  0
 <  value( 1 ) =  0
@@ -1812,9 +1837,9 @@ Compiling  testIntegerVector
 >  value  -1  :  0
 >  value  0  :  0
 >  value  1  :  0
-506d445
+525d445
 <     The increase allocation memory is :  0
-510,512c449,451
+529,531c449,451
 <  value( -1 ) =  25
 <  value( 0 ) =  25
 <  value( 1 ) =  25
@@ -1822,9 +1847,9 @@ Compiling  testIntegerVector
 >  value  -1  :  25
 >  value  0  :  25
 >  value  1  :  25
-518d456
+537d456
 <     The increase allocation memory is :  0
-522,524c460,462
+541,543c460,462
 <  value( -1 ) =  25
 <  value( 0 ) =  25
 <  value( 1 ) =  15
@@ -1832,9 +1857,9 @@ Compiling  testIntegerVector
 >  value  -1  :  25
 >  value  0  :  25
 >  value  1  :  15
-530d467
+549d467
 <     The increase allocation memory is :  0
-534,536c471,473
+553,555c471,473
 <  value( -1 ) =  25
 <  value( 0 ) =  25
 <  value( 1 ) =  60
@@ -1842,9 +1867,9 @@ Compiling  testIntegerVector
 >  value  -1  :  25
 >  value  0  :  25
 >  value  1  :  60
-550d486
+569d486
 <     The increase allocation memory is :  0
-554,556c490,492
+573,575c490,492
 <  value( -1 ) =  23
 <  value( 0 ) =  23
 <  value( 1 ) =  23
@@ -1852,9 +1877,9 @@ Compiling  testIntegerVector
 >  value  -1  :  23
 >  value  0  :  23
 >  value  1  :  23
-562d497
+581d497
 <     The increase allocation memory is :  0
-566,568c501,503
+585,587c501,503
 <  value( -1 ) =  2
 <  value( 0 ) =  2
 <  value( 1 ) =  2
@@ -1862,9 +1887,9 @@ Compiling  testIntegerVector
 >  value  -1  :  2
 >  value  0  :  2
 >  value  1  :  2
-571d505
+590d505
 <     The increase allocation memory is :  0
-575,581c509,515
+594,600c509,515
 <  value( -3 ) =  -3
 <  value( -2 ) =  -3
 <  value( -1 ) =  2
@@ -1884,7 +1909,9 @@ Compiling  testIntegerVector
 Test : testIntegerVector.Integer4
 ------
 Compiling  testIntegerVector
-1,24d0
+1,43d0
+<  checkAllocationMemoryProcedure
+<  ==============================
 <  The size of the vector is :  3
 <     The allocated memory is :  8
 <     The increase allocation memory is :  5
@@ -1895,8 +1922,8 @@ Compiling  testIntegerVector
 <  value( 2 ) =  0
 <  value( 3 ) =  0
 <  The size of the vector is :  9
-<     The allocated memory is :  9
-<     The increase allocation memory is :  0
+<     The allocated memory is :  14
+<     The increase allocation memory is :  5
 <     Allocation status of the vector :  T
 <     First position is :  1
 <     Last position is  :  9
@@ -1909,9 +1936,26 @@ Compiling  testIntegerVector
 <  value( 7 ) =  0
 <  value( 8 ) =  0
 <  value( 9 ) =  0
-29d4
+<  The size of the vector is :  10
+<     The allocated memory is :  14
 <     The increase allocation memory is :  5
-33,35c8,10
+<     Allocation status of the vector :  T
+<     First position is :  1
+<     Last position is  :  10
+<  value( 1 ) =  0
+<  value( 2 ) =  0
+<  value( 3 ) =  0
+<  value( 4 ) =  0
+<  value( 5 ) =  0
+<  value( 6 ) =  0
+<  value( 7 ) =  0
+<  value( 8 ) =  0
+<  value( 9 ) =  0
+<  value( 10 ) =  0
+<   
+48d4
+<     The increase allocation memory is :  5
+52,54c8,10
 <  value( 1 ) =  0
 <  value( 2 ) =  0
 <  value( 3 ) =  0
@@ -1919,9 +1963,9 @@ Compiling  testIntegerVector
 >  value  1  :  0
 >  value  2  :  0
 >  value  3  :  0
-41d15
+60d15
 <     The increase allocation memory is :  5
-45,47c19,21
+64,66c19,21
 <  value( 1 ) =  25
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -1929,9 +1973,9 @@ Compiling  testIntegerVector
 >  value  1  :  25
 >  value  2  :  25
 >  value  3  :  25
-53d26
+72d26
 <     The increase allocation memory is :  5
-57,59c30,32
+76,78c30,32
 <  value( 1 ) =  15
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -1939,9 +1983,9 @@ Compiling  testIntegerVector
 >  value  1  :  15
 >  value  2  :  25
 >  value  3  :  25
-65d37
+84d37
 <     The increase allocation memory is :  5
-69,71c41,43
+88,90c41,43
 <  value( 1 ) =  60
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -1949,9 +1993,9 @@ Compiling  testIntegerVector
 >  value  1  :  60
 >  value  2  :  25
 >  value  3  :  25
-85d56
+104d56
 <     The increase allocation memory is :  5
-89,91c60,62
+108,110c60,62
 <  value( 1 ) =  23
 <  value( 2 ) =  23
 <  value( 3 ) =  23
@@ -1959,9 +2003,9 @@ Compiling  testIntegerVector
 >  value  1  :  23
 >  value  2  :  23
 >  value  3  :  23
-97d67
+116d67
 <     The increase allocation memory is :  5
-101,103c71,73
+120,122c71,73
 <  value( 1 ) =  2
 <  value( 2 ) =  2
 <  value( 3 ) =  2
@@ -1969,9 +2013,9 @@ Compiling  testIntegerVector
 >  value  1  :  2
 >  value  2  :  2
 >  value  3  :  2
-106d75
+125d75
 <     The increase allocation memory is :  5
-110,116c79,85
+129,135c79,85
 <  value( -1 ) =  -3
 <  value( 0 ) =  -3
 <  value( 1 ) =  2
@@ -1987,9 +2031,9 @@ Compiling  testIntegerVector
 >  value  3  :  2
 >  value  4  :  4
 >  value  5  :  4
-122d90
+141d90
 <     The increase allocation memory is :  5
-126,128c94,96
+145,147c94,96
 <  value( 1 ) =  0
 <  value( 2 ) =  0
 <  value( 3 ) =  0
@@ -1997,9 +2041,9 @@ Compiling  testIntegerVector
 >  value  1  :  0
 >  value  2  :  0
 >  value  3  :  0
-134d101
+153d101
 <     The increase allocation memory is :  5
-138,140c105,107
+157,159c105,107
 <  value( 1 ) =  25
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -2007,9 +2051,9 @@ Compiling  testIntegerVector
 >  value  1  :  25
 >  value  2  :  25
 >  value  3  :  25
-146d112
+165d112
 <     The increase allocation memory is :  5
-150,152c116,118
+169,171c116,118
 <  value( 1 ) =  15
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -2017,9 +2061,9 @@ Compiling  testIntegerVector
 >  value  1  :  15
 >  value  2  :  25
 >  value  3  :  25
-158d123
+177d123
 <     The increase allocation memory is :  5
-162,164c127,129
+181,183c127,129
 <  value( 1 ) =  60
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -2027,9 +2071,9 @@ Compiling  testIntegerVector
 >  value  1  :  60
 >  value  2  :  25
 >  value  3  :  25
-178d142
+197d142
 <     The increase allocation memory is :  5
-182,184c146,148
+201,203c146,148
 <  value( 1 ) =  23
 <  value( 2 ) =  23
 <  value( 3 ) =  23
@@ -2037,9 +2081,9 @@ Compiling  testIntegerVector
 >  value  1  :  23
 >  value  2  :  23
 >  value  3  :  23
-190d153
+209d153
 <     The increase allocation memory is :  5
-194,196c157,159
+213,215c157,159
 <  value( 1 ) =  2
 <  value( 2 ) =  2
 <  value( 3 ) =  2
@@ -2047,9 +2091,9 @@ Compiling  testIntegerVector
 >  value  1  :  2
 >  value  2  :  2
 >  value  3  :  2
-199d161
+218d161
 <     The increase allocation memory is :  5
-203,209c165,171
+222,228c165,171
 <  value( -1 ) =  -3
 <  value( 0 ) =  -3
 <  value( 1 ) =  2
@@ -2065,9 +2109,9 @@ Compiling  testIntegerVector
 >  value  3  :  2
 >  value  4  :  4
 >  value  5  :  4
-215d176
+234d176
 <     The increase allocation memory is :  5
-219,221c180,182
+238,240c180,182
 <  value( -1 ) =  0
 <  value( 0 ) =  0
 <  value( 1 ) =  0
@@ -2075,9 +2119,9 @@ Compiling  testIntegerVector
 >  value  -1  :  0
 >  value  0  :  0
 >  value  1  :  0
-227d187
+246d187
 <     The increase allocation memory is :  5
-231,233c191,193
+250,252c191,193
 <  value( -1 ) =  25
 <  value( 0 ) =  25
 <  value( 1 ) =  25
@@ -2085,9 +2129,9 @@ Compiling  testIntegerVector
 >  value  -1  :  25
 >  value  0  :  25
 >  value  1  :  25
-239d198
+258d198
 <     The increase allocation memory is :  5
-243,245c202,204
+262,264c202,204
 <  value( -1 ) =  25
 <  value( 0 ) =  25
 <  value( 1 ) =  15
@@ -2095,9 +2139,9 @@ Compiling  testIntegerVector
 >  value  -1  :  25
 >  value  0  :  25
 >  value  1  :  15
-251d209
+270d209
 <     The increase allocation memory is :  5
-255,257c213,215
+274,276c213,215
 <  value( -1 ) =  25
 <  value( 0 ) =  25
 <  value( 1 ) =  60
@@ -2105,9 +2149,9 @@ Compiling  testIntegerVector
 >  value  -1  :  25
 >  value  0  :  25
 >  value  1  :  60
-271d228
+290d228
 <     The increase allocation memory is :  5
-275,277c232,234
+294,296c232,234
 <  value( -1 ) =  23
 <  value( 0 ) =  23
 <  value( 1 ) =  23
@@ -2115,9 +2159,9 @@ Compiling  testIntegerVector
 >  value  -1  :  23
 >  value  0  :  23
 >  value  1  :  23
-283d239
+302d239
 <     The increase allocation memory is :  5
-287,289c243,245
+306,308c243,245
 <  value( -1 ) =  2
 <  value( 0 ) =  2
 <  value( 1 ) =  2
@@ -2125,9 +2169,9 @@ Compiling  testIntegerVector
 >  value  -1  :  2
 >  value  0  :  2
 >  value  1  :  2
-292d247
+311d247
 <     The increase allocation memory is :  5
-296,302c251,257
+315,321c251,257
 <  value( -3 ) =  -3
 <  value( -2 ) =  -3
 <  value( -1 ) =  2
@@ -2143,9 +2187,9 @@ Compiling  testIntegerVector
 >  value  1  :  2
 >  value  2  :  4
 >  value  3  :  4
-308d262
+327d262
 <     The increase allocation memory is :  0
-312,314c266,268
+331,333c266,268
 <  value( 1 ) =  0
 <  value( 2 ) =  0
 <  value( 3 ) =  0
@@ -2153,9 +2197,9 @@ Compiling  testIntegerVector
 >  value  1  :  0
 >  value  2  :  0
 >  value  3  :  0
-320d273
+339d273
 <     The increase allocation memory is :  0
-324,326c277,279
+343,345c277,279
 <  value( 1 ) =  25
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -2163,9 +2207,9 @@ Compiling  testIntegerVector
 >  value  1  :  25
 >  value  2  :  25
 >  value  3  :  25
-332d284
+351d284
 <     The increase allocation memory is :  0
-336,338c288,290
+355,357c288,290
 <  value( 1 ) =  15
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -2173,9 +2217,9 @@ Compiling  testIntegerVector
 >  value  1  :  15
 >  value  2  :  25
 >  value  3  :  25
-344d295
+363d295
 <     The increase allocation memory is :  0
-348,350c299,301
+367,369c299,301
 <  value( 1 ) =  60
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -2183,9 +2227,9 @@ Compiling  testIntegerVector
 >  value  1  :  60
 >  value  2  :  25
 >  value  3  :  25
-364d314
+383d314
 <     The increase allocation memory is :  0
-368,370c318,320
+387,389c318,320
 <  value( 1 ) =  23
 <  value( 2 ) =  23
 <  value( 3 ) =  23
@@ -2193,9 +2237,9 @@ Compiling  testIntegerVector
 >  value  1  :  23
 >  value  2  :  23
 >  value  3  :  23
-376d325
+395d325
 <     The increase allocation memory is :  0
-380,382c329,331
+399,401c329,331
 <  value( 1 ) =  2
 <  value( 2 ) =  2
 <  value( 3 ) =  2
@@ -2203,9 +2247,9 @@ Compiling  testIntegerVector
 >  value  1  :  2
 >  value  2  :  2
 >  value  3  :  2
-385d333
+404d333
 <     The increase allocation memory is :  0
-389,395c337,343
+408,414c337,343
 <  value( -1 ) =  -3
 <  value( 0 ) =  -3
 <  value( 1 ) =  2
@@ -2221,9 +2265,9 @@ Compiling  testIntegerVector
 >  value  3  :  2
 >  value  4  :  4
 >  value  5  :  4
-401d348
+420d348
 <     The increase allocation memory is :  0
-405,407c352,354
+424,426c352,354
 <  value( 1 ) =  0
 <  value( 2 ) =  0
 <  value( 3 ) =  0
@@ -2231,9 +2275,9 @@ Compiling  testIntegerVector
 >  value  1  :  0
 >  value  2  :  0
 >  value  3  :  0
-413d359
+432d359
 <     The increase allocation memory is :  0
-417,419c363,365
+436,438c363,365
 <  value( 1 ) =  25
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -2241,9 +2285,9 @@ Compiling  testIntegerVector
 >  value  1  :  25
 >  value  2  :  25
 >  value  3  :  25
-425d370
+444d370
 <     The increase allocation memory is :  0
-429,431c374,376
+448,450c374,376
 <  value( 1 ) =  15
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -2251,9 +2295,9 @@ Compiling  testIntegerVector
 >  value  1  :  15
 >  value  2  :  25
 >  value  3  :  25
-437d381
+456d381
 <     The increase allocation memory is :  0
-441,443c385,387
+460,462c385,387
 <  value( 1 ) =  60
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -2261,9 +2305,9 @@ Compiling  testIntegerVector
 >  value  1  :  60
 >  value  2  :  25
 >  value  3  :  25
-457d400
+476d400
 <     The increase allocation memory is :  0
-461,463c404,406
+480,482c404,406
 <  value( 1 ) =  23
 <  value( 2 ) =  23
 <  value( 3 ) =  23
@@ -2271,9 +2315,9 @@ Compiling  testIntegerVector
 >  value  1  :  23
 >  value  2  :  23
 >  value  3  :  23
-469d411
+488d411
 <     The increase allocation memory is :  0
-473,475c415,417
+492,494c415,417
 <  value( 1 ) =  2
 <  value( 2 ) =  2
 <  value( 3 ) =  2
@@ -2281,9 +2325,9 @@ Compiling  testIntegerVector
 >  value  1  :  2
 >  value  2  :  2
 >  value  3  :  2
-478d419
+497d419
 <     The increase allocation memory is :  0
-482,488c423,429
+501,507c423,429
 <  value( -1 ) =  -3
 <  value( 0 ) =  -3
 <  value( 1 ) =  2
@@ -2299,9 +2343,9 @@ Compiling  testIntegerVector
 >  value  3  :  2
 >  value  4  :  4
 >  value  5  :  4
-494d434
+513d434
 <     The increase allocation memory is :  0
-498,500c438,440
+517,519c438,440
 <  value( -1 ) =  0
 <  value( 0 ) =  0
 <  value( 1 ) =  0
@@ -2309,9 +2353,9 @@ Compiling  testIntegerVector
 >  value  -1  :  0
 >  value  0  :  0
 >  value  1  :  0
-506d445
+525d445
 <     The increase allocation memory is :  0
-510,512c449,451
+529,531c449,451
 <  value( -1 ) =  25
 <  value( 0 ) =  25
 <  value( 1 ) =  25
@@ -2319,9 +2363,9 @@ Compiling  testIntegerVector
 >  value  -1  :  25
 >  value  0  :  25
 >  value  1  :  25
-518d456
+537d456
 <     The increase allocation memory is :  0
-522,524c460,462
+541,543c460,462
 <  value( -1 ) =  25
 <  value( 0 ) =  25
 <  value( 1 ) =  15
@@ -2329,9 +2373,9 @@ Compiling  testIntegerVector
 >  value  -1  :  25
 >  value  0  :  25
 >  value  1  :  15
-530d467
+549d467
 <     The increase allocation memory is :  0
-534,536c471,473
+553,555c471,473
 <  value( -1 ) =  25
 <  value( 0 ) =  25
 <  value( 1 ) =  60
@@ -2339,9 +2383,9 @@ Compiling  testIntegerVector
 >  value  -1  :  25
 >  value  0  :  25
 >  value  1  :  60
-550d486
+569d486
 <     The increase allocation memory is :  0
-554,556c490,492
+573,575c490,492
 <  value( -1 ) =  23
 <  value( 0 ) =  23
 <  value( 1 ) =  23
@@ -2349,9 +2393,9 @@ Compiling  testIntegerVector
 >  value  -1  :  23
 >  value  0  :  23
 >  value  1  :  23
-562d497
+581d497
 <     The increase allocation memory is :  0
-566,568c501,503
+585,587c501,503
 <  value( -1 ) =  2
 <  value( 0 ) =  2
 <  value( 1 ) =  2
@@ -2359,9 +2403,9 @@ Compiling  testIntegerVector
 >  value  -1  :  2
 >  value  0  :  2
 >  value  1  :  2
-571d505
+590d505
 <     The increase allocation memory is :  0
-575,581c509,515
+594,600c509,515
 <  value( -3 ) =  -3
 <  value( -2 ) =  -3
 <  value( -1 ) =  2
@@ -2381,7 +2425,9 @@ Compiling  testIntegerVector
 Test : testIntegerVector.Integer8
 ------
 Compiling  testIntegerVector
-1,24d0
+1,43d0
+<  checkAllocationMemoryProcedure
+<  ==============================
 <  The size of the vector is :  3
 <     The allocated memory is :  8
 <     The increase allocation memory is :  5
@@ -2392,8 +2438,8 @@ Compiling  testIntegerVector
 <  value( 2 ) =  0
 <  value( 3 ) =  0
 <  The size of the vector is :  9
-<     The allocated memory is :  9
-<     The increase allocation memory is :  0
+<     The allocated memory is :  14
+<     The increase allocation memory is :  5
 <     Allocation status of the vector :  T
 <     First position is :  1
 <     Last position is  :  9
@@ -2406,9 +2452,26 @@ Compiling  testIntegerVector
 <  value( 7 ) =  0
 <  value( 8 ) =  0
 <  value( 9 ) =  0
-29d4
+<  The size of the vector is :  10
+<     The allocated memory is :  14
 <     The increase allocation memory is :  5
-33,35c8,10
+<     Allocation status of the vector :  T
+<     First position is :  1
+<     Last position is  :  10
+<  value( 1 ) =  0
+<  value( 2 ) =  0
+<  value( 3 ) =  0
+<  value( 4 ) =  0
+<  value( 5 ) =  0
+<  value( 6 ) =  0
+<  value( 7 ) =  0
+<  value( 8 ) =  0
+<  value( 9 ) =  0
+<  value( 10 ) =  0
+<   
+48d4
+<     The increase allocation memory is :  5
+52,54c8,10
 <  value( 1 ) =  0
 <  value( 2 ) =  0
 <  value( 3 ) =  0
@@ -2416,9 +2479,9 @@ Compiling  testIntegerVector
 >  value  1  :  0
 >  value  2  :  0
 >  value  3  :  0
-41d15
+60d15
 <     The increase allocation memory is :  5
-45,47c19,21
+64,66c19,21
 <  value( 1 ) =  25
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -2426,9 +2489,9 @@ Compiling  testIntegerVector
 >  value  1  :  25
 >  value  2  :  25
 >  value  3  :  25
-53d26
+72d26
 <     The increase allocation memory is :  5
-57,59c30,32
+76,78c30,32
 <  value( 1 ) =  15
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -2436,9 +2499,9 @@ Compiling  testIntegerVector
 >  value  1  :  15
 >  value  2  :  25
 >  value  3  :  25
-65d37
+84d37
 <     The increase allocation memory is :  5
-69,71c41,43
+88,90c41,43
 <  value( 1 ) =  60
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -2446,9 +2509,9 @@ Compiling  testIntegerVector
 >  value  1  :  60
 >  value  2  :  25
 >  value  3  :  25
-85d56
+104d56
 <     The increase allocation memory is :  5
-89,91c60,62
+108,110c60,62
 <  value( 1 ) =  23
 <  value( 2 ) =  23
 <  value( 3 ) =  23
@@ -2456,9 +2519,9 @@ Compiling  testIntegerVector
 >  value  1  :  23
 >  value  2  :  23
 >  value  3  :  23
-97d67
+116d67
 <     The increase allocation memory is :  5
-101,103c71,73
+120,122c71,73
 <  value( 1 ) =  2
 <  value( 2 ) =  2
 <  value( 3 ) =  2
@@ -2466,9 +2529,9 @@ Compiling  testIntegerVector
 >  value  1  :  2
 >  value  2  :  2
 >  value  3  :  2
-106d75
+125d75
 <     The increase allocation memory is :  5
-110,116c79,85
+129,135c79,85
 <  value( -1 ) =  -3
 <  value( 0 ) =  -3
 <  value( 1 ) =  2
@@ -2484,9 +2547,9 @@ Compiling  testIntegerVector
 >  value  3  :  2
 >  value  4  :  4
 >  value  5  :  4
-122d90
+141d90
 <     The increase allocation memory is :  5
-126,128c94,96
+145,147c94,96
 <  value( 1 ) =  0
 <  value( 2 ) =  0
 <  value( 3 ) =  0
@@ -2494,9 +2557,9 @@ Compiling  testIntegerVector
 >  value  1  :  0
 >  value  2  :  0
 >  value  3  :  0
-134d101
+153d101
 <     The increase allocation memory is :  5
-138,140c105,107
+157,159c105,107
 <  value( 1 ) =  25
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -2504,9 +2567,9 @@ Compiling  testIntegerVector
 >  value  1  :  25
 >  value  2  :  25
 >  value  3  :  25
-146d112
+165d112
 <     The increase allocation memory is :  5
-150,152c116,118
+169,171c116,118
 <  value( 1 ) =  15
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -2514,9 +2577,9 @@ Compiling  testIntegerVector
 >  value  1  :  15
 >  value  2  :  25
 >  value  3  :  25
-158d123
+177d123
 <     The increase allocation memory is :  5
-162,164c127,129
+181,183c127,129
 <  value( 1 ) =  60
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -2524,9 +2587,9 @@ Compiling  testIntegerVector
 >  value  1  :  60
 >  value  2  :  25
 >  value  3  :  25
-178d142
+197d142
 <     The increase allocation memory is :  5
-182,184c146,148
+201,203c146,148
 <  value( 1 ) =  23
 <  value( 2 ) =  23
 <  value( 3 ) =  23
@@ -2534,9 +2597,9 @@ Compiling  testIntegerVector
 >  value  1  :  23
 >  value  2  :  23
 >  value  3  :  23
-190d153
+209d153
 <     The increase allocation memory is :  5
-194,196c157,159
+213,215c157,159
 <  value( 1 ) =  2
 <  value( 2 ) =  2
 <  value( 3 ) =  2
@@ -2544,9 +2607,9 @@ Compiling  testIntegerVector
 >  value  1  :  2
 >  value  2  :  2
 >  value  3  :  2
-199d161
+218d161
 <     The increase allocation memory is :  5
-203,209c165,171
+222,228c165,171
 <  value( -1 ) =  -3
 <  value( 0 ) =  -3
 <  value( 1 ) =  2
@@ -2562,9 +2625,9 @@ Compiling  testIntegerVector
 >  value  3  :  2
 >  value  4  :  4
 >  value  5  :  4
-215d176
+234d176
 <     The increase allocation memory is :  5
-219,221c180,182
+238,240c180,182
 <  value( -1 ) =  0
 <  value( 0 ) =  0
 <  value( 1 ) =  0
@@ -2572,9 +2635,9 @@ Compiling  testIntegerVector
 >  value  -1  :  0
 >  value  0  :  0
 >  value  1  :  0
-227d187
+246d187
 <     The increase allocation memory is :  5
-231,233c191,193
+250,252c191,193
 <  value( -1 ) =  25
 <  value( 0 ) =  25
 <  value( 1 ) =  25
@@ -2582,9 +2645,9 @@ Compiling  testIntegerVector
 >  value  -1  :  25
 >  value  0  :  25
 >  value  1  :  25
-239d198
+258d198
 <     The increase allocation memory is :  5
-243,245c202,204
+262,264c202,204
 <  value( -1 ) =  25
 <  value( 0 ) =  25
 <  value( 1 ) =  15
@@ -2592,9 +2655,9 @@ Compiling  testIntegerVector
 >  value  -1  :  25
 >  value  0  :  25
 >  value  1  :  15
-251d209
+270d209
 <     The increase allocation memory is :  5
-255,257c213,215
+274,276c213,215
 <  value( -1 ) =  25
 <  value( 0 ) =  25
 <  value( 1 ) =  60
@@ -2602,9 +2665,9 @@ Compiling  testIntegerVector
 >  value  -1  :  25
 >  value  0  :  25
 >  value  1  :  60
-271d228
+290d228
 <     The increase allocation memory is :  5
-275,277c232,234
+294,296c232,234
 <  value( -1 ) =  23
 <  value( 0 ) =  23
 <  value( 1 ) =  23
@@ -2612,9 +2675,9 @@ Compiling  testIntegerVector
 >  value  -1  :  23
 >  value  0  :  23
 >  value  1  :  23
-283d239
+302d239
 <     The increase allocation memory is :  5
-287,289c243,245
+306,308c243,245
 <  value( -1 ) =  2
 <  value( 0 ) =  2
 <  value( 1 ) =  2
@@ -2622,9 +2685,9 @@ Compiling  testIntegerVector
 >  value  -1  :  2
 >  value  0  :  2
 >  value  1  :  2
-292d247
+311d247
 <     The increase allocation memory is :  5
-296,302c251,257
+315,321c251,257
 <  value( -3 ) =  -3
 <  value( -2 ) =  -3
 <  value( -1 ) =  2
@@ -2640,9 +2703,9 @@ Compiling  testIntegerVector
 >  value  1  :  2
 >  value  2  :  4
 >  value  3  :  4
-308d262
+327d262
 <     The increase allocation memory is :  0
-312,314c266,268
+331,333c266,268
 <  value( 1 ) =  0
 <  value( 2 ) =  0
 <  value( 3 ) =  0
@@ -2650,9 +2713,9 @@ Compiling  testIntegerVector
 >  value  1  :  0
 >  value  2  :  0
 >  value  3  :  0
-320d273
+339d273
 <     The increase allocation memory is :  0
-324,326c277,279
+343,345c277,279
 <  value( 1 ) =  25
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -2660,9 +2723,9 @@ Compiling  testIntegerVector
 >  value  1  :  25
 >  value  2  :  25
 >  value  3  :  25
-332d284
+351d284
 <     The increase allocation memory is :  0
-336,338c288,290
+355,357c288,290
 <  value( 1 ) =  15
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -2670,9 +2733,9 @@ Compiling  testIntegerVector
 >  value  1  :  15
 >  value  2  :  25
 >  value  3  :  25
-344d295
+363d295
 <     The increase allocation memory is :  0
-348,350c299,301
+367,369c299,301
 <  value( 1 ) =  60
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -2680,9 +2743,9 @@ Compiling  testIntegerVector
 >  value  1  :  60
 >  value  2  :  25
 >  value  3  :  25
-364d314
+383d314
 <     The increase allocation memory is :  0
-368,370c318,320
+387,389c318,320
 <  value( 1 ) =  23
 <  value( 2 ) =  23
 <  value( 3 ) =  23
@@ -2690,9 +2753,9 @@ Compiling  testIntegerVector
 >  value  1  :  23
 >  value  2  :  23
 >  value  3  :  23
-376d325
+395d325
 <     The increase allocation memory is :  0
-380,382c329,331
+399,401c329,331
 <  value( 1 ) =  2
 <  value( 2 ) =  2
 <  value( 3 ) =  2
@@ -2700,9 +2763,9 @@ Compiling  testIntegerVector
 >  value  1  :  2
 >  value  2  :  2
 >  value  3  :  2
-385d333
+404d333
 <     The increase allocation memory is :  0
-389,395c337,343
+408,414c337,343
 <  value( -1 ) =  -3
 <  value( 0 ) =  -3
 <  value( 1 ) =  2
@@ -2718,9 +2781,9 @@ Compiling  testIntegerVector
 >  value  3  :  2
 >  value  4  :  4
 >  value  5  :  4
-401d348
+420d348
 <     The increase allocation memory is :  0
-405,407c352,354
+424,426c352,354
 <  value( 1 ) =  0
 <  value( 2 ) =  0
 <  value( 3 ) =  0
@@ -2728,9 +2791,9 @@ Compiling  testIntegerVector
 >  value  1  :  0
 >  value  2  :  0
 >  value  3  :  0
-413d359
+432d359
 <     The increase allocation memory is :  0
-417,419c363,365
+436,438c363,365
 <  value( 1 ) =  25
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -2738,9 +2801,9 @@ Compiling  testIntegerVector
 >  value  1  :  25
 >  value  2  :  25
 >  value  3  :  25
-425d370
+444d370
 <     The increase allocation memory is :  0
-429,431c374,376
+448,450c374,376
 <  value( 1 ) =  15
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -2748,9 +2811,9 @@ Compiling  testIntegerVector
 >  value  1  :  15
 >  value  2  :  25
 >  value  3  :  25
-437d381
+456d381
 <     The increase allocation memory is :  0
-441,443c385,387
+460,462c385,387
 <  value( 1 ) =  60
 <  value( 2 ) =  25
 <  value( 3 ) =  25
@@ -2758,9 +2821,9 @@ Compiling  testIntegerVector
 >  value  1  :  60
 >  value  2  :  25
 >  value  3  :  25
-457d400
+476d400
 <     The increase allocation memory is :  0
-461,463c404,406
+480,482c404,406
 <  value( 1 ) =  23
 <  value( 2 ) =  23
 <  value( 3 ) =  23
@@ -2768,9 +2831,9 @@ Compiling  testIntegerVector
 >  value  1  :  23
 >  value  2  :  23
 >  value  3  :  23
-469d411
+488d411
 <     The increase allocation memory is :  0
-473,475c415,417
+492,494c415,417
 <  value( 1 ) =  2
 <  value( 2 ) =  2
 <  value( 3 ) =  2
@@ -2778,9 +2841,9 @@ Compiling  testIntegerVector
 >  value  1  :  2
 >  value  2  :  2
 >  value  3  :  2
-478d419
+497d419
 <     The increase allocation memory is :  0
-482,488c423,429
+501,507c423,429
 <  value( -1 ) =  -3
 <  value( 0 ) =  -3
 <  value( 1 ) =  2
@@ -2796,9 +2859,9 @@ Compiling  testIntegerVector
 >  value  3  :  2
 >  value  4  :  4
 >  value  5  :  4
-494d434
+513d434
 <     The increase allocation memory is :  0
-498,500c438,440
+517,519c438,440
 <  value( -1 ) =  0
 <  value( 0 ) =  0
 <  value( 1 ) =  0
@@ -2806,9 +2869,9 @@ Compiling  testIntegerVector
 >  value  -1  :  0
 >  value  0  :  0
 >  value  1  :  0
-506d445
+525d445
 <     The increase allocation memory is :  0
-510,512c449,451
+529,531c449,451
 <  value( -1 ) =  25
 <  value( 0 ) =  25
 <  value( 1 ) =  25
@@ -2816,9 +2879,9 @@ Compiling  testIntegerVector
 >  value  -1  :  25
 >  value  0  :  25
 >  value  1  :  25
-518d456
+537d456
 <     The increase allocation memory is :  0
-522,524c460,462
+541,543c460,462
 <  value( -1 ) =  25
 <  value( 0 ) =  25
 <  value( 1 ) =  15
@@ -2826,9 +2889,9 @@ Compiling  testIntegerVector
 >  value  -1  :  25
 >  value  0  :  25
 >  value  1  :  15
-530d467
+549d467
 <     The increase allocation memory is :  0
-534,536c471,473
+553,555c471,473
 <  value( -1 ) =  25
 <  value( 0 ) =  25
 <  value( 1 ) =  60
@@ -2836,9 +2899,9 @@ Compiling  testIntegerVector
 >  value  -1  :  25
 >  value  0  :  25
 >  value  1  :  60
-550d486
+569d486
 <     The increase allocation memory is :  0
-554,556c490,492
+573,575c490,492
 <  value( -1 ) =  23
 <  value( 0 ) =  23
 <  value( 1 ) =  23
@@ -2846,9 +2909,9 @@ Compiling  testIntegerVector
 >  value  -1  :  23
 >  value  0  :  23
 >  value  1  :  23
-562d497
+581d497
 <     The increase allocation memory is :  0
-566,568c501,503
+585,587c501,503
 <  value( -1 ) =  2
 <  value( 0 ) =  2
 <  value( 1 ) =  2
@@ -2856,9 +2919,9 @@ Compiling  testIntegerVector
 >  value  -1  :  2
 >  value  0  :  2
 >  value  1  :  2
-571d505
+590d505
 <     The increase allocation memory is :  0
-575,581c509,515
+594,600c509,515
 <  value( -3 ) =  -3
 <  value( -2 ) =  -3
 <  value( -1 ) =  2
@@ -2878,12 +2941,12 @@ Compiling  testIntegerVector
 Test : testReadWrite
 ------
 Compiling  testReadWrite
-Files ./fort.412 and ./OUTPUTS/fort.412.testReadWrite.cygwin are identical
-Files ./fort.413 and ./OUTPUTS/fort.413.testReadWrite.cygwin are identical
-Files ./fort.414 and ./OUTPUTS/fort.414.testReadWrite.cygwin are identical
-Files ./fort.415 and ./OUTPUTS/fort.415.testReadWrite.cygwin are identical
-Files ./fort.812 and ./OUTPUTS/fort.812.testReadWrite.cygwin are identical
-Files ./fort.813 and ./OUTPUTS/fort.813.testReadWrite.cygwin are identical
-Files ./fort.814 and ./OUTPUTS/fort.814.testReadWrite.cygwin are identical
-Files ./fort.815 and ./OUTPUTS/fort.815.testReadWrite.cygwin are identical
+Les fichiers ./fort.412 et ./OUTPUTS/fort.412.testReadWrite.cygwin sont identiques.
+Les fichiers ./fort.413 et ./OUTPUTS/fort.413.testReadWrite.cygwin sont identiques.
+Les fichiers ./fort.414 et ./OUTPUTS/fort.414.testReadWrite.cygwin sont identiques.
+Les fichiers ./fort.415 et ./OUTPUTS/fort.415.testReadWrite.cygwin sont identiques.
+Les fichiers ./fort.812 et ./OUTPUTS/fort.812.testReadWrite.cygwin sont identiques.
+Les fichiers ./fort.813 et ./OUTPUTS/fort.813.testReadWrite.cygwin sont identiques.
+Les fichiers ./fort.814 et ./OUTPUTS/fort.814.testReadWrite.cygwin sont identiques.
+Les fichiers ./fort.815 et ./OUTPUTS/fort.815.testReadWrite.cygwin sont identiques.
  

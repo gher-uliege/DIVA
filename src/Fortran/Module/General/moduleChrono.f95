@@ -149,7 +149,7 @@ MODULE moduleChrono
 
 !     Declaration
 !     - - - - - -
-      REAL*8 :: startingPoint, finishPoint
+      REAL(KIND=8) :: startingPoint, finishPoint
 
 !     Body
 !     - - -

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Definition of the compiler and options
+# ======================================
+source $divaDir/compileBaseG95
+
+echo 'Compiling ' $2
+$compiler $flag $preprocessor $preprocessorFlag $libraryDir $libraryObj $1 -o $2.a
+

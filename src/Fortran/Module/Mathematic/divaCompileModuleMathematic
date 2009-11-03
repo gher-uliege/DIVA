@@ -1,0 +1,55 @@
+#!/bin/bash
+
+echo ===============================================
+echo ===============================================
+echo ==                                           ==
+echo ==   Compilation of DIVA Mathematic Modules  ==
+echo ==                                           ==
+echo ===============================================
+echo ===============================================
+echo ' '
+
+baseDir=$PWD
+
+echo ============================
+echo ============================
+echo = Compiling General Module =
+echo ============================
+echo ============================
+echo ' '
+
+preproFlag=''
+associateDir='-I'$divaDir'/Module/General -I'$divaDir'/Module/IOModule '
+export preproFlag
+export associateDir
+
+for ii in `ls *.f95`
+do
+$divaDir/compileFile $ii `basename $ii .f95`
+done
+
+mv *.mod $divaModuleLib
+mv *.o $divaModuleLib
+
+echo ===========================
+echo ===========================
+echo = Compiling Vector Module =
+echo ===========================
+echo ===========================
+echo ' '
+
+cd $baseDir/Vector
+./divaCompileModuleVector
+
+echo ===========================
+echo ===========================
+echo = Compiling Matrix Module =
+echo ===========================
+echo ===========================
+echo ' '
+
+cd $baseDir/Matrix
+./divaCompileModuleArray
+
+cd $baseDir
+

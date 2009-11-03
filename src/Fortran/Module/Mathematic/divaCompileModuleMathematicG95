@@ -25,7 +25,7 @@ export associateDir
 
 for ii in `ls *.f95`
 do
-$divaDir/compileFile $ii `basename $ii .f95`
+source $divaDir/compileFileG95 $ii `basename $ii .f95`
 done
 
 mv *.mod $divaModuleLib
@@ -39,7 +39,7 @@ echo ===========================
 echo ' '
 
 cd $baseDir/Vector
-./divaCompileModuleVectorCygwin
+source ./divaCompileModuleVectorG95
 
 echo ===========================
 echo ===========================
@@ -49,7 +49,7 @@ echo ===========================
 echo ' '
 
 cd $baseDir/Matrix
-./divaCompileModuleArrayCygwin
+source ./divaCompileModuleArrayG95
 
 cd $baseDir
 

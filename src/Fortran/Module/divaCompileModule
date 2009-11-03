@@ -10,24 +10,27 @@ echo ====================================
 echo ' '
 
 baseDir=$PWD
-divaModuleLib=$baseDir/Module/lib
 
 rm $divaModuleLib/*
 
-echo =====================
-echo =====================
-echo = Compiling Modules =
-echo =====================
-echo =====================
-echo ' '
+# Compilation of Mathematic module
+# =================================
 
 cd $baseDir/Mathematic
-./divaCompileModuleMathematicCygwin
+./divaCompileModuleMathematic
 
-echo --------------------
-echo Compilation finished
-echo --------------------
-echo ' '
+
+# Compilation of IO module
+# ========================
+
+cd $baseDir/IOModule
+./divaCompileIOModule
+
+# Compilation of General module
+# =============================
+
+cd $baseDir/General
+./divaCompileModuleGeneral
 
 cd $baseDir
 

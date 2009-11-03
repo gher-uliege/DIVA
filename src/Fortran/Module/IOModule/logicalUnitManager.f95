@@ -58,7 +58,7 @@ MODULE logicalUnitManager
 !     - - -
       CALL setNumberOfData(iEnd-iStart+1)
       CALL createDataBase()
-      CALL initialiseDataBase(iStart,iEnd)
+      CALL initialiseDataBase(iStart)
 
       isInitialise = true ;
       
@@ -139,11 +139,11 @@ MODULE logicalUnitManager
    
 ! Procedure 3 : initialisation of the database
 ! --------------------------------------------
-   SUBROUTINE initialiseDataBase(iStart,iEnd)
+   SUBROUTINE initialiseDataBase(iStart)
    
 !     Declaration
 !     - - - - - -
-      INTEGER, INTENT(IN) :: iStart, iEnd
+      INTEGER, INTENT(IN) :: iStart
       INTEGER :: i1
 
 !     Body
@@ -163,7 +163,7 @@ MODULE logicalUnitManager
 !     Declaration
 !     - - - - - -
       INTEGER :: i1
-      TYPE (logicalUnit), INTENT(OUT), POINTER :: number
+      TYPE (logicalUnit), POINTER :: number
 
 !     Body
 !     - - -

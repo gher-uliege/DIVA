@@ -1,0 +1,118 @@
+#!/bin/bash
+
+
+preproFlag='-DtemplatevectorType=vectorReal8Definition -DvectorType=vectorReal8 -DVARType=REAL(KIND=8) '
+export preproFlag
+moduleName=vectorReal8Definition
+
+source $divaDir/compileFileG95 moduleVector.f95 $moduleName
+
+preproFlag='-DtemplatevectorType=vectorReal4Definition -DvectorType=vectorReal4 -DVARType=REAL(KIND=4) '
+export preproFlag
+moduleName=vectorReal4Definition
+
+source $divaDir/compileFileG95 moduleVector.f95 $moduleName
+
+preproFlag='-DtemplatevectorType=vectorInteger2Definition -DvectorType=vectorInteger2 -DVARType=INTEGER(KIND=2) '
+export preproFlag
+moduleName=vectorInteger2Definition
+
+source $divaDir/compileFileG95 moduleVector.f95 $moduleName
+
+preproFlag='-DtemplatevectorType=vectorInteger4Definition -DvectorType=vectorInteger4 -DVARType=INTEGER(KIND=4) '
+export preproFlag
+moduleName=vectorInteger4Definition
+
+source $divaDir/compileFileG95 moduleVector.f95 $moduleName
+
+preproFlag='-DtemplatevectorType=vectorInteger8Definition -DvectorType=vectorInteger8 -DVARType=INTEGER(KIND=8) '
+export preproFlag
+moduleName=vectorInteger8Definition
+
+source $divaDir/compileFileG95 moduleVector.f95 $moduleName
+
+mv *.mod $divaModuleLib
+mv *.o $divaModuleLib
+
+preproFlag='-DtemplatevectorType=vectorReal8Definition -DtemplateBasicVector=basicVectorReal8 -Dtemplate=moduleVectorReal8 '
+preproFlag=$preproFlag' -DvectorType=vectorReal8 -DVARType=REAL(KIND=8) '
+export preproFlag
+moduleName=basicVectorReal8
+
+source $divaDir/compileFileG95 templateBasicVector.f95 $moduleName
+
+preproFlag='-DtemplatevectorType=vectorReal4Definition -DtemplateBasicVector=basicVectorReal4 -Dtemplate=moduleVectorReal4 '
+preproFlag=$preproFlag' -DvectorType=vectorReal4 -DVARType=REAL(KIND=4) '
+export preproFlag
+moduleName=basicVectorReal4
+
+source $divaDir/compileFileG95 templateBasicVector.f95 $moduleName
+
+preproFlag='-DtemplatevectorType=vectorInteger2Definition -DtemplateBasicVector=basicVectorInteger2 -Dtemplate=moduleVectorInteger2 '
+preproFlag=$preproFlag' -DvectorType=vectorInteger2 -DVARType=INTEGER(KIND=2) '
+export preproFlag
+moduleName=basicVectorInteger2
+
+source $divaDir/compileFileG95 templateBasicVector.f95 $moduleName
+
+preproFlag='-DtemplatevectorType=vectorInteger4Definition -DtemplateBasicVector=basicVectorInteger4 -Dtemplate=moduleVectorInteger4 '
+preproFlag=$preproFlag' -DvectorType=vectorInteger4 -DVARType=INTEGER(KIND=4) '
+export preproFlag
+moduleName=basicVectorInteger4
+
+source $divaDir/compileFileG95 templateBasicVector.f95 $moduleName
+
+preproFlag='-DtemplatevectorType=vectorInteger8Definition -DtemplateBasicVector=basicVectorInteger8 -Dtemplate=moduleVectorInteger8 '
+preproFlag=$preproFlag' -DvectorType=vectorInteger8 -DVARType=INTEGER(KIND=8) '
+export preproFlag
+moduleName=basicVectorInteger8
+
+source $divaDir/compileFileG95 templateBasicVector.f95 $moduleName
+
+mv *.mod $divaModuleLib
+mv *.o $divaModuleLib
+
+preproFlag='-DtemplateBasicVector=basicVectorReal8 -Dtemplate=moduleVectorReal8 -DvectorType=vectorReal8 -DVARType=REAL(KIND=8) '
+preproFlag=$preproFlag' -DtemplatevectorType=vectorReal8Definition'
+export preproFlag
+moduleName=moduleVectorReal8
+
+source $divaDir/compileFileG95 templateVector.f95 $moduleName
+
+preproFlag='-DtemplateBasicVector=basicVectorReal4 -Dtemplate=moduleVectorReal4 -DvectorType=vectorReal4 -DVARType=REAL(KIND=4) '
+preproFlag=$preproFlag' -DtemplatevectorType=vectorReal4Definition'
+export preproFlag
+moduleName=moduleVectorReal4
+
+source $divaDir/compileFileG95 templateVector.f95 $moduleName
+
+preproFlag='-DtemplateBasicVector=basicVectorInteger2 -Dtemplate=moduleVectorInteger2 -DvectorType=vectorInteger2 -DVARType=INTEGER(KIND=2) '
+preproFlag=$preproFlag' -DtemplatevectorType=vectorInteger2Definition'
+export preproFlag
+moduleName=moduleVectorInteger2
+
+source $divaDir/compileFileG95 templateIntegerVector.f95 $moduleName
+
+preproFlag='-DtemplateBasicVector=basicVectorInteger4 -Dtemplate=moduleVectorInteger4 -DvectorType=vectorInteger4 -DVARType=INTEGER(KIND=4) '
+preproFlag=$preproFlag' -DtemplatevectorType=vectorInteger4Definition'
+export preproFlag
+moduleName=moduleVectorInteger4
+
+source $divaDir/compileFileG95 templateIntegerVector.f95 $moduleName
+
+preproFlag='-DtemplateBasicVector=basicVectorInteger8 -Dtemplate=moduleVectorInteger8 -DvectorType=vectorInteger8 -DVARType=INTEGER(KIND=8) '
+preproFlag=$preproFlag' -DtemplatevectorType=vectorInteger8Definition'
+export preproFlag
+moduleName=moduleVectorInteger8
+
+source $divaDir/compileFileG95 templateIntegerVector.f95 $moduleName
+
+mv *.mod $divaModuleLib
+mv *.o $divaModuleLib
+
+moduleName=vectorInterface
+source $divaDir/compileFileG95 $moduleName.f95 $moduleName
+
+mv *.mod $divaModuleLib
+mv *.o $divaModuleLib
+
