@@ -237,14 +237,12 @@ else
 divacalc
 fi
 
-if [ "$#" == "7" ];then
-
-#echo Looking for outliers
-divaqcbis
-#echo Preparing cleaned up data
-dvoutlierclean
-
-fi
+###if [ "$#" == "7" ];then
+####echo Looking for outliers
+###divaqcbis
+####echo Preparing cleaned up data
+###dvoutlierclean
+###fi
 
 echo oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 echo Diva finished the performance

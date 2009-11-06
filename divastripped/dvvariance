@@ -13,6 +13,8 @@ echo Need to know which quality control script is calling
 exit
 else
 echo Called from quality control $1
+echo 'But we do not need the calculation anymore'
+exit
 fi
 
 if [ -d "output2" ]

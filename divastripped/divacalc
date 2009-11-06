@@ -327,8 +327,6 @@ echo $itcs
 echo constr 1 >> ./fort.10
 echo $itcs >> ./fort.10
 
-
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 fi
 
 
@@ -413,17 +411,33 @@ fi
 if [ -f ../output/diva.log ] ; then
  cp  -f ../output/diva.log .
 fi
+
+echo 'REMOVE FORT.35 and FORT.43'
+
 rm -f fort.43
+rm -f fort.35
 #execute diva
 echo $NINT $NREA | ../../bin/diva.a >> diva.log
 
-if [ -f fort.43 ] 
+
+dataonmesh=0
+
+if [ -f ./fort.35  ]; then
+dataonmesh=$(cat ./fort.35 | awk '{print $1-$2}')
+echo Data are outside the mesh, will produce emty files
+fi
+if [ "$dataonmesh" -lt "1" ]; then
+cd ..
+dvnil
+cd ./divawork
+else
+if [ -f ./fort.43 ] 
 then
 echo No data, will produce emty files
 echo $nx $ny $valex | ../../bin/ghervalex.a
 cp fort.84 fort.87
 fi
-
+fi
 
 if [ $? -ne 0 ] ;then
 echo ' '
