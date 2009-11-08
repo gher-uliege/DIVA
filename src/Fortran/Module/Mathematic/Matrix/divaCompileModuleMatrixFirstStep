@@ -1,0 +1,53 @@
+#!/bin/bash
+
+rm -f *.o
+rm -f *.mod
+
+# Compilation of : MatrixReal4
+# ============================
+arrayType='matrixReal4' ; export arrayType
+arrayDimension='_ARRAY_2D_' ; export arrayDimension
+VARType='REAL(KIND=4)' ; export VARType
+Kind='_REAL_' ; export Kind
+
+./compileMatrixFirstStep
+
+# Compilation of : MatrixReal8
+# ============================
+arrayType='matrixReal8' ; export arrayType
+arrayDimension='_ARRAY_2D_' ; export arrayDimension
+VARType='REAL(KIND=8)' ; export VARType
+Kind='_REAL_' ; export Kind
+
+./compileMatrixFirstStep
+
+# Compilation of : MatrixInteger2
+# ===============================
+arrayType='matrixInteger2' ; export arrayType
+arrayDimension='_ARRAY_2D_' ; export arrayDimension
+VARType='INTEGER(KIND=2)' ; export VARType
+Kind='_INTEGER_' ; export Kind
+
+./compileMatrixFirstStep
+
+# Compilation of : MatrixInteger4
+# ===============================
+arrayType='matrixInteger4' ; export arrayType
+arrayDimension='_ARRAY_2D_' ; export arrayDimension
+VARType='INTEGER(KIND=4)' ; export VARType
+Kind='_INTEGER_' ; export Kind
+
+./compileMatrixFirstStep
+
+# Compilation of : MatrixInteger8
+# ===============================
+arrayType='matrixInteger8' ; export arrayType
+arrayDimension='_ARRAY_2D_' ; export arrayDimension
+VARType='INTEGER(KIND=8)' ; export VARType
+Kind='_INTEGER_' ; export Kind
+
+./compileMatrixFirstStep
+
+
+mv *.mod $divaModuleLib
+mv *.o $divaModuleLib

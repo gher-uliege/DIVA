@@ -1,0 +1,9 @@
+#!/bin/bash
+
+moduleMatrix='module'$arrayType ; export moduleMatrix
+
+flag0='-DmoduleMatrix='$moduleMatrix
+
+preproFlag=$preproFlag' '$flag0
+
+export preproFlag

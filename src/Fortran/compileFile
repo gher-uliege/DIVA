@@ -12,12 +12,11 @@ echo 'Compiling ' $2
 
 if [ "$compiler" = ifort ] 
 then
-echo intelFortran
 cp $1 fileToCompile.f90
-$compiler $flag $preprocessor $preprocessorFlag $library fileToCompile.f90 -o $2.o
+$compiler $flag -c $preprocessor $preprocessorFlag $library fileToCompile.f90 -o $2.o
 rm fileToCompile.f90
 else
-$compiler $flag $preprocessor $preprocessorFlag $library $1 -o $2.o
+$compiler $flag -c $preprocessor $preprocessorFlag $library $1 -o $2.o
 fi
 
 

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+moduleArrayDefinition='module'$arrayType'Definition' ; export moduleArrayDefinition
+moduleWorkingArray='moduleWorking'$arrayType ; export moduleWorkingArray
+moduleMemoryArrayManagement='moduleMemoryManagement'$arrayType ; export moduleMemoryArrayManagement
+moduleValuesArrayManagement='moduleValuesManagement'$arrayType ; export moduleValuesArrayManagement
+
+flag0='-DmoduleArrayDefinition='$moduleArrayDefinition
+flag1='-D'$arrayDimension
+flag2='-DVARType='$VARType
+flag3='-DarrayType='$arrayType
+flag4='-DmoduleWorkingArray='$moduleWorkingArray
+flag5='-DmoduleMemoryArrayManagement='$moduleMemoryArrayManagement
+flag6='-DmoduleValuesArrayManagement='$moduleValuesArrayManagement
+
+preproFlag=$preproFlag' '$flag0
+preproFlag=$preproFlag' '$flag1
+preproFlag=$preproFlag' '$flag2
+preproFlag=$preproFlag' '$flag3
+preproFlag=$preproFlag' '$flag4
+preproFlag=$preproFlag' '$flag5
+preproFlag=$preproFlag' '$flag6
+
+export preproFlag

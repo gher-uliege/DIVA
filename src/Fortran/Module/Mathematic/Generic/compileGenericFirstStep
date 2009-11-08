@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "Compiling object :" $arrayType
+echo "------------------"
+
+source ./flagForGenericFirstStep
+
+$divaDir/compileFile moduleArrayDefinition.f95 $moduleArrayDefinition
+$divaDir/compileFile moduleWorkingArray.f95 $moduleWorkingArray
+$divaDir/compileFile moduleMemoryArrayManagement.f95 $moduleMemoryArrayManagement
+$divaDir/compileFile moduleValuesArrayManagement.f95 $moduleValuesArrayManagement
+
+echo ' '

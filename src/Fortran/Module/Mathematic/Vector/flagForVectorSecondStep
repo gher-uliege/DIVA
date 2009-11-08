@@ -1,0 +1,9 @@
+#!/bin/bash
+
+moduleVector='module'$arrayType ; export moduleVector
+
+flag0='-DmoduleVector='$moduleVector
+
+preproFlag=$preproFlag' '$flag0
+
+export preproFlag

@@ -1,0 +1,53 @@
+#!/bin/bash
+
+rm -f *.o
+rm -f *.mod
+
+# Compilation of : VectorReal4
+# ============================
+arrayType='vectorReal4' ; export arrayType
+arrayDimension='_ARRAY_1D_' ; export arrayDimension
+VARType='REAL(KIND=4)' ; export VARType
+Kind='_REAL_' ; export Kind
+
+./compileVectorSecondStep
+
+# Compilation of : VectorReal8
+# ============================
+arrayType='vectorReal8' ; export arrayType
+arrayDimension='_ARRAY_1D_' ; export arrayDimension
+VARType='REAL(KIND=8)' ; export VARType
+Kind='_REAL_' ; export Kind
+
+./compileVectorSecondStep
+
+# Compilation of : VectorInteger2
+# ===============================
+arrayType='vectorInteger2' ; export arrayType
+arrayDimension='_ARRAY_1D_' ; export arrayDimension
+VARType='INTEGER(KIND=2)' ; export VARType
+Kind='_INTEGER_' ; export Kind
+
+./compileVectorSecondStep
+
+# Compilation of : VectorInteger4
+# ===============================
+arrayType='vectorInteger4' ; export arrayType
+arrayDimension='_ARRAY_1D_' ; export arrayDimension
+VARType='INTEGER(KIND=4)' ; export VARType
+Kind='_INTEGER_' ; export Kind
+
+./compileVectorSecondStep
+
+# Compilation of : VectorInteger8
+# ===============================
+arrayType='vectorInteger8' ; export arrayType
+arrayDimension='_ARRAY_1D_' ; export arrayDimension
+VARType='INTEGER(KIND=8)' ; export VARType
+Kind='_INTEGER_' ; export Kind
+
+./compileVectorSecondStep
+
+
+mv *.mod $divaModuleLib
+mv *.o $divaModuleLib

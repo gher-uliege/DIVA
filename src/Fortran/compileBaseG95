@@ -4,8 +4,8 @@
 # ======================================
 compiler=g95
 
-flag='-O3 -Wall -Wimplicit-none -pedantic -fbounds-check -ftrace=full -march=pentium4 -finteger=0 -freal=zero -fpointer=null -c'
-#flag='-O3 -Wall -Wimplicit-none -pedantic -fbounds-check -ftrace=full -Wno-unused-vars -Wno-unset-vars -march=pentium4 -finteger=0 -freal=zero -fpointer=null -c'
+flag='-O3 -Wall -Wimplicit-none -pedantic -fbounds-check -ftrace=full -march=pentium4 -finteger=0 -freal=zero -fpointer=null'
+#flag='-O3 -Wall -Wimplicit-none -pedantic -fbounds-check -ftrace=full -Wno-unused-vars -Wno-unset-vars -march=pentium4 -finteger=0 -freal=zero -fpointer=null'
 
 export compiler
 export flag

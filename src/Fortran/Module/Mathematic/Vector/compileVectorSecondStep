@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "Compiling object :" $arrayType
+echo "------------------"
+
+source ../Generic/flagForGenericFirstStep
+source ../Generic/flagForGenericSecondStep
+source ./flagForVectorFirstStep
+source ./flagForVectorSecondStep
+
+$divaDir/compileFile moduleVector.f95 $moduleVector
+
+echo ' '

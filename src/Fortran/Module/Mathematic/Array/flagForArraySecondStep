@@ -1,0 +1,9 @@
+#!/bin/bash
+
+moduleArray3D='module'$arrayType ; export moduleArray3D
+
+flag0='-DmoduleArray3D='$moduleArray3D
+
+preproFlag=$preproFlag' '$flag0
+
+export preproFlag

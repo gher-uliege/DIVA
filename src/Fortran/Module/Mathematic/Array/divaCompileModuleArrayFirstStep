@@ -1,0 +1,53 @@
+#!/bin/bash
+
+rm -f *.o
+rm -f *.mod
+
+# Compilation of : ArrayReal4
+# ============================
+arrayType='arrayReal4' ; export arrayType
+arrayDimension='_ARRAY_3D_' ; export arrayDimension
+VARType='REAL(KIND=4)' ; export VARType
+Kind='_REAL_' ; export Kind
+
+./compileArrayFirstStep
+
+# Compilation of : ArrayReal8
+# ============================
+arrayType='arrayReal8' ; export arrayType
+arrayDimension='_ARRAY_3D_' ; export arrayDimension
+VARType='REAL(KIND=8)' ; export VARType
+Kind='_REAL_' ; export Kind
+
+./compileArrayFirstStep
+
+# Compilation of : ArrayInteger2
+# ===============================
+arrayType='arrayInteger2' ; export arrayType
+arrayDimension='_ARRAY_3D_' ; export arrayDimension
+VARType='INTEGER(KIND=2)' ; export VARType
+Kind='_INTEGER_' ; export Kind
+
+./compileArrayFirstStep
+
+# Compilation of : ArrayInteger4
+# ===============================
+arrayType='arrayInteger4' ; export arrayType
+arrayDimension='_ARRAY_3D_' ; export arrayDimension
+VARType='INTEGER(KIND=4)' ; export VARType
+Kind='_INTEGER_' ; export Kind
+
+./compileArrayFirstStep
+
+# Compilation of : ArrayInteger8
+# ===============================
+arrayType='arrayInteger8' ; export arrayType
+arrayDimension='_ARRAY_3D_' ; export arrayDimension
+VARType='INTEGER(KIND=8)' ; export VARType
+Kind='_INTEGER_' ; export Kind
+
+./compileArrayFirstStep
+
+
+mv *.mod $divaModuleLib
+mv *.o $divaModuleLib

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "Compiling object :" $arrayType
+echo "------------------"
+
+source ../Generic/flagForGenericFirstStep
+source ../Generic/flagForGenericSecondStep
+source ./flagForMatrixFirstStep
+source ./flagForMatrixSecondStep
+
+$divaDir/compileFile moduleMatrix.f95 $moduleMatrix
+
+echo ' '

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo "Compiling object :" $arrayType
+echo "------------------"
+
+source ./flagForGenericFirstStep
+source ./flagForGenericSecondStep
+
+$divaDir/compileFile moduleArray.f95 $moduleArray
+
+echo ' '

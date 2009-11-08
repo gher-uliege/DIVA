@@ -1,0 +1,20 @@
+#!/bin/bash
+
+moduleMathematicArray2D='moduleMathematic'$arrayType ; export moduleMathematicArray2D
+moduleMemoryArray2DManagement='moduleSpecialMemoryManagement'$arrayType ; export moduleMemoryArray2DManagement
+moduleValuesArray2DManagement='moduleSpecialValuesManagement'$arrayType ; export moduleValuesArray2DManagement
+moduleMemoryArrayNDManagement=$moduleMemoryArray2DManagement ; export moduleMemoryArrayNDManagement
+
+flag0='-DmoduleMemoryArrayNDManagement='$moduleMemoryArrayNDManagement
+flag1='-DmoduleMathematicArray2D='$moduleMathematicArray2D
+flag2='-DmoduleMemoryArray2DManagement='$moduleMemoryArray2DManagement
+flag3='-DmoduleValuesArray2DManagement='$moduleValuesArray2DManagement
+flag4='-D'$Kind
+
+preproFlag=$preproFlag' '$flag0
+preproFlag=$preproFlag' '$flag1
+preproFlag=$preproFlag' '$flag2
+preproFlag=$preproFlag' '$flag3
+preproFlag=$preproFlag' '$flag4
+
+export preproFlag

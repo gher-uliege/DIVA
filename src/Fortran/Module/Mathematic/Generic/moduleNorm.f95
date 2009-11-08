@@ -15,7 +15,7 @@ MODULE moduleNorm
 ! ===========
 #ifndef _MODULE_NORM_
 #define _MODULE_NORM_
-   include 'norm.h'
+   INCLUDE 'norm.h'
 #endif
 
    TYPE(normType), PUBLIC, PARAMETER :: normL1 = normType(1)
@@ -30,6 +30,7 @@ MODULE moduleNorm
 
 ! Procedures status
 ! =================
+   PUBLIC :: getNormType
    PRIVATE :: normEqual
    
 ! ============================================================
@@ -44,6 +45,25 @@ MODULE moduleNorm
 ! ============================================================
 ! ============================================================
  CONTAINS
+
+! ===========================================================
+! ===            Internal procedure ("PUBLIC")            ===
+! ===========================================================
+
+! Procedure 1 : get the norm type
+! -------------------------------
+  FUNCTION getNormType(normSelection) RESULT(ivalue)
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: ivalue
+      TYPE(normType), INTENT(IN) :: normSelection
+
+!     Body
+!     - - -
+      ivalue = normSelection%normTypeValue
+
+  END FUNCTION
 
 ! ============================================================
 ! ===            Internal procedure ("PRIVATE")            ===
@@ -66,6 +86,8 @@ MODULE moduleNorm
       END IF
 
   END FUNCTION
+
+
 
 END MODULE moduleNorm
 

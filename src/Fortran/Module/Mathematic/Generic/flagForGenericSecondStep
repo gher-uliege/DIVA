@@ -1,0 +1,15 @@
+#!/bin/bash
+
+moduleArray='moduleBase'$arrayType ; export moduleArray
+moduleValuesArrayNDManagement='moduleSpecialValuesManagement'$arrayType ; export moduleValuesArrayNDManagement
+moduleMemoryArrayNDManagement='moduleSpecialMemoryManagement'$arrayType ; export moduleMemoryArrayNDManagement
+
+flag0='-DmoduleArray='$moduleArray
+flag1='-DmoduleValuesArrayNDManagement='$moduleValuesArrayNDManagement
+flag2='-DmoduleMemoryArrayNDManagement='$moduleMemoryArrayNDManagement
+
+preproFlag=$preproFlag' '$flag0
+preproFlag=$preproFlag' '$flag1
+preproFlag=$preproFlag' '$flag2
+
+export preproFlag

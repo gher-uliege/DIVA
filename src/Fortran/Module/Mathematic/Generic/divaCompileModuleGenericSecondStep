@@ -1,0 +1,128 @@
+#!/bin/bash
+
+rm -f *.o
+rm -f *.mod
+
+# Compilation of : VectorReal4
+# ============================
+arrayType='vectorReal4' ; export arrayType
+arrayDimension='_ARRAY_1D_' ; export arrayDimension
+VARType='REAL(KIND=4)' ; export VARType
+
+./compileGenericSecondStep
+
+# Compilation of : VectorReal8
+# ============================
+arrayType='vectorReal8' ; export arrayType
+arrayDimension='_ARRAY_1D_' ; export arrayDimension
+VARType='REAL(KIND=8)' ; export VARType
+
+./compileGenericSecondStep
+
+# Compilation of : VectorInteger2
+# ===============================
+arrayType='vectorInteger2' ; export arrayType
+arrayDimension='_ARRAY_1D_' ; export arrayDimension
+VARType='INTEGER(KIND=2)' ; export VARType
+
+./compileGenericSecondStep
+
+# Compilation of : VectorInteger4
+# ===============================
+arrayType='vectorInteger4' ; export arrayType
+arrayDimension='_ARRAY_1D_' ; export arrayDimension
+VARType='INTEGER(KIND=4)' ; export VARType
+
+./compileGenericSecondStep
+
+# Compilation of : VectorInteger8
+# ===============================
+arrayType='vectorInteger8' ; export arrayType
+arrayDimension='_ARRAY_1D_' ; export arrayDimension
+VARType='INTEGER(KIND=8)' ; export VARType
+
+./compileGenericSecondStep
+
+
+# Compilation of : MatrixReal4
+# ============================
+arrayType='matrixReal4' ; export arrayType
+arrayDimension='_ARRAY_2D_' ; export arrayDimension
+VARType='REAL(KIND=4)' ; export VARType
+
+./compileGenericSecondStep
+
+# Compilation of : MatrixReal8
+# ============================
+arrayType='matrixReal8' ; export arrayType
+arrayDimension='_ARRAY_2D_' ; export arrayDimension
+VARType='REAL(KIND=8)' ; export VARType
+
+./compileGenericSecondStep
+
+# Compilation of : MatrixInteger2
+# ===============================
+arrayType='matrixInteger2' ; export arrayType
+arrayDimension='_ARRAY_2D_' ; export arrayDimension
+VARType='INTEGER(KIND=2)' ; export VARType
+
+./compileGenericSecondStep
+
+# Compilation of : MatrixInteger4
+# ===============================
+arrayType='matrixInteger4' ; export arrayType
+arrayDimension='_ARRAY_2D_' ; export arrayDimension
+VARType='INTEGER(KIND=4)' ; export VARType
+
+./compileGenericSecondStep
+
+# Compilation of : MatrixInteger8
+# ===============================
+arrayType='matrixInteger8' ; export arrayType
+arrayDimension='_ARRAY_2D_' ; export arrayDimension
+VARType='INTEGER(KIND=8)' ; export VARType
+
+./compileGenericSecondStep
+
+# Compilation of : ArrayReal4
+# ============================
+arrayType='arrayReal4' ; export arrayType
+arrayDimension='_ARRAY_3D_' ; export arrayDimension
+VARType='REAL(KIND=4)' ; export VARType
+
+./compileGenericSecondStep
+
+# Compilation of : ArrayReal8
+# ============================
+arrayType='arrayReal8' ; export arrayType
+arrayDimension='_ARRAY_3D_' ; export arrayDimension
+VARType='REAL(KIND=8)' ; export VARType
+
+./compileGenericSecondStep
+
+# Compilation of : ArrayInteger2
+# ===============================
+arrayType='arrayInteger2' ; export arrayType
+arrayDimension='_ARRAY_3D_' ; export arrayDimension
+VARType='INTEGER(KIND=2)' ; export VARType
+
+./compileGenericSecondStep
+
+# Compilation of : ArrayInteger4
+# ===============================
+arrayType='arrayInteger4' ; export arrayType
+arrayDimension='_ARRAY_3D_' ; export arrayDimension
+VARType='INTEGER(KIND=4)' ; export VARType
+
+./compileGenericSecondStep
+
+# Compilation of : ArrayInteger8
+# ===============================
+arrayType='arrayInteger8' ; export arrayType
+arrayDimension='_ARRAY_3D_' ; export arrayDimension
+VARType='INTEGER(KIND=8)' ; export VARType
+
+./compileGenericSecondStep
+
+mv *.mod $divaModuleLib
+mv *.o $divaModuleLib

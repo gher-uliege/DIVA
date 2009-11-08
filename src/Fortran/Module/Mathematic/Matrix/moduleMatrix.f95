@@ -1,4 +1,4 @@
-MODULE moduleVector
+MODULE moduleMatrix
 
 ! ============================================================
 ! ============================================================
@@ -27,14 +27,16 @@ MODULE moduleVector
                            arrayArrayFastInsertValue, arrayArrayFastAddValue, arraySetIncreaseSize, &
                            arrayDestructor, arrayPrintInformation, arrayCreateBase, arrayCreateWithDimension, &
                            arrayCreateWithDimensionAndFirstIndex, arraySetSize, &
-                           arrayGetFirstIndex,arrayGetLastIndex, arrayGetSize, arrayGetAllocatedSize , arrayGetIncreaseSize, &
-                           arrayGetDefaultIncreaseSize, &
                            arrayGetFirstIndexX, arrayGetLastIndexX, arrayGetSizeX, arrayGetAllocatedSizeX , arrayGetIncreaseSizeX, &
-                           arrayGetDefaultIncreaseSizeX, arraySetIncreaseSizeX
-   USE moduleMathematicArray1D, ONLY : mathArrayMin, mathArrayMax, &
+                           arrayGetDefaultIncreaseSizeX, arraySetIncreaseSizeX, &
+                           arrayGetFirstIndexY, arrayGetLastIndexY, arrayGetSizeY, arrayGetAllocatedSizeY , arrayGetIncreaseSizeY, &
+                           arrayGetDefaultIncreaseSizeY, arraySetIncreaseSizeY
+
+
+   USE moduleMathematicArray2D, ONLY : mathArrayMin, mathArrayMax, &
 #ifdef _REAL_
                                        mathArrayNorm1, mathArrayNorm2, mathArrayNormInfinity, mathArraySqrt, mathArraySum, &
-                                       mathArrayScale, mathArrayDot, setSecondWorkingArray, nullifySecondArrayPointer, &
+                                       mathArrayScale, &
 #endif
                                        mathArrayAbsMin, mathArrayAbsMax
 
@@ -47,7 +49,7 @@ MODULE moduleVector
    PUBLIC :: arrayArrayMin, arrayArrayMax, &
 #ifdef _REAL_
              arrayArrayNorm1, arrayArrayNorm2, arrayArrayNormInfinity, arrayArrayNorm, arrayArraySqrt, arrayArraySum, &
-             arrayArrayScale, arrayArrayDot, &
+             arrayArrayScale, &
 #endif
              arrayArrayAbsMin, arrayArrayAbsMax
 
@@ -203,33 +205,7 @@ MODULE moduleVector
 
   END SUBROUTINE
 
-! Procedure 7 : make the dot product of 2 array 1D
-! -------------------------------------------------
-  FUNCTION arrayArrayDot(targetArray1,targetArray2) RESULT(val)
-
-!     Declaration
-!     - - - - - - -
-      VARType :: val
-
-!     Pointer filling procedure
-!     - - - - - - - - - - - - -
-      TYPE(arrayType), INTENT(IN) :: targetArray1
-      TYPE(arrayType), INTENT(IN) :: targetArray2
-      CALL setWorkingArray(targetArray1)
-      CALL setSecondWorkingArray(targetArray2)
-
-!     Body
-!     - - -
-      val = mathArrayDot()
-
-!     Nullify pointer
-!     - - - - - - - -
-      CALL nullifyArrayPointer()
-      CALL nullifySecondArrayPointer()
-
-  END FUNCTION
-
-! Procedure 8 : compute the norm of the vector
+! Procedure 7 : compute the norm of the vector
 ! --------------------------------------------
   FUNCTION arrayArrayNorm(targetArray,normSelection) RESULT(val)
 
@@ -263,7 +239,7 @@ MODULE moduleVector
   END FUNCTION
 #endif
 
-! Procedure 9 : min value
+! Procedure 8 : min value
 ! -----------------------
   FUNCTION arrayArrayMin(targetArray) RESULT(val)
 
@@ -286,7 +262,7 @@ MODULE moduleVector
 
   END FUNCTION
 
-! Procedure 10 : max value
+! Procedure 9 : max value
 ! -----------------------
   FUNCTION arrayArrayMax(targetArray) RESULT(val)
 
@@ -309,7 +285,7 @@ MODULE moduleVector
 
   END FUNCTION
 
-! Procedure 11 : min value
+! Procedure 10 : min value
 ! -----------------------
   FUNCTION arrayArrayAbsMin(targetArray) RESULT(val)
 
@@ -332,7 +308,7 @@ MODULE moduleVector
 
   END FUNCTION
 
-! Procedure 12 : max value
+! Procedure 11 : max value
 ! -----------------------
   FUNCTION arrayArrayAbsMax(targetArray) RESULT(val)
 
@@ -356,5 +332,5 @@ MODULE moduleVector
   END FUNCTION
 
 
-END MODULE moduleVector
+END MODULE moduleMatrix
 
