@@ -3,6 +3,7 @@ export LC_ALL=C
 WORK=./Datawork
 dcoordinate=Depth
 todepth=0
+valexodv=""
 
 mkdir input
 mkdir input/divadata
@@ -63,6 +64,15 @@ headerlines=$(head -1000 $inputfile | grep "//"  | wc -l)
 let userlines=$datalines-headerlines
 let userlines=$userlines-1
 echo data $datalines header $headerlines user $userlines
+# 
+echo Trying to see if exclusion value is present
+
+valexodv=$(grep -a MissingValueIndicators $inputfile | awk -F ">" '{print $2}' | awk -F "<" '{print $1}')
+echo  valexodv =  $valexodv
+echo 
+#//<MissingValueIndicators>NaN</MissingValueIndicators>
+
+
 
 echo Checking file structure
 divaguessformsODV4 $inputfile
@@ -85,11 +95,19 @@ echo Delimiter for ODV $delimiter
 
 if [ "$dcoordinate" == "Pressure" ]
 then
-zfound=$(grep -i "pressure" ODVcolumns | wc -l)
+zfound1=$(grep -i "pressure" ODVcolumns | wc -l)
+zfound2=$(grep -i "press" ODVcolumns | wc -l)
+let zfound=$zfound1+$zfound2
 if [ "$zfound" -le "0" ]
 then
 echo Sorry, no pressure coordinates found, will try depth
 dcoordinate=Depth
+todepth=0
+else
+if [ "$zfound" -ge "2" ]; then
+echo 'WARNING: Divaselctor found several columns with pressure'
+echo '         Please check ' $inputfile
+fi
 fi
 fi
 
@@ -97,7 +115,7 @@ fi
 if [ "$dcoordinate" == "Depth" ]
 then
 zfound=$(grep -i "depth" ODVcolumns | wc -l)
-if [ "$zfound" -le "0" ]
+if [ "$zfound" -le "1" ]
 then
 echo Sorry, no depth coordinates found, will try pressure
 dcoordinate=Pressure
@@ -166,7 +184,7 @@ then
 
 tail -$userlines $inputfile | \
     awk -F "$delimiter" -v datacol=$datacol -v qccol=$qccol -v latcol=$latcol -v loncol=$loncol -v datecol=$datecol -v depthcol=$depthcol -v todepth=$todepth \
-         -v cruisecol=$cruisecol -v stationcol=$stationcol \
+         -v cruisecol=$cruisecol -v stationcol=$stationcol -v valexodv=$valexodv\
       '
       function myqfok(qf,n,qval)
 #        =====
@@ -191,14 +209,13 @@ return 0
       year=substr($datecol,1,4);
       month=substr($datecol,6,2);
       day=substr($datecol,9,2);
-      hour=substr($datecol,12,2);
-      minu=substr($datecol,15,2);
+      {if (length($datecol) > 12) {hour=substr($datecol,12,2)} else {hour=0}};
+      {if (length($datecol) > 15) {minu=substr($datecol,15,2)} else {minu=0}};
       {if (minu > 30) hour=hour+1};
       qcval=$qccol;
       qfok=myqfok(qf,nn,qcval);
 #      if ( $qccol==1 || $qccol==2 || $qccol==8 );
-      if (todepth==1) {locx=sin($latcol/57.29578); locc=(5.92+5.25*locx*locx)/1000.; $depthcol=((1-locc)-2.21*$depthcol/1000000)*$depthcol};
-      if ($datacol > "" && qfok==1) print $loncol,$latcol,$datacol,$depthcol,$qccol,year,month,day,hour,$cruisecol,$stationcol}' \
+      if ($datacol > "" && qfok==1 && $datacol != valexodv) print $loncol,$latcol,$datacol,$depthcol,$qccol,year,month,day,hour,$cruisecol $datecol,$stationcol $datecol}' \
        > ${WORK}/${var}.bigfile
 
 fi
