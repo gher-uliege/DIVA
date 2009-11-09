@@ -15,7 +15,6 @@ MODULE moduleDIVA
 ! ============
    USE logicalUnitManager, initialiseLogicalUnitManager => initialiseDefault, deleteLogicalUnitDataBase => destructor
    USE moduleChrono, ONLY : initialiseChrono => initialise
-   USE vectorInterface, ONLY : initialiseDynamicMemory => initialise
 
 ! Procedures status
 ! =================
@@ -46,7 +45,6 @@ MODULE moduleDIVA
 !     - - -
       CALL initialiseLogicalUnitManager()
       CALL initialiseChrono()
-      CALL initialiseDynamicMemory()
 
    END SUBROUTINE
 

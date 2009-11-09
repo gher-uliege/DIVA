@@ -48,6 +48,9 @@ Kind='_INTEGER_' ; export Kind
 
 ./compileArraySecondStep
 
+# Compilation of : array3DInterface
+# ================================
+$divaDir/compileFile array3DInterface.f95 array3DInterface
 
 mv *.mod $divaModuleLib
 mv *.o $divaModuleLib

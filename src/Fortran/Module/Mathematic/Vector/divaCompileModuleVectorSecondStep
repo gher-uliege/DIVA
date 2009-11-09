@@ -48,6 +48,9 @@ Kind='_INTEGER_' ; export Kind
 
 ./compileVectorSecondStep
 
+# Compilation of : vectorInterface
+# ================================
+$divaDir/compileFile vectorInterface.f95 vectorInterface
 
 mv *.mod $divaModuleLib
 mv *.o $divaModuleLib

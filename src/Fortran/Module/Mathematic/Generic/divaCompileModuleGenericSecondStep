@@ -8,6 +8,7 @@ rm -f *.mod
 arrayType='vectorReal4' ; export arrayType
 arrayDimension='_ARRAY_1D_' ; export arrayDimension
 VARType='REAL(KIND=4)' ; export VARType
+Kind='_REAL_' ; export Kind
 
 ./compileGenericSecondStep
 
@@ -16,6 +17,7 @@ VARType='REAL(KIND=4)' ; export VARType
 arrayType='vectorReal8' ; export arrayType
 arrayDimension='_ARRAY_1D_' ; export arrayDimension
 VARType='REAL(KIND=8)' ; export VARType
+Kind='_REAL_' ; export Kind
 
 ./compileGenericSecondStep
 
@@ -24,6 +26,7 @@ VARType='REAL(KIND=8)' ; export VARType
 arrayType='vectorInteger2' ; export arrayType
 arrayDimension='_ARRAY_1D_' ; export arrayDimension
 VARType='INTEGER(KIND=2)' ; export VARType
+Kind='_INTEGER_' ; export Kind
 
 ./compileGenericSecondStep
 
@@ -32,6 +35,7 @@ VARType='INTEGER(KIND=2)' ; export VARType
 arrayType='vectorInteger4' ; export arrayType
 arrayDimension='_ARRAY_1D_' ; export arrayDimension
 VARType='INTEGER(KIND=4)' ; export VARType
+Kind='_INTEGER_' ; export Kind
 
 ./compileGenericSecondStep
 
@@ -40,6 +44,7 @@ VARType='INTEGER(KIND=4)' ; export VARType
 arrayType='vectorInteger8' ; export arrayType
 arrayDimension='_ARRAY_1D_' ; export arrayDimension
 VARType='INTEGER(KIND=8)' ; export VARType
+Kind='_INTEGER_' ; export Kind
 
 ./compileGenericSecondStep
 
@@ -49,6 +54,7 @@ VARType='INTEGER(KIND=8)' ; export VARType
 arrayType='matrixReal4' ; export arrayType
 arrayDimension='_ARRAY_2D_' ; export arrayDimension
 VARType='REAL(KIND=4)' ; export VARType
+Kind='_REAL_' ; export Kind
 
 ./compileGenericSecondStep
 
@@ -57,6 +63,7 @@ VARType='REAL(KIND=4)' ; export VARType
 arrayType='matrixReal8' ; export arrayType
 arrayDimension='_ARRAY_2D_' ; export arrayDimension
 VARType='REAL(KIND=8)' ; export VARType
+Kind='_REAL_' ; export Kind
 
 ./compileGenericSecondStep
 
@@ -65,6 +72,7 @@ VARType='REAL(KIND=8)' ; export VARType
 arrayType='matrixInteger2' ; export arrayType
 arrayDimension='_ARRAY_2D_' ; export arrayDimension
 VARType='INTEGER(KIND=2)' ; export VARType
+Kind='_INTEGER_' ; export Kind
 
 ./compileGenericSecondStep
 
@@ -73,6 +81,7 @@ VARType='INTEGER(KIND=2)' ; export VARType
 arrayType='matrixInteger4' ; export arrayType
 arrayDimension='_ARRAY_2D_' ; export arrayDimension
 VARType='INTEGER(KIND=4)' ; export VARType
+Kind='_INTEGER_' ; export Kind
 
 ./compileGenericSecondStep
 
@@ -81,6 +90,7 @@ VARType='INTEGER(KIND=4)' ; export VARType
 arrayType='matrixInteger8' ; export arrayType
 arrayDimension='_ARRAY_2D_' ; export arrayDimension
 VARType='INTEGER(KIND=8)' ; export VARType
+Kind='_INTEGER_' ; export Kind
 
 ./compileGenericSecondStep
 
@@ -89,6 +99,7 @@ VARType='INTEGER(KIND=8)' ; export VARType
 arrayType='arrayReal4' ; export arrayType
 arrayDimension='_ARRAY_3D_' ; export arrayDimension
 VARType='REAL(KIND=4)' ; export VARType
+Kind='_REAL_' ; export Kind
 
 ./compileGenericSecondStep
 
@@ -97,6 +108,7 @@ VARType='REAL(KIND=4)' ; export VARType
 arrayType='arrayReal8' ; export arrayType
 arrayDimension='_ARRAY_3D_' ; export arrayDimension
 VARType='REAL(KIND=8)' ; export VARType
+Kind='_REAL_' ; export Kind
 
 ./compileGenericSecondStep
 
@@ -105,6 +117,7 @@ VARType='REAL(KIND=8)' ; export VARType
 arrayType='arrayInteger2' ; export arrayType
 arrayDimension='_ARRAY_3D_' ; export arrayDimension
 VARType='INTEGER(KIND=2)' ; export VARType
+Kind='_INTEGER_' ; export Kind
 
 ./compileGenericSecondStep
 
@@ -113,6 +126,7 @@ VARType='INTEGER(KIND=2)' ; export VARType
 arrayType='arrayInteger4' ; export arrayType
 arrayDimension='_ARRAY_3D_' ; export arrayDimension
 VARType='INTEGER(KIND=4)' ; export VARType
+Kind='_INTEGER_' ; export Kind
 
 ./compileGenericSecondStep
 
@@ -121,6 +135,7 @@ VARType='INTEGER(KIND=4)' ; export VARType
 arrayType='arrayInteger8' ; export arrayType
 arrayDimension='_ARRAY_3D_' ; export arrayDimension
 VARType='INTEGER(KIND=8)' ; export VARType
+Kind='_INTEGER_' ; export Kind
 
 ./compileGenericSecondStep
 
