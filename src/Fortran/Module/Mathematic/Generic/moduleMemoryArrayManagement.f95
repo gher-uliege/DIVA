@@ -42,15 +42,15 @@ MODULE moduleMemoryArrayManagement
 !  ------------
 #ifdef _ARRAY_1D_DEFINITION_
    INTEGER, PRIVATE, PARAMETER :: defaultFirstIndexX = 1
-   INTEGER, PRIVATE, PARAMETER :: defaultIncreaseSizeX = 10
+   INTEGER, PRIVATE, PARAMETER :: defaultIncreaseSizeX = 5
 #endif
 #ifdef _ARRAY_2D_DEFINITION_
    INTEGER, PRIVATE, PARAMETER :: defaultFirstIndexY = 1
-   INTEGER, PRIVATE, PARAMETER :: defaultIncreaseSizeY = 10
+   INTEGER, PRIVATE, PARAMETER :: defaultIncreaseSizeY = 5
 #endif
 #ifdef _ARRAY_3D_DEFINITION_
    INTEGER, PRIVATE, PARAMETER :: defaultFirstIndexZ = 1
-   INTEGER, PRIVATE, PARAMETER :: defaultIncreaseSizeZ = 10
+   INTEGER, PRIVATE, PARAMETER :: defaultIncreaseSizeZ = 5
 #endif
 
 
@@ -916,10 +916,17 @@ MODULE moduleMemoryArrayManagement
 !     Declaration
 !     - - - - - -
       INTEGER, INTENT(IN) :: i1
+      INTEGER :: finalValue
 
 !     Body
 !     - - -
-      workingArray%increaseSizeX = i1
+      finalValue = i1
+
+      IF ( finalValue < 0 ) THEN
+         finalValue = memoryGetDefaultIncreaseSizeX()
+      END IF
+
+      workingArray%increaseSizeX = finalValue
 
   END SUBROUTINE
 #endif
@@ -947,10 +954,17 @@ MODULE moduleMemoryArrayManagement
 !     Declaration
 !     - - - - - -
       INTEGER, INTENT(IN) :: i1
+      INTEGER :: finalValue
 
 !     Body
 !     - - -
-      workingArray%increaseSizeY = i1
+      finalValue = i1
+
+      IF ( finalValue < 0 ) THEN
+         finalValue = memoryGetDefaultIncreaseSizeX()
+      END IF
+
+      workingArray%increaseSizeY = finalValue
 
   END SUBROUTINE
 #endif
@@ -979,10 +993,17 @@ MODULE moduleMemoryArrayManagement
 !     Declaration
 !     - - - - - -
       INTEGER, INTENT(IN) :: i1
+      INTEGER :: finalValue
 
 !     Body
 !     - - -
-      workingArray%increaseSizeZ = i1
+      finalValue = i1
+
+      IF ( finalValue < 0 ) THEN
+         finalValue = memoryGetDefaultIncreaseSizeX()
+      END IF
+
+      workingArray%increaseSizeZ = finalValue
 
   END SUBROUTINE
 #endif
@@ -1025,15 +1046,15 @@ MODULE moduleMemoryArrayManagement
 !     - - -
 #ifdef _ARRAY_1D_DEFINITION_
       istartX = memoryGetFirstIndexX()
-      iendX = memoryGetLastIndexX()
+      iendX = istartX + memoryGetAllocatedSizeX()
 #endif
 #ifdef _ARRAY_2D_DEFINITION_
       istartY = memoryGetFirstIndexY()
-      iendY = memoryGetLastIndexY()
+      iendY = istartY + memoryGetAllocatedSizeY()
 #endif
 #ifdef _ARRAY_3D_DEFINITION_
       istartZ = memoryGetFirstIndexZ()
-      iendZ = memoryGetLastIndexZ()
+      iendZ = istartZ + memoryGetAllocatedSizeZ()
 #endif
 
 #ifdef _ARRAY_1D_
@@ -1082,21 +1103,18 @@ MODULE moduleMemoryArrayManagement
 #ifdef _ARRAY_1D_DEFINITION_
       CALL memorySetSizeX(izero)
       CALL memorySetAllocatedSizeX(izero)
-      CALL memorySetIncreaseSizeX(memoryGetDefaultIncreaseSizeX())
       CALL memorySetFirstIndexX(ione)
       CALL memorySetLastIndexX(computeLastIndex(ione,izero))
 #endif
 #ifdef _ARRAY_2D_DEFINITION_
       CALL memorySetSizeY(izero)
       CALL memorySetAllocatedSizeY(izero)
-      CALL memorySetIncreaseSizeY(memoryGetDefaultIncreaseSizeY())
       CALL memorySetFirstIndexY(ione)
       CALL memorySetLastIndexY(computeLastIndex(ione,izero))
 #endif
 #ifdef _ARRAY_3D_DEFINITION_
       CALL memorySetSizeZ(izero)
       CALL memorySetAllocatedSizeZ(izero)
-      CALL memorySetIncreaseSizeZ(memoryGetDefaultIncreaseSizeZ())
       CALL memorySetFirstIndexZ(ione)
       CALL memorySetLastIndexZ(computeLastIndex(ione,izero))
 #endif

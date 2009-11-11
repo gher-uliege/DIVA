@@ -1,0 +1,28 @@
+#!/bin/bash
+
+baseDir=$PWD
+
+echo Testing procedure in progress...
+echo ================================
+rm -f ./testing.log
+
+
+# Testing vector
+# ==============
+
+./testDivaVector
+
+
+# Testing matrix
+# ==============
+
+#./testDivaMatrix
+
+# Testing array
+# ==============
+
+#./testDivaArray
+
+
+cd $baseDir
+

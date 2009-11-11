@@ -19,6 +19,7 @@ MODULE moduleVector
 ! ============
    USE moduleArrayDefinition
 
+   USE moduleWorkingArray, ONLY : setWorkingArray, nullifyArrayPointer
    USE moduleArray, ONLY : arrayGetValues, arrayGetValue, arrayGetAllocationStatus, arrayGetPointerOnValue, &
                            arrayArraySetToZero, arrayArraySetToValue, arrayArrayInsertValue, arrayArrayAddValue, &
                            arrayArrayFastInsertValue, arrayArrayFastAddValue, arraySetIncreaseSize, &

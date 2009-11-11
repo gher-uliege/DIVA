@@ -157,6 +157,7 @@ MODULE moduleValuesArray1DManagement
 
 !     Body
 !     - - -
+
       workingArray%values(positionX) = val
 
   END SUBROUTINE

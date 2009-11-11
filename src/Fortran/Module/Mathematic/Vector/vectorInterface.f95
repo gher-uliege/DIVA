@@ -155,12 +155,9 @@ MODULE vectorInterface
                            arrayArrayNorm1Real4 => arrayArrayNorm1, &
                            arrayArrayNorm2Real4 => arrayArrayNorm2, &
                            arrayArrayNormInfinityReal4 => arrayArrayNormInfinity, &
-                           arrayArrayNormReal4 => arrayArrayNorm, &
-                           arrayArraySqrtReal4 => arrayArraySqrt, &
-                           arrayArraySumReal4 => arrayArraySum, &
-                           arrayArrayScaleReal4 => arrayArrayScale, &
-                           arrayArrayDotReal4 => arrayArrayDot, &
-                           arrayArrayAbsMinReal4 => arrayArrayAbsMin, &
+                           arrayArrayNormReal4 => arrayArrayNorm, arrayArraySqrtReal4 => arrayArraySqrt, &
+                           arrayArraySumReal4 => arrayArraySum, arrayArrayScaleReal4 => arrayArrayScale, &
+                           arrayArrayDotReal4 => arrayArrayDot, arrayArrayAbsMinReal4 => arrayArrayAbsMin, &
                            arrayArrayAbsMaxReal4 => arrayArrayAbsMax
 
 
@@ -201,12 +198,9 @@ MODULE vectorInterface
                            arrayArrayNorm2Real8 => arrayArrayNorm2, &
                            arrayArrayNormInfinityReal8 => arrayArrayNormInfinity, &
                            arrayArrayNormReal8 => arrayArrayNorm, &
-                           arrayArraySqrtReal8 => arrayArraySqrt, &
-                           arrayArraySumReal8 => arrayArraySum, &
-                           arrayArrayScaleReal8 => arrayArrayScale, &
-                           arrayArrayDotReal8 => arrayArrayDot, &
-                           arrayArrayAbsMinReal8 => arrayArrayAbsMin, &
-                           arrayArrayAbsMaxReal8 => arrayArrayAbsMax
+                           arrayArraySqrtReal8 => arrayArraySqrt, arrayArraySumReal8 => arrayArraySum, &
+                           arrayArrayScaleReal8 => arrayArrayScale, arrayArrayDotReal8 => arrayArrayDot, &
+                           arrayArrayAbsMinReal8 => arrayArrayAbsMin, arrayArrayAbsMaxReal8 => arrayArrayAbsMax
 
 
 ! Interface

@@ -1,0 +1,955 @@
+ checkAllocationMemoryProcedure
+ ==============================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =   0.000000000000000E+000
+ value(           2 ) =   0.000000000000000E+000
+ value(           3 ) =   0.000000000000000E+000
+ The size of the array is :            9
+    The allocated memory is :            9
+    The increase allocation memory is :            0
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            9
+ value(           1 ) =   0.000000000000000E+000
+ value(           2 ) =   0.000000000000000E+000
+ value(           3 ) =   0.000000000000000E+000
+ value(           4 ) =   0.000000000000000E+000
+ value(           5 ) =   0.000000000000000E+000
+ value(           6 ) =   0.000000000000000E+000
+ value(           7 ) =   0.000000000000000E+000
+ value(           8 ) =   0.000000000000000E+000
+ value(           9 ) =   0.000000000000000E+000
+ The size of the array is :           10
+    The allocated memory is :           15
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :           10
+ value(           1 ) =   0.000000000000000E+000
+ value(           2 ) =   0.000000000000000E+000
+ value(           3 ) =   0.000000000000000E+000
+ value(           4 ) =   0.000000000000000E+000
+ value(           5 ) =   0.000000000000000E+000
+ value(           6 ) =   0.000000000000000E+000
+ value(           7 ) =   0.000000000000000E+000
+ value(           8 ) =   0.000000000000000E+000
+ value(           9 ) =   0.000000000000000E+000
+ value(          10 ) =   0.000000000000000E+000
+  
+ checkVectorSetToZero
+ ====================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =   0.000000000000000E+000
+ value(           2 ) =   0.000000000000000E+000
+ value(           3 ) =   0.000000000000000E+000
+  
+ checkVectorSetToValue
+ =====================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    25.0000000000000     
+ value(           2 ) =    25.0000000000000     
+ value(           3 ) =    25.0000000000000     
+  
+ checkVectorSetInsertValue
+ =========================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    15.0000000000000     
+ value(           2 ) =    25.0000000000000     
+ value(           3 ) =    25.0000000000000     
+  
+ checkVectorSetAddValue
+ ======================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    60.0000000000000     
+ value(           2 ) =    25.0000000000000     
+ value(           3 ) =    25.0000000000000     
+  
+ checkVectorNorm
+ ===============
+ Norm L1 :    110.000000000000     
+ Norm L2 :    69.6419413859206     
+ Norm Inf :    60.0000000000000     
+ Norm L1 :    110.000000000000     
+ Norm L2 :    69.6419413859206     
+ Norm Inf :    60.0000000000000     
+  
+ checkVectorScale
+ ================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    19.1999995708466     
+ value(           2 ) =    7.99999982118607     
+ value(           3 ) =    7.99999982118607     
+  
+ checkVectorSqrt
+ ===============
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    4.38178041107112     
+ value(           2 ) =    2.82842709313605     
+ value(           3 ) =    2.82842709313605     
+  
+ checkVectorSum
+ ==============
+ Vector sum :    10.0386345973432     
+  
+ checkVectorMin
+ ==============
+ Vector min :    2.82842709313605     
+  
+ checkVectorMax
+ ==============
+ Vector abs max :    4.38178041107112     
+  
+ checkVectorAbsMin
+ =================
+ Vector abs min :    2.82842709313605     
+  
+ checkVectorAbsMax
+ =================
+ Vector max :    4.38178041107112     
+  
+ checkVectorDot
+ ==============
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    2.29999995231628     
+ value(           2 ) =    2.29999995231628     
+ value(           3 ) =    2.29999995231628     
+ Dot product :    23.0888590952100     
+  
+ checkVectorGetValues
+ ====================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    23.0000000000000     
+ value(           2 ) =    23.0000000000000     
+ value(           3 ) =    23.0000000000000     
+  
+ checkVectorSetSize
+ ==================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    2.29999995231628     
+ value(           2 ) =    2.29999995231628     
+ value(           3 ) =    2.29999995231628     
+ ined            3
+ The size of the array is :            7
+    The allocated memory is :           10
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            5
+ value(          -1 ) =   -3.29999995231628     
+ value(           0 ) =   -3.29999995231628     
+ value(           1 ) =    2.29999995231628     
+ value(           2 ) =    2.29999995231628     
+ value(           3 ) =    2.29999995231628     
+ value(           4 ) =    3.29999995231628     
+ value(           5 ) =    3.29999995231628     
+  
+ checkVectorSetToZero
+ ====================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =   0.000000000000000E+000
+ value(           2 ) =   0.000000000000000E+000
+ value(           3 ) =   0.000000000000000E+000
+  
+ checkVectorSetToValue
+ =====================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    25.0000000000000     
+ value(           2 ) =    25.0000000000000     
+ value(           3 ) =    25.0000000000000     
+  
+ checkVectorSetInsertValue
+ =========================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    15.0000000000000     
+ value(           2 ) =    25.0000000000000     
+ value(           3 ) =    25.0000000000000     
+  
+ checkVectorSetAddValue
+ ======================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    60.0000000000000     
+ value(           2 ) =    25.0000000000000     
+ value(           3 ) =    25.0000000000000     
+  
+ checkVectorNorm
+ ===============
+ Norm L1 :    110.000000000000     
+ Norm L2 :    69.6419413859206     
+ Norm Inf :    60.0000000000000     
+ Norm L1 :    110.000000000000     
+ Norm L2 :    69.6419413859206     
+ Norm Inf :    60.0000000000000     
+  
+ checkVectorScale
+ ================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    19.1999995708466     
+ value(           2 ) =    7.99999982118607     
+ value(           3 ) =    7.99999982118607     
+  
+ checkVectorSqrt
+ ===============
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    4.38178041107112     
+ value(           2 ) =    2.82842709313605     
+ value(           3 ) =    2.82842709313605     
+  
+ checkVectorSum
+ ==============
+ Vector sum :    10.0386345973432     
+  
+ checkVectorMin
+ ==============
+ Vector min :    2.82842709313605     
+  
+ checkVectorMax
+ ==============
+ Vector abs max :    4.38178041107112     
+  
+ checkVectorAbsMin
+ =================
+ Vector abs min :    2.82842709313605     
+  
+ checkVectorAbsMax
+ =================
+ Vector max :    4.38178041107112     
+  
+ checkVectorDot
+ ==============
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    2.29999995231628     
+ value(           2 ) =    2.29999995231628     
+ value(           3 ) =    2.29999995231628     
+ Dot product :    23.0888590952100     
+  
+ checkVectorGetValues
+ ====================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    23.0000000000000     
+ value(           2 ) =    23.0000000000000     
+ value(           3 ) =    23.0000000000000     
+  
+ checkVectorSetSize
+ ==================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    2.29999995231628     
+ value(           2 ) =    2.29999995231628     
+ value(           3 ) =    2.29999995231628     
+ ined            3
+ The size of the array is :            7
+    The allocated memory is :           10
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            5
+ value(          -1 ) =   -3.29999995231628     
+ value(           0 ) =   -3.29999995231628     
+ value(           1 ) =    2.29999995231628     
+ value(           2 ) =    2.29999995231628     
+ value(           3 ) =    2.29999995231628     
+ value(           4 ) =    3.29999995231628     
+ value(           5 ) =    3.29999995231628     
+  
+ checkVectorSetToZero
+ ====================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) =   0.000000000000000E+000
+ value(           0 ) =   0.000000000000000E+000
+ value(           1 ) =   0.000000000000000E+000
+  
+ checkVectorSetToValue
+ =====================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) =    25.0000000000000     
+ value(           0 ) =    25.0000000000000     
+ value(           1 ) =    25.0000000000000     
+  
+ checkVectorSetInsertValue
+ =========================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) =    25.0000000000000     
+ value(           0 ) =    25.0000000000000     
+ value(           1 ) =    15.0000000000000     
+  
+ checkVectorSetAddValue
+ ======================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) =    25.0000000000000     
+ value(           0 ) =    25.0000000000000     
+ value(           1 ) =    60.0000000000000     
+  
+ checkVectorNorm
+ ===============
+ Norm L1 :    110.000000000000     
+ Norm L2 :    69.6419413859206     
+ Norm Inf :    60.0000000000000     
+ Norm L1 :    110.000000000000     
+ Norm L2 :    69.6419413859206     
+ Norm Inf :    60.0000000000000     
+  
+ checkVectorScale
+ ================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) =    7.99999982118607     
+ value(           0 ) =    7.99999982118607     
+ value(           1 ) =    19.1999995708466     
+  
+ checkVectorSqrt
+ ===============
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) =    2.82842709313605     
+ value(           0 ) =    2.82842709313605     
+ value(           1 ) =    4.38178041107112     
+  
+ checkVectorSum
+ ==============
+ Vector sum :    10.0386345973432     
+  
+ checkVectorMin
+ ==============
+ Vector min :    2.82842709313605     
+  
+ checkVectorMax
+ ==============
+ Vector abs max :    4.38178041107112     
+  
+ checkVectorAbsMin
+ =================
+ Vector abs min :    2.82842709313605     
+  
+ checkVectorAbsMax
+ =================
+ Vector max :    4.38178041107112     
+  
+ checkVectorDot
+ ==============
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    2.29999995231628     
+ value(           2 ) =    2.29999995231628     
+ value(           3 ) =    2.29999995231628     
+ Dot product :    23.0888590952100     
+  
+ checkVectorGetValues
+ ====================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) =    23.0000000000000     
+ value(           0 ) =    23.0000000000000     
+ value(           1 ) =    23.0000000000000     
+  
+ checkVectorSetSize
+ ==================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) =    2.29999995231628     
+ value(           0 ) =    2.29999995231628     
+ value(           1 ) =    2.29999995231628     
+ ined            1
+ The size of the array is :            7
+    The allocated memory is :           10
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -3
+    Last positions are  :            3
+ value(          -3 ) =   -3.29999995231628     
+ value(          -2 ) =   -3.29999995231628     
+ value(          -1 ) =    2.29999995231628     
+ value(           0 ) =    2.29999995231628     
+ value(           1 ) =    2.29999995231628     
+ value(           2 ) =    3.29999995231628     
+ value(           3 ) =    3.29999995231628     
+  
+ checkVectorSetToZero
+ ====================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =   0.000000000000000E+000
+ value(           2 ) =   0.000000000000000E+000
+ value(           3 ) =   0.000000000000000E+000
+  
+ checkVectorSetToValue
+ =====================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    25.0000000000000     
+ value(           2 ) =    25.0000000000000     
+ value(           3 ) =    25.0000000000000     
+  
+ checkVectorSetInsertValue
+ =========================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    15.0000000000000     
+ value(           2 ) =    25.0000000000000     
+ value(           3 ) =    25.0000000000000     
+  
+ checkVectorSetAddValue
+ ======================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    60.0000000000000     
+ value(           2 ) =    25.0000000000000     
+ value(           3 ) =    25.0000000000000     
+  
+ checkVectorNorm
+ ===============
+ Norm L1 :    110.000000000000     
+ Norm L2 :    69.6419413859206     
+ Norm Inf :    60.0000000000000     
+ Norm L1 :    110.000000000000     
+ Norm L2 :    69.6419413859206     
+ Norm Inf :    60.0000000000000     
+  
+ checkVectorScale
+ ================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    19.1999995708466     
+ value(           2 ) =    7.99999982118607     
+ value(           3 ) =    7.99999982118607     
+  
+ checkVectorSqrt
+ ===============
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    4.38178041107112     
+ value(           2 ) =    2.82842709313605     
+ value(           3 ) =    2.82842709313605     
+  
+ checkVectorSum
+ ==============
+ Vector sum :    10.0386345973432     
+  
+ checkVectorMin
+ ==============
+ Vector min :    2.82842709313605     
+  
+ checkVectorMax
+ ==============
+ Vector abs max :    4.38178041107112     
+  
+ checkVectorAbsMin
+ =================
+ Vector abs min :    2.82842709313605     
+  
+ checkVectorAbsMax
+ =================
+ Vector max :    4.38178041107112     
+  
+ checkVectorDot
+ ==============
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    2.29999995231628     
+ value(           2 ) =    2.29999995231628     
+ value(           3 ) =    2.29999995231628     
+ Dot product :    23.0888590952100     
+  
+ checkVectorGetValues
+ ====================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    23.0000000000000     
+ value(           2 ) =    23.0000000000000     
+ value(           3 ) =    23.0000000000000     
+  
+ checkVectorSetSize
+ ==================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    2.29999995231628     
+ value(           2 ) =    2.29999995231628     
+ value(           3 ) =    2.29999995231628     
+ ined            3
+ The size of the array is :            7
+    The allocated memory is :           10
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            5
+ value(          -1 ) =   -3.29999995231628     
+ value(           0 ) =   -3.29999995231628     
+ value(           1 ) =    2.29999995231628     
+ value(           2 ) =    2.29999995231628     
+ value(           3 ) =    2.29999995231628     
+ value(           4 ) =    3.29999995231628     
+ value(           5 ) =    3.29999995231628     
+  
+ checkVectorSetToZero
+ ====================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =   0.000000000000000E+000
+ value(           2 ) =   0.000000000000000E+000
+ value(           3 ) =   0.000000000000000E+000
+  
+ checkVectorSetToValue
+ =====================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    25.0000000000000     
+ value(           2 ) =    25.0000000000000     
+ value(           3 ) =    25.0000000000000     
+  
+ checkVectorSetInsertValue
+ =========================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    15.0000000000000     
+ value(           2 ) =    25.0000000000000     
+ value(           3 ) =    25.0000000000000     
+  
+ checkVectorSetAddValue
+ ======================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    60.0000000000000     
+ value(           2 ) =    25.0000000000000     
+ value(           3 ) =    25.0000000000000     
+  
+ checkVectorNorm
+ ===============
+ Norm L1 :    110.000000000000     
+ Norm L2 :    69.6419413859206     
+ Norm Inf :    60.0000000000000     
+ Norm L1 :    110.000000000000     
+ Norm L2 :    69.6419413859206     
+ Norm Inf :    60.0000000000000     
+  
+ checkVectorScale
+ ================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    19.1999995708466     
+ value(           2 ) =    7.99999982118607     
+ value(           3 ) =    7.99999982118607     
+  
+ checkVectorSqrt
+ ===============
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    4.38178041107112     
+ value(           2 ) =    2.82842709313605     
+ value(           3 ) =    2.82842709313605     
+  
+ checkVectorSum
+ ==============
+ Vector sum :    10.0386345973432     
+  
+ checkVectorMin
+ ==============
+ Vector min :    2.82842709313605     
+  
+ checkVectorMax
+ ==============
+ Vector abs max :    4.38178041107112     
+  
+ checkVectorAbsMin
+ =================
+ Vector abs min :    2.82842709313605     
+  
+ checkVectorAbsMax
+ =================
+ Vector max :    4.38178041107112     
+  
+ checkVectorDot
+ ==============
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    2.29999995231628     
+ value(           2 ) =    2.29999995231628     
+ value(           3 ) =    2.29999995231628     
+ Dot product :    23.0888590952100     
+  
+ checkVectorGetValues
+ ====================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    23.0000000000000     
+ value(           2 ) =    23.0000000000000     
+ value(           3 ) =    23.0000000000000     
+  
+ checkVectorSetSize
+ ==================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    2.29999995231628     
+ value(           2 ) =    2.29999995231628     
+ value(           3 ) =    2.29999995231628     
+ ined            3
+ The size of the array is :            7
+    The allocated memory is :           10
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            5
+ value(          -1 ) =   -3.29999995231628     
+ value(           0 ) =   -3.29999995231628     
+ value(           1 ) =    2.29999995231628     
+ value(           2 ) =    2.29999995231628     
+ value(           3 ) =    2.29999995231628     
+ value(           4 ) =    3.29999995231628     
+ value(           5 ) =    3.29999995231628     
+  
+ checkVectorSetToZero
+ ====================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) =   0.000000000000000E+000
+ value(           0 ) =   0.000000000000000E+000
+ value(           1 ) =   0.000000000000000E+000
+  
+ checkVectorSetToValue
+ =====================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) =    25.0000000000000     
+ value(           0 ) =    25.0000000000000     
+ value(           1 ) =    25.0000000000000     
+  
+ checkVectorSetInsertValue
+ =========================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) =    25.0000000000000     
+ value(           0 ) =    25.0000000000000     
+ value(           1 ) =    15.0000000000000     
+  
+ checkVectorSetAddValue
+ ======================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) =    25.0000000000000     
+ value(           0 ) =    25.0000000000000     
+ value(           1 ) =    60.0000000000000     
+  
+ checkVectorNorm
+ ===============
+ Norm L1 :    110.000000000000     
+ Norm L2 :    69.6419413859206     
+ Norm Inf :    60.0000000000000     
+ Norm L1 :    110.000000000000     
+ Norm L2 :    69.6419413859206     
+ Norm Inf :    60.0000000000000     
+  
+ checkVectorScale
+ ================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) =    7.99999982118607     
+ value(           0 ) =    7.99999982118607     
+ value(           1 ) =    19.1999995708466     
+  
+ checkVectorSqrt
+ ===============
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) =    2.82842709313605     
+ value(           0 ) =    2.82842709313605     
+ value(           1 ) =    4.38178041107112     
+  
+ checkVectorSum
+ ==============
+ Vector sum :    10.0386345973432     
+  
+ checkVectorMin
+ ==============
+ Vector min :    2.82842709313605     
+  
+ checkVectorMax
+ ==============
+ Vector abs max :    4.38178041107112     
+  
+ checkVectorAbsMin
+ =================
+ Vector abs min :    2.82842709313605     
+  
+ checkVectorAbsMax
+ =================
+ Vector max :    4.38178041107112     
+  
+ checkVectorDot
+ ==============
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    2.29999995231628     
+ value(           2 ) =    2.29999995231628     
+ value(           3 ) =    2.29999995231628     
+ Dot product :    23.0888590952100     
+  
+ checkVectorGetValues
+ ====================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) =    23.0000000000000     
+ value(           0 ) =    23.0000000000000     
+ value(           1 ) =    23.0000000000000     
+  
+ checkVectorSetSize
+ ==================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) =    2.29999995231628     
+ value(           0 ) =    2.29999995231628     
+ value(           1 ) =    2.29999995231628     
+ ined            1
+ The size of the array is :            7
+    The allocated memory is :           10
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -3
+    Last positions are  :            3
+ value(          -3 ) =   -3.29999995231628     
+ value(          -2 ) =   -3.29999995231628     
+ value(          -1 ) =    2.29999995231628     
+ value(           0 ) =    2.29999995231628     
+ value(           1 ) =    2.29999995231628     
+ value(           2 ) =    3.29999995231628     
+ value(           3 ) =    3.29999995231628     
+  

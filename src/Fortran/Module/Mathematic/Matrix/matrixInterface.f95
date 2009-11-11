@@ -125,8 +125,7 @@ MODULE matrixInterface
                            arrayArrayAbsMaxInteger8 => arrayArrayAbsMax
 
    USE modulematrixReal4, ONLY : &
-                           arrayGetValuesReal4 => arrayGetValues,  &
-                           arrayGetValueReal4 => arrayGetValue, &
+                           arrayGetValuesReal4 => arrayGetValues, arrayGetValueReal4 => arrayGetValue, &
                            arrayGetAllocationStatusReal4 => arrayGetAllocationStatus, &
                            arrayGetPointerOnValueReal4 => arrayGetPointerOnValue, &
                            arrayArraySetToZeroReal4 => arrayArraySetToZero, &
@@ -141,10 +140,8 @@ MODULE matrixInterface
                            arrayCreateBaseReal4 => arrayCreateBase, &
                            arrayCreateWithDimensionReal4 => arrayCreateWithDimension, &
                            arrayCreateWithDimensionAndFirstIndexReal4 => arrayCreateWithDimensionAndFirstIndex, &
-                           arraySetSizeReal4 => arraySetSize, &
-                           arrayGetFirstIndexXReal4 => arrayGetFirstIndexX, &
-                           arrayGetLastIndexXReal4 => arrayGetLastIndexX, &
-                           arrayGetSizeXReal4 => arrayGetSizeX, &
+                           arraySetSizeReal4 => arraySetSize, arrayGetFirstIndexXReal4 => arrayGetFirstIndexX, &
+                           arrayGetLastIndexXReal4 => arrayGetLastIndexX, arrayGetSizeXReal4 => arrayGetSizeX, &
                            arrayGetAllocatedSizeXReal4 => arrayGetAllocatedSizeX , &
                            arrayGetIncreaseSizeXReal4 => arrayGetIncreaseSizeX, &
                            arraySetIncreaseSizeXReal4 => arraySetIncreaseSizeX, &
@@ -167,8 +164,7 @@ MODULE matrixInterface
                            arrayArrayScaleReal4 => arrayArrayScale
 
    USE modulematrixReal8, ONLY : &
-                           arrayGetValuesReal8 => arrayGetValues,  &
-                           arrayGetValueReal8 => arrayGetValue, &
+                           arrayGetValuesReal8 => arrayGetValues,  arrayGetValueReal8 => arrayGetValue, &
                            arrayGetAllocationStatusReal8 => arrayGetAllocationStatus, &
                            arrayGetPointerOnValueReal8 => arrayGetPointerOnValue, &
                            arrayArraySetToZeroReal8 => arrayArraySetToZero, &
@@ -178,28 +174,22 @@ MODULE matrixInterface
                            arrayArrayFastInsertValueReal8 => arrayArrayFastInsertValue, &
                            arrayArrayFastAddValueReal8 => arrayArrayFastAddValue, &
                            arraySetIncreaseSizeReal8 => arraySetIncreaseSize, &
-                           arrayDestructorReal8 => arrayDestructor, &
-                           arrayPrintInformationReal8 => arrayPrintInformation, &
-                           arrayCreateBaseReal8 => arrayCreateBase, &
-                           arrayCreateWithDimensionReal8 => arrayCreateWithDimension, &
+                           arrayDestructorReal8 => arrayDestructor, arrayPrintInformationReal8 => arrayPrintInformation, &
+                           arrayCreateBaseReal8 => arrayCreateBase, arrayCreateWithDimensionReal8 => arrayCreateWithDimension, &
                            arrayCreateWithDimensionAndFirstIndexReal8 => arrayCreateWithDimensionAndFirstIndex, &
-                           arraySetSizeReal8 => arraySetSize, &
-                           arrayGetFirstIndexXReal8 => arrayGetFirstIndexX, &
-                           arrayGetLastIndexXReal8 => arrayGetLastIndexX, &
-                           arrayGetSizeXReal8 => arrayGetSizeX, &
+                           arraySetSizeReal8 => arraySetSize, arrayGetFirstIndexXReal8 => arrayGetFirstIndexX, &
+                           arrayGetLastIndexXReal8 => arrayGetLastIndexX, arrayGetSizeXReal8 => arrayGetSizeX, &
                            arrayGetAllocatedSizeXReal8 => arrayGetAllocatedSizeX , &
                            arrayGetIncreaseSizeXReal8 => arrayGetIncreaseSizeX, &
                            arrayGetDefaultIncreaseSizeXReal8 => arrayGetDefaultIncreaseSizeX, &
                            arraySetIncreaseSizeXReal8 => arraySetIncreaseSizeX, &
                            arrayGetFirstIndexYReal8 => arrayGetFirstIndexY, &
                            arrayGetLastIndexYReal8 => arrayGetLastIndexY, &
-                           arrayGetSizeYReal8 => arrayGetSizeY, &
-                           arrayGetAllocatedSizeYReal8 => arrayGetAllocatedSizeY , &
+                           arrayGetSizeYReal8 => arrayGetSizeY, arrayGetAllocatedSizeYReal8 => arrayGetAllocatedSizeY , &
                            arrayGetIncreaseSizeYReal8 => arrayGetIncreaseSizeY, &
                            arrayGetDefaultIncreaseSizeYReal8 => arrayGetDefaultIncreaseSizeY, &
                            arraySetIncreaseSizeYReal8 => arraySetIncreaseSizeY, &
-                           arrayArrayMinReal8 => arrayArrayMin, &
-                           arrayArrayMaxReal8 => arrayArrayMax, &
+                           arrayArrayMinReal8 => arrayArrayMin, arrayArrayMaxReal8 => arrayArrayMax, &
                            arrayArrayAbsMinReal8 => arrayArrayAbsMin, &
                            arrayArrayAbsMaxReal8 => arrayArrayAbsMax, &
                            arrayArrayNorm1Real8 => arrayArrayNorm1, &

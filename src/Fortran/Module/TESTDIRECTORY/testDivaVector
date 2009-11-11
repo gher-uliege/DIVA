@@ -1,0 +1,94 @@
+#!/bin/bash
+
+
+
+echo =================================
+echo =================================
+echo ==                             ==
+echo == Procedure to test : vector  ==
+echo ==                             ==
+echo =================================
+echo =================================
+echo ' '
+
+# Chech program : testVector
+# --------------------------
+
+fileToCheck=testVector
+typeToCheck=Real8
+VARType='REAL(KIND=8)'
+
+echo Test : $fileToCheck.$typeToCheck
+echo ------
+echo Test : $fileToCheck.$typeToCheck >> testing.log
+echo ------ >> testing.log
+
+preproFlag='-DvectorType=vector'$typeToCheck' -DVARType='$VARType
+export preproFlag
+
+$divaDir/compileAndLinkFile $fileToCheck >> testing.log
+./$fileToCheck.a >> $fileToCheck.$typeToCheck.$compiler.$OSused
+
+fileToCheck=testVector
+typeToCheck=Real4
+VARType='REAL(KIND=4)'
+
+echo Test : $fileToCheck.$typeToCheck
+echo ------
+echo Test : $fileToCheck.$typeToCheck >> testing.log
+echo ------ >> testing.log
+
+preproFlag='-DvectorType=vector'$typeToCheck' -DVARType='$VARType
+export preproFlag
+
+$divaDir/compileAndLinkFile $fileToCheck >> testing.log
+./$fileToCheck.a >> $fileToCheck.$typeToCheck.$compiler.$OSused
+
+
+# Chech program : testIntegerVector
+# ---------------------------------
+
+fileToCheck=testIntegerVector
+typeToCheck=Integer2
+VARType='INTEGER(KIND=2)'
+
+echo Test : $fileToCheck.$typeToCheck
+echo ------
+echo Test : $fileToCheck.$typeToCheck >> testing.log
+echo ------ >> testing.log
+
+preproFlag='-DvectorType=vector'$typeToCheck' -DVARType='$VARType
+export preproFlag
+
+$divaDir/compileAndLinkFile $fileToCheck >> testing.log
+./$fileToCheck.a >> $fileToCheck.$typeToCheck.$compiler.$OSused
+
+fileToCheck=testIntegerVector
+typeToCheck=Integer4
+VARType='INTEGER(KIND=4)'
+
+echo Test : $fileToCheck.$typeToCheck
+echo ------
+echo Test : $fileToCheck.$typeToCheck >> testing.log
+echo ------ >> testing.log
+
+preproFlag='-DvectorType=vector'$typeToCheck' -DVARType='$VARType
+export preproFlag
+
+$divaDir/compileAndLinkFile $fileToCheck >> testing.log
+./$fileToCheck.a >> $fileToCheck.$typeToCheck.$compiler.$OSused
+
+fileToCheck=testIntegerVector
+typeToCheck=Integer8
+VARType='INTEGER(KIND=8)'
+
+echo Test : $fileToCheck.$typeToCheck
+echo ------
+echo Test : $fileToCheck.$typeToCheck >> testing.log
+echo ------ >> testing.log
+
+preproFlag='-DvectorType=vector'$typeToCheck' -DVARType='$VARType
+export preproFlag
+
+$divaDir/compileAndLinkFile $fileToCheck >> testing.log
+./$fileToCheck.a >> $fileToCheck.$typeToCheck.$compiler.$OSused
