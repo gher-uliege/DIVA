@@ -52,7 +52,8 @@ MODULE matrixInterface
                            arrayArrayMinInteger2 => arrayArrayMin, &
                            arrayArrayMaxInteger2 => arrayArrayMax, &
                            arrayArrayAbsMinInteger2 => arrayArrayAbsMin, &
-                           arrayArrayAbsMaxInteger2 => arrayArrayAbsMax
+                           arrayArrayAbsMaxInteger2 => arrayArrayAbsMax, &
+                           arrayOptimizeInteger2 => arrayOptimize
 
    USE modulematrixInteger4, ONLY : &
                            arrayGetValuesInteger4 => arrayGetValues,  &
@@ -87,7 +88,8 @@ MODULE matrixInterface
                            arrayArrayMinInteger4 => arrayArrayMin, &
                            arrayArrayMaxInteger4 => arrayArrayMax, &
                            arrayArrayAbsMinInteger4 => arrayArrayAbsMin, &
-                           arrayArrayAbsMaxInteger4 => arrayArrayAbsMax
+                           arrayArrayAbsMaxInteger4 => arrayArrayAbsMax, &
+                           arrayOptimizeInteger4 => arrayOptimize
 
    USE modulematrixInteger8, ONLY : &
                            arrayGetValuesInteger8 => arrayGetValues,  &
@@ -122,7 +124,8 @@ MODULE matrixInterface
                            arrayArrayMinInteger8 => arrayArrayMin, &
                            arrayArrayMaxInteger8 => arrayArrayMax, &
                            arrayArrayAbsMinInteger8 => arrayArrayAbsMin, &
-                           arrayArrayAbsMaxInteger8 => arrayArrayAbsMax
+                           arrayArrayAbsMaxInteger8 => arrayArrayAbsMax, &
+                           arrayOptimizeInteger8 => arrayOptimize
 
    USE modulematrixReal4, ONLY : &
                            arrayGetValuesReal4 => arrayGetValues, arrayGetValueReal4 => arrayGetValue, &
@@ -161,7 +164,8 @@ MODULE matrixInterface
                            arrayArrayNormReal4 => arrayArrayNorm, &
                            arrayArraySqrtReal4 => arrayArraySqrt, &
                            arrayArraySumReal4 => arrayArraySum, &
-                           arrayArrayScaleReal4 => arrayArrayScale
+                           arrayArrayScaleReal4 => arrayArrayScale, &
+                           arrayOptimizeReal4 => arrayOptimize
 
    USE modulematrixReal8, ONLY : &
                            arrayGetValuesReal8 => arrayGetValues,  arrayGetValueReal8 => arrayGetValue, &
@@ -198,7 +202,8 @@ MODULE matrixInterface
                            arrayArrayNormReal8 => arrayArrayNorm, &
                            arrayArraySqrtReal8 => arrayArraySqrt, &
                            arrayArraySumReal8 => arrayArraySum, &
-                           arrayArrayScaleReal8 => arrayArrayScale
+                           arrayArrayScaleReal8 => arrayArrayScale, &
+                           arrayOptimizeReal8 => arrayOptimize
 
 
 ! Interface
@@ -392,4 +397,13 @@ MODULE matrixInterface
                        arraySetIncreaseSizeYInteger2, arraySetIncreaseSizeYInteger4, arraySetIncreaseSizeYInteger8
    END INTERFACE
 
+   INTERFACE matrixSetIncreaseSize
+      MODULE PROCEDURE arraySetIncreaseSizeReal8, arraySetIncreaseSizeReal4, &
+                       arraySetIncreaseSizeInteger2, arraySetIncreaseSizeInteger4, arraySetIncreaseSizeInteger8
+   END INTERFACE
+
+   INTERFACE matrixOptimize
+      MODULE PROCEDURE arrayOptimizeReal8, arrayOptimizeReal4, &
+                       arrayOptimizeInteger2, arrayOptimizeInteger4, arrayOptimizeInteger8
+   END INTERFACE
 END MODULE matrixInterface

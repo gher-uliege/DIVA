@@ -1,0 +1,38 @@
+#!/bin/bash
+
+echo ============================
+echo ============================
+echo ==                        ==
+echo ==   Testing DIVA modules ==
+echo ==                        ==
+echo ============================
+echo ============================
+echo ' '
+
+divaDir=$PWD
+divaModuleLib=$divaDir/Module/lib
+OSused=`uname -s`
+
+export OSused
+
+export divaModuleLib
+export divaDir
+
+# Definition of the compiler, options,...
+# =======================================
+source $divaDir/compileBaseGFortran
+
+# Compilation of modules
+# ======================
+
+cd $divaDir/Module/TESTDIRECTORY
+source ./testDivaModule
+
+echo ' '
+echo ---------------------------
+echo Testing procedure finished
+echo ---------------------------
+echo ' '
+
+cd $divaDir
+

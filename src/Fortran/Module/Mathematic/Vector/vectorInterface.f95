@@ -51,7 +51,8 @@ MODULE vectorInterface
                            arrayArrayMinInteger2 => arrayArrayMin, &
                            arrayArrayMaxInteger2 => arrayArrayMax, &
                            arrayArrayAbsMinInteger2 => arrayArrayAbsMin, &
-                           arrayArrayAbsMaxInteger2 => arrayArrayAbsMax
+                           arrayArrayAbsMaxInteger2 => arrayArrayAbsMax, &
+                           arrayOptimizeInteger2 => arrayOptimize
 
    USE modulevectorInteger4, ONLY : &
                            arrayGetValuesInteger4 => arrayGetValues,  &
@@ -85,7 +86,8 @@ MODULE vectorInterface
                            arrayArrayMinInteger4 => arrayArrayMin, &
                            arrayArrayMaxInteger4 => arrayArrayMax, &
                            arrayArrayAbsMinInteger4 => arrayArrayAbsMin, &
-                           arrayArrayAbsMaxInteger4 => arrayArrayAbsMax
+                           arrayArrayAbsMaxInteger4 => arrayArrayAbsMax, &
+                           arrayOptimizeInteger4 => arrayOptimize
 
    USE modulevectorInteger8, ONLY : &
                            arrayGetValuesInteger8 => arrayGetValues,  &
@@ -119,7 +121,8 @@ MODULE vectorInterface
                            arrayArrayMinInteger8 => arrayArrayMin, &
                            arrayArrayMaxInteger8 => arrayArrayMax, &
                            arrayArrayAbsMinInteger8 => arrayArrayAbsMin, &
-                           arrayArrayAbsMaxInteger8 => arrayArrayAbsMax
+                           arrayArrayAbsMaxInteger8 => arrayArrayAbsMax, &
+                           arrayOptimizeInteger8 => arrayOptimize
 
    USE modulevectorReal4, ONLY : &
                            arrayGetValuesReal4 => arrayGetValues,  &
@@ -158,7 +161,8 @@ MODULE vectorInterface
                            arrayArrayNormReal4 => arrayArrayNorm, arrayArraySqrtReal4 => arrayArraySqrt, &
                            arrayArraySumReal4 => arrayArraySum, arrayArrayScaleReal4 => arrayArrayScale, &
                            arrayArrayDotReal4 => arrayArrayDot, arrayArrayAbsMinReal4 => arrayArrayAbsMin, &
-                           arrayArrayAbsMaxReal4 => arrayArrayAbsMax
+                           arrayArrayAbsMaxReal4 => arrayArrayAbsMax, &
+                           arrayOptimizeReal4 => arrayOptimize
 
 
    USE modulevectorReal8, ONLY : &
@@ -200,7 +204,8 @@ MODULE vectorInterface
                            arrayArrayNormReal8 => arrayArrayNorm, &
                            arrayArraySqrtReal8 => arrayArraySqrt, arrayArraySumReal8 => arrayArraySum, &
                            arrayArrayScaleReal8 => arrayArrayScale, arrayArrayDotReal8 => arrayArrayDot, &
-                           arrayArrayAbsMinReal8 => arrayArrayAbsMin, arrayArrayAbsMaxReal8 => arrayArrayAbsMax
+                           arrayArrayAbsMinReal8 => arrayArrayAbsMin, arrayArrayAbsMaxReal8 => arrayArrayAbsMax, &
+                           arrayOptimizeReal8 => arrayOptimize
 
 
 ! Interface
@@ -398,5 +403,9 @@ MODULE vectorInterface
                        arraySetIncreaseSizeXInteger2, arraySetIncreaseSizeXInteger4, arraySetIncreaseSizeXInteger8
    END INTERFACE
 
+   INTERFACE vectorOptimize
+      MODULE PROCEDURE arrayOptimizeReal8, arrayOptimizeReal4, &
+                       arrayOptimizeInteger2, arrayOptimizeInteger4, arrayOptimizeInteger8
+   END INTERFACE
 
 END MODULE vectorInterface

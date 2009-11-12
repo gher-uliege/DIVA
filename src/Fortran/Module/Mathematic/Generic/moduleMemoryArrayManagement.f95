@@ -961,7 +961,7 @@ MODULE moduleMemoryArrayManagement
       finalValue = i1
 
       IF ( finalValue < 0 ) THEN
-         finalValue = memoryGetDefaultIncreaseSizeX()
+         finalValue = memoryGetDefaultIncreaseSizeY()
       END IF
 
       workingArray%increaseSizeY = finalValue
@@ -1000,7 +1000,7 @@ MODULE moduleMemoryArrayManagement
       finalValue = i1
 
       IF ( finalValue < 0 ) THEN
-         finalValue = memoryGetDefaultIncreaseSizeX()
+         finalValue = memoryGetDefaultIncreaseSizeZ()
       END IF
 
       workingArray%increaseSizeZ = finalValue

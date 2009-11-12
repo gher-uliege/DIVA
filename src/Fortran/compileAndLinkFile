@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Definition of preprocessor options if needed
+# ============================================
+preprocessorFlag=$preprocessorFlag' '$preproFlag
+
+echo 'Compiling and linking ' $1
+
+fileToCompile=$1
+
+if [ "$compiler" = ifort ] 
+then
+cp $1.f95 $1.f90
+fileToCompile=$1.f90
+else
+fileToCompile=$1.f95
+fi
+
+fileToExecute=$1.a
+
+$compiler $flag $preprocessor $preprocessorFlag $libraryDir $libraryObj $fileToCompile -o $fileToExecute
+
+if [ "$compiler" = ifort ] 
+then
+rm -f $1.f90
+fi

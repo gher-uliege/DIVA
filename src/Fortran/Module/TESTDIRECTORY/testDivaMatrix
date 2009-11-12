@@ -5,16 +5,16 @@
 echo =================================
 echo =================================
 echo ==                             ==
-echo == Procedure to test : vector  ==
+echo == Procedure to test : matrix  ==
 echo ==                             ==
 echo =================================
 echo =================================
 echo ' '
 
-# Chech program : testVector
+# Chech program : testMatrix
 # --------------------------
 
-fileToCheck=testVector
+fileToCheck=testMatrix
 typeToCheck=Real8
 VARType='REAL(KIND=8)'
 
@@ -23,7 +23,7 @@ echo ------
 echo Test : $fileToCheck.$typeToCheck >> testing.log
 echo ------ >> testing.log
 
-preproFlag='-DvectorType=vector'$typeToCheck' -DVARType='$VARType
+preproFlag='-DmatrixType=matrix'$typeToCheck' -DVARType='$VARType
 export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
@@ -35,16 +35,17 @@ rm ./$fileToCheck.a
 
 echo ' ' >> testing.log
 
-fileToCheck=testVector
+fileToCheck=testMatrix
 typeToCheck=Real4
 VARType='REAL(KIND=4)'
 
 echo Test : $fileToCheck.$typeToCheck
 echo ------
+
 echo Test : $fileToCheck.$typeToCheck >> testing.log
 echo ------ >> testing.log
 
-preproFlag='-DvectorType=vector'$typeToCheck' -DVARType='$VARType
+preproFlag='-DmatrixType=matrix'$typeToCheck' -DVARType='$VARType
 export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
@@ -56,10 +57,10 @@ rm ./$fileToCheck.a
 
 echo ' ' >> testing.log
 
-# Chech program : testIntegerVector
+# Chech program : testIntegerMatrix
 # ---------------------------------
 
-fileToCheck=testIntegerVector
+fileToCheck=testIntegerMatrix
 typeToCheck=Integer2
 VARType='INTEGER(KIND=2)'
 
@@ -68,7 +69,7 @@ echo ------
 echo Test : $fileToCheck.$typeToCheck >> testing.log
 echo ------ >> testing.log
 
-preproFlag='-DvectorType=vector'$typeToCheck' -DVARType='$VARType
+preproFlag='-DmatrixType=matrix'$typeToCheck' -DVARType='$VARType
 export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
@@ -80,7 +81,7 @@ rm ./$fileToCheck.a
 
 echo ' ' >> testing.log
 
-fileToCheck=testIntegerVector
+fileToCheck=testIntegerMatrix
 typeToCheck=Integer4
 VARType='INTEGER(KIND=4)'
 
@@ -89,7 +90,7 @@ echo ------
 echo Test : $fileToCheck.$typeToCheck >> testing.log
 echo ------ >> testing.log
 
-preproFlag='-DvectorType=vector'$typeToCheck' -DVARType='$VARType
+preproFlag='-DmatrixType=matrix'$typeToCheck' -DVARType='$VARType
 export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
@@ -101,7 +102,7 @@ rm ./$fileToCheck.a
 
 echo ' ' >> testing.log
 
-fileToCheck=testIntegerVector
+fileToCheck=testIntegerMatrix
 typeToCheck=Integer8
 VARType='INTEGER(KIND=8)'
 
@@ -110,7 +111,7 @@ echo ------
 echo Test : $fileToCheck.$typeToCheck >> testing.log
 echo ------ >> testing.log
 
-preproFlag='-DvectorType=vector'$typeToCheck' -DVARType='$VARType
+preproFlag='-DmatrixType=matrix'$typeToCheck' -DVARType='$VARType
 export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log

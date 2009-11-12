@@ -40,7 +40,7 @@ MODULE moduleMemoryArray2DManagement
 
 !  General part
 !  ------------
-   PUBLIC :: memoryArrayCreate, memoryAllocateArray, memoryPrintInformation
+   PUBLIC :: memoryArrayCreate, memoryAllocateArray, memoryPrintInformation, memoryOptimize
    PRIVATE :: memoryStockIntermediateArray, memoryTransferIntermediateArrayToArray
 
 
@@ -91,9 +91,9 @@ MODULE moduleMemoryArray2DManagement
             istartValueX = memoryGetFirstIndexX()
             istartValueY = memoryGetFirstIndexY()
 
-            IF ((memoryGetSizeX() >= memoryGetAllocatedSizeX()).OR.(istartValueX<istartX) &
+            IF ((memoryGetSizeX() > memoryGetAllocatedSizeX()).OR.(istartValueX<istartX) &
                 .OR. &
-                (memoryGetSizeY() >= memoryGetAllocatedSizeY()).OR.(istartValueY<istartY)) THEN
+                (memoryGetSizeY() > memoryGetAllocatedSizeY()).OR.(istartValueY<istartY)) THEN
                 newSizeX = memoryGetSizeX()
                 newSizeY = memoryGetSizeY()
                 CALL memoryStockIntermediateArray()
@@ -152,10 +152,10 @@ MODULE moduleMemoryArray2DManagement
 !     - - -
       istartTab = lbound(internalWorkingValues)
       iendTab = ubound(internalWorkingValues)
-      istartX = istartTab(1)
-      istartY = istartTab(2)
-      iendX = iendTab(1)
-      iendY = iendTab(2)
+      istartX = max(istartTab(1),memoryGetFirstIndexX())
+      istartY = max(istartTab(2),memoryGetFirstIndexY())
+      iendX = min(iendTab(1),memoryGetLastIndexX())
+      iendY = min(iendTab(2),memoryGetLastIndexY())
 
       DO i1 = istartX , iendX
        DO i2 = istartY , iendY
@@ -198,6 +198,35 @@ MODULE moduleMemoryArray2DManagement
           ENDDO
          ENDDO
       END IF
+
+   END SUBROUTINE
+
+! Procedure 6 : optimisation of the allocated memory
+! --------------------------------------------------
+   SUBROUTINE memoryOptimize()
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: newSizeX, newSizeY, istartValueX, istartValueY
+
+!     Body
+!     - - -
+      SELECT CASE (memoryGetAllocationStatus())
+         CASE (.TRUE.)
+            istartValueX = memoryGetFirstIndexX()
+            istartValueY = memoryGetFirstIndexY()
+
+                newSizeX = memoryGetSizeX()
+                newSizeY = memoryGetSizeY()
+                CALL memoryStockIntermediateArray()
+                CALL memoryDestructor()
+                CALL memorySetFirstIndex(istartValueX,istartValueY)
+                CALL memorySetAllocatedSize(newSizeX,newSizeY)
+                CALL memorySetSize(newSizeX,newSizeY)
+                CALL memoryDefineLastIndex()
+                CALL memoryAllocateMemory()
+                CALL memoryTransferIntermediateArrayToArray()
+      END SELECT
 
    END SUBROUTINE
 

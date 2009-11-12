@@ -26,7 +26,6 @@ INTEGER, PARAMETER :: dim = 3
 
 !   1) testing the creation procedure
 !   ---------------------------------
-!  CALL vectorSetDefaultMemoryIncreaseSize(5)
   
   PRINT*,'checkAllocationMemoryProcedure'
   PRINT*,'=============================='
@@ -54,22 +53,25 @@ INTEGER, PARAMETER :: dim = 3
 
 !    1.4) Basic creation procedure with optimal size
 !    - - - - - - - - - - - - - - - - - - - - - - - -
-!  CALL vectorSetDefaultMemoryIncreaseSize(0)
 
   CALL vectorCreate(vector1)
   CALL vectorSetSize(vector1,dim)
+  CALL vectorOptimize(vector1)
   CALL checkProcedure(vector1)
   CALL vectorDestroy(vector1)
 
 !    1.5) creation procedure with dimension with optimal size
 !    - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   CALL vectorCreate(vector1,dim)
+  CALL vectorOptimize(vector1)
   CALL checkProcedure(vector1)
   CALL vectorDestroy(vector1)
 
 !    1.6) creation procedure with dimension and starting point with optimal size
 !    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   CALL vectorCreate(vector1,dim,-1)
+  CALL vectorOptimize(vector1)
+  CALL vectorSetIncreaseSize(vector1,0)
   CALL checkProcedure(vector1)
   CALL vectorDestroy(vector1)
 
@@ -382,8 +384,6 @@ INTEGER, PARAMETER :: dim = 3
        CALL vectorInsertValue(vector1,i1,val2)
    ENDDO
    
-   print*,'ined ',iend
-
    DO i1 = iend + 1  , iend + 2
        CALL vectorInsertValue(vector1,i1,val3)
    ENDDO

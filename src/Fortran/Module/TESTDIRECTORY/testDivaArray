@@ -5,16 +5,16 @@
 echo =================================
 echo =================================
 echo ==                             ==
-echo == Procedure to test : vector  ==
+echo == Procedure to test : array  ==
 echo ==                             ==
 echo =================================
 echo =================================
 echo ' '
 
-# Chech program : testVector
+# Chech program : testArray
 # --------------------------
 
-fileToCheck=testVector
+fileToCheck=testArray3D
 typeToCheck=Real8
 VARType='REAL(KIND=8)'
 
@@ -23,28 +23,30 @@ echo ------
 echo Test : $fileToCheck.$typeToCheck >> testing.log
 echo ------ >> testing.log
 
-preproFlag='-DvectorType=vector'$typeToCheck' -DVARType='$VARType
+preproFlag='-DarrayType=array'$typeToCheck' -DVARType='$VARType
 export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
 ./$fileToCheck.a >> $fileToCheck.$typeToCheck.$compiler.$OSused
 #cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
 diff -s ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused >> testing.log
+
 rm ./$fileToCheck.$typeToCheck.$compiler.$OSused
 rm ./$fileToCheck.a
 
 echo ' ' >> testing.log
 
-fileToCheck=testVector
+fileToCheck=testArray3D
 typeToCheck=Real4
 VARType='REAL(KIND=4)'
 
 echo Test : $fileToCheck.$typeToCheck
 echo ------
+
 echo Test : $fileToCheck.$typeToCheck >> testing.log
 echo ------ >> testing.log
 
-preproFlag='-DvectorType=vector'$typeToCheck' -DVARType='$VARType
+preproFlag='-DarrayType=array'$typeToCheck' -DVARType='$VARType
 export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
@@ -56,10 +58,10 @@ rm ./$fileToCheck.a
 
 echo ' ' >> testing.log
 
-# Chech program : testIntegerVector
+# Chech program : testIntegerArray
 # ---------------------------------
 
-fileToCheck=testIntegerVector
+fileToCheck=testIntegerArray3D
 typeToCheck=Integer2
 VARType='INTEGER(KIND=2)'
 
@@ -68,7 +70,7 @@ echo ------
 echo Test : $fileToCheck.$typeToCheck >> testing.log
 echo ------ >> testing.log
 
-preproFlag='-DvectorType=vector'$typeToCheck' -DVARType='$VARType
+preproFlag='-DarrayType=array'$typeToCheck' -DVARType='$VARType
 export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
@@ -80,7 +82,7 @@ rm ./$fileToCheck.a
 
 echo ' ' >> testing.log
 
-fileToCheck=testIntegerVector
+fileToCheck=testIntegerArray3D
 typeToCheck=Integer4
 VARType='INTEGER(KIND=4)'
 
@@ -89,7 +91,7 @@ echo ------
 echo Test : $fileToCheck.$typeToCheck >> testing.log
 echo ------ >> testing.log
 
-preproFlag='-DvectorType=vector'$typeToCheck' -DVARType='$VARType
+preproFlag='-DarrayType=array'$typeToCheck' -DVARType='$VARType
 export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
@@ -101,7 +103,7 @@ rm ./$fileToCheck.a
 
 echo ' ' >> testing.log
 
-fileToCheck=testIntegerVector
+fileToCheck=testIntegerArray3D
 typeToCheck=Integer8
 VARType='INTEGER(KIND=8)'
 
@@ -110,7 +112,7 @@ echo ------
 echo Test : $fileToCheck.$typeToCheck >> testing.log
 echo ------ >> testing.log
 
-preproFlag='-DvectorType=vector'$typeToCheck' -DVARType='$VARType
+preproFlag='-DarrayType=array'$typeToCheck' -DVARType='$VARType
 export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log

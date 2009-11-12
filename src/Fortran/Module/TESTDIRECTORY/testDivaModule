@@ -5,6 +5,7 @@ baseDir=$PWD
 echo Testing procedure in progress...
 echo ================================
 rm -f ./testing.log
+rm -f *.$OSused
 
 
 # Testing vector
@@ -16,12 +17,12 @@ rm -f ./testing.log
 # Testing matrix
 # ==============
 
-#./testDivaMatrix
+./testDivaMatrix
 
 # Testing array
 # ==============
 
-#./testDivaArray
+./testDivaArray
 
 
 cd $baseDir

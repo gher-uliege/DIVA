@@ -128,7 +128,6 @@
  value( 1 ) =  2
  value( 2 ) =  2
  value( 3 ) =  2
- ined  3
  The size of the array is :  7
     The allocated memory is :  10
     The increase allocation memory is :  5
@@ -230,7 +229,6 @@
  value( 1 ) =  2
  value( 2 ) =  2
  value( 3 ) =  2
- ined  3
  The size of the array is :  7
     The allocated memory is :  10
     The increase allocation memory is :  5
@@ -332,7 +330,6 @@
  value( -1 ) =  2
  value( 0 ) =  2
  value( 1 ) =  2
- ined  1
  The size of the array is :  7
     The allocated memory is :  10
     The increase allocation memory is :  5
@@ -350,7 +347,7 @@
  checkVectorSetToZero
  ====================
  The size of the array is :  3
-    The allocated memory is :  8
+    The allocated memory is :  3
     The increase allocation memory is :  5
     Allocation status of the vector :  T
     First positions are :  1
@@ -362,7 +359,7 @@
  checkVectorSetToValue
  =====================
  The size of the array is :  3
-    The allocated memory is :  8
+    The allocated memory is :  3
     The increase allocation memory is :  5
     Allocation status of the vector :  T
     First positions are :  1
@@ -374,7 +371,7 @@
  checkVectorSetInsertValue
  =========================
  The size of the array is :  3
-    The allocated memory is :  8
+    The allocated memory is :  3
     The increase allocation memory is :  5
     Allocation status of the vector :  T
     First positions are :  1
@@ -386,7 +383,7 @@
  checkVectorSetAddValue
  ======================
  The size of the array is :  3
-    The allocated memory is :  8
+    The allocated memory is :  3
     The increase allocation memory is :  5
     Allocation status of the vector :  T
     First positions are :  1
@@ -414,7 +411,7 @@
  checkVectorGetValues
  ====================
  The size of the array is :  3
-    The allocated memory is :  8
+    The allocated memory is :  3
     The increase allocation memory is :  5
     Allocation status of the vector :  T
     First positions are :  1
@@ -426,7 +423,7 @@
  checkVectorSetSize
  ==================
  The size of the array is :  3
-    The allocated memory is :  8
+    The allocated memory is :  3
     The increase allocation memory is :  5
     Allocation status of the vector :  T
     First positions are :  1
@@ -434,7 +431,6 @@
  value( 1 ) =  2
  value( 2 ) =  2
  value( 3 ) =  2
- ined  3
  The size of the array is :  7
     The allocated memory is :  10
     The increase allocation memory is :  5
@@ -452,7 +448,7 @@
  checkVectorSetToZero
  ====================
  The size of the array is :  3
-    The allocated memory is :  8
+    The allocated memory is :  3
     The increase allocation memory is :  5
     Allocation status of the vector :  T
     First positions are :  1
@@ -464,7 +460,7 @@
  checkVectorSetToValue
  =====================
  The size of the array is :  3
-    The allocated memory is :  8
+    The allocated memory is :  3
     The increase allocation memory is :  5
     Allocation status of the vector :  T
     First positions are :  1
@@ -476,7 +472,7 @@
  checkVectorSetInsertValue
  =========================
  The size of the array is :  3
-    The allocated memory is :  8
+    The allocated memory is :  3
     The increase allocation memory is :  5
     Allocation status of the vector :  T
     First positions are :  1
@@ -488,7 +484,7 @@
  checkVectorSetAddValue
  ======================
  The size of the array is :  3
-    The allocated memory is :  8
+    The allocated memory is :  3
     The increase allocation memory is :  5
     Allocation status of the vector :  T
     First positions are :  1
@@ -516,7 +512,7 @@
  checkVectorGetValues
  ====================
  The size of the array is :  3
-    The allocated memory is :  8
+    The allocated memory is :  3
     The increase allocation memory is :  5
     Allocation status of the vector :  T
     First positions are :  1
@@ -528,7 +524,7 @@
  checkVectorSetSize
  ==================
  The size of the array is :  3
-    The allocated memory is :  8
+    The allocated memory is :  3
     The increase allocation memory is :  5
     Allocation status of the vector :  T
     First positions are :  1
@@ -536,7 +532,6 @@
  value( 1 ) =  2
  value( 2 ) =  2
  value( 3 ) =  2
- ined  3
  The size of the array is :  7
     The allocated memory is :  10
     The increase allocation memory is :  5
@@ -554,8 +549,8 @@
  checkVectorSetToZero
  ====================
  The size of the array is :  3
-    The allocated memory is :  8
-    The increase allocation memory is :  5
+    The allocated memory is :  3
+    The increase allocation memory is :  0
     Allocation status of the vector :  T
     First positions are :  -1
     Last positions are  :  1
@@ -566,8 +561,8 @@
  checkVectorSetToValue
  =====================
  The size of the array is :  3
-    The allocated memory is :  8
-    The increase allocation memory is :  5
+    The allocated memory is :  3
+    The increase allocation memory is :  0
     Allocation status of the vector :  T
     First positions are :  -1
     Last positions are  :  1
@@ -578,8 +573,8 @@
  checkVectorSetInsertValue
  =========================
  The size of the array is :  3
-    The allocated memory is :  8
-    The increase allocation memory is :  5
+    The allocated memory is :  3
+    The increase allocation memory is :  0
     Allocation status of the vector :  T
     First positions are :  -1
     Last positions are  :  1
@@ -590,8 +585,8 @@
  checkVectorSetAddValue
  ======================
  The size of the array is :  3
-    The allocated memory is :  8
-    The increase allocation memory is :  5
+    The allocated memory is :  3
+    The increase allocation memory is :  0
     Allocation status of the vector :  T
     First positions are :  -1
     Last positions are  :  1
@@ -618,8 +613,8 @@
  checkVectorGetValues
  ====================
  The size of the array is :  3
-    The allocated memory is :  8
-    The increase allocation memory is :  5
+    The allocated memory is :  3
+    The increase allocation memory is :  0
     Allocation status of the vector :  T
     First positions are :  -1
     Last positions are  :  1
@@ -630,18 +625,17 @@
  checkVectorSetSize
  ==================
  The size of the array is :  3
-    The allocated memory is :  8
-    The increase allocation memory is :  5
+    The allocated memory is :  3
+    The increase allocation memory is :  0
     Allocation status of the vector :  T
     First positions are :  -1
     Last positions are  :  1
  value( -1 ) =  2
  value( 0 ) =  2
  value( 1 ) =  2
- ined  1
  The size of the array is :  7
-    The allocated memory is :  10
-    The increase allocation memory is :  5
+    The allocated memory is :  7
+    The increase allocation memory is :  0
     Allocation status of the vector :  T
     First positions are :  -3
     Last positions are  :  3

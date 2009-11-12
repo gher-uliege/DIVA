@@ -108,9 +108,25 @@ MODULE moduleValuesArray2DManagement
       istartX = memoryGetFirstIndexX()
       istartY = memoryGetFirstIndexY()
 
-      IF ( ( positionX < istartX ).OR.( positionY < istartY) ) THEN
+      IF (( positionX < istartX ).AND.( positionY < istartY )) THEN
          CALL memorySetFirstIndex(positionX,positionY)
          CALL memorySetSize(istartX-positionX+memoryGetSizeX(),istartY-positionY+memoryGetSizeY())
+         CALL memoryDefineLastIndex()
+         CALL memoryAllocateArray()
+         GOTO 30
+      ENDIF
+
+      IF ( positionX < istartX ) THEN
+         CALL memorySetFirstIndex(positionX,istartY)
+         CALL memorySetSize(istartX-positionX+memoryGetSizeX(),memoryGetSizeY())
+         CALL memoryDefineLastIndex()
+         CALL memoryAllocateArray()
+         GOTO 30
+      ENDIF
+
+      IF ( positionY < istartY ) THEN
+         CALL memorySetFirstIndex(istartX,positionY)
+         CALL memorySetSize(memoryGetSizeX(),istartY-positionY+memoryGetSizeY())
          CALL memoryDefineLastIndex()
          CALL memoryAllocateArray()
          GOTO 30
@@ -119,10 +135,25 @@ MODULE moduleValuesArray2DManagement
       iendX = memoryGetLastIndexX()
       iendY = memoryGetLastIndexY()
 
-      IF ( ( positionX > iendX ).OR.( positionY > iendY ) ) THEN
+      IF (( positionX > iendX ).AND.(( positionY > iendY ))) THEN
          CALL memorySetSize(positionX-iendX + memoryGetSizeX(),positionY-iendY + memoryGetSizeY())
          CALL memoryDefineLastIndex()
          CALL memoryAllocateArray()
+         GOTO 30
+      ENDIF
+
+      IF ( positionX > iendX ) THEN
+         CALL memorySetSize(positionX-iendX + memoryGetSizeX(),memoryGetSizeY())
+         CALL memoryDefineLastIndex()
+         CALL memoryAllocateArray()
+         GOTO 30
+      ENDIF
+
+      IF ( positionY > iendY ) THEN
+         CALL memorySetSize(memoryGetSizeX(),positionY-iendY + memoryGetSizeY())
+         CALL memoryDefineLastIndex()
+         CALL memoryAllocateArray()
+         GOTO 30
       ENDIF
 
 30    CONTINUE

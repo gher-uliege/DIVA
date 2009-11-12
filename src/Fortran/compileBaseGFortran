@@ -4,7 +4,7 @@
 # ======================================
 compiler=gfortran
 
-flag='-O3 -Wall -fimplicit-none -pedantic -fbounds-check '
+flag='-O3 -Wall -fimplicit-none -pedantic -fbounds-check -ffree-line-length-none -fmax-identifier-length=63 '
 
 export compiler
 export flag

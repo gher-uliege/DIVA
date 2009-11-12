@@ -39,7 +39,7 @@ MODULE moduleMemoryArray1DManagement
 
 !  General part
 !  ------------
-   PUBLIC :: memoryArrayCreate, memoryAllocateArray, memoryPrintInformation
+   PUBLIC :: memoryArrayCreate, memoryAllocateArray, memoryPrintInformation, memoryOptimize
    PRIVATE :: memoryStockIntermediateArray, memoryTransferIntermediateArrayToArray
 
 
@@ -88,7 +88,7 @@ MODULE moduleMemoryArray1DManagement
             istartX = istartTab(1)
             istartValueX = memoryGetFirstIndexX()
 
-            IF ((memoryGetSizeX() >= memoryGetAllocatedSizeX()).OR.(istartValueX<istartX)) THEN
+            IF ((memoryGetSizeX() > memoryGetAllocatedSizeX()).OR.(istartValueX<istartX)) THEN
                 newSizeX = memoryGetSizeX()
                 CALL memoryStockIntermediateArray()
                 CALL memoryDestructor()
@@ -142,8 +142,8 @@ MODULE moduleMemoryArray1DManagement
 !     - - -
       istartTab = lbound(internalWorkingValues)
       iendTab = ubound(internalWorkingValues)
-      istartX = istartTab(1)
-      iendX = iendTab(1)
+      istartX = max(istartTab(1),memoryGetFirstIndexX())
+      iendX = min(iendTab(1),memoryGetLastIndexX())
 
       DO i1 = istartX , iendX
          workingArray%values(i1) = internalWorkingValues(i1)
@@ -179,6 +179,32 @@ MODULE moduleMemoryArray1DManagement
             WRITE(stdOutput,*) 'value(',i1,') = ', memoryGetValue(i1)
          ENDDO
       END IF
+
+   END SUBROUTINE
+
+! Procedure 6 : optimisation of the allocated memory
+! --------------------------------------------------
+   SUBROUTINE memoryOptimize()
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: newSizeX, istartValueX
+
+!     Body
+!     - - -
+      SELECT CASE (memoryGetAllocationStatus())
+         CASE (.TRUE.)
+            istartValueX = memoryGetFirstIndexX()
+            newSizeX = memoryGetSizeX()
+            CALL memoryStockIntermediateArray()
+            CALL memoryDestructor()
+            CALL memorySetFirstIndex(istartValueX)
+            CALL memorySetAllocatedSize(newSizeX)
+            CALL memorySetSize(newSizeX)
+            CALL memoryDefineLastIndex()
+            CALL memoryAllocateMemory()
+            CALL memoryTransferIntermediateArrayToArray()
+      END SELECT
 
    END SUBROUTINE
 

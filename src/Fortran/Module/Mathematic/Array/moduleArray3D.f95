@@ -28,7 +28,7 @@ MODULE moduleArray3D
                            arrayGetDefaultIncreaseSizeY, arraySetIncreaseSizeY, &
                            arrayGetFirstIndexZ, arrayGetLastIndexZ, arrayGetSizeZ, arrayGetAllocatedSizeZ , arrayGetIncreaseSizeZ, &
                            arrayGetDefaultIncreaseSizeZ, arraySetIncreaseSizeZ, &
-                           arrayArrayMin, arrayArrayMax, &
+                           arrayArrayMin, arrayArrayMax, arrayOptimize, &
 #ifdef _REAL_
                            arrayArrayNorm1, arrayArrayNorm2, arrayArrayNormInfinity, arrayArrayNorm, arrayArraySqrt, &
                            arrayArraySum, arrayArrayScale, &

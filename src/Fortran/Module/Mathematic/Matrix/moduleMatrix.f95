@@ -27,7 +27,7 @@ MODULE moduleMatrix
                            arrayGetDefaultIncreaseSizeX, arraySetIncreaseSizeX, &
                            arrayGetFirstIndexY, arrayGetLastIndexY, arrayGetSizeY, arrayGetAllocatedSizeY , arrayGetIncreaseSizeY, &
                            arrayGetDefaultIncreaseSizeY, arraySetIncreaseSizeY, &
-                           arrayArrayMin, arrayArrayMax, &
+                           arrayArrayMin, arrayArrayMax, arrayOptimize, &
 #ifdef _REAL_
                            arrayArrayNorm1, arrayArrayNorm2, arrayArrayNormInfinity, arrayArrayNorm, arrayArraySqrt, &
                            arrayArraySum, arrayArrayScale, &

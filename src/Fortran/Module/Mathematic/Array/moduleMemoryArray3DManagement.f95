@@ -41,7 +41,7 @@ MODULE moduleMemoryArray3DManagement
 
 !  General part
 !  ------------
-   PUBLIC :: memoryArrayCreate, memoryPrintInformation, memoryAllocateArray
+   PUBLIC :: memoryArrayCreate, memoryPrintInformation, memoryAllocateArray, memoryOptimize
    PRIVATE :: memoryStockIntermediateArray, memoryTransferIntermediateArrayToArray
 
 
@@ -94,11 +94,11 @@ MODULE moduleMemoryArray3DManagement
             istartValueY = memoryGetFirstIndexY()
             istartValueZ = memoryGetFirstIndexZ()
 
-            IF ((memoryGetSizeX() >= memoryGetAllocatedSizeX()).OR.(istartValueX<istartX) &
+            IF ((memoryGetSizeX() > memoryGetAllocatedSizeX()).OR.(istartValueX<istartX) &
                 .OR. &
-                (memoryGetSizeY() >= memoryGetAllocatedSizeY()).OR.(istartValueY<istartY)&
+                (memoryGetSizeY() > memoryGetAllocatedSizeY()).OR.(istartValueY<istartY)&
                 .OR. &
-                (memoryGetSizeZ() >= memoryGetAllocatedSizeZ()).OR.(istartValueZ<istartZ)) THEN
+                (memoryGetSizeZ() > memoryGetAllocatedSizeZ()).OR.(istartValueZ<istartZ)) THEN
                 newSizeX = memoryGetSizeX()
                 newSizeY = memoryGetSizeY()
                 newSizeZ = memoryGetSizeZ()
@@ -163,12 +163,12 @@ MODULE moduleMemoryArray3DManagement
 !     - - -
       istartTab = lbound(internalWorkingValues)
       iendTab = ubound(internalWorkingValues)
-      istartX = istartTab(1)
-      istartY = istartTab(2)
-      istartZ = istartTab(3)
-      iendX = iendTab(1)
-      iendY = iendTab(2)
-      iendZ = iendTab(3)
+      istartX = max(istartTab(1),memoryGetFirstIndexX())
+      istartY = max(istartTab(2),memoryGetFirstIndexY())
+      istartZ = max(istartTab(3),memoryGetFirstIndexZ())
+      iendX = min(iendTab(1),memoryGetLastIndexX())
+      iendY = min(iendTab(2),memoryGetLastIndexY())
+      iendZ = min(iendTab(3),memoryGetLastIndexZ())
 
       DO i1 = istartX , iendX
        DO i2 = istartY , iendY
@@ -221,6 +221,37 @@ MODULE moduleMemoryArray3DManagement
           ENDDO
          ENDDO
       END IF
+
+   END SUBROUTINE
+
+! Procedure 6 : optimisation of the allocated memory
+! --------------------------------------------------
+   SUBROUTINE memoryOptimize()
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: newSizeX, newSizeY, newSizeZ, istartValueX, istartValueY, istartValueZ
+
+!     Body
+!     - - -
+      SELECT CASE (memoryGetAllocationStatus())
+         CASE (.TRUE.)
+            istartValueX = memoryGetFirstIndexX()
+            istartValueY = memoryGetFirstIndexY()
+            istartValueZ = memoryGetFirstIndexZ()
+
+                newSizeX = memoryGetSizeX()
+                newSizeY = memoryGetSizeY()
+                newSizeZ = memoryGetSizeZ()
+                CALL memoryStockIntermediateArray()
+                CALL memoryDestructor()
+                CALL memorySetFirstIndex(istartValueX,istartValueY,istartValueZ)
+                CALL memorySetAllocatedSize(newSizeX,newSizeY,newSizeZ)
+                CALL memorySetSize(newSizeX,newSizeY,newSizeZ)
+                CALL memoryDefineLastIndex()
+                CALL memoryAllocateMemory()
+                CALL memoryTransferIntermediateArrayToArray()
+      END SELECT
 
    END SUBROUTINE
 

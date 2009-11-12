@@ -62,7 +62,8 @@ MODULE moduleArray
 #endif
                                            memorySetIncreaseSize, memoryDestructor
 
-   USE moduleMemoryArrayNDManagement, ONLY : memoryPrintInformation, memoryArrayCreate, memoryAllocateArray
+   USE moduleMemoryArrayNDManagement, ONLY : memoryPrintInformation, memoryArrayCreate, memoryAllocateArray, &
+                                             memoryOptimize
 
    USE moduleMathematicArrayND, ONLY : mathArrayMin, mathArrayMax, &
 #ifdef _REAL_
@@ -82,7 +83,7 @@ MODULE moduleArray
              arrayArrayFastAddValue
    PUBLIC :: arraySetIncreaseSize
    PUBLIC :: arrayDestructor, arrayPrintInformation, arrayCreateBase, arrayCreateWithDimension, &
-             arrayCreateWithDimensionAndFirstIndex, arraySetSize
+             arrayCreateWithDimensionAndFirstIndex, arraySetSize, arrayOptimize
 
 #ifdef _ARRAY_1D_
    PUBLIC :: arrayGetFirstIndex,arrayGetLastIndex, arrayGetSize, arrayGetAllocatedSize , arrayGetIncreaseSize
@@ -2027,6 +2028,25 @@ MODULE moduleArray
       CALL nullifyArrayPointer()
 
   END FUNCTION
+
+! Procedure 12 : optimization of the memory
+! -----------------------------------------
+  SUBROUTINE arrayOptimize(targetArray)
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(arrayType), INTENT(IN) :: targetArray
+      CALL setWorkingArray(targetArray)
+
+!     Body
+!     - - -
+      CALL memoryOptimize()
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullifyArrayPointer()
+
+  END SUBROUTINE
 
 #undef _ARRAY_1D_DEFINITION_
 #undef _ARRAY_2D_DEFINITION_

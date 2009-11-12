@@ -58,7 +58,8 @@ MODULE array3DInterface
                            arrayGetSizeZInteger2 => arrayGetSizeZ, &
                            arrayGetAllocatedSizeZInteger2 => arrayGetAllocatedSizeZ , &
                            arrayGetIncreaseSizeZInteger2 => arrayGetIncreaseSizeZ, &
-                           arraySetIncreaseSizeZInteger2 => arraySetIncreaseSizeZ
+                           arraySetIncreaseSizeZInteger2 => arraySetIncreaseSizeZ, &
+                           arrayOptimizeInteger2 => arrayOptimize
 
    USE modulearrayInteger4, ONLY : &
                            arrayGetValuesInteger4 => arrayGetValues,  &
@@ -99,7 +100,8 @@ MODULE array3DInterface
                            arrayGetSizeZInteger4 => arrayGetSizeZ, &
                            arrayGetAllocatedSizeZInteger4 => arrayGetAllocatedSizeZ , &
                            arrayGetIncreaseSizeZInteger4 => arrayGetIncreaseSizeZ, &
-                           arraySetIncreaseSizeZInteger4 => arraySetIncreaseSizeZ
+                           arraySetIncreaseSizeZInteger4 => arraySetIncreaseSizeZ, &
+                           arrayOptimizeInteger4 => arrayOptimize
 
    USE modulearrayInteger8, ONLY : &
                            arrayGetValuesInteger8 => arrayGetValues,  &
@@ -140,7 +142,8 @@ MODULE array3DInterface
                            arrayGetSizeZInteger8 => arrayGetSizeZ, &
                            arrayGetAllocatedSizeZInteger8 => arrayGetAllocatedSizeZ , &
                            arrayGetIncreaseSizeZInteger8 => arrayGetIncreaseSizeZ, &
-                           arraySetIncreaseSizeZInteger8 => arraySetIncreaseSizeZ
+                           arraySetIncreaseSizeZInteger8 => arraySetIncreaseSizeZ, &
+                           arrayOptimizeInteger8 => arrayOptimize
 
    USE modulearrayReal4, ONLY : &
                            arrayGetValuesReal4 => arrayGetValues,  &
@@ -181,7 +184,8 @@ MODULE array3DInterface
                            arrayGetLastIndexZReal4 => arrayGetLastIndexZ, arrayGetSizeZReal4 => arrayGetSizeZ, &
                            arrayGetAllocatedSizeZReal4 => arrayGetAllocatedSizeZ , &
                            arrayGetIncreaseSizeZReal4 => arrayGetIncreaseSizeZ, &
-                           arraySetIncreaseSizeZReal4 => arraySetIncreaseSizeZ
+                           arraySetIncreaseSizeZReal4 => arraySetIncreaseSizeZ, &
+                           arrayOptimizeReal4 => arrayOptimize
 
    USE modulearrayReal8, ONLY : &
                            arrayGetValuesReal8 => arrayGetValues,  arrayGetValueReal8 => arrayGetValue, &
@@ -221,12 +225,13 @@ MODULE array3DInterface
                            arrayGetSizeZReal8 => arrayGetSizeZ, arrayGetAllocatedSizeZReal8 => arrayGetAllocatedSizeZ , &
                            arrayGetIncreaseSizeZReal8 => arrayGetIncreaseSizeZ, &
                            arrayGetDefaultIncreaseSizeZReal8 => arrayGetDefaultIncreaseSizeZ, &
-                           arraySetIncreaseSizeZReal8 => arraySetIncreaseSizeZ
+                           arraySetIncreaseSizeZReal8 => arraySetIncreaseSizeZ, &
+                           arrayOptimizeReal8 => arrayOptimize
 
 
 ! Interface
 ! =========
-   INTERFACE array3DCreate
+   INTERFACE arrayCreate
       MODULE PROCEDURE arrayCreateBaseReal8, arrayCreateWithDimensionReal8, arrayCreateWithDimensionAndFirstIndexReal8, &
                        arrayCreateBaseReal4, arrayCreateWithDimensionReal4, arrayCreateWithDimensionAndFirstIndexReal4, &
                    arrayCreateBaseInteger2, arrayCreateWithDimensionInteger2, arrayCreateWithDimensionAndFirstIndexInteger2, &
@@ -234,219 +239,229 @@ MODULE array3DInterface
                    arrayCreateBaseInteger8, arrayCreateWithDimensionInteger8, arrayCreateWithDimensionAndFirstIndexInteger8
    END INTERFACE
 
-   INTERFACE array3DPrint
+   INTERFACE arrayPrint
       MODULE PROCEDURE arrayPrintInformationReal8, arrayPrintInformationReal4, &
                        arrayPrintInformationInteger2, arrayPrintInformationInteger4, arrayPrintInformationInteger8
    END INTERFACE
 
-   INTERFACE array3DDestroy
+   INTERFACE arrayDestroy
       MODULE PROCEDURE arrayDestructorReal8, arrayDestructorReal4, &
                        arrayDestructorInteger2, arrayDestructorInteger4, arrayDestructorInteger8
    END INTERFACE
 
-   INTERFACE array3DSetSize
+   INTERFACE arraySetSize
       MODULE PROCEDURE arraySetSizeReal8, arraySetSizeReal4, &
                        arraySetSizeInteger2, arraySetSizeInteger4, arraySetSizeInteger8
    END INTERFACE
 
-   INTERFACE array3DGetSizeX
+   INTERFACE arrayGetSizeX
       MODULE PROCEDURE arrayGetSizeXReal8, arrayGetSizeXReal4,&
                        arrayGetSizeXInteger2, arrayGetSizeXInteger4, arrayGetSizeXInteger8
    END INTERFACE
 
-   INTERFACE array3DGetSizeY
+   INTERFACE arrayGetSizeY
       MODULE PROCEDURE arrayGetSizeYReal8, arrayGetSizeYReal4,&
                        arrayGetSizeYInteger2, arrayGetSizeYInteger4, arrayGetSizeYInteger8
    END INTERFACE
 
-   INTERFACE array3DGetSizeZ
+   INTERFACE arrayGetSizeZ
       MODULE PROCEDURE arrayGetSizeZReal8, arrayGetSizeZReal4,&
                        arrayGetSizeZInteger2, arrayGetSizeZInteger4, arrayGetSizeZInteger8
    END INTERFACE
 
-   INTERFACE array3DSetToZero
+   INTERFACE arraySetToZero
       MODULE PROCEDURE arrayArraySetToZeroReal8, arrayArraySetToZeroReal4, &
                        arrayArraySetToZeroInteger2, arrayArraySetToZeroInteger4, arrayArraySetToZeroInteger8
    END INTERFACE
 
-   INTERFACE array3DSetToValue
+   INTERFACE arraySetToValue
       MODULE PROCEDURE arrayArraySetToValueReal8, arrayArraySetToValueReal4, &
                        arrayArraySetToValueInteger2, arrayArraySetToValueInteger4, arrayArraySetToValueInteger8
    END INTERFACE
 
-   INTERFACE array3DNorm1
+   INTERFACE arrayNorm1
       MODULE PROCEDURE arrayArrayNorm1Real8, arrayArrayNorm1Real4
    END INTERFACE
 
-   INTERFACE array3DNorm2
+   INTERFACE arrayNorm2
       MODULE PROCEDURE arrayArrayNorm2Real8, arrayArrayNorm2Real4
    END INTERFACE
 
-   INTERFACE array3DNormInfinity
+   INTERFACE arrayNormInfinity
       MODULE PROCEDURE  arrayArrayNormInfinityReal8, arrayArrayNormInfinityReal4
    END INTERFACE
 
-   INTERFACE array3DSqrt
+   INTERFACE arraySqrt
       MODULE PROCEDURE arrayArraySqrtReal8, arrayArraySqrtReal4
    END INTERFACE
 
-   INTERFACE array3DSum
+   INTERFACE arraySum
       MODULE PROCEDURE arrayArraySumReal8, arrayArraySumReal4
    END INTERFACE
 
-   INTERFACE array3DMin
+   INTERFACE arrayMin
       MODULE PROCEDURE arrayArrayMinReal8, arrayArrayMinReal4, &
                        arrayArrayMinInteger2, arrayArrayMinInteger4, arrayArrayMinInteger8
    END INTERFACE
 
-   INTERFACE array3DMax
+   INTERFACE arrayMax
       MODULE PROCEDURE arrayArrayMaxReal8, arrayArrayMaxReal4, &
                        arrayArrayMaxInteger2, arrayArrayMaxInteger4, arrayArrayMaxInteger8
    END INTERFACE
 
-   INTERFACE array3DAbsMin
+   INTERFACE arrayAbsMin
       MODULE PROCEDURE arrayArrayAbsMinReal8, arrayArrayAbsMinReal4, &
                        arrayArrayAbsMinInteger2, arrayArrayAbsMinInteger4, arrayArrayAbsMinInteger8
    END INTERFACE
 
-   INTERFACE array3DAbsMax
+   INTERFACE arrayAbsMax
       MODULE PROCEDURE arrayArrayAbsMaxReal8, arrayArrayAbsMaxReal4, &
                        arrayArrayAbsMaxInteger2, arrayArrayAbsMaxInteger4, arrayArrayAbsMaxInteger8
    END INTERFACE
 
-   INTERFACE array3DInsertValue
+   INTERFACE arrayInsertValue
       MODULE PROCEDURE arrayArrayInsertValueReal8, arrayArrayInsertValueReal4, &
                        arrayArrayInsertValueInteger2, arrayArrayInsertValueInteger4, arrayArrayInsertValueInteger8
    END INTERFACE
 
-   INTERFACE array3DAddValue
+   INTERFACE arrayAddValue
       MODULE PROCEDURE arrayArrayAddValueReal8, arrayArrayAddValueReal4, &
                        arrayArrayAddValueInteger2, arrayArrayAddValueInteger4, arrayArrayAddValueInteger8
    END INTERFACE
 
-   INTERFACE array3DFastInsertValue
+   INTERFACE arrayFastInsertValue
       MODULE PROCEDURE arrayArrayFastInsertValueReal8, arrayArrayFastInsertValueReal4, &
                        arrayArrayFastInsertValueInteger2, arrayArrayFastInsertValueInteger4, arrayArrayFastInsertValueInteger8
    END INTERFACE
 
-   INTERFACE array3DFastAddValue
+   INTERFACE arrayFastAddValue
       MODULE PROCEDURE arrayArrayFastAddValueReal8, arrayArrayFastAddValueReal4, &
                        arrayArrayFastAddValueInteger2, arrayArrayFastAddValueInteger4, arrayArrayFastAddValueInteger8
    END INTERFACE
 
-   INTERFACE array3DScale
+   INTERFACE arrayScale
       MODULE PROCEDURE arrayArrayScaleReal8, arrayArrayScaleReal4
    END INTERFACE
 
-   INTERFACE array3DGetValue
+   INTERFACE arrayGetValue
       MODULE PROCEDURE arrayGetValueReal8, arrayGetValueReal4, &
                        arrayGetValueInteger2, arrayGetValueInteger4, arrayGetValueInteger8
    END INTERFACE
 
-   INTERFACE array3DNorm
+   INTERFACE arrayNorm
       MODULE PROCEDURE arrayArrayNormReal8, arrayArrayNormReal4
    END INTERFACE
 
-   INTERFACE array3DGetValues
+   INTERFACE arrayGetValues
       MODULE PROCEDURE arrayGetValuesReal8, arrayGetValuesReal4, &
                        arrayGetValuesInteger2, arrayGetValuesInteger4, arrayGetValuesInteger8
    END INTERFACE
 
-   INTERFACE array3DGetFirstIndexX
+   INTERFACE arrayGetFirstIndexX
       MODULE PROCEDURE arrayGetFirstIndexXReal8, arrayGetFirstIndexXReal4, &
                        arrayGetFirstIndexXInteger2, arrayGetFirstIndexXInteger4, arrayGetFirstIndexXInteger8
    END INTERFACE
 
-   INTERFACE array3DGetFirstIndexY
+   INTERFACE arrayGetFirstIndexY
       MODULE PROCEDURE arrayGetFirstIndexYReal8, arrayGetFirstIndexYReal4, &
                        arrayGetFirstIndexYInteger2, arrayGetFirstIndexYInteger4, arrayGetFirstIndexYInteger8
    END INTERFACE
 
-   INTERFACE array3DGetFirstIndexZ
+   INTERFACE arrayGetFirstIndexZ
       MODULE PROCEDURE arrayGetFirstIndexZReal8, arrayGetFirstIndexZReal4, &
                        arrayGetFirstIndexZInteger2, arrayGetFirstIndexZInteger4, arrayGetFirstIndexZInteger8
    END INTERFACE
 
-   INTERFACE array3DGetLastIndexX
+   INTERFACE arrayGetLastIndexX
       MODULE PROCEDURE arrayGetLastIndexXReal8, arrayGetLastIndexXReal4, &
                        arrayGetLastIndexXInteger2, arrayGetLastIndexXInteger4, arrayGetLastIndexXInteger8
    END INTERFACE
 
-   INTERFACE array3DGetLastIndexY
+   INTERFACE arrayGetLastIndexY
       MODULE PROCEDURE arrayGetLastIndexYReal8, arrayGetLastIndexYReal4, &
                        arrayGetLastIndexYInteger2, arrayGetLastIndexYInteger4, arrayGetLastIndexYInteger8
    END INTERFACE
 
-   INTERFACE array3DGetLastIndexZ
+   INTERFACE arrayGetLastIndexZ
       MODULE PROCEDURE arrayGetLastIndexZReal8, arrayGetLastIndexZReal4, &
                        arrayGetLastIndexZInteger2, arrayGetLastIndexZInteger4, arrayGetLastIndexZInteger8
    END INTERFACE
 
-   INTERFACE array3DGetAllocationStatus
+   INTERFACE arrayGetAllocationStatus
       MODULE PROCEDURE arrayGetAllocationStatusReal8, arrayGetAllocationStatusReal4, &
                        arrayGetAllocationStatusInteger2, arrayGetAllocationStatusInteger4, arrayGetAllocationStatusInteger8
    END INTERFACE
 
-   INTERFACE array3DGetAllocatedSizeX
+   INTERFACE arrayGetAllocatedSizeX
       MODULE PROCEDURE arrayGetAllocatedSizeXReal8, arrayGetAllocatedSizeXReal4, &
                        arrayGetAllocatedSizeXInteger2, arrayGetAllocatedSizeXInteger4, arrayGetAllocatedSizeXInteger8
    END INTERFACE
 
-   INTERFACE array3DGetAllocatedSizeY
+   INTERFACE arrayGetAllocatedSizeY
       MODULE PROCEDURE arrayGetAllocatedSizeYReal8, arrayGetAllocatedSizeYReal4, &
                        arrayGetAllocatedSizeYInteger2, arrayGetAllocatedSizeYInteger4, arrayGetAllocatedSizeYInteger8
    END INTERFACE
 
-   INTERFACE array3DGetAllocatedSizeZ
+   INTERFACE arrayGetAllocatedSizeZ
       MODULE PROCEDURE arrayGetAllocatedSizeZReal8, arrayGetAllocatedSizeZReal4, &
                        arrayGetAllocatedSizeZInteger2, arrayGetAllocatedSizeZInteger4, arrayGetAllocatedSizeZInteger8
    END INTERFACE
 
-   INTERFACE array3DGetPointerOnValue
+   INTERFACE arrayGetPointerOnValue
       MODULE PROCEDURE arrayGetPointerOnValueReal8, arrayGetPointerOnValueReal4, &
                        arrayGetPointerOnValueInteger2, arrayGetPointerOnValueInteger4, arrayGetPointerOnValueInteger8
    END INTERFACE
 
-   INTERFACE array3DGetDefaultIncreaseSizeX
+   INTERFACE arrayGetDefaultIncreaseSizeX
       MODULE PROCEDURE arrayGetDefaultIncreaseSizeXReal8
    END INTERFACE
 
-   INTERFACE array3DGetIncreaseSizeX
+   INTERFACE arrayGetIncreaseSizeX
       MODULE PROCEDURE arrayGetIncreaseSizeXReal8, arrayGetIncreaseSizeXReal4, &
                        arrayGetIncreaseSizeXInteger2, arrayGetIncreaseSizeXInteger4, arrayGetIncreaseSizeXInteger8
    END INTERFACE
 
-   INTERFACE array3DSetIncreaseSizeX
+   INTERFACE arraySetIncreaseSizeX
       MODULE PROCEDURE arraySetIncreaseSizeXReal8, arraySetIncreaseSizeXReal4, &
                        arraySetIncreaseSizeXInteger2, arraySetIncreaseSizeXInteger4, arraySetIncreaseSizeXInteger8
    END INTERFACE
 
-   INTERFACE array3DGetDefaultIncreaseSizeY
+   INTERFACE arrayGetDefaultIncreaseSizeY
       MODULE PROCEDURE arrayGetDefaultIncreaseSizeYReal8
    END INTERFACE
 
-   INTERFACE array3DGetIncreaseSizeY
+   INTERFACE arrayGetIncreaseSizeY
       MODULE PROCEDURE arrayGetIncreaseSizeYReal8, arrayGetIncreaseSizeYReal4, &
                        arrayGetIncreaseSizeYInteger2, arrayGetIncreaseSizeYInteger4, arrayGetIncreaseSizeYInteger8
    END INTERFACE
 
-   INTERFACE array3DSetIncreaseSizeY
+   INTERFACE arraySetIncreaseSizeY
       MODULE PROCEDURE arraySetIncreaseSizeYReal8, arraySetIncreaseSizeYReal4, &
                        arraySetIncreaseSizeYInteger2, arraySetIncreaseSizeYInteger4, arraySetIncreaseSizeYInteger8
    END INTERFACE
 
-   INTERFACE array3DGetDefaultIncreaseSizeZ
+   INTERFACE arrayGetDefaultIncreaseSizeZ
       MODULE PROCEDURE arrayGetDefaultIncreaseSizeZReal8
    END INTERFACE
 
-   INTERFACE array3DGetIncreaseSizeZ
+   INTERFACE arrayGetIncreaseSizeZ
       MODULE PROCEDURE arrayGetIncreaseSizeZReal8, arrayGetIncreaseSizeZReal4, &
                        arrayGetIncreaseSizeZInteger2, arrayGetIncreaseSizeZInteger4, arrayGetIncreaseSizeZInteger8
    END INTERFACE
 
-   INTERFACE array3DSetIncreaseSizeZ
+   INTERFACE arraySetIncreaseSizeZ
       MODULE PROCEDURE arraySetIncreaseSizeZReal8, arraySetIncreaseSizeZReal4, &
                        arraySetIncreaseSizeZInteger2, arraySetIncreaseSizeZInteger4, arraySetIncreaseSizeZInteger8
+   END INTERFACE
+
+   INTERFACE arraySetIncreaseSize
+      MODULE PROCEDURE arraySetIncreaseSizeReal8, arraySetIncreaseSizeReal4, &
+                       arraySetIncreaseSizeInteger2, arraySetIncreaseSizeInteger4, arraySetIncreaseSizeInteger8
+   END INTERFACE
+
+   INTERFACE arrayOptimize
+      MODULE PROCEDURE arrayOptimizeReal8, arrayOptimizeReal4, &
+                       arrayOptimizeInteger2, arrayOptimizeInteger4, arrayOptimizeInteger8
    END INTERFACE
 
 END MODULE array3DInterface

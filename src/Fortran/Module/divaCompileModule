@@ -11,7 +11,7 @@ echo ' '
 
 baseDir=$PWD
 
-rm $divaModuleLib/*
+rm -f $divaModuleLib/*
 
 # Compilation of Mathematic module
 # =================================
