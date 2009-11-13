@@ -13,6 +13,11 @@ divaDir=$PWD
 divaModuleLib=$divaDir/Module/lib
 OSused=`uname -s`
 
+if [ "$OSused" != Linux ]
+then
+OSused=cygwin
+fi
+
 export OSused
 
 export divaModuleLib
