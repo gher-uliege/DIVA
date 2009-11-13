@@ -34,6 +34,7 @@ MODULE moduleArray
 #ifdef _REAL_
    USE moduleNorm
 #endif
+   USE moduleInsertValueMethod
 
    USE moduleWorkingArray, ONLY : setWorkingArray, nullifyArrayPointer
    USE moduleValuesArrayManagement, ONLY : memoryGetValues, memoryGetValue, memoryGetPointerOnValue
@@ -1409,6 +1410,122 @@ MODULE moduleArray
   END SUBROUTINE
 #endif
 
+! Procedure 6 : global procedure to insert the value in the array at specified position
+! --------------------------------------------------------------------------------------
+!    Procedure A : for 1D array
+!    ----------------------------
+#ifdef _ARRAY_1D_
+  SUBROUTINE arrayArraySetValue(targetArray,i1,val,modeType)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: i1
+      TYPE(insertValueMethod), INTENT(IN) :: modeType
+      VARType :: val
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(arrayType), INTENT(IN) :: targetArray
+      CALL setWorkingArray(targetArray)
+
+!     Body
+!     - - -
+      SELECT CASE (modeType%insertValueMode)
+         CASE (INSERT_VALUE%insertValueMode)
+             CALL memoryArrayInsertValue(i1,val)
+         CASE (ADD_VALUE%insertValueMode)
+             CALL memoryArrayAddValue(i1,val)
+         CASE (FAST_INSERT_VALUE%insertValueMode)
+             CALL memoryArrayFastInsertValue(i1,val)
+         CASE (FAST_ADD_VALUE%insertValueMode)
+             CALL memoryArrayFastAddValue(i1,val)
+         CASE DEFAULT
+             CALL memoryArrayInsertValue(i1,val)
+      END SELECT
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullifyArrayPointer()
+
+  END SUBROUTINE
+#endif
+
+!    Procedure B : for 2D array
+!    ----------------------------
+#ifdef _ARRAY_2D_
+  SUBROUTINE arrayArraySetValue(targetArray,i1,i2,val,modeType)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: i1, i2
+      TYPE(insertValueMethod), INTENT(IN) :: modeType
+      VARType :: val
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(arrayType), INTENT(IN) :: targetArray
+      CALL setWorkingArray(targetArray)
+
+!     Body
+!     - - -
+      SELECT CASE (modeType%insertValueMode)
+         CASE (INSERT_VALUE%insertValueMode)
+             CALL memoryArrayInsertValue(i1,i2,val)
+         CASE (ADD_VALUE%insertValueMode)
+             CALL memoryArrayAddValue(i1,i2,val)
+         CASE (FAST_INSERT_VALUE%insertValueMode)
+             CALL memoryArrayFastInsertValue(i1,i2,val)
+         CASE (FAST_ADD_VALUE%insertValueMode)
+             CALL memoryArrayFastAddValue(i1,i2,val)
+         CASE DEFAULT
+             CALL memoryArrayInsertValue(i1,i2,val)
+      END SELECT
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullifyArrayPointer()
+
+  END SUBROUTINE
+#endif
+
+!    Procedure C : for 3D array
+!    ----------------------------
+#ifdef _ARRAY_3D_
+  SUBROUTINE arrayArraySetValue(targetArray,i1,i2,i3,val,modeType)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: i1, i2, i3
+      TYPE(insertValueMethod), INTENT(IN) :: modeType
+      VARType :: val
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(arrayType), INTENT(IN) :: targetArray
+      CALL setWorkingArray(targetArray)
+
+!     Body
+!     - - -
+      SELECT CASE (modeType%insertValueMode)
+         CASE (INSERT_VALUE%insertValueMode)
+             CALL memoryArrayInsertValue(i1,i2,i3,val)
+         CASE (ADD_VALUE%insertValueMode)
+             CALL memoryArrayAddValue(i1,i2,i3,val)
+         CASE (FAST_INSERT_VALUE%insertValueMode)
+             CALL memoryArrayFastInsertValue(i1,i2,i3,val)
+         CASE (FAST_ADD_VALUE%insertValueMode)
+             CALL memoryArrayFastAddValue(i1,i2,i3,val)
+         CASE DEFAULT
+             CALL memoryArrayInsertValue(i1,i2,i3,val)
+      END SELECT
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullifyArrayPointer()
+
+  END SUBROUTINE
+#endif
+
 ! =============================================================
 ! ===            Internal procedure ("PUBLIC")  : Others    ===
 ! =============================================================
@@ -1920,11 +2037,11 @@ MODULE moduleArray
 !     Body
 !     - - -
       SELECT CASE (normSelection%normTypeValue)
-         CASE (normL1%normTypeValue)
+         CASE (NORM_L1%normTypeValue)
             val = mathArrayNorm1()
-         CASE (normL2%normTypeValue)
+         CASE (NORM_L2%normTypeValue)
             val = mathArrayNorm2()
-         CASE (normInfinity%normTypeValue)
+         CASE (NORM_INF%normTypeValue)
             val = mathArrayNormInfinity()
          CASE DEFAULT
             val = mathArrayNorm2()

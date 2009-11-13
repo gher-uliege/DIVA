@@ -18,9 +18,9 @@ MODULE moduleNorm
    INCLUDE 'norm.h'
 #endif
 
-   TYPE(normType), PUBLIC, PARAMETER :: normL1 = normType(1)
-   TYPE(normType), PUBLIC, PARAMETER :: normL2 = normType(2)
-   TYPE(normType), PUBLIC, PARAMETER :: normInfinity = normType(3)
+   TYPE(normType), PUBLIC, PARAMETER :: NORM_L1 = normType(1)
+   TYPE(normType), PUBLIC, PARAMETER :: NORM_L2 = normType(2)
+   TYPE(normType), PUBLIC, PARAMETER :: NORM_INF = normType(3)
 
 ! Interface
 ! =========

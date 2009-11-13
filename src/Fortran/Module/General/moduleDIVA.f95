@@ -15,6 +15,8 @@ MODULE moduleDIVA
 ! ============
    USE logicalUnitManager, initialiseLogicalUnitManager => initialiseDefault, deleteLogicalUnitDataBase => destructor
    USE moduleChrono, ONLY : initialiseChrono => initialise
+   USE moduleNorm
+   USE moduleInsertValueMethod
 
 ! Procedures status
 ! =================

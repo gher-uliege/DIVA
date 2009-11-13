@@ -11,7 +11,6 @@ PROGRAM testMatrix
 ! Module to use
 ! =============
  USE moduleDIVA
- USE moduleNorm
  USE matrixInterface
 
 ! Declaration
@@ -250,7 +249,9 @@ INTEGER, PARAMETER :: dimY = 3
    TYPE(matrixType), INTENT(INOUT) :: array1
    INTEGER :: istartX, iendX, i1
    INTEGER :: istartY, iendY, i2
-   VARType, PARAMETER :: val = 2
+   VARType, PARAMETER :: val001 = 0
+   VARType, PARAMETER :: val002 = 1
+   VARType, PARAMETER :: val003 = 1
    VARType, PARAMETER :: val2 = -3
    VARType, PARAMETER :: val3 = 4
    VARType, PARAMETER :: val4 = 5
@@ -267,12 +268,19 @@ INTEGER, PARAMETER :: dimY = 3
   istartY = matrixGetFirstIndexY(array1)
   iendY = matrixGetLastIndexY(array1)
 
-   CALL matrixSetToValue(array1,val)
+   DO i1 = istartX , iendX
+    DO i2 = istartY , iendY
+       CALL matrixSetValue(array1,i1,i2,val001,FAST_INSERT_VALUE)
+       CALL matrixSetValue(array1,i1,i2,val002,FAST_ADD_VALUE)
+       CALL matrixSetValue(array1,i1,i2,val003,ADD_VALUE)
+    ENDDO
+   ENDDO
+
    CALL matrixPrint(array1)
 
    DO i1 = istartX - 2 , istartX - 1
     DO i2 = istartY - 2 , istartY - 1
-       CALL matrixInsertValue(array1,i1,i2,val2)
+       CALL matrixSetValue(array1,i1,i2,val2,INSERT_VALUE)
     ENDDO
    ENDDO
 

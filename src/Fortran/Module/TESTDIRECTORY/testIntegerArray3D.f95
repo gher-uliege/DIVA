@@ -11,7 +11,6 @@ PROGRAM testArray3D
 ! Module to use
 ! =============
  USE moduleDIVA
- USE moduleNorm
  USE array3DInterface
 
 ! Declaration
@@ -240,7 +239,7 @@ INTEGER, PARAMETER :: dimZ = 3
 
   DO i1 = istartX, iendX
    DO i2 = istartY, iendY
-    DO i3 = istartY, iendY
+    DO i3 = istartZ, iendZ
      ptr(i1,i2,i3) = 23
     ENDDO
    ENDDO
@@ -258,7 +257,9 @@ INTEGER, PARAMETER :: dimZ = 3
    INTEGER :: istartX, iendX, i1
    INTEGER :: istartY, iendY, i2
    INTEGER :: istartZ, iendZ, i3
-   VARType, PARAMETER :: val1 = 23
+   VARType, PARAMETER :: val001 = 10
+   VARType, PARAMETER :: val002 = 10
+   VARType, PARAMETER :: val003 = 3
    VARType, PARAMETER :: val2 = -33
    VARType, PARAMETER :: val3 = 43
    VARType, PARAMETER :: val4 = 53
@@ -296,13 +297,22 @@ INTEGER, PARAMETER :: dimZ = 3
   istartZ = arrayGetFirstIndexZ(array1)
   iendZ = arrayGetLastIndexZ(array1)
 
-   CALL arraySetToValue(array1,val1)
+   DO i1 = istartX , iendX
+    DO i2 = istartY , iendY
+     DO i3 = istartZ , iendZ
+       CALL arraySetValue(array1,i1,i2,i3,val001,FAST_INSERT_VALUE)
+       CALL arraySetValue(array1,i1,i2,i3,val002,FAST_ADD_VALUE)
+       CALL arraySetValue(array1,i1,i2,i3,val003,ADD_VALUE)
+     ENDDO
+    ENDDO
+   ENDDO
+
    CALL arrayPrint(array1)
 
    DO i1 = istartX - 2 , istartX - 1
     DO i2 = istartY - 2 , istartY - 1
      DO i3 = istartZ - 2 , istartZ - 1
-       CALL arrayInsertValue(array1,i1,i2,i3,val2)
+       CALL arraySetValue(array1,i1,i2,i3,val2,INSERT_VALUE)
      ENDDO
     ENDDO
    ENDDO

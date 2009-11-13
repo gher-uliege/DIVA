@@ -59,7 +59,7 @@ MODULE array3DInterface
                            arrayGetAllocatedSizeZInteger2 => arrayGetAllocatedSizeZ , &
                            arrayGetIncreaseSizeZInteger2 => arrayGetIncreaseSizeZ, &
                            arraySetIncreaseSizeZInteger2 => arraySetIncreaseSizeZ, &
-                           arrayOptimizeInteger2 => arrayOptimize
+                           arrayOptimizeInteger2 => arrayOptimize, arrayArraySetValueInteger2 => arrayArraySetValue
 
    USE modulearrayInteger4, ONLY : &
                            arrayGetValuesInteger4 => arrayGetValues,  &
@@ -101,7 +101,7 @@ MODULE array3DInterface
                            arrayGetAllocatedSizeZInteger4 => arrayGetAllocatedSizeZ , &
                            arrayGetIncreaseSizeZInteger4 => arrayGetIncreaseSizeZ, &
                            arraySetIncreaseSizeZInteger4 => arraySetIncreaseSizeZ, &
-                           arrayOptimizeInteger4 => arrayOptimize
+                           arrayOptimizeInteger4 => arrayOptimize, arrayArraySetValueInteger4 => arrayArraySetValue
 
    USE modulearrayInteger8, ONLY : &
                            arrayGetValuesInteger8 => arrayGetValues,  &
@@ -143,7 +143,7 @@ MODULE array3DInterface
                            arrayGetAllocatedSizeZInteger8 => arrayGetAllocatedSizeZ , &
                            arrayGetIncreaseSizeZInteger8 => arrayGetIncreaseSizeZ, &
                            arraySetIncreaseSizeZInteger8 => arraySetIncreaseSizeZ, &
-                           arrayOptimizeInteger8 => arrayOptimize
+                           arrayOptimizeInteger8 => arrayOptimize, arrayArraySetValueInteger8 => arrayArraySetValue
 
    USE modulearrayReal4, ONLY : &
                            arrayGetValuesReal4 => arrayGetValues,  &
@@ -185,7 +185,7 @@ MODULE array3DInterface
                            arrayGetAllocatedSizeZReal4 => arrayGetAllocatedSizeZ , &
                            arrayGetIncreaseSizeZReal4 => arrayGetIncreaseSizeZ, &
                            arraySetIncreaseSizeZReal4 => arraySetIncreaseSizeZ, &
-                           arrayOptimizeReal4 => arrayOptimize
+                           arrayOptimizeReal4 => arrayOptimize, arrayArraySetValueReal4 => arrayArraySetValue
 
    USE modulearrayReal8, ONLY : &
                            arrayGetValuesReal8 => arrayGetValues,  arrayGetValueReal8 => arrayGetValue, &
@@ -226,7 +226,7 @@ MODULE array3DInterface
                            arrayGetIncreaseSizeZReal8 => arrayGetIncreaseSizeZ, &
                            arrayGetDefaultIncreaseSizeZReal8 => arrayGetDefaultIncreaseSizeZ, &
                            arraySetIncreaseSizeZReal8 => arraySetIncreaseSizeZ, &
-                           arrayOptimizeReal8 => arrayOptimize
+                           arrayOptimizeReal8 => arrayOptimize, arrayArraySetValueReal8 => arrayArraySetValue
 
 
 ! Interface
@@ -462,6 +462,11 @@ MODULE array3DInterface
    INTERFACE arrayOptimize
       MODULE PROCEDURE arrayOptimizeReal8, arrayOptimizeReal4, &
                        arrayOptimizeInteger2, arrayOptimizeInteger4, arrayOptimizeInteger8
+   END INTERFACE
+
+   INTERFACE arraySetValue
+      MODULE PROCEDURE arrayArraySetValueReal8, arrayArraySetValueReal4, &
+                       arrayArraySetValueInteger2,arrayArraySetValueInteger4, arrayArraySetValueInteger8
    END INTERFACE
 
 END MODULE array3DInterface

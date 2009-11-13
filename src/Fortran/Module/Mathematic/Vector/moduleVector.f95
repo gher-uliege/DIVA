@@ -29,7 +29,7 @@ MODULE moduleVector
                            arrayGetDefaultIncreaseSize, &
                            arrayGetFirstIndexX, arrayGetLastIndexX, arrayGetSizeX, arrayGetAllocatedSizeX , arrayGetIncreaseSizeX, &
                            arrayGetDefaultIncreaseSizeX, arraySetIncreaseSizeX, &
-                           arrayArrayMin, arrayArrayMax, arrayOptimize, &
+                           arrayArrayMin, arrayArrayMax, arrayOptimize, arrayArraySetValue, &
 #ifdef _REAL_
                            arrayArrayNorm1, arrayArrayNorm2, arrayArrayNormInfinity, arrayArrayNorm, arrayArraySqrt, &
                            arrayArraySum, arrayArrayScale, &

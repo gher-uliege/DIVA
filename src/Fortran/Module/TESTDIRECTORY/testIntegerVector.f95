@@ -11,7 +11,6 @@ PROGRAM testVector
 ! Module to use
 ! =============
  USE moduleDIVA
- USE moduleNorm
  USE vectorInterface
 
 ! Declaration
@@ -274,7 +273,9 @@ INTEGER, PARAMETER :: dim = 3
 !  -----------
    TYPE(vectorType), INTENT(INOUT) :: vector1
    INTEGER :: istart, iend, i1
-   VARType, PARAMETER :: val = 2
+   VARType, PARAMETER :: val = 0
+   VARType, PARAMETER :: val1 = 1
+   VARType, PARAMETER :: val11 = 1
    VARType, PARAMETER :: val2 = -3
    VARType, PARAMETER :: val3 = 4
 
@@ -283,15 +284,20 @@ INTEGER, PARAMETER :: dim = 3
   istart = vectorGetFirstIndex(vector1)
   iend = vectorGetLastIndex(vector1)
 
-   CALL vectorSetToValue(vector1,val)
+   DO i1 = istart, iend
+       CALL vectorSetValue(vector1,i1,val,FAST_INSERT_VALUE)
+       CALL vectorSetValue(vector1,i1,val1,FAST_ADD_VALUE)
+       CALL vectorSetValue(vector1,i1,val11,ADD_VALUE)
+   ENDDO
+
    CALL vectorPrint(vector1)
 
    DO i1 = istart - 2 , istart - 1
-       CALL vectorInsertValue(vector1,i1,val2)
+       CALL vectorSetValue(vector1,i1,val2,INSERT_VALUE)
    ENDDO
 
    DO i1 = iend + 1  , iend + 2
-       CALL vectorInsertValue(vector1,i1,val3)
+       CALL vectorSetValue(vector1,i1,val3,INSERT_VALUE)
    ENDDO
 
    CALL vectorPrint(vector1)
