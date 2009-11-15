@@ -20,8 +20,7 @@ MODULE array3DInterface
    USE modulearrayReal8Definition
 
    USE modulearrayInteger2, ONLY : &
-                           arrayGetValuesInteger2 => arrayGetValues,  &
-                           arrayGetValueInteger2 => arrayGetValue, &
+                           arrayGetValuesInteger2 => arrayGetValues,  arrayGetValueInteger2 => arrayGetValue, &
                            arrayGetAllocationStatusInteger2 => arrayGetAllocationStatus, &
                            arrayGetPointerOnValueInteger2 => arrayGetPointerOnValue, &
                            arrayArraySetToZeroInteger2 => arrayArraySetToZero, &
@@ -62,8 +61,7 @@ MODULE array3DInterface
                            arrayOptimizeInteger2 => arrayOptimize, arrayArraySetValueInteger2 => arrayArraySetValue
 
    USE modulearrayInteger4, ONLY : &
-                           arrayGetValuesInteger4 => arrayGetValues,  &
-                           arrayGetValueInteger4 => arrayGetValue, &
+                           arrayGetValuesInteger4 => arrayGetValues,  arrayGetValueInteger4 => arrayGetValue, &
                            arrayGetAllocationStatusInteger4 => arrayGetAllocationStatus, &
                            arrayGetPointerOnValueInteger4 => arrayGetPointerOnValue, &
                            arrayArraySetToZeroInteger4 => arrayArraySetToZero, &
@@ -104,8 +102,7 @@ MODULE array3DInterface
                            arrayOptimizeInteger4 => arrayOptimize, arrayArraySetValueInteger4 => arrayArraySetValue
 
    USE modulearrayInteger8, ONLY : &
-                           arrayGetValuesInteger8 => arrayGetValues,  &
-                           arrayGetValueInteger8 => arrayGetValue, &
+                           arrayGetValuesInteger8 => arrayGetValues,  arrayGetValueInteger8 => arrayGetValue, &
                            arrayGetAllocationStatusInteger8 => arrayGetAllocationStatus, &
                            arrayGetPointerOnValueInteger8 => arrayGetPointerOnValue, &
                            arrayArraySetToZeroInteger8 => arrayArraySetToZero, &
@@ -146,8 +143,7 @@ MODULE array3DInterface
                            arrayOptimizeInteger8 => arrayOptimize, arrayArraySetValueInteger8 => arrayArraySetValue
 
    USE modulearrayReal4, ONLY : &
-                           arrayGetValuesReal4 => arrayGetValues,  &
-                           arrayGetValueReal4 => arrayGetValue, &
+                           arrayGetValuesReal4 => arrayGetValues,  arrayGetValueReal4 => arrayGetValue, &
                            arrayGetAllocationStatusReal4 => arrayGetAllocationStatus, &
                            arrayGetPointerOnValueReal4 => arrayGetPointerOnValue, &
                            arrayArraySetToZeroReal4 => arrayArraySetToZero, &

@@ -56,5 +56,16 @@ echo ' '
 cd $baseDir/Array
 ./divaCompileModuleArraySecondStep
 
+
+echo =================================
+echo =================================
+echo = Compiling SparseMatrix Module =
+echo =================================
+echo =================================
+echo ' '
+
+cd $baseDir/SparseMatrix
+./divaCompileModuleSparseMatrix
+
 cd $baseDir
 

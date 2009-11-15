@@ -117,7 +117,7 @@ MODULE moduleMemoryArray2DManagement
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, istartX,iendX, istartY,iendY
+      INTEGER :: istartX,iendX, istartY,iendY
       INTEGER, DIMENSION(2) :: istartTab,iendTab
 
 !     Body
@@ -131,11 +131,7 @@ MODULE moduleMemoryArray2DManagement
 
       ALLOCATE(internalWorkingValues(istartX:iendX,istartY:iendY))
 
-      DO i1 = istartX , iendX
-       DO i2 = istartY , iendY
-         internalWorkingValues(i1,i2) = workingArray%values(i1,i2)
-       END DO
-      END DO
+      internalWorkingValues(istartX:iendX,istartY:iendY) = workingArray%values(istartX:iendX,istartY:iendY)
 
   END SUBROUTINE
 
@@ -145,7 +141,7 @@ MODULE moduleMemoryArray2DManagement
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, istartX,iendX, istartY,iendY
+      INTEGER :: istartX,iendX, istartY,iendY
       INTEGER, DIMENSION(2) :: istartTab,iendTab
 
 !     Body
@@ -157,11 +153,7 @@ MODULE moduleMemoryArray2DManagement
       iendX = min(iendTab(1),memoryGetLastIndexX())
       iendY = min(iendTab(2),memoryGetLastIndexY())
 
-      DO i1 = istartX , iendX
-       DO i2 = istartY , iendY
-         workingArray%values(i1,i2) = internalWorkingValues(i1,i2)
-       END DO
-      END DO
+      workingArray%values(istartX:iendX,istartY:iendY) = internalWorkingValues(istartX:iendX,istartY:iendY)
 
       DEALLOCATE(internalWorkingValues)
 

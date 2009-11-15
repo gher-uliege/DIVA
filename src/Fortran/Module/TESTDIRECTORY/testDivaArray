@@ -28,7 +28,7 @@ export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
 ./$fileToCheck.a >> $fileToCheck.$typeToCheck.$compiler.$OSused
-cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
+#cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
 diff -s ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused >> testing.log
 
 rm ./$fileToCheck.$typeToCheck.$compiler.$OSused
@@ -51,7 +51,7 @@ export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
 ./$fileToCheck.a >> $fileToCheck.$typeToCheck.$compiler.$OSused
-cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
+#cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
 diff -s ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused >> testing.log
 rm ./$fileToCheck.$typeToCheck.$compiler.$OSused
 rm ./$fileToCheck.a
@@ -75,7 +75,7 @@ export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
 ./$fileToCheck.a >> $fileToCheck.$typeToCheck.$compiler.$OSused
-cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
+#cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
 diff -s ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused >> testing.log
 rm ./$fileToCheck.$typeToCheck.$compiler.$OSused
 rm ./$fileToCheck.a
@@ -96,7 +96,7 @@ export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
 ./$fileToCheck.a >> $fileToCheck.$typeToCheck.$compiler.$OSused
-cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
+#cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
 diff -s ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused >> testing.log
 rm ./$fileToCheck.$typeToCheck.$compiler.$OSused
 rm ./$fileToCheck.a
@@ -117,7 +117,7 @@ export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
 ./$fileToCheck.a >> $fileToCheck.$typeToCheck.$compiler.$OSused
-cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
+#cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
 diff -s ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused >> testing.log
 rm ./$fileToCheck.$typeToCheck.$compiler.$OSused
 rm ./$fileToCheck.a

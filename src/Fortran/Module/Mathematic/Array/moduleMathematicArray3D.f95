@@ -58,7 +58,7 @@ MODULE moduleMathematicArray3D
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, i3, istartX, iendX, istartY, iendY, istartZ, iendZ
+      INTEGER :: istartX, iendX, istartY, iendY, istartZ, iendZ
       VARType :: val
       VARType, DIMENSION(:,:,:), POINTER :: ptr
 
@@ -71,16 +71,9 @@ MODULE moduleMathematicArray3D
       istartZ = memoryGetFirstIndexZ()
       iendZ = memoryGetLastIndexZ()
 
-      val = zero
       ptr =>  memoryGetValues()
 
-      DO i1 = istartX, iendX
-       DO i2 = istartY, iendY
-        DO i3 = istartZ, iendZ
-         val = val + abs(ptr(i1,i2,i3))
-        END DO
-       END DO
-      END DO
+      val = sum(abs(ptr(istartX:iendX,istartY:iendY,istartZ:iendZ)))
 
   END FUNCTION
 
@@ -90,10 +83,9 @@ MODULE moduleMathematicArray3D
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, i3, istartX, iendX, istartY, iendY, istartZ, iendZ
+      INTEGER :: istartX, iendX, istartY, iendY, istartZ, iendZ
       VARType :: val
-      VARType, POINTER :: ptr
-      VARType, DIMENSION(:,:,:), POINTER :: ptr1
+      VARType, DIMENSION(:,:,:), POINTER :: ptr
 
 !     Body
 !     - - -
@@ -104,19 +96,8 @@ MODULE moduleMathematicArray3D
       istartZ = memoryGetFirstIndexZ()
       iendZ = memoryGetLastIndexZ()
 
-      val = zero
-      ptr1 =>  memoryGetValues()
-
-      DO i1 = istartX, iendX
-       DO i2 = istartY, iendY
-        DO i3 = istartZ, iendZ
-         ptr => ptr1(i1,i2,i3)
-         val = val + ptr * ptr
-        END DO
-       END DO
-      END DO
-
-      val = sqrt(val)
+      ptr =>  memoryGetValues()
+      val = sqrt(sum(ptr(istartX:iendX,istartY:iendY,istartZ:iendZ)*ptr(istartX:iendX,istartY:iendY,istartZ:iendZ)))
 
   END FUNCTION
 
@@ -126,7 +107,7 @@ MODULE moduleMathematicArray3D
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, i3, istartX, iendX, istartY, iendY, istartZ, iendZ
+      INTEGER :: istartX, iendX, istartY, iendY, istartZ, iendZ
       VARType :: val
       VARType, DIMENSION(:,:,:), POINTER :: ptr
 
@@ -139,16 +120,9 @@ MODULE moduleMathematicArray3D
       istartZ = memoryGetFirstIndexZ()
       iendZ = memoryGetLastIndexZ()
 
-      val = zero
       ptr =>  memoryGetValues()
 
-      DO i1 = istartX, iendX
-       DO i2 = istartY, iendY
-        DO i3 = istartZ, iendZ
-         val = max(val,abs(ptr(i1,i2,i3)))
-        END DO
-       END DO
-      END DO
+      val = maxval(abs(ptr(istartX:iendX,istartY:iendY,istartZ:iendZ)))
 
   END FUNCTION
 
@@ -158,7 +132,7 @@ MODULE moduleMathematicArray3D
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, i3, istartX, iendX, istartY, iendY, istartZ, iendZ
+      INTEGER :: istartX, iendX, istartY, iendY, istartZ, iendZ
       VARType :: val
       VARType, DIMENSION(:,:,:), POINTER :: ptr
 
@@ -171,16 +145,9 @@ MODULE moduleMathematicArray3D
       istartZ = memoryGetFirstIndexZ()
       iendZ = memoryGetLastIndexZ()
 
-      val = zero
       ptr =>  memoryGetValues()
 
-      DO i1 = istartX, iendX
-       DO i2 = istartY, iendY
-        DO i3 = istartZ, iendZ
-         val = val + ptr(i1,i2,i3)
-        END DO
-       END DO
-      END DO
+      val = sum(ptr(istartX:iendX,istartY:iendY,istartZ:iendZ))
 
   END FUNCTION
 
@@ -190,8 +157,7 @@ MODULE moduleMathematicArray3D
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, i3, istartX, iendX, istartY, iendY, istartZ, iendZ
-      VARType, POINTER :: ptr
+      INTEGER :: istartX, iendX, istartY, iendY, istartZ, iendZ
       VARType, DIMENSION(:,:,:), POINTER :: ptr1
 
 !     Body
@@ -205,14 +171,7 @@ MODULE moduleMathematicArray3D
 
       ptr1 =>  memoryGetValues()
 
-      DO i1 = istartX, iendX
-       DO i2 = istartY, iendY
-        DO i3 = istartZ, iendZ
-         ptr => ptr1(i1,i2,i3)
-         ptr = sqrt(abs(ptr))
-        END DO
-       END DO
-      END DO
+      ptr1(istartX:iendX,istartY:iendY,istartZ:iendZ) = sqrt(ptr1(istartX:iendX,istartY:iendY,istartZ:iendZ))
 
   END SUBROUTINE
 
@@ -222,9 +181,8 @@ MODULE moduleMathematicArray3D
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, i3, istartX, iendX, istartY, iendY, istartZ, iendZ
+      INTEGER :: istartX, iendX, istartY, iendY, istartZ, iendZ
       VARType :: val
-      VARType, POINTER :: ptr
       VARType, DIMENSION(:,:,:), POINTER :: ptr1
 
 !     Body
@@ -238,14 +196,7 @@ MODULE moduleMathematicArray3D
 
       ptr1 => memoryGetValues()
 
-      DO i1 = istartX, iendX
-       DO i2 = istartY, iendY
-        DO i3 = istartZ, iendZ
-         ptr => ptr1(i1,i2,i3)
-         ptr = val * ptr
-        END DO
-       END DO
-      END DO
+      ptr1(istartX:iendX,istartY:iendY,istartZ:iendZ) = val * ptr1(istartX:iendX,istartY:iendY,istartZ:iendZ)
 
   END SUBROUTINE
 
@@ -257,7 +208,7 @@ MODULE moduleMathematicArray3D
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, i3, istartX, iendX, istartY, iendY, istartZ, iendZ
+      INTEGER :: istartX, iendX, istartY, iendY, istartZ, iendZ
       VARType :: val
       VARType, DIMENSION(:,:,:), POINTER :: ptr
 
@@ -272,15 +223,7 @@ MODULE moduleMathematicArray3D
 
       ptr =>  memoryGetValues()
 
-      val = ptr(istartX,istartY,istartZ)
-
-      DO i1 = istartX , iendX
-       DO i2 = istartY , iendY
-        DO i3 = istartZ , iendZ
-         val = min(val,ptr(i1,i2,i3))
-        END DO
-       END DO
-      END DO
+      val = minval(ptr(istartX:iendX,istartY:iendY,istartZ:iendZ))
 
   END FUNCTION
 
@@ -290,7 +233,7 @@ MODULE moduleMathematicArray3D
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, i3, istartX, iendX, istartY, iendY, istartZ, iendZ
+      INTEGER ::istartX, iendX, istartY, iendY, istartZ, iendZ
       VARType :: val
       VARType, DIMENSION(:,:,:), POINTER :: ptr
 
@@ -305,15 +248,7 @@ MODULE moduleMathematicArray3D
 
       ptr =>  memoryGetValues()
 
-      val = ptr(istartX,istartY,istartZ)
-
-      DO i1 = istartX , iendX
-       DO i2 = istartY , iendY
-        DO i3 = istartZ , iendZ
-         val = max(val,ptr(i1,i2,i3))
-        END DO
-       END DO
-      END DO
+      val = maxval(ptr(istartX:iendX,istartY:iendY,istartZ:iendZ))
 
   END FUNCTION
 
@@ -323,7 +258,7 @@ MODULE moduleMathematicArray3D
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, i3, istartX, iendX, istartY, iendY, istartZ, iendZ
+      INTEGER :: istartX, iendX, istartY, iendY, istartZ, iendZ
       VARType :: val
       VARType, DIMENSION(:,:,:), POINTER :: ptr
 
@@ -338,15 +273,7 @@ MODULE moduleMathematicArray3D
 
       ptr =>  memoryGetValues()
 
-      val = ptr(istartX,istartY,istartZ)
-
-      DO i1 = istartX , iendX
-       DO i2 = istartY , iendY
-        DO i3 = istartZ , iendZ
-         val = min(val,abs(ptr(i1,i2,i3)))
-        END DO
-       END DO
-      END DO
+      val = minval(abs(ptr(istartX:iendX,istartY:iendY,istartZ:iendZ)))
 
   END FUNCTION
 
@@ -356,7 +283,7 @@ MODULE moduleMathematicArray3D
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, i3, istartX, iendX, istartY, iendY, istartZ, iendZ
+      INTEGER :: istartX, iendX, istartY, iendY, istartZ, iendZ
       VARType :: val
       VARType, DIMENSION(:,:,:), POINTER :: ptr
 
@@ -371,15 +298,7 @@ MODULE moduleMathematicArray3D
 
       ptr =>  memoryGetValues()
 
-      val = ptr(istartX,istartY,istartZ)
-
-      DO i1 = istartX , iendX
-       DO i2 = istartY , iendY
-        DO i3 = istartZ , iendZ
-         val = max(val,abs(ptr(i1,i2,i3)))
-        END DO
-       END DO
-      END DO
+      val = maxval(abs(ptr(istartX:iendX,istartY:iendY,istartZ:iendZ)))
 
   END FUNCTION
 

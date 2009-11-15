@@ -1,0 +1,28 @@
+#!/bin/bash
+
+moduleRowCSRMatrixDefinition='module'$rowCSRMatrixType'Definition' ; export moduleRowCSRMatrixDefinition
+moduleCSRMatrixDefinition='module'$arrayType'Definition' ; export moduleCSRMatrixDefinition
+csrMatrixType=$arrayType ; export csrMatrixType
+moduleValuesCSRMatrixManagement='moduleValuesManagement'$arrayType ; export moduleValuesCSRMatrixManagement
+vectorTypeValue=$vectorValue ; export vectorTypeValue
+vectorTypeIndex=$vectorIndex ; export vectorTypeIndex
+
+flag0='-DmoduleRowCSRMatrixDefinition='$moduleRowCSRMatrixDefinition
+flag1='-DrowCSRMatrixType='$rowCSRMatrixType
+flag2='-DmoduleCSRMatrixDefinition='$moduleCSRMatrixDefinition
+flag3='-DcsrMatrixType='$csrMatrixType
+flag4='-D'$Kind
+flag5='-DmoduleValuesCSRMatrixManagement='$moduleValuesCSRMatrixManagement
+flag6='-DvectorTypeValue='$vectorTypeValue
+flag7='-DvectorTypeIndex='$vectorTypeIndex
+
+preproFlag=$preproFlag' '$flag0
+preproFlag=$preproFlag' '$flag1
+preproFlag=$preproFlag' '$flag2
+preproFlag=$preproFlag' '$flag3
+preproFlag=$preproFlag' '$flag4
+preproFlag=$preproFlag' '$flag5
+preproFlag=$preproFlag' '$flag6
+preproFlag=$preproFlag' '$flag7
+
+export preproFlag

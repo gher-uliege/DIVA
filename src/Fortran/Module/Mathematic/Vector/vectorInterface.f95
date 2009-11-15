@@ -166,8 +166,7 @@ MODULE vectorInterface
 
 
    USE modulevectorReal8, ONLY : &
-                           arrayGetValuesReal8 => arrayGetValues,  &
-                           arrayGetValueReal8 => arrayGetValue, &
+                           arrayGetValuesReal8 => arrayGetValues,  arrayGetValueReal8 => arrayGetValue, &
                            arrayGetAllocationStatusReal8 => arrayGetAllocationStatus, &
                            arrayGetPointerOnValueReal8 => arrayGetPointerOnValue, &
                            arrayArraySetToZeroReal8 => arrayArraySetToZero, &

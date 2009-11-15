@@ -124,7 +124,7 @@ MODULE moduleMemoryArray3DManagement
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, i3, istartX,iendX, istartY,iendY, istartZ,iendZ
+      INTEGER :: istartX,iendX, istartY,iendY, istartZ,iendZ
       INTEGER, DIMENSION(3) :: istartTab,iendTab
 
 !     Body
@@ -140,13 +140,8 @@ MODULE moduleMemoryArray3DManagement
 
       ALLOCATE(internalWorkingValues(istartX:iendX,istartY:iendY,istartZ:iendZ))
 
-      DO i1 = istartX , iendX
-       DO i2 = istartY , iendY
-        DO i3 = istartZ , iendZ
-         internalWorkingValues(i1,i2,i3) = workingArray%values(i1,i2,i3)
-        END DO
-       END DO
-      END DO
+      internalWorkingValues(istartX:iendX,istartY:iendY,istartZ:iendZ) = &
+                                         workingArray%values(istartX:iendX,istartY:iendY,istartZ:iendZ)
 
   END SUBROUTINE
 
@@ -156,7 +151,7 @@ MODULE moduleMemoryArray3DManagement
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, i3, istartX,iendX, istartY,iendY, istartZ,iendZ
+      INTEGER :: istartX,iendX, istartY,iendY, istartZ,iendZ
       INTEGER, DIMENSION(3) :: istartTab,iendTab
 
 !     Body
@@ -170,13 +165,8 @@ MODULE moduleMemoryArray3DManagement
       iendY = min(iendTab(2),memoryGetLastIndexY())
       iendZ = min(iendTab(3),memoryGetLastIndexZ())
 
-      DO i1 = istartX , iendX
-       DO i2 = istartY , iendY
-        DO i3 = istartZ , iendZ
-         workingArray%values(i1,i2,i3) = internalWorkingValues(i1,i2,i3)
-        END DO
-       END DO
-      END DO
+      workingArray%values(istartX:iendX,istartY:iendY,istartZ:iendZ) = &
+                                         internalWorkingValues(istartX:iendX,istartY:iendY,istartZ:iendZ)
 
       DEALLOCATE(internalWorkingValues)
 

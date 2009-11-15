@@ -13,9 +13,9 @@ echo 'Compiling ' $2
 
 if [ "$compiler" = ifort ] 
 then
-cp $1 fileToCompile.f90
-$compiler $flag -c $preprocessor $preprocessorFlag $library fileToCompile.f90 -o $2.o
-rm fileToCompile.f90
+cp $1 $1.f90
+$compiler $flag -c $preprocessor $preprocessorFlag $library $1.f90 -o $2.o
+rm $1.f90
 else
 $compiler $flag -c $preprocessor $preprocessorFlag $library $1 -o $2.o
 fi

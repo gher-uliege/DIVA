@@ -71,7 +71,7 @@ MODULE moduleValuesArray1DManagement
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, istartX, iendX
+      INTEGER :: istartX, iendX
       VARType, DIMENSION(:), POINTER :: ptr
       VARType, INTENT(IN) :: val
 
@@ -82,9 +82,7 @@ MODULE moduleValuesArray1DManagement
 
       ptr =>  memoryGetValues()
 
-      DO i1 = istartX , iendX
-           ptr(i1) = val
-      END DO
+      ptr(istartX:iendX) = val
 
   END SUBROUTINE
 

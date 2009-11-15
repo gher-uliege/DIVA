@@ -73,7 +73,7 @@ MODULE moduleValuesArray3DManagement
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, i2, i3, istartX, iendX, istartY, iendY, istartZ, iendZ
+      INTEGER :: istartX, iendX, istartY, iendY, istartZ, iendZ
       VARType, DIMENSION(:,:,:), POINTER :: ptr
       VARType, INTENT(IN) :: val
 
@@ -88,13 +88,7 @@ MODULE moduleValuesArray3DManagement
 
       ptr =>  memoryGetValues()
 
-      DO i1 = istartX , iendX
-       DO i2 = istartY , iendY
-        DO i3 = istartZ , iendZ
-           ptr(i1,i2,i3) = val
-        END DO
-       END DO
-      END DO
+      ptr(istartX:iendX,istartY:iendY,istartZ:iendZ) = val
 
   END SUBROUTINE
 

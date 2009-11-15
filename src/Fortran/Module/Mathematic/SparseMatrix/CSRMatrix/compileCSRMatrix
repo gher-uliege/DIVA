@@ -1,0 +1,14 @@
+#!/bin/bash
+
+echo "Compiling object :" $arrayType
+echo "------------------"
+
+source $divaDir/Module/Mathematic/Generic/flagForGenericFirstStep
+source $divaDir/Module/Mathematic/Generic/flagForGenericSecondStep
+source ./flagForCSRMatrix
+
+$divaDir/compileFile moduleCSRMatrixDefinition.f95 $moduleCSRMatrixDefinition
+$divaDir/compileFile $divaDir/Module/Mathematic/Generic/moduleWorkingArray.f95 $moduleWorkingArray
+$divaDir/compileFile moduleValuesCSRMatrixManagement.f95 $moduleValuesCSRMatrixManagement
+
+echo ' '

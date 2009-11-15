@@ -70,7 +70,7 @@ MODULE moduleMathematicArray1D
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, istartX, iendX
+      INTEGER :: istartX, iendX
       VARType :: val
       VARType, DIMENSION(:), POINTER :: ptr
 
@@ -79,12 +79,9 @@ MODULE moduleMathematicArray1D
       istartX = memoryGetFirstIndexX()
       iendX = memoryGetLastIndexX()
 
-      val = zero
       ptr =>  memoryGetValues()
 
-      DO i1 = istartX, iendX
-         val = val + abs(ptr(i1))
-      END DO
+      val = sum(abs(ptr(istartX:iendX)))
 
   END FUNCTION
 
@@ -94,25 +91,18 @@ MODULE moduleMathematicArray1D
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, istartX, iendX
+      INTEGER :: istartX, iendX
       VARType :: val
-      VARType, POINTER :: ptr
-      VARType, DIMENSION(:), POINTER :: ptr1
+      VARType, DIMENSION(:), POINTER :: ptr
 
 !     Body
 !     - - -
       istartX = memoryGetFirstIndexX()
       iendX = memoryGetLastIndexX()
 
-      val = zero
-      ptr1 =>  memoryGetValues()
+      ptr =>  memoryGetValues()
 
-      DO i1 = istartX, iendX
-         ptr => ptr1(i1)
-         val = val + ptr * ptr
-      END DO
-
-      val = sqrt(val)
+      val = sqrt(sum(ptr(istartX:iendX)*ptr(istartX:iendX)))
 
   END FUNCTION
 
@@ -122,7 +112,7 @@ MODULE moduleMathematicArray1D
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, istartX, iendX
+      INTEGER :: istartX, iendX
       VARType :: val
       VARType, DIMENSION(:), POINTER :: ptr
 
@@ -131,12 +121,9 @@ MODULE moduleMathematicArray1D
       istartX = memoryGetFirstIndexX()
       iendX = memoryGetLastIndexX()
 
-      val = zero
       ptr =>  memoryGetValues()
 
-      DO i1 = istartX, iendX
-         val = max(val,abs(ptr(i1)))
-      END DO
+      val = maxval(abs(ptr(istartX:iendX)))
 
   END FUNCTION
 
@@ -146,7 +133,7 @@ MODULE moduleMathematicArray1D
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, istartX, iendX
+      INTEGER :: istartX, iendX
       VARType :: val
       VARType, DIMENSION(:), POINTER :: ptr
 
@@ -155,12 +142,9 @@ MODULE moduleMathematicArray1D
       istartX = memoryGetFirstIndexX()
       iendX = memoryGetLastIndexX()
 
-      val = zero
       ptr =>  memoryGetValues()
 
-      DO i1 = istartX, iendX
-         val = val + ptr(i1)
-      END DO
+      val = sum(ptr(istartX:iendX))
 
   END FUNCTION
 
@@ -170,8 +154,7 @@ MODULE moduleMathematicArray1D
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, istartX, iendX
-      VARType, POINTER :: ptr
+      INTEGER :: istartX, iendX
       VARType, DIMENSION(:), POINTER :: ptr1
 
 !     Body
@@ -180,11 +163,7 @@ MODULE moduleMathematicArray1D
       iendX = memoryGetLastIndexX()
 
       ptr1 =>  memoryGetValues()
-
-      DO i1 = istartX, iendX
-         ptr => ptr1(i1)
-         ptr = sqrt(abs(ptr))
-      END DO
+      ptr1(istartX:iendX) = sqrt(ptr1(istartX:iendX))
 
   END SUBROUTINE
 
@@ -194,9 +173,8 @@ MODULE moduleMathematicArray1D
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, istartX, iendX
+      INTEGER ::  istartX, iendX
       VARType :: val
-      VARType, POINTER :: ptr
       VARType, DIMENSION(:), POINTER :: ptr1
 
 !     Body
@@ -206,10 +184,7 @@ MODULE moduleMathematicArray1D
 
       ptr1 => memoryGetValues()
 
-      DO i1 = istartX, iendX
-         ptr => ptr1(i1)
-         ptr = val * ptr
-      END DO
+      ptr1(istartX:iendX) = val * ptr1(istartX:iendX)
 
   END SUBROUTINE
 
@@ -219,7 +194,7 @@ MODULE moduleMathematicArray1D
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, size, istart, iend, istart2
+      INTEGER :: length, istart, iend, istart2, iend2
       VARType :: val
       VARType, DIMENSION(:), POINTER :: ptr1
       VARType, DIMENSION(:), POINTER :: ptr2
@@ -227,28 +202,21 @@ MODULE moduleMathematicArray1D
 
 !     Body
 !     - - -
-      size = memoryGetSize()
+      length = memoryGetSize()
       istart = memoryGetFirstIndexX()
       iend = memoryGetLastIndexX()
 
       istart2 = secondWorkingArray%firstIndexX
+      iend2 = secondWorkingArray%lastIndexX
 
       ptr1 => memoryGetValues()
       ptr2 => secondWorkingArray%values
 
       val = zero
 
-      IF ( size /= secondWorkingArray%nbOfDataX ) RETURN
+      IF ( length /= secondWorkingArray%nbOfDataX ) RETURN
 
-      IF ( istart == istart2 ) THEN
-         DO i1 = istart, iend
-             val = val + ptr2(i1) * ptr1(i1)
-         END DO
-      ELSE
-         DO i1 = istart, iend
-             val = val + ptr2(i1-istart+istart2) * ptr1(i1)
-         END DO
-      ENDIF
+      val = dot_product(ptr1(istart:iend),ptr2(istart2:iend2))
 
   END FUNCTION
 
@@ -284,7 +252,7 @@ MODULE moduleMathematicArray1D
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, istartX, iendX
+      INTEGER :: istartX, iendX
       VARType :: val
       VARType, DIMENSION(:), POINTER :: ptr
 
@@ -295,11 +263,7 @@ MODULE moduleMathematicArray1D
 
       ptr =>  memoryGetValues()
 
-      val = ptr(istartX)
-
-      DO i1 = istartX + 1, iendX
-         val = min(val,ptr(i1))
-      END DO
+      val = minval(ptr(istartX:iendX))
 
   END FUNCTION
 
@@ -309,7 +273,7 @@ MODULE moduleMathematicArray1D
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, istartX, iendX
+      INTEGER :: istartX, iendX
       VARType :: val
       VARType, DIMENSION(:), POINTER :: ptr
 
@@ -322,9 +286,7 @@ MODULE moduleMathematicArray1D
 
       val = ptr(istartX)
 
-      DO i1 = istartX + 1 , iendX
-         val = max(val,ptr(i1))
-      END DO
+      val = maxval(ptr(istartX:iendX))
 
   END FUNCTION
 
@@ -334,7 +296,7 @@ MODULE moduleMathematicArray1D
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, istartX, iendX
+      INTEGER :: istartX, iendX
       VARType :: val
       VARType, DIMENSION(:), POINTER :: ptr
 
@@ -345,11 +307,7 @@ MODULE moduleMathematicArray1D
 
       ptr =>  memoryGetValues()
 
-      val = ptr(istartX)
-
-      DO i1 = istartX + 1, iendX
-         val = min(val,abs(ptr(i1)))
-      END DO
+      val = minval(abs(ptr(istartX:iendX)))
 
   END FUNCTION
 
@@ -359,7 +317,7 @@ MODULE moduleMathematicArray1D
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, istartX, iendX
+      INTEGER :: istartX, iendX
       VARType :: val
       VARType, DIMENSION(:), POINTER :: ptr
 
@@ -370,11 +328,7 @@ MODULE moduleMathematicArray1D
 
       ptr =>  memoryGetValues()
 
-      val = ptr(istartX)
-
-      DO i1 = istartX + 1 , iendX
-         val = max(val,abs(ptr(i1)))
-      END DO
+      val = maxval(abs(ptr(istartX:iendX)))
 
   END FUNCTION
 

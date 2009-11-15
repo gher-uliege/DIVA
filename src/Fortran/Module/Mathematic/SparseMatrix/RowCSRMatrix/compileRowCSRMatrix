@@ -1,0 +1,15 @@
+#!/bin/bash
+
+echo "Compiling object :" $rowCSRMatrixType
+echo "------------------"
+
+source $divaDir/Module/Mathematic/Generic/flagForGenericFirstStep
+source $divaDir/Module/Mathematic/Generic/flagForGenericSecondStep
+source ./flagForRowCSRMatrix
+
+$divaDir/compileFile moduleRowCSRMatrixDefinition.f95 $moduleRowCSRMatrixDefinition
+$divaDir/compileFile $divaDir/Module/Mathematic/Generic/moduleWorkingArray.f95 $moduleWorkingArray
+$divaDir/compileFile moduleValuesRowCSRMatrixManagement.f95 $moduleValuesRowCSRMatrixManagement
+$divaDir/compileFile moduleRowCSRMatrix.f95 $moduleRowCSRMatrix
+
+echo ' '

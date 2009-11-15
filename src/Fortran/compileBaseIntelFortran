@@ -4,7 +4,7 @@
 # ======================================
 compiler=ifort
 
-flag='-fast -warn all  '
+flag='-fast -warn all -implicitnone'
 
 export compiler
 export flag

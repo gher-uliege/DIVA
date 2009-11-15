@@ -111,7 +111,7 @@ MODULE moduleMemoryArray1DManagement
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, istartX,iendX
+      INTEGER :: istartX,iendX
       INTEGER, DIMENSION(1) :: istartTab,iendTab
 
 !     Body
@@ -123,9 +123,7 @@ MODULE moduleMemoryArray1DManagement
 
       ALLOCATE(internalWorkingValues(istartX:iendX))
 
-      DO i1 = istartX , iendX
-         internalWorkingValues(i1) = workingArray%values(i1)
-      END DO
+      internalWorkingValues(istartX:iendX) = workingArray%values(istartX:iendX)
 
   END SUBROUTINE
 
@@ -135,7 +133,7 @@ MODULE moduleMemoryArray1DManagement
 
 !     Declaration
 !     - - - - - -
-      INTEGER :: i1, istartX,iendX
+      INTEGER :: istartX,iendX
       INTEGER, DIMENSION(1) :: istartTab,iendTab
 
 !     Body
@@ -145,9 +143,7 @@ MODULE moduleMemoryArray1DManagement
       istartX = max(istartTab(1),memoryGetFirstIndexX())
       iendX = min(iendTab(1),memoryGetLastIndexX())
 
-      DO i1 = istartX , iendX
-         workingArray%values(i1) = internalWorkingValues(i1)
-      END DO
+      workingArray%values(istartX:iendX) = internalWorkingValues(istartX:iendX)
 
       DEALLOCATE(internalWorkingValues)
 

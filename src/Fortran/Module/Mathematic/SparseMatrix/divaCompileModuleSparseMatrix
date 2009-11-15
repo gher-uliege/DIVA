@@ -1,0 +1,32 @@
+#!/bin/bash
+
+echo =============================================================
+echo =============================================================
+echo ==                                                         ==
+echo ==   Compilation of DIVA Mathematic Sparse matrix Modules  ==
+echo ==                                                         ==
+echo =============================================================
+echo =============================================================
+echo ' '
+
+baseDir=$PWD
+
+echo =================================
+echo =================================
+echo = Compiling RowCSRMatrix Module =
+echo =================================
+echo =================================
+echo ' '
+
+cd $baseDir/RowCSRMatrix
+./divaCompileModuleRowCSRMatrix
+
+echo ==============================
+echo ==============================
+echo = Compiling CSRMatrix Module =
+echo ==============================
+echo ==============================
+echo ' '
+
+cd $baseDir/CSRMatrix
+./divaCompileModuleCSRMatrix

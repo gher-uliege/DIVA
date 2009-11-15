@@ -1,0 +1,67 @@
+#!/bin/bash
+
+rm -f *.o
+rm -f *.mod
+
+thisDir=$PWD
+associateDir=$associateDir' -I'$thisDir
+export associateDir
+arrayDimension=_ARRAY_2D_ ; export arrayDimension
+
+# Compilation of : CSRMatrixReal4
+# ===============================
+arrayType='csrMatrixReal4' ; export arrayType
+rowCSRMatrixType='row'$arrayType ; export rowCSRMatrixType
+vectorValue='vectorReal4' ; export vectorValue
+vectorIndex='vectorInteger4' ; export vectorIndex
+VARType='REAL(KIND=4)' ; export VARType
+Kind='_REAL_' ; export Kind
+
+./compileCSRMatrix
+
+# Compilation of : CSRMatrixReal8
+# ===============================
+arrayType='csrMatrixReal8' ; export arrayType
+rowCSRMatrixType='row'$arrayType ; export rowCSRMatrixType
+vectorValue='vectorReal8' ; export vectorValue
+vectorIndex='vectorInteger4' ; export vectorIndex
+VARType='REAL(KIND=8)' ; export VARType
+Kind='_REAL_' ; export Kind
+
+./compileCSRMatrix
+
+# Compilation of : CSRMatrixInteger2
+# ==================================
+arrayType='csrMatrixInteger2' ; export arrayType
+rowCSRMatrixType='row'$arrayType ; export rowCSRMatrixType
+vectorValue='vectorInteger2' ; export vectorValue
+vectorIndex='vectorInteger4' ; export vectorIndex
+VARType='INTEGER(KIND=2)' ; export VARType
+Kind='_INTEGER_' ; export Kind
+
+./compileCSRMatrix
+
+# Compilation of : CSRMatrixInteger4
+# ==================================
+arrayType='csrMatrixInteger4' ; export arrayType
+rowCSRMatrixType='row'$arrayType ; export rowCSRMatrixType
+vectorValue='vectorInteger4' ; export vectorValue
+vectorIndex='vectorInteger4' ; export vectorIndex
+VARType='INTEGER(KIND=4)' ; export VARType
+Kind='_INTEGER_' ; export Kind
+
+./compileCSRMatrix
+
+# Compilation of : CSRMatrixInteger8
+# ==================================
+arrayType='csrMatrixInteger8' ; export arrayType
+rowCSRMatrixType='row'$arrayType ; export rowCSRMatrixType
+vectorValue='vectorInteger8' ; export vectorValue
+vectorIndex='vectorInteger4' ; export vectorIndex
+VARType='INTEGER(KIND=8)' ; export VARType
+Kind='_INTEGER_' ; export Kind
+
+./compileCSRMatrix
+
+mv *.mod $divaModuleLib
+mv *.o $divaModuleLib
