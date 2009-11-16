@@ -40,6 +40,7 @@ MODULE moduleVector
    USE moduleMathematicArray1D, ONLY : mathArrayDot, setSecondWorkingArray, nullifySecondArrayPointer
 #endif
 
+   USE moduleValuesArray1DManagement, ONLY : memoryPutIn
 
 ! Procedures status
 ! =================
@@ -49,6 +50,8 @@ MODULE moduleVector
 #ifdef _REAL_
    PUBLIC :: arrayArrayDot
 #endif
+
+   PUBLIC :: arrayArrayPutIn
 
 ! ============================================================
 ! ============================================================
@@ -61,9 +64,7 @@ MODULE moduleVector
 ! ============================================================
 ! ============================================================
 ! ============================================================
-#ifdef _REAL_
  CONTAINS
-#endif
 
 ! =============================================================
 ! ===            Internal procedure ("PUBLIC")  : Others    ===
@@ -98,6 +99,30 @@ MODULE moduleVector
   END FUNCTION
 
 #endif
+
+! Procedure 2 : shift function
+! ----------------------------
+  SUBROUTINE arrayArrayPutIn(targetArray,iposition,value)
+
+!    Declaration
+!    - - - - - -
+     INTEGER, INTENT(IN) :: iposition
+     VARType, INTENT(IN) :: value
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(arrayType), INTENT(IN) :: targetArray
+      CALL setWorkingArray(targetArray)
+
+!     Body
+!     - - -
+      CALL memoryPutIn(iposition,value)
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullifyArrayPointer()
+
+  END SUBROUTINE
 
 END MODULE moduleVector
 

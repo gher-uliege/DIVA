@@ -26,3 +26,4 @@ preproFlag=$preproFlag' '$flag6
 preproFlag=$preproFlag' '$flag7
 
 export preproFlag
+

@@ -26,13 +26,14 @@ MODULE moduleValuesRowCSRMatrixManagement
 !  General part
 !  ------------
 
-
 ! Procedures status
 ! =================
 
 !  General part
 !  ------------
    PUBLIC :: memoryGetValues, memoryGetIndex, memoryGetValue, memoryGetPointerOnValue
+   PUBLIC :: memoryArraySetToZero, memoryArraySetToValue , memoryArrayInsertValue, memoryArrayAddValue
+   PRIVATE :: memoryGetInternalPosition
 
 ! ============================================================
 ! ============================================================
@@ -139,5 +140,141 @@ MODULE moduleValuesRowCSRMatrixManagement
 
    END FUNCTION
 
-END MODULE moduleValuesRowCSRMatrixManagement
+! =============================================================
+! ===            Internal procedure ("PUBLIC")  : Others    ===
+! =============================================================
+! Procedure 1 : set 0 to each entry
+! ---------------------------------
+  SUBROUTINE memoryArraySetToZero()
 
+!     Declaration
+!     - - - - - -
+      VARType, PARAMETER :: val = 0
+
+!     Body
+!     - - -
+      CALL memoryArraySetToValue(val)
+
+  END SUBROUTINE
+
+! Procedure 2 : set "value" to each entry
+! ---------------------------------------
+  SUBROUTINE memoryArraySetToValue(val)
+
+!    Declaration
+!    - - - - - - -
+     VARType, INTENT(IN) :: val
+     TYPE(vectorTypeValue), POINTER :: ptrValue
+
+!     Body
+!     - - -
+      ptrValue => memoryGetValues()
+      CALL vectorSetToValue(ptrValue,val)
+
+  END SUBROUTINE
+
+
+! Procedure 3 : insert value in array (scracth the previous one)
+! ---------------------------------------------------------------
+  SUBROUTINE memoryArrayInsertValue(positionX,val)
+
+!    Declaration
+!    - - - - - - -
+     INTEGER, INTENT(IN) :: positionX
+     INTEGER :: iposition, iinsert
+     VARType, INTENT(IN) :: val
+
+     TYPE(vectorTypeValue), POINTER :: ptrValue
+     TYPE(vectorTypeIndex), POINTER :: ptrIndex
+
+!     Body
+!     - - -
+      ptrValue => memoryGetValues()
+      ptrIndex => memoryGetIndex()
+
+!       Look for position in the existing data
+!       + + + + + + + + + + + + + + + + + + + +
+      CALL memoryGetInternalPosition(ptrIndex,positionX,iposition,iinsert)
+
+      SELECT CASE (iinsert)
+         CASE (ione)
+             CALL vectorPutIn(ptrIndex,iposition,positionX)
+             CALL vectorPutIn(ptrValue,iposition,val)
+         CASE (itwo)
+             CALL vectorFastInsertValue(ptrValue,iposition,val)
+         CASE (ithree)
+             CALL vectorInsertValue(ptrValue,iposition,val)
+             CALL vectorInsertValue(ptrIndex,iposition,positionX)
+      END SELECT
+
+  END SUBROUTINE
+
+! Procedure 4 : search internal position
+! --------------------------------------
+   SUBROUTINE memoryGetInternalPosition(ptrIndex,positionX,iposition,iinsert)
+
+!    Declaration
+!    - - - - - -
+     INTEGER, INTENT(OUT) :: iposition, iinsert
+     INTEGER, INTENT(IN) :: positionX
+     INTEGER :: istart, iend, i1
+     TYPE(vectorTypeIndex), POINTER :: ptrIndex
+     ROWIndexVARType, DIMENSION(:), POINTER :: ptrIndexValue
+
+!    Body
+!    - - -
+      iposition = vectorGetFirstIndexX(ptrIndex)
+      iend = vectorGetLastIndexX(ptrIndex)
+      ptrIndexValue => vectorGetValues(ptrIndex)
+
+      istart = iposition
+      iinsert = ione
+
+      DO i1 = istart, iend
+         IF ( ptrIndexValue(i1) > positionX ) THEN
+            iposition = i1
+            GOTO 30
+         ELSE IF ( ptrIndexValue(i1) == positionX ) THEN
+            iposition = i1
+            GOTO 30
+            iinsert = itwo
+         END IF
+      ENDDO
+
+      iposition = iend + 1
+      iinsert = ithree
+
+30    CONTINUE
+
+   END SUBROUTINE
+
+! Procedure 5 : add value in array (scracth the previous one)
+! ---------------------------------------------------------------
+  SUBROUTINE memoryArrayAddValue(positionX,val)
+
+!    Declaration
+!    - - - - - - -
+     INTEGER, INTENT(IN) :: positionX
+     INTEGER :: iposition, iinsert
+     VARType, INTENT(IN) :: val
+
+     TYPE(vectorTypeValue), POINTER :: ptrValue
+     TYPE(vectorTypeIndex), POINTER :: ptrIndex
+
+!     Body
+!     - - -
+      ptrValue => memoryGetValues()
+      ptrIndex => memoryGetIndex()
+
+!       Look for position in the existing data
+!       + + + + + + + + + + + + + + + + + + + +
+      CALL memoryGetInternalPosition(ptrIndex,positionX,iposition,iinsert)
+
+      IF ( iinsert == itwo ) THEN
+          CALL vectorFastAddValue(ptrValue,iposition,val)
+      END IF
+
+  END SUBROUTINE
+
+
+END MODULE moduleValuesRowCSRMatrixManagement

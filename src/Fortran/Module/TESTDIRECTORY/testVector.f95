@@ -158,7 +158,10 @@ INTEGER, PARAMETER :: dim = 3
   PRINT*,'=================='
   CALL checkVectorSetSize(vector1)
   PRINT*,' '
-
+  PRINT*,'checkPutInProcedure'
+  PRINT*,'==================='
+  CALL checkPutInProcedure(vector1)
+  PRINT*,' '
 
  END SUBROUTINE
  
@@ -419,6 +422,56 @@ INTEGER, PARAMETER :: dim = 3
    CALL vectorSetToZero(vector1)
    CALL vectorPrint(vector1)
    CALL vectorDestroy(vector1)
+
+ END SUBROUTINE
+
+ SUBROUTINE checkPutInProcedure(vector1)
+
+!  Declaration
+!  -----------
+   TYPE(vectorType), INTENT(INOUT) :: vector1
+   INTEGER :: istart, iend, i1
+   VARType, PARAMETER :: unity = 1
+   VARType, PARAMETER :: valStart = -50.
+   VARType, PARAMETER :: valStart1 = 50.
+   VARType, PARAMETER :: valMid = 150.
+   VARType, PARAMETER :: valEnd = 250.
+   VARType, PARAMETER :: valEnd1 = -250.
+
+!  Body
+!  - - -
+   CALL vectorSetToZero(vector1)
+
+   istart = vectorGetFirstIndex(vector1)
+   iend = vectorGetLastIndex(vector1)
+
+   DO i1 = istart, iend
+       CALL vectorSetValue(vector1,i1,i1*unity,FAST_INSERT_VALUE)
+   ENDDO
+
+   CALL vectorPrint(vector1)
+   CALL vectorPutIn(vector1,istart-2,valStart)
+   CALL vectorPrint(vector1)
+   CALL vectorPutIn(vector1,istart,valStart1)
+   CALL vectorPrint(vector1)
+
+   istart = vectorGetFirstIndex(vector1)
+   iend = vectorGetLastIndex(vector1)
+
+   CALL vectorPutIn(vector1,istart+2,valMid)
+   CALL vectorPrint(vector1)
+
+   istart = vectorGetFirstIndex(vector1)
+   iend = vectorGetLastIndex(vector1)
+
+   CALL vectorPutIn(vector1,iend,valEnd)
+   CALL vectorPrint(vector1)
+
+   istart = vectorGetFirstIndex(vector1)
+   iend = vectorGetLastIndex(vector1)
+
+   CALL vectorPutIn(vector1,iend+2,valEnd1)
+   CALL vectorPrint(vector1)
 
  END SUBROUTINE
 

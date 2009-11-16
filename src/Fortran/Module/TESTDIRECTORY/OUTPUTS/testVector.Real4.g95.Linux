@@ -192,6 +192,108 @@
  value( 4 ) =  3.3
  value( 5 ) =  3.3
   
+ checkPutInProcedure
+ ===================
+ The size of the array is :  7
+    The allocated memory is :  10
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -1
+    Last positions are  :  5
+ value( -1 ) =  -1.
+ value( 0 ) =  0.
+ value( 1 ) =  1.
+ value( 2 ) =  2.
+ value( 3 ) =  3.
+ value( 4 ) =  4.
+ value( 5 ) =  5.
+ The size of the array is :  9
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  5
+ value( -3 ) =  -50.
+ value( -2 ) =  0.
+ value( -1 ) =  -1.
+ value( 0 ) =  0.
+ value( 1 ) =  1.
+ value( 2 ) =  2.
+ value( 3 ) =  3.
+ value( 4 ) =  4.
+ value( 5 ) =  5.
+ The size of the array is :  10
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  6
+ value( -3 ) =  -50.
+ value( -2 ) =  0.
+ value( -1 ) =  50.
+ value( 0 ) =  -1.
+ value( 1 ) =  0.
+ value( 2 ) =  1.
+ value( 3 ) =  2.
+ value( 4 ) =  3.
+ value( 5 ) =  4.
+ value( 6 ) =  5.
+ The size of the array is :  11
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  7
+ value( -3 ) =  -50.
+ value( -2 ) =  0.
+ value( -1 ) =  150.
+ value( 0 ) =  50.
+ value( 1 ) =  -1.
+ value( 2 ) =  0.
+ value( 3 ) =  1.
+ value( 4 ) =  2.
+ value( 5 ) =  3.
+ value( 6 ) =  4.
+ value( 7 ) =  5.
+ The size of the array is :  12
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  8
+ value( -3 ) =  -50.
+ value( -2 ) =  0.
+ value( -1 ) =  150.
+ value( 0 ) =  50.
+ value( 1 ) =  -1.
+ value( 2 ) =  0.
+ value( 3 ) =  1.
+ value( 4 ) =  2.
+ value( 5 ) =  3.
+ value( 6 ) =  4.
+ value( 7 ) =  250.
+ value( 8 ) =  5.
+ The size of the array is :  14
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  10
+ value( -3 ) =  -50.
+ value( -2 ) =  0.
+ value( -1 ) =  150.
+ value( 0 ) =  50.
+ value( 1 ) =  -1.
+ value( 2 ) =  0.
+ value( 3 ) =  1.
+ value( 4 ) =  2.
+ value( 5 ) =  3.
+ value( 6 ) =  4.
+ value( 7 ) =  250.
+ value( 8 ) =  5.
+ value( 9 ) =  0.
+ value( 10 ) =  -250.
+  
  checkVectorSetToZero
  ====================
  The size of the array is :  3
@@ -342,6 +444,108 @@
  value( 3 ) =  2.3
  value( 4 ) =  3.3
  value( 5 ) =  3.3
+  
+ checkPutInProcedure
+ ===================
+ The size of the array is :  7
+    The allocated memory is :  10
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -1
+    Last positions are  :  5
+ value( -1 ) =  -1.
+ value( 0 ) =  0.
+ value( 1 ) =  1.
+ value( 2 ) =  2.
+ value( 3 ) =  3.
+ value( 4 ) =  4.
+ value( 5 ) =  5.
+ The size of the array is :  9
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  5
+ value( -3 ) =  -50.
+ value( -2 ) =  0.
+ value( -1 ) =  -1.
+ value( 0 ) =  0.
+ value( 1 ) =  1.
+ value( 2 ) =  2.
+ value( 3 ) =  3.
+ value( 4 ) =  4.
+ value( 5 ) =  5.
+ The size of the array is :  10
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  6
+ value( -3 ) =  -50.
+ value( -2 ) =  0.
+ value( -1 ) =  50.
+ value( 0 ) =  -1.
+ value( 1 ) =  0.
+ value( 2 ) =  1.
+ value( 3 ) =  2.
+ value( 4 ) =  3.
+ value( 5 ) =  4.
+ value( 6 ) =  5.
+ The size of the array is :  11
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  7
+ value( -3 ) =  -50.
+ value( -2 ) =  0.
+ value( -1 ) =  150.
+ value( 0 ) =  50.
+ value( 1 ) =  -1.
+ value( 2 ) =  0.
+ value( 3 ) =  1.
+ value( 4 ) =  2.
+ value( 5 ) =  3.
+ value( 6 ) =  4.
+ value( 7 ) =  5.
+ The size of the array is :  12
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  8
+ value( -3 ) =  -50.
+ value( -2 ) =  0.
+ value( -1 ) =  150.
+ value( 0 ) =  50.
+ value( 1 ) =  -1.
+ value( 2 ) =  0.
+ value( 3 ) =  1.
+ value( 4 ) =  2.
+ value( 5 ) =  3.
+ value( 6 ) =  4.
+ value( 7 ) =  250.
+ value( 8 ) =  5.
+ The size of the array is :  14
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  10
+ value( -3 ) =  -50.
+ value( -2 ) =  0.
+ value( -1 ) =  150.
+ value( 0 ) =  50.
+ value( 1 ) =  -1.
+ value( 2 ) =  0.
+ value( 3 ) =  1.
+ value( 4 ) =  2.
+ value( 5 ) =  3.
+ value( 6 ) =  4.
+ value( 7 ) =  250.
+ value( 8 ) =  5.
+ value( 9 ) =  0.
+ value( 10 ) =  -250.
   
  checkVectorSetToZero
  ====================
@@ -494,6 +698,108 @@
  value( 2 ) =  3.3
  value( 3 ) =  3.3
   
+ checkPutInProcedure
+ ===================
+ The size of the array is :  7
+    The allocated memory is :  10
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  3
+ value( -3 ) =  -3.
+ value( -2 ) =  -2.
+ value( -1 ) =  -1.
+ value( 0 ) =  0.
+ value( 1 ) =  1.
+ value( 2 ) =  2.
+ value( 3 ) =  3.
+ The size of the array is :  9
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -5
+    Last positions are  :  3
+ value( -5 ) =  -50.
+ value( -4 ) =  0.
+ value( -3 ) =  -3.
+ value( -2 ) =  -2.
+ value( -1 ) =  -1.
+ value( 0 ) =  0.
+ value( 1 ) =  1.
+ value( 2 ) =  2.
+ value( 3 ) =  3.
+ The size of the array is :  10
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -5
+    Last positions are  :  4
+ value( -5 ) =  -50.
+ value( -4 ) =  0.
+ value( -3 ) =  50.
+ value( -2 ) =  -3.
+ value( -1 ) =  -2.
+ value( 0 ) =  -1.
+ value( 1 ) =  0.
+ value( 2 ) =  1.
+ value( 3 ) =  2.
+ value( 4 ) =  3.
+ The size of the array is :  11
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -5
+    Last positions are  :  5
+ value( -5 ) =  -50.
+ value( -4 ) =  0.
+ value( -3 ) =  150.
+ value( -2 ) =  50.
+ value( -1 ) =  -3.
+ value( 0 ) =  -2.
+ value( 1 ) =  -1.
+ value( 2 ) =  0.
+ value( 3 ) =  1.
+ value( 4 ) =  2.
+ value( 5 ) =  3.
+ The size of the array is :  12
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -5
+    Last positions are  :  6
+ value( -5 ) =  -50.
+ value( -4 ) =  0.
+ value( -3 ) =  150.
+ value( -2 ) =  50.
+ value( -1 ) =  -3.
+ value( 0 ) =  -2.
+ value( 1 ) =  -1.
+ value( 2 ) =  0.
+ value( 3 ) =  1.
+ value( 4 ) =  2.
+ value( 5 ) =  250.
+ value( 6 ) =  3.
+ The size of the array is :  14
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -5
+    Last positions are  :  8
+ value( -5 ) =  -50.
+ value( -4 ) =  0.
+ value( -3 ) =  150.
+ value( -2 ) =  50.
+ value( -1 ) =  -3.
+ value( 0 ) =  -2.
+ value( 1 ) =  -1.
+ value( 2 ) =  0.
+ value( 3 ) =  1.
+ value( 4 ) =  2.
+ value( 5 ) =  250.
+ value( 6 ) =  3.
+ value( 7 ) =  0.
+ value( 8 ) =  -250.
+  
  checkVectorSetToZero
  ====================
  The size of the array is :  3
@@ -645,6 +951,108 @@
  value( 4 ) =  3.3
  value( 5 ) =  3.3
   
+ checkPutInProcedure
+ ===================
+ The size of the array is :  7
+    The allocated memory is :  10
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -1
+    Last positions are  :  5
+ value( -1 ) =  -1.
+ value( 0 ) =  0.
+ value( 1 ) =  1.
+ value( 2 ) =  2.
+ value( 3 ) =  3.
+ value( 4 ) =  4.
+ value( 5 ) =  5.
+ The size of the array is :  9
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  5
+ value( -3 ) =  -50.
+ value( -2 ) =  0.
+ value( -1 ) =  -1.
+ value( 0 ) =  0.
+ value( 1 ) =  1.
+ value( 2 ) =  2.
+ value( 3 ) =  3.
+ value( 4 ) =  4.
+ value( 5 ) =  5.
+ The size of the array is :  10
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  6
+ value( -3 ) =  -50.
+ value( -2 ) =  0.
+ value( -1 ) =  50.
+ value( 0 ) =  -1.
+ value( 1 ) =  0.
+ value( 2 ) =  1.
+ value( 3 ) =  2.
+ value( 4 ) =  3.
+ value( 5 ) =  4.
+ value( 6 ) =  5.
+ The size of the array is :  11
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  7
+ value( -3 ) =  -50.
+ value( -2 ) =  0.
+ value( -1 ) =  150.
+ value( 0 ) =  50.
+ value( 1 ) =  -1.
+ value( 2 ) =  0.
+ value( 3 ) =  1.
+ value( 4 ) =  2.
+ value( 5 ) =  3.
+ value( 6 ) =  4.
+ value( 7 ) =  5.
+ The size of the array is :  12
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  8
+ value( -3 ) =  -50.
+ value( -2 ) =  0.
+ value( -1 ) =  150.
+ value( 0 ) =  50.
+ value( 1 ) =  -1.
+ value( 2 ) =  0.
+ value( 3 ) =  1.
+ value( 4 ) =  2.
+ value( 5 ) =  3.
+ value( 6 ) =  4.
+ value( 7 ) =  250.
+ value( 8 ) =  5.
+ The size of the array is :  14
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  10
+ value( -3 ) =  -50.
+ value( -2 ) =  0.
+ value( -1 ) =  150.
+ value( 0 ) =  50.
+ value( 1 ) =  -1.
+ value( 2 ) =  0.
+ value( 3 ) =  1.
+ value( 4 ) =  2.
+ value( 5 ) =  3.
+ value( 6 ) =  4.
+ value( 7 ) =  250.
+ value( 8 ) =  5.
+ value( 9 ) =  0.
+ value( 10 ) =  -250.
+  
  checkVectorSetToZero
  ====================
  The size of the array is :  3
@@ -795,6 +1203,108 @@
  value( 3 ) =  2.3
  value( 4 ) =  3.3
  value( 5 ) =  3.3
+  
+ checkPutInProcedure
+ ===================
+ The size of the array is :  7
+    The allocated memory is :  10
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -1
+    Last positions are  :  5
+ value( -1 ) =  -1.
+ value( 0 ) =  0.
+ value( 1 ) =  1.
+ value( 2 ) =  2.
+ value( 3 ) =  3.
+ value( 4 ) =  4.
+ value( 5 ) =  5.
+ The size of the array is :  9
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  5
+ value( -3 ) =  -50.
+ value( -2 ) =  0.
+ value( -1 ) =  -1.
+ value( 0 ) =  0.
+ value( 1 ) =  1.
+ value( 2 ) =  2.
+ value( 3 ) =  3.
+ value( 4 ) =  4.
+ value( 5 ) =  5.
+ The size of the array is :  10
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  6
+ value( -3 ) =  -50.
+ value( -2 ) =  0.
+ value( -1 ) =  50.
+ value( 0 ) =  -1.
+ value( 1 ) =  0.
+ value( 2 ) =  1.
+ value( 3 ) =  2.
+ value( 4 ) =  3.
+ value( 5 ) =  4.
+ value( 6 ) =  5.
+ The size of the array is :  11
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  7
+ value( -3 ) =  -50.
+ value( -2 ) =  0.
+ value( -1 ) =  150.
+ value( 0 ) =  50.
+ value( 1 ) =  -1.
+ value( 2 ) =  0.
+ value( 3 ) =  1.
+ value( 4 ) =  2.
+ value( 5 ) =  3.
+ value( 6 ) =  4.
+ value( 7 ) =  5.
+ The size of the array is :  12
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  8
+ value( -3 ) =  -50.
+ value( -2 ) =  0.
+ value( -1 ) =  150.
+ value( 0 ) =  50.
+ value( 1 ) =  -1.
+ value( 2 ) =  0.
+ value( 3 ) =  1.
+ value( 4 ) =  2.
+ value( 5 ) =  3.
+ value( 6 ) =  4.
+ value( 7 ) =  250.
+ value( 8 ) =  5.
+ The size of the array is :  14
+    The allocated memory is :  14
+    The increase allocation memory is :  5
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  10
+ value( -3 ) =  -50.
+ value( -2 ) =  0.
+ value( -1 ) =  150.
+ value( 0 ) =  50.
+ value( 1 ) =  -1.
+ value( 2 ) =  0.
+ value( 3 ) =  1.
+ value( 4 ) =  2.
+ value( 5 ) =  3.
+ value( 6 ) =  4.
+ value( 7 ) =  250.
+ value( 8 ) =  5.
+ value( 9 ) =  0.
+ value( 10 ) =  -250.
   
  checkVectorSetToZero
  ====================
@@ -946,4 +1456,106 @@
  value( 1 ) =  2.3
  value( 2 ) =  3.3
  value( 3 ) =  3.3
+  
+ checkPutInProcedure
+ ===================
+ The size of the array is :  7
+    The allocated memory is :  7
+    The increase allocation memory is :  0
+    Allocation status of the vector :  T
+    First positions are :  -3
+    Last positions are  :  3
+ value( -3 ) =  -3.
+ value( -2 ) =  -2.
+ value( -1 ) =  -1.
+ value( 0 ) =  0.
+ value( 1 ) =  1.
+ value( 2 ) =  2.
+ value( 3 ) =  3.
+ The size of the array is :  9
+    The allocated memory is :  9
+    The increase allocation memory is :  0
+    Allocation status of the vector :  T
+    First positions are :  -5
+    Last positions are  :  3
+ value( -5 ) =  -50.
+ value( -4 ) =  0.
+ value( -3 ) =  -3.
+ value( -2 ) =  -2.
+ value( -1 ) =  -1.
+ value( 0 ) =  0.
+ value( 1 ) =  1.
+ value( 2 ) =  2.
+ value( 3 ) =  3.
+ The size of the array is :  10
+    The allocated memory is :  10
+    The increase allocation memory is :  0
+    Allocation status of the vector :  T
+    First positions are :  -5
+    Last positions are  :  4
+ value( -5 ) =  -50.
+ value( -4 ) =  0.
+ value( -3 ) =  50.
+ value( -2 ) =  -3.
+ value( -1 ) =  -2.
+ value( 0 ) =  -1.
+ value( 1 ) =  0.
+ value( 2 ) =  1.
+ value( 3 ) =  2.
+ value( 4 ) =  3.
+ The size of the array is :  11
+    The allocated memory is :  11
+    The increase allocation memory is :  0
+    Allocation status of the vector :  T
+    First positions are :  -5
+    Last positions are  :  5
+ value( -5 ) =  -50.
+ value( -4 ) =  0.
+ value( -3 ) =  150.
+ value( -2 ) =  50.
+ value( -1 ) =  -3.
+ value( 0 ) =  -2.
+ value( 1 ) =  -1.
+ value( 2 ) =  0.
+ value( 3 ) =  1.
+ value( 4 ) =  2.
+ value( 5 ) =  3.
+ The size of the array is :  12
+    The allocated memory is :  12
+    The increase allocation memory is :  0
+    Allocation status of the vector :  T
+    First positions are :  -5
+    Last positions are  :  6
+ value( -5 ) =  -50.
+ value( -4 ) =  0.
+ value( -3 ) =  150.
+ value( -2 ) =  50.
+ value( -1 ) =  -3.
+ value( 0 ) =  -2.
+ value( 1 ) =  -1.
+ value( 2 ) =  0.
+ value( 3 ) =  1.
+ value( 4 ) =  2.
+ value( 5 ) =  250.
+ value( 6 ) =  3.
+ The size of the array is :  14
+    The allocated memory is :  14
+    The increase allocation memory is :  0
+    Allocation status of the vector :  T
+    First positions are :  -5
+    Last positions are  :  8
+ value( -5 ) =  -50.
+ value( -4 ) =  0.
+ value( -3 ) =  150.
+ value( -2 ) =  50.
+ value( -1 ) =  -3.
+ value( 0 ) =  -2.
+ value( 1 ) =  -1.
+ value( 2 ) =  0.
+ value( 3 ) =  1.
+ value( 4 ) =  2.
+ value( 5 ) =  250.
+ value( 6 ) =  3.
+ value( 7 ) =  0.
+ value( 8 ) =  -250.
   

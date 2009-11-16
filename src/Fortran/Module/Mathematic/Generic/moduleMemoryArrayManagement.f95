@@ -1059,12 +1059,15 @@ MODULE moduleMemoryArrayManagement
 
 #ifdef _ARRAY_1D_
       ALLOCATE(workingArray%values(istartX:iendX))
+      workingArray%values = 0
 #endif
 #ifdef _ARRAY_2D_
       ALLOCATE(workingArray%values(istartX:iendX,istartY:iendY))
+      workingArray%values = 0
 #endif
 #ifdef _ARRAY_3D_
       ALLOCATE(workingArray%values(istartX:iendX,istartY:iendY,istartZ:iendZ))
+      workingArray%values = 0
 #endif
 
       CALL memorySetAllocationStatus(true)

@@ -18,12 +18,14 @@ MODULE moduleValuesArray1DManagement
   USE moduleWorkingArray, ONLY : workingArray
   USE moduleMemoryArrayManagement, ONLY : memoryGetFirstIndexX, memoryGetLastIndexX, &
                                           memorySetFirstIndex, memorySetSize, memoryDefineLastIndex, &
-                                          memoryGetSizeX
+                                          memoryGetSizeX, memoryGetAllocatedSizeX
   USE moduleMemoryArrayNDManagement, ONLY : memoryAllocateArray
   USE moduleValuesArrayManagement, ONLY : memoryGetPointerOnValue, memoryGetValues
 
 ! Declaration
 ! ===========
+
+  INCLUDE 'constantParameter.h'
 
 ! Procedures status
 ! =================
@@ -31,7 +33,7 @@ MODULE moduleValuesArray1DManagement
 !  General part
 !  ------------
    PUBLIC :: memoryArraySetToZero, memoryArraySetToValue, memoryArrayInsertValue, memoryArrayAddValue, memoryArrayFastInsertValue, &
-             memoryArrayFastAddValue
+             memoryArrayFastAddValue, memoryPutIn
 
 
 ! ============================================================
@@ -176,5 +178,42 @@ MODULE moduleValuesArray1DManagement
       ptr = ptr + val
 
   END SUBROUTINE
+
+! Procedure 7 : put value in vector by displacing the others of the vector
+! ------------------------------------------------------------------------
+   SUBROUTINE memoryPutIn(iposition,value)
+
+!    Declaration
+!    - - - - - -
+     INTEGER, INTENT(IN) :: iposition
+     INTEGER :: iEndValueX, istartValueX
+     VARType, PARAMETER :: intermediateVal = 0
+     VARType, DIMENSION(:), POINTER :: ptr
+     VARType :: value
+
+!    Body
+!    - - -
+     istartValueX = memoryGetFirstIndexX()
+     iEndValueX = memoryGetLastIndexX()
+
+     IF ( iposition < istartValueX ) THEN
+        CALL memoryArrayInsertValue(iposition,value)
+        GOTO 30
+     END IF
+     IF ( iposition > iEndValueX ) THEN
+        CALL memoryArrayInsertValue(iposition,value)
+        GOTO 30
+     END IF
+
+     CALL memoryArrayInsertValue(iEndValueX+ione,intermediateVal)
+
+     ptr =>  memoryGetValues()
+
+     ptr(iposition+ione:iEndValueX+ione) = ptr(iposition:iEndValueX)
+     ptr(iposition) = value
+
+30   CONTINUE
+
+   END SUBROUTINE
 
 END MODULE moduleValuesArray1DManagement

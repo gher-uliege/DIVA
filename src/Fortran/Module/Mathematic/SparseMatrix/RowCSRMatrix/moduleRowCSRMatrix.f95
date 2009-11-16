@@ -17,7 +17,10 @@ MODULE moduleRowCSRMatrix
    USE moduleRowCSRMatrixDefinition
    USE moduleWorkingArray, ONLY : setWorkingArray, nullifyArrayPointer
 
-   USE moduleValuesRowCSRMatrixManagement, ONLY : memoryGetValues, memoryGetIndex, memoryGetValue, memoryGetPointerOnValue
+   USE moduleValuesRowCSRMatrixManagement, ONLY : memoryGetValues, memoryGetIndex, memoryGetValue, &
+                                                  memoryGetPointerOnValue , memoryArraySetToZero, &
+                                                  memoryArraySetToValue, memoryArrayInsertValue, &
+                                                  memoryArrayAddValue
 
 
 ! Procedures status
@@ -25,7 +28,8 @@ MODULE moduleRowCSRMatrix
 
 !  General part
 !  ------------
-   PUBLIC :: rowCSRMatrixGetValues, rowCSRMatrixGetIndex, rowCSRMatrixGetValue, rowCSRMatrixGetPointerOnValue
+   PUBLIC :: rowCSRMatrixGetValues, rowCSRMatrixGetIndex, rowCSRMatrixGetValue, rowCSRMatrixGetPointerOnValue, &
+             rowCSRMatrixSetToZero, rowCSRMatrixSetToValue, rowCSRMatrixInsertValue, rowCSRMatrixAddValue
 
 ! ============================================================
 ! ============================================================
@@ -42,7 +46,7 @@ MODULE moduleRowCSRMatrix
 
 
 ! =============================================================
-! ===            Internal procedure ("PUBLIC")  : Getting   ===
+! ===            Internal procedure ("PUBLIC")  : Others    ===
 ! =============================================================
 
 ! Procedure 1 : get reference to pointer containing the values
@@ -115,7 +119,7 @@ MODULE moduleRowCSRMatrix
 
    END FUNCTION
 
-! Procedure 3 : get the value at position i1
+! Procedure 4 : get the value at position i1
 ! ------------------------------------------
    FUNCTION rowCSRMatrixGetPointerOnValue(targetRowCSRMatrix,i1) RESULT(val)
 
@@ -138,6 +142,97 @@ MODULE moduleRowCSRMatrix
       CALL nullifyArrayPointer()
 
    END FUNCTION
+
+
+! Procedure 5 : set to zero
+! -------------------------
+   SUBROUTINE rowCSRMatrixSetToZero(targetRowCSRMatrix)
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(arrayType), INTENT(IN) :: targetRowCSRMatrix
+      CALL setWorkingArray(targetRowCSRMatrix)
+
+!     Body
+!     - - -
+      CALL memoryArraySetToZero()
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullifyArrayPointer()
+
+   END SUBROUTINE
+
+! Procedure 6 : set to value
+! ---------------------------
+   SUBROUTINE rowCSRMatrixSetToValue(targetRowCSRMatrix,val)
+
+!     Declaration
+!     - - - - - - -
+      VARType, POINTER :: val
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(arrayType), INTENT(IN) :: targetRowCSRMatrix
+      CALL setWorkingArray(targetRowCSRMatrix)
+
+!     Body
+!     - - -
+      CALL memoryArraySetToValue(val)
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullifyArrayPointer()
+
+   END SUBROUTINE
+
+! Procedure 7 : insert value
+! ---------------------------
+   SUBROUTINE rowCSRMatrixInsertValue(targetRowCSRMatrix,i1,val)
+
+!     Declaration
+!     - - - - - - -
+      INTEGER, INTENT(IN) :: i1
+      VARType, POINTER :: val
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(arrayType), INTENT(IN) :: targetRowCSRMatrix
+      CALL setWorkingArray(targetRowCSRMatrix)
+
+!     Body
+!     - - -
+      CALL memoryArrayInsertValue(i1,val)
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullifyArrayPointer()
+
+   END SUBROUTINE
+
+! Procedure 8 : add value
+! ---------------------------
+   SUBROUTINE rowCSRMatrixAddValue(targetRowCSRMatrix,i1,val)
+
+!     Declaration
+!     - - - - - - -
+      INTEGER, INTENT(IN) :: i1
+      VARType, POINTER :: val
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(arrayType), INTENT(IN) :: targetRowCSRMatrix
+      CALL setWorkingArray(targetRowCSRMatrix)
+
+!     Body
+!     - - -
+      CALL memoryArrayAddValue(i1,val)
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullifyArrayPointer()
+
+   END SUBROUTINE
 
 END MODULE moduleRowCSRMatrix
 
