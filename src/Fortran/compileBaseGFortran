@@ -13,7 +13,7 @@ export flag
 # Definition of preprocessor options if needed
 # ============================================
 preprocessor='-x f95-cpp-input '
-preprocessorFlag='-D=_BATCH_MODE_  -D=_GFORTRAN_ '$preproFlag
+preprocessorFlag='-D=_BATCH_MODE_  -D_GFORTRAN_ '$preproFlag
 
 export preprocessor
 export preprocessorFlag

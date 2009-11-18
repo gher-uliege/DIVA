@@ -23,10 +23,64 @@ associateDir='-I'$divaDir'/Module/General '
 export preproFlag
 export associateDir
 
-for ii in `ls *.f95`
-do
-$divaDir/compileFile $ii `basename $ii .f95`
-done
+$divaDir/compileFile moduleFileFormatType.f95 moduleFileFormatType
+$divaDir/compileFile moduleLogicalUnitDefinition.f95 moduleLogicalUnitDefinition
+$divaDir/compileFile moduleFileDefinition.f95 moduleFileDefinition
+$divaDir/compileFile logicalUnitManager.f95 logicalUnitManager
+$divaDir/compileFile moduleFile.f95 moduleFile
+$divaDir/compileFile moduleIOBase.f95 moduleIOBase
+
+VARType='REAL(KIND=4)'
+moduleWrite=moduleWriteReal4
+kind='_REAL4_'
+flag0='-DVARType='$VARType
+flag1='-DmoduleWrite='$moduleWrite
+flag2='-D'$kind
+preproFlag=$flag0
+preproFlag=$preproFlag' '$flag1
+preproFlag=$preproFlag' '$flag2
+export preproFlag
+
+$divaDir/compileFile moduleWrite.f95 $moduleWrite
+
+VARType='REAL(KIND=8)'
+moduleWrite=moduleWriteReal8
+kind='_REAL8_'
+flag0='-DVARType='$VARType
+flag1='-DmoduleWrite='$moduleWrite
+flag2='-D'$kind
+preproFlag=$flag0
+preproFlag=$preproFlag' '$flag1
+preproFlag=$preproFlag' '$flag2
+export preproFlag
+
+$divaDir/compileFile moduleWrite.f95 $moduleWrite
+
+VARType='REAL(KIND=4)'
+moduleRead=moduleReadReal4
+kind='_REAL4_'
+flag0='-DVARType='$VARType
+flag1='-DmoduleRead='$moduleRead
+flag2='-D'$kind
+preproFlag=$flag0
+preproFlag=$preproFlag' '$flag1
+preproFlag=$preproFlag' '$flag2
+export preproFlag
+
+$divaDir/compileFile moduleRead.f95 $moduleRead
+
+VARType='REAL(KIND=8)'
+moduleRead=moduleReadReal8
+kind='_REAL8_'
+flag0='-DVARType='$VARType
+flag1='-DmoduleRead='$moduleRead
+flag2='-D'$kind
+preproFlag=$flag0
+preproFlag=$preproFlag' '$flag1
+preproFlag=$preproFlag' '$flag2
+export preproFlag
+
+$divaDir/compileFile moduleRead.f95 $moduleRead
 
 mv *.mod $divaModuleLib
 mv *.o $divaModuleLib

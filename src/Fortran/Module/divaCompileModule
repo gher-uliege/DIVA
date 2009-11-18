@@ -17,7 +17,7 @@ rm -f $divaModuleLib/*
 # =================================
 
 cd $baseDir/Mathematic
-./divaCompileModuleMathematic
+#./divaCompileModuleMathematic
 
 
 # Compilation of IO module

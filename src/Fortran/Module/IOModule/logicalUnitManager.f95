@@ -13,8 +13,8 @@ MODULE logicalUnitManager
 
 ! Include file
 ! ============
-   include 'logicalUnit.h'
-   include 'logicalParameter.h'
+   USE moduleLogicalUnitDefinition
+   INCLUDE 'logicalParameter.h'
    
 ! Declaration
 ! ===========

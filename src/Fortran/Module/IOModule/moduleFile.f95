@@ -13,8 +13,11 @@ MODULE moduleFile
 
 ! Include file
 ! ============
-   USE logicalUnitManager, getLogicalUnitFromUnitManager => getLogicalUnit
-   include 'fileType.h'
+   USE logicalUnitManager, ONLY : getLogicalUnitFromUnitManager => getLogicalUnit
+   USE moduleFileFormatType
+   USE moduleFileDefinition
+
+   INCLUDE 'logicalParameter.h'
 
 ! Declaration
 ! ===========
@@ -23,7 +26,7 @@ MODULE moduleFile
 ! Procedures status
 ! =================
    PUBLIC :: initialiseFile, defineFile, defineFileName, defineLogicalUnit, printInformation, openFile, closeFile, isFileOpened, &
-             createFile, getFileUnit, defineFileFormat, Formatted, Unformatted, getFileFormat
+             createFile, getFileUnit, defineFileFormat, getFileFormat
    PRIVATE :: setWorkingFile, internalInitialise, internalDefineFileName, internalDefineLogicalUnit, internalPrintInformation, &
               setIsLinked, isFileLinked, getLogicalUnit, getFileName, setIsOpened, internalIsFileOpened, nullify, &
               internalDefineFormType
@@ -72,7 +75,7 @@ MODULE moduleFile
 !     - - - - - -
       CHARACTER(*), OPTIONAL, INTENT(IN) :: name
       TYPE(logicalUnit), OPTIONAL, POINTER     :: unit
-      LOGICAL, OPTIONAL, INTENT(IN) :: formType
+      TYPE(fileFormatType), OPTIONAL, INTENT(IN) :: formType
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
@@ -181,7 +184,7 @@ MODULE moduleFile
 !     - - -
       SELECT CASE (isFileLinked())
       CASE (true)
-            IF ( workingFile%formatFile ) THEN
+            IF ( workingFile%formatFile%formType ) THEN
                  OPEN(unit=getLogicalUnit(),file=getFileName(),iostat=checkValue,form='formatted')
             ELSE
                  OPEN(unit=getLogicalUnit(),file=getFileName(),iostat=checkValue,form='unformatted')
@@ -279,7 +282,7 @@ MODULE moduleFile
       CHARACTER(*), OPTIONAL, INTENT(IN) :: name
       TYPE(logicalUnit), OPTIONAL, POINTER     :: unit
       TYPE(file), INTENT(INOUT) :: targetFile
-      LOGICAL, OPTIONAL, INTENT(IN) :: formType
+      TYPE(fileFormatType), OPTIONAL, INTENT(IN) :: formType
 
 !     Body
 !     - - -
@@ -305,6 +308,10 @@ MODULE moduleFile
 !     - - -
       unit1 = getLogicalUnit()
 
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullify()
+
    END FUNCTION
 
 ! Procedure 11 : defining file format
@@ -313,7 +320,7 @@ MODULE moduleFile
 
 !     Declaration
 !     - - - - - -
-      LOGICAL, INTENT(IN) :: fileFormat
+      TYPE(fileFormatType), INTENT(IN) :: fileFormat
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
@@ -330,41 +337,13 @@ MODULE moduleFile
 
    END SUBROUTINE
 
-! Procedure 12 : set formatted format
-! ----------------------------------
-  FUNCTION Formatted() RESULT(choice)
-
-!     Declaration
-!     - - - - - -
-      LOGICAL :: choice
-
-!     Body
-!     - - -
-      choice = true
-
-  END FUNCTION
-
-! Procedure 13 : set unformatted format
-! ----------------------------------
-  FUNCTION Unformatted() RESULT(choice)
-
-!     Declaration
-!     - - - - - -
-      LOGICAL :: choice
-
-!     Body
-!     - - -
-      choice = false
-
-  END FUNCTION
-
-! Procedure 14 : obtain the output format
+! Procedure 12 : obtain the output format
 ! ----------------------------------------
   FUNCTION getFileFormat(targetFile) RESULT(choice)
 
 !     Declaration
 !     - - - - - -
-      LOGICAL :: choice
+      TYPE(fileFormatType) :: choice
 
 !     Pointer filling procedure
 !     - - - - - - - - - - - - -
@@ -375,7 +354,12 @@ MODULE moduleFile
 !     - - -
       choice = workingFile%formatFile
 
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullify()
+
   END FUNCTION
+
 
 ! ============================================================
 ! ===            Internal procedure ("PRIVATE")            ===
@@ -404,7 +388,7 @@ MODULE moduleFile
 !     - - -
       CALL internalDefineLogicalUnit()
       CALL internalDefineFileName(' ')
-      CALL internalDefineFormType(true)
+      CALL internalDefineFormType(GHER)
       CALL setIsLinked(false)
       CALL setIsOpened(false)
 
@@ -509,7 +493,7 @@ MODULE moduleFile
 
 !     Declaration
 !     - - - - - -
-      CHARACTER(LEN = fileNameMaxLength) :: name
+      CHARACTER(LEN=maxFileLengthName) :: name
 
 !     Body
 !     - - -
@@ -561,7 +545,7 @@ MODULE moduleFile
 
 !     Declaration
 !     - - - - - -
-      LOGICAL, INTENT(IN) :: choice
+      TYPE(fileFormatType), INTENT(IN) :: choice
 
 !     Body
 !     - - -
@@ -570,4 +554,5 @@ MODULE moduleFile
    END SUBROUTINE
 
    
+
 END MODULE moduleFile
