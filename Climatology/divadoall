@@ -89,6 +89,8 @@ declare -i depthm
 
 
 echo Making sure files are in unix format
+
+dos2unix -q ./input/param.par
 dos2unix ./input/contour.depth
 dos2unix varlist
 dos2unix yearlist
@@ -224,7 +226,7 @@ if [ "$isUVcst" == "1" ];then
  rm -r ./input/divaUVcons
  rm -f ./input/constraint.dat
  fi
- mkdir ./input/divaUVcons
+ mkdir -p ./input/divaUVcons
  let lev=0+$minlevel
  let maxlevel=0+$maxlevel
  while [ "$lev" -le "$maxlevel" ]
@@ -264,7 +266,7 @@ if [ "$isref" == "1" ];then
  if [ -d ./input/divarefe ]; then
  rm -r ./input/divarefe
  fi
- mkdir ./input/divarefe
+ mkdir -p ./input/divarefe
  let lev=0+$minlevel
  let maxlevel=0+$maxlevel
  while [ "$lev" -le "$maxlevel" ]
@@ -395,7 +397,7 @@ if [ "$isanalysis" -eq "2" ] ;then
 if [ -d ./input/divarefe_all ];then
 echo '>>>WARNING: ./input/divarefe_all exists, files may be rewritten'
 else
-mkdir ./input/divarefe_all
+mkdir -p ./input/divarefe_all
 fi
 fi
 
