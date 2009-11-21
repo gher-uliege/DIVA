@@ -13,17 +13,15 @@ MODULE moduleChrono
 
 ! Include file
 ! ============
-#ifndef _MODULE_CHRONO_
-#define _MODULE_CHRONO_
-   include 'chrono.h'
-   include 'ioParameter.h'
-   include 'logicalParameter.h'
-#endif
+   INCLUDE 'chrono.h'
+   INCLUDE 'ioParameter.h'
+   INCLUDE 'logicalParameter.h'
+
 
 ! Declaration
 ! ===========
-   Type(Chronometer), PRIVATE :: internalChronometer
-   Type(Chronometer), PRIVATE, POINTER :: workingChronometer => NULL()
+   TYPE(Chronometer), PRIVATE :: internalChronometer
+   TYPE(Chronometer), PRIVATE, POINTER :: workingChronometer => NULL()
 
 ! Procedures status
 ! =================

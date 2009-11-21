@@ -53,4 +53,3 @@ Kind='_INTEGER_' ; export Kind
 $divaDir/compileFile vectorInterface.f95 vectorInterface
 
 mv *.mod $divaModuleLib
-mv *.o $divaModuleLib

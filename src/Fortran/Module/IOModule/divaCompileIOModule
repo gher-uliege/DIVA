@@ -82,8 +82,9 @@ export preproFlag
 
 $divaDir/compileFile moduleRead.f95 $moduleRead
 
+$divaDir/compileFile ioInterface.f95 ioInterface
+
 mv *.mod $divaModuleLib
-mv *.o $divaModuleLib
 
 cd $baseDir
 

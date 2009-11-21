@@ -11,6 +11,7 @@ echo ' '
 
 divaDir=$PWD
 divaModuleLib=$divaDir/Module/lib
+
 OSused=`uname -s`
 
 if [ "$OSused" != Linux ]

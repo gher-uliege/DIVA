@@ -135,4 +135,3 @@ VARType='INTEGER(KIND=8)' ; export VARType
 ./compileGenericFirstStep
 
 mv *.mod $divaModuleLib
-mv *.o $divaModuleLib

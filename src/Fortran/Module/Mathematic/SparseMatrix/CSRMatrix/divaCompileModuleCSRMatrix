@@ -64,4 +64,3 @@ Kind='_INTEGER_' ; export Kind
 ./compileCSRMatrix
 
 mv *.mod $divaModuleLib
-mv *.o $divaModuleLib

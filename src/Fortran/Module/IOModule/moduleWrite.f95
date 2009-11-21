@@ -59,7 +59,7 @@ MODULE moduleWrite
       INTEGER, INTENT(IN) :: nbOfDataI, nbOfDataJ, nbOfDataK, iprecision
       INTEGER, INTENT(INOUT) :: nbOfWords
       REAL(KIND=4), INTENT(IN) :: exclusionValue
-      VARType, DIMENSIOn(:), INTENT(IN) :: entries
+      VARType, DIMENSION(:), INTENT(IN) :: entries
 
       LOGICAL :: checkWritingProcedure, fileFormat
       INTEGER :: i1, i2, i3, numberOfFullRecord, remainingWords, logicalUnit, icheckError

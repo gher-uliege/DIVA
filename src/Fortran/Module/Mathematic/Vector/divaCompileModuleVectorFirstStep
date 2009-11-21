@@ -50,4 +50,3 @@ Kind='_INTEGER_' ; export Kind
 
 
 mv *.mod $divaModuleLib
-mv *.o $divaModuleLib

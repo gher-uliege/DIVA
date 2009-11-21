@@ -27,3 +27,11 @@ libraryObj=$divaModuleLib/*.o
 
 export libraryDir
 export libraryObj
+
+# Definition of the library directory
+# ====================================
+libraryPath='-L'$divaModuleLib
+libraryLink='-ldiva '
+
+export libraryPath
+export libraryLink

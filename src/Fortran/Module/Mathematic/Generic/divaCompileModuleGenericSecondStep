@@ -140,4 +140,3 @@ Kind='_INTEGER_' ; export Kind
 ./compileGenericSecondStep
 
 mv *.mod $divaModuleLib
-mv *.o $divaModuleLib

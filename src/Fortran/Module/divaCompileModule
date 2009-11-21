@@ -13,18 +13,18 @@ baseDir=$PWD
 
 rm -f $divaModuleLib/*
 
-# Compilation of Mathematic module
-# =================================
-
-cd $baseDir/Mathematic
-#./divaCompileModuleMathematic
-
-
 # Compilation of IO module
 # ========================
 
 cd $baseDir/IOModule
 ./divaCompileIOModule
+
+# Compilation of Mathematic module
+# =================================
+
+cd $baseDir/Mathematic
+./divaCompileModuleMathematic
+
 
 # Compilation of General module
 # =============================

@@ -29,7 +29,7 @@ MODULE moduleRead
 !  General part
 !  ------------
    PUBLIC :: readData
-   PRIVATE :: defineNumberOfWords, readInternalData
+   PRIVATE :: defineNumberOfWords, readInternalData,checkDimensionValue, verifMatrixDimension
 
 ! ============================================================
 ! ============================================================
@@ -225,5 +225,40 @@ MODULE moduleRead
 
 
    END SUBROUTINE
+
+! Procedure 4 : check if matrix dimensions are correct
+! -----------------------------------------------------
+  SUBROUTINE checkDimensionValue(nbOfDataI,nbOfDataJ,nbOfDataK,isMatrixRegular)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(INOUT) :: nbOfDataI, nbOfDataJ, nbOfDataK
+
+      LOGICAL, INTENT(OUT) :: isMatrixRegular
+
+!     Body
+!     - - -
+      isMatrixRegular = ( nbOfDataI > izero ).AND.( nbOfDataJ > izero ) .AND. ( nbOfDataK > izero )
+      CALL verifMatrixDimension(nbOfDataI)
+      CALL verifMatrixDimension(nbOfDataJ)
+      CALL verifMatrixDimension(nbOfDataK)
+
+  END SUBROUTINE
+
+! Procedure 5 : change matrix dimensions if needed
+! -------------------------------------------------
+  SUBROUTINE verifMatrixDimension(size)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(INOUT) :: size
+
+!     Body
+!     - - -
+      IF ( size < izero ) THEN
+         size = iminusone * size
+      END IF
+
+  END SUBROUTINE
 
 END MODULE moduleRead

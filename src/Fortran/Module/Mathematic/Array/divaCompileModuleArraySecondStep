@@ -53,4 +53,3 @@ Kind='_INTEGER_' ; export Kind
 $divaDir/compileFile array3DInterface.f95 array3DInterface
 
 mv *.mod $divaModuleLib
-mv *.o $divaModuleLib

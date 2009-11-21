@@ -13,7 +13,7 @@ MODULE moduleDIVA
 
 ! Include file
 ! ============
-   USE logicalUnitManager, initialiseLogicalUnitManager => initialiseDefault, deleteLogicalUnitDataBase => destructor
+   USE logicalUnitManager, ONLY : initialiseLogicalUnitManager => initialiseDefault, deleteLogicalUnitDataBase => destructor
    USE moduleChrono, ONLY : initialiseChrono => initialise
    USE moduleNorm
    USE moduleInsertValueMethod

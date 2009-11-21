@@ -72,4 +72,3 @@ Kind='_INTEGER_' ; export Kind
 $divaDir/compileFile rowCSRMatrixInterface.f95 rowCSRMatrixInterface
 
 mv *.mod $divaModuleLib
-mv *.o $divaModuleLib
