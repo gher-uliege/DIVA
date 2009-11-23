@@ -22,6 +22,10 @@ preproFlag=''
 associateDir='-I'$divaDir'/Module/IOModule '
 export preproFlag
 export associateDir
+libName=libdiva.a
+export libName
+
+rm -f $divaModuleLib/$libName
 
 for ii in `ls *.f95`
 do

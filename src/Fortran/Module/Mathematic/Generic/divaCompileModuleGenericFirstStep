@@ -3,6 +3,11 @@
 rm -f *.o
 rm -f *.mod
 
+libName=libMath.a
+export libName
+
+rm -f $divaModuleLib/$libName
+
 # Compilation of : moduleNorm
 # ===========================
 $divaDir/compileFile moduleNorm.f95 moduleNorm

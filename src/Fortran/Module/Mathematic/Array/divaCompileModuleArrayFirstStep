@@ -3,6 +3,11 @@
 rm -f *.o
 rm -f *.mod
 
+libName=libArray.a
+export libName
+
+rm -f $divaModuleLib/$libName
+
 # Compilation of : ArrayReal4
 # ============================
 arrayType='arrayReal4' ; export arrayType

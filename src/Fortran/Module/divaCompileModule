@@ -11,26 +11,38 @@ echo ' '
 
 baseDir=$PWD
 
-rm -f $divaModuleLib/*
+_WITH_IO_=1 ; export _WITH_IO_
+_WITH_MATH_=0 ; export _WITH_MATH_
+_WITH_DIVA_=0 ; export _WITH_DIVA_ 
+
+rm -f $divaModuleLib/*.o
 
 # Compilation of IO module
 # ========================
 
+if [ $_WITH_IO_ == 1 ]
+then
 cd $baseDir/IOModule
 ./divaCompileIOModule
+fi
 
 # Compilation of Mathematic module
 # =================================
 
+if [ $_WITH_MATH_ == 1 ]
+then
 cd $baseDir/Mathematic
 ./divaCompileModuleMathematic
-
+fi
 
 # Compilation of General module
 # =============================
 
+if [ $_WITH_DIVA_ == 1 ]
+then
 cd $baseDir/General
 ./divaCompileModuleGeneral
+fi
 
 cd $baseDir
 

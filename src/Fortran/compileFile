@@ -16,11 +16,11 @@ then
 cp $1 $1.f90
 $compiler $flag -c $preprocessor $preprocessorFlag $library $1.f90 -o $2.o
 rm $1.f90
-xiar -csr $divaDir/Module/lib/libdiva.a $2.o
+xiar -csr $divaDir/Module/lib/$libName $2.o
 rm $2.o
 else
 $compiler $flag -c $preprocessor $preprocessorFlag $library $1 -o $2.o
-ar -csr $divaDir/Module/lib/libdiva.a $2.o
+ar -csr $divaDir/Module/lib/$libName $2.o
 rm $2.o
 fi
 

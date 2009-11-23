@@ -3,6 +3,11 @@
 rm -f *.o
 rm -f *.mod
 
+libName=libVector.a
+export libName
+
+rm -f $divaModuleLib/$libName
+
 # Compilation of : VectorReal4
 # ============================
 arrayType='vectorReal4' ; export arrayType

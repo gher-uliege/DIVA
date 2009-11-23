@@ -3,6 +3,9 @@
 rm -f *.o
 rm -f *.mod
 
+libName=libMath.a
+export libName
+
 # Compilation of : VectorReal4
 # ============================
 arrayType='vectorReal4' ; export arrayType

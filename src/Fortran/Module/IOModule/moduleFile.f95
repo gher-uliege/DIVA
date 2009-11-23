@@ -25,11 +25,11 @@ MODULE moduleFile
 
 ! Procedures status
 ! =================
-   PUBLIC :: initialiseFile, defineFile, defineFileName, defineLogicalUnit, printInformation, openFile, closeFile, isFileOpened, &
+   PUBLIC :: initialiseFile, defineFileName, printInformation, openFile, closeFile, isFileOpened, &
              createFile, getFileUnit, defineFileFormat, getFileFormat
    PRIVATE :: setWorkingFile, internalInitialise, internalDefineFileName, internalDefineLogicalUnit, internalPrintInformation, &
               setIsLinked, isFileLinked, getLogicalUnit, getFileName, setIsOpened, internalIsFileOpened, nullify, &
-              internalDefineFormType
+              internalDefineFormType, defineFile, defineLogicalUnit
 
 ! ============================================================
 ! ============================================================
@@ -69,12 +69,12 @@ MODULE moduleFile
 
 ! Procedure 2 : defining file name
 ! --------------------------------
-   SUBROUTINE defineFile(targetFile,name,unit,formType)
+   SUBROUTINE defineFile(targetFile,unit,name,formType)
 
 !     Declaration
 !     - - - - - -
       CHARACTER(*), OPTIONAL, INTENT(IN) :: name
-      TYPE(logicalUnit), OPTIONAL, POINTER     :: unit
+      TYPE(logicalUnit), POINTER     :: unit
       TYPE(fileFormatType), OPTIONAL, INTENT(IN) :: formType
 
 !     Pointer filling procedure
@@ -86,12 +86,16 @@ MODULE moduleFile
 !     - - -
       IF ( PRESENT(name) ) THEN
          CALL internalDefineFileName(name)
+      ELSE
+         CALL internalDefineFileName('noName')
       END IF
-      IF ( PRESENT(unit) ) THEN
-         CALL internalDefineLogicalUnit(unit)
-      END IF
+
+      CALL internalDefineLogicalUnit(unit)
+
       IF ( PRESENT(formType) ) THEN
          CALL internalDefineFormType(formType)
+      ELSE
+         CALL internalDefineFormType(GHER)
       ENDIF
 
 !     Nullify pointer
@@ -275,19 +279,18 @@ MODULE moduleFile
 
 ! Procedure 9 : creating new file
 ! -------------------------------
-   SUBROUTINE createFile(targetFile,name,unit,formType)
+   SUBROUTINE createFile(targetFile,name,formType)
 
 !     Declaration
 !     - - - - - -
       CHARACTER(*), OPTIONAL, INTENT(IN) :: name
-      TYPE(logicalUnit), OPTIONAL, POINTER     :: unit
       TYPE(file), INTENT(INOUT) :: targetFile
       TYPE(fileFormatType), OPTIONAL, INTENT(IN) :: formType
 
 !     Body
 !     - - -
       CALL initialiseFile(targetFile)
-      CALL defineFile(targetFile,name,unit,formType)
+      CALL defineFile(targetFile,getLogicalUnitFromUnitManager(),name,formType)
 
    END SUBROUTINE
 
@@ -359,7 +362,6 @@ MODULE moduleFile
       CALL nullify()
 
   END FUNCTION
-
 
 ! ============================================================
 ! ===            Internal procedure ("PRIVATE")            ===

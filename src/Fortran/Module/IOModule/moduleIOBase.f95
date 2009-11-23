@@ -165,10 +165,11 @@ MODULE moduleIOBase
 
 ! Procedure 2 : write KBLANC at the beginning of the file
 ! -------------------------------------------------------
-  FUNCTION writeBLANK() RESULT (icheckError)
+  FUNCTION writeBLANK(unitToWrite) RESULT (icheckError)
 
 !     Declaration
 !     - - - - - -
+      INTEGER, INTENT(IN) :: unitToWrite
       INTEGER :: icheckError
       INTEGER :: i1
 
@@ -179,11 +180,11 @@ MODULE moduleIOBase
       SELECT CASE (formType)
         CASE (true)
            DO i1 = 1 , KBLANC
-              WRITE(unit,*,ERR=99)
+              WRITE(unitToWrite,*,ERR=99)
            END DO
         CASE (false)
            DO i1 = 1 , KBLANC
-              WRITE(unit,ERR=99)
+              WRITE(unitToWrite,ERR=99)
            END DO
       END SELECT
 
@@ -206,10 +207,11 @@ MODULE moduleIOBase
 
 ! Procedure 4 : read KBLanc at the beginning of the file
 ! -------------------------------------------------------
-  FUNCTION readBLANK() RESULT(icheckError)
+  FUNCTION readBLANK(unitToRead) RESULT(icheckError)
 
 !     Declaration
 !     - - - - - -
+      INTEGER, INTENT(IN) :: unitToRead
       INTEGER :: icheckError
 
       INTEGER :: i1
@@ -221,11 +223,11 @@ MODULE moduleIOBase
       SELECT CASE (formType)
         CASE (true)
            DO i1 = 1 , KBLANC
-              READ(unit,*,ERR=99,END=99)
+              READ(unitToRead,*,ERR=99,END=99)
            END DO
         CASE (false)
            DO i1 = 1 , KBLANC
-              READ(unit,ERR=99,END=99)
+              READ(unitToRead,ERR=99,END=99)
            END DO
       END SELECT
 

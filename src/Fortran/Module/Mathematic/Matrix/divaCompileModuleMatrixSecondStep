@@ -3,6 +3,9 @@
 rm -f *.o
 rm -f *.mod
 
+libName=libMatrix.a
+export libName
+
 # Compilation of : MatrixReal4
 # ============================
 arrayType='matrixReal4' ; export arrayType

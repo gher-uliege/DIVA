@@ -28,7 +28,7 @@ MODULE moduleWrite
 
 !  General part
 !  ------------
-   PUBLIC :: writeData
+   PUBLIC :: writeVector, writeMatrix, writeArray, writeData
    PRIVATE :: defineNumberOfWords, fillinNaNWithExclusionValue
 
 ! ============================================================
@@ -44,32 +44,130 @@ MODULE moduleWrite
 ! ============================================================
  CONTAINS
 
-
 ! =============================================================
 ! ===            Internal procedure ("PUBLIC")  : Others    ===
 ! =============================================================
 
-! Procedure 1 : uwritc
-! --------------------
-   SUBROUTINE writeData(fileToWrite,entries,exclusionValue,iprecision,nbOfDataI,nbOfDataJ,nbOfDataK,nbOfWords)
+! Procedure 1 : writeVector
+! -------------------------
+  SUBROUTINE writeVector(fileToWrite,entries,exclusionValue,nbOfDataI,nbOfWords)
 
 !     Declaration
 !     - - - - - -
-      TYPE(file), POINTER :: fileToWrite
-      INTEGER, INTENT(IN) :: nbOfDataI, nbOfDataJ, nbOfDataK, iprecision
-      INTEGER, INTENT(INOUT) :: nbOfWords
+      TYPE(file), TARGET :: fileToWrite
+      INTEGER, INTENT(IN) :: nbOfDataI
+      INTEGER, OPTIONAL, INTENT(INOUT) :: nbOfWords
       REAL(KIND=4), INTENT(IN) :: exclusionValue
       VARType, DIMENSION(:), INTENT(IN) :: entries
 
-      LOGICAL :: checkWritingProcedure, fileFormat
-      INTEGER :: i1, i2, i3, numberOfFullRecord, remainingWords, logicalUnit, icheckError
+      INTEGER :: nbOfDataJ, nbOfDataK, iprecision
 
 !     Body
 !     - - -
+#ifdef _REAL4_
+      iprecision = ifour
+#endif
+#ifdef _REAL8_
+      iprecision = ieight
+#endif
+
+      nbOfDataJ = ione
+      nbOfDataK = ione
+
       CALL setFile(fileToWrite)
+      CALL openFile()
+      CALL writeData(getLogicalUnit(),entries,exclusionValue,iprecision,nbOfDataI,nbOfDataJ,nbOfDataK,nbOfWords)
+      CALL closeFile()
+
+  END SUBROUTINE
+
+! Procedure 2 : writeMatrix
+! -------------------------
+  SUBROUTINE writeMatrix(fileToWrite,entries,exclusionValue,nbOfDataI,nbOfDataJ,nbOfWords)
+
+!     Declaration
+!     - - - - - -
+      TYPE(file), TARGET :: fileToWrite
+      INTEGER, INTENT(IN) :: nbOfDataI, nbOfDataJ
+      INTEGER, OPTIONAL, INTENT(INOUT) :: nbOfWords
+      REAL(KIND=4), INTENT(IN) :: exclusionValue
+      VARType, DIMENSION(:,:), INTENT(IN) :: entries
+
+      INTEGER :: nbOfDataK, iprecision
+
+!     Body
+!     - - -
+#ifdef _REAL4_
+      iprecision = ifour
+#endif
+#ifdef _REAL8_
+      iprecision = ieight
+#endif
+
+      nbOfDataK = ione
+
+      CALL setFile(fileToWrite)
+      CALL openFile()
+      CALL writeData(getLogicalUnit(),entries,exclusionValue,iprecision,nbOfDataI,nbOfDataJ,nbOfDataK,nbOfWords)
+      CALL closeFile()
+
+  END SUBROUTINE
+
+! Procedure 3 : writeArray
+! -------------------------
+  SUBROUTINE writeArray(fileToWrite,entries,exclusionValue,nbOfDataI,nbOfDataJ,nbOfDataK,nbOfWords)
+
+!     Declaration
+!     - - - - - -
+      TYPE(file), TARGET :: fileToWrite
+      INTEGER, INTENT(IN) :: nbOfDataI, nbOfDataJ, nbOfDataK
+      INTEGER, OPTIONAL, INTENT(INOUT) :: nbOfWords
+      REAL(KIND=4), INTENT(IN) :: exclusionValue
+      VARType, DIMENSION(:,:,:), INTENT(IN) :: entries
+
+      INTEGER :: iprecision
+
+!     Body
+!     - - -
+#ifdef _REAL4_
+      iprecision = ifour
+#endif
+#ifdef _REAL8_
+      iprecision = ieight
+#endif
+
+      CALL setFile(fileToWrite)
+      CALL openFile()
+      CALL writeData(getLogicalUnit(),entries,exclusionValue,iprecision,nbOfDataI,nbOfDataJ,nbOfDataK,nbOfWords)
+      CALL closeFile()
+
+  END SUBROUTINE
+
+! Procedure 4 : uwritc
+! --------------------
+   SUBROUTINE writeData(logicalUnit,entries,exclusionValue,iprecision,nbOfDataI,nbOfDataJ,nbOfDataK,nbOfWordsOutput)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: logicalUnit
+      INTEGER, INTENT(IN) :: nbOfDataI, nbOfDataJ, nbOfDataK, iprecision
+      INTEGER, OPTIONAL, INTENT(INOUT) :: nbOfWordsOutput
+      REAL(KIND=4), INTENT(IN) :: exclusionValue
+      VARType, INTENT(IN) :: entries(*)
+
+      LOGICAL :: checkWritingProcedure, fileFormat
+      INTEGER :: i1, i2, i3, numberOfFullRecord, remainingWords, icheckError, nbOfWords
+
+!     Body
+!     - - -
 
       checkWritingProcedure = ( nbOfDataI > izero ).AND.( nbOfDataJ > izero ) .AND. ( nbOfDataK > izero )
-      logicalUnit = getLogicalUnit()
+      IF ( PRESENT(nbOfWordsOutput) ) THEN
+         nbOfWords = nbOfWordsOutput
+      ELSE
+         nbOfWords = iminusone
+      END IF
+
       fileFormat = getFileFormType()
 
 !        Define writing value if normal field or degenerated
@@ -85,8 +183,7 @@ MODULE moduleWrite
 
 !        Write "KBLANC" in the beginning of the file (user could use them)
 !        --  --  --  --  --  --  --  --  --  --  --  --  --  --  -- -- -- --
-      CALL openFile()
-      icheckError = writeBLANK()
+      icheckError = writeBLANK(logicalUnit)
 
       IF ( icheckError == ione ) THEN
          GOTO 99
@@ -129,7 +226,11 @@ MODULE moduleWrite
            WRITE(logicalUnit,ERR=99) ( ( entries(i2+i3) ) , i3 = 1 , remainingWords )
       END SELECT
 
-      CALL closeFile()
+RETURN
+
+      IF ( PRESENT(nbOfWordsOutput) ) THEN
+          nbOfWordsOutput = nbOfWords
+      END IF
 
       RETURN
 
@@ -138,15 +239,19 @@ MODULE moduleWrite
       WRITE(stdOutput,*) 'Data error in UWRITC, not a conform file'
       WRITE(stdOutput,*) 'imaxc,jmaxc,kmaxc,iprec,nbmots,valexc'
       WRITE(stdOutput,*) nbOfDataI,nbOfDataJ,nbOfDataK,iprecision,nbOfWords,exclusionValue
-      CALL closeFile()
+
+      IF ( PRESENT(nbOfWordsOutput) ) THEN
+          nbOfWordsOutput = nbOfWords
+      END IF
 
    END SUBROUTINE
 
 ! =============================================================
-! ===            Internal procedure ("PRIVATE")  : Others   ===
+! ===            Internal procedure ("PRIVATE") : Others    ===
 ! =============================================================
 
-! Procedure 1 : define the number of words to write
+
+! Procedure 2 : define the number of words to write
 ! -------------------------------------------------
    SUBROUTINE defineNumberOfWords(nbOfDataI,nbOfDataJ,nbOfDataK,nbOfWords)
 
@@ -157,13 +262,13 @@ MODULE moduleWrite
 
 !     Body
 !     - - -
-      IF ( nbOfWords == iminusone ) THEN
+      IF ( nbOfWords <= izero ) THEN
          nbOfWords = nbOfDataI * nbOfDataJ * nbOfDataK
       END IF
 
    END SUBROUTINE
 
-! Procedure 2 : replacing not-a-number value in the field with exclusion value
+! Procedure 3 : replacing not-a-number value in the field with exclusion value
 ! -----------------------------------------------------------------------------
    SUBROUTINE fillinNaNWithExclusionValue(entries,exclusionValue,nbOfWords)
 
@@ -171,7 +276,7 @@ MODULE moduleWrite
 !     - - - - - -
       INTEGER, INTENT(IN) :: nbOfWords
       REAL(KIND=4), INTENT(IN) :: exclusionValue
-      VARType, DIMENSION(:), INTENT(IN), TARGET :: entries
+      VARType, INTENT(IN), TARGET :: entries(*)
 
       VARType, POINTER :: ptr
       INTEGER :: icheck, i1
@@ -200,45 +305,22 @@ MODULE moduleWrite
 
    END SUBROUTINE
 
-! Procedure 3 : check if value is not a number (only for GFORTRAN)
+! Procedure 4 : check if value is not a number (only for GFORTRAN)
 ! -----------------------------------------------------------------
 #ifdef _GFORTRAN_
   FUNCTION isNotANumber(value) RESULT(check)
 
 !     Declaration
 !     - - - - - -
-      VARType :: numerator, denominator, ratio
       VARType, INTENT(IN) :: value
       LOGICAL :: check
 
 !     Body
 !     - - -
-      check = false
+      check = true
 
-      numerator = 1.
-      denominator = 0.
-      ratio = numerator / denominator
-      IF ( value == ratio ) THEN
-         check = true
-         RETURN
-      END IF
-
-      ratio = (-1.) * ratio
-      IF ( value == ratio ) THEN
-         check = true
-         RETURN
-      END IF
-
-      numerator = 0.
-      ratio = numerator / denominator
-      IF ( value == ratio ) THEN
-         check = true
-         RETURN
-      END IF
-
-      ratio = (-1.) * ratio
-      IF ( value == ratio ) THEN
-         check = true
+      IF ( ( value - value ) /= 0 ) THEN
+         check = false
          RETURN
       END IF
 

@@ -11,19 +11,22 @@ rm -f *.$OSused
 # Testing vector
 # ==============
 
-./testDivaVector
+#./testDivaVector
 
 
 # Testing matrix
 # ==============
 
-./testDivaMatrix
+#./testDivaMatrix
 
 # Testing array
 # ==============
 
-./testDivaArray
+#./testDivaArray
 
+# Testinf IO
+# ==========
+./testDivaIO
 
 cd $baseDir
 

@@ -3,6 +3,9 @@
 rm -f *.o
 rm -f *.mod
 
+libName=libArray.a
+export libName
+
 # Compilation of : ArrayReal4
 # ============================
 arrayType='arrayReal4' ; export arrayType
