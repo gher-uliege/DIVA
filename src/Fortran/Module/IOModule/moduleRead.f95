@@ -352,6 +352,18 @@ PRINT*,'je passe ici'
       VARType, DIMENSION(:,:), POINTER :: realMatrixEntries
       VARType, DIMENSION(:,:,:), POINTER :: realArrayEntries
 
+#if _REAL4_
+      REAL(KIND=8), DIMENSION(:), POINTER :: realVectorEntries8
+      REAL(KIND=8), DIMENSION(:,:), POINTER :: realMatrixEntries8
+      REAL(KIND=8), DIMENSION(:,:,:), POINTER :: realArrayEntries8
+#endif
+
+#ifdef _REAL8_
+      REAL(KIND=4), DIMENSION(:), POINTER :: realVectorEntries4
+      REAL(KIND=4), DIMENSION(:,:), POINTER :: realMatrixEntries4
+      REAL(KIND=4), DIMENSION(:,:,:), POINTER :: realArrayEntries4
+#endif
+
 !     Body
 !     - - -
       SELECT CASE (checkArrayType)
@@ -365,15 +377,21 @@ PRINT*,'je passe ici'
                 CALL readInternalData(logicalUnit,fileFormat,realVectorEntries,numberOfFullRecord,nbOfWords,&
                                   remainingWords,icheckError,icheckEnd)
             ELSEIF ( iprecision == ieight ) THEN
-                CALL readInternalDataBis(logicalUnit,fileFormat,REAL(realVectorEntries,KIND=8),numberOfFullRecord,nbOfWords,&
+                ALLOCATE(realVectorEntries8(1:nbOfDataI))
+                CALL readInternalDataBis(logicalUnit,fileFormat,realVectorEntries8,numberOfFullRecord,nbOfWords,&
                                   remainingWords,icheckError,icheckEnd)
+                realVectorEntries(1:NbOfDataI) = realVectorEntries8(1:nbOfDataI)
+                DEALLOCATE(realVectorEntries8)
             END IF
 #endif
 
 #if _REAL8_
             IF ( iprecision == ifour ) THEN
-                CALL readInternalDataBis(logicalUnit,fileFormat,REAL(realVectorEntries,KIND=4),numberOfFullRecord,nbOfWords,&
+                ALLOCATE(realVectorEntries4(1:nbOfDataI))
+                CALL readInternalDataBis(logicalUnit,fileFormat,realVectorEntries4,numberOfFullRecord,nbOfWords,&
                                   remainingWords,icheckError,icheckEnd)
+                realVectorEntries(1:NbOfDataI) = realVectorEntries4(1:nbOfDataI)
+                DEALLOCATE(realVectorEntries4)
             ELSEIF ( iprecision == ieight ) THEN
                 CALL readInternalData(logicalUnit,fileFormat,realVectorEntries,numberOfFullRecord,nbOfWords,&
                                   remainingWords,icheckError,icheckEnd)
@@ -386,15 +404,21 @@ PRINT*,'je passe ici'
                 CALL readInternalData(logicalUnit,fileFormat,realMatrixEntries,numberOfFullRecord,nbOfWords,&
                                   remainingWords,icheckError,icheckEnd)
             ELSEIF ( iprecision == ieight ) THEN
-                CALL readInternalDataBis(logicalUnit,fileFormat,REAL(realMatrixEntries,KIND=8),numberOfFullRecord,nbOfWords,&
+                ALLOCATE(realMatrixEntries8(1:nbOfDataI,1:nbOfDataJ))
+                CALL readInternalDataBis(logicalUnit,fileFormat,realMatrixEntries8,numberOfFullRecord,nbOfWords,&
                                   remainingWords,icheckError,icheckEnd)
+                realMatrixEntries(1:nbOfDataI,1:nbOfDataJ) = realMatrixEntries8(1:nbOfDataI,1:nbOfDataJ)
+                DEALLOCATE(realMatrixEntries8)
             END IF
 #endif
 
 #if _REAL8_
             IF ( iprecision == ifour ) THEN
-                CALL readInternalDataBis(logicalUnit,fileFormat,REAL(realMatrixEntries,KIND=4),numberOfFullRecord,nbOfWords,&
+                ALLOCATE(realMatrixEntries4(1:nbOfDataI,1:nbOfDataJ))
+                CALL readInternalDataBis(logicalUnit,fileFormat,realMatrixEntries4,numberOfFullRecord,nbOfWords,&
                                   remainingWords,icheckError,icheckEnd)
+                realMatrixEntries(1:nbOfDataI,1:nbOfDataJ) = realMatrixEntries4(1:nbOfDataI,1:nbOfDataJ)
+                DEALLOCATE(realMatrixEntries4)
             ELSEIF ( iprecision == ieight ) THEN
                 CALL readInternalData(logicalUnit,fileFormat,realMatrixEntries,numberOfFullRecord,nbOfWords,&
                                   remainingWords,icheckError,icheckEnd)
@@ -408,15 +432,21 @@ PRINT*,'je passe ici'
                 CALL readInternalData(logicalUnit,fileFormat,realArrayEntries,numberOfFullRecord,nbOfWords,&
                                   remainingWords,icheckError,icheckEnd)
             ELSEIF ( iprecision == ieight ) THEN
-                CALL readInternalDataBis(logicalUnit,fileFormat,REAL(realArrayEntries,KIND=8),numberOfFullRecord,nbOfWords,&
+                ALLOCATE(realArrayEntries8(1:nbOfDataI,1:nbOfDataJ,1:nbOfDataK))
+                CALL readInternalDataBis(logicalUnit,fileFormat,realArrayEntries8,numberOfFullRecord,nbOfWords,&
                                   remainingWords,icheckError,icheckEnd)
+                realArrayEntries(1:nbOfDataI,1:nbOfDataJ,1:nbOfDataK) = realArrayEntries8(1:nbOfDataI,1:nbOfDataJ,1:nbOfDataK)
+                DEALLOCATE(realArrayEntries8)
             END IF
 #endif
 
 #if _REAL8_
             IF ( iprecision == ifour ) THEN
-                CALL readInternalDataBis(logicalUnit,fileFormat,REAL(realArrayEntries,KIND=4),numberOfFullRecord,nbOfWords,&
+                ALLOCATE(realArrayEntries4(1:nbOfDataI,1:nbOfDataJ,1:nbOfDataK))
+                CALL readInternalDataBis(logicalUnit,fileFormat,realArrayEntries4,numberOfFullRecord,nbOfWords,&
                                   remainingWords,icheckError,icheckEnd)
+                realArrayEntries(1:nbOfDataI,1:nbOfDataJ,1:nbOfDataK) = realArrayEntries4(1:nbOfDataI,1:nbOfDataJ,1:nbOfDataK)
+                DEALLOCATE(realArrayEntries4)
             ELSEIF ( iprecision == ieight ) THEN
                 CALL readInternalData(logicalUnit,fileFormat,realArrayEntries,numberOfFullRecord,nbOfWords,&
                                   remainingWords,icheckError,icheckEnd)
@@ -448,11 +478,40 @@ PRINT*,'je passe ici'
       VARType, DIMENSION(:,:), POINTER :: realMatrixEntries
       VARType, DIMENSION(:,:,:), POINTER :: realArrayEntries
 
+#if _REAL4_
+      REAL(KIND=8), DIMENSION(ifour) :: degeneratedField8
+#endif
+#if _REAL8_
+      REAL(KIND=4), DIMENSION(ifour) :: degeneratedField4
+#endif
+
 !     Body
 !     - - -
 
       CALL readInternalData(logicalUnit,fileFormat,degeneratedField,numberOfFullRecord,nbOfWords,&
                             remainingWords,icheckError,icheckEnd)
+
+#if _REAL4_
+            IF ( iprecision == ifour ) THEN
+                CALL readInternalData(logicalUnit,fileFormat,degeneratedField,numberOfFullRecord,nbOfWords,&
+                                  remainingWords,icheckError,icheckEnd)
+            ELSEIF ( iprecision == ieight ) THEN
+                CALL readInternalDataBis(logicalUnit,fileFormat,degeneratedField8,numberOfFullRecord,nbOfWords,&
+                                  remainingWords,icheckError,icheckEnd)
+                degeneratedField(:) = degeneratedField8(:)
+            END IF
+#endif
+#if _REAL8_
+            IF ( iprecision == ifour ) THEN
+                CALL readInternalDataBis(logicalUnit,fileFormat,degeneratedField4,numberOfFullRecord,nbOfWords,&
+                                  remainingWords,icheckError,icheckEnd)
+                degeneratedField(:) = degeneratedField4(:)
+            ELSEIF ( iprecision == ieight ) THEN
+                CALL readInternalData(logicalUnit,fileFormat,degeneratedField,numberOfFullRecord,nbOfWords,&
+                                  remainingWords,icheckError,icheckEnd)
+            END IF
+#endif
+
       CALL checkDimensionValue(nbOfDataI,nbOfDataJ,nbOfDataK)
 
       SELECT CASE (checkArrayType)
