@@ -28,8 +28,9 @@ MODULE moduleRead
 
 !  General part
 !  ------------
-   PUBLIC :: readData
-   PRIVATE :: defineNumberOfWords, readInternalData,checkDimensionValue, verifMatrixDimension
+   PUBLIC :: readDataOldFormat, readVector, readMatrix, readArray, getInformationToRead
+   PRIVATE :: readData, defineNumberOfWords, readInternalData, checkDimensionValue, verifMatrixDimension, readNormalField, &
+              readInternalDataBis, readDegeneratedField, fillDimension
 
 ! ============================================================
 ! ============================================================
@@ -43,11 +44,6 @@ MODULE moduleRead
 ! ============================================================
 ! ============================================================
  CONTAINS
-
-
-! =============================================================
-! ===            Internal procedure ("PUBLIC")  : Others    ===
-! =============================================================
 
 ! =============================================================
 ! ===            Internal procedure ("PUBLIC")  : Others    ===
@@ -152,19 +148,12 @@ MODULE moduleRead
 
 !     Body
 !     - - -
-      fileFormat = getFileFormType()
 
 !        read "KBLANC" in the beginning of the file (user could use them)
 !        --  --  --  --  --  --  --  --  --  --  --  --  --  --  -- -- -- --
-      icheckError = readBLANK(logicalUnit)
+      fileFormat = getFileFormType()
 
-      IF ( icheckError == ione ) THEN
-         GOTO 99
-      END IF
-
-!         read information on size, precision
-!         --  --  --  --  --  --  --  --  --  --
-      CALL defineNumberOfWords(logicalUnit,fileFormat,nbOfDataI,nbOfDataJ,nbOfDataK,iprecision,nbOfWords,&
+      CALL getInformationToRead(logicalUnit,nbOfDataI,nbOfDataJ,nbOfDataK,iprecision,nbOfWords,&
                                exclusionValue,icheckError)
 
       IF ( icheckError == ione ) THEN
@@ -290,7 +279,6 @@ MODULE moduleRead
       RETURN
 
 99    CONTINUE
-PRINT*,'je passe ici'
       icheckError = ione
       RETURN
 
@@ -368,6 +356,8 @@ PRINT*,'je passe ici'
 !     - - -
       SELECT CASE (checkArrayType)
         CASE (ione)
+            PRINT*,'je passe ici'
+            PRINT*,oldEntries(1:4),numberOfFullRecord,nbOfWords,remainingWords
             CALL readInternalData(logicalUnit,fileFormat,oldEntries,numberOfFullRecord,nbOfWords,&
                                   remainingWords,icheckError,icheckEnd)
         CASE (itwo)
@@ -480,16 +470,15 @@ PRINT*,'je passe ici'
 
 #if _REAL4_
       REAL(KIND=8), DIMENSION(ifour) :: degeneratedField8
+      degeneratedField8(:) = 0.
 #endif
 #if _REAL8_
       REAL(KIND=4), DIMENSION(ifour) :: degeneratedField4
+      degeneratedField4(:) = 0.
 #endif
 
 !     Body
 !     - - -
-
-      CALL readInternalData(logicalUnit,fileFormat,degeneratedField,numberOfFullRecord,nbOfWords,&
-                            remainingWords,icheckError,icheckEnd)
 
 #if _REAL4_
             IF ( iprecision == ifour ) THEN
@@ -583,8 +572,8 @@ PRINT*,'je passe ici'
 !     - - -
       ival = ione
       DO i3 = 1, nbOfDataK
-       DO i2 = 1, nbOfDataJ
         DO i1 = 1, nbOfDataI
+          DO i2 = 1, nbOfDataJ
            entries(ival) = origin + (i1-1) * dx + (i2-1) * dy + (i3-1) * dz
            ival = ival + ione
         END DO
@@ -616,7 +605,7 @@ PRINT*,'je passe ici'
 
   END SUBROUTINE
 
-! Procedure 3 : read data
+! Procedure 10 : read data
 ! ------------------------
   SUBROUTINE readInternalDataBis(logicalUnit,fileFormat,realEntries,numberOfFullRecord,nbOfWords,remainingWords,&
                               icheckError,icheckEnd)
@@ -669,5 +658,64 @@ PRINT*,'je passe ici'
 
    END SUBROUTINE
 
+! Procedure 11 : basic ureadc procedure
+! ------------------------------------
+   SUBROUTINE readDataOldFormat(logicalUnit,oldEntries,exclusionValue,nbOfDataIinput,nbOfDataJinput,nbOfDataKinput)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: logicalUnit
+      INTEGER, OPTIONAL, INTENT(OUT) :: nbOfDataIinput, nbOfDataJinput, nbOfDataKinput
+      REAL(KIND=4), INTENT(OUT) :: exclusionValue
+      VARType :: oldEntries(*)
+      VARType, DIMENSION(:), POINTER :: realVectorEntries
+      VARType, DIMENSION(:,:), POINTER :: realMatrixEntries
+      VARType, DIMENSION(:,:,:), POINTER :: realArrayEntries
+
+!     Body
+!     - - -
+      CALL readData(logicalUnit,realVectorEntries,realMatrixEntries,realArrayEntries,oldEntries,exclusionValue,&
+                       nbOfDataIinput,nbOfDataJinput,nbOfDataKinput)
+
+   END SUBROUTINE
+
+! Procedure 12 : get information to read value
+! --------------------------------------------
+   SUBROUTINE getInformationToRead(logicalUnit,nbOfDataI,nbOfDataJ,nbOfDataK,iprecision,nbOfWords,&
+                               exclusionValue,icheckErrorIn)
+
+!     Declaration
+!     - - - - - - -
+      INTEGER, INTENT(IN) :: logicalUnit
+      INTEGER, INTENT(OUT) :: nbOfDataI, nbOfDataJ, nbOfDataK
+      INTEGER, OPTIONAL, INTENT(OUT) :: icheckErrorIn
+      REAL(KIND=4), INTENT(OUT) :: exclusionValue
+      INTEGER :: icheckError
+
+      INTEGER, INTENT(OUT) :: iprecision, nbOfWords
+      LOGICAL :: fileFormat
+
+!     Body
+!     - - -
+
+      fileFormat = getFileFormType()
+      icheckError = readBLANK(logicalUnit)
+
+      IF ( icheckError == ione ) THEN
+         GOTO 99
+      END IF
+
+!         read information on size, precision
+!         --  --  --  --  --  --  --  --  --  --
+      CALL defineNumberOfWords(logicalUnit,fileFormat,nbOfDataI,nbOfDataJ,nbOfDataK,iprecision,nbOfWords,&
+                               exclusionValue,icheckError)
+
+99    CONTINUE
+
+      IF ( PRESENT(icheckErrorIn) ) THEN
+         icheckErrorIn = icheckError
+      END IF
+
+   END SUBROUTINE
 
 END MODULE moduleRead

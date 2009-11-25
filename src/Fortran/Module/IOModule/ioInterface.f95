@@ -18,10 +18,13 @@ MODULE ioInterface
    USE moduleIOBase, ONLY : setFileFormType
    USE moduleReadReal4, ONLY : readVectorReal4 => readVector, &
                                readMatrixReal4 => readMatrix, &
-                               readArrayReal4 => readArray
+                               readArrayReal4 => readArray, &
+                               readDataOldFormatReal4 => readDataOldFormat, &
+                               getInformationToRead
    USE moduleReadReal8, ONLY : readVectorReal8 => readVector, &
                                readMatrixReal8 => readMatrix, &
-                               readArrayReal8 => readArray
+                               readArrayReal8 => readArray, &
+                               readDataOldFormatReal8 => readDataOldFormat
    USE moduleWriteReal4, ONLY : writeVectorReal4 => writeVector, &
                                 writeMatrixReal4 => writeMatrix, &
                                 writeArrayReal4 => writeArray, &
@@ -88,6 +91,32 @@ MODULE ioInterface
          CALL writeDataReal4(fileUnit,entries4,exclusionValue,iprecision,nbOfDataI, nbOfDataJ, nbOfDataK, nbOfWords)
       ELSEIF ( iprecision == ieight ) THEN
          CALL writeDataReal8(fileUnit,entries8,exclusionValue,iprecision,nbOfDataI, nbOfDataJ, nbOfDataK, nbOfWords)
+      END IF
+
+  END SUBROUTINE
+
+! Procedure 1 : writeData to file
+! -------------------------------
+  SUBROUTINE ureadc(fileUnit,entries8,entries4,exclusionValue,iprecision,nbOfDataI, nbOfDataJ, nbOfDataK, nbOfWords)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: fileUnit
+      INTEGER, INTENT(OUT) :: nbOfWords, iprecision, nbOfDataI, nbOfDataJ, nbOfDataK
+      REAL(KIND=4), INTENT(OUT) :: exclusionValue
+      REAL(KIND=8), INTENT(OUT) :: entries8(*)
+      REAL(KIND=4), INTENT(OUT) :: entries4(*)
+
+!     Body
+!     - - -
+      CALL setFileFormType(GHER)
+      CALL getInformationToRead(fileUnit,nbOfDataI,nbOfDataJ,nbOfDataK,iprecision,nbOfWords,exclusionValue)
+      REWIND(fileUnit)
+      PRINT*,'iprecision ', iprecision
+      IF ( iprecision == ifour ) THEN
+         CALL readDataOldFormatReal4(fileUnit,entries4,exclusionValue,nbOfDataI,nbOfDataJ,nbOfDataK)
+      ELSEIF ( iprecision == ieight ) THEN
+         CALL readDataOldFormatReal8(fileUnit,entries8,exclusionValue,nbOfDataI,nbOfDataJ,nbOfDataK)
       END IF
 
   END SUBROUTINE

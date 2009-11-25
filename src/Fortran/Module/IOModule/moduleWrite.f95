@@ -174,6 +174,9 @@ MODULE moduleWrite
 !        --  --  --  --  --  --  --  --  --  --  --  --  --  --
       SELECT CASE (checkWritingProcedure)
         CASE (true)
+           IF ( nbOfWords <= izero ) THEN
+              nbOfWords = iminusone
+           END IF
            CALL defineNumberOfWords(nbOfDataI,nbOfDataJ,nbOfDataK,nbOfWords)
            CALL fillinNaNWithExclusionValue(entries,exclusionValue,nbOfDataI*nbOfDataJ*nbOfDataK)
            CALL computeInformationForNormalField(nbOfDataI*nbOfDataJ*nbOfDataK,nbOfWords,numberOfFullRecord,remainingWords)
