@@ -29,7 +29,7 @@ MODULE moduleFile
              createFile, getFileUnit, defineFileFormat, getFileFormat
    PRIVATE :: setWorkingFile, internalInitialise, internalDefineFileName, internalDefineLogicalUnit, internalPrintInformation, &
               setIsLinked, isFileLinked, getLogicalUnit, getFileName, setIsOpened, internalIsFileOpened, nullify, &
-              internalDefineFormType, defineFile, defineLogicalUnit
+              internalDefineFormType, internalDefineFile, defineLogicalUnit
 
 ! ============================================================
 ! ============================================================
@@ -67,45 +67,8 @@ MODULE moduleFile
       
    END SUBROUTINE
 
+
 ! Procedure 2 : defining file name
-! --------------------------------
-   SUBROUTINE defineFile(targetFile,unit,name,formType)
-
-!     Declaration
-!     - - - - - -
-      CHARACTER(*), OPTIONAL, INTENT(IN) :: name
-      TYPE(logicalUnit), POINTER     :: unit
-      TYPE(fileFormatType), OPTIONAL, INTENT(IN) :: formType
-
-!     Pointer filling procedure
-!     - - - - - - - - - - - - -
-      TYPE(file), INTENT(INOUT) :: targetFile
-      CALL setWorkingFile(targetFile)
-
-!     Body
-!     - - -
-      IF ( PRESENT(name) ) THEN
-         CALL internalDefineFileName(name)
-      ELSE
-         CALL internalDefineFileName('noName')
-      END IF
-
-      CALL internalDefineLogicalUnit(unit)
-
-      IF ( PRESENT(formType) ) THEN
-         CALL internalDefineFormType(formType)
-      ELSE
-         CALL internalDefineFormType(GHER)
-      ENDIF
-
-!     Nullify pointer
-!     - - - - - - - -
-      CALL nullify()
-
-   END SUBROUTINE
-
-
-! Procedure 3 : defining file name
 ! --------------------------------
    SUBROUTINE defineFileName(targetFile,name)
    
@@ -128,7 +91,7 @@ MODULE moduleFile
 
    END SUBROUTINE
 
-! Procedure 4 : link a logical unit to the file
+! Procedure 3 : link a logical unit to the file
 ! ---------------------------------------------
    SUBROUTINE defineLogicalUnit(targetFile,unit)
 
@@ -151,7 +114,7 @@ MODULE moduleFile
 
    END SUBROUTINE
 
-! Procedure 5 : print information on the file
+! Procedure 4 : print information on the file
 ! -------------------------------------------
    SUBROUTINE printInformation(targetFile)
 
@@ -170,7 +133,7 @@ MODULE moduleFile
 
    END SUBROUTINE
 
-! Procedure 6 : open a logical unit
+! Procedure 5 : open a logical unit
 ! ---------------------------------
    SUBROUTINE openFile(targetFile,checkError)
 
@@ -215,7 +178,7 @@ MODULE moduleFile
 
    END SUBROUTINE
 
-! Procedure 7 : close a logical unit
+! Procedure 6 : close a logical unit
 ! ----------------------------------
    SUBROUTINE closeFile(targetFile,checkError)
 
@@ -254,7 +217,7 @@ MODULE moduleFile
 
    END SUBROUTINE
    
-! Procedure 8 : information of the "opening" status of the file
+! Procedure 7 : information of the "opening" status of the file
 ! -------------------------------------------------------------
    FUNCTION isFileOpened(targetFile) RESULT(check)
 
@@ -277,24 +240,37 @@ MODULE moduleFile
 
    END FUNCTION
 
-! Procedure 9 : creating new file
+! Procedure 8 : creating new file
 ! -------------------------------
    SUBROUTINE createFile(targetFile,name,formType)
 
 !     Declaration
 !     - - - - - -
-      CHARACTER(*), OPTIONAL, INTENT(IN) :: name
-      TYPE(file), INTENT(INOUT) :: targetFile
+      CHARACTER(*), INTENT(IN) :: name
       TYPE(fileFormatType), OPTIONAL, INTENT(IN) :: formType
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(file), INTENT(INOUT) :: targetFile
+      CALL setWorkingFile(targetFile)
 
 !     Body
 !     - - -
-      CALL initialiseFile(targetFile)
-      CALL defineFile(targetFile,getLogicalUnitFromUnitManager(),name,formType)
+      CALL internalInitialise()
+
+      IF ( PRESENT(formType) ) THEN
+         CALL internalDefineFile(getLogicalUnitFromUnitManager(),name,formType)
+      ELSE
+         CALL internalDefineFile(getLogicalUnitFromUnitManager(),name,GHER)
+      END IF
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullify()
 
    END SUBROUTINE
 
-! Procedure 10 : get the logical unit number of the file
+! Procedure 9 : get the logical unit number of the file
 ! ------------------------------------------------------
    FUNCTION getFileUnit(targetFile) RESULT(unit1)
 
@@ -317,7 +293,7 @@ MODULE moduleFile
 
    END FUNCTION
 
-! Procedure 11 : defining file format
+! Procedure 10 : defining file format
 ! -----------------------------------
    SUBROUTINE defineFileFormat(targetFile,fileFormat)
 
@@ -340,7 +316,7 @@ MODULE moduleFile
 
    END SUBROUTINE
 
-! Procedure 12 : obtain the output format
+! Procedure 11 : obtain the output format
 ! ----------------------------------------
   FUNCTION getFileFormat(targetFile) RESULT(choice)
 
@@ -412,18 +388,20 @@ MODULE moduleFile
 
 ! Procedure 4 : file's logical unit definition
 ! --------------------------------------------
-   SUBROUTINE internalDefineLogicalUnit(unit)
+   SUBROUTINE internalDefineLogicalUnit(logicalTarget)
 
 !     Declaration
 !     - - - - - -
-      TYPE(logicalUnit), OPTIONAL, POINTER     :: unit
+      TYPE(logicalUnit), OPTIONAL, POINTER     :: logicalTarget
 
 !     Body
 !     - - -
-      IF ( PRESENT(unit) ) THEN
-           workingFile%logicalUnit => unit
+      IF ( PRESENT(logicalTarget) ) THEN
+           workingFile%logicalUnit%unit = logicalTarget%unit
+           workingFile%logicalUnit%isUsed = logicalTarget%isUsed
       ELSE
-           workingFile%logicalUnit => NULL()
+           workingFile%logicalUnit%unit =  0
+           workingFile%logicalUnit%isUsed = false
       END IF
       
       CALL setIsLinked(true)
@@ -555,6 +533,23 @@ MODULE moduleFile
 
    END SUBROUTINE
 
+! Procedure 14 : defining file name
+! --------------------------------
+   SUBROUTINE internalDefineFile(unit,name,formType)
+
+!     Declaration
+!     - - - - - -
+      CHARACTER(*), INTENT(IN) :: name
+      TYPE(logicalUnit), POINTER  :: unit
+      TYPE(fileFormatType), INTENT(IN) :: formType
+
+!     Body
+!     - - -
+      CALL internalDefineFileName(name)
+      CALL internalDefineLogicalUnit(unit)
+      CALL internalDefineFormType(formType)
+
+   END SUBROUTINE
    
 
 END MODULE moduleFile

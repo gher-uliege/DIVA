@@ -11,6 +11,9 @@ echo ' '
 
 divaDir=$PWD
 divaModuleLib=$divaDir/Module/lib
+divaModuleMod=$divaDir/Module/INCLUDE/GFORTRAN
+
+export divaModuleMod
 
 export divaModuleLib
 export divaDir
@@ -22,8 +25,24 @@ source $divaDir/compileBaseGFortran
 # Compilation of modules
 # ======================
 
+rm -f $divaDir/error.log
+
 cd $divaDir/Module
-source ./divaCompileModule
+source ./divaCompileModule 2>>$divaDir/error.log
+
+mv $divaModuleLib/*.mod $divaModuleMod/
+
+dim=`ls -l $divaDir/error.log | awk '{print $5}'`
+if [ $dim == 0 ] 
+then
+rm -f $divaDir/error.log
+fi
+
+if [ -f $divaDir/error.log ]
+then
+echo 'Compilation encountered some warnings or errors'
+echo 'check : error.log file'
+fi
 
 echo ' '
 echo --------------------

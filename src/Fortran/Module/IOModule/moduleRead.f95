@@ -55,7 +55,7 @@ MODULE moduleRead
 
 !     Declaration
 !     - - - - - -
-      TYPE(file), TARGET :: fileToRead
+      TYPE(file) :: fileToRead
       INTEGER, INTENT(OUT) :: nbOfDataI
       REAL(KIND=4), INTENT(OUT) :: exclusionValue
       VARType, DIMENSION(:), POINTER :: entries
@@ -78,7 +78,7 @@ MODULE moduleRead
 
 !     Declaration
 !     - - - - - -
-      TYPE(file), TARGET :: fileToRead
+      TYPE(file) :: fileToRead
       INTEGER, INTENT(OUT) :: nbOfDataI, nbOfDataJ
       REAL(KIND=4), INTENT(OUT) :: exclusionValue
       VARType, DIMENSION(:,:), POINTER :: entries
@@ -101,7 +101,7 @@ MODULE moduleRead
 
 !     Declaration
 !     - - - - - -
-      TYPE(file), TARGET :: fileToRead
+      TYPE(file) :: fileToRead
       INTEGER, INTENT(OUT) :: nbOfDataI, nbOfDataJ, nbOfDataK
       REAL(KIND=4), INTENT(OUT) :: exclusionValue
       VARType, DIMENSION(:,:,:), POINTER :: entries
@@ -235,9 +235,11 @@ MODULE moduleRead
            READ(logicalUnit,ERR=99,END=99) nbOfDataI,nbOfDataJ,nbOfDataK,iprecision,nbOfWords,exclusionValue
       END SELECT
 
+
       RETURN
 
 99    CONTINUE
+
       icheckError = ione
 
    END SUBROUTINE
@@ -356,8 +358,6 @@ MODULE moduleRead
 !     - - -
       SELECT CASE (checkArrayType)
         CASE (ione)
-            PRINT*,'je passe ici'
-            PRINT*,oldEntries(1:4),numberOfFullRecord,nbOfWords,remainingWords
             CALL readInternalData(logicalUnit,fileFormat,oldEntries,numberOfFullRecord,nbOfWords,&
                                   remainingWords,icheckError,icheckEnd)
         CASE (itwo)
@@ -370,7 +370,7 @@ MODULE moduleRead
                 ALLOCATE(realVectorEntries8(1:nbOfDataI))
                 CALL readInternalDataBis(logicalUnit,fileFormat,realVectorEntries8,numberOfFullRecord,nbOfWords,&
                                   remainingWords,icheckError,icheckEnd)
-                realVectorEntries(1:NbOfDataI) = realVectorEntries8(1:nbOfDataI)
+                realVectorEntries(1:NbOfDataI) = REAL(realVectorEntries8(1:nbOfDataI),KIND=4)
                 DEALLOCATE(realVectorEntries8)
             END IF
 #endif
@@ -397,7 +397,7 @@ MODULE moduleRead
                 ALLOCATE(realMatrixEntries8(1:nbOfDataI,1:nbOfDataJ))
                 CALL readInternalDataBis(logicalUnit,fileFormat,realMatrixEntries8,numberOfFullRecord,nbOfWords,&
                                   remainingWords,icheckError,icheckEnd)
-                realMatrixEntries(1:nbOfDataI,1:nbOfDataJ) = realMatrixEntries8(1:nbOfDataI,1:nbOfDataJ)
+                realMatrixEntries(1:nbOfDataI,1:nbOfDataJ) = REAL(realMatrixEntries8(1:nbOfDataI,1:nbOfDataJ),KIND=4)
                 DEALLOCATE(realMatrixEntries8)
             END IF
 #endif
@@ -425,7 +425,8 @@ MODULE moduleRead
                 ALLOCATE(realArrayEntries8(1:nbOfDataI,1:nbOfDataJ,1:nbOfDataK))
                 CALL readInternalDataBis(logicalUnit,fileFormat,realArrayEntries8,numberOfFullRecord,nbOfWords,&
                                   remainingWords,icheckError,icheckEnd)
-                realArrayEntries(1:nbOfDataI,1:nbOfDataJ,1:nbOfDataK) = realArrayEntries8(1:nbOfDataI,1:nbOfDataJ,1:nbOfDataK)
+                realArrayEntries(1:nbOfDataI,1:nbOfDataJ,1:nbOfDataK) = &
+                                          REAL(realArrayEntries8(1:nbOfDataI,1:nbOfDataJ,1:nbOfDataK),KIND=4)
                 DEALLOCATE(realArrayEntries8)
             END IF
 #endif
@@ -487,7 +488,7 @@ MODULE moduleRead
             ELSEIF ( iprecision == ieight ) THEN
                 CALL readInternalDataBis(logicalUnit,fileFormat,degeneratedField8,numberOfFullRecord,nbOfWords,&
                                   remainingWords,icheckError,icheckEnd)
-                degeneratedField(:) = degeneratedField8(:)
+                degeneratedField(:) = REAL(degeneratedField8(:),KIND=4)
             END IF
 #endif
 #if _REAL8_

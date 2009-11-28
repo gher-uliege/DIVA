@@ -11,6 +11,7 @@ echo ' '
 
 divaDir=$PWD
 divaModuleLib=$divaDir/Module/lib
+divaModuleMod=$divaDir/Module/INCLUDE/G95
 
 OSused=`uname -s`
 
@@ -21,6 +22,7 @@ fi
 
 export OSused
 export divaModuleLib
+export divaModuleMod
 export divaDir
 
 # Definition of the compiler, options,...
@@ -30,8 +32,31 @@ source $divaDir/compileBaseG95
 # Compilation of modules
 # ======================
 
+rm -f $divaDir/error.log
+rm -f $divaDir/testing.log
+
 cd $divaDir/Module/TESTDIRECTORY
-source ./testDivaModule
+source ./testDivaModule 2>>$divaDir/error.log
+
+cp $divaDir/Module/TESTDIRECTORY/testing.log $divaDir/testing.log
+
+dim=`ls -l $divaDir/error.log | awk '{print $5}'`
+if [ $dim == 0 ] 
+then
+rm -f $divaDir/error.log
+fi
+
+
+if [ -f $divaDir/error.log ]
+then
+echo 'Compilation encountered some warnings or errors'
+echo 'check : error.log file'
+fi
+
+if [ -f $divaDir/testing.log ]
+then
+echo 'Check the testing procedure : testing.log'
+fi
 
 echo ' '
 echo ---------------------------

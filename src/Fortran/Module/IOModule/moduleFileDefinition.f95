@@ -21,7 +21,7 @@ TYPE file
 
 ! File type description
 ! =====================
-! logiclaUnit = pointer to the considered logical unit
+! logiclaUnit = the considered logical unit
 ! fileName    = name of the considered file
 ! isLinked    = true if a logical unit is defined for the file
 !             = false if not
@@ -29,7 +29,7 @@ TYPE file
 !             = false if not
 ! formatFile  = format of the file
 
- TYPE(logicalUnit), POINTER :: logicalUnit
+ TYPE(logicalUnit) :: logicalUnit
  CHARACTER (LEN=maxFileLengthName) :: fileName
  LOGICAL :: isLinked
  LOGICAL :: isOpened

@@ -30,8 +30,16 @@ export libraryObj
 
 # Definition of the library directory
 # ====================================
+libraryMod='-I'$divaModuleMod
 libraryPath='-L'$divaModuleLib
-libraryLink='-ldiva -lMath -lVector -lMatrix -lArray -lSparseMatrix -lIO'
+libraryLink='-ldiva'$compiler
+libraryLink=$libraryLink' -lMath'$compiler
+libraryLink=$libraryLink' -lVector'$compiler
+libraryLink=$libraryLink' -lMatrix'$compiler
+libraryLink=$libraryLink' -lArray'$compiler
+libraryLink=$libraryLink' -lSparseMatrix'$compiler
+libraryLink=$libraryLink' -lIO'$compiler
 
+export libraryMod
 export libraryPath
 export libraryLink

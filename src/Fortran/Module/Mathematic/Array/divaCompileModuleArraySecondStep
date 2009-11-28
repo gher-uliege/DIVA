@@ -3,7 +3,7 @@
 rm -f *.o
 rm -f *.mod
 
-libName=libArray.a
+libName=libArray$compiler.a
 export libName
 
 # Compilation of : ArrayReal4

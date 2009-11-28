@@ -10,7 +10,7 @@ echo =============================================================
 echo ' '
 
 baseDir=$PWD
-libName=libSparseMatrix.a
+libName=libSparseMatrix$compiler.a
 export libName
 
 rm -f $divaModuleLib/$libName

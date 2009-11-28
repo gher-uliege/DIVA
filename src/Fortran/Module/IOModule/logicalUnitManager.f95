@@ -90,7 +90,7 @@ MODULE logicalUnitManager
       IF ( .NOT.(isInitialise) ) THEN
           CALL initialiseDefault()
       END IF
-      CALL searchFreeLogicalUnit(number)
+      number => searchFreeLogicalUnit()
 
    END FUNCTION
    
@@ -158,7 +158,7 @@ MODULE logicalUnitManager
    
 ! Procedure 4 : Searching for free logical unit
 ! ---------------------------------------------
-   SUBROUTINE searchFreeLogicalUnit(number)
+   FUNCTION searchFreeLogicalUnit() RESULT (number)
 
 !     Declaration
 !     - - - - - -
@@ -175,7 +175,7 @@ MODULE logicalUnitManager
       workingLogicalUnit%isUsed = true
       number => workingLogicalUnit
 
-   END SUBROUTINE
+   END FUNCTION
    
 ! Procedure 5 : setting pointer to logicalUnit
 ! --------------------------------------------

@@ -18,7 +18,7 @@ fi
 
 fileToExecute=$1.a
 
-$compiler $flag $preprocessor $preprocessorFlag $libraryDir $fileToCompile -o $fileToExecute $libraryPath $libraryLink
+$compiler $flag $preprocessor $preprocessorFlag $libraryMod $fileToCompile -o $fileToExecute $libraryPath $libraryLink
 
 if [ "$compiler" = ifort ] 
 then

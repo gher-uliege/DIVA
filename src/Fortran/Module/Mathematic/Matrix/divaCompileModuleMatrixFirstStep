@@ -3,7 +3,7 @@
 rm -f *.o
 rm -f *.mod
 
-libName=libMatrix.a
+libName=libMatrix$compiler.a
 export libName
 
 rm -f $divaModuleLib/$libName

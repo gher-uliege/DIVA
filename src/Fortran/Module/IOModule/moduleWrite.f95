@@ -54,7 +54,7 @@ MODULE moduleWrite
 
 !     Declaration
 !     - - - - - -
-      TYPE(file), TARGET :: fileToWrite
+      TYPE(file) :: fileToWrite
       INTEGER, INTENT(IN) :: nbOfDataI
       INTEGER, OPTIONAL, INTENT(INOUT) :: nbOfWords
       REAL(KIND=4), INTENT(IN) :: exclusionValue
@@ -87,7 +87,7 @@ MODULE moduleWrite
 
 !     Declaration
 !     - - - - - -
-      TYPE(file), TARGET :: fileToWrite
+      TYPE(file) :: fileToWrite
       INTEGER, INTENT(IN) :: nbOfDataI, nbOfDataJ
       INTEGER, OPTIONAL, INTENT(INOUT) :: nbOfWords
       REAL(KIND=4), INTENT(IN) :: exclusionValue
@@ -119,7 +119,7 @@ MODULE moduleWrite
 
 !     Declaration
 !     - - - - - -
-      TYPE(file), TARGET :: fileToWrite
+      TYPE(file) :: fileToWrite
       INTEGER, INTENT(IN) :: nbOfDataI, nbOfDataJ, nbOfDataK
       INTEGER, OPTIONAL, INTENT(INOUT) :: nbOfWords
       REAL(KIND=4), INTENT(IN) :: exclusionValue
@@ -320,10 +320,10 @@ RETURN
 
 !     Body
 !     - - -
-      check = true
+      check = false
 
       IF ( ( value - value ) /= 0 ) THEN
-         check = false
+         check = true
          RETURN
       END IF
 

@@ -112,7 +112,6 @@ MODULE ioInterface
       CALL setFileFormType(GHER)
       CALL getInformationToRead(fileUnit,nbOfDataI,nbOfDataJ,nbOfDataK,iprecision,nbOfWords,exclusionValue)
       REWIND(fileUnit)
-      PRINT*,'iprecision ', iprecision
       IF ( iprecision == ifour ) THEN
          CALL readDataOldFormatReal4(fileUnit,entries4,exclusionValue,nbOfDataI,nbOfDataJ,nbOfDataK)
       ELSEIF ( iprecision == ieight ) THEN

@@ -3,7 +3,7 @@
 rm -f *.o
 rm -f *.mod
 
-libName=libVector.a
+libName=libVector$compiler.a
 export libName
 
 # Compilation of : VectorReal4
