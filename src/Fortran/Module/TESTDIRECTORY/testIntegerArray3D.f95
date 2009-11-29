@@ -12,6 +12,7 @@ PROGRAM testArray3D
 ! =============
  USE moduleDIVA
  USE array3DInterface
+ USE ioInterface
 
 ! Declaration
 ! ===========
@@ -117,6 +118,10 @@ INTEGER, PARAMETER :: dimZ = 3
   PRINT*,'======================'
   CALL checkArraySetAddValue(array1)
   PRINT*,' '
+  PRINT*,'checkWriteProcedure'
+  PRINT*,'==================='
+  CALL checkWriteProcedure(array1)
+  PRINT*,' '
   PRINT*,'checkArrayMin'
   PRINT*,'=============='
   CALL checkArrayMin(array1)
@@ -137,6 +142,39 @@ INTEGER, PARAMETER :: dimZ = 3
 
  END SUBROUTINE
  
+ SUBROUTINE checkWriteProcedure(array1)
+
+!  Declaration
+!  -----------
+   TYPE(arrayType), INTENT(INOUT) :: array1
+   TYPE(file) :: fichier
+
+!  Body
+!  - - -
+#ifdef Integer2
+   CALL createFile(fichier,'testIntegerArray3DWrite.Integer2.out',GHER_FORMATTED)
+   CALL arrayWrite(array1,fichier)
+   CALL defineFileName(fichier,'testIntegerArray3DWriteTHK.Integer2.out')
+   CALL defineFileFormat(fichier,THK_FORMATTED)
+   CALL arrayWrite(array1,fichier)
+#endif
+#ifdef Integer4
+   CALL createFile(fichier,'testIntegerArray3DWrite.Integer4.out',GHER_FORMATTED)
+   CALL arrayWrite(array1,fichier)
+   CALL defineFileName(fichier,'testIntegerArray3DWriteTHK.Integer4.out')
+   CALL defineFileFormat(fichier,THK_FORMATTED)
+   CALL arrayWrite(array1,fichier)
+#endif
+#ifdef Integer8
+   CALL createFile(fichier,'testIntegerArray3DWrite.Integer8.out',GHER_FORMATTED)
+   CALL arrayWrite(array1,fichier)
+   CALL defineFileName(fichier,'testIntegerArray3DWriteTHK.Integer8.out')
+   CALL defineFileFormat(fichier,THK_FORMATTED)
+   CALL arrayWrite(array1,fichier)
+#endif
+
+ END SUBROUTINE
+
  SUBROUTINE checkArraySetToZero(array1)
 
 !  Declaration

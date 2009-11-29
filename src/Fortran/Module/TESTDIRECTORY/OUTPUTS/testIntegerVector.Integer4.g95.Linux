@@ -89,6 +89,10 @@
  value( 2 ) =  25
  value( 3 ) =  25
   
+ checkWriteProcedure
+ ===================
+ No writing procedure for integer with GHER format
+  
  checkVectorMin
  ==============
  Vector min :  25
@@ -292,6 +296,10 @@
  value( 2 ) =  25
  value( 3 ) =  25
   
+ checkWriteProcedure
+ ===================
+ No writing procedure for integer with GHER format
+  
  checkVectorMin
  ==============
  Vector min :  25
@@ -494,6 +502,10 @@
  value( -1 ) =  25
  value( 0 ) =  25
  value( 1 ) =  60
+  
+ checkWriteProcedure
+ ===================
+ No writing procedure for integer with GHER format
   
  checkVectorMin
  ==============
@@ -698,6 +710,10 @@
  value( 2 ) =  25
  value( 3 ) =  25
   
+ checkWriteProcedure
+ ===================
+ No writing procedure for integer with GHER format
+  
  checkVectorMin
  ==============
  Vector min :  25
@@ -901,6 +917,10 @@
  value( 2 ) =  25
  value( 3 ) =  25
   
+ checkWriteProcedure
+ ===================
+ No writing procedure for integer with GHER format
+  
  checkVectorMin
  ==============
  Vector min :  25
@@ -1103,6 +1123,10 @@
  value( -1 ) =  25
  value( 0 ) =  25
  value( 1 ) =  60
+  
+ checkWriteProcedure
+ ===================
+ No writing procedure for integer with GHER format
   
  checkVectorMin
  ==============

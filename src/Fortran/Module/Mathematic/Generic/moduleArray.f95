@@ -72,10 +72,10 @@ MODULE moduleArray
                                        mathArrayScale, &
 #endif
                                        mathArrayAbsMin, mathArrayAbsMax
-#ifdef _REAL_
-   USE moduleIOArrayManagement, ONLY : ioArrayWrite
-   USE moduleIOArrayManagementND, ONLY : ioArrayRead
    USE moduleFileDefinition
+   USE moduleIOArrayManagement, ONLY : ioArrayWrite
+#ifdef _REAL_
+   USE moduleIOArrayManagementND, ONLY : ioArrayRead
 #endif
 
    INCLUDE 'constantParameter.h'
@@ -122,8 +122,9 @@ MODULE moduleArray
 #endif
              arrayArrayAbsMin, arrayArrayAbsMax
 
+   PUBLIC :: arrayIOWrite
 #ifdef _REAL_
-   PUBLIC :: arrayIOWrite, arrayIORead
+   PUBLIC :: arrayIORead
 #endif
 
 ! ============================================================
@@ -2175,7 +2176,6 @@ MODULE moduleArray
 
   END SUBROUTINE
 
-#ifdef _REAL_
 ! Procedure 13 : writing procedure
 ! --------------------------------
   SUBROUTINE arrayIOWrite(targetArray,fileToWrite,exclusionValue)
@@ -2207,6 +2207,7 @@ MODULE moduleArray
 
   END SUBROUTINE
 
+#ifdef _REAL_
 ! Procedure 13 : writing procedure
 ! --------------------------------
   SUBROUTINE arrayIORead(targetArray,fileToRead,exclusionValue)

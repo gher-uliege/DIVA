@@ -48,7 +48,7 @@ MODULE array3DInterface
                            arrayGetAllocatedSizeYInteger2 => arrayGetAllocatedSizeY , &
                            arrayGetIncreaseSizeYInteger2 => arrayGetIncreaseSizeY, &
                            arraySetIncreaseSizeYInteger2 => arraySetIncreaseSizeY, &
-                           arrayArrayMinInteger2 => arrayArrayMin, &
+                           arrayArrayMinInteger2 => arrayArrayMin, arrayIOWriteInteger2 => arrayIOWrite, &
                            arrayArrayMaxInteger2 => arrayArrayMax, &
                            arrayArrayAbsMinInteger2 => arrayArrayAbsMin, &
                            arrayArrayAbsMaxInteger2 => arrayArrayAbsMax, &
@@ -89,7 +89,7 @@ MODULE array3DInterface
                            arrayGetAllocatedSizeYInteger4 => arrayGetAllocatedSizeY , &
                            arrayGetIncreaseSizeYInteger4 => arrayGetIncreaseSizeY, &
                            arraySetIncreaseSizeYInteger4 => arraySetIncreaseSizeY, &
-                           arrayArrayMinInteger4 => arrayArrayMin, &
+                           arrayArrayMinInteger4 => arrayArrayMin, arrayIOWriteInteger4 => arrayIOWrite, &
                            arrayArrayMaxInteger4 => arrayArrayMax, &
                            arrayArrayAbsMinInteger4 => arrayArrayAbsMin, &
                            arrayArrayAbsMaxInteger4 => arrayArrayAbsMax, &
@@ -130,7 +130,7 @@ MODULE array3DInterface
                            arrayGetAllocatedSizeYInteger8 => arrayGetAllocatedSizeY , &
                            arrayGetIncreaseSizeYInteger8 => arrayGetIncreaseSizeY, &
                            arraySetIncreaseSizeYInteger8 => arraySetIncreaseSizeY, &
-                           arrayArrayMinInteger8 => arrayArrayMin, &
+                           arrayArrayMinInteger8 => arrayArrayMin, arrayIOWriteInteger8 => arrayIOWrite, &
                            arrayArrayMaxInteger8 => arrayArrayMax, &
                            arrayArrayAbsMinInteger8 => arrayArrayAbsMin, &
                            arrayArrayAbsMaxInteger8 => arrayArrayAbsMax, &
@@ -466,7 +466,8 @@ MODULE array3DInterface
    END INTERFACE
 
    INTERFACE arrayWrite
-      MODULE PROCEDURE arrayIOWriteReal4, arrayIOWriteReal8
+      MODULE PROCEDURE arrayIOWriteReal4, arrayIOWriteReal8, &
+                       arrayIOWriteInteger2, arrayIOWriteInteger4, arrayIOWriteInteger8
    END INTERFACE
 
    INTERFACE arrayRead

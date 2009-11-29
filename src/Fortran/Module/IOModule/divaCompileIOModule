@@ -32,58 +32,167 @@ $divaDir/compileFile moduleFileDefinition.f95 moduleFileDefinition
 $divaDir/compileFile logicalUnitManager.f95 logicalUnitManager
 $divaDir/compileFile moduleFile.f95 moduleFile
 $divaDir/compileFile moduleIOBase.f95 moduleIOBase
+$divaDir/compileFile moduleIOBaseGHER.f95 moduleIOBaseGHER
+$divaDir/compileFile moduleIOBaseTHK.f95 moduleIOBaseTHK
 
 VARType='REAL(KIND=4)'
+moduleWriteGHER=moduleWriteGHERReal4
+moduleWriteTHK=moduleWriteTHKReal4
 moduleWrite=moduleWriteReal4
 kind='_REAL4_'
+kind2='_REAL_'
+
 flag0='-DVARType='$VARType
-flag1='-DmoduleWrite='$moduleWrite
+flag1='-DmoduleWriteGHER='$moduleWriteGHER
 flag2='-D'$kind
+flag3='-DmoduleWrite='$moduleWrite
+flag4='-DmoduleWriteTHK='$moduleWriteTHK
+flag5='-D'$kind2
+
 preproFlag=$flag0
 preproFlag=$preproFlag' '$flag1
 preproFlag=$preproFlag' '$flag2
+preproFlag=$preproFlag' '$flag3
+preproFlag=$preproFlag' '$flag4
+preproFlag=$preproFlag' '$flag5
 export preproFlag
 
+$divaDir/compileFile moduleWriteGHER.f95 $moduleWriteGHER
+$divaDir/compileFile moduleWriteTHK.f95 $moduleWriteTHK
 $divaDir/compileFile moduleWrite.f95 $moduleWrite
 
 VARType='REAL(KIND=8)'
+moduleWriteGHER=moduleWriteGHERReal8
+moduleWriteTHK=moduleWriteTHKReal8
 moduleWrite=moduleWriteReal8
 kind='_REAL8_'
+kind2='_REAL_'
+
 flag0='-DVARType='$VARType
-flag1='-DmoduleWrite='$moduleWrite
+flag1='-DmoduleWriteGHER='$moduleWriteGHER
 flag2='-D'$kind
+flag3='-DmoduleWrite='$moduleWrite
+flag4='-DmoduleWriteTHK='$moduleWriteTHK
+flag5='-D'$kind2
+
 preproFlag=$flag0
 preproFlag=$preproFlag' '$flag1
 preproFlag=$preproFlag' '$flag2
+preproFlag=$preproFlag' '$flag3
+preproFlag=$preproFlag' '$flag4
+preproFlag=$preproFlag' '$flag5
 export preproFlag
 
+$divaDir/compileFile moduleWriteGHER.f95 $moduleWriteGHER
+$divaDir/compileFile moduleWriteTHK.f95 $moduleWriteTHK
 $divaDir/compileFile moduleWrite.f95 $moduleWrite
 
 VARType='REAL(KIND=4)'
+moduleReadGHER=moduleReadGHERReal4
 moduleRead=moduleReadReal4
 kind='_REAL4_'
+kind2='_REAL_'
+
 flag0='-DVARType='$VARType
-flag1='-DmoduleRead='$moduleRead
+flag1='-DmoduleReadGHER='$moduleReadGHER
 flag2='-D'$kind
+flag3='-DmoduleRead='$moduleRead
+flag5='-D'$kind2
+
 preproFlag=$flag0
 preproFlag=$preproFlag' '$flag1
 preproFlag=$preproFlag' '$flag2
+preproFlag=$preproFlag' '$flag3
+preproFlag=$preproFlag' '$flag5
 export preproFlag
 
+$divaDir/compileFile moduleReadGHER.f95 $moduleReadGHER
 $divaDir/compileFile moduleRead.f95 $moduleRead
 
 VARType='REAL(KIND=8)'
+moduleReadGHER=moduleReadGHERReal8
 moduleRead=moduleReadReal8
 kind='_REAL8_'
+kind2='_REAL_'
+
 flag0='-DVARType='$VARType
-flag1='-DmoduleRead='$moduleRead
+flag1='-DmoduleReadGHER='$moduleReadGHER
 flag2='-D'$kind
+flag3='-DmoduleRead='$moduleRead
+flag5='-D'$kind2
+
 preproFlag=$flag0
 preproFlag=$preproFlag' '$flag1
 preproFlag=$preproFlag' '$flag2
+preproFlag=$preproFlag' '$flag3
+preproFlag=$preproFlag' '$flag5
 export preproFlag
 
+$divaDir/compileFile moduleReadGHER.f95 $moduleReadGHER
 $divaDir/compileFile moduleRead.f95 $moduleRead
+
+VARType='INTEGER(KIND=2)'
+moduleWriteTHK=moduleWriteTHKInteger2
+moduleWrite=moduleWriteInteger2
+kind='_INTEGER2_'
+kind2='_INTEGER_'
+flag0='-DVARType='$VARType
+flag2='-D'$kind
+flag3='-DmoduleWrite='$moduleWrite
+flag4='-DmoduleWriteTHK='$moduleWriteTHK
+flag5='-D'$kind2
+
+preproFlag=$flag0
+preproFlag=$preproFlag' '$flag2
+preproFlag=$preproFlag' '$flag3
+preproFlag=$preproFlag' '$flag4
+preproFlag=$preproFlag' '$flag5
+export preproFlag
+
+$divaDir/compileFile moduleWriteTHK.f95 $moduleWriteTHK
+$divaDir/compileFile moduleWrite.f95 $moduleWrite
+
+VARType='INTEGER(KIND=4)'
+moduleWriteTHK=moduleWriteTHKInteger4
+moduleWrite=moduleWriteInteger4
+kind='_INTEGER4_'
+kind2='_INTEGER_'
+flag0='-DVARType='$VARType
+flag2='-D'$kind
+flag3='-DmoduleWrite='$moduleWrite
+flag4='-DmoduleWriteTHK='$moduleWriteTHK
+flag5='-D'$kind2
+
+preproFlag=$flag0
+preproFlag=$preproFlag' '$flag2
+preproFlag=$preproFlag' '$flag3
+preproFlag=$preproFlag' '$flag4
+preproFlag=$preproFlag' '$flag5
+export preproFlag
+
+$divaDir/compileFile moduleWriteTHK.f95 $moduleWriteTHK
+$divaDir/compileFile moduleWrite.f95 $moduleWrite
+
+VARType='INTEGER(KIND=8)'
+moduleWriteTHK=moduleWriteTHKInteger8
+moduleWrite=moduleWriteInteger8
+kind='_INTEGER8_'
+kind2='_INTEGER_'
+flag0='-DVARType='$VARType
+flag2='-D'$kind
+flag3='-DmoduleWrite='$moduleWrite
+flag4='-DmoduleWriteTHK='$moduleWriteTHK
+flag5='-D'$kind2
+
+preproFlag=$flag0
+preproFlag=$preproFlag' '$flag2
+preproFlag=$preproFlag' '$flag3
+preproFlag=$preproFlag' '$flag4
+preproFlag=$preproFlag' '$flag5
+export preproFlag
+
+$divaDir/compileFile moduleWriteTHK.f95 $moduleWriteTHK
+$divaDir/compileFile moduleWrite.f95 $moduleWrite
 
 $divaDir/compileFile ioInterface.f95 ioInterface
 

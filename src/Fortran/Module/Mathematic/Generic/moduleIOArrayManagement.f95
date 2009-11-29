@@ -1,7 +1,5 @@
 MODULE moduleIOArrayManagement
 
-#ifdef _REAL_
-
 ! ============================================================
 ! ============================================================
 ! ============================================================
@@ -42,18 +40,21 @@ MODULE moduleIOArrayManagement
    USE moduleWrite, ONLY : writeArray
 #endif
 
-   USE moduleMemoryArrayManagement, ONLY : memoryGetFirstIndexX, &
+   USE moduleMemoryArrayManagement, ONLY : memoryGetFirstIndexX, memoryGetIncreaseSizeX, &
 #ifdef _ARRAY_2D_DEFINITION_
                                            memoryGetFirstIndexY, memoryGetLastIndexY , memoryGetSizeY ,&
+                                           memoryGetIncreaseSizeY, &
 #endif
 #ifdef _ARRAY_3D_DEFINITION_
                                            memoryGetFirstIndexZ, memoryGetLastIndexZ , memoryGetSizeZ ,&
+                                           memoryGetIncreaseSizeZ, &
 #endif
                                            memoryGetLastIndexX, memoryGetSizeX
 
    USE moduleValuesArrayManagement, ONLY : memoryGetValues
 
    INCLUDE 'constantParameter.h'
+   INCLUDE 'logicalParameter.h'
 
 ! Declaration
 ! ===========
@@ -92,12 +93,12 @@ MODULE moduleIOArrayManagement
 !     - - - - - -
       TYPE(file) :: fileToWrite
       REAL(KIND=4), INTENT(IN) :: exclusionValue
-      INTEGER :: istartX, iendX, lengthX
+      INTEGER :: istartX, iendX, lengthX, increaseSizeX
 #ifdef _ARRAY_2D_DEFINITION_
-      INTEGER :: istartY, iendY, lengthY
+      INTEGER :: istartY, iendY, lengthY, increaseSizeY
 #endif
 #ifdef _ARRAY_3D_DEFINITION_
-      INTEGER :: istartZ, iendZ, lengthZ
+      INTEGER :: istartZ, iendZ, lengthZ, increaseSizeZ
 #endif
 
 #ifdef _ARRAY_1D_
@@ -115,30 +116,36 @@ MODULE moduleIOArrayManagement
 !     - - -
       istartX = memoryGetFirstIndexX()
       iendX = memoryGetLastIndexX()
+      increaseSizeX = memoryGetIncreaseSizeX()
       lengthX = memoryGetSizeX()
 
 #ifdef _ARRAY_2D_DEFINITION_
       istartY = memoryGetFirstIndexY()
       iendY = memoryGetLastIndexY()
+      increaseSizeY = memoryGetIncreaseSizeY()
       lengthY = memoryGetSizeY()
 #endif
 
 #ifdef _ARRAY_3D_DEFINITION_
       istartZ = memoryGetFirstIndexZ()
       iendZ = memoryGetLastIndexZ()
+      increaseSizeZ = memoryGetIncreaseSizeZ()
       lengthZ = memoryGetSizeZ()
 #endif
 
       ptr =>  memoryGetValues()
 
 #ifdef _ARRAY_1D_
-      CALL  writeVector(fileToWrite,ptr(istartX:iendX),exclusionValue,lengthX)
+      CALL  writeVector(fileToWrite,ptr(istartX:iendX),increaseSizeX,lengthX,istartX,iendX,exclusionValue,false)
 #endif
 #ifdef _ARRAY_2D_
-      CALL  writeMatrix(fileToWrite,ptr(istartX:iendX,istartY:iendY),exclusionValue,lengthX,lengthY)
+      CALL  writeMatrix(fileToWrite,ptr(istartX:iendX,istartY:iendY),increaseSizeX,lengthX,istartX,iendX, &
+                                               increaseSizeY,lengthY,istartY,iendY,exclusionValue,false)
 #endif
 #ifdef _ARRAY_3D_
-      CALL  writeArray(fileToWrite,ptr(istartX:iendX,istartY:iendY,istartZ:iendZ),exclusionValue,lengthX,lengthY,lengthZ)
+      CALL  writeArray(fileToWrite,ptr(istartX:iendX,istartY:iendY,istartZ:iendZ),increaseSizeX,lengthX,istartX,iendX, &
+                                               increaseSizeY,lengthY,istartY,iendY, &
+                                               increaseSizeZ,lengthZ,istartZ,iendZ,exclusionValue,false)
 #endif
 
   END SUBROUTINE
@@ -146,7 +153,5 @@ MODULE moduleIOArrayManagement
 #undef _ARRAY_1D_DEFINITION_
 #undef _ARRAY_2D_DEFINITION_
 #undef _ARRAY_3D_DEFINITION_
-
-#endif
 
 END MODULE moduleIOArrayManagement

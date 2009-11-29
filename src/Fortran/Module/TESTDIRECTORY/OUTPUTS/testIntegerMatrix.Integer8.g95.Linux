@@ -281,6 +281,10 @@
  value( 3 , 2 ) =  25
  value( 3 , 3 ) =  25
   
+ checkWriteProcedure
+ ===================
+ No writing procedure for integer with GHER format
+  
  checkArrayMin
  ==============
  array min :  25
@@ -452,6 +456,10 @@
  value( 3 , 2 ) =  25
  value( 3 , 3 ) =  25
   
+ checkWriteProcedure
+ ===================
+ No writing procedure for integer with GHER format
+  
  checkArrayMin
  ==============
  array min :  25
@@ -622,6 +630,10 @@
  value( 1 , -1 ) =  25
  value( 1 , 0 ) =  25
  value( 1 , 1 ) =  60
+  
+ checkWriteProcedure
+ ===================
+ No writing procedure for integer with GHER format
   
  checkArrayMin
  ==============
@@ -794,6 +806,10 @@
  value( 3 , 2 ) =  25
  value( 3 , 3 ) =  25
   
+ checkWriteProcedure
+ ===================
+ No writing procedure for integer with GHER format
+  
  checkArrayMin
  ==============
  array min :  25
@@ -965,6 +981,10 @@
  value( 3 , 2 ) =  25
  value( 3 , 3 ) =  25
   
+ checkWriteProcedure
+ ===================
+ No writing procedure for integer with GHER format
+  
  checkArrayMin
  ==============
  array min :  25
@@ -1135,6 +1155,10 @@
  value( 1 , -1 ) =  25
  value( 1 , 0 ) =  25
  value( 1 , 1 ) =  60
+  
+ checkWriteProcedure
+ ===================
+ No writing procedure for integer with GHER format
   
  checkArrayMin
  ==============

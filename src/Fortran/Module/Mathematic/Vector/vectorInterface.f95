@@ -48,7 +48,7 @@ MODULE vectorInterface
                            arrayGetAllocatedSizeXInteger2 => arrayGetAllocatedSizeX , &
                            arrayGetIncreaseSizeXInteger2 => arrayGetIncreaseSizeX, &
                            arraySetIncreaseSizeXInteger2 => arraySetIncreaseSizeX, &
-                           arrayArrayMinInteger2 => arrayArrayMin, &
+                           arrayArrayMinInteger2 => arrayArrayMin, arrayIOWriteInteger2 => arrayIOWrite, &
                            arrayArrayMaxInteger2 => arrayArrayMax, &
                            arrayArrayAbsMinInteger2 => arrayArrayAbsMin, &
                            arrayArrayAbsMaxInteger2 => arrayArrayAbsMax, arrayArrayPutInInteger2 => arrayArrayPutIn, &
@@ -83,7 +83,7 @@ MODULE vectorInterface
                            arrayGetAllocatedSizeXInteger4 => arrayGetAllocatedSizeX , &
                            arrayGetIncreaseSizeXInteger4 => arrayGetIncreaseSizeX, &
                            arraySetIncreaseSizeXInteger4 => arraySetIncreaseSizeX, &
-                           arrayArrayMinInteger4 => arrayArrayMin, &
+                           arrayArrayMinInteger4 => arrayArrayMin, arrayIOWriteInteger4 => arrayIOWrite, &
                            arrayArrayMaxInteger4 => arrayArrayMax, &
                            arrayArrayAbsMinInteger4 => arrayArrayAbsMin, &
                            arrayArrayAbsMaxInteger4 => arrayArrayAbsMax, arrayArrayPutInInteger4 => arrayArrayPutIn, &
@@ -118,7 +118,7 @@ MODULE vectorInterface
                            arrayGetAllocatedSizeXInteger8 => arrayGetAllocatedSizeX , &
                            arrayGetIncreaseSizeXInteger8 => arrayGetIncreaseSizeX, &
                            arraySetIncreaseSizeXInteger8 => arraySetIncreaseSizeX, &
-                           arrayArrayMinInteger8 => arrayArrayMin, &
+                           arrayArrayMinInteger8 => arrayArrayMin, arrayIOWriteInteger8 => arrayIOWrite, &
                            arrayArrayMaxInteger8 => arrayArrayMax, &
                            arrayArrayAbsMinInteger8 => arrayArrayAbsMin, &
                            arrayArrayAbsMaxInteger8 => arrayArrayAbsMax, arrayArrayPutInInteger8 => arrayArrayPutIn, &
@@ -418,7 +418,8 @@ MODULE vectorInterface
    END INTERFACE
 
    INTERFACE vectorWrite
-      MODULE PROCEDURE arrayIOWriteReal4, arrayIOWriteReal8
+      MODULE PROCEDURE arrayIOWriteReal4, arrayIOWriteReal8, &
+                       arrayIOWriteInteger2, arrayIOWriteInteger4, arrayIOWriteInteger8
    END INTERFACE
 
    INTERFACE vectorRead

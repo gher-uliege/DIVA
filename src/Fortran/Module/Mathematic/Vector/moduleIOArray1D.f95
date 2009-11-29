@@ -18,7 +18,7 @@ MODULE moduleIOArray1D
 ! Include file
 ! ============
    USE moduleFileDefinition
-   USE moduleRead, ONLY : readVector
+   USE moduleRead, ONLY : readVectorGHER
    USE moduleWorkingArray, ONLY : workingArray
    USE moduleMemoryArrayManagement, ONLY : memoryDestructor, memorySetAllocatedSize,  &
                                            memorySetFirstIndex, memorySetSize, memoryDefineLastIndex, &
@@ -70,7 +70,7 @@ MODULE moduleIOArray1D
 !     - - -
 
       CALL memoryDestructor()
-      CALL readVector(fileToRead,workingArray%values,exclusionValue,nbOfDataI)
+      CALL readVectorGHER(fileToRead,workingArray%values,exclusionValue,nbOfDataI)
       CALL memorySetFirstIndex(ione)
       CALL memorySetAllocatedSize(nbOfDataI)
       CALL memorySetSize(nbOfDataI)

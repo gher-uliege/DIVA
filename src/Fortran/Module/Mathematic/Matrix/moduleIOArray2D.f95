@@ -18,7 +18,7 @@ MODULE moduleIOArray2D
 ! Include file
 ! ============
    USE moduleFileDefinition
-   USE moduleRead, ONLY : readMatrix
+   USE moduleRead, ONLY : readMatrixGHER
    USE moduleWorkingArray, ONLY : workingArray
    USE moduleMemoryArrayManagement, ONLY : memoryDestructor, memorySetAllocatedSize,  &
                                            memorySetFirstIndex, memorySetSize, memoryDefineLastIndex, &
@@ -70,7 +70,7 @@ MODULE moduleIOArray2D
 !     - - -
 
       CALL memoryDestructor()
-      CALL readMatrix(fileToRead,workingArray%values,exclusionValue,nbOfDataI,nbOfDataJ)
+      CALL readMatrixGHER(fileToRead,workingArray%values,exclusionValue,nbOfDataI,nbOfDataJ)
       CALL memorySetFirstIndex(ione,ione)
       CALL memorySetAllocatedSize(nbOfDataI,nbOfDataJ)
       CALL memorySetSize(nbOfDataI,nbOfDataJ)

@@ -173,10 +173,16 @@ INTEGER, PARAMETER :: dimY = 3
 #ifdef Real4
    CALL createFile(fichier,'testMatrixWrite.Real4.out',GHER_FORMATTED)
    CALL matrixWrite(array1,fichier)
+   CALL defineFileName(fichier,'testMatrixWriteTHK.Real4.out')
+   CALL defineFileFormat(fichier,THK_FORMATTED)
+   CALL matrixWrite(array1,fichier)
 #endif
 #ifdef Real8
    CALL createFile(fichier,'testMatrixWrite.Real8.out',GHER_FORMATTED)
    CALL matrixWrite(array1,fichier,998.)
+   CALL defineFileName(fichier,'testMatrixWriteTHK.Real8.out')
+   CALL defineFileFormat(fichier,THK_FORMATTED)
+   CALL matrixWrite(array1,fichier)
 #endif
 
  END SUBROUTINE

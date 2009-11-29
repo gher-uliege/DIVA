@@ -12,6 +12,7 @@ PROGRAM testVector
 ! =============
  USE moduleDIVA
  USE vectorInterface
+ USE ioInterface
 
 ! Declaration
 ! ===========
@@ -114,6 +115,10 @@ INTEGER, PARAMETER :: dim = 3
   PRINT*,'======================'
   CALL checkVectorSetAddValue(vector1)
   PRINT*,' '
+  PRINT*,'checkWriteProcedure'
+  PRINT*,'==================='
+  CALL checkWriteProcedure(vector1)
+  PRINT*,' '
   PRINT*,'checkVectorMin'
   PRINT*,'=============='
   CALL checkVectorMin(vector1)
@@ -143,6 +148,39 @@ INTEGER, PARAMETER :: dim = 3
   CALL checkPutInProcedure(vector1)
   PRINT*,' '
 
+
+ END SUBROUTINE
+
+ SUBROUTINE checkWriteProcedure(vector1)
+
+!  Declaration
+!  -----------
+   TYPE(vectorType), INTENT(INOUT) :: vector1
+   TYPE(file) :: fichier
+
+!  Body
+!  - - -
+#ifdef Integer2
+   CALL createFile(fichier,'testIntegerVectorWrite.Integer2.out',GHER_FORMATTED)
+   CALL vectorWrite(vector1,fichier)
+   CALL defineFileName(fichier,'testIntegerVectorWriteTHK.Integer2.out')
+   CALL defineFileFormat(fichier,THK_FORMATTED)
+   CALL vectorWrite(vector1,fichier)
+#endif
+#ifdef Integer4
+   CALL createFile(fichier,'testIntegerVectorWrite.Integer4.out',GHER_FORMATTED)
+   CALL vectorWrite(vector1,fichier)
+   CALL defineFileName(fichier,'testIntegerVectorWriteTHK.Integer4.out')
+   CALL defineFileFormat(fichier,THK_FORMATTED)
+   CALL vectorWrite(vector1,fichier)
+#endif
+#ifdef Integer8
+   CALL createFile(fichier,'testIntegerVectorWrite.Integer8.out',GHER_FORMATTED)
+   CALL vectorWrite(vector1,fichier)
+   CALL defineFileName(fichier,'testIntegerVectorWriteTHK.Integer8.out')
+   CALL defineFileFormat(fichier,THK_FORMATTED)
+   CALL vectorWrite(vector1,fichier)
+#endif
 
  END SUBROUTINE
 

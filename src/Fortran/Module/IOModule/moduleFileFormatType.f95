@@ -21,6 +21,9 @@ MODULE moduleFileFormatType
    TYPE(fileFormatType), PUBLIC, PARAMETER :: GHER_FORMATTED = fileFormatType(1,.TRUE.)
    TYPE(fileFormatType), PUBLIC, PARAMETER :: GHER_UNFORMATTED = fileFormatType(2,.FALSE.)
    TYPE(fileFormatType), PUBLIC, PARAMETER :: GHER = fileFormatType(2,.FALSE.)
+   TYPE(fileFormatType), PUBLIC, PARAMETER :: THK_FORMATTED = fileFormatType(3,.TRUE.)
+   TYPE(fileFormatType), PUBLIC, PARAMETER :: THK_UNFORMATTED = fileFormatType(4,.FALSE.)
+   TYPE(fileFormatType), PUBLIC, PARAMETER :: THK = fileFormatType(4,.FALSE.)
 
 ! Procedures status
 ! =================

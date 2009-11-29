@@ -12,6 +12,7 @@ PROGRAM testMatrix
 ! =============
  USE moduleDIVA
  USE matrixInterface
+ USE ioInterface
 
 ! Declaration
 ! ===========
@@ -116,6 +117,10 @@ INTEGER, PARAMETER :: dimY = 3
   PRINT*,'======================'
   CALL checkArraySetAddValue(array1)
   PRINT*,' '
+  PRINT*,'checkWriteProcedure'
+  PRINT*,'==================='
+  CALL checkWriteProcedure(array1)
+  PRINT*,' '
   PRINT*,'checkArrayMin'
   PRINT*,'=============='
   CALL checkArrayMin(array1)
@@ -136,6 +141,39 @@ INTEGER, PARAMETER :: dimY = 3
 
  END SUBROUTINE
  
+ SUBROUTINE checkWriteProcedure(array1)
+
+!  Declaration
+!  -----------
+   TYPE(matrixType), INTENT(INOUT) :: array1
+   TYPE(file) :: fichier
+
+!  Body
+!  - - -
+#ifdef Integer2
+   CALL createFile(fichier,'testIntegerMatrixWrite.Integer2.out',GHER_FORMATTED)
+   CALL matrixWrite(array1,fichier)
+   CALL defineFileName(fichier,'testIntegerMatrixWriteTHK.Integer2.out')
+   CALL defineFileFormat(fichier,THK_FORMATTED)
+   CALL matrixWrite(array1,fichier)
+#endif
+#ifdef Integer4
+   CALL createFile(fichier,'testIntegerMatrixWrite.Integer4.out',GHER_FORMATTED)
+   CALL matrixWrite(array1,fichier)
+   CALL defineFileName(fichier,'testIntegerMatrixWriteTHK.Integer4.out')
+   CALL defineFileFormat(fichier,THK_FORMATTED)
+   CALL matrixWrite(array1,fichier)
+#endif
+#ifdef Integer8
+   CALL createFile(fichier,'testIntegerMatrixWrite.Integer8.out',GHER_FORMATTED)
+   CALL matrixWrite(array1,fichier)
+   CALL defineFileName(fichier,'testIntegerMatrixWriteTHK.Integer8.out')
+   CALL defineFileFormat(fichier,THK_FORMATTED)
+   CALL matrixWrite(array1,fichier)
+#endif
+
+ END SUBROUTINE
+
  SUBROUTINE checkArraySetToZero(array1)
 
 !  Declaration

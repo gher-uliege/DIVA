@@ -16,43 +16,43 @@ MODULE ioInterface
    USE logicalUnitManager
    USE moduleFile
    USE moduleIOBase, ONLY : setFileFormType
-   USE moduleReadReal4, ONLY : readVectorReal4 => readVector, &
-                               readMatrixReal4 => readMatrix, &
-                               readArrayReal4 => readArray, &
-                               readDataOldFormatReal4 => readDataOldFormat, &
-                               getInformationToRead
-   USE moduleReadReal8, ONLY : readVectorReal8 => readVector, &
-                               readMatrixReal8 => readMatrix, &
-                               readArrayReal8 => readArray, &
-                               readDataOldFormatReal8 => readDataOldFormat
-   USE moduleWriteReal4, ONLY : writeVectorReal4 => writeVector, &
-                                writeMatrixReal4 => writeMatrix, &
-                                writeArrayReal4 => writeArray, &
-                                writeDataReal4 => writeData
-   USE moduleWriteReal8, ONLY : writeVectorReal8 => writeVector, &
-                                writeMatrixReal8 => writeMatrix, &
-                                writeArrayReal8=> writeArray, &
-                                writeDataReal8 => writeData
+   USE moduleReadGHERReal4, ONLY : readVectorGHERReal4 => readVector, &
+                               readMatrixGHERReal4 => readMatrix, &
+                               readArrayGHERReal4 => readArray, &
+                               readDataOldFormatGHERReal4 => readDataOldFormat, &
+                               getInformationToReadGHER => getInformationToRead
+   USE moduleReadGHERReal8, ONLY : readVectorGHERReal8 => readVector, &
+                               readMatrixGHERReal8 => readMatrix, &
+                               readArrayGHERReal8 => readArray, &
+                               readDataOldFormatGHERReal8 => readDataOldFormat
+   USE moduleWriteGHERReal4, ONLY : writeVectorGHERReal4 => writeVector, &
+                                writeMatrixGHERReal4 => writeMatrix, &
+                                writeArrayGHERReal4 => writeArray, &
+                                writeDataGHERReal4 => writeData
+   USE moduleWriteGHERReal8, ONLY : writeVectorGHERReal8 => writeVector, &
+                                writeMatrixGHERReal8 => writeMatrix, &
+                                writeArrayGHERReal8=> writeArray, &
+                                writeDataGHERReal8 => writeData
 
    INCLUDE 'constantParameter.h'
 
 ! Interface
 ! =========
    INTERFACE readFromDisk
-      MODULE PROCEDURE readVectorReal4, readVectorReal8, &
-                       readMatrixReal4, readMatrixReal8, &
-                       readArrayReal4, readArrayReal8
+      MODULE PROCEDURE readVectorGHERReal4, readVectorGHERReal8, &
+                       readMatrixGHERReal4, readMatrixGHERReal8, &
+                       readArrayGHERReal4, readArrayGHERReal8
    END INTERFACE
 
    INTERFACE writeOnDisk
-      MODULE PROCEDURE writeVectorReal4, writeVectorReal8, &
-                       writeMatrixReal4, writeMatrixReal8, &
-                       writeArrayReal4, writeArrayReal8
+      MODULE PROCEDURE writeVectorGHERReal4, writeVectorGHERReal8, &
+                       writeMatrixGHERReal4, writeMatrixGHERReal8, &
+                       writeArrayGHERReal4, writeArrayGHERReal8
    END INTERFACE
 
 ! Procedure status
 ! ================
-  PUBLIC :: uwritc  ! for compatibility with previous version
+  PUBLIC :: uwritc, ureadc  ! for compatibility with previous version
 
 ! ============================================================
 ! ============================================================
@@ -88,9 +88,9 @@ MODULE ioInterface
 !     - - -
       CALL setFileFormType(GHER)
       IF ( iprecision == ifour ) THEN
-         CALL writeDataReal4(fileUnit,entries4,exclusionValue,iprecision,nbOfDataI, nbOfDataJ, nbOfDataK, nbOfWords)
+         CALL writeDataGHERReal4(fileUnit,entries4,exclusionValue,iprecision,nbOfDataI, nbOfDataJ, nbOfDataK, nbOfWords)
       ELSEIF ( iprecision == ieight ) THEN
-         CALL writeDataReal8(fileUnit,entries8,exclusionValue,iprecision,nbOfDataI, nbOfDataJ, nbOfDataK, nbOfWords)
+         CALL writeDataGHERReal8(fileUnit,entries8,exclusionValue,iprecision,nbOfDataI, nbOfDataJ, nbOfDataK, nbOfWords)
       END IF
 
   END SUBROUTINE
@@ -110,12 +110,12 @@ MODULE ioInterface
 !     Body
 !     - - -
       CALL setFileFormType(GHER)
-      CALL getInformationToRead(fileUnit,nbOfDataI,nbOfDataJ,nbOfDataK,iprecision,nbOfWords,exclusionValue)
+      CALL getInformationToReadGHER(fileUnit,nbOfDataI,nbOfDataJ,nbOfDataK,iprecision,nbOfWords,exclusionValue)
       REWIND(fileUnit)
       IF ( iprecision == ifour ) THEN
-         CALL readDataOldFormatReal4(fileUnit,entries4,exclusionValue,nbOfDataI,nbOfDataJ,nbOfDataK)
+         CALL readDataOldFormatGHERReal4(fileUnit,entries4,exclusionValue,nbOfDataI,nbOfDataJ,nbOfDataK)
       ELSEIF ( iprecision == ieight ) THEN
-         CALL readDataOldFormatReal8(fileUnit,entries8,exclusionValue,nbOfDataI,nbOfDataJ,nbOfDataK)
+         CALL readDataOldFormatGHERReal8(fileUnit,entries8,exclusionValue,nbOfDataI,nbOfDataJ,nbOfDataK)
       END IF
 
   END SUBROUTINE

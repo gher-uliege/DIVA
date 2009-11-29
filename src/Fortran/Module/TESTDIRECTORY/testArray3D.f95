@@ -174,10 +174,16 @@ INTEGER, PARAMETER :: dimZ = 3
 #ifdef Real4
    CALL createFile(fichier,'testArray3DWrite.Real4.out',GHER_FORMATTED)
    CALL arrayWrite(array1,fichier)
+   CALL defineFileName(fichier,'testArray3DWriteTHK.Real4.out')
+   CALL defineFileFormat(fichier,THK_FORMATTED)
+   CALL arrayWrite(array1,fichier)
 #endif
 #ifdef Real8
    CALL createFile(fichier,'testArray3DWrite.Real8.out',GHER_FORMATTED)
    CALL arrayWrite(array1,fichier,998.)
+   CALL defineFileName(fichier,'testArray3DWriteTHK.Real8.out')
+   CALL defineFileFormat(fichier,THK_FORMATTED)
+   CALL arrayWrite(array1,fichier)
 #endif
 
  END SUBROUTINE

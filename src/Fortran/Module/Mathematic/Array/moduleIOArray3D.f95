@@ -18,7 +18,7 @@ MODULE moduleIOArray3D
 ! Include file
 ! ============
    USE moduleFileDefinition
-   USE moduleRead, ONLY : readArray
+   USE moduleRead, ONLY : readArrayGHER
    USE moduleWorkingArray, ONLY : workingArray
    USE moduleMemoryArrayManagement, ONLY : memoryDestructor, memorySetAllocatedSize,  &
                                            memorySetFirstIndex, memorySetSize, memoryDefineLastIndex, &
@@ -70,7 +70,7 @@ MODULE moduleIOArray3D
 !     - - -
 
       CALL memoryDestructor()
-      CALL readArray(fileToRead,workingArray%values,exclusionValue,nbOfDataI,nbOfDataJ,nbOfDataK)
+      CALL readArrayGHER(fileToRead,workingArray%values,exclusionValue,nbOfDataI,nbOfDataJ,nbOfDataK)
       CALL memorySetFirstIndex(ione,ione,ione)
       CALL memorySetAllocatedSize(nbOfDataI,nbOfDataJ,nbOfDataK)
       CALL memorySetSize(nbOfDataI,nbOfDataJ,nbOfDataK)
