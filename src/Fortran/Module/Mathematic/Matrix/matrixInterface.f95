@@ -156,8 +156,8 @@ MODULE matrixInterface
                            arraySetIncreaseSizeYReal4 => arraySetIncreaseSizeY, &
                            arrayArrayMinReal4 => arrayArrayMin, &
                            arrayArrayMaxReal4 => arrayArrayMax, &
-                           arrayArrayAbsMinReal4 => arrayArrayAbsMin, &
-                           arrayArrayAbsMaxReal4 => arrayArrayAbsMax, &
+                           arrayArrayAbsMinReal4 => arrayArrayAbsMin, arrayIOWriteReal4 => arrayIOWrite, &
+                           arrayArrayAbsMaxReal4 => arrayArrayAbsMax, arrayIOReadReal4 =>  arrayIORead, &
                            arrayArrayNorm1Real4 => arrayArrayNorm1, &
                            arrayArrayNorm2Real4 => arrayArrayNorm2, &
                            arrayArrayNormInfinityReal4 => arrayArrayNormInfinity, &
@@ -194,8 +194,8 @@ MODULE matrixInterface
                            arrayGetDefaultIncreaseSizeYReal8 => arrayGetDefaultIncreaseSizeY, &
                            arraySetIncreaseSizeYReal8 => arraySetIncreaseSizeY, &
                            arrayArrayMinReal8 => arrayArrayMin, arrayArrayMaxReal8 => arrayArrayMax, &
-                           arrayArrayAbsMinReal8 => arrayArrayAbsMin, &
-                           arrayArrayAbsMaxReal8 => arrayArrayAbsMax, &
+                           arrayArrayAbsMinReal8 => arrayArrayAbsMin, arrayIOWriteReal8 => arrayIOWrite, &
+                           arrayArrayAbsMaxReal8 => arrayArrayAbsMax, arrayIOReadReal8 =>  arrayIORead, &
                            arrayArrayNorm1Real8 => arrayArrayNorm1, &
                            arrayArrayNorm2Real8 => arrayArrayNorm2, &
                            arrayArrayNormInfinityReal8 => arrayArrayNormInfinity, &
@@ -410,6 +410,14 @@ MODULE matrixInterface
    INTERFACE matrixSetValue
       MODULE PROCEDURE arrayArraySetValueReal8, arrayArraySetValueReal4, &
                        arrayArraySetValueInteger2,arrayArraySetValueInteger4, arrayArraySetValueInteger8
+   END INTERFACE
+
+   INTERFACE matrixWrite
+      MODULE PROCEDURE arrayIOWriteReal4, arrayIOWriteReal8
+   END INTERFACE
+
+   INTERFACE matrixRead
+      MODULE PROCEDURE arrayIOReadReal4, arrayIOReadReal8
    END INTERFACE
 
 END MODULE matrixInterface

@@ -9,5 +9,6 @@ source ./flagForArrayFirstStep
 $divaDir/compileFile moduleMathematicArray3D.f95 $moduleMathematicArray3D
 $divaDir/compileFile moduleMemoryArray3DManagement.f95 $moduleMemoryArray3DManagement
 $divaDir/compileFile moduleValuesArray3DManagement.f95 $moduleValuesArray3DManagement
+$divaDir/compileFile moduleIOArray3D.f95 $moduleIOArrayManagementND
 
 echo ' '

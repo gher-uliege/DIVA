@@ -4,12 +4,13 @@ moduleArray='moduleBase'$arrayType ; export moduleArray
 moduleValuesArrayNDManagement='moduleSpecialValuesManagement'$arrayType ; export moduleValuesArrayNDManagement
 moduleMemoryArrayNDManagement='moduleSpecialMemoryManagement'$arrayType ; export moduleMemoryArrayNDManagement
 moduleMathematicArrayND='moduleMathematic'$arrayType ; export moduleMathematicArrayND
+moduleIOArrayManagementND='moduleSpecialIO'$arrayType ; export moduleIOArrayManagementND
 
 flag0='-DmoduleArray='$moduleArray
 flag1='-DmoduleValuesArrayNDManagement='$moduleValuesArrayNDManagement
 flag2='-DmoduleMemoryArrayNDManagement='$moduleMemoryArrayNDManagement
 flag3='-DmoduleMathematicArrayND='$moduleMathematicArrayND
-flag4='-D'$Kind
+flag4='-DmoduleIOArrayManagementND='$moduleIOArrayManagementND
 
 preproFlag=$preproFlag' '$flag0
 preproFlag=$preproFlag' '$flag1

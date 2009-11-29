@@ -11,8 +11,9 @@ arrayDimension=_ARRAY_2D_ ; export arrayDimension
 
 # Compilation of : rowCSRMatrixReal4
 # ==================================
-arrayType='rowcsrmatrixReal4' ; export arrayType
-vectorValue='vectorReal4' ; export vectorValue
+dataType='Real4' ; export dataType
+arrayType='rowcsrmatrix'$dataType ; export arrayType
+vectorValue='vector'$dataType ; export vectorValue
 vectorIndex='vectorInteger4' ; export vectorIndex
 VARType='REAL(KIND=4)' ; export VARType
 ROWIndexVARType='INTEGER(KIND=4)' ; export ROWIndexVARType
@@ -23,8 +24,9 @@ Kind='_REAL_' ; export Kind
 
 # Compilation of : rowCSRMatrixReal8
 # ==================================
-arrayType='rowcsrmatrixReal8' ; export arrayType
-vectorValue='vectorReal8' ; export vectorValue
+dataType='Real8' ; export dataType
+arrayType='rowcsrmatrix'$dataType ; export arrayType
+vectorValue='vector'$dataType ; export vectorValue
 vectorIndex='vectorInteger4' ; export vectorIndex
 VARType='REAL(KIND=8)' ; export VARType
 ROWIndexVARType='INTEGER(KIND=4)' ; export ROWIndexVARType
@@ -35,8 +37,9 @@ Kind='_REAL_' ; export Kind
 
 # Compilation of : rowCSRMatrixInteger2
 # =====================================
-arrayType='rowcsrmatrixInteger2' ; export arrayType
-vectorValue='vectorInteger2' ; export vectorValue
+dataType='Integer2' ; export dataType
+arrayType='rowcsrmatrix'$dataType ; export arrayType
+vectorValue='vector'$dataType ; export vectorValue
 vectorIndex='vectorInteger4' ; export vectorIndex
 VARType='INTEGER(KIND=2)' ; export VARType
 ROWIndexVARType='INTEGER(KIND=4)' ; export ROWIndexVARType
@@ -47,8 +50,9 @@ Kind='_INTEGER_' ; export Kind
 
 # Compilation of : rowCSRMatrixInteger4
 # =====================================
-arrayType='rowcsrmatrixInteger4' ; export arrayType
-vectorValue='vectorInteger4' ; export vectorValue
+dataType='Integer4' ; export dataType
+arrayType='rowcsrmatrix'$dataType ; export arrayType
+vectorValue='vector'$dataType ; export vectorValue
 vectorIndex='vectorInteger4' ; export vectorIndex
 VARType='INTEGER(KIND=4)' ; export VARType
 ROWIndexVARType='INTEGER(KIND=4)' ; export ROWIndexVARType
@@ -58,8 +62,9 @@ Kind='_INTEGER_' ; export Kind
 
 # Compilation of : rowCSRMatrixInteger8
 # =====================================
-arrayType='rowcsrmatrixInteger8' ; export arrayType
-vectorValue='vectorInteger8' ; export vectorValue
+dataType='Integer8' ; export dataType
+arrayType='rowcsrmatrix'$dataType ; export arrayType
+vectorValue='vector'$dataType ; export vectorValue
 vectorIndex='vectorInteger4' ; export vectorIndex
 VARType='INTEGER(KIND=8)' ; export VARType
 ROWIndexVARType='INTEGER(KIND=4)' ; export ROWIndexVARType

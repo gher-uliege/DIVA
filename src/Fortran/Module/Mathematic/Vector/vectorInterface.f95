@@ -153,8 +153,8 @@ MODULE vectorInterface
                            arrayGetAllocatedSizeXReal4 => arrayGetAllocatedSizeX , &
                            arrayGetIncreaseSizeXReal4 => arrayGetIncreaseSizeX, &
                            arraySetIncreaseSizeXReal4 => arraySetIncreaseSizeX, &
-                           arrayArrayMinReal4 => arrayArrayMin, &
-                           arrayArrayMaxReal4 => arrayArrayMax, &
+                           arrayArrayMinReal4 => arrayArrayMin, arrayIOWriteReal4 => arrayIOWrite, &
+                           arrayArrayMaxReal4 => arrayArrayMax, arrayIOReadReal4 =>  arrayIORead, &
                            arrayArrayNorm1Real4 => arrayArrayNorm1, &
                            arrayArrayNorm2Real4 => arrayArrayNorm2, &
                            arrayArrayNormInfinityReal4 => arrayArrayNormInfinity, &
@@ -195,8 +195,8 @@ MODULE vectorInterface
                            arrayGetIncreaseSizeXReal8 => arrayGetIncreaseSizeX, &
                            arrayGetDefaultIncreaseSizeXReal8 => arrayGetDefaultIncreaseSizeX, &
                            arraySetIncreaseSizeXReal8 => arraySetIncreaseSizeX, &
-                           arrayArrayMinReal8 => arrayArrayMin, &
-                           arrayArrayMaxReal8 => arrayArrayMax, &
+                           arrayArrayMinReal8 => arrayArrayMin, arrayIOWriteReal8 => arrayIOWrite, &
+                           arrayArrayMaxReal8 => arrayArrayMax, arrayIOReadReal8 =>  arrayIORead, &
                            arrayArrayNorm1Real8 => arrayArrayNorm1, &
                            arrayArrayNorm2Real8 => arrayArrayNorm2, &
                            arrayArrayNormInfinityReal8 => arrayArrayNormInfinity, &
@@ -416,4 +416,13 @@ MODULE vectorInterface
       MODULE PROCEDURE arrayArrayPutInReal8, arrayArrayPutInReal4, &
                        arrayArrayPutInInteger2,arrayArrayPutInInteger4, arrayArrayPutInInteger8
    END INTERFACE
+
+   INTERFACE vectorWrite
+      MODULE PROCEDURE arrayIOWriteReal4, arrayIOWriteReal8
+   END INTERFACE
+
+   INTERFACE vectorRead
+      MODULE PROCEDURE arrayIOReadReal4, arrayIOReadReal8
+   END INTERFACE
+
 END MODULE vectorInterface

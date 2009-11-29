@@ -89,6 +89,30 @@
  value(           2 ) =    25.00000    
  value(           3 ) =    25.00000    
   
+ checkWriteProcedure
+ ===================
+  
+ checkReadProcedure
+ ===================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    60.00000    
+ value(           2 ) =    25.00000    
+ value(           3 ) =    25.00000    
+ The size of the array is :            3
+    The allocated memory is :            3
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    60.00000    
+ value(           2 ) =    25.00000    
+ value(           3 ) =    25.00000    
+  
  checkVectorNorm
  ===============
  Norm L1 :    110.0000    
@@ -334,6 +358,30 @@
  ======================
  The size of the array is :            3
     The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    60.00000    
+ value(           2 ) =    25.00000    
+ value(           3 ) =    25.00000    
+  
+ checkWriteProcedure
+ ===================
+  
+ checkReadProcedure
+ ===================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    60.00000    
+ value(           2 ) =    25.00000    
+ value(           3 ) =    25.00000    
+ The size of the array is :            3
+    The allocated memory is :            3
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :            1
@@ -594,6 +642,30 @@
  value(          -1 ) =    25.00000    
  value(           0 ) =    25.00000    
  value(           1 ) =    60.00000    
+  
+ checkWriteProcedure
+ ===================
+  
+ checkReadProcedure
+ ===================
+ The size of the array is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) =    25.00000    
+ value(           0 ) =    25.00000    
+ value(           1 ) =    60.00000    
+ The size of the array is :            3
+    The allocated memory is :            3
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    25.00000    
+ value(           2 ) =    25.00000    
+ value(           3 ) =    60.00000    
   
  checkVectorNorm
  ===============
@@ -848,6 +920,30 @@
  value(           2 ) =    25.00000    
  value(           3 ) =    25.00000    
   
+ checkWriteProcedure
+ ===================
+  
+ checkReadProcedure
+ ===================
+ The size of the array is :            3
+    The allocated memory is :            3
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    60.00000    
+ value(           2 ) =    25.00000    
+ value(           3 ) =    25.00000    
+ The size of the array is :            3
+    The allocated memory is :            3
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    60.00000    
+ value(           2 ) =    25.00000    
+ value(           3 ) =    25.00000    
+  
  checkVectorNorm
  ===============
  Norm L1 :    110.0000    
@@ -1091,6 +1187,30 @@
   
  checkVectorSetAddValue
  ======================
+ The size of the array is :            3
+    The allocated memory is :            3
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    60.00000    
+ value(           2 ) =    25.00000    
+ value(           3 ) =    25.00000    
+  
+ checkWriteProcedure
+ ===================
+  
+ checkReadProcedure
+ ===================
+ The size of the array is :            3
+    The allocated memory is :            3
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    60.00000    
+ value(           2 ) =    25.00000    
+ value(           3 ) =    25.00000    
  The size of the array is :            3
     The allocated memory is :            3
     The increase allocation memory is :            5
@@ -1353,6 +1473,30 @@
  value(          -1 ) =    25.00000    
  value(           0 ) =    25.00000    
  value(           1 ) =    60.00000    
+  
+ checkWriteProcedure
+ ===================
+  
+ checkReadProcedure
+ ===================
+ The size of the array is :            3
+    The allocated memory is :            3
+    The increase allocation memory is :            0
+    Allocation status of the vector :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) =    25.00000    
+ value(           0 ) =    25.00000    
+ value(           1 ) =    60.00000    
+ The size of the array is :            3
+    The allocated memory is :            3
+    The increase allocation memory is :            5
+    Allocation status of the vector :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) =    25.00000    
+ value(           2 ) =    25.00000    
+ value(           3 ) =    60.00000    
   
  checkVectorNorm
  ===============

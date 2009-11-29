@@ -72,7 +72,13 @@ MODULE moduleArray
                                        mathArrayScale, &
 #endif
                                        mathArrayAbsMin, mathArrayAbsMax
+#ifdef _REAL_
+   USE moduleIOArrayManagement, ONLY : ioArrayWrite
+   USE moduleIOArrayManagementND, ONLY : ioArrayRead
+   USE moduleFileDefinition
+#endif
 
+   INCLUDE 'constantParameter.h'
 
 ! Procedures status
 ! =================
@@ -115,6 +121,10 @@ MODULE moduleArray
              arrayArrayScale, &
 #endif
              arrayArrayAbsMin, arrayArrayAbsMax
+
+#ifdef _REAL_
+   PUBLIC :: arrayIOWrite, arrayIORead
+#endif
 
 ! ============================================================
 ! ============================================================
@@ -2164,6 +2174,69 @@ MODULE moduleArray
       CALL nullifyArrayPointer()
 
   END SUBROUTINE
+
+#ifdef _REAL_
+! Procedure 13 : writing procedure
+! --------------------------------
+  SUBROUTINE arrayIOWrite(targetArray,fileToWrite,exclusionValue)
+
+!     Declaration
+!     - - - - - -
+      TYPE(file) :: fileToWrite
+      REAL(KIND=4), OPTIONAL, INTENT(IN) :: exclusionValue
+      REAL(KIND=4) :: realExclusionValue
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(arrayType), INTENT(IN) :: targetArray
+      CALL setWorkingArray(targetArray)
+
+!     Body
+!     - - -
+      realExclusionValue = posInf
+
+      IF ( PRESENT(exclusionValue) ) THEN
+         realExclusionValue = exclusionValue
+      ENDIF
+
+      CALL ioArrayWrite(fileToWrite,realExclusionValue)
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullifyArrayPointer()
+
+  END SUBROUTINE
+
+! Procedure 13 : writing procedure
+! --------------------------------
+  SUBROUTINE arrayIORead(targetArray,fileToRead,exclusionValue)
+
+!     Declaration
+!     - - - - - -
+      TYPE(file) :: fileToRead
+      REAL(KIND=4), OPTIONAL, INTENT(OUT) :: exclusionValue
+      REAL(KIND=4) :: realExclusionValue
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(arrayType), INTENT(IN) :: targetArray
+      CALL setWorkingArray(targetArray)
+
+!     Body
+!     - - -
+      CALL ioArrayRead(fileToRead,realExclusionValue)
+
+      IF ( PRESENT(exclusionValue) ) THEN
+         exclusionValue = realExclusionValue
+      ENDIF
+
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullifyArrayPointer()
+
+  END SUBROUTINE
+#endif
 
 #undef _ARRAY_1D_DEFINITION_
 #undef _ARRAY_2D_DEFINITION_

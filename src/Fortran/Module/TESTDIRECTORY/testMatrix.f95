@@ -12,6 +12,7 @@ PROGRAM testMatrix
 ! =============
  USE moduleDIVA
  USE matrixInterface
+ USE ioInterface
 
 ! Declaration
 ! ===========
@@ -116,6 +117,14 @@ INTEGER, PARAMETER :: dimY = 3
   PRINT*,'======================'
   CALL checkArraySetAddValue(array1)
   PRINT*,' '
+  PRINT*,'checkWriteProcedure'
+  PRINT*,'==================='
+  CALL checkWriteProcedure(array1)
+  PRINT*,' '
+  PRINT*,'checkReadProcedure'
+  PRINT*,'==================='
+  CALL checkReadProcedure(array1)
+  PRINT*,' '
   PRINT*,'checkArrayNorm'
   PRINT*,'==============='
   CALL checkArrayNorm(array1)
@@ -152,6 +161,62 @@ INTEGER, PARAMETER :: dimY = 3
 
  END SUBROUTINE
  
+ SUBROUTINE checkWriteProcedure(array1)
+
+!  Declaration
+!  -----------
+   TYPE(matrixType), INTENT(INOUT) :: array1
+   TYPE(file) :: fichier
+
+!  Body
+!  - - -
+#ifdef Real4
+   CALL createFile(fichier,'testMatrixWrite.Real4.out',GHER_FORMATTED)
+   CALL matrixWrite(array1,fichier)
+#endif
+#ifdef Real8
+   CALL createFile(fichier,'testMatrixWrite.Real8.out',GHER_FORMATTED)
+   CALL matrixWrite(array1,fichier,998.)
+#endif
+
+ END SUBROUTINE
+
+ SUBROUTINE checkReadProcedure(array1)
+
+!  Declaration
+!  -----------
+   TYPE(matrixType), INTENT(INOUT) :: array1
+   TYPE(matrixType) :: array2
+   TYPE(file) :: fichier
+
+#ifdef Real8
+   REAL(KIND=4) :: exclusionValue
+#endif
+
+!  Body
+!  - - -
+
+   CALL matrixCreate(array2)
+   CALL matrixSetToZero(array2)
+
+!  Body
+!  - - -
+#ifdef Real4
+   CALL createFile(fichier,'testMatrixWrite.Real4.out',GHER_FORMATTED)
+   CALL matrixRead(array2,fichier)
+#endif
+#ifdef Real8
+   CALL createFile(fichier,'testMatrixWrite.Real8.out',GHER_FORMATTED)
+   CALL matrixRead(array2,fichier,exclusionValue)
+   PRINT*,'exclusionValue = ',exclusionValue
+#endif
+
+   CALL matrixPrint(array1)
+   CALL matrixPrint(array2)
+   CALL matrixDestroy(array2)
+
+ END SUBROUTINE
+
  SUBROUTINE checkArraySetToZero(array1)
 
 !  Declaration

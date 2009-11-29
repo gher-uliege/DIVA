@@ -8,7 +8,8 @@ export libName
 
 # Compilation of : ArrayReal4
 # ============================
-arrayType='arrayReal4' ; export arrayType
+dataType='Real4' ; export dataType
+arrayType='array'$dataType ; export arrayType 
 arrayDimension='_ARRAY_3D_' ; export arrayDimension
 VARType='REAL(KIND=4)' ; export VARType
 Kind='_REAL_' ; export Kind
@@ -17,7 +18,8 @@ Kind='_REAL_' ; export Kind
 
 # Compilation of : ArrayReal8
 # ============================
-arrayType='arrayReal8' ; export arrayType
+dataType='Real8' ; export dataType
+arrayType='array'$dataType ; export arrayType 
 arrayDimension='_ARRAY_3D_' ; export arrayDimension
 VARType='REAL(KIND=8)' ; export VARType
 Kind='_REAL_' ; export Kind
@@ -26,7 +28,8 @@ Kind='_REAL_' ; export Kind
 
 # Compilation of : ArrayInteger2
 # ===============================
-arrayType='arrayInteger2' ; export arrayType
+dataType='Integer2' ; export dataType
+arrayType='array'$dataType ; export arrayType 
 arrayDimension='_ARRAY_3D_' ; export arrayDimension
 VARType='INTEGER(KIND=2)' ; export VARType
 Kind='_INTEGER_' ; export Kind
@@ -35,7 +38,8 @@ Kind='_INTEGER_' ; export Kind
 
 # Compilation of : ArrayInteger4
 # ===============================
-arrayType='arrayInteger4' ; export arrayType
+dataType='Integer4' ; export dataType
+arrayType='array'$dataType ; export arrayType 
 arrayDimension='_ARRAY_3D_' ; export arrayDimension
 VARType='INTEGER(KIND=4)' ; export VARType
 Kind='_INTEGER_' ; export Kind
@@ -44,7 +48,8 @@ Kind='_INTEGER_' ; export Kind
 
 # Compilation of : ArrayInteger8
 # ===============================
-arrayType='arrayInteger8' ; export arrayType
+dataType='Integer8' ; export dataType
+arrayType='array'$dataType ; export arrayType 
 arrayDimension='_ARRAY_3D_' ; export arrayDimension
 VARType='INTEGER(KIND=8)' ; export VARType
 Kind='_INTEGER_' ; export Kind

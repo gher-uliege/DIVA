@@ -4,6 +4,8 @@ moduleArrayDefinition='module'$arrayType'Definition' ; export moduleArrayDefinit
 moduleWorkingArray='moduleWorking'$arrayType ; export moduleWorkingArray
 moduleMemoryArrayManagement='moduleMemoryManagement'$arrayType ; export moduleMemoryArrayManagement
 moduleValuesArrayManagement='moduleValuesManagement'$arrayType ; export moduleValuesArrayManagement
+moduleWriteManagement='moduleWrite'$dataType ; export moduleWriteManagement 
+moduleIOArrayManagement='moduleIO'$arrayType ; export moduleIOArrayManagement
 
 flag0='-DmoduleArrayDefinition='$moduleArrayDefinition
 flag1='-D'$arrayDimension
@@ -12,6 +14,10 @@ flag3='-DarrayType='$arrayType
 flag4='-DmoduleWorkingArray='$moduleWorkingArray
 flag5='-DmoduleMemoryArrayManagement='$moduleMemoryArrayManagement
 flag6='-DmoduleValuesArrayManagement='$moduleValuesArrayManagement
+flag7='-DmoduleWrite='$moduleWriteManagement
+flag8='-D'$Kind
+flag9='-D'$dataType
+flag10='-DmoduleIOArrayManagement='$moduleIOArrayManagement
 
 preproFlag=$preproFlag' '$flag0
 preproFlag=$preproFlag' '$flag1
@@ -20,5 +26,9 @@ preproFlag=$preproFlag' '$flag3
 preproFlag=$preproFlag' '$flag4
 preproFlag=$preproFlag' '$flag5
 preproFlag=$preproFlag' '$flag6
+preproFlag=$preproFlag' '$flag7
+preproFlag=$preproFlag' '$flag8
+preproFlag=$preproFlag' '$flag9
+preproFlag=$preproFlag' '$flag10
 
 export preproFlag

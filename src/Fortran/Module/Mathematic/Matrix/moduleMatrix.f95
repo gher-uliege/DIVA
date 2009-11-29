@@ -31,6 +31,7 @@ MODULE moduleMatrix
 #ifdef _REAL_
                            arrayArrayNorm1, arrayArrayNorm2, arrayArrayNormInfinity, arrayArrayNorm, arrayArraySqrt, &
                            arrayArraySum, arrayArrayScale, &
+                           arrayIOWrite, arrayIORead, &
 #endif
                            arrayArrayAbsMin, arrayArrayAbsMax
 

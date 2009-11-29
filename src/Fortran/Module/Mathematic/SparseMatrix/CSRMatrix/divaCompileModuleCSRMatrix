@@ -10,9 +10,10 @@ arrayDimension=_ARRAY_2D_ ; export arrayDimension
 
 # Compilation of : CSRMatrixReal4
 # ===============================
-arrayType='csrMatrixReal4' ; export arrayType
+dataType='Real4' ; export dataType
+arrayType='csrMatrix'$dataType ; export arrayType
 rowCSRMatrixType='row'$arrayType ; export rowCSRMatrixType
-vectorValue='vectorReal4' ; export vectorValue
+vectorValue='vector'$dataType ; export vectorValue
 vectorIndex='vectorInteger4' ; export vectorIndex
 VARType='REAL(KIND=4)' ; export VARType
 Kind='_REAL_' ; export Kind
@@ -21,9 +22,10 @@ Kind='_REAL_' ; export Kind
 
 # Compilation of : CSRMatrixReal8
 # ===============================
-arrayType='csrMatrixReal8' ; export arrayType
+dataType='Real8' ; export dataType
+arrayType='csrMatrix'$dataType ; export arrayType
 rowCSRMatrixType='row'$arrayType ; export rowCSRMatrixType
-vectorValue='vectorReal8' ; export vectorValue
+vectorValue='vector'$dataType ; export vectorValue
 vectorIndex='vectorInteger4' ; export vectorIndex
 VARType='REAL(KIND=8)' ; export VARType
 Kind='_REAL_' ; export Kind
@@ -32,9 +34,10 @@ Kind='_REAL_' ; export Kind
 
 # Compilation of : CSRMatrixInteger2
 # ==================================
-arrayType='csrMatrixInteger2' ; export arrayType
+dataType='Integer2' ; export dataType
+arrayType='csrMatrix'$dataType ; export arrayType
 rowCSRMatrixType='row'$arrayType ; export rowCSRMatrixType
-vectorValue='vectorInteger2' ; export vectorValue
+vectorValue='vector'$dataType ; export vectorValue
 vectorIndex='vectorInteger4' ; export vectorIndex
 VARType='INTEGER(KIND=2)' ; export VARType
 Kind='_INTEGER_' ; export Kind
@@ -43,9 +46,10 @@ Kind='_INTEGER_' ; export Kind
 
 # Compilation of : CSRMatrixInteger4
 # ==================================
-arrayType='csrMatrixInteger4' ; export arrayType
+dataType='Integer4' ; export dataType
+arrayType='csrMatrix'$dataType ; export arrayType
 rowCSRMatrixType='row'$arrayType ; export rowCSRMatrixType
-vectorValue='vectorInteger4' ; export vectorValue
+vectorValue='vector'$dataType ; export vectorValue
 vectorIndex='vectorInteger4' ; export vectorIndex
 VARType='INTEGER(KIND=4)' ; export VARType
 Kind='_INTEGER_' ; export Kind
@@ -54,9 +58,10 @@ Kind='_INTEGER_' ; export Kind
 
 # Compilation of : CSRMatrixInteger8
 # ==================================
-arrayType='csrMatrixInteger8' ; export arrayType
+dataType='Integer8' ; export dataType
+arrayType='csrMatrix'$dataType ; export arrayType
 rowCSRMatrixType='row'$arrayType ; export rowCSRMatrixType
-vectorValue='vectorInteger8' ; export vectorValue
+vectorValue='vector'$dataType ; export vectorValue
 vectorIndex='vectorInteger4' ; export vectorIndex
 VARType='INTEGER(KIND=8)' ; export VARType
 Kind='_INTEGER_' ; export Kind

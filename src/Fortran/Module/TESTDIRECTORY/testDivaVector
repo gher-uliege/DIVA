@@ -24,12 +24,16 @@ echo Test : $fileToCheck.$typeToCheck >> testing.log
 echo ------ >> testing.log
 
 preproFlag='-DvectorType=vector'$typeToCheck' -DVARType='$VARType
+preproFlag=$preproFlag' -D'$typeToCheck
 export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
 ./$fileToCheck.a >> $fileToCheck.$typeToCheck.$compiler.$OSused
 #cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
+#cp ./$fileToCheck'Write'.$typeToCheck.out ./OUTPUTS/$fileToCheck'Write'.$typeToCheck.$compiler.$OSused
 diff -s ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused >> testing.log
+diff -s ./$fileToCheck'Write'.$typeToCheck.out ./OUTPUTS/$fileToCheck'Write'.$typeToCheck.$compiler.$OSused >> testing.log
+rm ./$fileToCheck'Write'.$typeToCheck.out
 rm ./$fileToCheck.$typeToCheck.$compiler.$OSused
 rm ./$fileToCheck.a
 
@@ -45,12 +49,16 @@ echo Test : $fileToCheck.$typeToCheck >> testing.log
 echo ------ >> testing.log
 
 preproFlag='-DvectorType=vector'$typeToCheck' -DVARType='$VARType
+preproFlag=$preproFlag' -D'$typeToCheck
 export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
 ./$fileToCheck.a >> $fileToCheck.$typeToCheck.$compiler.$OSused
 #cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
+#cp ./$fileToCheck'Write'.$typeToCheck.out ./OUTPUTS/$fileToCheck'Write'.$typeToCheck.$compiler.$OSused
 diff -s ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused >> testing.log
+diff -s ./$fileToCheck'Write'.$typeToCheck.out ./OUTPUTS/$fileToCheck'Write'.$typeToCheck.$compiler.$OSused >> testing.log
+rm ./$fileToCheck'Write'.$typeToCheck.out
 rm ./$fileToCheck.$typeToCheck.$compiler.$OSused
 rm ./$fileToCheck.a
 

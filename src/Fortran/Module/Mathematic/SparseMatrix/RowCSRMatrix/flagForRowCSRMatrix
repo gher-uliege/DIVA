@@ -14,7 +14,6 @@ flag2='-DmoduleVectorDefinitionIndex='$moduleVectorDefinitionIndex
 flag3='-DrowCSRMatrixType='$arrayType
 flag4='-DvectorTypeValue='$vectorTypeValue
 flag5='-DvectorTypeIndex='$vectorTypeIndex
-flag6='-D'$Kind
 flag7='-DROWIndexVARType='$ROWIndexVARType
 flag8='-DmoduleValuesRowCSRMatrixManagement='$moduleValuesRowCSRMatrixManagement
 flag9='-DmoduleRowCSRMatrix='$moduleRowCSRMatrix
@@ -25,7 +24,6 @@ preproFlag=$preproFlag' '$flag2
 preproFlag=$preproFlag' '$flag3
 preproFlag=$preproFlag' '$flag4
 preproFlag=$preproFlag' '$flag5
-preproFlag=$preproFlag' '$flag6
 preproFlag=$preproFlag' '$flag7
 preproFlag=$preproFlag' '$flag8
 preproFlag=$preproFlag' '$flag9

@@ -9,5 +9,6 @@ source ./flagForMatrixFirstStep
 $divaDir/compileFile moduleMathematicArray2D.f95 $moduleMathematicArray2D
 $divaDir/compileFile moduleMemoryArray2DManagement.f95 $moduleMemoryArray2DManagement
 $divaDir/compileFile moduleValuesArray2DManagement.f95 $moduleValuesArray2DManagement
+$divaDir/compileFile moduleIOArray2D.f95 $moduleIOArrayManagementND
 
 echo ' '

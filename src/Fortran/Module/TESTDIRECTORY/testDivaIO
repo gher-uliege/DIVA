@@ -1,0 +1,199 @@
+#!/bin/bash
+
+
+
+echo =============================
+echo =============================
+echo ==                         ==
+echo == Procedure to test : io  ==
+echo ==                         ==
+echo =============================
+echo =============================
+echo ' '
+
+action=eval ; export action
+
+# Chech program : testWrite
+# --------------------------
+
+fileToCheck=testWrite
+
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+$divaDir/compileAndLinkFile $fileToCheck >> testing.log
+./$fileToCheck.a
+
+if [ $action == copy ] 
+then
+echo 'Copy result files'
+cp fort.412 ./OUTPUTS/fort.412.$compiler.$OSused
+cp fort.413 ./OUTPUTS/fort.413.$compiler.$OSused
+cp fort.414 ./OUTPUTS/fort.414.$compiler.$OSused
+cp fort.415 ./OUTPUTS/fort.415.$compiler.$OSused
+cp fort.416 ./OUTPUTS/fort.416.$compiler.$OSused
+cp fort.417 ./OUTPUTS/fort.417.$compiler.$OSused
+
+cp fort.812 ./OUTPUTS/fort.812.$compiler.$OSused
+cp fort.814 ./OUTPUTS/fort.814.$compiler.$OSused
+cp fort.816 ./OUTPUTS/fort.816.$compiler.$OSused
+
+cp fort.422 ./OUTPUTS/fort.422.$compiler.$OSused
+cp fort.423 ./OUTPUTS/fort.423.$compiler.$OSused
+cp fort.424 ./OUTPUTS/fort.424.$compiler.$OSused
+
+cp fort.432 ./OUTPUTS/fort.432.$compiler.$OSused
+cp fort.433 ./OUTPUTS/fort.433.$compiler.$OSused
+cp fort.434 ./OUTPUTS/fort.434.$compiler.$OSused
+
+cp fort.822 ./OUTPUTS/fort.822.$compiler.$OSused
+cp fort.823 ./OUTPUTS/fort.823.$compiler.$OSused
+
+cp fort.832 ./OUTPUTS/fort.832.$compiler.$OSused
+cp fort.833 ./OUTPUTS/fort.833.$compiler.$OSused
+
+cp fort.old.412 ./OUTPUTS/fort.old.412.$compiler.$OSused
+cp fort.old.812 ./OUTPUTS/fort.old.812.$compiler.$OSused
+fi
+
+diff -s fort.412 ./OUTPUTS/fort.412.$compiler.$OSused >> testing.log
+diff -s fort.413 ./OUTPUTS/fort.413.$compiler.$OSused >> testing.log
+diff -s fort.414 ./OUTPUTS/fort.414.$compiler.$OSused >> testing.log
+diff -s fort.415 ./OUTPUTS/fort.415.$compiler.$OSused >> testing.log
+diff -s fort.416 ./OUTPUTS/fort.416.$compiler.$OSused >> testing.log
+diff -s fort.417 ./OUTPUTS/fort.417.$compiler.$OSused >> testing.log
+
+diff -s fort.812 ./OUTPUTS/fort.812.$compiler.$OSused >> testing.log
+diff -s fort.814 ./OUTPUTS/fort.814.$compiler.$OSused >> testing.log
+diff -s fort.816 ./OUTPUTS/fort.816.$compiler.$OSused >> testing.log
+
+diff -s fort.422 ./OUTPUTS/fort.422.$compiler.$OSused >> testing.log
+diff -s fort.423 ./OUTPUTS/fort.423.$compiler.$OSused >> testing.log
+diff -s fort.424 ./OUTPUTS/fort.424.$compiler.$OSused >> testing.log
+
+diff -s fort.432 ./OUTPUTS/fort.432.$compiler.$OSused >> testing.log
+diff -s fort.433 ./OUTPUTS/fort.433.$compiler.$OSused >> testing.log
+diff -s fort.434 ./OUTPUTS/fort.434.$compiler.$OSused >> testing.log
+
+diff -s fort.822 ./OUTPUTS/fort.822.$compiler.$OSused >> testing.log
+diff -s fort.823 ./OUTPUTS/fort.823.$compiler.$OSused >> testing.log
+
+diff -s fort.832 ./OUTPUTS/fort.832.$compiler.$OSused >> testing.log
+diff -s fort.833 ./OUTPUTS/fort.833.$compiler.$OSused >> testing.log
+
+diff -s fort.old.412 ./OUTPUTS/fort.old.412.$compiler.$OSused >> testing.log
+diff -s fort.old.812 ./OUTPUTS/fort.old.812.$compiler.$OSused >> testing.log
+
+rm ./fort*
+rm ./$fileToCheck.a
+
+# Chech program : testRead
+# --------------------------
+
+fileToCheck=testRead
+action=eval
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+$divaDir/compileAndLinkFile $fileToCheck >> testing.log
+./$fileToCheck.a
+
+if [ $action == copy ] 
+then
+echo 'Copy result files'
+cp fort.4120 ./OUTPUTS/fort.4120.$compiler.$OSused
+cp fort.4130 ./OUTPUTS/fort.4130.$compiler.$OSused
+
+cp fort.8120 ./OUTPUTS/fort.8120.$compiler.$OSused
+cp fort.8130 ./OUTPUTS/fort.8130.$compiler.$OSused
+
+cp fort.4220 ./OUTPUTS/fort.4220.$compiler.$OSused
+cp fort.4230 ./OUTPUTS/fort.4230.$compiler.$OSused
+
+cp fort.4320 ./OUTPUTS/fort.4320.$compiler.$OSused
+cp fort.4329 ./OUTPUTS/fort.4329.$compiler.$OSused
+cp fort.4330 ./OUTPUTS/fort.4330.$compiler.$OSused
+
+cp fort.8220 ./OUTPUTS/fort.8220.$compiler.$OSused
+cp fort.8230 ./OUTPUTS/fort.8230.$compiler.$OSused
+
+cp fort.8320 ./OUTPUTS/fort.8320.$compiler.$OSused
+cp fort.8330 ./OUTPUTS/fort.8330.$compiler.$OSused
+
+cp fort.8431 ./OUTPUTS/fort.8431.$compiler.$OSused
+cp fort.8432 ./OUTPUTS/fort.8432.$compiler.$OSused
+
+cp fort.4430 ./OUTPUTS/fort.4430.$compiler.$OSused
+cp fort.4431 ./OUTPUTS/fort.4431.$compiler.$OSused
+cp fort.4432 ./OUTPUTS/fort.4432.$compiler.$OSused
+
+cp fort.8433 ./OUTPUTS/fort.8433.$compiler.$OSused
+cp fort.8434 ./OUTPUTS/fort.8434.$compiler.$OSused
+cp fort.8435 ./OUTPUTS/fort.8435.$compiler.$OSused
+
+cp fort.4433 ./OUTPUTS/fort.4433.$compiler.$OSused
+cp fort.4434 ./OUTPUTS/fort.4434.$compiler.$OSused
+cp fort.4435 ./OUTPUTS/fort.4435.$compiler.$OSused
+
+cp fort.old.41 ./OUTPUTS/fort.old.41.$compiler.$OSused
+cp fort.old.42 ./OUTPUTS/fort.old.42.$compiler.$OSused
+cp fort.old.43 ./OUTPUTS/fort.old.43.$compiler.$OSused
+
+cp fort.old.81 ./OUTPUTS/fort.old.81.$compiler.$OSused
+cp fort.old.82 ./OUTPUTS/fort.old.82.$compiler.$OSused
+cp fort.old.83 ./OUTPUTS/fort.old.83.$compiler.$OSused
+
+fi
+
+
+diff -s fort.4120 ./OUTPUTS/fort.4120.$compiler.$OSused >> testing.log
+diff -s fort.4130 ./OUTPUTS/fort.4130.$compiler.$OSused >> testing.log
+
+diff -s fort.8120 ./OUTPUTS/fort.8120.$compiler.$OSused >> testing.log
+diff -s fort.8130 ./OUTPUTS/fort.8130.$compiler.$OSused >> testing.log
+
+diff -s fort.4220 ./OUTPUTS/fort.4220.$compiler.$OSused >> testing.log
+diff -s fort.4230 ./OUTPUTS/fort.4230.$compiler.$OSused >> testing.log
+
+diff -s fort.4320 ./OUTPUTS/fort.4320.$compiler.$OSused >> testing.log
+diff -s fort.4329 ./OUTPUTS/fort.4329.$compiler.$OSused >> testing.log
+diff -s fort.4330 ./OUTPUTS/fort.4330.$compiler.$OSused >> testing.log
+
+diff -s fort.8220 ./OUTPUTS/fort.8220.$compiler.$OSused >> testing.log
+diff -s fort.8230 ./OUTPUTS/fort.8230.$compiler.$OSused >> testing.log
+
+diff -s fort.8320 ./OUTPUTS/fort.8320.$compiler.$OSused >> testing.log
+diff -s fort.8330 ./OUTPUTS/fort.8330.$compiler.$OSused >> testing.log
+
+diff -s fort.8431 ./OUTPUTS/fort.8431.$compiler.$OSused >> testing.log
+diff -s fort.8432 ./OUTPUTS/fort.8432.$compiler.$OSused >> testing.log
+
+diff -s fort.4430 ./OUTPUTS/fort.4430.$compiler.$OSused >> testing.log
+diff -s fort.4431 ./OUTPUTS/fort.4431.$compiler.$OSused >> testing.log
+diff -s fort.4432 ./OUTPUTS/fort.4432.$compiler.$OSused >> testing.log
+
+diff -s fort.8433 ./OUTPUTS/fort.8433.$compiler.$OSused >> testing.log
+diff -s fort.8434 ./OUTPUTS/fort.8434.$compiler.$OSused >> testing.log
+diff -s fort.8435 ./OUTPUTS/fort.8435.$compiler.$OSused >> testing.log
+
+diff -s fort.4433 ./OUTPUTS/fort.4433.$compiler.$OSused >> testing.log
+diff -s fort.4434 ./OUTPUTS/fort.4434.$compiler.$OSused >> testing.log
+diff -s fort.4435 ./OUTPUTS/fort.4435.$compiler.$OSused >> testing.log
+
+diff -s fort.old.41 ./OUTPUTS/fort.old.41.$compiler.$OSused >> testing.log
+diff -s fort.old.42 ./OUTPUTS/fort.old.42.$compiler.$OSused >> testing.log
+diff -s fort.old.43 ./OUTPUTS/fort.old.43.$compiler.$OSused >> testing.log
+
+diff -s fort.old.81 ./OUTPUTS/fort.old.81.$compiler.$OSused >> testing.log
+diff -s fort.old.82 ./OUTPUTS/fort.old.82.$compiler.$OSused >> testing.log
+diff -s fort.old.83 ./OUTPUTS/fort.old.83.$compiler.$OSused >> testing.log
+
+rm ./fort*
+rm ./temp*
+rm ./$fileToCheck.a
+
+echo ' ' >> testing.log

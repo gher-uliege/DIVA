@@ -12,6 +12,7 @@ PROGRAM testVector
 ! =============
  USE moduleDIVA
  USE vectorInterface
+ USE ioInterface
 
 ! Declaration
 ! ===========
@@ -114,6 +115,14 @@ INTEGER, PARAMETER :: dim = 3
   PRINT*,'======================'
   CALL checkVectorSetAddValue(vector1)
   PRINT*,' '
+  PRINT*,'checkWriteProcedure'
+  PRINT*,'==================='
+  CALL checkWriteProcedure(vector1)
+  PRINT*,' '
+  PRINT*,'checkReadProcedure'
+  PRINT*,'==================='
+  CALL checkReadProcedure(vector1)
+  PRINT*,' '
   PRINT*,'checkVectorNorm'
   PRINT*,'==============='
   CALL checkVectorNorm(vector1)
@@ -164,7 +173,66 @@ INTEGER, PARAMETER :: dim = 3
   PRINT*,' '
 
  END SUBROUTINE
- 
+
+ SUBROUTINE checkWriteProcedure(vector1)
+
+!  Declaration
+!  -----------
+   TYPE(vectorType), INTENT(INOUT) :: vector1
+   TYPE(file) :: fichier
+
+!  Body
+!  - - -
+#ifdef Real4
+   CALL createFile(fichier,'testVectorWrite.Real4.out',GHER_FORMATTED)
+   CALL vectorWrite(vector1,fichier)
+#endif
+#ifdef Real8
+   CALL createFile(fichier,'testVectorWrite.Real8.out',GHER_FORMATTED)
+   CALL vectorWrite(vector1,fichier,998.)
+#endif
+
+ END SUBROUTINE
+
+ SUBROUTINE checkReadProcedure(vector1)
+
+!  Declaration
+!  -----------
+   TYPE(vectorType), INTENT(INOUT) :: vector1
+   TYPE(vectorType) :: vector2
+   TYPE(file) :: fichier
+
+   INTEGER :: istart, length
+#ifdef Real8
+   REAL(KIND=4) :: exclusionValue
+#endif
+
+!  Body
+!  - - -
+  istart = vectorGetFirstIndex(vector1)
+  length = vectorGetSize(vector1)
+
+   CALL vectorCreate(vector2,length,istart)
+   CALL vectorSetToZero(vector2)
+
+!  Body
+!  - - -
+#ifdef Real4
+   CALL createFile(fichier,'testVectorWrite.Real4.out',GHER_FORMATTED)
+   CALL vectorRead(vector2,fichier)
+#endif
+#ifdef Real8
+   CALL createFile(fichier,'testVectorWrite.Real8.out',GHER_FORMATTED)
+   CALL vectorRead(vector2,fichier,exclusionValue)
+   PRINT*,'exclusionValue = ',exclusionValue
+#endif
+
+   CALL vectorPrint(vector1)
+   CALL vectorPrint(vector2)
+   CALL vectorDestroy(vector2)
+
+ END SUBROUTINE
+
  SUBROUTINE checkVectorSetToZero(vector1)
 
 !  Declaration

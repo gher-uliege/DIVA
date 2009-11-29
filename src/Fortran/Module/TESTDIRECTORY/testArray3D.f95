@@ -12,6 +12,7 @@ PROGRAM testArray3D
 ! =============
  USE moduleDIVA
  USE array3DInterface
+ USE ioInterface
 
 ! Declaration
 ! ===========
@@ -117,6 +118,14 @@ INTEGER, PARAMETER :: dimZ = 3
   PRINT*,'======================'
   CALL checkArraySetAddValue(array1)
   PRINT*,' '
+  PRINT*,'checkWriteProcedure'
+  PRINT*,'==================='
+  CALL checkWriteProcedure(array1)
+  PRINT*,' '
+  PRINT*,'checkReadProcedure'
+  PRINT*,'==================='
+  CALL checkReadProcedure(array1)
+  PRINT*,' '
   PRINT*,'checkArrayNorm'
   PRINT*,'==============='
   CALL checkArrayNorm(array1)
@@ -153,6 +162,62 @@ INTEGER, PARAMETER :: dimZ = 3
 
  END SUBROUTINE
  
+ SUBROUTINE checkWriteProcedure(array1)
+
+!  Declaration
+!  -----------
+   TYPE(arrayType), INTENT(INOUT) :: array1
+   TYPE(file) :: fichier
+
+!  Body
+!  - - -
+#ifdef Real4
+   CALL createFile(fichier,'testArray3DWrite.Real4.out',GHER_FORMATTED)
+   CALL arrayWrite(array1,fichier)
+#endif
+#ifdef Real8
+   CALL createFile(fichier,'testArray3DWrite.Real8.out',GHER_FORMATTED)
+   CALL arrayWrite(array1,fichier,998.)
+#endif
+
+ END SUBROUTINE
+
+ SUBROUTINE checkReadProcedure(array1)
+
+!  Declaration
+!  -----------
+   TYPE(arrayType), INTENT(INOUT) :: array1
+   TYPE(arrayType) :: array2
+   TYPE(file) :: fichier
+
+#ifdef Real8
+   REAL(KIND=4) :: exclusionValue
+#endif
+
+!  Body
+!  - - -
+
+   CALL arrayCreate(array2)
+   CALL arraySetToZero(array2)
+
+!  Body
+!  - - -
+#ifdef Real4
+   CALL createFile(fichier,'testArray3DWrite.Real4.out',GHER_FORMATTED)
+   CALL arrayRead(array2,fichier)
+#endif
+#ifdef Real8
+   CALL createFile(fichier,'testArray3DWrite.Real8.out',GHER_FORMATTED)
+   CALL arrayRead(array2,fichier,exclusionValue)
+   PRINT*,'exclusionValue = ',exclusionValue
+#endif
+
+   CALL arrayPrint(array1)
+   CALL arrayPrint(array2)
+   CALL arrayDestroy(array2)
+
+ END SUBROUTINE
+
  SUBROUTINE checkArraySetToZero(array1)
 
 !  Declaration

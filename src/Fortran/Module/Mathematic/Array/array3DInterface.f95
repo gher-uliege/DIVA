@@ -160,8 +160,8 @@ MODULE array3DInterface
                            arrayCreateWithDimensionAndFirstIndexReal4 => arrayCreateWithDimensionAndFirstIndex, &
                            arraySetSizeReal4 => arraySetSize, &
                            arrayGetFirstIndexXReal4 => arrayGetFirstIndexX, &
-                           arrayGetLastIndexXReal4 => arrayGetLastIndexX, &
-                           arrayGetSizeXReal4 => arrayGetSizeX, &
+                           arrayGetLastIndexXReal4 => arrayGetLastIndexX, arrayIOWriteReal4 => arrayIOWrite, &
+                           arrayGetSizeXReal4 => arrayGetSizeX, arrayIOReadReal4 =>  arrayIORead, &
                            arrayGetAllocatedSizeXReal4 => arrayGetAllocatedSizeX , &
                            arrayGetIncreaseSizeXReal4 => arrayGetIncreaseSizeX, &
                            arraySetIncreaseSizeXReal4 => arraySetIncreaseSizeX, &
@@ -198,8 +198,8 @@ MODULE array3DInterface
                            arrayCreateWithDimensionReal8 => arrayCreateWithDimension, &
                            arrayCreateWithDimensionAndFirstIndexReal8 => arrayCreateWithDimensionAndFirstIndex, &
                            arraySetSizeReal8 => arraySetSize, arrayGetFirstIndexXReal8 => arrayGetFirstIndexX, &
-                           arrayGetLastIndexXReal8 => arrayGetLastIndexX, &
-                           arrayGetSizeXReal8 => arrayGetSizeX, &
+                           arrayGetLastIndexXReal8 => arrayGetLastIndexX, arrayIOWriteReal8 => arrayIOWrite, &
+                           arrayGetSizeXReal8 => arrayGetSizeX, arrayIOReadReal8 =>  arrayIORead, &
                            arrayGetAllocatedSizeXReal8 => arrayGetAllocatedSizeX , &
                            arrayGetIncreaseSizeXReal8 => arrayGetIncreaseSizeX, &
                            arrayGetDefaultIncreaseSizeXReal8 => arrayGetDefaultIncreaseSizeX, &
@@ -463,6 +463,14 @@ MODULE array3DInterface
    INTERFACE arraySetValue
       MODULE PROCEDURE arrayArraySetValueReal8, arrayArraySetValueReal4, &
                        arrayArraySetValueInteger2,arrayArraySetValueInteger4, arrayArraySetValueInteger8
+   END INTERFACE
+
+   INTERFACE arrayWrite
+      MODULE PROCEDURE arrayIOWriteReal4, arrayIOWriteReal8
+   END INTERFACE
+
+   INTERFACE arrayRead
+      MODULE PROCEDURE arrayIOReadReal4, arrayIOReadReal8
    END INTERFACE
 
 END MODULE array3DInterface

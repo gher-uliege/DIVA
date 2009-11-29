@@ -9,5 +9,6 @@ source ./flagForVectorFirstStep
 $divaDir/compileFile moduleMathematicArray1D.f95 $moduleMathematicArray1D
 $divaDir/compileFile moduleMemoryArray1DManagement.f95 $moduleMemoryArray1DManagement
 $divaDir/compileFile moduleValuesArray1DManagement.f95 $moduleValuesArray1DManagement
+$divaDir/compileFile moduleIOArray1D.f95 $moduleIOArrayManagementND
 
 echo ' '
