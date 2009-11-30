@@ -89,6 +89,11 @@
  value(           2 ) =      25
  value(           3 ) =      25
   
+ checkWriteProcedure
+ ===================
+ No writing procedure for integer with GHER format
+ The vector containing            3 values with the exclusion value   1.0000000E+12  will not be saved
+  
  checkVectorMin
  ==============
  Vector min :      25
@@ -292,6 +297,11 @@
  value(           2 ) =      25
  value(           3 ) =      25
   
+ checkWriteProcedure
+ ===================
+ No writing procedure for integer with GHER format
+ The vector containing            3 values with the exclusion value   1.0000000E+12  will not be saved
+  
  checkVectorMin
  ==============
  Vector min :      25
@@ -494,6 +504,11 @@
  value(          -1 ) =      25
  value(           0 ) =      25
  value(           1 ) =      60
+  
+ checkWriteProcedure
+ ===================
+ No writing procedure for integer with GHER format
+ The vector containing            3 values with the exclusion value   1.0000000E+12  will not be saved
   
  checkVectorMin
  ==============
@@ -698,6 +713,11 @@
  value(           2 ) =      25
  value(           3 ) =      25
   
+ checkWriteProcedure
+ ===================
+ No writing procedure for integer with GHER format
+ The vector containing            3 values with the exclusion value   1.0000000E+12  will not be saved
+  
  checkVectorMin
  ==============
  Vector min :      25
@@ -901,6 +921,11 @@
  value(           2 ) =      25
  value(           3 ) =      25
   
+ checkWriteProcedure
+ ===================
+ No writing procedure for integer with GHER format
+ The vector containing            3 values with the exclusion value   1.0000000E+12  will not be saved
+  
  checkVectorMin
  ==============
  Vector min :      25
@@ -1103,6 +1128,11 @@
  value(          -1 ) =      25
  value(           0 ) =      25
  value(           1 ) =      60
+  
+ checkWriteProcedure
+ ===================
+ No writing procedure for integer with GHER format
+ The vector containing            3 values with the exclusion value   1.0000000E+12  will not be saved
   
  checkVectorMin
  ==============

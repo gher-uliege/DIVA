@@ -1922,6 +1922,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
+ The array containing  3  x  3  x  3 values with the exclusion value  1.E+12  will not be saved
   
  checkArrayMin
  ==============
@@ -2499,6 +2500,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
+ The array containing  3  x  3  x  3 values with the exclusion value  1.E+12  will not be saved
   
  checkArrayMin
  ==============
@@ -3076,6 +3078,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
+ The array containing  3  x  3  x  3 values with the exclusion value  1.E+12  will not be saved
   
  checkArrayMin
  ==============
@@ -3653,6 +3656,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
+ The array containing  3  x  3  x  3 values with the exclusion value  1.E+12  will not be saved
   
  checkArrayMin
  ==============
@@ -4230,6 +4234,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
+ The array containing  3  x  3  x  3 values with the exclusion value  1.E+12  will not be saved
   
  checkArrayMin
  ==============
@@ -4807,6 +4812,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
+ The array containing  3  x  3  x  3 values with the exclusion value  1.E+12  will not be saved
   
  checkArrayMin
  ==============

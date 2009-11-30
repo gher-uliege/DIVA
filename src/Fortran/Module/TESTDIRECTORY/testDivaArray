@@ -29,6 +29,7 @@ export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
 ./$fileToCheck.a >> $fileToCheck.$typeToCheck.$compiler.$OSused
+
 #cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
 #cp ./$fileToCheck'Write'.$typeToCheck.out ./OUTPUTS/$fileToCheck'Write'.$typeToCheck.$compiler.$OSused
 #cp ./$fileToCheck'WriteTHK'.$typeToCheck.out ./OUTPUTS/$fileToCheck'WriteTHK'.$typeToCheck.$compiler.$OSused

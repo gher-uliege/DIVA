@@ -90,6 +90,7 @@ MODULE moduleWrite
                CALL writeVectorGHER(fileToWrite,entries,exclusionValue,nbOfDataX)
 #else
                PRINT*,'No writing procedure for integer with GHER format'
+               PRINT*,'The vector containing ', nbOfDataX, 'values with the exclusion value ',exclusionValue,' will not be saved'
 #endif
 
          CASE (itwo) ! THK
@@ -136,6 +137,8 @@ MODULE moduleWrite
                CALL writeMatrixGHER(fileToWrite,entries,exclusionValue,nbOfDataX,nbOfDataY)
 #else
                PRINT*,'No writing procedure for integer with GHER format'
+               PRINT*,'The matrix containing ', nbOfDataX,' x ', nbOfDataY, &
+                               'values with the exclusion value ',exclusionValue,' will not be saved'
 #endif
 
          CASE (itwo) ! THK
@@ -185,6 +188,8 @@ MODULE moduleWrite
                CALL writeArrayGHER(fileToWrite,entries,exclusionValue,nbOfDataX,nbOfDataY,nbOfDataZ)
 #else
                PRINT*,'No writing procedure for integer with GHER format'
+               PRINT*,'The array containing ', nbOfDataX,' x ', nbOfDataY,' x ', nbOfDataZ, &
+                               'values with the exclusion value ',exclusionValue,' will not be saved'
 #endif
 
          CASE (itwo) ! THK

@@ -92,6 +92,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
+ The vector containing  3 values with the exclusion value  1.E+12  will not be saved
   
  checkVectorMin
  ==============
@@ -299,6 +300,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
+ The vector containing  3 values with the exclusion value  1.E+12  will not be saved
   
  checkVectorMin
  ==============
@@ -506,6 +508,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
+ The vector containing  3 values with the exclusion value  1.E+12  will not be saved
   
  checkVectorMin
  ==============
@@ -713,6 +716,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
+ The vector containing  3 values with the exclusion value  1.E+12  will not be saved
   
  checkVectorMin
  ==============
@@ -920,6 +924,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
+ The vector containing  3 values with the exclusion value  1.E+12  will not be saved
   
  checkVectorMin
  ==============
@@ -1127,6 +1132,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
+ The vector containing  3 values with the exclusion value  1.E+12  will not be saved
   
  checkVectorMin
  ==============
