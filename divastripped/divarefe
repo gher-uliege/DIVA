@@ -53,7 +53,7 @@ echo 3 >> param.par
 head -23 param.par.ori   | tail -15 >> param.par
 echo $snr 0.1 | ../../bin/multiply.a >> param.par
 echo varba >> param.par
-echo 0 >> param.par
+echo $varbak $snr | awk '{print 0.1*(1+$2)/(1+0.1*$2)*$1}' >> param.par
 
 cd ..
 
