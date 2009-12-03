@@ -6,6 +6,8 @@ echo Working in $WDIR
 
 DIVADIR="../../DIVA3D"
 
+dos2unix datasource
+
 FILENAME=driver
 {
 read isextractcomm
@@ -38,8 +40,167 @@ read isplotcomm
 read isplot
 } < $FILENAME
 
+jmtrend=$(cat driver | wc -l)
+
+FILENAME=./input/NCDFinfo
+
+if [ -f "$FILENAME" ]
+then
+
+{
+read titlecomm
+read titlestr
+read reftimecomm
+read reftimestr
+read valtimecomm
+read valtimestr
+read cellmethcomm
+read cellmethstr
+read institcomm
+read institstr
+read produccomm
+read producstr
+read sourcecomm
+read sourcestr
+read commentcomm
+read commentstr
+} < $FILENAME
+else
+echo DIVAERRS2 divadoall71 Missing file $FILENAME
+echo Please provide information file $FILENAME
+exit
+fi
 #
-  Fileinf=./input/Stabinfo
+##################################################
+# loop on depth layers defined in contour.depth
+# loop on seasons devined in monthlist
+# loop on years defined in yearlist
+# loop on variables defined in varlist
+
+
+# innermost loop on depth to use diva3D
+
+WDIR=$(pwd)
+
+echo Working in $WDIR
+
+declare -i mlevel
+declare -i depth
+declare -i depthp
+declare -i depthm
+
+
+echo Making sure files are in unix format
+dos2unix ./input/contour.depth
+dos2unix varlist
+dos2unix yearlist
+dos2unix monthlist
+dos2unix qflist
+
+maxlevel=$(cat ./input/contour.depth | wc -l)
+
+
+isextract=0
+if [ "$isextractf" == "1" ]
+then
+isextract=1
+fi
+
+if [ "$isextractf" == "-1" ]
+then
+echo $isextractf > pressure.coordinates
+isextract=1
+fi
+if [ "$isextractf" == "-10" ]
+then
+echo $isextractf > pressure.coordinates
+isextract=1
+fi
+
+
+if [ "$isextract" == "1" ]
+then
+echo Cleaning up the old data files
+
+#########################################################
+for var in `cat varlist`
+#########################################################
+do
+echo variable $var
+
+#########################################################
+for year in `cat yearlist`
+#########################################################
+do
+echo year $year
+
+if [ -f output/3Danalysis/${var}.${year}.3DNCliste ]
+then
+echo Erasing 3DNCD list
+rm -f output/3Danalysis/${var}.${year}.3DNCliste
+fi
+
+if [ -f output/3Danalysis/${var}.${year}.3DNCinfo ]
+then
+echo Erasing 3DNCD info
+rm -f output/3Danalysis/${var}.${year}.3DNCinfo
+fi
+
+#########################################################
+for month in `cat monthlist`
+#########################################################
+do
+echo month $month
+#########################################################
+lev="0"
+for layer in `cat input/contour.depth`
+do
+let lev=$lev+1
+let lnum=10000+$lev
+ls -l input/divadata/${var}.${year}.${month}.$lnum
+rm -f input/divadata/${var}.${year}.${month}.$lnum
+
+done
+
+done
+
+done
+
+done
+
+
+
+for ODVDATA in `cat datasource`
+do
+
+echo Data source file is $ODVDATA
+echo Trying to guess ODV format on $ODVDATA
+
+divaguessformsODV4 $ODVDATA
+echo Now extracting
+divaselectorODV4 $ODVDATA
+
+echo finished with $ODVDATA
+done
+
+echo Finished data extraction
+fi
+
+##################################################################
+#########################################################
+for year in `cat yearlist`
+#########################################################
+do
+echo divadoTS looping on year $year
+#########################################################
+for month in `cat monthlist`
+#########################################################
+do
+echo divadoTS looping on month $month
+#########################################################
+#
+#
+FILENAME=./input/Stabinfo
 if [ -f "$FILENAME" ]
 then
 {
@@ -57,14 +218,15 @@ read commentcombinationfactor
 read factorcombin
 read commentMaximumiteration
 read maxit
-} < $Fileinf
+} < $FILENAME
 else
 echo DIVAERRS2 divadoTS71 Missing file $FILENAME
 echo Please provide information file $FILENAME
 exit
 fi
 #
-
+echo divadoTS: variables read frpm Stabinfo are: $psal $temp
+#
 FILENAME=./input/NCDFinfo_salinity
 
 if [ -f "$FILENAME" ]
@@ -102,7 +264,6 @@ FILENAME=./input/NCDFinfo_temperature
 
 if [ -f "$FILENAME" ]
 then
-
 {
 read longnametmpcomm
 read longtmpname
@@ -133,15 +294,12 @@ fi
 
 maxlevel=$(cat ./input/contour.depth | wc -l)
 ##
-
-
 sGMIN="0"
 sGMAX="40"
 FILENAME=Salinity.bounds
 
 if [ -f "$FILENAME" ] 
 then
-
 {
 read GMINcomm
 read sGMIN
@@ -149,8 +307,7 @@ read GMAXcomm
 read sGMAX
 } < $FILENAME
 fi
-
-
+#
 tGMIN="-1"
 tGMAX="30"
 FILENAME=Temperature.bounds
@@ -163,45 +320,46 @@ read GMAXcomm
 read tGMAX
 } < $FILENAME
 fi
-
+#
 if [ -f ./Salinity.longname ]
 then
 {
 read longsalname
 } < ./Salinity.longname
 fi
-
+#
 if [ -f ./Salinity.units ]
 then
 {
 read longsalunit
 } < ./Salinity.units
 fi
-
+#
 if [ -f ./Temperature.longname ]
 then
 {
 read longtmpname
 } < ./Temperature.longname
 fi
-
+#
 if [ -f ./Temperature.units ]
 then
 {
 read longtmpunit
 } < ./Temperature.units
 fi
-
 #
-# Prepare infofiles and run divaSTB
 
-rm  ${DIVADIR}/divastripped/input/*
-rm  ${DIVADIR}/divastripped/input/*/*
-rm  ${DIVADIR}/divastripped/output/*
-rm  ${DIVADIR}/divastripped/output/*/*
-rm  ${DIVADIR}/divastripped/output/*/*/*
-rm  ${DIVADIR}/divastripped/output/*/*/*/*
-rm  ${DIVADIR}/divastripped/divawork/*
+echo divadoTS: cleanig ${DIVADIR}/divastripped input and output
+
+rm -rf ${DIVADIR}/divastripped/input/*
+rm  -f ${DIVADIR}/divastripped/output/*
+rm  -f ${DIVADIR}/divastripped/output/*/*
+rm -rf ${DIVADIR}/divastripped/output/3Danalysis/STABOUT
+rm -rf ${DIVADIR}/divastripped/output/3Danalysis/Fields
+rm -rf ${DIVADIR}/divastripped/output/3Danalysis/Fields_beforestb
+
+echo copying input to  ${DIVADIR}/divastripped/input
 
 cp -r ./input/* ${DIVADIR}/divastripped/input
 
@@ -222,12 +380,12 @@ mkdir -p ./input/divaUVcons
 mkdir -p ./output/3Danalysis
 
 #############################################################
-
+# Prepare infofiles and run diva_STABILIZE
 # write 3Dinfo for psal
 
 echo ! Variable  > ./input/3Dinfosalinity
-echo $psal >> ./input/3Dinfosalinity
-echo ! Number of the first level to be processed  >> ./input/3Dinfosalinity
+echo $psal.$year.$month >> ./input/3Dinfosalinity
+echo ! Number of the first level to be processed >> ./input/3Dinfosalinity
 echo $minlevel >> ./input/3Dinfosalinity
 echo ! Number of the last level to be processed  >> ./input/3Dinfosalinity
 echo $upperlevel >> ./input/3Dinfosalinity
@@ -276,13 +434,14 @@ echo $sourcestr_sal >> ./input/3Dinfosalinity
 echo $commentcomm_sal >> ./input/3Dinfosalinity
 echo $commentstr_sal >> ./input/3Dinfosalinity
 
-
+echo  3Dinfosalinity:
+cat  ./input/3Dinfosalinity
 ###################################################################
 
-# write 3Dinfo for psal
+# write 3Dinfo for temp
 
 echo ! Variable  > ./input/3Dinfotemper
-echo $temp >> ./input/3Dinfotemper
+echo $temp.$year.$month >> ./input/3Dinfotemper
 echo ! Number of the first level to be processed  >> ./input/3Dinfotemper
 echo $minlevel >> ./input/3Dinfotemper
 echo ! Number of the last level to be processed  >> ./input/3Dinfotemper
@@ -332,15 +491,16 @@ echo $sourcestr_temp >> ./input/3Dinfotemper
 echo $commentcomm_temp >> ./input/3Dinfotemper
 echo $commentstr_temp >> ./input/3Dinfotemper
 #
-
+echo 3Dinfotemper:
+cat ./input/3Dinfotemper
 ###################################################################
 
 # write STBinfo file
 
 echo ! Code name for salinity variable > ./input/STBinfo
-echo $psal >> ./input/STBinfo
+echo $psal.$year.$month >> ./input/STBinfo
 echo ! Code name for temperature variable >> ./input/STBinfo
-echo $temp >> ./input/STBinfo >> ./input/STBinfo
+echo $temp.$year.$month >> ./input/STBinfo >> ./input/STBinfo
 echo ! Number of the first level to be processed  >> ./input/STBinfo
 echo $minlevel >> ./input/STBinfo >> ./input/STBinfo
 echo ! Number of the last level to be processed >> ./input/STBinfo
@@ -404,15 +564,28 @@ echo $sourcestr_temp >> ./input/STBinfo
 echo $commentcomm_temp >> ./input/STBinfo
 echo $commentstr_temp >> ./input/STBinfo
 #
+echo divadoTS: runing divaTSdress
 ./divaTSdress
 #
-echo now saving needs to be done
+echo divadoTS: now saving needs to be done for $year $month
 mkdir -p ${WDIR}/output
 mkdir -p ${WDIR}/newinput
 cp -r ${DIVADIR}/divastripped/output/* ${WDIR}/output
 cp -r ${DIVADIR}/divastripped/input/* ${WDIR}/newinput
 
+echo divadoTS: After saving:
+echo ${DIVADIR}/divastripped/output:
+ls -l  ${DIVADIR}/divastripped/output/3Danalysis
+ls -l  ${DIVADIR}/divastripped/output/3Danalysis/Fields
+echo '  '
+echo ${WDIR}/output:
+ls -ls ${WDIR}/output/3Danalysis
+ls -ls ${WDIR}/output/3Danalysis/Fields
 
 cd $WDIR
+
+done
+
+done
 
 #
