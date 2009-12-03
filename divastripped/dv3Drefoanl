@@ -32,6 +32,11 @@ else
 fi
 if [ -f ./input/param.par ];then
  runflag=0
+if [ "$#" == "8" ];then
+echo dv3Drefoanl: dvstbchp 1
+ls ./input/
+./dvstbchp 1
+fi
 else
  runflag=1
 fi
@@ -281,7 +286,7 @@ fi
 echo '>>>>>>>>>>>>  sum up anomalies and reference field for '$var'.'$lev' '
 ./divasumup
 #
-./dvoutlierclean
+#####./dvoutlierclean
 fi
 #
 if [ -f ./input/divadata/$var'.'$lev'.DATABINS' ];then
@@ -293,10 +298,10 @@ cp -v ./output/DATABINSinfo.dat ./input/divadata/$var'.'$lev'.DATABINSinfo'
 fi
 #
 #
-if [ "$fmesh" == "0" ]; then
- cp -v ./output/meshvisu/fort.22 ./input/divamesh/meshtopo.$lev
- cp -v ./output/meshvisu/fort.23 ./input/divamesh/mesh.dat.$lev
-fi
+###if [ "$fmesh" == "0" ]; then
+### cp -v ./output/meshvisu/fort.22 ./input/divamesh/meshtopo.$lev
+### cp -v ./output/meshvisu/fort.23 ./input/divamesh/mesh.dat.$lev
+###fi
 #
 if [ "$detrd" -eq "1" ];then
 cp -v ./input/data.detrend.dat ./output/3Danalysis/DATADETREND/data.detrend.$var'.'$lev
@@ -313,6 +318,9 @@ done
 cd ..
 fi
 #
+if [ "$#" == "8" ];then
+cp -v ./output/ghertonetcdf/fort.84 ./output/3Danalysis/Fields/$var'.'$lev'.anl'
+else
 if [ "$dataflag" == "1" ]; then
 cp -v ./output/ghertonetcdf/GridInfo.dat ./output/3Danalysis/Fields/GridInfo.dat
 cp -v ./output/ghertonetcdf/fort.84 ./output/3Danalysis/Fields/$var'.'$lev'.anl'
@@ -373,6 +381,7 @@ cd ../..
 fi
 #
 fi
+fi
 #
 if [ "$action" == "2" ];then
 
@@ -395,6 +404,7 @@ echo '>>>>>>>>>>>>>>>>  using ./divadetrend' $ngrp $nbit
 else
 ./divarefe
 fi
+
 if [ -f ./input/divadata/$var'.'$lev'.DATABINS' ];then
  echo $var'.'$lev'.DATABINS exists'
 else
@@ -422,6 +432,10 @@ done
 cd ..
 fi
 #
+
+if [ "$#" == "8" ];then
+cp -v ./output/fieldgher.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.anl'
+else
 if [ -d ./input/divarefe_all ] ;then
 cp -v ./output/ghertonetcdf/GridInfo.dat ./input/divarefe_all/GridInfo.dat
 cp -v ./output/fieldatdatapoint.anl.ref ./input/divarefe_all/$var'.'$lev'.datapoint.ref'
@@ -440,6 +454,10 @@ cp -v ./output/fieldascii.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.ascii.
 cp -v ./output/fieldatdatapoint.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.datapoint.ref'
 cp -v ./output/fieldgher.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.ref'
 cp -v ./output/valatxyascii.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.valatxyasc.ref'
+
+cp -v ./output/errorfieldgher.anl ./output/3Danalysis/Fields/$var'.'$lev'.ref.error'
+cp -v ./output/errorfieldascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.ref.errorascii'
+
 if [ -f ./output/erroratxyascii.anl ];then
 cp -v ./output/erroratxyascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.erroratxyascii.anl'
 fi
@@ -474,8 +492,16 @@ cp -v $i ../../output/3Danalysis/GnuPlots/$var'.'$lev'.'$i
 done
 cd ../../
 fi
+fi
 #------------------------------------------------------------
 fi
+
+if [ "$#" == "8" ];then
+echo dv3Drefoanl: dvstbchp 0
+ls ./input/
+./dvstbchp 0
+fi
+
 ##################################################################
 else
 if [ "$runflag" -eq "1" ];then
