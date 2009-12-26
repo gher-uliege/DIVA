@@ -1,0 +1,62 @@
+#!/bin/bash
+
+kind=$1 ; export kind
+genericType=$2 ; export genericType
+moduleGenericTypeDefinition=$3 ; export moduleGenericTypeDefinition
+moduleGenericTypeSurDefined=$4 ; export moduleGenericTypeSurDefined
+
+echo Compilation of : dataBase$1
+# ==============================
+cp $divaDir/Module/DataBase/moduleGenericTypeDataBaseDefinition.f95 .
+cp $divaDir/Module/DataBase/moduleWorkingDataBase.f95 .
+cp $divaDir/Module/DataBase/moduleMemoryDataBaseManagement.f95 .
+cp $divaDir/Module/DataBase/moduleValuesDataBaseManagement.f95 .
+cp $divaDir/Module/DataBase/moduleGenericTypeDataBase.f95 .
+
+moduleGenericTypeDataBaseDefinition='moduleDataBaseDefinition'$genericType 
+genericTypeDataBase=$genericType'DataBase'
+moduleWorkingDataBase='moduleWorkingDataBase'$genericType
+moduleMemoryDataBaseManagement='moduleMemoryDataBase'$genericType
+moduleValuesDataBaseManagement='moduleValuesDataBase'$genericType
+moduleGenericTypeDataBase='moduleGenericTypeDataBase'$genericType
+
+flag0='-DmoduleGenericTypeDataBaseDefinition='$moduleGenericTypeDataBaseDefinition
+flag1='-D'$kind
+flag2='-DmoduleGenericTypeDefinition='$moduleGenericTypeDefinition
+flag3='-DgenericTypeDataBase='$genericTypeDataBase
+flag4='-DgenericType='$genericType
+flag5='-DmoduleWorkingDataBase='$moduleWorkingDataBase
+flag6='-DmoduleMemoryDataBaseManagement='$moduleMemoryDataBaseManagement
+flag7='-DmoduleValuesDataBaseManagement='$moduleValuesDataBaseManagement
+flag8='-DmoduleGenericTypeDataBase='$moduleGenericTypeDataBase
+flag9='-DmoduleGenericTypeSurDefined='$moduleGenericTypeSurDefined
+
+preproFlag=$flag0
+preproFlag=$preproFlag' '$flag1
+preproFlag=$preproFlag' '$flag2
+preproFlag=$preproFlag' '$flag3
+preproFlag=$preproFlag' '$flag4
+preproFlag=$preproFlag' '$flag5
+preproFlag=$preproFlag' '$flag6
+preproFlag=$preproFlag' '$flag7
+preproFlag=$preproFlag' '$flag8
+preproFlag=$preproFlag' '$flag9
+
+export preproFlag
+
+$divaDir/compileFile moduleGenericTypeDataBaseDefinition.f95 $moduleGenericTypeDataBaseDefinition
+$divaDir/compileFile moduleWorkingDataBase.f95 $moduleWorkingDataBase
+$divaDir/compileFile moduleMemoryDataBaseManagement.f95 $moduleMemoryDataBaseManagement
+$divaDir/compileFile moduleValuesDataBaseManagement.f95 $moduleValuesDataBaseManagement
+$divaDir/compileFile moduleGenericTypeDataBase.f95 $moduleGenericTypeDataBase
+
+rm -r moduleGenericTypeDataBaseDefinition.f95
+rm -r moduleWorkingDataBase.f95
+rm -r moduleMemoryDataBaseManagement.f95
+rm -r moduleValuesDataBaseManagement.f95
+rm -r moduleGenericTypeDataBase.f95
+
+if [ "$kind" = _DB_1D_ ]
+then
+$divaDir/Module/DataBase/DataBase1D/divaCompileDataBase1D
+fi

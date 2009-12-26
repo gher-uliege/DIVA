@@ -38,6 +38,7 @@ libraryLink=$libraryLink' -lMatrix'$compiler
 libraryLink=$libraryLink' -lArray'$compiler
 libraryLink=$libraryLink' -lSparseMatrix'$compiler
 libraryLink=$libraryLink' -lIO'$compiler
+libraryLink=$libraryLink' -lMesh'$compiler
 
 export libraryMod
 export libraryPath

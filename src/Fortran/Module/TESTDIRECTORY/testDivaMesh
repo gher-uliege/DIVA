@@ -1,0 +1,34 @@
+#!/bin/bash
+
+
+
+echo ===============================
+echo ===============================
+echo ==                           ==
+echo == Procedure to test : mesh  ==
+echo ==                           ==
+echo ===============================
+echo ===============================
+echo ' '
+
+action=eval ; export action
+
+cp ./Mesh/testNode.f95 .
+
+# Chech program : testNode
+# -------------------------
+
+fileToCheck=testNode
+
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+$divaDir/compileAndLinkFile $fileToCheck >> testing.log
+./$fileToCheck.a
+rm ./$fileToCheck.a
+
+echo ' ' >> testing.log
+
+rm -r testNode.f95

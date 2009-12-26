@@ -1,0 +1,62 @@
+#!/bin/bash
+
+echo ========================================
+echo ========================================
+echo ==                                    ==
+echo ==   Compilation of DIVA Mesh Module  ==
+echo ==                                    ==
+echo ========================================
+echo ========================================
+echo ' '
+
+baseDir=$PWD
+
+echo =========================
+echo =========================
+echo = Compiling Mesh Module =
+echo =========================
+echo =========================
+echo ' '
+
+preproFlag=''
+associateDir='-I'$divaDir'/Module/General -I'$divaDir'/Module/IOModule '
+export preproFlag
+export associateDir
+libName=libMesh$compiler.a
+export libName
+rm -f $divaModuleLib/$libName
+
+# Compilation of : nodeReal4
+# ===========================
+node='node' ; export node
+VARType='REAL(KIND=8)' ; export VARType
+moduleNodeDefinition='module'$node ; export moduleNodeDefinition
+moduleNodeDataBaseDefinition='moduleSpecificDataBase'$node ; export moduleNodeDataBaseDefinition
+moduleNodeDataBase=$node'Interface'
+moduleGenericDataBase='moduleGenericDataBase'$node
+
+flag0='-DnodeType='$node
+flag1='-DVARType='$VARType
+flag2='-DmoduleNodeDefinition='$moduleNodeDefinition
+flag3='-DmoduleNodeDataBaseDefinition='$moduleNodeDataBaseDefinition
+flag4='-DmoduleNodeDataBase='$moduleNodeDataBase
+flag5='-DmoduleGenericDataBase='$moduleGenericDataBase
+
+preproFlag=$preproFlag' '$flag0
+preproFlag=$preproFlag' '$flag1
+preproFlag=$preproFlag' '$flag2
+preproFlag=$preproFlag' '$flag3
+preproFlag=$preproFlag' '$flag4
+preproFlag=$preproFlag' '$flag5
+
+export preproFlag
+
+$divaDir/compileFile moduleNodeDefinition.f95 $moduleNodeDefinition
+$divaDir/compileFile moduleNodeDataBaseDefinition.f95 $moduleNodeDataBaseDefinition
+$divaDir/Module/DataBase/divaCompileDataBase _DB_1D_ $node $moduleNodeDefinition $moduleNodeDataBaseDefinition
+$divaDir/compileFile moduleNodeDataBase.f95 $moduleNodeDataBase
+
+mv *.mod $divaModuleLib
+
+cd $baseDir
+

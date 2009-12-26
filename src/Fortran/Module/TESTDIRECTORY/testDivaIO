@@ -13,6 +13,9 @@ echo ' '
 
 action=eval ; export action
 
+cp ./IOModule/testRead.f95 .
+cp ./IOModule/testWrite.f95 .
+
 # Chech program : testWrite
 # --------------------------
 
@@ -197,3 +200,6 @@ rm ./temp*
 rm ./$fileToCheck.a
 
 echo ' ' >> testing.log
+
+rm -r testRead.f95
+rm -r testWrite.f95

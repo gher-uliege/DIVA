@@ -11,6 +11,9 @@ echo =================================
 echo =================================
 echo ' '
 
+cp ./Mathematic/testArray3D.f95 .
+cp ./Mathematic/testIntegerArray3D.f95 .
+
 # Chech program : testArray
 # --------------------------
 
@@ -149,3 +152,6 @@ rm ./$fileToCheck.$typeToCheck.$compiler.$OSused
 rm ./$fileToCheck.a
 
 echo ' ' >> testing.log
+
+rm -r testArray3D.f95
+rm -r testIntegerArray3D.f95

@@ -11,9 +11,11 @@ echo =================================
 echo =================================
 echo ' '
 
+cp ./Mathematic/testVector.f95 .
+cp ./Mathematic/testIntegerVector.f95 .
+
 # Chech program : testVector
 # --------------------------
-
 fileToCheck=testVector
 typeToCheck=Real8
 VARType='REAL(KIND=8)'
@@ -22,6 +24,7 @@ echo Test : $fileToCheck.$typeToCheck
 echo ------
 echo Test : $fileToCheck.$typeToCheck >> testing.log
 echo ------ >> testing.log
+
 
 preproFlag='-DvectorType=vector'$typeToCheck' -DVARType='$VARType
 preproFlag=$preproFlag' -D'$typeToCheck
@@ -147,3 +150,6 @@ rm ./$fileToCheck.$typeToCheck.$compiler.$OSused
 rm ./$fileToCheck.a
 
 echo ' ' >> testing.log
+
+rm -r testVector.f95
+rm -r testIntegerVector.f95

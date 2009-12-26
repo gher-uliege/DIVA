@@ -11,6 +11,9 @@ echo =================================
 echo =================================
 echo ' '
 
+cp ./Mathematic/testMatrix.f95 .
+cp ./Mathematic/testIntegerMatrix.f95 .
+
 # Chech program : testMatrix
 # --------------------------
 
@@ -148,3 +151,6 @@ rm ./$fileToCheck.$typeToCheck.$compiler.$OSused
 rm ./$fileToCheck.a
 
 echo ' ' >> testing.log
+
+rm -r testMatrix.f95
+rm -r testIntegerMatrix.f95

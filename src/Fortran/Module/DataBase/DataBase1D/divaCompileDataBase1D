@@ -1,0 +1,27 @@
+#!/bin/bash
+
+cp $divaDir/Module/DataBase/DataBase1D/moduleMemoryDataBase1DManagement.f95 .
+cp $divaDir/Module/DataBase/DataBase1D/moduleValuesDataBase1DManagement.f95 .
+cp $divaDir/Module/DataBase/DataBase1D/moduleGenericTypeDataBase1D.f95 .
+
+moduleMemoryDataBase1DManagement='moduleMemoryDataBase1D'$genericType
+moduleValuesDataBase1DManagement='moduleValuesDataBase1D'$genericType
+moduleGenericTypeDataBase1D='moduleGenericDataBase'$genericType
+
+flag0='-DmoduleMemoryDataBase1DManagement='$moduleMemoryDataBase1DManagement
+flag1='-DmoduleValuesDataBase1DManagement='$moduleValuesDataBase1DManagement
+flag2='-DmoduleGenericTypeDataBase1D='$moduleGenericTypeDataBase1D
+
+preproFlag=$preproFlag' '$flag0
+preproFlag=$preproFlag' '$flag1
+preproFlag=$preproFlag' '$flag2
+
+export preproFlag
+
+$divaDir/compileFile moduleMemoryDataBase1DManagement.f95 $moduleMemoryDataBase1DManagement
+$divaDir/compileFile moduleValuesDataBase1DManagement.f95 $moduleValuesDataBase1DManagement
+$divaDir/compileFile moduleGenericTypeDataBase1D.f95 $moduleGenericTypeDataBase1D
+
+rm -r moduleMemoryDataBase1DManagement.f95
+rm -r moduleValuesDataBase1DManagement.f95
+rm -r moduleGenericTypeDataBase1D.f95
