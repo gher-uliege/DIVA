@@ -13,11 +13,6 @@ rm -f $divaModuleLib/$libName
 $divaDir/compileFile moduleNorm.f95 moduleNorm
 echo ' '
 
-# Compilation of : moduleInsertValueMethod
-# ========================================
-$divaDir/compileFile moduleInsertValueMethod.f95 moduleInsertValueMethod
-echo ' '
-
 # Compilation of : VectorReal4
 # ============================
 dataType='Real4' ; export dataType

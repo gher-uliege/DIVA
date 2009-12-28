@@ -1,4 +1,4 @@
-MODULE moduleNodeDataBaseDefinition
+MODULE moduleLineDataBaseDefinition
 
 ! ============================================================
 ! ============================================================
@@ -14,7 +14,8 @@ MODULE moduleNodeDataBaseDefinition
 
 ! Include file
 ! ============
-   USE moduleNodeDefinition
+   USE moduleLineDefinition
+   USE moduleNodeDataBaseDefinition, ONLY : printNode => printInformation
 
 ! Declaration
 ! ===========
@@ -51,15 +52,14 @@ SUBROUTINE printInformation(output,ptr)
 !     Declaration
 !     - - - - - -
       INTEGER :: output
-      TYPE(nodeType), POINTER :: ptr
+      TYPE(lineType), POINTER :: ptr
 
 !     Body
 !     - - -
-      WRITE(output,*)    'object type is node'
+      WRITE(output,*)    'object type is line'
       WRITE(output,*)    '   index  = ', ptr%indexValue
-      WRITE(output,*)    '   xValue = ', ptr%xValue
-      WRITE(output,*)    '   yValue = ', ptr%yValue
-      WRITE(output,*)    '   zValue = ', ptr%zValue
+      CALL printNode(output,ptr%startNode)
+      CALL printNode(output,ptr%endNode)
 
 END SUBROUTINE
 
@@ -69,14 +69,13 @@ SUBROUTINE copy(ptrTarget,ptrSource)
 
 !     Declaration
 !     - - - - - -
-      TYPE(nodeType), POINTER :: ptrTarget
-      TYPE(nodeType), POINTER :: ptrSource
+      TYPE(lineType), POINTER :: ptrTarget
+      TYPE(lineType), POINTER :: ptrSource
 
 !     Body
 !     - - -
-      ptrTarget%xValue = ptrSource%xValue
-      ptrTarget%yValue = ptrSource%yValue
-      ptrTarget%zValue = ptrSource%zValue
+      ptrTarget%startNode => ptrSource%startNode
+      ptrTarget%endNode => ptrSource%endNode
 
       ptrTarget%indexValue = ptrSource%indexValue
       ptrTarget%characteristicLength = ptrSource%characteristicLength
@@ -90,17 +89,16 @@ SUBROUTINE initialise(ptrTarget,indexValue)
 !     Declaration
 !     - - - - - -
       INTEGER, INTENT(IN) :: indexValue
-      TYPE(nodeType), INTENT(INOUT) :: ptrTarget
+      TYPE(lineType), INTENT(INOUT) :: ptrTarget
 
 !     Body
 !     - - -
-      ptrTarget%xValue = 0.
-      ptrTarget%yValue = 0.
-      ptrTarget%zValue = 0.
+      ptrTarget%startNode => NULL()
+      ptrTarget%endNode => NULL()
 
       ptrTarget%indexValue = indexValue
       ptrTarget%characteristicLength = 0.
 
 END SUBROUTINE
 
-END MODULE moduleNodeDataBaseDefinition
+END MODULE moduleLineDataBaseDefinition

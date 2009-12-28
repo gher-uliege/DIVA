@@ -26,8 +26,12 @@ echo Test : $fileToCheck >> testing.log
 echo ------ >> testing.log
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
-./$fileToCheck.a
+./$fileToCheck.a >> $fileToCheck.$compiler.$OSused
+#cp ./$fileToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$compiler.$OSused
+diff -s ./$fileToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$compiler.$OSused >> testing.log
+
 rm ./$fileToCheck.a
+rm ./$fileToCheck.$compiler.$OSused
 
 echo ' ' >> testing.log
 

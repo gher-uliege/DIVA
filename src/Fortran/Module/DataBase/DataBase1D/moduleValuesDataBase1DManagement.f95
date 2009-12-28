@@ -16,12 +16,13 @@ MODULE moduleValuesDataBase1DManagement
 ! Include file
 ! ============
   USE moduleGenericTypeDefinition
+  USE moduleInsertValueMethod
   USE moduleMemoryDataBaseManagement, ONLY : memoryGetFirstIndexX, memoryGetLastIndexX, &
                                           memorySetFirstIndex, memorySetSize, memoryDefineLastIndex, &
                                           memoryGetSizeX, memoryGetAllocatedSizeX
   USE moduleMemoryDataBase1DManagement, ONLY : memoryAllocateDataBase
-  USE moduleValuesDataBaseManagement, ONLY : memoryGetPointerOnValue
-  USE moduleGenericTypeSurDefined, ONLY : genericTypeCopy => copy
+  USE moduleValuesDataBaseManagement, ONLY : memoryGetPointerOnValue, memoryGetValues
+  USE moduleGenericTypeSurDefined, ONLY : genericTypeCopy => copy, genericTypeInitialise => initialise
 
 ! Declaration
 ! ===========
@@ -33,7 +34,7 @@ MODULE moduleValuesDataBase1DManagement
 
 !  General part
 !  ------------
-   PUBLIC :: memoryDataBaseInsertValue,memoryDataBaseFastInsertValue
+   PUBLIC :: memoryDataBaseInsertValue,memoryDataBaseFastInsertValue, memoryDataBaseInitialise
 
 
 ! ============================================================
@@ -105,5 +106,49 @@ MODULE moduleValuesDataBase1DManagement
 
   END SUBROUTINE
 
+! Procedure 3 : initialisation
+! ----------------------------
+  SUBROUTINE memoryDataBaseInitialise()
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: istartX, iendX, i1
+      TYPE(genericType), DIMENSION(:), POINTER :: val
+
+!     Body
+!     - - -
+      istartX = memoryGetFirstIndexX()
+      iendX = memoryGetLastIndexX()
+
+      val => memoryGetValues()
+
+      DO i1 = iStartX, iendX
+          CALL genericTypeInitialise(val(i1),i1)
+      END DO
+
+  END SUBROUTINE
+
+! Procedure 4 : global procedure to insert the value in the array at specified position
+! --------------------------------------------------------------------------------------
+  SUBROUTINE memoryDataBaseSetValue(i1,val,modeType)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: i1
+      TYPE(insertValueMethod), INTENT(IN) :: modeType
+      TYPE(genericType), POINTER :: val
+
+!     Body
+!     - - -
+      SELECT CASE (modeType%insertValueMode)
+         CASE (INSERT_VALUE%insertValueMode)
+             CALL memoryDataBaseInsertValue(i1,val)
+         CASE (SET_VALUE%insertValueMode)
+             CALL memoryDataBaseFastInsertValue(i1,val)
+         CASE DEFAULT
+             CALL memoryDataBaseInsertValue(i1,val)
+      END SELECT
+
+  END SUBROUTINE
 
 END MODULE moduleValuesDataBase1DManagement

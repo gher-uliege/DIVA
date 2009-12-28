@@ -26,8 +26,8 @@ libName=libMesh$compiler.a
 export libName
 rm -f $divaModuleLib/$libName
 
-# Compilation of : nodeReal4
-# ===========================
+# Compilation of : node
+# =====================
 node='node' ; export node
 VARType='REAL(KIND=8)' ; export VARType
 moduleNodeDefinition='module'$node ; export moduleNodeDefinition
@@ -35,19 +35,19 @@ moduleNodeDataBaseDefinition='moduleSpecificDataBase'$node ; export moduleNodeDa
 moduleNodeDataBase=$node'Interface'
 moduleGenericDataBase='moduleGenericDataBase'$node
 
-flag0='-DnodeType='$node
-flag1='-DVARType='$VARType
-flag2='-DmoduleNodeDefinition='$moduleNodeDefinition
-flag3='-DmoduleNodeDataBaseDefinition='$moduleNodeDataBaseDefinition
-flag4='-DmoduleNodeDataBase='$moduleNodeDataBase
-flag5='-DmoduleGenericDataBase='$moduleGenericDataBase
+flagNode0='-DnodeType='$node
+flagNode1='-DVARType='$VARType
+flagNode2='-DmoduleNodeDefinition='$moduleNodeDefinition
+flagNode3='-DmoduleNodeDataBaseDefinition='$moduleNodeDataBaseDefinition
+flagNode4='-DmoduleNodeDataBase='$moduleNodeDataBase
+flagNode5='-DmoduleGenericDataBase='$moduleGenericDataBase
 
-preproFlag=$preproFlag' '$flag0
-preproFlag=$preproFlag' '$flag1
-preproFlag=$preproFlag' '$flag2
-preproFlag=$preproFlag' '$flag3
-preproFlag=$preproFlag' '$flag4
-preproFlag=$preproFlag' '$flag5
+preproFlag=$preproFlag' '$flagNode0
+preproFlag=$preproFlag' '$flagNode1
+preproFlag=$preproFlag' '$flagNode2
+preproFlag=$preproFlag' '$flagNode3
+preproFlag=$preproFlag' '$flagNode4
+preproFlag=$preproFlag' '$flagNode5
 
 export preproFlag
 
@@ -55,6 +55,39 @@ $divaDir/compileFile moduleNodeDefinition.f95 $moduleNodeDefinition
 $divaDir/compileFile moduleNodeDataBaseDefinition.f95 $moduleNodeDataBaseDefinition
 $divaDir/Module/DataBase/divaCompileDataBase _DB_1D_ $node $moduleNodeDefinition $moduleNodeDataBaseDefinition
 $divaDir/compileFile moduleNodeDataBase.f95 $moduleNodeDataBase
+
+echo ' '
+# Compilation of : line
+# =====================
+line='line' ; export line
+moduleLineDefinition='module'$line ; export moduleLineDefinition
+moduleLineDataBaseDefinition='moduleSpecificDataBase'$line ; export moduleLineDataBaseDefinition
+moduleLineDataBase=$line'Interface'
+moduleGenericDataBase='moduleGenericDataBase'$line
+
+flagLine0='-DlineType='$line
+flagLine1='-DVARType='$VARType
+flagLine2='-DmoduleLineDefinition='$moduleLineDefinition
+flagLine3='-DmoduleLineDataBaseDefinition='$moduleLineDataBaseDefinition
+flagLine4='-DmoduleLineDataBase='$moduleLineDataBase
+flagLine5='-DmoduleGenericDataBase='$moduleGenericDataBase
+
+preproFlag=$flagLine0
+preproFlag=$preproFlag' '$flagLine1
+preproFlag=$preproFlag' '$flagLine2
+preproFlag=$preproFlag' '$flagLine3
+preproFlag=$preproFlag' '$flagLine4
+preproFlag=$preproFlag' '$flagLine5
+preproFlag=$preproFlag' '$flagNode0
+preproFlag=$preproFlag' '$flagNode2
+preproFlag=$preproFlag' '$flagNode3
+
+export preproFlag
+
+$divaDir/compileFile moduleLineDefinition.f95 $moduleLineDefinition
+$divaDir/compileFile moduleLineDataBaseDefinition.f95 $moduleLineDataBaseDefinition
+$divaDir/Module/DataBase/divaCompileDataBase _DB_1D_ $line $moduleLineDefinition $moduleLineDataBaseDefinition
+$divaDir/compileFile moduleLineDataBase.f95 $moduleLineDataBase
 
 mv *.mod $divaModuleLib
 

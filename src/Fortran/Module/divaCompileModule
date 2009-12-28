@@ -11,6 +11,7 @@ echo ' '
 
 baseDir=$PWD
 
+_WITH_COMMON_=1 ; export _WITH_COMMON_
 _WITH_IO_=1 ; export _WITH_IO_
 _WITH_MATH_=1 ; export _WITH_MATH_
 _WITH_DIVA_=1 ; export _WITH_DIVA_ 
@@ -18,6 +19,15 @@ _WITH_MESH_=1 ; export _WITH_MESH_
 
 
 rm -f $divaModuleLib/*.o
+
+# Compilation of Common module
+# =============================
+
+if [ $_WITH_COMMON_ == 1 ]
+then
+cd $baseDir/CommonModule
+./divaCompileCommonModule
+fi
 
 # Compilation of IO module
 # ========================

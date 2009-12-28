@@ -1,4 +1,4 @@
-MODULE moduleNodeDataBase
+MODULE moduleLineDataBase
 
 ! ============================================================
 ! ============================================================
@@ -27,80 +27,76 @@ MODULE moduleNodeDataBase
 
 ! Interface
 ! =========
-   INTERFACE nodeDBCreate
+   INTERFACE lineDBCreate
       MODULE PROCEDURE dataBaseCreateBase, dataBaseCreateWithDimension, dataBaseCreateWithDimensionAndFirstIndex
    END INTERFACE
 
-   INTERFACE nodeDBSetSize
+   INTERFACE lineDBSetSize
       MODULE PROCEDURE dataBaseSetSize
    END INTERFACE
 
-   INTERFACE nodeDBPrint
+   INTERFACE lineDBPrint
       MODULE PROCEDURE dataBasePrintInformation
    END INTERFACE
 
-   INTERFACE nodeDBInsert
+   INTERFACE lineDBInsert
       MODULE PROCEDURE dataBaseInsertElement
    END INTERFACE
 
-   INTERFACE nodeDBFastInsert
+   INTERFACE lineDBFastInsert
       MODULE PROCEDURE dataBaseFastInsertElement
    END INTERFACE
 
-   INTERFACE nodeDBGetValues
+   INTERFACE lineDBGetValues
       MODULE PROCEDURE dataBaseGetValues
    END INTERFACE
 
-   INTERFACE nodeDBGetAllocationStatus
+   INTERFACE lineDBGetAllocationStatus
       MODULE PROCEDURE dataBaseGetAllocationStatus
    END INTERFACE
 
-   INTERFACE nodeDBGetValue
+   INTERFACE lineDBGetValue
       MODULE PROCEDURE dataBaseGetPointerOnValue
    END INTERFACE
 
-   INTERFACE nodeDBSetIncreaseSize
+   INTERFACE lineDBSetIncreaseSize
       MODULE PROCEDURE dataBaseSetIncreaseSize
    END INTERFACE
 
-   INTERFACE nodeDBDestroy
+   INTERFACE lineDBDestroy
       MODULE PROCEDURE dataBaseDestructor
    END INTERFACE
 
-   INTERFACE nodeDBGetFirstIndex
+   INTERFACE lineDBGetFirstIndex
       MODULE PROCEDURE dataBaseGetFirstIndex
    END INTERFACE
 
-   INTERFACE nodeDBGetLastIndex
+   INTERFACE lineDBGetLastIndex
       MODULE PROCEDURE dataBaseGetLastIndex
    END INTERFACE
 
-   INTERFACE nodeDBGetSize
+   INTERFACE lineDBGetSize
       MODULE PROCEDURE dataBaseGetSize
    END INTERFACE
 
-   INTERFACE nodeDBGetAllocatedSize
+   INTERFACE lineDBGetAllocatedSize
       MODULE PROCEDURE dataBaseGetAllocatedSize
    END INTERFACE
 
-   INTERFACE nodeDBGetIncreaseSize
+   INTERFACE lineDBGetIncreaseSize
       MODULE PROCEDURE dataBaseGetIncreaseSize
    END INTERFACE
 
-   INTERFACE nodeDBGetDefaultIncreaseSize
+   INTERFACE lineDBGetDefaultIncreaseSize
       MODULE PROCEDURE dataBaseGetDefaultIncreaseSize
    END INTERFACE
 
-   INTERFACE nodeDBInitialise
+   INTERFACE lineDBInitialise
       MODULE PROCEDURE dataBaseInitialise
    END INTERFACE
 
-   INTERFACE nodeDBSetValue
+   INTERFACE lineDBSetValue
       MODULE PROCEDURE dataBaseSetValue
-   END INTERFACE
-
-   INTERFACE nodeDBOptimizeMemory
-      MODULE PROCEDURE dataBaseOptimizeMemory
    END INTERFACE
 
 ! ============================================================
@@ -121,4 +117,4 @@ MODULE moduleNodeDataBase
 ! ===            Internal procedure ("PUBLIC")  : Others    ===
 ! =============================================================
 
-END MODULE moduleNodeDataBase
+END MODULE moduleLineDataBase

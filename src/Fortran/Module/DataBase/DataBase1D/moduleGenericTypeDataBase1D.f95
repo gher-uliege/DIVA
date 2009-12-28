@@ -19,6 +19,7 @@ MODULE moduleGenericTypeDataBase1D
 ! ============
    USE moduleGenericTypeDataBaseDefinition
 
+   USE moduleInsertValueMethod
    USE moduleWorkingDataBase, ONLY : setWorkingDataBase, nullifyDataBasePointer
    USE moduleGenericTypeDataBase, ONLY : dataBaseGetValues, dataBaseGetAllocationStatus, dataBaseGetPointerOnValue, &
                            dataBaseSetIncreaseSize, dataBaseDestructor, &
@@ -28,8 +29,10 @@ MODULE moduleGenericTypeDataBase1D
                            dataBaseGetFirstIndexX, dataBaseGetLastIndexX, dataBaseGetSizeX, dataBaseGetAllocatedSizeX , &
                            dataBaseGetIncreaseSizeX, dataBaseGetDefaultIncreaseSizeX, dataBaseSetIncreaseSizeX
    USE moduleMemoryDataBaseManagement, ONLY : memorySetSize, memorySetFirstIndex
-   USE moduleMemoryDataBase1DManagement, ONLY : memoryDataBaseCreate, memoryAllocateDataBase, memoryPrintInformation
-   USE moduleValuesDataBase1DManagement, ONLY : memoryDataBaseInsertValue,memoryDataBaseFastInsertValue
+   USE moduleMemoryDataBase1DManagement, ONLY : memoryDataBaseCreate, memoryAllocateDataBase, memoryPrintInformation, &
+                                                memoryOptimize
+   USE moduleValuesDataBase1DManagement, ONLY : memoryDataBaseInsertValue,memoryDataBaseFastInsertValue, &
+                                                memoryDataBaseInitialise, memoryDataBaseSetValue
 
 ! Procedures status
 ! =================
@@ -37,7 +40,8 @@ MODULE moduleGenericTypeDataBase1D
 !  General part
 !  ------------
    PUBLIC :: dataBaseCreateBase, dataBaseCreateWithDimension, dataBaseCreateWithDimensionAndFirstIndex, &
-             dataBaseSetSize, dataBasePrintInformation, dataBaseInsertElement, dataBaseFastInsertElement
+             dataBaseSetSize, dataBasePrintInformation, dataBaseInsertElement, dataBaseFastInsertElement, &
+             dataBaseInitialise, dataBaseSetValue, dataBaseOptimizeMemory
 
 
 ! ============================================================
@@ -220,6 +224,71 @@ MODULE moduleGenericTypeDataBase1D
       CALL nullifyDataBasePointer()
 
   END SUBROUTINE
+
+! Procedure 8 : initialisation
+! ----------------------------
+   SUBROUTINE dataBaseInitialise(targetDataBase)
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(genericTypeDataBase), INTENT(IN) :: targetDataBase
+      CALL setWorkingDataBase(targetDataBase)
+
+!     Body
+!     - - -
+      CALL memoryDataBaseInitialise()
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullifyDataBasePointer()
+
+   END SUBROUTINE
+
+! Procedure 9 : global procedure to insert the value in the array at specified position
+! --------------------------------------------------------------------------------------
+  SUBROUTINE dataBaseSetValue(targetDataBase,i1,val,modeType)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: i1
+      TYPE(insertValueMethod), INTENT(IN) :: modeType
+      TYPE(genericType), TARGET, INTENT(IN) :: val
+      TYPE(genericType), POINTER :: val2
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(genericTypeDataBase), INTENT(IN) :: targetDataBase
+      CALL setWorkingDataBase(targetDataBase)
+
+!     Body
+!     - - -
+      val2 => val
+      CALL memoryDataBaseSetValue(i1,val2,modeType)
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullifyDataBasePointer()
+
+  END SUBROUTINE
+
+! Procedure 10 : optimisation of the memory
+! ----------------------------------------
+   SUBROUTINE dataBaseOptimizeMemory(targetDataBase)
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(genericTypeDataBase), INTENT(IN) :: targetDataBase
+      CALL setWorkingDataBase(targetDataBase)
+
+!     Body
+!     - - -
+      CALL memoryOptimize()
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullifyDataBasePointer()
+
+   END SUBROUTINE
 
 END MODULE moduleGenericTypeDataBase1D
 

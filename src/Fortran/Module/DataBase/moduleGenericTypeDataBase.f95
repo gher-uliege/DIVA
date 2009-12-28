@@ -983,7 +983,6 @@ MODULE moduleGenericTypeDataBase
   END SUBROUTINE
 #endif
 
-
 ! =============================================================
 ! ===            Internal procedure ("PUBLIC")  : Others    ===
 ! =============================================================

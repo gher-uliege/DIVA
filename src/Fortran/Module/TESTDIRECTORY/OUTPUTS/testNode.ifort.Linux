@@ -1,0 +1,1089 @@
+ checkAllocationMemoryProcedure
+ ==============================
+ The size of the data base is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) is 
+ object type is node
+    index  =            1
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           2 ) is 
+ object type is node
+    index  =            2
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           3 ) is 
+ object type is node
+    index  =            3
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ The size of the data base is :            9
+    The allocated memory is :            9
+    The increase allocation memory is :            0
+    Allocation status of the data base :  T
+    First positions are :            1
+    Last positions are  :            9
+ value(           1 ) is 
+ object type is node
+    index  =            1
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           2 ) is 
+ object type is node
+    index  =            2
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           3 ) is 
+ object type is node
+    index  =            3
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           4 ) is 
+ object type is node
+    index  =            4
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           5 ) is 
+ object type is node
+    index  =            5
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           6 ) is 
+ object type is node
+    index  =            6
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           7 ) is 
+ object type is node
+    index  =            7
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           8 ) is 
+ object type is node
+    index  =            8
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           9 ) is 
+ object type is node
+    index  =            9
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ The size of the data base is :           10
+    The allocated memory is :           15
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :            1
+    Last positions are  :           10
+ value(           1 ) is 
+ object type is node
+    index  =            1
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           2 ) is 
+ object type is node
+    index  =            2
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           3 ) is 
+ object type is node
+    index  =            3
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           4 ) is 
+ object type is node
+    index  =            4
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           5 ) is 
+ object type is node
+    index  =            5
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           6 ) is 
+ object type is node
+    index  =            6
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           7 ) is 
+ object type is node
+    index  =            7
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           8 ) is 
+ object type is node
+    index  =            8
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           9 ) is 
+ object type is node
+    index  =            9
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(          10 ) is 
+ object type is node
+    index  =           10
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+  
+ checkInitialise
+ ===============
+ The size of the data base is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) is 
+ object type is node
+    index  =            1
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           2 ) is 
+ object type is node
+    index  =            2
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           3 ) is 
+ object type is node
+    index  =            3
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+  
+ checkSetInsertValue
+ ===================
+ The size of the data base is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           2 ) is 
+ object type is node
+    index  =            2
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           3 ) is 
+ object type is node
+    index  =            3
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+  
+ checkGetValues
+ ==============
+ The size of the data base is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    23.0000000000000     
+ value(           2 ) is 
+ object type is node
+    index  =            2
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =    23.0000000000000     
+ value(           3 ) is 
+ object type is node
+    index  =            3
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =    23.0000000000000     
+  
+ checkSetSize
+ ============
+ The size of the data base is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           2 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           3 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ The size of the data base is :            7
+    The allocated memory is :           10
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :           -1
+    Last positions are  :            5
+ value(          -1 ) is 
+ object type is node
+    index  =           16
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           0 ) is 
+ object type is node
+    index  =           16
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           2 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           3 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           4 ) is 
+ object type is node
+    index  =           30
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           5 ) is 
+ object type is node
+    index  =           30
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+  
+ checkInitialise
+ ===============
+ The size of the data base is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) is 
+ object type is node
+    index  =            1
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           2 ) is 
+ object type is node
+    index  =            2
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           3 ) is 
+ object type is node
+    index  =            3
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+  
+ checkSetInsertValue
+ ===================
+ The size of the data base is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           2 ) is 
+ object type is node
+    index  =            2
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           3 ) is 
+ object type is node
+    index  =            3
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+  
+ checkGetValues
+ ==============
+ The size of the data base is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    23.0000000000000     
+ value(           2 ) is 
+ object type is node
+    index  =            2
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =    23.0000000000000     
+ value(           3 ) is 
+ object type is node
+    index  =            3
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =    23.0000000000000     
+  
+ checkSetSize
+ ============
+ The size of the data base is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           2 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           3 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ The size of the data base is :            7
+    The allocated memory is :           10
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :           -1
+    Last positions are  :            5
+ value(          -1 ) is 
+ object type is node
+    index  =           16
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           0 ) is 
+ object type is node
+    index  =           16
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           2 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           3 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           4 ) is 
+ object type is node
+    index  =           30
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           5 ) is 
+ object type is node
+    index  =           30
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+  
+ checkInitialise
+ ===============
+ The size of the data base is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) is 
+ object type is node
+    index  =           -1
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           0 ) is 
+ object type is node
+    index  =            0
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           1 ) is 
+ object type is node
+    index  =            1
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+  
+ checkSetInsertValue
+ ===================
+ The size of the data base is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) is 
+ object type is node
+    index  =           -1
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           0 ) is 
+ object type is node
+    index  =            0
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+  
+ checkGetValues
+ ==============
+ The size of the data base is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) is 
+ object type is node
+    index  =           -1
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =    23.0000000000000     
+ value(           0 ) is 
+ object type is node
+    index  =            0
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =    23.0000000000000     
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    23.0000000000000     
+  
+ checkSetSize
+ ============
+ The size of the data base is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           0 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ The size of the data base is :            7
+    The allocated memory is :           10
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :           -3
+    Last positions are  :            3
+ value(          -3 ) is 
+ object type is node
+    index  =           16
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(          -2 ) is 
+ object type is node
+    index  =           16
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(          -1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           0 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           2 ) is 
+ object type is node
+    index  =           30
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           3 ) is 
+ object type is node
+    index  =           30
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+  
+ checkInitialise
+ ===============
+ The size of the data base is :            3
+    The allocated memory is :            3
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) is 
+ object type is node
+    index  =            1
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           2 ) is 
+ object type is node
+    index  =            2
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           3 ) is 
+ object type is node
+    index  =            3
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+  
+ checkSetInsertValue
+ ===================
+ The size of the data base is :            3
+    The allocated memory is :            3
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           2 ) is 
+ object type is node
+    index  =            2
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           3 ) is 
+ object type is node
+    index  =            3
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+  
+ checkGetValues
+ ==============
+ The size of the data base is :            3
+    The allocated memory is :            3
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    23.0000000000000     
+ value(           2 ) is 
+ object type is node
+    index  =            2
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =    23.0000000000000     
+ value(           3 ) is 
+ object type is node
+    index  =            3
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =    23.0000000000000     
+  
+ checkSetSize
+ ============
+ The size of the data base is :            3
+    The allocated memory is :            3
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           2 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           3 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ The size of the data base is :            7
+    The allocated memory is :           10
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :           -1
+    Last positions are  :            5
+ value(          -1 ) is 
+ object type is node
+    index  =           16
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           0 ) is 
+ object type is node
+    index  =           16
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           2 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           3 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           4 ) is 
+ object type is node
+    index  =           30
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           5 ) is 
+ object type is node
+    index  =           30
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+  
+ checkInitialise
+ ===============
+ The size of the data base is :            3
+    The allocated memory is :            3
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) is 
+ object type is node
+    index  =            1
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           2 ) is 
+ object type is node
+    index  =            2
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           3 ) is 
+ object type is node
+    index  =            3
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+  
+ checkSetInsertValue
+ ===================
+ The size of the data base is :            3
+    The allocated memory is :            3
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           2 ) is 
+ object type is node
+    index  =            2
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           3 ) is 
+ object type is node
+    index  =            3
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+  
+ checkGetValues
+ ==============
+ The size of the data base is :            3
+    The allocated memory is :            3
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    23.0000000000000     
+ value(           2 ) is 
+ object type is node
+    index  =            2
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =    23.0000000000000     
+ value(           3 ) is 
+ object type is node
+    index  =            3
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =    23.0000000000000     
+  
+ checkSetSize
+ ============
+ The size of the data base is :            3
+    The allocated memory is :            3
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           2 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           3 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ The size of the data base is :            7
+    The allocated memory is :           10
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :           -1
+    Last positions are  :            5
+ value(          -1 ) is 
+ object type is node
+    index  =           16
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           0 ) is 
+ object type is node
+    index  =           16
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           2 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           3 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           4 ) is 
+ object type is node
+    index  =           30
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           5 ) is 
+ object type is node
+    index  =           30
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+  
+ checkInitialise
+ ===============
+ The size of the data base is :            3
+    The allocated memory is :            3
+    The increase allocation memory is :            0
+    Allocation status of the data base :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) is 
+ object type is node
+    index  =           -1
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           0 ) is 
+ object type is node
+    index  =            0
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           1 ) is 
+ object type is node
+    index  =            1
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+  
+ checkSetInsertValue
+ ===================
+ The size of the data base is :            3
+    The allocated memory is :            3
+    The increase allocation memory is :            0
+    Allocation status of the data base :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) is 
+ object type is node
+    index  =           -1
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           0 ) is 
+ object type is node
+    index  =            0
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =   0.000000000000000E+000
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+  
+ checkGetValues
+ ==============
+ The size of the data base is :            3
+    The allocated memory is :            3
+    The increase allocation memory is :            0
+    Allocation status of the data base :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) is 
+ object type is node
+    index  =           -1
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =    23.0000000000000     
+ value(           0 ) is 
+ object type is node
+    index  =            0
+    xValue =   0.000000000000000E+000
+    yValue =   0.000000000000000E+000
+    zValue =    23.0000000000000     
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    23.0000000000000     
+  
+ checkSetSize
+ ============
+ The size of the data base is :            3
+    The allocated memory is :            3
+    The increase allocation memory is :            0
+    Allocation status of the data base :  T
+    First positions are :           -1
+    Last positions are  :            1
+ value(          -1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           0 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ The size of the data base is :            7
+    The allocated memory is :            7
+    The increase allocation memory is :            0
+    Allocation status of the data base :  T
+    First positions are :           -3
+    Last positions are  :            3
+ value(          -3 ) is 
+ object type is node
+    index  =           16
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(          -2 ) is 
+ object type is node
+    index  =           16
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(          -1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           0 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           1 ) is 
+ object type is node
+    index  =          -56
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           2 ) is 
+ object type is node
+    index  =           30
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+ value(           3 ) is 
+ object type is node
+    index  =           30
+    xValue =    1.50000000000000     
+    yValue =    2.50000000000000     
+    zValue =    3.50000000000000     
+  

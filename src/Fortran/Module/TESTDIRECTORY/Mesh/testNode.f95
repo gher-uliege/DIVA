@@ -3,41 +3,21 @@ PROGRAM testNode
 ! =====================================================
 ! =====================================================
 ! ===                                               ===
-! ===   This program is testing the node module   ===
+! ===   This program is testing the mesh module     ===
 ! ===                                               ===
 ! =====================================================
 ! =====================================================
 
 ! Module to use
 ! =============
+ USE moduleDIVA
  USE nodeInterface
-
 
 ! Declaration
 ! ===========
 TYPE(nodeDataBase) :: nodeDB
-TYPE(node), POINTER :: noeud
-TYPE(node) :: noeud1=node(1.,1.,1.,42,0.5)
-TYPE(node), DIMENSION(:), POINTER :: ptr
 
 INTEGER, PARAMETER :: dim = 3
-
-!noeud1%indexValue
-   CALL dataBaseCreateWithDimension(nodeDB,dim)
-   CALL dataBasePrintInformation(nodeDB)
-   noeud => dataBaseGetPointerOnValue(nodeDB,2)
-   noeud%xValue=23.
-   CALL dataBaseInsertElement(nodeDB,9,noeud1)
-   CALL dataBasePrintInformation(nodeDB)
-   ptr => dataBaseGetValues(nodeDB)
-   noeud => ptr(1)
-
-   print*,ptr(1)%indexValue
-   noeud1%indexValue=-56
-   CALL dataBasePrintInformation(nodeDB)
-   CALL dataBaseDestructor(nodeDB)
-
-#ifdef coucou
 
 ! Main program
 ! ============
@@ -53,46 +33,46 @@ INTEGER, PARAMETER :: dim = 3
 
 !    1.1) Basic creation procedure
 !    - - - - - - - - - - - - - - -
-  CALL vectorCreate(vector1)
-  CALL vectorSetSize(vector1,dim)
-  CALL checkProcedure(vector1)
-  CALL vectorDestroy(vector1)
+  CALL nodeDBCreate(nodeDB)
+  CALL nodeDBSetSize(nodeDB,dim)
+  CALL checkProcedure(nodeDB)
+  CALL nodeDBDestroy(nodeDB)
 
 !    1.2) creation procedure with dimension
 !    - - - - - - - - - - - - - - - - - - - -
-  CALL vectorCreate(vector1,dim)
-  CALL checkProcedure(vector1)
-  CALL vectorDestroy(vector1)
+  CALL nodeDBCreate(nodeDB,dim)
+  CALL checkProcedure(nodeDB)
+  CALL nodeDBDestroy(nodeDB)
 
 !    1.3) creation procedure with dimension and starting point
 !    - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  CALL vectorCreate(vector1,dim,-1)
-  CALL checkProcedure(vector1)
-  CALL vectorDestroy(vector1)
+  CALL nodeDBCreate(nodeDB,dim,-1)
+  CALL checkProcedure(nodeDB)
+  CALL nodeDBDestroy(nodeDB)
 
 !    1.4) Basic creation procedure with optimal size
 !    - - - - - - - - - - - - - - - - - - - - - - - -
 
-  CALL vectorCreate(vector1)
-  CALL vectorSetSize(vector1,dim)
-  CALL vectorOptimize(vector1)
-  CALL checkProcedure(vector1)
-  CALL vectorDestroy(vector1)
+  CALL nodeDBCreate(nodeDB)
+  CALL nodeDBSetSize(nodeDB,dim)
+  CALL nodeDBOptimizeMemory(nodeDB)
+  CALL checkProcedure(nodeDB)
+  CALL nodeDBDestroy(nodeDB)
 
 !    1.5) creation procedure with dimension with optimal size
 !    - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  CALL vectorCreate(vector1,dim)
-  CALL vectorOptimize(vector1)
-  CALL checkProcedure(vector1)
-  CALL vectorDestroy(vector1)
+  CALL nodeDBCreate(nodeDB,dim)
+  CALL nodeDBOptimizeMemory(nodeDB)
+  CALL checkProcedure(nodeDB)
+  CALL nodeDBDestroy(nodeDB)
 
 !    1.6) creation procedure with dimension and starting point with optimal size
 !    - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  CALL vectorCreate(vector1,dim,-1)
-  CALL vectorOptimize(vector1)
-  CALL vectorSetIncreaseSize(vector1,0)
-  CALL checkProcedure(vector1)
-  CALL vectorDestroy(vector1)
+  CALL nodeDBCreate(nodeDB,dim,-1)
+  CALL nodeDBOptimizeMemory(nodeDB)
+  CALL nodeDBSetIncreaseSize(nodeDB,0)
+  CALL checkProcedure(nodeDB)
+  CALL nodeDBDestroy(nodeDB)
 
 ! End program
 ! ===========
@@ -109,388 +89,112 @@ INTEGER, PARAMETER :: dim = 3
 ! ==                                          ==
 ! ==============================================
 ! ==============================================
-
- SUBROUTINE checkProcedure(vector1)
+ SUBROUTINE checkProcedure(nodeDB)
 
 !  Declaration
 !  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
+   TYPE(nodeDataBase), INTENT(INOUT) :: nodeDB
 
 !  Body
 !  - - -
-  PRINT*,'checkVectorSetToZero'
-  PRINT*,'===================='
-  CALL checkVectorSetToZero(vector1)
-  PRINT*,' '
-  PRINT*,'checkVectorSetToValue'
-  PRINT*,'====================='
-  CALL checkVectorSetToValue(vector1)
-  PRINT*,' '
-  PRINT*,'checkVectorSetInsertValue'
-  PRINT*,'========================='
-  CALL checkVectorSetInsertValue(vector1)
-  PRINT*,' '
-  PRINT*,'checkVectorSetAddValue'
-  PRINT*,'======================'
-  CALL checkVectorSetAddValue(vector1)
-  PRINT*,' '
-  PRINT*,'checkWriteProcedure'
-  PRINT*,'==================='
-  CALL checkWriteProcedure(vector1)
-  PRINT*,' '
-  PRINT*,'checkReadProcedure'
-  PRINT*,'==================='
-  CALL checkReadProcedure(vector1)
-  PRINT*,' '
-  PRINT*,'checkVectorNorm'
+  PRINT*,'checkInitialise'
   PRINT*,'==============='
-  CALL checkVectorNorm(vector1)
+  CALL checkInitialise(nodeDB)
   PRINT*,' '
-  PRINT*,'checkVectorScale'
-  PRINT*,'================'
-  CALL checkVectorScale(vector1)
-  PRINT*,' '
-  PRINT*,'checkVectorSqrt'
-  PRINT*,'==============='
-  CALL checkVectorSqrt(vector1)
-  PRINT*,' '
-  PRINT*,'checkVectorSum'
-  PRINT*,'=============='
-  CALL checkVectorSum(vector1)
-  PRINT*,' '
-  PRINT*,'checkVectorMin'
-  PRINT*,'=============='
-  CALL checkVectorMin(vector1)
-  PRINT*,' '
-  PRINT*,'checkVectorMax'
-  PRINT*,'=============='
-  CALL checkVectorMax(vector1)
-  PRINT*,' '
-  PRINT*,'checkVectorAbsMin'
-  PRINT*,'================='
-  CALL checkVectorAbsMin(vector1)
-  PRINT*,' '
-  PRINT*,'checkVectorAbsMax'
-  PRINT*,'================='
-  CALL checkVectorAbsMax(vector1)
-  PRINT*,' '
-  PRINT*,'checkVectorDot'
-  PRINT*,'=============='
-  CALL checkVectorDot(vector1)
-  PRINT*,' '
-  PRINT*,'checkVectorGetValues'
-  PRINT*,'===================='
-  CALL checkVectorGetValues(vector1)
-  PRINT*,' '
-  PRINT*,'checkVectorSetSize'
-  PRINT*,'=================='
-  CALL checkVectorSetSize(vector1)
-  PRINT*,' '
-  PRINT*,'checkPutInProcedure'
+  PRINT*,'checkSetInsertValue'
   PRINT*,'==================='
-  CALL checkPutInProcedure(vector1)
+  CALL checkInsertValue(nodeDB)
+  PRINT*,' '
+  PRINT*,'checkGetValues'
+  PRINT*,'=============='
+  CALL checkGetValues(nodeDB)
+  PRINT*,' '
+  PRINT*,'checkSetSize'
+  PRINT*,'============'
+  CALL checkSetSize(nodeDB)
   PRINT*,' '
 
  END SUBROUTINE
 
- SUBROUTINE checkWriteProcedure(vector1)
+ SUBROUTINE checkInitialise(nodeDB)
 
 !  Declaration
 !  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-   TYPE(file) :: fichier
+   TYPE(nodeDataBase), INTENT(INOUT) :: nodeDB
 
 !  Body
 !  - - -
-#ifdef Real4
-   CALL createFile(fichier,'testVectorWrite.Real4.out',GHER_FORMATTED)
-   CALL vectorWrite(vector1,fichier)
-   CALL defineFileName(fichier,'testVectorWriteTHK.Real4.out')
-   CALL defineFileFormat(fichier,THK_FORMATTED)
-   CALL vectorWrite(vector1,fichier)
-#endif
-#ifdef Real8
-   CALL createFile(fichier,'testVectorWrite.Real8.out',GHER_FORMATTED)
-   CALL vectorWrite(vector1,fichier,998.)
-   CALL defineFileName(fichier,'testVectorWriteTHK.Real8.out')
-   CALL defineFileFormat(fichier,THK_FORMATTED)
-   CALL vectorWrite(vector1,fichier)
-#endif
+   CALL nodeDBInitialise(nodeDB)
+   CALL nodeDBPrint(nodeDB)
 
  END SUBROUTINE
 
- SUBROUTINE checkReadProcedure(vector1)
+ SUBROUTINE checkInsertValue(nodeDB)
 
 !  Declaration
 !  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-   TYPE(vectorType) :: vector2
-   TYPE(file) :: fichier
-
-   INTEGER :: istart, length
-#ifdef Real8
-   REAL(KIND=4) :: exclusionValue
-#endif
+   TYPE(nodeDataBase), INTENT(INOUT) :: nodeDB
+   TYPE(node) :: noeud1=node(1.5,2.5,3.5,-56,0.2)
 
 !  Body
 !  - - -
-  istart = vectorGetFirstIndex(vector1)
-  length = vectorGetSize(vector1)
-
-   CALL vectorCreate(vector2,length,istart)
-   CALL vectorSetToZero(vector2)
-
-!  Body
-!  - - -
-#ifdef Real4
-   CALL createFile(fichier,'testVectorWrite.Real4.out',GHER_FORMATTED)
-   CALL vectorRead(vector2,fichier)
-#endif
-#ifdef Real8
-   CALL createFile(fichier,'testVectorWrite.Real8.out',GHER_FORMATTED)
-   CALL vectorRead(vector2,fichier,exclusionValue)
-   PRINT*,'exclusionValue = ',exclusionValue
-#endif
-
-   CALL vectorPrint(vector1)
-   CALL vectorPrint(vector2)
-   CALL vectorDestroy(vector2)
+   CALL nodeDBInsert(nodeDB,1,noeud1)
+   CALL nodeDBPrint(nodeDB)
 
  END SUBROUTINE
 
- SUBROUTINE checkVectorSetToZero(vector1)
+
+ SUBROUTINE checkGetValues(nodeDB)
 
 !  Declaration
 !  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-
-!  Body
-!  - - -
-   CALL vectorSetToZero(vector1)
-   CALL vectorPrint(vector1)
-
- END SUBROUTINE
-
- SUBROUTINE checkVectorSetToValue(vector1)
-
-!  Declaration
-!  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-   VARType, PARAMETER :: val = 25.
-
-!  Body
-!  - - -
-   CALL vectorSetToValue(vector1,val)
-   CALL vectorPrint(vector1)
-
- END SUBROUTINE
-
- SUBROUTINE checkVectorSetInsertValue(vector1)
-
-!  Declaration
-!  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-   VARType, PARAMETER :: val = 15.
-
-!  Body
-!  - - -
-   CALL vectorInsertValue(vector1,1,val)
-   CALL vectorPrint(vector1)
-
- END SUBROUTINE
-
- SUBROUTINE checkVectorSetAddValue(vector1)
-
-!  Declaration
-!  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-   VARType, PARAMETER :: val = 45.
-
-!  Body
-!  - - -
-   CALL vectorAddValue(vector1,1,val)
-   CALL vectorPrint(vector1)
-
- END SUBROUTINE
-
- SUBROUTINE checkVectorNorm(vector1)
-
-!  Declaration
-!  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-
-!  Body
-!  - - -
-   PRINT*,'Norm L1 : ', vectorNorm1(vector1)
-   PRINT*,'Norm L2 : ', vectorNorm2(vector1)
-   PRINT*,'Norm Inf : ', vectorNormInfinity(vector1)
-   PRINT*,'Norm L1 : ', vectorNorm(vector1,NORM_L1)
-   PRINT*,'Norm L2 : ', vectorNorm(vector1,NORM_L2)
-   PRINT*,'Norm Inf : ', vectorNorm(vector1,NORM_INF)
-
- END SUBROUTINE
-
- SUBROUTINE checkVectorScale(vector1)
-
-!  Declaration
-!  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-   VARType, PARAMETER :: val = 0.32
-
-!  Body
-!  - - -
-   CALL vectorScale(vector1,val)
-   CALL vectorPrint(vector1)
-
- END SUBROUTINE
-
- SUBROUTINE checkVectorSqrt(vector1)
-
-!  Declaration
-!  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-
-!  Body
-!  - - -
-   CALL vectorSqrt(vector1)
-   CALL vectorPrint(vector1)
-
- END SUBROUTINE
-
- SUBROUTINE checkVectorSum(vector1)
-
-!  Declaration
-!  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-
-!  Body
-!  - - -
-   PRINT*,'Vector sum : ', vectorSum(vector1)
-
- END SUBROUTINE
-
- SUBROUTINE checkVectorMin(vector1)
-
-!  Declaration
-!  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-
-!  Body
-!  - - -
-   PRINT*,'Vector min : ', vectorMin(vector1)
-
- END SUBROUTINE
-
- SUBROUTINE checkVectorAbsMax(vector1)
-
-!  Declaration
-!  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-
-!  Body
-!  - - -
-   PRINT*,'Vector max : ', vectorAbsMax(vector1)
-
- END SUBROUTINE
-
- SUBROUTINE checkVectorAbsMin(vector1)
-
-!  Declaration
-!  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-
-!  Body
-!  - - -
-   PRINT*,'Vector abs min : ', vectorAbsMin(vector1)
-
- END SUBROUTINE
-
- SUBROUTINE checkVectorMax(vector1)
-
-!  Declaration
-!  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-
-!  Body
-!  - - -
-   PRINT*,'Vector abs max : ', vectorMax(vector1)
-
- END SUBROUTINE
-
- SUBROUTINE checkVectorDot(vector1)
-
-!  Declaration
-!  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-   TYPE(vectorType) :: vector2
-   VARType, PARAMETER :: val = 2.3
-
-!  Body
-!  - - -
-  CALL vectorCreate(vector2)
-  CALL vectorSetSize(vector2,vectorGetSize(vector1))
-  CALL vectorSetToValue(vector2,val)
-  CALL vectorPrint(vector2)
-  PRINT*,'Dot product : ', vectorDot(vector1,vector2)
-  CALL vectorDestroy(vector2)
-
- END SUBROUTINE
-
- SUBROUTINE checkVectorGetValues(vector1)
-
-!  Declaration
-!  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-   VARType, DIMENSION(:), POINTER :: ptr
+   TYPE(nodeDataBase), INTENT(INOUT) :: nodeDB
+   TYPE(node), DIMENSION(:), POINTER :: ptr
    INTEGER :: istart, iend, i1
 
 !  Body
 !  - - -
-  ptr => vectorGetValues(vector1)
-  istart = vectorGetFirstIndex(vector1)
-  iend = vectorGetLastIndex(vector1)
+  ptr => nodeDBGetValues(nodeDB)
+  istart = nodeDBGetFirstIndex(nodeDB)
+  iend = nodeDBGetLastIndex(nodeDB)
   DO i1 = istart, iend
-     ptr(i1) = 23.
+     ptr(i1)%zValue = 23.
   ENDDO
 
-  CALL vectorPrint(vector1)
+  CALL nodeDBPrint(nodeDB)
 
  END SUBROUTINE
 
- SUBROUTINE checkVectorSetSize(vector1)
+ SUBROUTINE checkSetSize(nodeDB)
 
 !  Declaration
 !  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
+   TYPE(nodeDataBase), INTENT(INOUT) :: nodeDB
    INTEGER :: istart, iend, i1
-   VARType, PARAMETER :: val = 1.0
-   VARType, PARAMETER :: val1 = 1.0
-   VARType, PARAMETER :: val11 = 0.3
-   VARType, PARAMETER :: val2 = -3.3
-   VARType, PARAMETER :: val3 = 3.3
+   TYPE(node) :: val = node(1.5,2.5,3.5,-56,0.2)
+   TYPE(node) :: val2 = node(1.5,2.5,3.5,16,0.2)
+   TYPE(node) :: val3 = node(1.5,2.5,3.5,30,0.2)
 
 !  Body
 !  - - -
-  istart = vectorGetFirstIndex(vector1)
-  iend = vectorGetLastIndex(vector1)
+  istart = nodeDBGetFirstIndex(nodeDB)
+  iend = nodeDBGetLastIndex(nodeDB)
 
    DO i1 = istart, iend
-       CALL vectorSetValue(vector1,i1,val,FAST_INSERT_VALUE)
-       CALL vectorSetValue(vector1,i1,val1,FAST_ADD_VALUE)
-       CALL vectorSetValue(vector1,i1,val11,ADD_VALUE)
+       CALL nodeDBSetValue(nodeDB,i1,val,SET_VALUE)
    ENDDO
 
-   CALL vectorPrint(vector1)
+   CALL nodeDBPrint(nodeDB)
 
    DO i1 = istart - 2 , istart - 1
-       CALL vectorSetValue(vector1,i1,val2,INSERT_VALUE)
+       CALL nodeDBSetValue(nodeDB,i1,val2,INSERT_VALUE)
    ENDDO
 
    DO i1 = iend + 1  , iend + 2
-       CALL vectorSetValue(vector1,i1,val3,INSERT_VALUE)
+       CALL nodeDBSetValue(nodeDB,i1,val3,INSERT_VALUE)
    ENDDO
 
-   CALL vectorPrint(vector1)
+   CALL nodeDBPrint(nodeDB)
 
  END SUBROUTINE
 
@@ -498,77 +202,25 @@ INTEGER, PARAMETER :: dim = 3
 
 !  Declaration
 !  -----------
-   TYPE(vectorType) :: vector1
+   TYPE(nodeDataBase) :: nodeDB
 
 !  Body
 !  - - -
-   CALL vectorCreate(vector1)
-   CALL vectorSetSize(vector1,3)
-   CALL vectorSetToZero(vector1)
-   CALL vectorPrint(vector1)
-   CALL vectorSetIncreaseSize(vector1,0)
-   CALL vectorSetSize(vector1,9)
-   CALL vectorSetToZero(vector1)
-   CALL vectorPrint(vector1)
-   CALL vectorSetIncreaseSize(vector1,-1)
-   CALL vectorSetSize(vector1,10)
-   CALL vectorSetToZero(vector1)
-   CALL vectorPrint(vector1)
-   CALL vectorDestroy(vector1)
+   CALL nodeDBCreate(nodeDB)
+   CALL nodeDBSetSize(nodeDB,3)
+   CALL nodeDBInitialise(nodeDB)
+   CALL nodeDBPrint(nodeDB)
+   CALL nodeDBSetIncreaseSize(nodeDB,0)
+   CALL nodeDBSetSize(nodeDB,9)
+   CALL nodeDBInitialise(nodeDB)
+   CALL nodeDBPrint(nodeDB)
+   CALL nodeDBSetIncreaseSize(nodeDB,-1)
+   CALL nodeDBSetSize(nodeDB,10)
+   CALL nodeDBInitialise(nodeDB)
+   CALL nodeDBPrint(nodeDB)
+   CALL nodeDBDestroy(nodeDB)
 
  END SUBROUTINE
-
- SUBROUTINE checkPutInProcedure(vector1)
-
-!  Declaration
-!  -----------
-   TYPE(vectorType), INTENT(INOUT) :: vector1
-   INTEGER :: istart, iend, i1
-   VARType, PARAMETER :: unity = 1
-   VARType, PARAMETER :: valStart = -50.
-   VARType, PARAMETER :: valStart1 = 50.
-   VARType, PARAMETER :: valMid = 150.
-   VARType, PARAMETER :: valEnd = 250.
-   VARType, PARAMETER :: valEnd1 = -250.
-
-!  Body
-!  - - -
-   CALL vectorSetToZero(vector1)
-
-   istart = vectorGetFirstIndex(vector1)
-   iend = vectorGetLastIndex(vector1)
-
-   DO i1 = istart, iend
-       CALL vectorSetValue(vector1,i1,i1*unity,FAST_INSERT_VALUE)
-   ENDDO
-
-   CALL vectorPrint(vector1)
-   CALL vectorPutIn(vector1,istart-2,valStart)
-   CALL vectorPrint(vector1)
-   CALL vectorPutIn(vector1,istart,valStart1)
-   CALL vectorPrint(vector1)
-
-   istart = vectorGetFirstIndex(vector1)
-   iend = vectorGetLastIndex(vector1)
-
-   CALL vectorPutIn(vector1,istart+2,valMid)
-   CALL vectorPrint(vector1)
-
-   istart = vectorGetFirstIndex(vector1)
-   iend = vectorGetLastIndex(vector1)
-
-   CALL vectorPutIn(vector1,iend,valEnd)
-   CALL vectorPrint(vector1)
-
-   istart = vectorGetFirstIndex(vector1)
-   iend = vectorGetLastIndex(vector1)
-
-   CALL vectorPutIn(vector1,iend+2,valEnd1)
-   CALL vectorPrint(vector1)
-
- END SUBROUTINE
-
-#endif
 
 END PROGRAM testNode
 

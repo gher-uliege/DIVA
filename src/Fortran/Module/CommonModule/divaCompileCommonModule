@@ -1,0 +1,39 @@
+#!/bin/bash
+
+echo ===========================================
+echo ===========================================
+echo ==                                       ==
+echo ==   Compilation of DIVA Common Module  ==
+echo ==                                       ==
+echo ===========================================
+echo ===========================================
+echo ' '
+
+baseDir=$PWD
+
+echo ====================
+echo ====================
+echo = Compiling Module =
+echo ====================
+echo ====================
+echo ' '
+
+preproFlag=''
+associateDir='-I'$divaDir'/Module/IOModule '
+associateDir=$associateDir' -I'$divaDir'/Module/General '
+export preproFlag
+export associateDir
+libName=libCommonDiva$compiler.a
+export libName
+
+rm -f $divaModuleLib/$libName
+
+for ii in `ls *.f95`
+do
+$divaDir/compileFile $ii `basename $ii .f95`
+done
+
+mv *.mod $divaModuleLib
+
+cd $baseDir
+

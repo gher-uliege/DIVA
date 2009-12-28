@@ -22,6 +22,7 @@ MODULE moduleInsertValueMethod
    TYPE(insertValueMethod), PUBLIC, PARAMETER :: ADD_VALUE = insertValueMethod(2)
    TYPE(insertValueMethod), PUBLIC, PARAMETER :: FAST_INSERT_VALUE = insertValueMethod(3)
    TYPE(insertValueMethod), PUBLIC, PARAMETER :: FAST_ADD_VALUE = insertValueMethod(4)
+   TYPE(insertValueMethod), PUBLIC, PARAMETER :: SET_VALUE = insertValueMethod(5)
 
 END MODULE moduleInsertValueMethod
 

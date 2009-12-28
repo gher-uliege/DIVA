@@ -33,6 +33,7 @@ export libraryObj
 libraryMod='-I'$divaModuleMod
 libraryPath='-L'$divaModuleLib
 libraryLink='-ldiva'$compiler
+libraryLink=$libraryLink' -lCommonDiva'$compiler
 libraryLink=$libraryLink' -lMath'$compiler
 libraryLink=$libraryLink' -lVector'$compiler
 libraryLink=$libraryLink' -lMatrix'$compiler
