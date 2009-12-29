@@ -24,7 +24,7 @@ MODULE moduleNodeDataBaseDefinition
 
 !  General part
 !  ------------
-   PUBLIC :: printInformation, copy, initialise
+   PUBLIC :: printInformation, initialise
 
 
 ! ============================================================
@@ -60,30 +60,11 @@ SUBROUTINE printInformation(output,ptr)
       WRITE(output,*)    '   xValue = ', ptr%xValue
       WRITE(output,*)    '   yValue = ', ptr%yValue
       WRITE(output,*)    '   zValue = ', ptr%zValue
+      WRITE(output,*)    ' '
 
 END SUBROUTINE
 
-! Procedure 2 : copy
-! ------------------
-SUBROUTINE copy(ptrTarget,ptrSource)
-
-!     Declaration
-!     - - - - - -
-      TYPE(nodeType), POINTER :: ptrTarget
-      TYPE(nodeType), POINTER :: ptrSource
-
-!     Body
-!     - - -
-      ptrTarget%xValue = ptrSource%xValue
-      ptrTarget%yValue = ptrSource%yValue
-      ptrTarget%zValue = ptrSource%zValue
-
-      ptrTarget%indexValue = ptrSource%indexValue
-      ptrTarget%characteristicLength = ptrSource%characteristicLength
-
-END SUBROUTINE
-
-! Procedure 3 : initialise
+! Procedure 2 : initialise
 ! ------------------------
 SUBROUTINE initialise(ptrTarget,indexValue)
 

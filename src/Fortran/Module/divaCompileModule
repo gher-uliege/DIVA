@@ -11,10 +11,10 @@ echo ' '
 
 baseDir=$PWD
 
-_WITH_COMMON_=1 ; export _WITH_COMMON_
-_WITH_IO_=1 ; export _WITH_IO_
-_WITH_MATH_=1 ; export _WITH_MATH_
-_WITH_DIVA_=1 ; export _WITH_DIVA_ 
+_WITH_COMMON_=0 ; export _WITH_COMMON_
+_WITH_IO_=0 ; export _WITH_IO_
+_WITH_MATH_=0 ; export _WITH_MATH_
+_WITH_DIVA_=0 ; export _WITH_DIVA_ 
 _WITH_MESH_=1 ; export _WITH_MESH_
 
 

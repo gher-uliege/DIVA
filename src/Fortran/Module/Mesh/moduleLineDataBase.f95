@@ -14,7 +14,30 @@ MODULE moduleLineDataBase
 
 ! Include file
 ! ============
-   USE moduleGenericDataBase
+   USE moduleGenericTypeDataBaseDefinition
+   USE moduleGenericDataBase, ONLY : dataBaseCreateBaseLine => dataBaseCreateBase, &
+                                     dataBaseCreateWithDimensionLine => dataBaseCreateWithDimension, &
+                                     dataBaseCreateWithDimensionAndFirstIndexLine => dataBaseCreateWithDimensionAndFirstIndex, &
+                                     dataBaseSetSizeLine => dataBaseSetSize, &
+                                     dataBasePrintInformationLine => dataBasePrintInformation, &
+                                     dataBaseInsertElementLine => dataBaseInsertElement, &
+                                     dataBaseFastInsertElementLine => dataBaseFastInsertElement, &
+                                     dataBaseGetValuesLine => dataBaseGetValues, &
+                                     dataBaseGetAllocationStatusLine => dataBaseGetAllocationStatus, &
+                                     dataBaseGetPointerOnValueLine => dataBaseGetPointerOnValue, &
+                                     dataBaseSetIncreaseSizeLine => dataBaseSetIncreaseSize, &
+                                     dataBaseDestructorLine => dataBaseDestructor, &
+                                     dataBaseGetFirstIndexLine => dataBaseGetFirstIndex, &
+                                     dataBaseGetLastIndexLine => dataBaseGetLastIndex, &
+                                     dataBaseGetSizeLine => dataBaseGetSize, &
+                                     dataBaseGetAllocatedSizeLine => dataBaseGetAllocatedSize, &
+                                     dataBaseGetIncreaseSizeLine => dataBaseGetIncreaseSize, &
+                                     dataBaseGetDefaultIncreaseSizeLine => dataBaseGetDefaultIncreaseSize, &
+                                     dataBaseInitialiseLine => dataBaseInitialise, &
+                                     dataBaseSetValueLine => dataBaseSetValue, &
+                                     dataBaseOptimizeMemoryLine => dataBaseOptimizeMemory
+
+! Rem. : redirection of function pointer xxxLine => xxx needed for intel compiler (not for g95 or gfortran)
 
 ! Declaration
 ! ===========
@@ -28,75 +51,80 @@ MODULE moduleLineDataBase
 ! Interface
 ! =========
    INTERFACE lineDBCreate
-      MODULE PROCEDURE dataBaseCreateBase, dataBaseCreateWithDimension, dataBaseCreateWithDimensionAndFirstIndex
+      MODULE PROCEDURE dataBaseCreateBaseLine, dataBaseCreateWithDimensionLine, &
+                       dataBaseCreateWithDimensionAndFirstIndexLine
    END INTERFACE
 
    INTERFACE lineDBSetSize
-      MODULE PROCEDURE dataBaseSetSize
+      MODULE PROCEDURE dataBaseSetSizeLine
    END INTERFACE
 
    INTERFACE lineDBPrint
-      MODULE PROCEDURE dataBasePrintInformation
+      MODULE PROCEDURE dataBasePrintInformationLine
    END INTERFACE
 
    INTERFACE lineDBInsert
-      MODULE PROCEDURE dataBaseInsertElement
+      MODULE PROCEDURE dataBaseInsertElementLine
    END INTERFACE
 
    INTERFACE lineDBFastInsert
-      MODULE PROCEDURE dataBaseFastInsertElement
+      MODULE PROCEDURE dataBaseFastInsertElementLine
    END INTERFACE
 
    INTERFACE lineDBGetValues
-      MODULE PROCEDURE dataBaseGetValues
+      MODULE PROCEDURE dataBaseGetValuesLine
    END INTERFACE
 
    INTERFACE lineDBGetAllocationStatus
-      MODULE PROCEDURE dataBaseGetAllocationStatus
+      MODULE PROCEDURE dataBaseGetAllocationStatusLine
    END INTERFACE
 
    INTERFACE lineDBGetValue
-      MODULE PROCEDURE dataBaseGetPointerOnValue
+      MODULE PROCEDURE dataBaseGetPointerOnValueLine
    END INTERFACE
 
    INTERFACE lineDBSetIncreaseSize
-      MODULE PROCEDURE dataBaseSetIncreaseSize
+      MODULE PROCEDURE dataBaseSetIncreaseSizeLine
    END INTERFACE
 
    INTERFACE lineDBDestroy
-      MODULE PROCEDURE dataBaseDestructor
+      MODULE PROCEDURE dataBaseDestructorLine
    END INTERFACE
 
    INTERFACE lineDBGetFirstIndex
-      MODULE PROCEDURE dataBaseGetFirstIndex
+      MODULE PROCEDURE dataBaseGetFirstIndexLine
    END INTERFACE
 
    INTERFACE lineDBGetLastIndex
-      MODULE PROCEDURE dataBaseGetLastIndex
+      MODULE PROCEDURE dataBaseGetLastIndexLine
    END INTERFACE
 
    INTERFACE lineDBGetSize
-      MODULE PROCEDURE dataBaseGetSize
+      MODULE PROCEDURE dataBaseGetSizeLine
    END INTERFACE
 
    INTERFACE lineDBGetAllocatedSize
-      MODULE PROCEDURE dataBaseGetAllocatedSize
+      MODULE PROCEDURE dataBaseGetAllocatedSizeLine
    END INTERFACE
 
    INTERFACE lineDBGetIncreaseSize
-      MODULE PROCEDURE dataBaseGetIncreaseSize
+      MODULE PROCEDURE dataBaseGetIncreaseSizeLine
    END INTERFACE
 
    INTERFACE lineDBGetDefaultIncreaseSize
-      MODULE PROCEDURE dataBaseGetDefaultIncreaseSize
+      MODULE PROCEDURE dataBaseGetDefaultIncreaseSizeLine
    END INTERFACE
 
    INTERFACE lineDBInitialise
-      MODULE PROCEDURE dataBaseInitialise
+      MODULE PROCEDURE dataBaseInitialiseLine
    END INTERFACE
 
    INTERFACE lineDBSetValue
-      MODULE PROCEDURE dataBaseSetValue
+      MODULE PROCEDURE dataBaseSetValueLine
+   END INTERFACE
+
+   INTERFACE lineDBOptimizeMemory
+      MODULE PROCEDURE dataBaseOptimizeMemoryLine
    END INTERFACE
 
 ! ============================================================

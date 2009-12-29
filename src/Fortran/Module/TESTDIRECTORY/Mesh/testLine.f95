@@ -70,7 +70,7 @@ INTEGER, PARAMETER :: dimLine = 3
 
 ! End program
 ! ===========
-    CALL finaliseDIVAContext()
+  CALL finaliseDIVAContext()
 
 
 END PROGRAM testLine

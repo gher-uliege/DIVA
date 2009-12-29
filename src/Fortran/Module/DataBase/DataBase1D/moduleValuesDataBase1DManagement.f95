@@ -22,7 +22,7 @@ MODULE moduleValuesDataBase1DManagement
                                           memoryGetSizeX, memoryGetAllocatedSizeX
   USE moduleMemoryDataBase1DManagement, ONLY : memoryAllocateDataBase
   USE moduleValuesDataBaseManagement, ONLY : memoryGetPointerOnValue, memoryGetValues
-  USE moduleGenericTypeSurDefined, ONLY : genericTypeCopy => copy, genericTypeInitialise => initialise
+  USE moduleGenericTypeSurDefined, ONLY : genericTypeInitialise => initialise
 
 ! Declaration
 ! ===========
@@ -102,7 +102,7 @@ MODULE moduleValuesDataBase1DManagement
 !     Body
 !     - - -
       val2 => memoryGetPointerOnValue(positionX)
-      CALL genericTypeCopy(val2,val)
+      val2 = val
 
   END SUBROUTINE
 

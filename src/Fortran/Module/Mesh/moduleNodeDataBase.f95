@@ -14,7 +14,30 @@ MODULE moduleNodeDataBase
 
 ! Include file
 ! ============
-   USE moduleGenericDataBase
+   USE moduleGenericTypeDataBaseDefinition
+   USE moduleGenericDataBase, ONLY : dataBaseCreateBaseNode => dataBaseCreateBase, &
+                                     dataBaseCreateWithDimensionNode => dataBaseCreateWithDimension, &
+                                     dataBaseCreateWithDimensionAndFirstIndexNode => dataBaseCreateWithDimensionAndFirstIndex, &
+                                     dataBaseSetSizeNode => dataBaseSetSize, &
+                                     dataBasePrintInformationNode => dataBasePrintInformation, &
+                                     dataBaseInsertElementNode => dataBaseInsertElement, &
+                                     dataBaseFastInsertElementNode => dataBaseFastInsertElement, &
+                                     dataBaseGetValuesNode => dataBaseGetValues, &
+                                     dataBaseGetAllocationStatusNode => dataBaseGetAllocationStatus, &
+                                     dataBaseGetPointerOnValueNode => dataBaseGetPointerOnValue, &
+                                     dataBaseSetIncreaseSizeNode => dataBaseSetIncreaseSize, &
+                                     dataBaseDestructorNode => dataBaseDestructor, &
+                                     dataBaseGetFirstIndexNode => dataBaseGetFirstIndex, &
+                                     dataBaseGetLastIndexNode => dataBaseGetLastIndex, &
+                                     dataBaseGetSizeNode => dataBaseGetSize, &
+                                     dataBaseGetAllocatedSizeNode => dataBaseGetAllocatedSize, &
+                                     dataBaseGetIncreaseSizeNode => dataBaseGetIncreaseSize, &
+                                     dataBaseGetDefaultIncreaseSizeNode => dataBaseGetDefaultIncreaseSize, &
+                                     dataBaseInitialiseNode => dataBaseInitialise, &
+                                     dataBaseSetValueNode => dataBaseSetValue, &
+                                     dataBaseOptimizeMemoryNode => dataBaseOptimizeMemory
+
+! Rem. : redirection of function pointer xxxLine => xxx needed for intel compiler (not for g95 or gfortran)
 
 ! Declaration
 ! ===========
@@ -28,81 +51,81 @@ MODULE moduleNodeDataBase
 ! Interface
 ! =========
    INTERFACE nodeDBCreate
-      MODULE PROCEDURE dataBaseCreateBase, dataBaseCreateWithDimension, dataBaseCreateWithDimensionAndFirstIndex
+      MODULE PROCEDURE dataBaseCreateBaseNode, dataBaseCreateWithDimensionNode, &
+                       dataBaseCreateWithDimensionAndFirstIndexNode
    END INTERFACE
 
    INTERFACE nodeDBSetSize
-      MODULE PROCEDURE dataBaseSetSize
+      MODULE PROCEDURE dataBaseSetSizeNode
    END INTERFACE
 
    INTERFACE nodeDBPrint
-      MODULE PROCEDURE dataBasePrintInformation
+      MODULE PROCEDURE dataBasePrintInformationNode
    END INTERFACE
 
    INTERFACE nodeDBInsert
-      MODULE PROCEDURE dataBaseInsertElement
+      MODULE PROCEDURE dataBaseInsertElementNode
    END INTERFACE
 
    INTERFACE nodeDBFastInsert
-      MODULE PROCEDURE dataBaseFastInsertElement
+      MODULE PROCEDURE dataBaseFastInsertElementNode
    END INTERFACE
 
    INTERFACE nodeDBGetValues
-      MODULE PROCEDURE dataBaseGetValues
+      MODULE PROCEDURE dataBaseGetValuesNode
    END INTERFACE
 
    INTERFACE nodeDBGetAllocationStatus
-      MODULE PROCEDURE dataBaseGetAllocationStatus
+      MODULE PROCEDURE dataBaseGetAllocationStatusNode
    END INTERFACE
 
    INTERFACE nodeDBGetValue
-      MODULE PROCEDURE dataBaseGetPointerOnValue
+      MODULE PROCEDURE dataBaseGetPointerOnValueNode
    END INTERFACE
 
    INTERFACE nodeDBSetIncreaseSize
-      MODULE PROCEDURE dataBaseSetIncreaseSize
+      MODULE PROCEDURE dataBaseSetIncreaseSizeNode
    END INTERFACE
 
    INTERFACE nodeDBDestroy
-      MODULE PROCEDURE dataBaseDestructor
+      MODULE PROCEDURE dataBaseDestructorNode
    END INTERFACE
 
    INTERFACE nodeDBGetFirstIndex
-      MODULE PROCEDURE dataBaseGetFirstIndex
+      MODULE PROCEDURE dataBaseGetFirstIndexNode
    END INTERFACE
 
    INTERFACE nodeDBGetLastIndex
-      MODULE PROCEDURE dataBaseGetLastIndex
+      MODULE PROCEDURE dataBaseGetLastIndexNode
    END INTERFACE
 
    INTERFACE nodeDBGetSize
-      MODULE PROCEDURE dataBaseGetSize
+      MODULE PROCEDURE dataBaseGetSizeNode
    END INTERFACE
 
    INTERFACE nodeDBGetAllocatedSize
-      MODULE PROCEDURE dataBaseGetAllocatedSize
+      MODULE PROCEDURE dataBaseGetAllocatedSizeNode
    END INTERFACE
 
    INTERFACE nodeDBGetIncreaseSize
-      MODULE PROCEDURE dataBaseGetIncreaseSize
+      MODULE PROCEDURE dataBaseGetIncreaseSizeNode
    END INTERFACE
 
    INTERFACE nodeDBGetDefaultIncreaseSize
-      MODULE PROCEDURE dataBaseGetDefaultIncreaseSize
+      MODULE PROCEDURE dataBaseGetDefaultIncreaseSizeNode
    END INTERFACE
 
    INTERFACE nodeDBInitialise
-      MODULE PROCEDURE dataBaseInitialise
+      MODULE PROCEDURE dataBaseInitialiseNode
    END INTERFACE
 
    INTERFACE nodeDBSetValue
-      MODULE PROCEDURE dataBaseSetValue
+      MODULE PROCEDURE dataBaseSetValueNode
    END INTERFACE
 
    INTERFACE nodeDBOptimizeMemory
-      MODULE PROCEDURE dataBaseOptimizeMemory
+      MODULE PROCEDURE dataBaseOptimizeMemoryNode
    END INTERFACE
-
 ! ============================================================
 ! ============================================================
 ! ============================================================

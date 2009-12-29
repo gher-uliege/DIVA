@@ -34,6 +34,7 @@ moduleNodeDefinition='module'$node ; export moduleNodeDefinition
 moduleNodeDataBaseDefinition='moduleSpecificDataBase'$node ; export moduleNodeDataBaseDefinition
 moduleNodeDataBase=$node'Interface'
 moduleGenericDataBase='moduleGenericDataBase'$node
+moduleGenericTypeDataBaseDefinition='moduleDataBaseDefinition'$node 
 
 flagNode0='-DnodeType='$node
 flagNode1='-DVARType='$VARType
@@ -41,6 +42,7 @@ flagNode2='-DmoduleNodeDefinition='$moduleNodeDefinition
 flagNode3='-DmoduleNodeDataBaseDefinition='$moduleNodeDataBaseDefinition
 flagNode4='-DmoduleNodeDataBase='$moduleNodeDataBase
 flagNode5='-DmoduleGenericDataBase='$moduleGenericDataBase
+flagNode6='-DmoduleGenericTypeDataBaseDefinition='$moduleGenericTypeDataBaseDefinition
 
 preproFlag=$preproFlag' '$flagNode0
 preproFlag=$preproFlag' '$flagNode1
@@ -48,6 +50,7 @@ preproFlag=$preproFlag' '$flagNode2
 preproFlag=$preproFlag' '$flagNode3
 preproFlag=$preproFlag' '$flagNode4
 preproFlag=$preproFlag' '$flagNode5
+preproFlag=$preproFlag' '$flagNode6
 
 export preproFlag
 
@@ -64,6 +67,7 @@ moduleLineDefinition='module'$line ; export moduleLineDefinition
 moduleLineDataBaseDefinition='moduleSpecificDataBase'$line ; export moduleLineDataBaseDefinition
 moduleLineDataBase=$line'Interface'
 moduleGenericDataBase='moduleGenericDataBase'$line
+moduleGenericTypeDataBaseDefinition='moduleDataBaseDefinition'$line 
 
 flagLine0='-DlineType='$line
 flagLine1='-DVARType='$VARType
@@ -71,6 +75,7 @@ flagLine2='-DmoduleLineDefinition='$moduleLineDefinition
 flagLine3='-DmoduleLineDataBaseDefinition='$moduleLineDataBaseDefinition
 flagLine4='-DmoduleLineDataBase='$moduleLineDataBase
 flagLine5='-DmoduleGenericDataBase='$moduleGenericDataBase
+flagLine6='-DmoduleGenericTypeDataBaseDefinition='$moduleGenericTypeDataBaseDefinition
 
 preproFlag=$flagLine0
 preproFlag=$preproFlag' '$flagLine1
@@ -78,6 +83,7 @@ preproFlag=$preproFlag' '$flagLine2
 preproFlag=$preproFlag' '$flagLine3
 preproFlag=$preproFlag' '$flagLine4
 preproFlag=$preproFlag' '$flagLine5
+preproFlag=$preproFlag' '$flagLine6
 preproFlag=$preproFlag' '$flagNode0
 preproFlag=$preproFlag' '$flagNode2
 preproFlag=$preproFlag' '$flagNode3
@@ -88,6 +94,22 @@ $divaDir/compileFile moduleLineDefinition.f95 $moduleLineDefinition
 $divaDir/compileFile moduleLineDataBaseDefinition.f95 $moduleLineDataBaseDefinition
 $divaDir/Module/DataBase/divaCompileDataBase _DB_1D_ $line $moduleLineDefinition $moduleLineDataBaseDefinition
 $divaDir/compileFile moduleLineDataBase.f95 $moduleLineDataBase
+
+echo ' '
+# Compilation of : moduleCoordinateInformation
+# ============================================
+REALType='REAL(KIND=8)'
+INTEGERType='INTEGER'
+
+flag0='-DREALType='$REALType
+flag1='-DINTEGERType='$INTEGERType
+
+preproFlag=$flag0
+preproFlag=$preproFlag' '$flag1
+
+export preproFlag
+$divaDir/compileFile moduleCoordinateInformation.f95 moduleCoordinateInformation
+
 
 mv *.mod $divaModuleLib
 
