@@ -96,6 +96,39 @@ $divaDir/Module/DataBase/divaCompileDataBase _DB_1D_ $line $moduleLineDefinition
 $divaDir/compileFile moduleLineDataBase.f95 $moduleLineDataBase
 
 echo ' '
+
+# Compilation of : Stencil
+# ========================
+stencil='stencil' ; export stencil
+moduleStencilDefinition='module'$stencil ; export moduleStencilDefinition
+moduleStencilDataBaseDefinition='moduleSpecificDataBase'$stencil ; export moduleStencilDataBaseDefinition
+moduleStencilDataBase=$stencil'Interface'
+moduleGenericDataBase='moduleGenericDataBase'$stencil
+moduleGenericTypeDataBaseDefinition='moduleDataBaseDefinition'$stencil 
+
+flagStencil0='-DstencilType='$stencil
+flagStencil2='-DmoduleStencilDefinition='$moduleStencilDefinition
+flagStencil3='-DmoduleStencilDataBaseDefinition='$moduleStencilDataBaseDefinition
+flagStencil4='-DmoduleStencilDataBase='$moduleStencilDataBase
+flagStencil5='-DmoduleGenericDataBase='$moduleGenericDataBase
+flagStencil6='-DmoduleGenericTypeDataBaseDefinition='$moduleGenericTypeDataBaseDefinition
+
+preproFlag=$flagStencil0
+preproFlag=$preproFlag' '$flagStencil2
+preproFlag=$preproFlag' '$flagStencil3
+preproFlag=$preproFlag' '$flagStencil4
+preproFlag=$preproFlag' '$flagStencil5
+preproFlag=$preproFlag' '$flagStencil6
+
+export preproFlag
+
+$divaDir/compileFile moduleStencilDefinition.f95 $moduleStencilDefinition
+$divaDir/compileFile moduleStencilDataBaseDefinition.f95 $moduleStencilDataBaseDefinition
+$divaDir/Module/DataBase/divaCompileDataBase _DB_1D_ $stencil $moduleStencilDefinition $moduleStencilDataBaseDefinition
+$divaDir/compileFile moduleStencilDataBase.f95 $moduleStencilDataBase
+
+echo ' '
+
 # Compilation of : moduleCoordinateInformation
 # ============================================
 REALType='REAL(KIND=8)'
