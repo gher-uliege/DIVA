@@ -89,6 +89,9 @@ MODULE moduleMemoryArrayManagement
    PUBLIC :: memorySetFirstIndexZ, memorySetLastIndexZ, memorySetSizeZ, memorySetAllocatedSizeZ , memorySetIncreaseSizeZ
 #endif
 
+#ifdef _INTEGER_
+   PUBLIC :: memoryIsAlreadyIn
+#endif
 
 ! ============================================================
 ! ============================================================
@@ -1191,6 +1194,98 @@ MODULE moduleMemoryArrayManagement
 
   END SUBROUTINE
 
+#ifdef _INTEGER_
+! Procedure 7 : check if a value is already in the array
+! ------------------------------------------------------
+
+  FUNCTION memoryIsAlreadyIn(val) RESULT(check)
+
+!     Declaration
+!     - - - - - -
+      VARType, INTENT(IN) :: val
+      LOGICAL :: check
+
+!        1) For 1D array
+!        + + + + + + + + +
+#ifdef _ARRAY_1D_
+       VARType, DIMENSION(:), POINTER :: ptr
+#endif
+
+!        2) For 2D array
+!        + + + + + + + +
+#ifdef _ARRAY_2D_
+       VARType, DIMENSION(:,:), POINTER :: ptr
+#endif
+
+!        3) For 3D array
+!        + + + + + + + +
+#ifdef _ARRAY_3D_
+       VARType, DIMENSION(:,:,:), POINTER :: ptr
+#endif
+
+#ifdef _ARRAY_1D_DEFINITION_
+      INTEGER :: iStartX, iEndX, i1
+#endif
+#ifdef _ARRAY_2D_DEFINITION_
+      INTEGER :: iStartY, iEndY, i2
+#endif
+#ifdef _ARRAY_3D_DEFINITION_
+      INTEGER :: iStartZ, iEndZ, i3
+#endif
+
+!     Body
+!     - - -
+      check = .FALSE.
+      ptr => workingArray%values
+
+#ifdef _ARRAY_1D_DEFINITION_
+      iStartX = memoryGetFirstIndexX()
+      iEndX = memoryGetLastIndexX()
+#endif
+#ifdef _ARRAY_2D_DEFINITION_
+      iStartY = memoryGetFirstIndexY()
+      iEndY = memoryGetLastIndexY()
+#endif
+#ifdef _ARRAY_3D_DEFINITION_
+      iStartZ = memoryGetFirstIndexZ()
+      iEndZ = memoryGetLastIndexZ()
+#endif
+
+#ifdef _ARRAY_1D_
+      DO i1 = iStartX, iEndX
+        IF ( ptr(i1) == val ) THEN
+           check = .TRUE.
+           RETURN
+        ENDIF
+      ENDDO
+#endif
+
+#ifdef _ARRAY_2D_
+      DO i1 = iStartX, iEndX
+       DO i2 = iStartY, iEndY
+        IF ( ptr(i1,i2) == val ) THEN
+           check = .TRUE.
+           RETURN
+        ENDIF
+       ENDDO
+      ENDDO
+#endif
+
+#ifdef _ARRAY_3D_
+      DO i1 = iStartX, iEndX
+       DO i2 = iStartY, iEndY
+        DO i3 = iStartZ, iEndZ
+        IF ( ptr(i1,i2,i3) == val ) THEN
+           check = .TRUE.
+           RETURN
+        ENDIF
+        ENDDO
+       ENDDO
+      ENDDO
+#endif
+
+  END FUNCTION
+#endif
 
 #undef _ARRAY_1D_DEFINITION_
 #undef _ARRAY_2D_DEFINITION_

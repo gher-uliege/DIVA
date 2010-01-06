@@ -42,6 +42,10 @@ MODULE moduleArray
                                              memoryArrayAddValue, memoryArrayFastInsertValue, memoryArrayFastAddValue
    USE moduleMemoryArrayManagement, ONLY : memoryGetAllocationStatus, memorySetSize,  memorySetFirstIndex, &
 
+#ifdef _INTEGER_
+                                           memoryIsAlreadyIn, &
+#endif
+
 #ifdef _ARRAY_1D_
                                            memoryGetFirstIndex, memoryGetLastIndex, memoryGetSize, memoryGetAllocatedSize , &
                                            memoryGetIncreaseSize, memoryGetDefaultIncreaseSize, &
@@ -125,6 +129,10 @@ MODULE moduleArray
    PUBLIC :: arrayIOWrite
 #ifdef _REAL_
    PUBLIC :: arrayIORead
+#endif
+
+#ifdef _INTEGER_
+  PUBLIC ::  arrayIsAlreadyIn
 #endif
 
 ! ============================================================
@@ -2237,6 +2245,32 @@ MODULE moduleArray
       CALL nullifyArrayPointer()
 
   END SUBROUTINE
+#endif
+
+#ifdef _INTEGER_
+! Procedure 14 : is value already in the array ?
+! ----------------------------------------------
+FUNCTION arrayIsAlreadyIn(targetArray,val) RESULT(check)
+
+!     Declaration
+!     - - - - - -
+      VARType, INTENT(IN) :: val
+      LOGICAL :: check
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(arrayType), INTENT(IN) :: targetArray
+      CALL setWorkingArray(targetArray)
+
+!     Body
+!     - - -
+      check = memoryIsAlreadyIn(val)
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullifyArrayPointer()
+
+END FUNCTION
 #endif
 
 #undef _ARRAY_1D_DEFINITION_

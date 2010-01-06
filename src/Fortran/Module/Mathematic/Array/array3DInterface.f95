@@ -49,7 +49,7 @@ MODULE array3DInterface
                            arrayGetIncreaseSizeYInteger2 => arrayGetIncreaseSizeY, &
                            arraySetIncreaseSizeYInteger2 => arraySetIncreaseSizeY, &
                            arrayArrayMinInteger2 => arrayArrayMin, arrayIOWriteInteger2 => arrayIOWrite, &
-                           arrayArrayMaxInteger2 => arrayArrayMax, &
+                           arrayArrayMaxInteger2 => arrayArrayMax, arrayIsAlreadyInInteger2 => arrayIsAlreadyIn, &
                            arrayArrayAbsMinInteger2 => arrayArrayAbsMin, &
                            arrayArrayAbsMaxInteger2 => arrayArrayAbsMax, &
                            arrayGetFirstIndexZInteger2 => arrayGetFirstIndexZ, &
@@ -90,7 +90,7 @@ MODULE array3DInterface
                            arrayGetIncreaseSizeYInteger4 => arrayGetIncreaseSizeY, &
                            arraySetIncreaseSizeYInteger4 => arraySetIncreaseSizeY, &
                            arrayArrayMinInteger4 => arrayArrayMin, arrayIOWriteInteger4 => arrayIOWrite, &
-                           arrayArrayMaxInteger4 => arrayArrayMax, &
+                           arrayArrayMaxInteger4 => arrayArrayMax, arrayIsAlreadyInInteger4 => arrayIsAlreadyIn, &
                            arrayArrayAbsMinInteger4 => arrayArrayAbsMin, &
                            arrayArrayAbsMaxInteger4 => arrayArrayAbsMax, &
                            arrayGetFirstIndexZInteger4 => arrayGetFirstIndexZ, &
@@ -131,7 +131,7 @@ MODULE array3DInterface
                            arrayGetIncreaseSizeYInteger8 => arrayGetIncreaseSizeY, &
                            arraySetIncreaseSizeYInteger8 => arraySetIncreaseSizeY, &
                            arrayArrayMinInteger8 => arrayArrayMin, arrayIOWriteInteger8 => arrayIOWrite, &
-                           arrayArrayMaxInteger8 => arrayArrayMax, &
+                           arrayArrayMaxInteger8 => arrayArrayMax, arrayIsAlreadyInInteger8 => arrayIsAlreadyIn, &
                            arrayArrayAbsMinInteger8 => arrayArrayAbsMin, &
                            arrayArrayAbsMaxInteger8 => arrayArrayAbsMax, &
                            arrayGetFirstIndexZInteger8 => arrayGetFirstIndexZ, &
@@ -233,6 +233,10 @@ MODULE array3DInterface
                    arrayCreateBaseInteger2, arrayCreateWithDimensionInteger2, arrayCreateWithDimensionAndFirstIndexInteger2, &
                    arrayCreateBaseInteger4, arrayCreateWithDimensionInteger4, arrayCreateWithDimensionAndFirstIndexInteger4, &
                    arrayCreateBaseInteger8, arrayCreateWithDimensionInteger8, arrayCreateWithDimensionAndFirstIndexInteger8
+   END INTERFACE
+
+   INTERFACE arrayIsAlreadyIn
+      MODULE PROCEDURE arrayIsAlreadyInInteger2 , arrayIsAlreadyInInteger4, arrayIsAlreadyInInteger8
    END INTERFACE
 
    INTERFACE arrayPrint

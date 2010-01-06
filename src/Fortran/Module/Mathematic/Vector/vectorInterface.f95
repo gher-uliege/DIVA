@@ -52,7 +52,8 @@ MODULE vectorInterface
                            arrayArrayMaxInteger2 => arrayArrayMax, &
                            arrayArrayAbsMinInteger2 => arrayArrayAbsMin, &
                            arrayArrayAbsMaxInteger2 => arrayArrayAbsMax, arrayArrayPutInInteger2 => arrayArrayPutIn, &
-                           arrayOptimizeInteger2 => arrayOptimize, arrayArraySetValueInteger2 => arrayArraySetValue
+                           arrayOptimizeInteger2 => arrayOptimize, arrayArraySetValueInteger2 => arrayArraySetValue, &
+                           arrayIsAlreadyInInteger2 => arrayIsAlreadyIn
 
    USE modulevectorInteger4, ONLY : &
                            arrayGetValuesInteger4 => arrayGetValues,  &
@@ -87,7 +88,8 @@ MODULE vectorInterface
                            arrayArrayMaxInteger4 => arrayArrayMax, &
                            arrayArrayAbsMinInteger4 => arrayArrayAbsMin, &
                            arrayArrayAbsMaxInteger4 => arrayArrayAbsMax, arrayArrayPutInInteger4 => arrayArrayPutIn, &
-                           arrayOptimizeInteger4 => arrayOptimize, arrayArraySetValueInteger4 => arrayArraySetValue
+                           arrayOptimizeInteger4 => arrayOptimize, arrayArraySetValueInteger4 => arrayArraySetValue, &
+                           arrayIsAlreadyInInteger4 => arrayIsAlreadyIn
 
    USE modulevectorInteger8, ONLY : &
                            arrayGetValuesInteger8 => arrayGetValues,  &
@@ -122,7 +124,8 @@ MODULE vectorInterface
                            arrayArrayMaxInteger8 => arrayArrayMax, &
                            arrayArrayAbsMinInteger8 => arrayArrayAbsMin, &
                            arrayArrayAbsMaxInteger8 => arrayArrayAbsMax, arrayArrayPutInInteger8 => arrayArrayPutIn, &
-                           arrayOptimizeInteger8 => arrayOptimize, arrayArraySetValueInteger8 => arrayArraySetValue
+                           arrayOptimizeInteger8 => arrayOptimize, arrayArraySetValueInteger8 => arrayArraySetValue, &
+                           arrayIsAlreadyInInteger8 => arrayIsAlreadyIn
 
    USE modulevectorReal4, ONLY : &
                            arrayGetValuesReal4 => arrayGetValues,  &
@@ -424,6 +427,10 @@ MODULE vectorInterface
 
    INTERFACE vectorRead
       MODULE PROCEDURE arrayIOReadReal4, arrayIOReadReal8
+   END INTERFACE
+
+   INTERFACE vectorIsAlreadyIn
+      MODULE PROCEDURE arrayIsAlreadyInInteger2 , arrayIsAlreadyInInteger4, arrayIsAlreadyInInteger8
    END INTERFACE
 
 END MODULE vectorInterface

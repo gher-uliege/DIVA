@@ -35,6 +35,9 @@ MODULE moduleVector
                            arrayArraySum, arrayArrayScale, &
                            arrayIORead, &
 #endif
+#ifdef _INTEGER_
+                           arrayIsAlreadyIn, &
+#endif
                            arrayIOWrite,  &
                            arrayArrayAbsMin, arrayArrayAbsMax
 

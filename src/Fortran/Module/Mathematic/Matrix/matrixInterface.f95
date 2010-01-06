@@ -53,7 +53,8 @@ MODULE matrixInterface
                            arrayArrayMaxInteger2 => arrayArrayMax, &
                            arrayArrayAbsMinInteger2 => arrayArrayAbsMin, &
                            arrayArrayAbsMaxInteger2 => arrayArrayAbsMax, &
-                           arrayOptimizeInteger2 => arrayOptimize, arrayArraySetValueInteger2 => arrayArraySetValue
+                           arrayOptimizeInteger2 => arrayOptimize, arrayArraySetValueInteger2 => arrayArraySetValue, &
+                           arrayIsAlreadyInInteger2 => arrayIsAlreadyIn
 
    USE modulematrixInteger4, ONLY : &
                            arrayGetValuesInteger4 => arrayGetValues,  &
@@ -89,7 +90,8 @@ MODULE matrixInterface
                            arrayArrayMaxInteger4 => arrayArrayMax, &
                            arrayArrayAbsMinInteger4 => arrayArrayAbsMin, &
                            arrayArrayAbsMaxInteger4 => arrayArrayAbsMax, &
-                           arrayOptimizeInteger4 => arrayOptimize, arrayArraySetValueInteger4 => arrayArraySetValue
+                           arrayOptimizeInteger4 => arrayOptimize, arrayArraySetValueInteger4 => arrayArraySetValue, &
+                           arrayIsAlreadyInInteger4 => arrayIsAlreadyIn
 
    USE modulematrixInteger8, ONLY : &
                            arrayGetValuesInteger8 => arrayGetValues,  &
@@ -125,7 +127,8 @@ MODULE matrixInterface
                            arrayArrayMaxInteger8 => arrayArrayMax, &
                            arrayArrayAbsMinInteger8 => arrayArrayAbsMin, &
                            arrayArrayAbsMaxInteger8 => arrayArrayAbsMax, &
-                           arrayOptimizeInteger8 => arrayOptimize, arrayArraySetValueInteger8 => arrayArraySetValue
+                           arrayOptimizeInteger8 => arrayOptimize, arrayArraySetValueInteger8 => arrayArraySetValue, &
+                           arrayIsAlreadyInInteger8 => arrayIsAlreadyIn
 
    USE modulematrixReal4, ONLY : &
                            arrayGetValuesReal4 => arrayGetValues, arrayGetValueReal4 => arrayGetValue, &
@@ -419,6 +422,10 @@ MODULE matrixInterface
 
    INTERFACE matrixRead
       MODULE PROCEDURE arrayIOReadReal4, arrayIOReadReal8
+   END INTERFACE
+
+   INTERFACE matrixIsAlreadyIn
+      MODULE PROCEDURE arrayIsAlreadyInInteger2 , arrayIsAlreadyInInteger4, arrayIsAlreadyInInteger8
    END INTERFACE
 
 END MODULE matrixInterface
