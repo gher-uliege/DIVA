@@ -35,7 +35,11 @@ MODULE moduleStencilDataBase
                                      dataBaseGetDefaultIncreaseSizeStencil => dataBaseGetDefaultIncreaseSize, &
                                      dataBaseInitialiseStencil => dataBaseInitialise, &
                                      dataBaseSetValueStencil => dataBaseSetValue, &
-                                     dataBaseOptimizeMemoryStencil => dataBaseOptimizeMemory
+                                     dataBaseOptimizeMemoryStencil => dataBaseOptimizeMemory, &
+                                     dataBaseAddSizeStencil => dataBaseAddSize, &
+                                     dataBasePushBackElementStencil => dataBasePushBackElement, &
+                                     dataBaseFastPushBackElementStencil => dataBaseFastPushBackElement, &
+                                     dataBaseGetPointerOnLastValueStencil => dataBaseGetPointerOnLastValue
 
 ! Rem. : redirection of function pointer xxxLine => xxx needed for intel compiler (not for g95 or gfortran)
 
@@ -126,6 +130,23 @@ MODULE moduleStencilDataBase
    INTERFACE stencilDBOptimizeMemory
       MODULE PROCEDURE dataBaseOptimizeMemoryStencil
    END INTERFACE
+
+   INTERFACE stencilDBAddSize
+      MODULE PROCEDURE dataBaseAddSizeStencil
+   END INTERFACE
+
+   INTERFACE stencilDBPushBack
+      MODULE PROCEDURE dataBasePushBackElementStencil
+   END INTERFACE
+
+   INTERFACE stencilDBFastPushBack
+      MODULE PROCEDURE dataBaseFastPushBackElementStencil
+   END INTERFACE
+
+   INTERFACE stencilDBGetPointerOnLastValue
+      MODULE PROCEDURE dataBaseGetPointerOnLastValueStencil
+   END INTERFACE
+
 ! ============================================================
 ! ============================================================
 ! ============================================================

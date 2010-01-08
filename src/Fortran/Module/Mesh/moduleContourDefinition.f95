@@ -1,4 +1,4 @@
-MODULE moduleLineDefinition
+MODULE moduleContourDefinition
 
 ! ============================================================
 ! ============================================================
@@ -12,16 +12,14 @@ MODULE moduleLineDefinition
 ! ============================================================
 ! ============================================================
 
-USE moduleNodeDefinition
+USE moduleLineDataBase
 
-TYPE lineType
+TYPE contourType
 
-  TYPE(nodeType) :: startNode
-  TYPE(nodeType) :: endNode
+  TYPE(lineDataBase) :: lineDB
 
   INTEGER(KIND=4) :: indexValue
-  VARType :: characteristicLength
 
-END TYPE lineType
+END TYPE contourType
 
-END MODULE moduleLineDefinition
+END MODULE moduleContourDefinition

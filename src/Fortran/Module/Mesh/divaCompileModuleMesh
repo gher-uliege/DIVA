@@ -129,6 +129,39 @@ $divaDir/compileFile moduleStencilDataBase.f95 $moduleStencilDataBase
 
 echo ' '
 
+# Compilation of : contour
+# ========================
+contour='contour' ; export contour
+moduleContourDefinition='module'$contour ; export moduleContourDefinition
+moduleContourDataBaseDefinition='moduleSpecificDataBase'$contour ; export moduleContourDataBaseDefinition
+moduleContourDataBase=$contour'Interface'
+moduleGenericDataBase='moduleGenericDataBase'$contour
+moduleGenericTypeDataBaseDefinition='moduleDataBaseDefinition'$contour 
+
+flagContour0='-DcontourType='$contour
+flagContour2='-DmoduleContourDefinition='$moduleContourDefinition
+flagContour3='-DmoduleContourDataBaseDefinition='$moduleContourDataBaseDefinition
+flagContour4='-DmoduleContourDataBase='$moduleContourDataBase
+flagContour5='-DmoduleGenericDataBase='$moduleGenericDataBase
+flagContour6='-DmoduleGenericTypeDataBaseDefinition='$moduleGenericTypeDataBaseDefinition
+
+preproFlag=$flagContour0
+preproFlag=$preproFlag' '$flagContour2
+preproFlag=$preproFlag' '$flagContour3
+preproFlag=$preproFlag' '$flagContour4
+preproFlag=$preproFlag' '$flagContour5
+preproFlag=$preproFlag' '$flagContour6
+preproFlag=$preproFlag' '$flagLine4
+
+export preproFlag
+
+$divaDir/compileFile moduleContourDefinition.f95 $moduleContourDefinition
+$divaDir/compileFile moduleContourDataBaseDefinition.f95 $moduleContourDataBaseDefinition
+$divaDir/Module/DataBase/divaCompileDataBase _DB_1D_ $contour $moduleContourDefinition $moduleContourDataBaseDefinition
+$divaDir/compileFile moduleContourDataBase.f95 $moduleContourDataBase
+
+echo ' '
+
 # Compilation of : moduleCoordinateInformation
 # ============================================
 REALType='REAL(KIND=8)'

@@ -35,7 +35,11 @@ MODULE moduleNodeDataBase
                                      dataBaseGetDefaultIncreaseSizeNode => dataBaseGetDefaultIncreaseSize, &
                                      dataBaseInitialiseNode => dataBaseInitialise, &
                                      dataBaseSetValueNode => dataBaseSetValue, &
-                                     dataBaseOptimizeMemoryNode => dataBaseOptimizeMemory
+                                     dataBaseOptimizeMemoryNode => dataBaseOptimizeMemory, &
+                                     dataBaseAddSizeNode => dataBaseAddSize, &
+                                     dataBasePushBackElementNode => dataBasePushBackElement, &
+                                     dataBaseFastPushBackElementNode => dataBaseFastPushBackElement, &
+                                     dataBaseGetPointerOnLastValueNode => dataBaseGetPointerOnLastValue
 
 ! Rem. : redirection of function pointer xxxLine => xxx needed for intel compiler (not for g95 or gfortran)
 
@@ -126,6 +130,23 @@ MODULE moduleNodeDataBase
    INTERFACE nodeDBOptimizeMemory
       MODULE PROCEDURE dataBaseOptimizeMemoryNode
    END INTERFACE
+
+   INTERFACE nodeDBAddSize
+      MODULE PROCEDURE dataBaseAddSizeNode
+   END INTERFACE
+
+   INTERFACE nodeDBPushBack
+      MODULE PROCEDURE dataBasePushBackElementNode
+   END INTERFACE
+
+   INTERFACE nodeDBFastPushBack
+      MODULE PROCEDURE dataBaseFastPushBackElementNode
+   END INTERFACE
+
+   INTERFACE nodeDBGetPointerOnLastValue
+      MODULE PROCEDURE dataBaseGetPointerOnLastValueNode
+   END INTERFACE
+
 ! ============================================================
 ! ============================================================
 ! ============================================================

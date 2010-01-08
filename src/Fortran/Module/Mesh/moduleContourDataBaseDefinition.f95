@@ -1,4 +1,4 @@
-MODULE moduleLineDataBaseDefinition
+MODULE moduleContourDataBaseDefinition
 
 ! ============================================================
 ! ============================================================
@@ -14,8 +14,8 @@ MODULE moduleLineDataBaseDefinition
 
 ! Include file
 ! ============
-   USE moduleLineDefinition
-   USE moduleNodeDataBaseDefinition, ONLY : printNode => printInformation
+   USE moduleContourDefinition
+   USE moduleLineDataBase, ONLY : lineDBCreate, lineDBPrint
 
 ! Declaration
 ! ===========
@@ -52,17 +52,13 @@ SUBROUTINE printInformation(output,ptr)
 !     Declaration
 !     - - - - - -
       INTEGER :: output
-      TYPE(lineType), POINTER :: ptr
-      TYPE(nodeType), POINTER :: ptrNode
+      TYPE(contourType), POINTER :: ptr
 
 !     Body
 !     - - -
-      WRITE(output,*)    'object type is line'
+      WRITE(output,*)    'object type is contour'
       WRITE(output,*)    '   index  = ', ptr%indexValue
-      ptrNode => ptr%startNode
-      CALL printNode(output,ptrNode)
-      ptrNode => ptr%endNode
-      CALL printNode(output,ptrNode)
+      CALL lineDBPrint(ptr%lineDB)
       WRITE(output,*)    ' '
 
 END SUBROUTINE
@@ -74,18 +70,14 @@ SUBROUTINE initialise(ptrTarget,indexValue)
 !     Declaration
 !     - - - - - -
       INTEGER, INTENT(IN) :: indexValue
-      TYPE(lineType), INTENT(INOUT) :: ptrTarget
+      TYPE(contourType), INTENT(INOUT) :: ptrTarget
 
 !     Body
 !     - - -
-!      ptrTarget%startNode => NULL()
-!      ptrTarget%endNode => NULL()
-      ptrTarget%startNode = nodeType(0.,0.,0.,0,0.)
-      ptrTarget%endNode = nodeType(0.,0.,0.,0,0.)
-
       ptrTarget%indexValue = indexValue
-      ptrTarget%characteristicLength = 0.
+      CALL lineDBCreate(ptrTarget%lineDB)
+      CALL lineDBInitialise(ptrTarget%lineDB)
 
 END SUBROUTINE
 
-END MODULE moduleLineDataBaseDefinition
+END MODULE moduleContourDataBaseDefinition

@@ -56,10 +56,9 @@ SUBROUTINE printInformation(output,ptr)
 !     Body
 !     - - -
       WRITE(output,*)    'object type is stencil'
-      WRITE(output,*)    '   indexNode        = ', ptr%indexValueNode
+      WRITE(output,*)    '   index            = ', ptr%indexValue
       WRITE(output,*)    '   lastPositionNode = ', ptr%lastPositionNode
       CALL vectorPrint(ptr%stencilNode)
-      WRITE(output,*)    '   indexCell        = ', ptr%indexValueCell
       WRITE(output,*)    '   lastPositionCell = ', ptr%lastPositionCell
       CALL vectorPrint(ptr%stencilCell)
       WRITE(output,*)    ' '
@@ -77,11 +76,10 @@ SUBROUTINE initialise(ptrTarget,indexValue)
 
 !     Body
 !     - - -
-      ptrTarget%indexValueNode = indexValue
+      ptrTarget%indexValue = indexValue
       ptrTarget%lastPositionNode = 0
       CALL vectorCreate(ptrTarget%stencilNode)
 
-      ptrTarget%indexValueCell = indexValue
       ptrTarget%lastPositionCell = 0
       CALL vectorCreate(ptrTarget%stencilCell)
 
