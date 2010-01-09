@@ -52,33 +52,57 @@ PROGRAM divaGMSH
 
       real*8 KN(NMAX,2),G(NRMAX)
       INTEGER*4 NTRI(NMAX)
-      REAL*8 D
+      REAL*8 D, Chjklh
       include'iodv.h'
 
-      INTEGER :: iStart, iEnd, i1, i2, i3, nbOfData, fileUnit
-      REAL(KIND=8) :: meanPosX, meanPosY, deltaXInKm, deltaYInKm, characteristicLength
-      REAL(KIND=8) :: Xmax, Xmin, Ymax, Ymin
-      REAL(KIND=8) :: changeCoordinate
-      REAL(KIND=8), PARAMETER :: one = 1., zero = 0.
-      TYPE(Chronometer) :: chrono
 
-      TYPE(nodeDataBase) :: contourNodes
-      TYPE(node), DIMENSION(:), POINTER :: ptrContourNodes
-      TYPE(lineDataBase), POINTER :: lineDB1
-      TYPE(line), POINTER :: ptrLine
-      TYPE(contourDataBase) :: contourLoops
-      TYPE(contour), POINTER :: contourLoop
-      TYPE(node) :: nodeElement = node(0.,0.,0.,1,0.)
-      TYPE(node), POINTER :: ptrNode, ptrNode1
-      TYPE(file) :: inputContourFile
-      INTEGER(KIND=4) :: nbOfContour, nbOfNodeInContourI1
-!ici
+!     Declaration
+!     ===========
+!        General
+!        -------
+         INTEGER :: iStart, iEnd, i1, i2, i3, nbOfData, fileUnit
+         REAL(KIND=8) :: meanPosX, meanPosY, deltaXInKm, deltaYInKm, characteristicLength
+         REAL(KIND=8) :: Xmax, Xmin, Ymax, Ymin
+         REAL(KIND=8) :: changeCoordinate
+         REAL(KIND=8), PARAMETER :: one = 1., zero = 0.
+         TYPE(Chronometer) :: chrono
+
+         REAL(KIND=8) :: meshCharacteristicLength
+
+!        Boundary
+!        --------
+         INTEGER :: nbOfContour, nbOfNodeInBoundaryI1
+         INTEGER, TARGET :: boundaryNodeIndex
+         INTEGER, POINTER :: boundarySegmentIndex
+
+         TYPE(contourDataBase) :: boundaryLoops
+         TYPE(contour), POINTER :: ptrBoundaryLoop
+
+         TYPE(line) :: lineElement
+         TYPE(line), POINTER :: ptrLine
+         TYPE(lineDataBase), POINTER :: ptrBoundaryLoopSegment
+
+         TYPE(node) :: nodeElement = node(0.,0.,0.,0,0.)
+         TYPE(node), TARGET :: nodeElement1 = node(0.,0.,0.,0,0.), nodeElementOld = node(0.,0.,0.,0,0.)
+         TYPE(node), POINTER :: ptrNode, ptrNode1
+
+         TYPE(file) :: inputCoastFile
+
+!        GMSH
+!        ----
+         INTEGER :: gmshFlag
+
+gmshFlag = 1
+! ==================================================================================
+! ==================================================================================
+!  Start Diva mesh code
+! ==================================================================================
+! ==================================================================================
       CALL createDIVAContext()
       CALL initialiseCoordinateInformation()
-      CALL nodeDBCreate(contourNodes)
 
       PRINT*, 'Pi:',getPi()
-!ici
+
 
       P=0
       
@@ -111,6 +135,7 @@ PROGRAM divaGMSH
       ENDIF
   
       READ(11,*) S
+      meshCharacteristicLength = S
 !C       S  : LONGUEUR CARATERISTIQUE (LUE DANS 11)
 
       NO=0
@@ -157,7 +182,7 @@ PROGRAM divaGMSH
           if(j.gt.1) then
           if(abs(x(j)-x(j-1)).lt.0.000001*abs(x(j)+x(j-1))) then
           if(abs(y(j)-y(j-1)).lt.0.000001*abs(y(j)+y(j-1))) then
-          write(6,*) 'Found two succesive identical points ', I, J
+!          write(6,*) 'Found two succesive identical points ', I, J
           j=j-1
           PPTC(i)=PPTC(i)-1
           endif
@@ -168,7 +193,7 @@ PROGRAM divaGMSH
           
           if(abs(x(j)-x(j-PPTC(i)+1)).lt.0.000001*abs(x(j)+x(j-PPTC(i)+1))) then
           if(abs(y(j)-y(j-PPTC(i)+1)).lt.0.000001 *abs(y(j)+y(j-PPTC(i)+1))) then
-          write(6,*) 'Found  identical points at start and end ', I, J
+!          write(6,*) 'Found  identical points at start and end ', I, J
           j=j-1
           PPTC(i)=PPTC(i)-1
           endif
@@ -185,74 +210,172 @@ PROGRAM divaGMSH
 
 ! ==================================================================================
 ! ==================================================================================
-!  Read contour
+!  Read Coast (Boundary)
 ! ==================================================================================
 ! ==================================================================================
 
-   CALL createFile(inputContourFile,'fort.10',formType=THK_FORMATTED)
+!  Defined file name and open the file
+!  ====================================
+   CALL createFile(inputCoastFile,'fort.10',formType=THK_FORMATTED)
 
    IF ( iodv == 1 ) THEN
-      CALL defineFileName(inputContourFile,'domain.checked')
+      CALL defineFileName(inputCoastFile,'domain.checked')
    ENDIF
 
-   CALL openFile(inputContourFile)
-   fileUnit = getFileUnit(inputContourFile)
+   CALL openFile(inputCoastFile)
+   fileUnit = getFileUnit(inputCoastFile)
 
-   READ(fileUnit,*) nbOfContour
+!  Read the boundaries (coast) of the computational domain
+!  =======================================================
 
-   CALL contourDBCreate(contourLoops,nbOfContour)
+!     Read the number of boundaries and create the data base
+!     ------------------------------------------------------
+      READ(fileUnit,*) nbOfContour
+      CALL contourDBCreate(boundaryLoops,nbOfContour)
 
-   i3 = 0
+!     General loop to read the boundaries
+!     -----------------------------------
+      boundaryNodeIndex = 0
+      boundarySegmentIndex => boundaryNodeIndex
 
-   DO i1 = 1, nbOfContour
+      DO i1 = 1, nbOfContour
 
-    contourLoop => contourLoops%values(i1)
-    READ(fileUnit,*) nbOfNodeInContourI1
-    CALL nodeDBAddSize(contourNodes,nbOfNodeInContourI1)
+!         Read the number of "potential" element in the boundary loop
+!         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          ptrBoundaryLoop => contourDBGetValue(boundaryLoops,i1) ! take a pointer on the i1_th boundary loop in the data base
+          READ(fileUnit,*) nbOfNodeInBoundaryI1                  ! read the number of nodes describing the boundary
 
-    lineDB1 => contourLoop%lineDB
-    CALL lineDBSetSize(lineDB1,nbOfNodeInContourI1)
-    CALL lineDBInitialise(lineDB1)
+!         Define "potential" dimension of the data base containing the boundary segments
+!         ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+          ptrBoundaryLoopSegment => ptrBoundaryLoop%lineDB
 
-    ptrLine => lineDB1%values(1)
+          CALL lineDBAddSize(ptrBoundaryLoopSegment,nbOfNodeInBoundaryI1) ! reserve memory to store the segments of the boundary
 
-    READ(fileUnit,*) nodeElement%xValue,nodeElement%yValue
-    i3 = i3 + 1
-    nodeElement%indexValue = i3
-    CALL nodeDBFastPushBack(contourNodes,nodeElement)
-    ptrNode1 => nodeDBGetPointerOnLastValue(contourNodes)
-    ptrLine%startNode = ptrNode1
+!         Read the segments of the boundary
+!         +++++++++++++++++++++++++++++++++
+!            Read the first segment
+!            - - - - - - - - - - - -
+             boundaryNodeIndex = boundaryNodeIndex + 1
+             nodeElement1%indexValue = boundaryNodeIndex
 
-    DO i2 = 2, nbOfNodeInContourI1-1
-       READ(fileUnit,*) nodeElement%xValue,nodeElement%yValue
-       i3 = i3 + 1
-       nodeElement%indexValue = i3
-       CALL nodeDBFastPushBack(contourNodes,nodeElement)
-       ptrNode => nodeDBGetPointerOnLastValue(contourNodes)
-       ptrLine%endNode = ptrNode
-       ptrLine => lineDB1%values(i2)
-       ptrLine%startNode = ptrNode
-    ENDDO
+             READ(fileUnit,*) nodeElement1%xValue, nodeElement1%yValue
+             lineElement%startNode = nodeElement1
+             lineElement%indexValue = boundarySegmentIndex
 
-    i2 = nbOfNodeInContourI1
-    READ(fileUnit,*) nodeElement%xValue,nodeElement%yValue
-    i3 = i3 + 1
-    nodeElement%indexValue = i3
-    CALL nodeDBFastPushBack(contourNodes,nodeElement)
-    ptrNode => nodeDBGetPointerOnLastValue(contourNodes)
-    ptrLine%endNode = ptrNode
-    ptrLine => lineDB1%values(i2)
-    ptrLine%startNode = ptrNode
-    ptrLine%endNode = ptrNode1
+             ptrNode1 => nodeElement1
+             ptrNode => nodeElementOld
+             ptrNode%xValue = ptrNode1%xValue
+             ptrNode%yValue = ptrNode1%yValue
 
-   ENDDO
+!            Read the following segments
+!            - - - - - - - - - - - - - -
+             DO i2 = 2 , nbOfNodeInBoundaryI1 - 1
 
-   CALL closeFile(inputContourFile)
+!                Read the node coordinates
+!                + + + + + + + + + + + + + +
+                 READ(fileUnit,*) nodeElement%xValue, nodeElement%yValue
 
-   stop
+!                Check if this node is not identical to the previous one
+!                + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+
+                 IF ( checkNewNode(ptrNode,nodeElement) ) THEN
+
+                      boundaryNodeIndex = boundaryNodeIndex + 1
+                      nodeElement%indexValue = boundaryNodeIndex
+
+                      lineElement%endNode = nodeElement
+
+                      CALL lineDBFastPushBack(ptrBoundaryLoopSegment,lineElement) ! introduction of the segment in the database
+
+                      lineElement%startNode = nodeElement
+                      lineElement%indexValue = boundarySegmentIndex
+
+                      ptrNode%xValue = nodeElement%xValue
+                      ptrNode%yValue = nodeElement%yValue
+
+                 ENDIF
+
+             ENDDO
+
+!            Read the last segment
+!            - - - - - - - - - - -
+!                Read the node coordinates
+!                + + + + + + + + + + + + + +
+            READ(fileUnit,*) nodeElement%xValue, nodeElement%yValue
+
+!                Check if this node is not identical to the previous one
+!                + + + + + + + + + + + + + + + + + + + + + + + + + + + +
+            IF ( checkNewNode(ptrNode,nodeElement) ) THEN
+
+!                   Check of this node is not identical to the first node
+!                   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+                    IF ( checkNewNode(ptrNode1,nodeElement) ) THEN
+
+                         boundaryNodeIndex = boundaryNodeIndex + 1
+                         nodeElement%indexValue = boundaryNodeIndex
+
+                         lineElement%endNode = nodeElement
+
+                         CALL lineDBFastPushBack(ptrBoundaryLoopSegment,lineElement) ! introduction of the segment in the database
+
+                         lineElement%startNode = nodeElement
+                         lineElement%indexValue = boundarySegmentIndex
+                         lineElement%endNode = ptrNode1
+
+                         CALL lineDBFastPushBack(ptrBoundaryLoopSegment,lineElement) ! introduction of the segment in the database
+
+                    ELSE
+
+                         lineElement%endNode = ptrNode1
+                         CALL lineDBFastPushBack(ptrBoundaryLoopSegment,lineElement) ! introduction of the segment in the database
+
+                    ENDIF
 
 
+            ELSE
 
+!                   Check of this node is not identical to the first node
+!                   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+                    IF ( checkNewNode(ptrNode1,nodeElement) ) THEN
+
+                         lineElement%endNode = ptrNode1
+                         CALL lineDBFastPushBack(ptrBoundaryLoopSegment,lineElement) ! introduction of the segment in the database
+
+                    ELSE
+                         ptrLine => lineDBGetPointerOnLastValue(ptrBoundaryLoopSegment)
+                         ptrLine%endNode = ptrNode1
+                    ENDIF
+
+            ENDIF
+
+      ENDDO
+
+!  Close the file
+!  ==============
+   CALL closeFile(inputCoastFile)
+
+! ==================================================================================
+! ==================================================================================
+! Search inside domain
+! ==================================================================================
+! ==================================================================================
+
+   CALL searchInsideDomain(boundaryLoops)
+
+! ==================================================================================
+! ==================================================================================
+! Export boundary to gmsh if needed
+! ==================================================================================
+! ==================================================================================
+
+  IF ( gmshFlag == 1 ) THEN
+     CALL exportBoundaryToGMSH(boundaryLoops,meshCharacteristicLength)
+  ENDIF
+
+!  DO i1=1,nbOfContour
+!  CALL contourDBPrint(boundaryLoops)
+!  ENDDO
+!stop
 !      CALL meshWithGMSH(PPTC,X,Y,S,NC)
 
 
@@ -628,13 +751,13 @@ PROGRAM divaGMSH
 !c           IF(A.EQ.(B+E)) THEN
            IF(A.EQ.(B+E)) THEN
              F=1
-!c             write(6,*) 'Need to eliminate??'
+!             write(6,*) 'Need to eliminate??'
 !c             write(6,*) A,B,I,J,E
-!c             write(6,*) (MAILLE(I,J),J=1,6)
+!             write(6,*) (MAILLE(I,J),J=1,6)
            ENDIF
        ENDIF
        IF(F.EQ.1) THEN
-!c           write(6,*) 'Elimination of mesh',MA,NC,I
+           write(6,*) 'Elimination of mesh',MA,NC,I
             CALL DELMACONC(MAILLE,PPTC,MMAX,NCMAX,MA,NC,I)
             
            I=0
@@ -656,7 +779,7 @@ PROGRAM divaGMSH
        STOP 'Severe error in contourgen'
       ENDIF
 
- 
+361 continue
 ! ==================================================================================
 ! ==================================================================================
 !     RAFFINAGE
@@ -665,6 +788,8 @@ PROGRAM divaGMSH
 
       PRINT*,'REFINEMENT'
       CALL RAFFIN1(MAILLE,NOEUD,NMAX,MMAX,NO,MA,S,G,KN,NR,NRMAX,KNMAX,P)
+!      READ(11,*) Chjklh
+
 
 
 ! ==================================================================================
@@ -747,6 +872,447 @@ SUBROUTINE SORTIE(MAILLE,NOEUD,NMAX,MMAX,NO,MA)
       CLOSE(20)
 
 END SUBROUTINE
+
+! Procedure 2 : check if the new node is equal or not to previous one
+! -------------------------------------------------------------------
+FUNCTION  checkNewNode(ptrNode,newNode) RESULT(check)
+
+!     Declaration
+!     - - - - - -
+      TYPE(node), POINTER :: ptrNode
+      TYPE(node), INTENT(IN) :: newNode
+
+      REAL(KIND=8), PARAMETER :: tolerance = 1.D-6
+      REAL(KIND=8) :: xNew, yNew, xOld, yOld
+      LOGICAL :: check
+
+!     Body
+!     - - -
+
+      check = .TRUE.
+
+      xOld = ptrNode%xValue
+      yOld = ptrNode%yValue
+
+      xNew = newNode%xValue
+      yNew = newNode%yValue
+
+      IF ( abs( xNew - xOld ) >= tolerance * abs( xNew + xOld ) ) THEN
+         RETURN
+      ENDIF
+
+      IF ( abs( yNew - yOld ) >= tolerance * abs( yNew + yOld ) ) THEN
+         RETURN
+      ENDIF
+
+!      PRINT*, 'Found two successive identical points ', ptrNode%indexValue
+
+      check = .FALSE.
+
+END FUNCTION
+
+! Procedure 3 : export data to GMSH
+! ---------------------------------
+SUBROUTINE exportBoundaryToGMSH(boundaryLoops,meshCharacteristicLength)
+
+!     Declaration
+!     - - - - - -
+      TYPE(contourDataBase), INTENT(INOUT) :: boundaryLoops
+      REAL(KIND=8), INTENT(IN) :: meshCharacteristicLength
+
+      INTEGER :: i1, nbOfContour, nbOfBoundarySegment
+      TYPE(contour), POINTER :: ptrBoundaryLoop
+      TYPE(lineDataBase), POINTER :: ptrLineDB
+
+!     Body
+!     - - -
+
+      nbOfContour = contourDBGetSize(boundaryLoops)
+
+!        Define characteristic length of each node
+!        + + + + + + + + + + + + + + + + + + + + +
+         DO i1 = 1, nbOfContour
+            ptrBoundaryLoop => contourDBGetValue(boundaryLoops,i1)
+            ptrLineDB => ptrBoundaryLoop%lineDB
+            nbOfBoundarySegment = lineDBGetSize(ptrLineDB)
+            ptrLineDB%values(1:nbOfBoundarySegment)%startNode%characteristicLength = meshCharacteristicLength
+            ptrLineDB%values(1:nbOfBoundarySegment)%endNode%characteristicLength = meshCharacteristicLength
+         ENDDO
+
+!        Export nodes
+!        + + + + + + +
+         DO i1 = 1, nbOfContour
+            ptrBoundaryLoop => contourDBGetValue(boundaryLoops,i1)
+            ptrLineDB => ptrBoundaryLoop%lineDB
+            CALL exportBoundaryLoopNodesToGMSH(ptrLineDB)
+         ENDDO
+
+!        Export boundary segments
+!        + + + + + + + + + + + + +
+         DO i1 = 1, nbOfContour
+            ptrBoundaryLoop => contourDBGetValue(boundaryLoops,i1)
+            ptrLineDB => ptrBoundaryLoop%lineDB
+            CALL exportBoundaryLoopDataBaseToGMSH(ptrLineDB)
+         ENDDO
+
+!        Export boundary loop
+!        + + + + + + + + + + +
+         DO i1 = 1, nbOfContour
+            ptrBoundaryLoop => contourDBGetValue(boundaryLoops,i1)
+            CALL exportLoopToGMSH(ptrBoundaryLoop)
+         ENDDO
+
+!        Export contour
+!        + + + + + + + +
+         DO i1 = 1, nbOfContour
+            ptrBoundaryLoop => contourDBGetValue(boundaryLoops,i1)
+            CALL exportContourToGMSH(ptrBoundaryLoop)
+         ENDDO
+
+END SUBROUTINE
+
+! Procedure 4 : export nodes to GMSH
+! -----------------------------------
+SUBROUTINE exportBoundaryLoopNodesToGMSH(ptrLineDB)
+
+!     Declaration
+!     - - - - - -
+      TYPE(lineDataBase), POINTER :: ptrLineDB
+      INTEGER :: nbOfBoundarySegment, i1
+
+!     Body
+!     - - -
+      nbOfBoundarySegment = lineDBGetSize(ptrLineDB)
+      DO i1 = 1, nbOfBoundarySegment
+           ptrLine => ptrLineDB%values(i1)
+           CALL exportNodeToGMSH(ptrLine%startNode)
+      ENDDO
+
+END SUBROUTINE
+
+! Procedure 5 : export boundary loop database to GMSH
+! ----------------------------------------------------
+SUBROUTINE exportBoundaryLoopDataBaseToGMSH(ptrLineDB)
+
+!     Declaration
+!     - - - - - -
+      TYPE(lineDataBase), POINTER :: ptrLineDB
+      INTEGER :: nbOfBoundarySegment, i1
+
+!     Body
+!     - - -
+      nbOfBoundarySegment = lineDBGetSize(ptrLineDB)
+      DO i1 = 1, nbOfBoundarySegment
+           ptrLine => ptrLineDB%values(i1)
+           CALL exportBoundarySegmentToGMSH(ptrLine)
+      ENDDO
+
+END SUBROUTINE
+
+! Procedure 6 : export boundary segment to GMSH
+! ----------------------------------------------
+SUBROUTINE exportBoundarySegmentToGMSH(ptrLine)
+
+!     Declaration
+!     - - - - - -
+      TYPE(line), POINTER :: ptrLine
+
+!     Body
+!     - - -
+      WRITE(26,820) ptrLine%indexValue,ptrLine%startNode%indexValue,ptrLine%endNode%indexValue
+
+820  FORMAT("Line(",i20,") = {",i20,",",i20,"};")
+
+END SUBROUTINE
+
+! Procedure 7 : export node to GMSH
+! ----------------------------------
+SUBROUTINE exportNodeToGMSH(nodeToExport)
+
+!     Declaration
+!     - - - - - -
+      TYPE(node), INTENT(IN) :: nodeToExport
+
+!     Body
+!     - - -
+      WRITE(26,810) nodeToExport%indexValue,nodeToExport%xValue,nodeToExport%yValue,nodeToExport%zValue, &
+                    nodeToExport%characteristicLength
+
+810  FORMAT("Point(",i20,") = {", f20.10,",", f20.10,",", f20.10,",", f20.10,"};")
+
+END SUBROUTINE
+
+! Procedure 8 : export loop to GMSH
+! ----------------------------------
+SUBROUTINE exportLoopToGMSH(ptrBoundaryLoop)
+
+!     Declaration
+!     - - - - - -
+      TYPE(contour), POINTER :: ptrBoundaryLoop
+      TYPE(lineDataBase), POINTER :: ptrLineDB
+      INTEGER :: nbOfBoundarySegment, i1
+
+!     Body
+!     - - -
+      ptrLineDB => ptrBoundaryLoop%lineDB
+      nbOfBoundarySegment = lineDBGetSize(ptrLineDB)
+
+      WRITE(26,830) ptrBoundaryLoop%indexValue,ptrLineDB%values(1)%indexValue
+
+      DO i1 = 2, nbOfBoundarySegment - 1
+           WRITE(26,840) ptrLineDB%values(i1)%indexValue
+      ENDDO
+
+      WRITE(26,850) ptrLineDB%values(nbOfBoundarySegment)%indexValue
+
+830  FORMAT("Line Loop(",i20,") = {",i20,",")
+840  FORMAT("                      ",i20,",")
+850  FORMAT("                      ",i20,"};")
+
+END SUBROUTINE
+
+! Procedure 8 : export contour to GMSH
+! ----------------------------------
+SUBROUTINE exportContourToGMSH(ptrBoundaryLoop)
+
+!     Declaration
+!     - - - - - -
+      TYPE(contour), POINTER :: ptrBoundaryLoop
+      TYPE(vectorInteger4), POINTER :: ptrInsideContour
+      INTEGER :: nbOfInsideContour, i1
+
+!     Body
+!     - - -
+      ptrInsideContour => ptrBoundaryLoop%insideContour
+      nbOfInsideContour = vectorGetSize(ptrInsideContour)
+
+      IF ( nbOfInsideContour == 0 ) THEN
+          WRITE(26,860) ptrBoundaryLoop%indexValue,ptrBoundaryLoop%indexValue
+      ELSE
+          WRITE(26,830) ptrBoundaryLoop%indexValue,ptrBoundaryLoop%indexValue
+          DO i1 = 1,nbOfInsideContour-1
+             WRITE(26,840) ptrInsideContour%values(i1)
+          ENDDO
+          WRITE(26,850) ptrInsideContour%values(nbOfInsideContour)
+      ENDIF
+
+
+830  FORMAT("Plane Surface(",i20,") = {",i20,",")
+840  FORMAT("                          ",i20,",")
+850  FORMAT("                          ",i20,"};")
+860  FORMAT("Plane Surface(",i20,") = {",i20,"};")
+
+END SUBROUTINE
+
+
+! Procedure 10 : search inside domain
+! -----------------------------------
+SUBROUTINE searchInsideDomain(boundaryLoops)
+
+!     Declaration
+!     - - - - - -
+      TYPE(contourDataBase), INTENT(INOUT) :: boundaryLoops
+
+      INTEGER :: i1, nbOfContour
+!     Body
+!     - - -
+      nbOfContour = contourDBGetSize(boundaryLoops)
+
+      DO i1 = 1, nbOfContour
+         CALL searchInsideDomainOfBoundaryLoop(boundaryLoops,i1)
+      ENDDO
+
+END SUBROUTINE
+
+! Procedure 11 : search inside domain in a specific boundary loop
+! ---------------------------------------------------------------
+SUBROUTINE searchInsideDomainOfBoundaryLoop(boundaryLoops,contourNumber)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: contourNumber
+      TYPE(contourDataBase), INTENT(INOUT) :: boundaryLoops
+
+      TYPE(contour), POINTER :: ptrBoundaryLoop, ptrBoundaryLoop1
+      INTEGER :: i1, i2, boundaryLoopIndex, nbOfContour
+
+!     Body
+!     - - -
+      ptrBoundaryLoop => contourDBGetValue(boundaryLoops,contourNumber)
+      boundaryLoopIndex = ptrBoundaryLoop%indexValue
+
+      nbOfContour = contourDBGetSize(boundaryLoops)
+
+      i2 = 0
+      DO i1 = 1, nbOfContour
+         IF ( i1 /= contourNumber ) THEN
+          ptrBoundaryLoop1 => contourDBGetValue(boundaryLoops,i1)
+          IF ( checkIsInside(ptrBoundaryLoop,ptrBoundaryLoop1) ) THEN
+             i2 = i2 + 1
+             CALL vectorInsertValue(ptrBoundaryLoop%insideContour,i2,ptrBoundaryLoop1%indexValue)
+          ENDIF
+         ENDIF
+      ENDDO
+
+END SUBROUTINE
+
+! Procedure 12 : check if the  boundary loop 1 is inside boundary loop
+! --------------------------------------------------------------------
+FUNCTION checkIsInside(ptrBoundaryLoop,ptrBoundaryLoop1) RESULT(check)
+
+!     Declaration
+!     - - - - - -
+      TYPE(contour), POINTER :: ptrBoundaryLoop, ptrBoundaryLoop1
+
+      TYPE(node), POINTER :: ptrNode1
+
+      LOGICAL :: check
+
+      INTEGER :: nbOfBoundarySegment
+      REAL(KIND=8) :: xValueNode1, yValueNode1, xValueNodeStart, yValueNodeStart, xValueNodeEnd, yValueNodeEnd
+      REAL(KIND=8) :: distance, distanceBelow, distanceAbove, distanceRight, distanceLeft
+      TYPE(lineDataBase), POINTER :: ptrLineDB
+      TYPE(line), POINTER :: lineBelow, lineAbove, lineRight, lineLeft, ptrLine
+
+!     Body
+!     - - -
+      check = .TRUE.
+
+      ptrNode1 => ptrBoundaryLoop1%lineDB%values(1)%startNode
+
+      xValueNode1 = ptrNode1%xValue
+      yValueNode1 = ptrNode1%yValue
+
+      ptrLineDB => ptrBoundaryLoop%lineDB
+
+      nbOfBoundarySegment = lineDBGetSize(ptrLineDB)
+
+      distanceBelow = 1.D+9
+      distanceAbove = 1.D+9
+      distanceRight = 1.D+9
+      distanceLeft = 1.D+9
+
+      lineBelow => NULL()
+      lineAbove => NULL()
+      lineRight => NULL()
+      lineLeft => NULL()
+
+      DO i1 = 1, nbOfBoundarySegment
+         ptrLine => ptrLineDB%values(i1)
+
+         xValueNodeStart = ptrLine%startNode%xValue
+         yValueNodeStart = ptrLine%startNode%yValue
+
+         xValueNodeEnd = ptrLine%endNode%xValue
+         yValueNodeEnd = ptrLine%endNode%yValue
+
+         IF ( (xValueNodeStart <= xValueNode1).AND.(xValueNodeEnd >= xValueNode1)) THEN
+            distance = computeDistance(xValueNodeStart,yValueNodeStart,xValueNodeEnd,yValueNodeEnd,xValueNode1,yValueNode1)
+            IF ( distance < distanceBelow ) THEN
+                distanceBelow = distance
+                lineBelow => ptrLine
+            ENDIF
+            CYCLE
+         ENDIF
+         IF ( (xValueNodeStart >= xValueNode1).AND.(xValueNodeEnd <= xValueNode1)) THEN
+            distance = computeDistance(xValueNodeStart,yValueNodeStart,xValueNodeEnd,yValueNodeEnd,xValueNode1,yValueNode1)
+            IF ( distance < distanceAbove ) THEN
+                distanceAbove = distance
+                lineAbove => ptrLine
+            ENDIF
+            CYCLE
+         ENDIF
+         IF ( (yValueNodeStart <= yValueNode1).AND.(yValueNodeEnd >= yValueNode1)) THEN
+            distance = computeDistance(xValueNodeStart,yValueNodeStart,xValueNodeEnd,yValueNodeEnd,xValueNode1,yValueNode1)
+            IF ( distance < distanceRight ) THEN
+                distanceRight = distance
+                lineRight => ptrLine
+            ENDIF
+            CYCLE
+         ENDIF
+         IF ( (yValueNodeStart >= yValueNode1).AND.(yValueNodeEnd <= yValueNode1)) THEN
+            distance = computeDistance(xValueNodeStart,yValueNodeStart,xValueNodeEnd,yValueNodeEnd,xValueNode1,yValueNode1)
+            IF ( distance < distanceLeft ) THEN
+                distanceLeft = distance
+                lineLeft => ptrLine
+            ENDIF
+            CYCLE
+         ENDIF
+
+      ENDDO
+
+
+      IF (.NOT.((associated(lineBelow)).AND.(associated(lineAbove)).AND.(associated(lineRight)).AND.(associated(lineLeft)))) THEN
+         check = .FALSE.
+         RETURN
+      ENDIF
+
+      IF ( checkPosition(lineBelow,ptrNode1) ) THEN
+         check = .FALSE.
+         RETURN
+      ENDIF
+      IF ( checkPosition(lineAbove,ptrNode1) ) THEN
+         check = .FALSE.
+         RETURN
+      ENDIF
+      IF ( checkPosition(lineRight,ptrNode1) ) THEN
+         check = .FALSE.
+         RETURN
+      ENDIF
+      IF ( checkPosition(lineLeft,ptrNode1) ) THEN
+         check = .FALSE.
+         RETURN
+      ENDIF
+
+END FUNCTION
+
+! Procedure 13 : check if the node is on the right side of the boundary
+! ---------------------------------------------------------------------
+FUNCTION checkPosition(ptrLine,ptrNode1) RESULT (check)
+
+!     Declaration
+!     - - - - - -
+      TYPE(line), POINTER :: ptrLine
+      TYPE(node), POINTER :: ptrNode1
+
+      LOGICAL :: check
+      REAL(KIND=8) :: xNodeStart, yNodeStart, xNodeEnd, yNodeEnd, vectorialProduct
+
+!     Body
+!     - - -
+      check = .FALSE.
+
+      xNodeStart = ptrLine%startNode%xValue
+      yNodeStart = ptrLine%startNode%yValue
+      xNodeEnd = ptrLine%endNode%xValue
+      yNodeEnd = ptrLine%endNode%yValue
+
+      vectorialProduct = (xNodeEnd - xNodeStart) * (ptrNode1%yValue - yNodeStart) - &
+                         (yNodeEnd - yNodeStart) * (ptrNode1%xValue - xNodeStart)
+
+      IF ( vectorialProduct < 0. ) THEN
+         check = .TRUE.
+      ENDIF
+
+END FUNCTION
+
+! Procedure 14 : compute the distance between a boundary segment and a node
+! -------------------------------------------------------------------------
+FUNCTION computeDistance(xValueNodeStart,yValueNodeStart,xValueNodeEnd,yValueNodeEnd,xValueNode1,yValueNode1) RESULT(distance)
+
+!     Declaration
+!     - - - - - -
+      REAL(KIND=8), INTENT(IN) :: xValueNodeStart,yValueNodeStart,xValueNodeEnd,yValueNodeEnd,xValueNode1,yValueNode1
+      REAL(KIND=8) :: distance, xMiddle, yMiddle
+
+!     Body
+!     - - -
+
+      xMiddle = 0.5 * (xValueNodeStart+xValueNodeEnd)
+      yMiddle = 0.5 * (yValueNodeStart+yValueNodeEnd)
+      distance = sqrt((xMiddle-xValueNode1)*(xMiddle-xValueNode1)+(yMiddle-yValueNode1)*(yMiddle-yValueNode1))
+
+END FUNCTION
 
 ! Procedure 2 : subroutine : NEWNO
 ! --------------------------------
