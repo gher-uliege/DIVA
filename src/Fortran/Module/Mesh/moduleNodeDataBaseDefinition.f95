@@ -60,6 +60,7 @@ SUBROUTINE printInformation(output,ptr)
       WRITE(output,*)    '   xValue = ', ptr%xValue
       WRITE(output,*)    '   yValue = ', ptr%yValue
       WRITE(output,*)    '   zValue = ', ptr%zValue
+      WRITE(output,*)    '   characteristicLength = ', ptr%characteristicLength
       WRITE(output,*)    ' '
 
 END SUBROUTINE

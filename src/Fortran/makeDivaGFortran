@@ -1,0 +1,52 @@
+#!/bin/bash
+
+echo ============================
+echo ============================
+echo ==                        ==
+echo ==   Compilation of DIVA  ==
+echo ==                        ==
+echo ============================
+echo ============================
+echo ' '
+
+divaDir=$PWD
+divaModuleLib=$divaDir/Module/lib
+divaModuleMod=$divaDir/Module/INCLUDE/GFORTRAN
+
+export divaModuleMod
+
+export divaModuleLib
+export divaDir
+
+# Definition of the compiler, options,...
+# =======================================
+source $divaDir/compileBaseGFortran
+
+# Compilation of programs
+# =======================
+
+rm -f $divaDir/error.log
+
+cd $divaDir/Bin
+source ./makeDiva  2>>$divaDir/error.log
+
+dim=`ls -l $divaDir/error.log | awk '{print $5}'`
+if [ $dim == 0 ] 
+then
+rm -f $divaDir/error.log
+fi
+
+if [ -f $divaDir/error.log ]
+then
+echo 'Compilation encountered some warnings or errors'
+echo 'check : error.log file'
+fi
+
+echo ' '
+echo --------------------
+echo Compilation finished
+echo --------------------
+echo ' '
+
+cd $divaDir
+

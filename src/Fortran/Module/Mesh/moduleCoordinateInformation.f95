@@ -21,6 +21,7 @@ MODULE moduleCoordinateInformation
   REALType, PRIVATE, SAVE :: meanXCoordinate, meanYCoordinate
 
   INTEGERType, PRIVATE, SAVE :: iChangeCoordinate, iSpheric
+  LOGICAL, PRIVATE, SAVE :: gmshWithCoastRefinement
 
 ! Procedures status
 ! =================
@@ -34,6 +35,7 @@ MODULE moduleCoordinateInformation
              setPi, &
              setMeanXCoordinate, setMeanYCoordinate, &
              setIChangeCoordinate, setISpheric, &
+             setGmshWithCoastRefinement, &
              getMinimumLongitude, getMinimumLatitude, &
              getMaximumLongitude, getMaximumLatitude, &
              getMeanLongitude, getMeanLatitude, &
@@ -41,7 +43,9 @@ MODULE moduleCoordinateInformation
              getPi, &
              getMeanXCoordinate, getMeanYCoordinate, &
              getIChangeCoordinate, getISpheric, &
-             initialise, computeMeanLatitude, computeMeanLongitude
+             initialise, computeMeanLatitude, computeMeanLongitude, &
+             getGmshWithCoastRefinement
+
 
 ! ============================================================
 ! ============================================================
@@ -241,6 +245,20 @@ FUNCTION getISpheric() RESULT (value)
 
 END FUNCTION
 
+! Procedure 14 : getGmshWithCoastRefinement
+! -----------------------------------------
+FUNCTION getGmshWithCoastRefinement() RESULT (value)
+
+!     Declaration
+!     - - - - - -
+      LOGICAL :: value
+
+!     Body
+!     - - -
+      value = gmshWithCoastRefinement
+
+END FUNCTION
+
 ! =============================================================
 ! ===            Internal procedure ("PUBLIC")  : Setting   ===
 ! =============================================================
@@ -428,6 +446,20 @@ SUBROUTINE setISpheric(value)
 
 END SUBROUTINE
 
+! Procedure 14 : setGmshWithCoastRefinement
+! -----------------------------------------
+SUBROUTINE setGmshWithCoastRefinement(value)
+
+!     Declaration
+!     - - - - - -
+      LOGICAL, INTENT(IN) :: value
+
+!     Body
+!     - - -
+      gmshWithCoastRefinement = value
+
+END SUBROUTINE
+
 ! =============================================================
 ! ===            Internal procedure ("PUBLIC")  : Others    ===
 ! =============================================================
@@ -454,6 +486,7 @@ SUBROUTINE initialise()
       CALL setMeanYCoordinate(zero)
       CALL setIChangeCoordinate(0)
       CALL setISpheric(0)
+      CALL setGmshWithCoastRefinement(.FALSE.)
 
 END SUBROUTINE
 

@@ -59,6 +59,14 @@ SUBROUTINE printInformation(output,ptr)
       WRITE(output,*)    'object type is contour'
       WRITE(output,*)    '   index  = ', ptr%indexValue
       CALL lineDBPrint(ptr%lineDB)
+
+      WRITE(output,*)    '   the contour has ', vectorGetSize(ptr%insideContour), ' holes'
+      CALL vectorPrint(ptr%insideContour)
+      IF ( ptr%meshFlag ) THEN
+         WRITE(output,*)    '   the domain defined by this contour has to be meshed'
+      ELSE
+         WRITE(output,*)    '   the domain defined by this contour does not have to be meshed'
+      ENDIF
       WRITE(output,*)    ' '
 
 END SUBROUTINE
@@ -77,6 +85,7 @@ SUBROUTINE initialise(ptrTarget,indexValue)
       ptrTarget%indexValue = indexValue
       CALL lineDBCreate(ptrTarget%lineDB)
       CALL lineDBInitialise(ptrTarget%lineDB)
+      CALL vectorCreate(ptrTarget%insideContour)
 
 END SUBROUTINE
 

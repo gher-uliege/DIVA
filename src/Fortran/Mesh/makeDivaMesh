@@ -1,0 +1,6 @@
+# Compilation of driver to gmsh
+# -----------------------------
+rm -f $divaDir/Bin/gmshDriver.a
+$divaDir/compileAndLinkFile gmshDriver
+mv gmshDriver.a $divaDir/Bin
+
