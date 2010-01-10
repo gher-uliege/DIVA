@@ -17,27 +17,14 @@ PROGRAM gmshDriver
  USE lineInterface
  USE moduleCoordinateInformation, initialiseCoordinateInformation => initialise
 
-
-!C ----------------------------------------------------
-!C     GENERATEUR DE MAILLAGE 2D MULTIPLEMENT CONNNEXE
-!C       PAR LA TRIANGULATION DE DELAUNAY
-!C
-!C  PROGRAMMATION : BERTIN, ORBAN (AOUT 93)
-!C  ADAPTATION    : SCHOENAUEN    (DECEMBRE 93)
-!C
-!C  Regrouping of gener.a and reorg.a
-!C      sorting optimization and english version:
-!C       BECKERS SIRJACOBS (2006)
-!C ----------------------------------------------------
-
-      INCLUDE 'iodv.h'
+ INCLUDE 'iodv.h'
 
 !     Declaration
 !     ===========
 !        General
 !        -------
          INTEGER :: i1, i2, fileUnit
-         REAL(KIND=8) :: deltaXInKm, deltaYInKm
+         REAL(KIND=8) :: deltaXInKm, deltaYInKm, Xmin, Xmax, Ymin, Ymax
          REAL(KIND=8) :: changeCoordinate
          REAL(KIND=8), PARAMETER :: one = 1., zero = 0.
 
@@ -120,6 +107,11 @@ PROGRAM gmshDriver
 !  Read the boundaries (coast) of the computational domain
 !  =======================================================
 
+      Xmin = 1.D9
+      Xmax = -1.D9
+      Ymin = 1.D9
+      Ymax = -1.D9
+
 !     Read the number of boundaries and create the data base
 !     ------------------------------------------------------
       READ(fileUnit,*) nbOfContour
@@ -159,6 +151,11 @@ PROGRAM gmshDriver
              ptrNode%xValue = ptrNode1%xValue
              ptrNode%yValue = ptrNode1%yValue
 
+             Xmin = min(Xmin,ptrNode1%xValue)
+             Xmax = max(Xmax,ptrNode1%xValue)
+             Ymin = min(Ymin,ptrNode1%yValue)
+             Ymax = max(Ymax,ptrNode1%yValue)
+
 !            Read the following segments
 !            - - - - - - - - - - - - - -
              DO i2 = 2 , nbOfNodeInBoundaryI1 - 1
@@ -185,6 +182,11 @@ PROGRAM gmshDriver
                       ptrNode%xValue = nodeElement%xValue
                       ptrNode%yValue = nodeElement%yValue
 
+                     Xmin = min(Xmin,ptrNode%xValue)
+                     Xmax = max(Xmax,ptrNode%xValue)
+                     Ymin = min(Ymin,ptrNode%yValue)
+                     Ymax = max(Ymax,ptrNode%yValue)
+
                  ENDIF
 
              ENDDO
@@ -198,6 +200,12 @@ PROGRAM gmshDriver
 !                Check if this node is not identical to the previous one
 !                + + + + + + + + + + + + + + + + + + + + + + + + + + + +
             IF ( checkNewNode(ptrNode,nodeElement) ) THEN
+
+                    Xmin = min(Xmin,nodeElement%xValue)
+                    Xmax = max(Xmax,nodeElement%xValue)
+                    Ymin = min(Ymin,nodeElement%yValue)
+                    Ymax = max(Ymax,nodeElement%yValue)
+
 
 !                   Check of this node is not identical to the first node
 !                   -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -282,18 +290,21 @@ PROGRAM gmshDriver
 
 ! FIND LAT MIN, LAT MAX
 ! ----------------------
+    CALL setMinimumLongitude(Xmin)
+    CALL setMaximumLongitude(Xmax)
+    CALL setMinimumLatitude(Ymin)
+    CALL setMaximumLatitude(Ymax)
+    CALL computeMeanLongitude()
+    CALL computeMeanLatitude()
+
     IF ( getIChangeCoordinate() < 0 ) THEN
       PRINT*,'Anisotropic case'
-      CALL computeMeanLongitude()
-      CALL computeMeanLatitude()
       CALL setDeltaYInKm(one)
       CALL setDeltaXInKm((-1.)*changeCoordinate)
     ENDIF
 
     IF ( getIChangeCoordinate() == 1 ) THEN
-      CALL computeMeanLongitude()
-      CALL computeMeanLatitude()
-      
+
       deltaYInKm = ( 4. * asin(1.) * 6360. ) / 360.
       deltaXInKm = asin(1.) * getMeanLatitude() / 90.
       deltaXInKm = 6360. * cos( deltaXInKm )
@@ -309,7 +320,6 @@ PROGRAM gmshDriver
 
     IF ( getISpheric() == 1 ) THEN
       PRINT*,'Spherical case'
-      CALL computeMeanLongitude()
       CALL setMeanLatitude(zero)
       CALL setDeltaXInKm(one)
       CALL setDeltaYInKm(one)
