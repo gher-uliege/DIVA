@@ -26,7 +26,7 @@ MODULE moduleNodeDataBase
                                      dataBaseGetAllocationStatusNode => dataBaseGetAllocationStatus, &
                                      dataBaseGetPointerOnValueNode => dataBaseGetPointerOnValue, &
                                      dataBaseSetIncreaseSizeNode => dataBaseSetIncreaseSize, &
-                                     dataBaseDestructorNode => dataBaseDestructor, &
+                                     dataBaseDestroyNode => dataBaseDestroy, &
                                      dataBaseGetFirstIndexNode => dataBaseGetFirstIndex, &
                                      dataBaseGetLastIndexNode => dataBaseGetLastIndex, &
                                      dataBaseGetSizeNode => dataBaseGetSize, &
@@ -92,7 +92,7 @@ MODULE moduleNodeDataBase
    END INTERFACE
 
    INTERFACE nodeDBDestroy
-      MODULE PROCEDURE dataBaseDestructorNode
+      MODULE PROCEDURE dataBaseDestroyNode
    END INTERFACE
 
    INTERFACE nodeDBGetFirstIndex

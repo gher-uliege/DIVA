@@ -25,7 +25,7 @@ MODULE moduleLineDataBaseDefinition
 
 !  General part
 !  ------------
-   PUBLIC :: printInformation, initialise
+   PUBLIC :: printInformation, initialise, destroy
 
 
 ! ============================================================
@@ -78,12 +78,25 @@ SUBROUTINE initialise(ptrTarget,indexValue)
 
 !     Body
 !     - - -
-!      ptrTarget%startNode => NULL()
-!      ptrTarget%endNode => NULL()
       ptrTarget%startNode = nodeType(0.,0.,0.,0,0.)
       ptrTarget%endNode = nodeType(0.,0.,0.,0,0.)
 
       ptrTarget%indexValue = indexValue
+      ptrTarget%characteristicLength = 0.
+
+END SUBROUTINE
+
+! Procedure 3 : destroy
+! ------------------------
+SUBROUTINE destroy(ptrTarget)
+
+!     Declaration
+!     - - - - - -
+      TYPE(lineType), INTENT(INOUT) :: ptrTarget
+
+!     Body
+!     - - -
+
       ptrTarget%characteristicLength = 0.
 
 END SUBROUTINE

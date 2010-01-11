@@ -19,10 +19,10 @@ MODULE moduleValuesDataBase1DManagement
   USE moduleInsertValueMethod
   USE moduleMemoryDataBaseManagement, ONLY : memoryGetFirstIndexX, memoryGetLastIndexX, &
                                           memorySetFirstIndex, memorySetSize, memoryDefineLastIndex, &
-                                          memoryGetSizeX, memoryGetAllocatedSizeX
+                                          memoryGetSizeX, memoryGetAllocatedSizeX, memoryDestructor
   USE moduleMemoryDataBase1DManagement, ONLY : memoryAllocateDataBase
   USE moduleValuesDataBaseManagement, ONLY : memoryGetPointerOnValue, memoryGetValues
-  USE moduleGenericTypeSurDefined, ONLY : genericTypeInitialise => initialise
+  USE moduleGenericTypeSurDefined, ONLY : genericTypeInitialise => initialise, genericTypeDestroy => destroy
 
 ! Declaration
 ! ===========
@@ -34,7 +34,7 @@ MODULE moduleValuesDataBase1DManagement
 
 !  General part
 !  ------------
-   PUBLIC :: memoryDataBaseInsertValue,memoryDataBaseFastInsertValue, memoryDataBaseInitialise
+   PUBLIC :: memoryDataBaseInsertValue,memoryDataBaseFastInsertValue, memoryDataBaseInitialise, memoryDataBaseDestroy
 
 
 ! ============================================================
@@ -150,5 +150,30 @@ MODULE moduleValuesDataBase1DManagement
       END SELECT
 
   END SUBROUTINE
+
+! Procedure 5 : destructor
+! ------------------------
+  SUBROUTINE memoryDataBaseDestroy()
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: istartX, iendX, i1
+      TYPE(genericType), DIMENSION(:), POINTER :: val
+
+!     Body
+!     - - -
+      istartX = memoryGetFirstIndexX()
+      iendX = memoryGetLastIndexX()
+
+      val => memoryGetValues()
+
+      DO i1 = iStartX, iendX
+          CALL genericTypeDestroy(val(i1))
+      END DO
+
+      CALL memoryDestructor()
+
+  END SUBROUTINE
+
 
 END MODULE moduleValuesDataBase1DManagement

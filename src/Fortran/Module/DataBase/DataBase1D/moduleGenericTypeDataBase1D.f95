@@ -33,7 +33,8 @@ MODULE moduleGenericTypeDataBase1D
    USE moduleMemoryDataBase1DManagement, ONLY : memoryDataBaseCreate, memoryAllocateDataBase, memoryPrintInformation, &
                                                 memoryOptimize
    USE moduleValuesDataBase1DManagement, ONLY : memoryDataBaseInsertValue,memoryDataBaseFastInsertValue, &
-                                                memoryDataBaseInitialise, memoryDataBaseSetValue
+                                                memoryDataBaseInitialise, memoryDataBaseSetValue, &
+                                                memoryDataBaseDestroy
    USE moduleValuesDataBaseManagement, ONLY : memoryGetPointerOnValue
 ! Procedures status
 ! =================
@@ -43,7 +44,8 @@ MODULE moduleGenericTypeDataBase1D
    PUBLIC :: dataBaseCreateBase, dataBaseCreateWithDimension, dataBaseCreateWithDimensionAndFirstIndex, &
              dataBaseSetSize, dataBasePrintInformation, dataBaseInsertElement, dataBaseFastInsertElement, &
              dataBaseInitialise, dataBaseSetValue, dataBaseOptimizeMemory,dataBaseAddSize, &
-             dataBasePushBackElement, dataBaseFastPushBackElement, dataBaseGetPointerOnLastValue
+             dataBasePushBackElement, dataBaseFastPushBackElement, dataBaseGetPointerOnLastValue, &
+             dataBaseDestroy
 
 
 ! ============================================================
@@ -404,6 +406,25 @@ MODULE moduleGenericTypeDataBase1D
       CALL nullifyDataBasePointer()
 
   END FUNCTION
+
+! Procedure 14 : destructor
+! ----------------------------
+   SUBROUTINE dataBaseDestroy(targetDataBase)
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(genericTypeDataBase), INTENT(IN) :: targetDataBase
+      CALL setWorkingDataBase(targetDataBase)
+
+!     Body
+!     - - -
+      CALL memoryDataBaseDestroy()
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullifyDataBasePointer()
+
+   END SUBROUTINE
 
 END MODULE moduleGenericTypeDataBase1D
 

@@ -26,7 +26,7 @@ MODULE moduleStencilDataBase
                                      dataBaseGetAllocationStatusStencil => dataBaseGetAllocationStatus, &
                                      dataBaseGetPointerOnValueStencil => dataBaseGetPointerOnValue, &
                                      dataBaseSetIncreaseSizeStencil => dataBaseSetIncreaseSize, &
-                                     dataBaseDestructorStencil => dataBaseDestructor, &
+                                     dataBaseDestroyStencil => dataBaseDestroy, &
                                      dataBaseGetFirstIndexStencil => dataBaseGetFirstIndex, &
                                      dataBaseGetLastIndexStencil => dataBaseGetLastIndex, &
                                      dataBaseGetSizeStencil => dataBaseGetSize, &
@@ -92,7 +92,7 @@ MODULE moduleStencilDataBase
    END INTERFACE
 
    INTERFACE stencilDBDestroy
-      MODULE PROCEDURE dataBaseDestructorStencil
+      MODULE PROCEDURE dataBaseDestroyStencil
    END INTERFACE
 
    INTERFACE stencilDBGetFirstIndex

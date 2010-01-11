@@ -26,7 +26,7 @@ MODULE moduleLineDataBase
                                      dataBaseGetAllocationStatusLine => dataBaseGetAllocationStatus, &
                                      dataBaseGetPointerOnValueLine => dataBaseGetPointerOnValue, &
                                      dataBaseSetIncreaseSizeLine => dataBaseSetIncreaseSize, &
-                                     dataBaseDestructorLine => dataBaseDestructor, &
+                                     dataBaseDestroyLine => dataBaseDestroy, &
                                      dataBaseGetFirstIndexLine => dataBaseGetFirstIndex, &
                                      dataBaseGetLastIndexLine => dataBaseGetLastIndex, &
                                      dataBaseGetSizeLine => dataBaseGetSize, &
@@ -92,7 +92,7 @@ MODULE moduleLineDataBase
    END INTERFACE
 
    INTERFACE lineDBDestroy
-      MODULE PROCEDURE dataBaseDestructorLine
+      MODULE PROCEDURE dataBaseDestroyLine
    END INTERFACE
 
    INTERFACE lineDBGetFirstIndex

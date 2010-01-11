@@ -333,7 +333,7 @@ PROGRAM gmshDriver
 
           ptrBoundaryLoop => contourDBGetValue(boundaryLoops,i1) ! take a pointer on the i1_th boundary loop in the data base
           ptrBoundaryLoopSegment => ptrBoundaryLoop%lineDB
-!          CALL changeLongLatToXY(ptrBoundaryLoopSegment)
+          CALL changeLongLatToXY(ptrBoundaryLoopSegment)
 
       ENDDO
 
@@ -350,7 +350,8 @@ PROGRAM gmshDriver
      CALL exportBoundaryToGMSH(outputGMSHFile,boundaryLoops,meshCharacteristicLength)
      CALL runGMSH(outputGMSHFile,outputGMSHMeshFile)
 
-   CALL finaliseDIVAContext()
+     CALL contourDBDestroy(boundaryLoops)
+     CALL finaliseDIVAContext()
 
 ! ============================================================
 ! ============================================================
@@ -1108,6 +1109,9 @@ SUBROUTINE exportCommandToGMSHWithRefinement(fileUnit,boundaryLoops,meshCharacte
            WRITE(fileUnit,920) 5,2,4
            WRITE(fileUnit,960) 5
      END SELECT
+
+     CALL vectorDestroy(attractorLengthLowerMeshCharacteristic)
+     CALL vectorDestroy(attractorLengthHigherMeshCharacteristic)
 
 810  FORMAT("Mesh.CharacteristicLengthExtendFromBoundary = 0;")
 830  FORMAT("Field[",i20,"] = Attractor;",/,"Field[",i20,"].EdgesList = {",i20,",")

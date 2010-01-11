@@ -24,7 +24,7 @@ MODULE moduleStencilDataBaseDefinition
 
 !  General part
 !  ------------
-   PUBLIC :: printInformation, initialise
+   PUBLIC :: printInformation, initialise, destroy
 
 
 ! ============================================================
@@ -82,6 +82,21 @@ SUBROUTINE initialise(ptrTarget,indexValue)
 
       ptrTarget%lastPositionCell = 0
       CALL vectorCreate(ptrTarget%stencilCell)
+
+END SUBROUTINE
+
+! Procedure 3 : destroy
+! ------------------------
+SUBROUTINE destroy(ptrTarget)
+
+!     Declaration
+!     - - - - - -
+      TYPE(stencilType), INTENT(INOUT) :: ptrTarget
+
+!     Body
+!     - - -
+      CALL vectorDestroy(ptrTarget%stencilCell)
+      CALL vectorDestroy(ptrTarget%stencilNode)
 
 END SUBROUTINE
 

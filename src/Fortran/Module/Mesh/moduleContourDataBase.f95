@@ -26,7 +26,7 @@ MODULE moduleContourDataBase
                                      dataBaseGetAllocationStatusContour => dataBaseGetAllocationStatus, &
                                      dataBaseGetPointerOnValueContour => dataBaseGetPointerOnValue, &
                                      dataBaseSetIncreaseSizeContour => dataBaseSetIncreaseSize, &
-                                     dataBaseDestructorContour => dataBaseDestructor, &
+                                     dataBaseDestroyContour => dataBaseDestroy, &
                                      dataBaseGetFirstIndexContour => dataBaseGetFirstIndex, &
                                      dataBaseGetLastIndexContour => dataBaseGetLastIndex, &
                                      dataBaseGetSizeContour => dataBaseGetSize, &
@@ -92,7 +92,7 @@ MODULE moduleContourDataBase
    END INTERFACE
 
    INTERFACE contourDBDestroy
-      MODULE PROCEDURE dataBaseDestructorContour
+      MODULE PROCEDURE dataBaseDestroyContour
    END INTERFACE
 
    INTERFACE contourDBGetFirstIndex

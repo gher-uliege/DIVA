@@ -25,7 +25,7 @@ MODULE moduleContourDataBaseDefinition
 
 !  General part
 !  ------------
-   PUBLIC :: printInformation, initialise
+   PUBLIC :: printInformation, initialise, destroy
 
 
 ! ============================================================
@@ -86,6 +86,21 @@ SUBROUTINE initialise(ptrTarget,indexValue)
       CALL lineDBCreate(ptrTarget%lineDB)
       CALL lineDBInitialise(ptrTarget%lineDB)
       CALL vectorCreate(ptrTarget%insideContour)
+
+END SUBROUTINE
+
+! Procedure 3 : destroy
+! ------------------------
+SUBROUTINE destroy(ptrTarget)
+
+!     Declaration
+!     - - - - - -
+      TYPE(contourType), INTENT(INOUT) :: ptrTarget
+
+!     Body
+!     - - -
+      CALL vectorDestroy(ptrTarget%insideContour)
+      CALL lineDBDestroy(ptrTarget%lineDB)
 
 END SUBROUTINE
 

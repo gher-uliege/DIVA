@@ -24,7 +24,7 @@ MODULE moduleNodeDataBaseDefinition
 
 !  General part
 !  ------------
-   PUBLIC :: printInformation, initialise
+   PUBLIC :: printInformation, initialise, destroy
 
 
 ! ============================================================
@@ -82,6 +82,21 @@ SUBROUTINE initialise(ptrTarget,indexValue)
 
       ptrTarget%indexValue = indexValue
       ptrTarget%characteristicLength = 0.
+
+END SUBROUTINE
+
+! Procedure 3 : destroy
+! ------------------------
+SUBROUTINE destroy(ptrTarget)
+
+!     Declaration
+!     - - - - - -
+      TYPE(nodeType), INTENT(INOUT) :: ptrTarget
+
+!     Body
+!     - - -
+
+      ptrTarget%xValue = 0.
 
 END SUBROUTINE
 
