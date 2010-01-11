@@ -11,15 +11,25 @@ echo ' '
 
 baseDir=$PWD
 
-_WITH_MESH_=1 ; export _WITH_MESH_
+_WITH_MESH_=0 ; export _WITH_MESH_
+_WITH_UTIL_=1 ; export _WITH_UTIL_
 
-# Compilation of Mesh module
-# ==========================
+# Compilation of Mesh
+# ===================
 
 if [ $_WITH_MESH_ == 1 ]
 then
 cd $divaDir/Mesh
 ./makeDivaMesh
+fi
+
+# Compilation of Util
+# ===================
+
+if [ $_WITH_UTIL_ == 1 ]
+then
+cd $divaDir/Util
+./makeDivaUtil
 fi
 
 cd $baseDir

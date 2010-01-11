@@ -35,7 +35,7 @@ PROGRAM griddef
 !    --------------
 !       Opening file to read and reading data
 !       -------------------------------------
-   CALL createFile(inputFile,'fort.13',getLogicalUnit())
+   CALL createFile(inputFile,'fort.13',formType=STD_FORMATTED)
    CALL openFile(inputFile)
    inputFileUnit = getFileUnit(inputFile)
    
@@ -44,7 +44,7 @@ PROGRAM griddef
 
 !       Opening file to write and writing data
 !       --------------------------------------
-   CALL createFile(outputFile,'fort.13',getLogicalUnit())
+   CALL createFile(outputFile,'fort.13',formType=STD_FORMATTED)
    CALL openFile(outputFile)
    outputFileUnit = getFileUnit(outputFile)
 

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+rm -f $divaDir/error.log
+rm -f $divaDir/testing.log
+
+_WITH_UTIL_=1 ; export _WITH_UTIL_
+
+# Testing Util
+# ------------
+if [ $_WITH_UTIL_ == 1 ]
+then
+cd $divaDir/Util/TESTDIRECTORY
+./testDivaUtil
+cat $divaDir/Util/TESTDIRECTORY/testing.log >> $divaDir/testing.log
+fi
+
+
+
+
+
+
+
+
+
+
+if [ -f $divaDir/testing.log ]
+then
+echo 'Check the testing procedure : testing.log'
+fi
+

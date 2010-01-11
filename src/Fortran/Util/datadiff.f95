@@ -59,15 +59,15 @@ PROGRAM datadiff
 
 !    Opening file to read and to write
 !    ---------------------------------
-   CALL createFile(inputFile1,'fort.44',getLogicalUnit())
+   CALL createFile(inputFile1,'fort.44',formType=STD_FORMATTED)
    CALL openFile(inputFile1)
    inputFileUnit1 = getFileUnit(inputFile1)
 
-   CALL createFile(inputFile2,'fort.45',getLogicalUnit())
+   CALL createFile(inputFile2,'fort.45',formType=STD_FORMATTED)
    CALL openFile(inputFile2)
    inputFileUnit2 = getFileUnit(inputFile2)
 
-   CALL createFile(outputFile,'fort.46',getLogicalUnit())
+   CALL createFile(outputFile,'fort.46',formType=STD_FORMATTED)
    CALL openFile(outputFile)
    outputFileUnit = getFileUnit(outputFile)
 

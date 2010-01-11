@@ -1,0 +1,445 @@
+#!/bin/bash
+
+makeRef=0
+
+echo =============================================
+echo =============================================
+echo ==                                         ==
+echo ==   Procedure to test programs in : UTIL  ==
+echo ==                                         ==
+echo =============================================
+echo =============================================
+echo ' '
+
+echo Testing procedure in progress...
+echo ================================
+rm -f ./testing.log
+rm -f ./*.a
+
+# Chech program : alpha.a
+# -----------------------
+fileToCheck=alpha
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+correlationLength=0.8
+penalisation=1
+echo $correlationLength $penalisation | ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.12 ./OUTPUTS/fort.12.$fileToCheck.$compiler
+fi
+ 
+diff -s ./fort.12 ./OUTPUTS/fort.12.$fileToCheck.$compiler >> testing.log
+rm ./fort.12
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : calcest.a
+# -------------------------
+fileToCheck=calcest
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+nbOfColumn=3
+generalizedCrossValidator=10.34
+tracea=0.85
+cp ./INPUTS/fort.443.$fileToCheck.$compiler ./fort.44
+echo $nbOfColumn $generalizedCrossValidator $tracea | ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.76 ./OUTPUTS/fort.763.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.76 ./OUTPUTS/fort.763.$fileToCheck.$compiler >> testing.log
+rm ./fort.76
+rm ./fort.44
+
+nbOfColumn=4
+cp ./INPUTS/fort.444.$fileToCheck.$compiler ./fort.44
+echo $nbOfColumn $generalizedCrossValidator $tracea | ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.76 ./OUTPUTS/fort.764.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.76 ./OUTPUTS/fort.764.$fileToCheck.$compiler >> testing.log
+rm ./fort.76
+rm ./fort.44
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : calcestbis.a
+# ----------------------------
+fileToCheck=calcestbis
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+signalToNoise=1
+nbOfColumn=3
+tracea=0.85
+variance=0.75
+cp ./INPUTS/fort.443.$fileToCheck.$compiler ./fort.44
+echo $signalToNoise $nbOfColumn $tracea $variance | ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.76 ./OUTPUTS/fort.763.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.76 ./OUTPUTS/fort.763.$fileToCheck.$compiler >> testing.log
+rm ./fort.76
+rm ./fort.44
+
+nbOfColumn=4
+cp ./INPUTS/fort.444.$fileToCheck.$compiler ./fort.44
+echo $signalToNoise $nbOfColumn $tracea $variance | ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.76 ./OUTPUTS/fort.764.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.76 ./OUTPUTS/fort.764.$fileToCheck.$compiler >> testing.log
+rm ./fort.76
+rm ./fort.44
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : calcmu.a
+# ----------------------------
+fileToCheck=calcmu
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+correlationLength=0.8
+signalToNoise=1
+nbOfColumn=3
+xi=16
+cp ./INPUTS/fort.443.$fileToCheck.$compiler ./fort.44
+echo $correlationLength $signalToNoise $nbOfColumn $xi | ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.20 ./OUTPUTS/fort.203.1.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.20 ./OUTPUTS/fort.203.1.$fileToCheck.$compiler >> testing.log
+rm ./fort.20
+rm ./fort.44
+
+nbOfColumn=4
+cp ./INPUTS/fort.444.$fileToCheck.$compiler ./fort.44
+echo $correlationLength $signalToNoise $nbOfColumn $xi | ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.20 ./OUTPUTS/fort.204.1.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.20 ./OUTPUTS/fort.204.1.$fileToCheck.$compiler >> testing.log
+rm ./fort.20
+rm ./fort.44
+
+nbOfColumn=3
+xi=1
+cp ./INPUTS/fort.443.$fileToCheck.$compiler ./fort.44
+echo $correlationLength $signalToNoise $nbOfColumn $xi | ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.20 ./OUTPUTS/fort.203.2.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.20 ./OUTPUTS/fort.203.2.$fileToCheck.$compiler >> testing.log
+rm ./fort.20
+rm ./fort.44
+
+nbOfColumn=4
+cp ./INPUTS/fort.444.$fileToCheck.$compiler ./fort.44
+echo $correlationLength $signalToNoise $nbOfColumn $xi | ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.20 ./OUTPUTS/fort.204.2.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.20 ./OUTPUTS/fort.204.2.$fileToCheck.$compiler >> testing.log
+rm ./fort.20
+rm ./fort.44
+
+nbOfColumn=3
+xi=0.5
+cp ./INPUTS/fort.443.$fileToCheck.$compiler ./fort.44
+echo $correlationLength $signalToNoise $nbOfColumn $xi | ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.20 ./OUTPUTS/fort.203.3.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.20 ./OUTPUTS/fort.203.3.$fileToCheck.$compiler >> testing.log
+rm ./fort.20
+rm ./fort.44
+
+nbOfColumn=4
+cp ./INPUTS/fort.444.$fileToCheck.$compiler ./fort.44
+echo $correlationLength $signalToNoise $nbOfColumn $xi | ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.20 ./OUTPUTS/fort.204.3.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.20 ./OUTPUTS/fort.204.3.$fileToCheck.$compiler >> testing.log
+rm ./fort.20
+rm ./fort.44
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : cverror.a
+# ----------------------------
+fileToCheck=cverror
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+exclusionValue=999.
+cp ./INPUTS/fort.20.$fileToCheck.$compiler ./fort.20
+cp ./INPUTS/fort.21.$fileToCheck.$compiler ./fort.21
+echo $exclusionValue | ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.22 ./OUTPUTS/fort.22.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.22 ./OUTPUTS/fort.22.$fileToCheck.$compiler >> testing.log
+rm ./fort.20
+rm ./fort.21
+rm ./fort.22
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : cverroraii.a
+# ----------------------------
+fileToCheck=cverroraii
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+exclusionValue=999.
+variableData=12.63
+cp ./INPUTS/fort.20.$fileToCheck.$compiler ./fort.20
+cp ./INPUTS/fort.21.$fileToCheck.$compiler ./fort.21
+cp ./INPUTS/fort.22.$fileToCheck.$compiler ./fort.22
+cp ./INPUTS/fort.33.$fileToCheck.$compiler ./fort.33
+echo $exclusionValue $variableData| ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.23 ./OUTPUTS/fort.23.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.23 ./OUTPUTS/fort.23.$fileToCheck.$compiler >> testing.log
+rm ./fort.20
+rm ./fort.21
+rm ./fort.22
+rm ./fort.23
+rm ./fort.33
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : cvtotalerror.a
+# -------------------------------
+fileToCheck=cvtotalerror
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+crossValidationValue=10.12
+cp ./INPUTS/fort.20.$fileToCheck.$compiler ./fort.20
+cp ./INPUTS/fort.21.$fileToCheck.$compiler ./fort.21
+echo $crossValidationValue | ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.22 ./OUTPUTS/fort.22.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.22 ./OUTPUTS/fort.22.$fileToCheck.$compiler >> testing.log
+rm ./fort.20
+rm ./fort.21
+rm ./fort.22
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : datadiff.a
+# ---------------------------
+fileToCheck=datadiff
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+nbOfColumn=3
+exclusionValue=999.
+cp ./INPUTS/fort.443.$fileToCheck.$compiler ./fort.44
+cp ./INPUTS/fort.453.$fileToCheck.$compiler ./fort.45
+echo $nbOfColumn $exclusionValue | ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.46 ./OUTPUTS/fort.463.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.46 ./OUTPUTS/fort.463.$fileToCheck.$compiler >> testing.log
+rm ./fort.44
+rm ./fort.46
+
+nbOfColumn=4
+cp ./INPUTS/fort.444.$fileToCheck.$compiler ./fort.44
+echo $nbOfColumn $exclusionValue | ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.46 ./OUTPUTS/fort.464.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.46 ./OUTPUTS/fort.464.$fileToCheck.$compiler >> testing.log
+rm ./fort.44
+rm ./fort.45
+rm ./fort.46
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : griddef.a
+# ---------------------------
+fileToCheck=griddef
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+cp ./INPUTS/fort.13.$fileToCheck.$compiler ./fort.13
+./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.13 ./OUTPUTS/fort.13.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.13 ./OUTPUTS/fort.13.$fileToCheck.$compiler >> testing.log
+
+rm ./fort.13
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : lcelem.a
+# ---------------------------
+fileToCheck=lcelem
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+isdens=1
+lengthScale=25.
+echo $isdens $lengthScale | ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.11 ./OUTPUTS/fort.11.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.11 ./OUTPUTS/fort.11.$fileToCheck.$compiler >> testing.log
+
+rm ./fort.11
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : multiply.a
+# ---------------------------
+fileToCheck=multiply
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+value1=25.
+value2=13.
+echo $value1 $value2 | ./$fileToCheck.a >> $fileToCheck.log
+
+if [ $makeRef == 1 ]
+then
+cp ./$fileToCheck.log ./OUTPUTS/$fileToCheck.$compiler
+fi
+
+diff -s ./$fileToCheck.log ./OUTPUTS/$fileToCheck.$compiler >> testing.log
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : sumup.a
+# ---------------------------
+fileToCheck=sumup
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+exclusionValue=999.
+cp ./INPUTS/fort.20.$fileToCheck.$compiler ./fort.20
+cp ./INPUTS/fort.21.$fileToCheck.$compiler ./fort.21
+echo $exclusionValue | ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.22 ./OUTPUTS/fort.22.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.22 ./OUTPUTS/fort.22.$fileToCheck.$compiler >> testing.log
+rm ./fort.20
+rm ./fort.21
+rm ./fort.22 
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+echo Testing procedure finished
+echo ==========================
+echo Check 'testing.log'
+ 

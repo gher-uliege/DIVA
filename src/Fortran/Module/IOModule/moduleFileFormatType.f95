@@ -24,6 +24,9 @@ MODULE moduleFileFormatType
    TYPE(fileFormatType), PUBLIC, PARAMETER :: THK_FORMATTED = fileFormatType(3,.TRUE.)
    TYPE(fileFormatType), PUBLIC, PARAMETER :: THK_UNFORMATTED = fileFormatType(4,.FALSE.)
    TYPE(fileFormatType), PUBLIC, PARAMETER :: THK = fileFormatType(4,.FALSE.)
+   TYPE(fileFormatType), PUBLIC, PARAMETER :: STD_FORMATTED = fileFormatType(5,.TRUE.)
+   TYPE(fileFormatType), PUBLIC, PARAMETER :: STD_UNFORMATTED = fileFormatType(6,.FALSE.)
+   TYPE(fileFormatType), PUBLIC, PARAMETER :: STD = fileFormatType(6,.FALSE.)
 
 ! Procedures status
 ! =================

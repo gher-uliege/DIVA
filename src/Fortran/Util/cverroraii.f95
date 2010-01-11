@@ -53,23 +53,23 @@ PROGRAM cverror
 
 !    Opening file to read and to write
 !    ---------------------------------
-   CALL createFile(inputFile1,'fort.20',getLogicalUnit())
+   CALL createFile(inputFile1,'fort.20',formType=STD_FORMATTED)
    CALL openFile(inputFile1)
    inputFileUnit1 = getFileUnit(inputFile1)
 
-   CALL createFile(inputFile2,'fort.21',getLogicalUnit())
+   CALL createFile(inputFile2,'fort.21',formType=STD_FORMATTED)
    CALL openFile(inputFile2)
    inputFileUnit2 = getFileUnit(inputFile2)
 
-   CALL createFile(inputFile3,'fort.22',getLogicalUnit())
+   CALL createFile(inputFile3,'fort.22',formType=STD_FORMATTED)
    CALL openFile(inputFile3)
    inputFileUnit3 = getFileUnit(inputFile3)
 
-   CALL createFile(inputFile4,'fort.33',getLogicalUnit())
+   CALL createFile(inputFile4,'fort.33',formType=STD_FORMATTED)
    CALL openFile(inputFile4)
    inputFileUnit4 = getFileUnit(inputFile4)
 
-   CALL createFile(outputFile,'fort.23',getLogicalUnit())
+   CALL createFile(outputFile,'fort.23',formType=STD_FORMATTED)
    CALL openFile(outputFile)
    outputFileUnit = getFileUnit(outputFile)
 

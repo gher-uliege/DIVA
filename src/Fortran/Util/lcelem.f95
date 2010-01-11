@@ -7,8 +7,8 @@ PROGRAM lcelem
 
 ! Include file
 ! ============
-   include 'constantParameter.h'
-   include 'ioParameter.h'
+   INCLUDE 'constantParameter.h'
+   INCLUDE 'ioParameter.h'
 
 ! Declaration
 ! ===========
@@ -53,7 +53,7 @@ PROGRAM lcelem
 
 !     Write results in file
 !     ----------------------
-   CALL createFile(outputFile,'fort.11',getLogicalUnit())
+   CALL createFile(outputFile,'fort.11',formType=STD_FORMATTED)
    CALL openFile(outputFile)
    fileUnit = getFileUnit(outputFile)
 

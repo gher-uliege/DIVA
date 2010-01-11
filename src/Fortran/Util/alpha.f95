@@ -52,7 +52,7 @@ PROGRAM Alpha0_Alpha1
 
 !     Write results in file
 !     ----------------------
-   CALL createFile(outputFile,'fort.12',getLogicalUnit())
+   CALL createFile(outputFile,'fort.12',formType=STD_FORMATTED)
    CALL openFile(outputFile)
    fileUnit = getFileUnit(outputFile)
 

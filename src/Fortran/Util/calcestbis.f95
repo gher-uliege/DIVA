@@ -64,11 +64,11 @@ PROGRAM calcestbis
 
 !    Opening file to read and to write
 !    ---------------------------------
-   CALL createFile(inputFile,'fort.44',getLogicalUnit())
+   CALL createFile(inputFile,'fort.44',formType=STD_FORMATTED)
    CALL openFile(inputFile)
    inputFileUnit = getFileUnit(inputFile)
 
-   CALL createFile(outputFile,'fort.76',getLogicalUnit())
+   CALL createFile(outputFile,'fort.76',formType=STD_FORMATTED)
    CALL openFile(outputFile)
    outputFileUnit = getFileUnit(outputFile)
 

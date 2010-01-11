@@ -1,0 +1,24 @@
+#!/bin/bash
+
+echo =============================
+echo =============================
+echo ==                         ==
+echo ==   Testing DIVA programs ==
+echo ==                         ==
+echo =============================
+echo =============================
+echo ' '
+
+divaDir=$PWD ; export divaDir
+compiler=gfortran ; export compiler
+
+./testDivaPrograms
+
+echo ' '
+echo ---------------------------
+echo Testing procedure finished
+echo ---------------------------
+echo ' '
+
+cd $divaDir
+
