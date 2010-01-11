@@ -9,21 +9,27 @@
  value(           1 ) is 
  object type is node
     index  =            1
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           2 ) is 
  object type is node
     index  =            2
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           3 ) is 
  object type is node
     index  =            3
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  The size of the data base is :            9
     The allocated memory is :            9
     The increase allocation memory is :            0
@@ -33,57 +39,75 @@
  value(           1 ) is 
  object type is node
     index  =            1
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           2 ) is 
  object type is node
     index  =            2
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           3 ) is 
  object type is node
     index  =            3
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           4 ) is 
  object type is node
     index  =            4
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           5 ) is 
  object type is node
     index  =            5
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           6 ) is 
  object type is node
     index  =            6
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           7 ) is 
  object type is node
     index  =            7
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           8 ) is 
  object type is node
     index  =            8
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           9 ) is 
  object type is node
     index  =            9
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  The size of the data base is :           10
     The allocated memory is :           15
     The increase allocation memory is :            5
@@ -93,63 +117,83 @@
  value(           1 ) is 
  object type is node
     index  =            1
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           2 ) is 
  object type is node
     index  =            2
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           3 ) is 
  object type is node
     index  =            3
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           4 ) is 
  object type is node
     index  =            4
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           5 ) is 
  object type is node
     index  =            5
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           6 ) is 
  object type is node
     index  =            6
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           7 ) is 
  object type is node
     index  =            7
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           8 ) is 
  object type is node
     index  =            8
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           9 ) is 
  object type is node
     index  =            9
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(          10 ) is 
  object type is node
     index  =           10
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
   
  checkInitialise
  ===============
@@ -162,21 +206,27 @@
  value(           1 ) is 
  object type is node
     index  =            1
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           2 ) is 
  object type is node
     index  =            2
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           3 ) is 
  object type is node
     index  =            3
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
   
  checkSetInsertValue
  ===================
@@ -189,21 +239,27 @@
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           2 ) is 
  object type is node
     index  =            2
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           3 ) is 
  object type is node
     index  =            3
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
   
  checkGetValues
  ==============
@@ -216,21 +272,27 @@
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    23.0000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    23.000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           2 ) is 
  object type is node
     index  =            2
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    23.0000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    23.000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           3 ) is 
  object type is node
     index  =            3
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    23.0000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    23.000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
   
  checkSetSize
  ============
@@ -243,21 +305,27 @@
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           2 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           3 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  The size of the data base is :            7
     The allocated memory is :           10
     The increase allocation memory is :            5
@@ -267,45 +335,59 @@
  value(          -1 ) is 
  object type is node
     index  =           16
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           0 ) is 
  object type is node
     index  =           16
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           2 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           3 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           4 ) is 
  object type is node
     index  =           30
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           5 ) is 
  object type is node
     index  =           30
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
   
  checkInitialise
  ===============
@@ -318,21 +400,27 @@
  value(           1 ) is 
  object type is node
     index  =            1
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           2 ) is 
  object type is node
     index  =            2
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           3 ) is 
  object type is node
     index  =            3
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
   
  checkSetInsertValue
  ===================
@@ -345,21 +433,27 @@
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           2 ) is 
  object type is node
     index  =            2
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           3 ) is 
  object type is node
     index  =            3
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
   
  checkGetValues
  ==============
@@ -372,21 +466,27 @@
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    23.0000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    23.000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           2 ) is 
  object type is node
     index  =            2
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    23.0000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    23.000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           3 ) is 
  object type is node
     index  =            3
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    23.0000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    23.000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
   
  checkSetSize
  ============
@@ -399,21 +499,27 @@
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           2 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           3 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  The size of the data base is :            7
     The allocated memory is :           10
     The increase allocation memory is :            5
@@ -423,45 +529,59 @@
  value(          -1 ) is 
  object type is node
     index  =           16
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           0 ) is 
  object type is node
     index  =           16
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           2 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           3 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           4 ) is 
  object type is node
     index  =           30
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           5 ) is 
  object type is node
     index  =           30
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
   
  checkInitialise
  ===============
@@ -474,21 +594,27 @@
  value(          -1 ) is 
  object type is node
     index  =           -1
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           0 ) is 
  object type is node
     index  =            0
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           1 ) is 
  object type is node
     index  =            1
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
   
  checkSetInsertValue
  ===================
@@ -501,21 +627,27 @@
  value(          -1 ) is 
  object type is node
     index  =           -1
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           0 ) is 
  object type is node
     index  =            0
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
   
  checkGetValues
  ==============
@@ -528,21 +660,27 @@
  value(          -1 ) is 
  object type is node
     index  =           -1
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    23.0000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    23.000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           0 ) is 
  object type is node
     index  =            0
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    23.0000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    23.000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    23.0000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    23.000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
   
  checkSetSize
  ============
@@ -555,21 +693,27 @@
  value(          -1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           0 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  The size of the data base is :            7
     The allocated memory is :           10
     The increase allocation memory is :            5
@@ -579,45 +723,59 @@
  value(          -3 ) is 
  object type is node
     index  =           16
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(          -2 ) is 
  object type is node
     index  =           16
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(          -1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           0 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           2 ) is 
  object type is node
     index  =           30
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           3 ) is 
  object type is node
     index  =           30
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
   
  checkInitialise
  ===============
@@ -630,21 +788,27 @@
  value(           1 ) is 
  object type is node
     index  =            1
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           2 ) is 
  object type is node
     index  =            2
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           3 ) is 
  object type is node
     index  =            3
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
   
  checkSetInsertValue
  ===================
@@ -657,21 +821,27 @@
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           2 ) is 
  object type is node
     index  =            2
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           3 ) is 
  object type is node
     index  =            3
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
   
  checkGetValues
  ==============
@@ -684,21 +854,27 @@
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    23.0000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    23.000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           2 ) is 
  object type is node
     index  =            2
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    23.0000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    23.000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           3 ) is 
  object type is node
     index  =            3
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    23.0000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    23.000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
   
  checkSetSize
  ============
@@ -711,21 +887,27 @@
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           2 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           3 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  The size of the data base is :            7
     The allocated memory is :           10
     The increase allocation memory is :            5
@@ -735,45 +917,59 @@
  value(          -1 ) is 
  object type is node
     index  =           16
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           0 ) is 
  object type is node
     index  =           16
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           2 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           3 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           4 ) is 
  object type is node
     index  =           30
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           5 ) is 
  object type is node
     index  =           30
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
   
  checkInitialise
  ===============
@@ -786,21 +982,27 @@
  value(           1 ) is 
  object type is node
     index  =            1
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           2 ) is 
  object type is node
     index  =            2
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           3 ) is 
  object type is node
     index  =            3
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
   
  checkSetInsertValue
  ===================
@@ -813,21 +1015,27 @@
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           2 ) is 
  object type is node
     index  =            2
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           3 ) is 
  object type is node
     index  =            3
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
   
  checkGetValues
  ==============
@@ -840,21 +1048,27 @@
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    23.0000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    23.000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           2 ) is 
  object type is node
     index  =            2
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    23.0000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    23.000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           3 ) is 
  object type is node
     index  =            3
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    23.0000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    23.000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
   
  checkSetSize
  ============
@@ -867,21 +1081,27 @@
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           2 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           3 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  The size of the data base is :            7
     The allocated memory is :           10
     The increase allocation memory is :            5
@@ -891,45 +1111,59 @@
  value(          -1 ) is 
  object type is node
     index  =           16
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           0 ) is 
  object type is node
     index  =           16
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           2 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           3 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           4 ) is 
  object type is node
     index  =           30
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           5 ) is 
  object type is node
     index  =           30
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
   
  checkInitialise
  ===============
@@ -942,21 +1176,27 @@
  value(          -1 ) is 
  object type is node
     index  =           -1
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           0 ) is 
  object type is node
     index  =            0
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           1 ) is 
  object type is node
     index  =            1
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
   
  checkSetInsertValue
  ===================
@@ -969,21 +1209,27 @@
  value(          -1 ) is 
  object type is node
     index  =           -1
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           0 ) is 
  object type is node
     index  =            0
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    0.00000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
   
  checkGetValues
  ==============
@@ -996,21 +1242,27 @@
  value(          -1 ) is 
  object type is node
     index  =           -1
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    23.0000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    23.000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           0 ) is 
  object type is node
     index  =            0
-    xValue =    0.00000000000000     
-    yValue =    0.00000000000000     
-    zValue =    23.0000000000000     
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    23.000000000000000     
+    characteristicLength =    0.0000000000000000     
+  
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    23.0000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    23.000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
   
  checkSetSize
  ============
@@ -1023,21 +1275,27 @@
  value(          -1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           0 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  The size of the data base is :            7
     The allocated memory is :            7
     The increase allocation memory is :            0
@@ -1047,43 +1305,57 @@
  value(          -3 ) is 
  object type is node
     index  =           16
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(          -2 ) is 
  object type is node
     index  =           16
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(          -1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           0 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           1 ) is 
  object type is node
     index  =          -56
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           2 ) is 
  object type is node
     index  =           30
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
  value(           3 ) is 
  object type is node
     index  =           30
-    xValue =    1.50000000000000     
-    yValue =    2.50000000000000     
-    zValue =    3.50000000000000     
+    xValue =    1.5000000000000000     
+    yValue =    2.5000000000000000     
+    zValue =    3.5000000000000000     
+    characteristicLength =   0.20000000298023224     
+  
   

@@ -71,7 +71,7 @@ PROGRAM gmshDriver
 
 !  Defined file name and open the file
 !  ====================================
-   CALL createFile(inputGeneralFile,'fort.11',formType=THK_FORMATTED)
+   CALL createFile(inputGeneralFile,'fort.11',formType=STD_FORMATTED)
 
    IF ( iodv == 1 ) THEN
       CALL defineFileName(inputGeneralFile,'meshgen.prm')
@@ -95,7 +95,7 @@ PROGRAM gmshDriver
 
 !  Defined file name and open the file
 !  ====================================
-   CALL createFile(inputCoastFile,'fort.10',formType=THK_FORMATTED)
+   CALL createFile(inputCoastFile,'fort.10',formType=STD_FORMATTED)
 
    IF ( iodv == 1 ) THEN
       CALL defineFileName(inputCoastFile,'domain.checked')
@@ -345,7 +345,7 @@ PROGRAM gmshDriver
 ! ==================================================================================
 ! ==================================================================================
 
-     CALL createFile(outputGMSHFile,'diva.geo',formType=THK_FORMATTED)
+     CALL createFile(outputGMSHFile,'diva.geo',formType=STD_FORMATTED)
      CALL createFile(outputGMSHMeshFile,'diva.msh',formType=THK_FORMATTED)
      CALL exportBoundaryToGMSH(outputGMSHFile,boundaryLoops,meshCharacteristicLength)
      CALL runGMSH(outputGMSHFile,outputGMSHMeshFile)

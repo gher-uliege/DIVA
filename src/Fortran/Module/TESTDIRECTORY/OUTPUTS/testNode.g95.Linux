@@ -12,18 +12,24 @@
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 2 ) is 
  object type is node
     index  =  2
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 3 ) is 
  object type is node
     index  =  3
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  The size of the data base is :  9
     The allocated memory is :  9
     The increase allocation memory is :  0
@@ -36,54 +42,72 @@
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 2 ) is 
  object type is node
     index  =  2
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 3 ) is 
  object type is node
     index  =  3
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 4 ) is 
  object type is node
     index  =  4
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 5 ) is 
  object type is node
     index  =  5
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 6 ) is 
  object type is node
     index  =  6
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 7 ) is 
  object type is node
     index  =  7
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 8 ) is 
  object type is node
     index  =  8
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 9 ) is 
  object type is node
     index  =  9
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  The size of the data base is :  10
     The allocated memory is :  15
     The increase allocation memory is :  5
@@ -96,60 +120,80 @@
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 2 ) is 
  object type is node
     index  =  2
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 3 ) is 
  object type is node
     index  =  3
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 4 ) is 
  object type is node
     index  =  4
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 5 ) is 
  object type is node
     index  =  5
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 6 ) is 
  object type is node
     index  =  6
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 7 ) is 
  object type is node
     index  =  7
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 8 ) is 
  object type is node
     index  =  8
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 9 ) is 
  object type is node
     index  =  9
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 10 ) is 
  object type is node
     index  =  10
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
   
  checkInitialise
  ===============
@@ -165,18 +209,24 @@
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 2 ) is 
  object type is node
     index  =  2
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 3 ) is 
  object type is node
     index  =  3
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
   
  checkSetInsertValue
  ===================
@@ -192,18 +242,24 @@
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 2 ) is 
  object type is node
     index  =  2
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 3 ) is 
  object type is node
     index  =  3
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
   
  checkGetValues
  ==============
@@ -219,18 +275,24 @@
     xValue =  1.5
     yValue =  2.5
     zValue =  23.
+    characteristicLength =  0.20000000298023224
+  
  value( 2 ) is 
  object type is node
     index  =  2
     xValue =  0.
     yValue =  0.
     zValue =  23.
+    characteristicLength =  0.
+  
  value( 3 ) is 
  object type is node
     index  =  3
     xValue =  0.
     yValue =  0.
     zValue =  23.
+    characteristicLength =  0.
+  
   
  checkSetSize
  ============
@@ -246,18 +308,24 @@
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 2 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 3 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  The size of the data base is :  7
     The allocated memory is :  10
     The increase allocation memory is :  5
@@ -270,42 +338,56 @@
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 0 ) is 
  object type is node
     index  =  16
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 1 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 2 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 3 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 4 ) is 
  object type is node
     index  =  30
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 5 ) is 
  object type is node
     index  =  30
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
   
  checkInitialise
  ===============
@@ -321,18 +403,24 @@
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 2 ) is 
  object type is node
     index  =  2
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 3 ) is 
  object type is node
     index  =  3
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
   
  checkSetInsertValue
  ===================
@@ -348,18 +436,24 @@
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 2 ) is 
  object type is node
     index  =  2
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 3 ) is 
  object type is node
     index  =  3
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
   
  checkGetValues
  ==============
@@ -375,18 +469,24 @@
     xValue =  1.5
     yValue =  2.5
     zValue =  23.
+    characteristicLength =  0.20000000298023224
+  
  value( 2 ) is 
  object type is node
     index  =  2
     xValue =  0.
     yValue =  0.
     zValue =  23.
+    characteristicLength =  0.
+  
  value( 3 ) is 
  object type is node
     index  =  3
     xValue =  0.
     yValue =  0.
     zValue =  23.
+    characteristicLength =  0.
+  
   
  checkSetSize
  ============
@@ -402,18 +502,24 @@
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 2 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 3 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  The size of the data base is :  7
     The allocated memory is :  10
     The increase allocation memory is :  5
@@ -426,42 +532,56 @@
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 0 ) is 
  object type is node
     index  =  16
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 1 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 2 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 3 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 4 ) is 
  object type is node
     index  =  30
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 5 ) is 
  object type is node
     index  =  30
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
   
  checkInitialise
  ===============
@@ -477,18 +597,24 @@
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 0 ) is 
  object type is node
     index  =  0
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 1 ) is 
  object type is node
     index  =  1
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
   
  checkSetInsertValue
  ===================
@@ -504,18 +630,24 @@
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 0 ) is 
  object type is node
     index  =  0
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 1 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
   
  checkGetValues
  ==============
@@ -531,18 +663,24 @@
     xValue =  0.
     yValue =  0.
     zValue =  23.
+    characteristicLength =  0.
+  
  value( 0 ) is 
  object type is node
     index  =  0
     xValue =  0.
     yValue =  0.
     zValue =  23.
+    characteristicLength =  0.
+  
  value( 1 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  23.
+    characteristicLength =  0.20000000298023224
+  
   
  checkSetSize
  ============
@@ -558,18 +696,24 @@
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 0 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 1 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  The size of the data base is :  7
     The allocated memory is :  10
     The increase allocation memory is :  5
@@ -582,42 +726,56 @@
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( -2 ) is 
  object type is node
     index  =  16
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( -1 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 0 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 1 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 2 ) is 
  object type is node
     index  =  30
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 3 ) is 
  object type is node
     index  =  30
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
   
  checkInitialise
  ===============
@@ -633,18 +791,24 @@
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 2 ) is 
  object type is node
     index  =  2
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 3 ) is 
  object type is node
     index  =  3
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
   
  checkSetInsertValue
  ===================
@@ -660,18 +824,24 @@
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 2 ) is 
  object type is node
     index  =  2
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 3 ) is 
  object type is node
     index  =  3
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
   
  checkGetValues
  ==============
@@ -687,18 +857,24 @@
     xValue =  1.5
     yValue =  2.5
     zValue =  23.
+    characteristicLength =  0.20000000298023224
+  
  value( 2 ) is 
  object type is node
     index  =  2
     xValue =  0.
     yValue =  0.
     zValue =  23.
+    characteristicLength =  0.
+  
  value( 3 ) is 
  object type is node
     index  =  3
     xValue =  0.
     yValue =  0.
     zValue =  23.
+    characteristicLength =  0.
+  
   
  checkSetSize
  ============
@@ -714,18 +890,24 @@
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 2 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 3 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  The size of the data base is :  7
     The allocated memory is :  10
     The increase allocation memory is :  5
@@ -738,42 +920,56 @@
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 0 ) is 
  object type is node
     index  =  16
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 1 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 2 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 3 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 4 ) is 
  object type is node
     index  =  30
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 5 ) is 
  object type is node
     index  =  30
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
   
  checkInitialise
  ===============
@@ -789,18 +985,24 @@
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 2 ) is 
  object type is node
     index  =  2
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 3 ) is 
  object type is node
     index  =  3
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
   
  checkSetInsertValue
  ===================
@@ -816,18 +1018,24 @@
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 2 ) is 
  object type is node
     index  =  2
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 3 ) is 
  object type is node
     index  =  3
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
   
  checkGetValues
  ==============
@@ -843,18 +1051,24 @@
     xValue =  1.5
     yValue =  2.5
     zValue =  23.
+    characteristicLength =  0.20000000298023224
+  
  value( 2 ) is 
  object type is node
     index  =  2
     xValue =  0.
     yValue =  0.
     zValue =  23.
+    characteristicLength =  0.
+  
  value( 3 ) is 
  object type is node
     index  =  3
     xValue =  0.
     yValue =  0.
     zValue =  23.
+    characteristicLength =  0.
+  
   
  checkSetSize
  ============
@@ -870,18 +1084,24 @@
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 2 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 3 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  The size of the data base is :  7
     The allocated memory is :  10
     The increase allocation memory is :  5
@@ -894,42 +1114,56 @@
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 0 ) is 
  object type is node
     index  =  16
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 1 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 2 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 3 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 4 ) is 
  object type is node
     index  =  30
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 5 ) is 
  object type is node
     index  =  30
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
   
  checkInitialise
  ===============
@@ -945,18 +1179,24 @@
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 0 ) is 
  object type is node
     index  =  0
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 1 ) is 
  object type is node
     index  =  1
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
   
  checkSetInsertValue
  ===================
@@ -972,18 +1212,24 @@
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 0 ) is 
  object type is node
     index  =  0
     xValue =  0.
     yValue =  0.
     zValue =  0.
+    characteristicLength =  0.
+  
  value( 1 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
   
  checkGetValues
  ==============
@@ -999,18 +1245,24 @@
     xValue =  0.
     yValue =  0.
     zValue =  23.
+    characteristicLength =  0.
+  
  value( 0 ) is 
  object type is node
     index  =  0
     xValue =  0.
     yValue =  0.
     zValue =  23.
+    characteristicLength =  0.
+  
  value( 1 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  23.
+    characteristicLength =  0.20000000298023224
+  
   
  checkSetSize
  ============
@@ -1026,18 +1278,24 @@
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 0 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 1 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  The size of the data base is :  7
     The allocated memory is :  7
     The increase allocation memory is :  0
@@ -1050,40 +1308,54 @@
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( -2 ) is 
  object type is node
     index  =  16
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( -1 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 0 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 1 ) is 
  object type is node
     index  =  -56
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 2 ) is 
  object type is node
     index  =  30
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
  value( 3 ) is 
  object type is node
     index  =  30
     xValue =  1.5
     yValue =  2.5
     zValue =  3.5
+    characteristicLength =  0.20000000298023224
+  
   

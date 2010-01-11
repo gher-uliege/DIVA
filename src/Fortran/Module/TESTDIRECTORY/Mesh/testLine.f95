@@ -35,17 +35,6 @@ INTEGER, PARAMETER :: dimLine = 3
   CALL nodeDBInitialise(nodeDB)
   CALL lineDBInitialise(lineDB)
 
-  ligne => lineDBGetValue(lineDB,1)
-  ligne%startNode => nodeDBGetValue(nodeDB,1)
-  ligne%endNode => nodeDBGetValue(nodeDB,2)
-
-  ligne => lineDBGetValue(lineDB,2)
-  ligne%startNode => nodeDBGetValue(nodeDB,2)
-  ligne%endNode => nodeDBGetValue(nodeDB,3)
-
-  ligne => lineDBGetValue(lineDB,3)
-  ligne%startNode => nodeDBGetValue(nodeDB,3)
-  ligne%endNode => nodeDBGetValue(nodeDB,1)
 
   noeud => nodeDBGetValue(nodeDB,1)
   noeud%xValue = 0.
@@ -61,6 +50,19 @@ INTEGER, PARAMETER :: dimLine = 3
   noeud%xValue = 0.5
   noeud%yValue = 1.
   noeud%characteristicLength = 0.5
+
+  ligne => lineDBGetValue(lineDB,1)
+  ligne%startNode = nodeDBGetValue(nodeDB,1)
+  ligne%endNode = nodeDBGetValue(nodeDB,2)
+
+  ligne => lineDBGetValue(lineDB,2)
+  ligne%startNode = nodeDBGetValue(nodeDB,2)
+  ligne%endNode = nodeDBGetValue(nodeDB,3)
+
+  ligne => lineDBGetValue(lineDB,3)
+  ligne%startNode = nodeDBGetValue(nodeDB,3)
+  ligne%endNode = nodeDBGetValue(nodeDB,1)
+
 
   CALL nodeDBPrint(nodeDB)
   CALL lineDBPrint(lineDB)
