@@ -162,6 +162,38 @@ $divaDir/compileFile moduleContourDataBase.f95 $moduleContourDataBase
 
 echo ' '
 
+# Compilation of : tria3
+# =====================
+tria3='tria3' ; export tria3
+moduleTria3Definition='module'$tria3 ; export moduleTria3Definition
+moduleTria3DataBaseDefinition='moduleSpecificDataBase'$tria3 ; export moduleTria3DataBaseDefinition
+moduleTria3DataBase=$tria3'Interface'
+moduleGenericDataBase='moduleGenericDataBase'$tria3
+moduleGenericTypeDataBaseDefinition='moduleDataBaseDefinition'$tria3 
+
+flagTria30='-Dtria3Type='$tria3
+flagTria32='-DmoduleTria3Definition='$moduleTria3Definition
+flagTria33='-DmoduleTria3DataBaseDefinition='$moduleTria3DataBaseDefinition
+flagTria34='-DmoduleTria3DataBase='$moduleTria3DataBase
+flagTria35='-DmoduleGenericDataBase='$moduleGenericDataBase
+flagTria36='-DmoduleGenericTypeDataBaseDefinition='$moduleGenericTypeDataBaseDefinition
+
+preproFlag=$flagTria30
+preproFlag=$preproFlag' '$flagTria32
+preproFlag=$preproFlag' '$flagTria33
+preproFlag=$preproFlag' '$flagTria34
+preproFlag=$preproFlag' '$flagTria35
+preproFlag=$preproFlag' '$flagTria36
+
+export preproFlag
+
+$divaDir/compileFile moduleTria3Definition.f95 $moduleTria3Definition
+$divaDir/compileFile moduleTria3DataBaseDefinition.f95 $moduleTria3DataBaseDefinition
+$divaDir/Module/DataBase/divaCompileDataBase _DB_1D_ $tria3 $moduleTria3Definition $moduleTria3DataBaseDefinition
+$divaDir/compileFile moduleTria3DataBase.f95 $moduleTria3DataBase
+
+echo ' '
+
 # Compilation of : moduleCoordinateInformation
 # ============================================
 REALType='REAL(KIND=8)'

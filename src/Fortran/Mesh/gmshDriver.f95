@@ -4,8 +4,6 @@ PROGRAM gmshDriver
 ! to make the meshing procedure with GMSH.
 !
 
-!#define lgrSmoothingFunction
-
 ! Module to use
 ! =============
  USE moduleDIVA
@@ -15,6 +13,7 @@ PROGRAM gmshDriver
  USE nodeInterface
  USE contourInterface
  USE lineInterface
+ USE tria3Interface
  USE moduleCoordinateInformation, initialiseCoordinateInformation => initialise
 
  INCLUDE 'iodv.h'
@@ -53,6 +52,14 @@ PROGRAM gmshDriver
 !        GMSH
 !        ----
          TYPE(file) :: outputGMSHFile, outputGMSHMeshFile
+
+!        Reload result
+!        -------------
+         INTEGER, PARAMETER :: waitingTime = 5, informationLine = 3
+         INTEGER :: nbOfVertices, nbOfCell
+         TYPE(nodeDataBase) :: vertices
+         TYPE(tria3DataBase) :: cells
+         TYPE(tria3), POINTER :: ptrCell
 
 ! ==================================================================================
 ! ==================================================================================
@@ -346,12 +353,65 @@ PROGRAM gmshDriver
 ! ==================================================================================
 
      CALL createFile(outputGMSHFile,'diva.geo',formType=STD_FORMATTED)
-     CALL createFile(outputGMSHMeshFile,'diva.msh',formType=THK_FORMATTED)
+     CALL createFile(outputGMSHMeshFile,'diva.msh',formType=STD_FORMATTED)
      CALL exportBoundaryToGMSH(outputGMSHFile,boundaryLoops,meshCharacteristicLength)
      CALL runGMSH(outputGMSHFile,outputGMSHMeshFile)
 
      CALL contourDBDestroy(boundaryLoops)
-     CALL finaliseDIVAContext()
+
+! ==================================================================================
+! ==================================================================================
+! read the result
+! ==================================================================================
+! ==================================================================================
+
+   CALL sleep(waitingTime)
+
+!  Defined file name and open the file
+!  ====================================
+   CALL openFile(outputGMSHMeshFile)
+   fileUnit = getFileUnit(outputGMSHMeshFile)
+
+!  Read the resulting mesh
+!  =======================
+!     Read information
+!     ----------------
+      DO i1 = 1, informationLine
+          READ(fileUnit,*)
+      ENDDO
+
+!     Read vertices
+!     -------------
+      READ(fileUnit,*)
+
+      READ(fileUnit,*) nbOfVertices
+      CALL nodeDBCreate(vertices,nbOfVertices)
+
+      DO i1 = 1, nbOfVertices
+         ptrNode => vertices%values(i1)
+         READ(fileUnit,*) ptrNode%indexValue, ptrNode%xValue, ptrNode%yValue, ptrNode%zValue
+      ENDDO
+
+      READ(fileUnit,*)
+
+!     Read information
+!     ----------------
+      READ(fileUnit,*)
+
+      READ(fileUnit,*) nbOfCell
+      CALL tria3DBCreate(cells,nbOfCell)
+      DO i1 = 1, nbOfCell
+          ptrCell => cells%values(i1)
+          READ(fileUnit,*) ptrCell%indexValue,i2,i2,i2,i2,ptrCell%node1,ptrCell%node2,ptrCell%node3
+      ENDDO
+
+      READ(fileUnit,*)
+
+   CALL closeFile(outputGMSHMeshFile)
+
+   CALL nodeDBDestroy(vertices)
+   CALL tria3DBDestroy(cells)
+   CALL finaliseDIVAContext()
 
 ! ============================================================
 ! ============================================================
@@ -1135,9 +1195,9 @@ SUBROUTINE runGMSH(outputGMSHFile,outputGMSHMeshFile)
 ! -----------
      TYPE(file), INTENT(IN) :: outputGMSHFile, outputGMSHMeshFile
      CHARACTER(LEN=301) :: command
+
 ! Body
 ! ----
-
      command = 'gmsh -2 -smooth 10 -algo meshadapt ' // outputGMSHFile%fileName &
                // ' -o ' // outputGMSHMeshFile%fileName
      print*,command
@@ -1146,6 +1206,8 @@ SUBROUTINE runGMSH(outputGMSHFile,outputGMSHMeshFile)
 
 END SUBROUTINE
 
+! Procedure 20 : change coordinate
+! --------------------------------
 SUBROUTINE changeLongLatToXY(ptrBoundaryLoopSegment)
 
 !     Declaration

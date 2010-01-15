@@ -4,3 +4,7 @@ rm -f $divaDir/Bin/gmshDriver.a
 $divaDir/compileAndLinkFile gmshDriver
 mv gmshDriver.a $divaDir/Bin
 
+rm -f $divaDir/Bin/testMesh.a
+$divaDir/compileAndLinkFile testMesh 
+mv testMesh.a $divaDir/Bin
+
