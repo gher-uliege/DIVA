@@ -31,14 +31,14 @@ MODULE moduleArray3D
                            arrayArrayMin, arrayArrayMax, arrayOptimize, arrayArraySetValue, &
 #ifdef _REAL_
                            arrayArrayNorm1, arrayArrayNorm2, arrayArrayNormInfinity, arrayArrayNorm, arrayArraySqrt, &
-                           arrayArraySum, arrayArrayScale, &
+                           arrayArrayScale, &
                            arrayIORead, &
 #endif
 #ifdef _INTEGER_
                            arrayIsAlreadyIn, &
 #endif
                            arrayIOWrite, &
-                           arrayArrayAbsMin, arrayArrayAbsMax
+                           arrayArrayAbsMin, arrayArrayAbsMax, arrayArraySum
 
 
 ! Procedures status

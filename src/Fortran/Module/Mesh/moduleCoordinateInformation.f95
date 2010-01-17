@@ -19,6 +19,7 @@ MODULE moduleCoordinateInformation
   REALType, PRIVATE, SAVE :: deltaXInKm, deltaYInKm
   REALType, PRIVATE, SAVE :: pi
   REALType, PRIVATE, SAVE :: meanXCoordinate, meanYCoordinate
+  REALType, PRIVATE, SAVE :: dimensionLessLength
 
   INTEGERType, PRIVATE, SAVE :: iChangeCoordinate, iSpheric
   LOGICAL, PRIVATE, SAVE :: gmshWithCoastRefinement
@@ -36,6 +37,7 @@ MODULE moduleCoordinateInformation
              setMeanXCoordinate, setMeanYCoordinate, &
              setIChangeCoordinate, setISpheric, &
              setGmshWithCoastRefinement, &
+             setDimensionLessLength, &
              getMinimumLongitude, getMinimumLatitude, &
              getMaximumLongitude, getMaximumLatitude, &
              getMeanLongitude, getMeanLatitude, &
@@ -43,8 +45,13 @@ MODULE moduleCoordinateInformation
              getPi, &
              getMeanXCoordinate, getMeanYCoordinate, &
              getIChangeCoordinate, getISpheric, &
+             getDimensionLessLength, &
              initialise, computeMeanLatitude, computeMeanLongitude, &
-             getGmshWithCoastRefinement
+             getGmshWithCoastRefinement, &
+             shiftMinimumLongitude, shiftMinimumLatitude, shiftMaximumLongitude, shiftMaximumLatitude, &
+             computeDimensionLessLength
+
+
 
 
 ! ============================================================
@@ -259,6 +266,21 @@ FUNCTION getGmshWithCoastRefinement() RESULT (value)
 
 END FUNCTION
 
+! Procedure 15 : getDimensionLessLength
+! --------------------------------------
+FUNCTION getDimensionLessLength() RESULT (value)
+
+!     Declaration
+!     - - - - - -
+      REALType :: value
+
+!     Body
+!     - - -
+      value = dimensionLessLength
+
+END FUNCTION
+
+
 ! =============================================================
 ! ===            Internal procedure ("PUBLIC")  : Setting   ===
 ! =============================================================
@@ -460,6 +482,20 @@ SUBROUTINE setGmshWithCoastRefinement(value)
 
 END SUBROUTINE
 
+! Procedure 15 : setDimensionLessLength
+! --------------------------------------
+SUBROUTINE setDimensionLessLength(value)
+
+!     Declaration
+!     - - - - - -
+      REALType :: value
+
+!     Body
+!     - - -
+      dimensionLessLength = value
+
+END SUBROUTINE
+
 ! =============================================================
 ! ===            Internal procedure ("PUBLIC")  : Others    ===
 ! =============================================================
@@ -469,7 +505,7 @@ SUBROUTINE initialise()
 
 !     Declaration
 !     - - - - - -
-      REALType, PARAMETER :: zero = 0.
+      REALType, PARAMETER :: zero = 0., un = 1.
 
 !     Body
 !     - - -
@@ -487,6 +523,7 @@ SUBROUTINE initialise()
       CALL setIChangeCoordinate(0)
       CALL setISpheric(0)
       CALL setGmshWithCoastRefinement(.FALSE.)
+      CALL setDimensionLessLength(un)
 
 END SUBROUTINE
 
@@ -507,6 +544,57 @@ SUBROUTINE computeMeanLatitude()
 !     Body
 !     - - -
       meanLatitude = 0.5 * ( minLatitude + maxLatitude )
+
+END SUBROUTINE
+
+! Procedure 4 : shift minimum longitude
+! ------------------------------------
+SUBROUTINE shiftMinimumLongitude()
+
+!     Body
+!     - - -
+      minLongitude =  ( minLongitude - meanXCoordinate ) / dimensionLessLength
+
+END SUBROUTINE
+
+! Procedure 5 : shift maximum longitude
+! ------------------------------------
+SUBROUTINE shiftMinimumLatitude()
+
+!     Body
+!     - - -
+      minLatitude = ( minLatitude - meanXCoordinate ) / dimensionLessLength
+
+END SUBROUTINE
+
+! Procedure 6 : shift minimum latitude
+! ------------------------------------
+SUBROUTINE shiftMaximumLongitude()
+
+!     Body
+!     - - -
+      maxLongitude = ( maxLongitude - meanXCoordinate ) / dimensionLessLength
+
+END SUBROUTINE
+
+! Procedure 7 : shift maximum latitude
+! ------------------------------------
+SUBROUTINE shiftMaximumLatitude()
+
+!     Body
+!     - - -
+      maxLatitude = ( maxLatitude - meanXCoordinate ) / dimensionLessLength
+
+END SUBROUTINE
+
+! Procedure 8 : computeDimensionLessLength
+! ------------------------------------
+SUBROUTINE computeDimensionLessLength()
+
+!     Body
+!     - - -
+
+      dimensionLessLength = 1.0D+0 * max(maxLongitude-minLongitude, maxLatitude-minLatitude)
 
 END SUBROUTINE
 

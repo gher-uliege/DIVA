@@ -90,7 +90,7 @@ MODULE moduleMemoryDataBase1DManagement
             istartX = istartTab(1)
             istartValueX = memoryGetFirstIndexX()
 
-            IF ((memoryGetSizeX() > memoryGetAllocatedSizeX()).OR.(istartValueX<istartX)) THEN
+            IF ((memoryGetSizeX() > memoryGetAllocatedSizeX()).OR.(istartValueX<istartX).OR.(memoryGetSizeX()==1)) THEN
                 newSizeX = memoryGetSizeX()
                 CALL memoryStockIntermediateDataBase()
                 CALL memoryDestructor()

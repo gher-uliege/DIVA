@@ -23,9 +23,9 @@ associateDir='-I'$divaDir'/Module/IOModule '
 associateDir=$associateDir' -I'$divaDir'/Module/General '
 export preproFlag
 export associateDir
+
 libName=libCommonDiva$compiler.a
 export libName
-
 rm -f $divaModuleLib/$libName
 
 for ii in `ls *.f95`

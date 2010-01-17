@@ -50,7 +50,7 @@ MODULE matrixInterface
                            arrayGetIncreaseSizeYInteger2 => arrayGetIncreaseSizeY, &
                            arraySetIncreaseSizeYInteger2 => arraySetIncreaseSizeY, &
                            arrayArrayMinInteger2 => arrayArrayMin, arrayIOWriteInteger2 => arrayIOWrite, &
-                           arrayArrayMaxInteger2 => arrayArrayMax, &
+                           arrayArrayMaxInteger2 => arrayArrayMax, arrayArraySumInteger2 => arrayArraySum, &
                            arrayArrayAbsMinInteger2 => arrayArrayAbsMin, &
                            arrayArrayAbsMaxInteger2 => arrayArrayAbsMax, &
                            arrayOptimizeInteger2 => arrayOptimize, arrayArraySetValueInteger2 => arrayArraySetValue, &
@@ -76,7 +76,7 @@ MODULE matrixInterface
                            arraySetSizeInteger4 => arraySetSize, &
                            arrayGetFirstIndexXInteger4 => arrayGetFirstIndexX, &
                            arrayGetLastIndexXInteger4 => arrayGetLastIndexX, &
-                           arrayGetSizeXInteger4 => arrayGetSizeX, &
+                           arrayGetSizeXInteger4 => arrayGetSizeX, arrayArraySumInteger4 => arrayArraySum, &
                            arrayGetAllocatedSizeXInteger4 => arrayGetAllocatedSizeX , &
                            arrayGetIncreaseSizeXInteger4 => arrayGetIncreaseSizeX, &
                            arraySetIncreaseSizeXInteger4 => arraySetIncreaseSizeX, &
@@ -105,7 +105,7 @@ MODULE matrixInterface
                            arrayArrayFastInsertValueInteger8 => arrayArrayFastInsertValue, &
                            arrayArrayFastAddValueInteger8 => arrayArrayFastAddValue, &
                            arraySetIncreaseSizeInteger8 => arraySetIncreaseSize, &
-                           arrayDestructorInteger8 => arrayDestructor, &
+                           arrayDestructorInteger8 => arrayDestructor, arrayArraySumInteger8 => arrayArraySum, &
                            arrayPrintInformationInteger8 => arrayPrintInformation, &
                            arrayCreateBaseInteger8 => arrayCreateBase, &
                            arrayCreateWithDimensionInteger8 => arrayCreateWithDimension, &
@@ -271,7 +271,8 @@ MODULE matrixInterface
    END INTERFACE
 
    INTERFACE matrixSum
-      MODULE PROCEDURE arrayArraySumReal8, arrayArraySumReal4
+      MODULE PROCEDURE arrayArraySumReal8, arrayArraySumReal4, &
+                       arrayArraySumInteger2, arrayArraySumInteger4, arrayArraySumInteger8
    END INTERFACE
 
    INTERFACE matrixMin

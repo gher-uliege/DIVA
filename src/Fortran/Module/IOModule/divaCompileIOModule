@@ -22,6 +22,7 @@ preproFlag=''
 associateDir='-I'$divaDir'/Module/General '
 export preproFlag
 export associateDir
+
 libName=libIO$compiler.a
 export libName
 rm -f $divaModuleLib/$libName

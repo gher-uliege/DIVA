@@ -12,7 +12,6 @@ echo ' '
 baseDir=$PWD
 libName=libSparseMatrix$compiler.a
 export libName
-
 rm -f $divaModuleLib/$libName
 
 echo =================================

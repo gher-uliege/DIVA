@@ -1,4 +1,4 @@
-MODULE moduleMatrix
+MODULE moduleContourProcedure
 
 ! ============================================================
 ! ============================================================
@@ -12,38 +12,20 @@ MODULE moduleMatrix
 ! ============================================================
 ! ============================================================
 
-! Preprocessing declaration
-! =========================
-
 ! Include file
 ! ============
+   USE moduleContourDefinition
 
-   USE moduleArray, ONLY : arrayGetValues, arrayGetValue, arrayGetAllocationStatus, arrayGetPointerOnValue, &
-                           arrayArraySetToZero, arrayArraySetToValue, arrayArrayInsertValue, arrayArrayAddValue, &
-                           arrayArrayFastInsertValue, arrayArrayFastAddValue, arraySetIncreaseSize, &
-                           arrayDestructor, arrayPrintInformation, arrayCreateBase, arrayCreateWithDimension, &
-                           arrayCreateWithDimensionAndFirstIndex, arraySetSize, &
-                           arrayGetFirstIndexX, arrayGetLastIndexX, arrayGetSizeX, arrayGetAllocatedSizeX , arrayGetIncreaseSizeX, &
-                           arrayGetDefaultIncreaseSizeX, arraySetIncreaseSizeX, &
-                           arrayGetFirstIndexY, arrayGetLastIndexY, arrayGetSizeY, arrayGetAllocatedSizeY , arrayGetIncreaseSizeY, &
-                           arrayGetDefaultIncreaseSizeY, arraySetIncreaseSizeY, &
-                           arrayArrayMin, arrayArrayMax, arrayOptimize, arrayArraySetValue, &
-#ifdef _REAL_
-                           arrayArrayNorm1, arrayArrayNorm2, arrayArrayNormInfinity, arrayArrayNorm, arrayArraySqrt, &
-                           arrayArrayScale, &
-                           arrayIORead, &
-#endif
-#ifdef _INTEGER_
-                           arrayIsAlreadyIn, &
-#endif
-                           arrayIOWrite, &
-                           arrayArrayAbsMin, arrayArrayAbsMax, arrayArraySum
+! Declaration
+! ===========
 
 ! Procedures status
 ! =================
 
 !  General part
 !  ------------
+   PUBLIC :: contourComputeSurface
+
 
 ! ============================================================
 ! ============================================================
@@ -56,12 +38,52 @@ MODULE moduleMatrix
 ! ============================================================
 ! ============================================================
 ! ============================================================
+ CONTAINS
+
 
 ! =============================================================
 ! ===            Internal procedure ("PUBLIC")  : Others    ===
 ! =============================================================
+! Procedure 1 : compute the surface of the loop
+! ---------------------------------------------
+FUNCTION contourComputeSurface(ptr) RESULT(surface)
+
+!     Declaration
+!     - - - - - -
+      TYPE(contourType), POINTER :: ptr
+      TYPE(lineDataBase), POINTER :: ptrLineDB
+      TYPE(lineType), POINTER :: ptrLine
+      TYPE(nodeType), POINTER :: ptrNodeStart, ptrNodeEnd
 
 
+      VARType :: xCenter, yCenter, surface
+      VARType, DIMENSION(2) :: a, b
+      INTEGER :: i1, nbOfBoundarySegment
 
-END MODULE moduleMatrix
+!     Body
+!     - - -
 
+    surface = 0.
+    ptrLineDB => ptr%lineDB
+    nbOfBoundarySegment = lineDBGetSize(ptrLineDB)
+
+    xCenter = sum(ptrLineDB%values(1:nbOfBoundarySegment)%startNode%xValue) / max(nbOfBoundarySegment,1)
+    yCenter = sum(ptrLineDB%values(1:nbOfBoundarySegment)%startNode%yValue) / max(nbOfBoundarySegment,1)
+
+    DO i1 = 1, nbOfBoundarySegment
+       ptrLine => ptrLineDB%values(i1)
+       ptrNodeStart => ptrLine%startNode
+       ptrNodeEnd => ptrLine%endNode
+
+       a(1) = ptrNodeEnd%xValue - ptrNodeStart%xValue
+       a(2) = ptrNodeEnd%yValue - ptrNodeStart%yValue
+       b(1) = xCenter - ptrNodeStart%xValue
+       b(2) = yCenter - ptrNodeStart%yValue
+
+       surface = surface + 0.5 * ( a(1)*b(2)-a(2)*b(1) )
+    ENDDO
+
+END FUNCTION
+
+
+END MODULE moduleContourProcedure

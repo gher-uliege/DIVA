@@ -20,6 +20,10 @@ _WITH_MESH_=1 ; export _WITH_MESH_
 
 rm -f $divaModuleLib/*.o
 
+#libName=libDiva$compiler.a
+#export libName
+#rm -f $divaModuleLib/$libName
+
 # Compilation of Common module
 # =============================
 

@@ -5,7 +5,6 @@ rm -f *.mod
 
 libName=libVector$compiler.a
 export libName
-
 rm -f $divaModuleLib/$libName
 
 # Compilation of : VectorReal4

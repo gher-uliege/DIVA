@@ -1,4 +1,4 @@
-MODULE moduleMatrix
+MODULE moduleLineProcedure
 
 ! ============================================================
 ! ============================================================
@@ -12,38 +12,20 @@ MODULE moduleMatrix
 ! ============================================================
 ! ============================================================
 
-! Preprocessing declaration
-! =========================
-
 ! Include file
 ! ============
+   USE moduleLineDefinition
 
-   USE moduleArray, ONLY : arrayGetValues, arrayGetValue, arrayGetAllocationStatus, arrayGetPointerOnValue, &
-                           arrayArraySetToZero, arrayArraySetToValue, arrayArrayInsertValue, arrayArrayAddValue, &
-                           arrayArrayFastInsertValue, arrayArrayFastAddValue, arraySetIncreaseSize, &
-                           arrayDestructor, arrayPrintInformation, arrayCreateBase, arrayCreateWithDimension, &
-                           arrayCreateWithDimensionAndFirstIndex, arraySetSize, &
-                           arrayGetFirstIndexX, arrayGetLastIndexX, arrayGetSizeX, arrayGetAllocatedSizeX , arrayGetIncreaseSizeX, &
-                           arrayGetDefaultIncreaseSizeX, arraySetIncreaseSizeX, &
-                           arrayGetFirstIndexY, arrayGetLastIndexY, arrayGetSizeY, arrayGetAllocatedSizeY , arrayGetIncreaseSizeY, &
-                           arrayGetDefaultIncreaseSizeY, arraySetIncreaseSizeY, &
-                           arrayArrayMin, arrayArrayMax, arrayOptimize, arrayArraySetValue, &
-#ifdef _REAL_
-                           arrayArrayNorm1, arrayArrayNorm2, arrayArrayNormInfinity, arrayArrayNorm, arrayArraySqrt, &
-                           arrayArrayScale, &
-                           arrayIORead, &
-#endif
-#ifdef _INTEGER_
-                           arrayIsAlreadyIn, &
-#endif
-                           arrayIOWrite, &
-                           arrayArrayAbsMin, arrayArrayAbsMax, arrayArraySum
+! Declaration
+! ===========
 
 ! Procedures status
 ! =================
 
 !  General part
 !  ------------
+   PUBLIC :: lineComputeLength
+
 
 ! ============================================================
 ! ============================================================
@@ -56,12 +38,34 @@ MODULE moduleMatrix
 ! ============================================================
 ! ============================================================
 ! ============================================================
+ CONTAINS
+
 
 ! =============================================================
 ! ===            Internal procedure ("PUBLIC")  : Others    ===
 ! =============================================================
+! Procedure 1 : compute the length of the line
+! --------------------------------------------
+FUNCTION lineComputeLength(ptr) RESULT(val)
+
+!     Declaration
+!     - - - - - -
+      TYPE(lineType), POINTER :: ptr
+      TYPE(nodeType), POINTER :: ptrNodeStart, ptrNodeEnd
+
+      REAL(KIND=8) :: val, dx, dy
+
+!     Body
+!     - - -
+      ptrNodeStart => ptr%startNode
+      ptrNodeEnd => ptr%endNode
+
+      dx = ptrNodeStart%xValue - ptrNodeEnd%xValue
+      dy = ptrNodeStart%yValue - ptrNodeEnd%yValue
+
+      val = sqrt( dx * dx + dy * dy )
+
+END FUNCTION
 
 
-
-END MODULE moduleMatrix
-
+END MODULE moduleLineProcedure

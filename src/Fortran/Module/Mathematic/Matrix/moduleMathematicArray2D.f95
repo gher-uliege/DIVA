@@ -27,11 +27,11 @@ MODULE moduleMathematicArray2D
 !  General part
 !  ------------
 #ifdef _REAL_
-   PUBLIC :: mathArrayNorm1, mathArrayNorm2, mathArrayNormInfinity, mathArraySqrt, mathArraySum, &
+   PUBLIC :: mathArrayNorm1, mathArrayNorm2, mathArrayNormInfinity, mathArraySqrt, &
              mathArrayScale
 #endif
 
-   PUBLIC :: mathArrayMin, mathArrayMax, mathArrayAbsMin, mathArrayAbsMax
+   PUBLIC :: mathArrayMin, mathArrayMax, mathArrayAbsMin, mathArrayAbsMax, mathArraySum
 
 
 ! ============================================================
@@ -118,29 +118,6 @@ MODULE moduleMathematicArray2D
       ptr =>  memoryGetValues()
 
       val = maxval(abs(ptr(istartX:iendX,istartY:iendY)))
-
-  END FUNCTION
-
-! Procedure 4 : sum(xi)
-! ---------------------
-  FUNCTION mathArraySum() RESULT(val)
-
-!     Declaration
-!     - - - - - -
-      INTEGER :: istartX, iendX, istartY, iendY
-      VARType :: val
-      VARType, DIMENSION(:,:), POINTER :: ptr
-
-!     Body
-!     - - -
-      istartX = memoryGetFirstIndexX()
-      iendX = memoryGetLastIndexX()
-      istartY = memoryGetFirstIndexY()
-      iendY = memoryGetLastIndexY()
-
-      ptr =>  memoryGetValues()
-
-      val = sum(ptr(istartX:iendX,istartY:iendY))
 
   END FUNCTION
 
@@ -282,5 +259,29 @@ MODULE moduleMathematicArray2D
       val = maxval(abs(ptr(istartX:iendX,istartY:iendY)))
 
   END FUNCTION
+
+! Procedure 4 : sum(xi)
+! ---------------------
+  FUNCTION mathArraySum() RESULT(val)
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: istartX, iendX, istartY, iendY
+      VARType :: val
+      VARType, DIMENSION(:,:), POINTER :: ptr
+
+!     Body
+!     - - -
+      istartX = memoryGetFirstIndexX()
+      iendX = memoryGetLastIndexX()
+      istartY = memoryGetFirstIndexY()
+      iendY = memoryGetLastIndexY()
+
+      ptr =>  memoryGetValues()
+
+      val = sum(ptr(istartX:iendX,istartY:iendY))
+
+  END FUNCTION
+
 
 END MODULE moduleMathematicArray2D

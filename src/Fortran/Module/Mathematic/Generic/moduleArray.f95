@@ -72,10 +72,10 @@ MODULE moduleArray
 
    USE moduleMathematicArrayND, ONLY : mathArrayMin, mathArrayMax, &
 #ifdef _REAL_
-                                       mathArrayNorm1, mathArrayNorm2, mathArrayNormInfinity, mathArraySqrt, mathArraySum, &
+                                       mathArrayNorm1, mathArrayNorm2, mathArrayNormInfinity, mathArraySqrt, &
                                        mathArrayScale, &
 #endif
-                                       mathArrayAbsMin, mathArrayAbsMax
+                                       mathArrayAbsMin, mathArrayAbsMax, mathArraySum
    USE moduleFileDefinition
    USE moduleIOArrayManagement, ONLY : ioArrayWrite
 #ifdef _REAL_
@@ -121,10 +121,10 @@ MODULE moduleArray
 
    PUBLIC :: arrayArrayMin, arrayArrayMax, &
 #ifdef _REAL_
-             arrayArrayNorm1, arrayArrayNorm2, arrayArrayNormInfinity, arrayArrayNorm, arrayArraySqrt, arrayArraySum, &
+             arrayArrayNorm1, arrayArrayNorm2, arrayArrayNormInfinity, arrayArrayNorm, arrayArraySqrt, &
              arrayArrayScale, &
 #endif
-             arrayArrayAbsMin, arrayArrayAbsMax
+             arrayArrayAbsMin, arrayArrayAbsMax, arrayArraySum
 
    PUBLIC :: arrayIOWrite
 #ifdef _REAL_
@@ -1974,29 +1974,6 @@ MODULE moduleArray
 
   END FUNCTION
 
-! Procedure 4 : sum(xi)
-! ---------------------
-  FUNCTION arrayArraySum(targetArray) RESULT(val)
-
-!     Declaration
-!     - - - - - - -
-      VARType :: val
-
-!     Pointer filling procedure
-!     - - - - - - - - - - - - -
-      TYPE(arrayType), INTENT(IN) :: targetArray
-      CALL setWorkingArray(targetArray)
-
-!     Body
-!     - - -
-      val = mathArraySum()
-
-!     Nullify pointer
-!     - - - - - - - -
-      CALL nullifyArrayPointer()
-
-  END FUNCTION
-
 ! Procedure 5 : make sqrt of all values
 ! -------------------------------------
   SUBROUTINE arrayArraySqrt(targetArray)
@@ -2072,6 +2049,30 @@ MODULE moduleArray
 
   END FUNCTION
 #endif
+
+! Procedure 4 : sum(xi)
+! ---------------------
+  FUNCTION arrayArraySum(targetArray) RESULT(val)
+
+!     Declaration
+!     - - - - - - -
+      VARType :: val
+
+!     Pointer filling procedure
+!     - - - - - - - - - - - - -
+      TYPE(arrayType), INTENT(IN) :: targetArray
+      CALL setWorkingArray(targetArray)
+
+!     Body
+!     - - -
+      val = mathArraySum()
+
+!     Nullify pointer
+!     - - - - - - - -
+      CALL nullifyArrayPointer()
+
+  END FUNCTION
+
 
 ! Procedure 8 : min value
 ! -----------------------

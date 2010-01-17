@@ -8,3 +8,6 @@ rm -f $divaDir/Bin/testMesh.a
 $divaDir/compileAndLinkFile testMesh 
 mv testMesh.a $divaDir/Bin
 
+rm -f $divaDir/Bin/g.a
+$divaDir/compileAndLinkFile g
+mv g.a $divaDir/Bin

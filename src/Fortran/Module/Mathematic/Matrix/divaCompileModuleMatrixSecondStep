@@ -3,8 +3,8 @@
 rm -f *.o
 rm -f *.mod
 
-libName=libMatrix$compiler.a
-export libName
+#libName=libMatrix$compiler.a
+#export libName
 
 # Compilation of : MatrixReal4
 # ============================

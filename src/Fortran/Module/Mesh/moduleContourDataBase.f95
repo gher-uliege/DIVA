@@ -14,6 +14,7 @@ MODULE moduleContourDataBase
 
 ! Include file
 ! ============
+   USE moduleContourProcedure
    USE moduleGenericTypeDataBaseDefinition
    USE moduleGenericDataBase, ONLY : dataBaseCreateBaseContour => dataBaseCreateBase, &
                                      dataBaseCreateWithDimensionContour => dataBaseCreateWithDimension, &
@@ -40,6 +41,7 @@ MODULE moduleContourDataBase
                                      dataBasePushBackElementContour => dataBasePushBackElement, &
                                      dataBaseFastPushBackElementContour => dataBaseFastPushBackElement, &
                                      dataBaseGetPointerOnLastValueContour => dataBaseGetPointerOnLastValue
+
 
 ! Rem. : redirection of function pointer xxxContour => xxx needed for intel compiler (not for g95 or gfortran)
 

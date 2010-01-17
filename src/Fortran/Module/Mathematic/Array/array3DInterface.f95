@@ -30,7 +30,7 @@ MODULE array3DInterface
                            arrayArrayFastInsertValueInteger2 => arrayArrayFastInsertValue, &
                            arrayArrayFastAddValueInteger2 => arrayArrayFastAddValue, &
                            arraySetIncreaseSizeInteger2 => arraySetIncreaseSize, &
-                           arrayDestructorInteger2 => arrayDestructor, &
+                           arrayDestructorInteger2 => arrayDestructor, arrayArraySumInteger2 => arrayArraySum, &
                            arrayPrintInformationInteger2 => arrayPrintInformation, &
                            arrayCreateBaseInteger2 => arrayCreateBase, &
                            arrayCreateWithDimensionInteger2 => arrayCreateWithDimension, &
@@ -67,7 +67,7 @@ MODULE array3DInterface
                            arrayArraySetToZeroInteger4 => arrayArraySetToZero, &
                            arrayArraySetToValueInteger4 => arrayArraySetToValue, &
                            arrayArrayInsertValueInteger4 => arrayArrayInsertValue, &
-                           arrayArrayAddValueInteger4 => arrayArrayAddValue, &
+                           arrayArrayAddValueInteger4 => arrayArrayAddValue, arrayArraySumInteger4 => arrayArraySum, &
                            arrayArrayFastInsertValueInteger4 => arrayArrayFastInsertValue, &
                            arrayArrayFastAddValueInteger4 => arrayArrayFastAddValue, &
                            arraySetIncreaseSizeInteger4 => arraySetIncreaseSize, &
@@ -105,7 +105,7 @@ MODULE array3DInterface
                            arrayGetValuesInteger8 => arrayGetValues,  arrayGetValueInteger8 => arrayGetValue, &
                            arrayGetAllocationStatusInteger8 => arrayGetAllocationStatus, &
                            arrayGetPointerOnValueInteger8 => arrayGetPointerOnValue, &
-                           arrayArraySetToZeroInteger8 => arrayArraySetToZero, &
+                           arrayArraySetToZeroInteger8 => arrayArraySetToZero, arrayArraySumInteger8 => arrayArraySum, &
                            arrayArraySetToValueInteger8 => arrayArraySetToValue, &
                            arrayArrayInsertValueInteger8 => arrayArrayInsertValue, &
                            arrayArrayAddValueInteger8 => arrayArrayAddValue, &
@@ -296,7 +296,8 @@ MODULE array3DInterface
    END INTERFACE
 
    INTERFACE arraySum
-      MODULE PROCEDURE arrayArraySumReal8, arrayArraySumReal4
+      MODULE PROCEDURE arrayArraySumReal8, arrayArraySumReal4, &
+                       arrayArraySumInteger2, arrayArraySumInteger4, arrayArraySumInteger8
    END INTERFACE
 
    INTERFACE arrayMin

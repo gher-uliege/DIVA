@@ -317,6 +317,7 @@ MODULE moduleGenericTypeDataBase1D
       CALL memorySetSize(oldSize+addDimX)
       CALL memoryAllocateDataBase()
       CALL memorySetSize(oldSize)
+      CALL memoryDefineLastIndex()
 
 !     Nullify pointer
 !     - - - - - - - -

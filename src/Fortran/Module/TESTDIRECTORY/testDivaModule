@@ -7,10 +7,10 @@ echo ================================
 rm -f ./testing.log
 rm -f *.$OSused
 
-_WITH_IO_=0 ; export _WITH_IO_
-_WITH_VECTOR_=0 ; export _WITH_MATH_
-_WITH_MATRIX_=0 ; export _WITH_DIVA_ 
-_WITH_ARRAY_=0 ; export _WITH_DIVA_ 
+_WITH_IO_=1 ; export _WITH_IO_
+_WITH_VECTOR_=1 ; export _WITH_MATH_
+_WITH_MATRIX_=1 ; export _WITH_DIVA_ 
+_WITH_ARRAY_=1 ; export _WITH_DIVA_ 
 _WITH_MESH_=1 ; export _WITH_MESH_
 
 _OTHER_=0 ; export _OTHER_

@@ -60,6 +60,9 @@ SUBROUTINE printInformation(output,ptr)
       WRITE(output,*)    '   node1  = ', ptr%node1
       WRITE(output,*)    '   node2  = ', ptr%node2
       WRITE(output,*)    '   node3  = ', ptr%node3
+      WRITE(output,*)    '   neighbor1  = ', ptr%neighbor1
+      WRITE(output,*)    '   neighbor2  = ', ptr%neighbor2
+      WRITE(output,*)    '   neighbor3  = ', ptr%neighbor3
       WRITE(output,*)    ' '
 
 END SUBROUTINE
@@ -79,6 +82,9 @@ SUBROUTINE initialise(ptrTarget,indexValue)
       ptrTarget%node1 = 0
       ptrTarget%node2 = 0
       ptrTarget%node3 = 0
+      ptrTarget%neighbor1 = 0
+      ptrTarget%neighbor2 = 0
+      ptrTarget%neighbor3 = 0
 
 END SUBROUTINE
 

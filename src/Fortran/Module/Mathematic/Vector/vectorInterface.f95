@@ -49,7 +49,7 @@ MODULE vectorInterface
                            arrayGetIncreaseSizeXInteger2 => arrayGetIncreaseSizeX, &
                            arraySetIncreaseSizeXInteger2 => arraySetIncreaseSizeX, &
                            arrayArrayMinInteger2 => arrayArrayMin, arrayIOWriteInteger2 => arrayIOWrite, &
-                           arrayArrayMaxInteger2 => arrayArrayMax, &
+                           arrayArrayMaxInteger2 => arrayArrayMax, arrayArraySumInteger2 => arrayArraySum, &
                            arrayArrayAbsMinInteger2 => arrayArrayAbsMin, &
                            arrayArrayAbsMaxInteger2 => arrayArrayAbsMax, arrayArrayPutInInteger2 => arrayArrayPutIn, &
                            arrayOptimizeInteger2 => arrayOptimize, arrayArraySetValueInteger2 => arrayArraySetValue, &
@@ -80,7 +80,7 @@ MODULE vectorInterface
                            arrayGetIncreaseSizeInteger4 => arrayGetIncreaseSize, &
                            arrayGetFirstIndexXInteger4 => arrayGetFirstIndexX, &
                            arrayGetLastIndexXInteger4 => arrayGetLastIndexX, &
-                           arrayGetSizeXInteger4 => arrayGetSizeX, &
+                           arrayGetSizeXInteger4 => arrayGetSizeX, arrayArraySumInteger4 => arrayArraySum, &
                            arrayGetAllocatedSizeXInteger4 => arrayGetAllocatedSizeX , &
                            arrayGetIncreaseSizeXInteger4 => arrayGetIncreaseSizeX, &
                            arraySetIncreaseSizeXInteger4 => arraySetIncreaseSizeX, &
@@ -108,7 +108,7 @@ MODULE vectorInterface
                            arrayCreateBaseInteger8 => arrayCreateBase, &
                            arrayCreateWithDimensionInteger8 => arrayCreateWithDimension, &
                            arrayCreateWithDimensionAndFirstIndexInteger8 => arrayCreateWithDimensionAndFirstIndex, &
-                           arraySetSizeInteger8 => arraySetSize, &
+                           arraySetSizeInteger8 => arraySetSize, arrayArraySumInteger8 => arrayArraySum, &
                            arrayGetFirstIndexInteger8 => arrayGetFirstIndex, &
                            arrayGetLastIndexInteger8 => arrayGetLastIndex, &
                            arrayGetSizeInteger8 => arrayGetSize, &
@@ -272,7 +272,8 @@ MODULE vectorInterface
    END INTERFACE
 
    INTERFACE vectorSum
-      MODULE PROCEDURE arrayArraySumReal8, arrayArraySumReal4
+      MODULE PROCEDURE arrayArraySumReal8, arrayArraySumReal4, &
+                       arrayArraySumInteger2, arrayArraySumInteger4, arrayArraySumInteger8
    END INTERFACE
 
    INTERFACE vectorMin

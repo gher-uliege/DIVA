@@ -27,11 +27,11 @@ MODULE moduleMathematicArray3D
 !  General part
 !  ------------
 #ifdef _REAL_
-   PUBLIC :: mathArrayNorm1, mathArrayNorm2, mathArrayNormInfinity, mathArraySqrt, mathArraySum, &
+   PUBLIC :: mathArrayNorm1, mathArrayNorm2, mathArrayNormInfinity, mathArraySqrt, &
              mathArrayScale
 #endif
 
-   PUBLIC :: mathArrayMin, mathArrayMax, mathArrayAbsMin, mathArrayAbsMax
+   PUBLIC :: mathArrayMin, mathArrayMax, mathArrayAbsMin, mathArrayAbsMax, mathArraySum
 
 ! ============================================================
 ! ============================================================
@@ -123,31 +123,6 @@ MODULE moduleMathematicArray3D
       ptr =>  memoryGetValues()
 
       val = maxval(abs(ptr(istartX:iendX,istartY:iendY,istartZ:iendZ)))
-
-  END FUNCTION
-
-! Procedure 4 : sum(xi)
-! ---------------------
-  FUNCTION mathArraySum() RESULT(val)
-
-!     Declaration
-!     - - - - - -
-      INTEGER :: istartX, iendX, istartY, iendY, istartZ, iendZ
-      VARType :: val
-      VARType, DIMENSION(:,:,:), POINTER :: ptr
-
-!     Body
-!     - - -
-      istartX = memoryGetFirstIndexX()
-      iendX = memoryGetLastIndexX()
-      istartY = memoryGetFirstIndexY()
-      iendY = memoryGetLastIndexY()
-      istartZ = memoryGetFirstIndexZ()
-      iendZ = memoryGetLastIndexZ()
-
-      ptr =>  memoryGetValues()
-
-      val = sum(ptr(istartX:iendX,istartY:iendY,istartZ:iendZ))
 
   END FUNCTION
 
@@ -299,6 +274,31 @@ MODULE moduleMathematicArray3D
       ptr =>  memoryGetValues()
 
       val = maxval(abs(ptr(istartX:iendX,istartY:iendY,istartZ:iendZ)))
+
+  END FUNCTION
+
+! Procedure 4 : sum(xi)
+! ---------------------
+  FUNCTION mathArraySum() RESULT(val)
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: istartX, iendX, istartY, iendY, istartZ, iendZ
+      VARType :: val
+      VARType, DIMENSION(:,:,:), POINTER :: ptr
+
+!     Body
+!     - - -
+      istartX = memoryGetFirstIndexX()
+      iendX = memoryGetLastIndexX()
+      istartY = memoryGetFirstIndexY()
+      iendY = memoryGetLastIndexY()
+      istartZ = memoryGetFirstIndexZ()
+      iendZ = memoryGetLastIndexZ()
+
+      ptr =>  memoryGetValues()
+
+      val = sum(ptr(istartX:iendX,istartY:iendY,istartZ:iendZ))
 
   END FUNCTION
 

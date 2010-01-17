@@ -14,6 +14,7 @@ MODULE moduleLineDataBase
 
 ! Include file
 ! ============
+   USE moduleLineProcedure
    USE moduleGenericTypeDataBaseDefinition
    USE moduleGenericDataBase, ONLY : dataBaseCreateBaseLine => dataBaseCreateBase, &
                                      dataBaseCreateWithDimensionLine => dataBaseCreateWithDimension, &
