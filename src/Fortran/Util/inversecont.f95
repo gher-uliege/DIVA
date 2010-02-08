@@ -13,7 +13,7 @@
 
       IMPLICIT NONE
 
-      INTEGER*4 NMAX,MMAX,NCMAX
+      INTEGER(KIND=4) ::  NMAX,MMAX,NCMAX
 
       PARAMETER(NMAX=400000,MMAX=400000,NCMAX=1000)
 
@@ -21,11 +21,11 @@
 !C     MMAX: MAXIMAL NUMBER OF MESHS
 !C     NCMAX: MAXIMAL NUMBER OF CONTOURS
 
-      REAL*4 X(NMAX),Y(NMAX)
+      REAL(KIND=4) ::  X(NMAX),Y(NMAX)
 
-      INTEGER*4 I,J,K,N,NC
-      INTEGER*4 MP,PPTC(NCMAX)
-      INTEGER*4 NR,P,jj,nskip
+      INTEGER(KIND=4) ::  I,J,K,N,NC
+      INTEGER(KIND=4) ::  MP,PPTC(NCMAX)
+      INTEGER(KIND=4) ::  NR,P,jj,nskip
       character*13 invcoastname
       
       invcoastname='coastinv.cont'
@@ -49,11 +49,11 @@
 !C     READ THE NUMBER OF POINTS IN THE FIRST CONTOUR
        READ(10,*) N
        PPTC(I)=N
-!C       print *,'number of points in the contour nø ', I
+!C       print *,'number of points in the contour nï¿½ ', I
 !C       print *,'=',N
        
        WRITE(20,*) N
-!C     LOOP ON Nø CONTOUR POINTS
+!C     LOOP ON Nï¿½ CONTOUR POINTS
        DO 40 K=1,N
           J=J+1
 !C         READ COORDINATES POINTS

@@ -1,6 +1,6 @@
 !C Template for calculating relative length scale based on data coverage
 !C
-             PARAMETER(IW=15000000)
+             integer, PARAMETER :: IW=15000000
              REAL*4 C(IW)
              REAL*8 C8,RRR
              read(5,*) nx,ny,valex

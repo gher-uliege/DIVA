@@ -1,14 +1,17 @@
 !
       PROGRAM DIVASTORE
 !
+      USE ioInterface
       implicit none
+      
+      
 !
 !---------------------------------------------------------------------!
 !
       INTEGER :: ivar, istep,MINLEV,MAXLEV
       INTEGER :: step,ichge
 !
-      real*8                           :: W8
+      real*8, DIMENSION(1)                  :: W8
       REAL*4, DIMENSION(:) ,    ALLOCATABLE :: U,U3,W3
 !
       REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: z_watercolumn,  Z, dep
@@ -23,8 +26,8 @@
 !
       integer            :: i,j,k,klev,ic,top_lev,kuw,kwu,ipar,iparpar
       integer                   :: NX, NY, NK, ndata, nl,chlen,iun
-      integer*4                 :: KMAX, ipr, nw, IMAX, JMAX
-!!      integer                 :: KMAX, ipr, nw, IMAX, JMAX
+!!      integer*4                 :: KMAX, ipr, nw, IMAX, JMAX
+      integer                 :: KMAX, ipr, nw, IMAX, JMAX
       integer                   :: ICOOC, IREG, ISPEC
       integer                   :: nm,xm1,xm2,xy1,xy2
 !
@@ -821,6 +824,10 @@
 !
 
         subroutine jmbround(x1,x2,x1r,x2r)
+        
+        INTEGER(KIND=4) :: ip, i1neg, i2neg,i1s,i2s
+        REAL(KIND=4) :: x1,x2,x1r,x2r
+        
         if(x1.ge.x2) then
 !        write(6,*) 'Sorry only for range'
         x1r=x1

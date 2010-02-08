@@ -1,5 +1,5 @@
-      parameter(nmax=10000000)
-      real*4 topo(nmax)
+      integer, parameter ::  nmax=10000000
+      REAL(KIND=4) ::  topo(nmax)
       read(10,*) x1
       read(10,*) y1
       read(10,*) dx
@@ -25,8 +25,8 @@
       INTEGER IMAX,JMAX
       REAL*4 A(IMAX,JMAX)
 
-      real*8 valex8
-      real*4 valex
+      REAL(KIND=8) ::  valex8
+      REAL(KIND=4) ::  valex
       read(11,*) 
       read(11,*) 
       read(11,*) 
@@ -63,10 +63,10 @@
 !cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 !c
       PARAMETER(KBLANC=10)
-      real*4 c4(*)
-      real*8 c8(*)
-      real*8 valex8
-      real*4 valexc
+      REAL(KIND=4) ::  c4(*)
+      REAL(KIND=8) ::  c8(*)
+      REAL(KIND=8) ::  valex8
+      REAL(KIND=4) ::  valexc
 !c in the calling routin you can specify the following equivalence to
 !c save memory space:
 !c      equivalence(c,c4)

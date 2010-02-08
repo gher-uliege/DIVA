@@ -96,7 +96,7 @@ rm ./$fileToCheck.a
 # --------------------------
 
 fileToCheck=testRead
-action=eval
+
 echo Test : $fileToCheck
 echo ------
 echo Test : $fileToCheck >> testing.log

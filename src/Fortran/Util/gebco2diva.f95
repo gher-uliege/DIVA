@@ -1,4 +1,4 @@
-      parameter(idata=5000000)
+      integer, parameter :: idata=5000000
       real*4 c(idata)
       real*8 valex8
       valex8=-99999

@@ -65,7 +65,7 @@ echo =================================
 echo ' '
 
 cd $baseDir/SparseMatrix
-./divaCompileModuleSparseMatrix
+#./divaCompileModuleSparseMatrix
 
 cd $baseDir
 

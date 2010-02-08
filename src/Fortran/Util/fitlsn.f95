@@ -1,9 +1,9 @@
         integer nm
         parameter(nm=5000000)
         
-        real*8 x(nm),y(nm),d(nm),work(nm)
-        real*8 w2(nm),w3(nm)
-        real*8 iw(nm),dmin,dmax,rqual
+        REAL(KIND=8) ::  x(nm),y(nm),d(nm),work(nm)
+        REAL(KIND=8) ::  w2(nm),w3(nm)
+        REAL(KIND=8) ::  iw(nm),dmin,dmax,rqual
         write(6,*) ' Into fitting '
         
         icoord=0
@@ -73,7 +73,7 @@
         stop
         end
         subroutine changec(x,y,n,icoord)
-        real*8 x(n),y(n)
+        REAL(KIND=8) ::  x(n),y(n)
         xmin=1E30
         xmax=-xmin
         ymin=xmin
@@ -98,17 +98,17 @@
         
         subroutine lfit(x,y,d,n,rl,sn,varbak,work,w2,w3,iw,icoord,rcoord,nsamp,rqual)
 
-        real*8 x(n),y(n),d(n)
-        real*8 work(n),maxdist
-        real*8 w2(n),w3(n)
-        real*8 variance,datavar
-        real*8 iw(n)
-        real*8 meandist,rjjj,datamean,rjjjbis
-        real*8 dist,rnbins,rn,rqual
-        real*4 randf
+        REAL(KIND=8) ::  x(n),y(n),d(n)
+        REAL(KIND=8) ::  work(n),maxdist
+        REAL(KIND=8) ::  w2(n),w3(n)
+        REAL(KIND=8) ::  variance,datavar
+        REAL(KIND=8) ::  iw(n)
+        REAL(KIND=8) ::  meandist,rjjj,datamean,rjjjbis
+        REAL(KIND=8) ::  dist,rnbins,rn,rqual
+        REAL(KIND=4) ::  randf
         parameter(nopt=64000)
         parameter(nop=10000)
-        real*4 distcouples(nop*nop/2)
+        REAL(KIND=4) ::  distcouples(nop*nop/2)
         integer*4 icouples(nop*nop/2)
         integer*4 jcouples(nop*nop/2)
        if(nsamp.ne.0) then
@@ -387,9 +387,9 @@
         end
         
         subroutine forfit(x0,dx,c,w2,n,RL,VAR,err,iwr,w3)
-        real*8 c(n)
-        real*8 w2(n),w3(n),ww3
-        real*8 bessk1
+        REAL(KIND=8) ::  c(n)
+        REAL(KIND=8) ::  w2(n),w3(n),ww3
+        REAL(KIND=8) ::  bessk1
 !C        write(6,*) RL,dx,n,var
         err=0
         errb=0
@@ -425,8 +425,8 @@
         
       function bessk1(X)
       
-      implicit real*8 (a-h,o-z)
-      real*4 x
+      implicit REAL(KIND=8) (a-h,o-z)
+      REAL(KIND=4) ::  x
       DATA P1,P2,P3,P4,P5,P6,P7/1.0D0,0.15443144D0,-0.67278579D0,-0.18156897D0,-0.1919402D-1,-0.110404D-2,-0.4686D-4/
       DATA Q1,Q2,Q3,Q4,Q5,Q6,Q7/1.25331414D0,0.23498619D0,-0.3655620D-1,0.1504268D-1,-0.780353D-2,0.325614D-2,-0.68245D-3/
 
@@ -447,8 +447,8 @@
 !C=========================================================================
       function bessi1(X)
 
-            implicit real*8 (a-h,o-z)
-            real*4 x
+            implicit REAL(KIND=8) (a-h,o-z)
+            REAL(KIND=4) ::  x
 
       DATA P1,P2,P3,P4,P5,P6,P7/0.5D0,0.87890594D0,0.51498869D0,0.15084934D0,0.2658733D-1,0.301532D-2,0.32411D-3/
       DATA Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9/0.39894228D0,-0.3988024D-1,-0.362018D-2,0.163801D-2,-0.1031555D-1,0.2282967D-1, &
@@ -471,7 +471,7 @@
 
       PARAMETER (NP = 5)
 
-      real*8 x(NDATA),y(ndata),dd(ndata)
+      REAL(KIND=8) ::  x(NDATA),y(ndata),dd(ndata)
       REAL*8 XMEAN,TOTDAT,SX,SY,SXY,SX2,SY2,SV,SXV,SYV
       REAL*4 A(NP,NP), B(NP)
 
@@ -554,7 +554,8 @@
 
       SUBROUTINE LUDCMP(A,N,NP,INDX,D)
       PARAMETER (NMAX=100,TINY=1.0E-20)
-      DIMENSION A(NP,NP),INDX(N),VV(NMAX)
+      integer*4 INDX(N)
+      DIMENSION A(NP,NP),VV(NMAX)
       D=1.
       DO 12 I=1,N
         AAMAX=0.
@@ -638,7 +639,8 @@
 !C ----------------------------------------------
 
       SUBROUTINE LUBKSB(A,N,NP,INDX,B)
-      DIMENSION A(NP,NP),INDX(N),B(N)
+      integer*4 INDX(N)
+      DIMENSION A(NP,NP),B(N)
       II=0
       DO 12 I=1,N
         LL=INDX(I)
@@ -666,8 +668,8 @@
       END
       
        subroutine greatarc(rlon1,rlat1,rlon2,rlat2,dist)
-       real*8 lon1,lon2,lat1,lat2,torad
-       real*8 rlon1,rlon2,rlat1,rlat2,dist
+       REAL(KIND=8) ::  lon1,lon2,lat1,lat2,torad
+       REAL(KIND=8) ::  rlon1,rlon2,rlat1,rlat2,dist
        torad=3.14159/180.
        lon1=rlon1*torad
        lat1=rlat1*torad

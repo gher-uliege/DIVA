@@ -1,6 +1,9 @@
 !
       PROGRAM ADDVAR
 !
+      USE moduleStabil
+      USE ioInterface
+      
       implicit none
 !
 !----------------------------------------------------------------------
@@ -9,7 +12,7 @@
 !
       DOUBLE PRECISION :: lon,lat,val
 !
-      real*8                           :: W8
+      real*8, DIMENSION(1)                  :: W8
       REAL*4, DIMENSION(:) ,    ALLOCATABLE :: U
 !
 ! Depth distribution
@@ -56,7 +59,8 @@
 !
       integer                   :: surface_lev,top_lev,icdf
       integer                   :: NX, NY, NK
-      integer*4                   :: KMAX, ipr, nw, IMAX, JMAX
+!!      integer*4                 :: KMAX, ipr, nw, IMAX, JMAX
+      integer                 :: KMAX, ipr, nw, IMAX, JMAX
       integer                   :: CL_i,CL_j
       integer                   :: isq, jsq, itrack
       real                      :: VALEXU, M_width
@@ -432,7 +436,7 @@
         istep = k + layer - 1
         DO ivar = 1,2
 !
-          WRITE(VARFILEIN,&'(a,".1",i4.4,".error")')TRIM(var_name(ivar)),istep
+          WRITE(VARFILEIN,'(a,".1",i4.4,".error")')TRIM(var_name(ivar)),istep
           WRITE(file_name,'("../output/3Danalysis/Fields/",a)')TRIM(VARFILEIN)
 !
            close(84)

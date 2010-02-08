@@ -49,6 +49,7 @@ MODULE moduleCoordinateInformation
              initialise, computeMeanLatitude, computeMeanLongitude, &
              getGmshWithCoastRefinement, &
              shiftMinimumLongitude, shiftMinimumLatitude, shiftMaximumLongitude, shiftMaximumLatitude, &
+             unshiftMinimumLongitude, unshiftMinimumLatitude, unshiftMaximumLongitude, unshiftMaximumLatitude, &
              computeDimensionLessLength
 
 
@@ -595,6 +596,46 @@ SUBROUTINE computeDimensionLessLength()
 !     - - -
 
       dimensionLessLength = 1.0D+0 * max(maxLongitude-minLongitude, maxLatitude-minLatitude)
+
+END SUBROUTINE
+
+! Procedure 9 : unshift minimum longitude
+! ------------------------------------
+SUBROUTINE unshiftMinimumLongitude()
+
+!     Body
+!     - - -
+      minLongitude =  minLongitude * dimensionLessLength + meanXCoordinate 
+
+END SUBROUTINE
+
+! Procedure 10 : unshift maximum longitude
+! ------------------------------------
+SUBROUTINE unshiftMinimumLatitude()
+
+!     Body
+!     - - -
+      minLatitude = minLatitude * dimensionLessLength + meanXCoordinate 
+
+END SUBROUTINE
+
+! Procedure 11 : unshift minimum latitude
+! ------------------------------------
+SUBROUTINE unshiftMaximumLongitude()
+
+!     Body
+!     - - -
+      maxLongitude = maxLongitude * dimensionLessLength + meanXCoordinate
+
+END SUBROUTINE
+
+! Procedure 12 : unshift maximum latitude
+! ------------------------------------
+SUBROUTINE unshiftMaximumLatitude()
+
+!     Body
+!     - - -
+      maxLatitude = maxLatitude * dimensionLessLength + meanXCoordinate
 
 END SUBROUTINE
 

@@ -539,6 +539,7 @@ MODULE moduleReadGHER
 
       INTEGER :: ival, i1, i2, i3
       VARType :: origin, dx, dy, dz
+      VARType :: dxx, dyy, dzz
 
       origin = 0.
       dx = 0.
@@ -576,7 +577,17 @@ MODULE moduleReadGHER
       DO i3 = 1, nbOfDataK
         DO i1 = 1, nbOfDataI
           DO i2 = 1, nbOfDataJ
-           entries(ival) = origin + (i1-1) * dx + (i2-1) * dy + (i3-1) * dz
+#ifdef _REAL4_
+           dxx = REAL((i1-1),KIND=4) * dx
+           dyy = REAL((i2-1),KIND=4) * dy
+           dzz = REAL((i3-1),KIND=4) * dz
+#endif          
+#ifdef _REAL8_
+           dxx = REAL((i1-1),KIND=8) * dx
+           dyy = REAL((i2-1),KIND=8) * dy
+           dzz = REAL((i3-1),KIND=8) * dz
+#endif          
+           entries(ival) = origin + dxx + dyy + dzz
            ival = ival + ione
         END DO
        END DO

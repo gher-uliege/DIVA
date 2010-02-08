@@ -4,7 +4,10 @@
 # ======================================
 compiler=g95
 
-flag='-O3 -Wall -Wimplicit-none -pedantic -fbounds-check -ftrace=full -march=pentium4 -finteger=0 -freal=zero -fpointer=null'
+flag='-O0'
+#flag='-O3 -pedantic -fbounds-check -ftrace=full -finteger=0 -freal=zero -fpointer=null'
+
+#flag='-O3 -Wall -Wimplicit-none -pedantic -fbounds-check -ftrace=full -finteger=0 -freal=zero -fpointer=null'
 #flag='-O3 -Wall -Wimplicit-none -pedantic -fbounds-check -ftrace=full -Wno-unused-vars -Wno-unset-vars -march=pentium4 -finteger=0 -freal=zero -fpointer=null'
 
 export compiler
@@ -20,28 +23,6 @@ export preprocessor
 export preprocessorFlag
 
 
-# Definition of the library directory
-# ====================================
-libraryDir='-I'$divaModuleLib
-libraryObj=$divaModuleLib/*.o
-
-export libraryDir
-export libraryObj
-
-# Definition of the library directory
-# ====================================
-libraryMod='-I'$divaModuleMod
-libraryPath='-L'$divaModuleLib
-libraryLink='-ldiva'$compiler
-libraryLink=$libraryLink' -lCommonDiva'$compiler
-libraryLink=$libraryLink' -lMath'$compiler
-libraryLink=$libraryLink' -lVector'$compiler
-libraryLink=$libraryLink' -lMatrix'$compiler
-libraryLink=$libraryLink' -lArray'$compiler
-libraryLink=$libraryLink' -lSparseMatrix'$compiler
-libraryLink=$libraryLink' -lIO'$compiler
-#libraryLink=$libraryLink' -lMesh'$compiler
-
-export libraryMod
-export libraryPath
-export libraryLink
+# Definition of the library
+# =========================
+source ./defineLibrary

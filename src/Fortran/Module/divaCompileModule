@@ -15,7 +15,9 @@ _WITH_COMMON_=0 ; export _WITH_COMMON_
 _WITH_IO_=0 ; export _WITH_IO_
 _WITH_MATH_=0 ; export _WITH_MATH_
 _WITH_DIVA_=0 ; export _WITH_DIVA_ 
-_WITH_MESH_=1 ; export _WITH_MESH_
+_WITH_MESH_=0 ; export _WITH_MESH_
+_WITH_STABIL_=0 ; export _WITH_STABIL_
+_WITH_CALC_=1 ; export _WITH_CALC_
 
 
 rm -f $divaModuleLib/*.o
@@ -23,6 +25,7 @@ rm -f $divaModuleLib/*.o
 #libName=libDiva$compiler.a
 #export libName
 #rm -f $divaModuleLib/$libName
+#rm -f $divaModuleLib/*.a
 
 # Compilation of Common module
 # =============================
@@ -58,6 +61,24 @@ if [ $_WITH_MESH_ == 1 ]
 then
 cd $baseDir/Mesh
 ./divaCompileModuleMesh
+fi
+
+# Compilation of Stabil module
+# ============================
+
+if [ $_WITH_STABIL_ == 1 ]
+then
+cd $baseDir/Stabil
+./divaCompileModuleStabil
+fi
+
+# Compilation of Calc module
+# ============================
+
+if [ $_WITH_CALC_ == 1 ]
+then
+cd $baseDir/Calc
+./divaCompileModuleCalc
 fi
 
 # Compilation of General module

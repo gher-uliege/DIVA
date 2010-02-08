@@ -1,7 +1,6 @@
-        integer iw
-        parameter(iw=1000000)
-        real*4 cv(iw),cvf(iw),w(iw)
-        real*4 w1(iw),w2(iw),w3(iw),w4(iw),w5(iw)
+        integer, parameter :: iw=1000000
+        REAL(KIND=4) ::  cv(iw),cvf(iw),w(iw)
+        REAL(KIND=4) ::  w1(iw),w2(iw),w3(iw),w4(iw),w5(iw)
         
         
         read(5,*) nsamp,nlayer
@@ -11,14 +10,14 @@
         stop
         end
         subroutine filtercv(cv,cvf,w,ns,nl,w1,w2,w3,w4,w5)
-        real*4 cv(ns,nl)
-        real*4 cvf(ns,nl)
-        real*4 w(ns,nl)
-        real*4 w1(ns,nl)
-        real*4 w2(ns,nl)
-        real*4 w3(ns,nl)
-        real*4 w4(ns,nl)
-        real*4 w5(ns,nl)
+        REAL(KIND=4) ::  cv(ns,nl)
+        REAL(KIND=4) ::  cvf(ns,nl)
+        REAL(KIND=4) ::  w(ns,nl)
+        REAL(KIND=4) ::  w1(ns,nl)
+        REAL(KIND=4) ::  w2(ns,nl)
+        REAL(KIND=4) ::  w3(ns,nl)
+        REAL(KIND=4) ::  w4(ns,nl)
+        REAL(KIND=4) ::  w5(ns,nl)
         do j=1,nl
          do i=1,ns
          read(20,*,end=99,err=99) w1(i,j),cv(i,j),w2(i,j),w3(i,j),w4(i,j),w5(i,j),w(i,j)

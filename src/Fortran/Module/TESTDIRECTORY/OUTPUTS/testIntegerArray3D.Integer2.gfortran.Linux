@@ -1922,7 +1922,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
- The array containing            3  x            3  x            3 values with the exclusion value   1.0000000E+12  will not be saved
+ The array containing            3  x            3  x            3 values with the exclusion value   9.99999996E+11  will not be saved
   
  checkArrayMin
  ==============
@@ -2500,7 +2500,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
- The array containing            3  x            3  x            3 values with the exclusion value   1.0000000E+12  will not be saved
+ The array containing            3  x            3  x            3 values with the exclusion value   9.99999996E+11  will not be saved
   
  checkArrayMin
  ==============
@@ -3078,7 +3078,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
- The array containing            3  x            3  x            3 values with the exclusion value   1.0000000E+12  will not be saved
+ The array containing            3  x            3  x            3 values with the exclusion value   9.99999996E+11  will not be saved
   
  checkArrayMin
  ==============
@@ -3656,7 +3656,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
- The array containing            3  x            3  x            3 values with the exclusion value   1.0000000E+12  will not be saved
+ The array containing            3  x            3  x            3 values with the exclusion value   9.99999996E+11  will not be saved
   
  checkArrayMin
  ==============
@@ -4234,7 +4234,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
- The array containing            3  x            3  x            3 values with the exclusion value   1.0000000E+12  will not be saved
+ The array containing            3  x            3  x            3 values with the exclusion value   9.99999996E+11  will not be saved
   
  checkArrayMin
  ==============
@@ -4812,7 +4812,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
- The array containing            3  x            3  x            3 values with the exclusion value   1.0000000E+12  will not be saved
+ The array containing            3  x            3  x            3 values with the exclusion value   9.99999996E+11  will not be saved
   
  checkArrayMin
  ==============

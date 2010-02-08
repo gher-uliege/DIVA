@@ -9,23 +9,24 @@
 !C =  Walrave Stephane (GHER - University of Liege, 25/11/95)
 !C =====================================================================
 
-      implicit none
+USE ioInterface
+
       integer n1max
       parameter(n1max=1000000)
 !C     dimension nsom(n1max),xel(n1max),yel(n1max)
       character*12 str3
       character*20 form
       character*100 mh4,tpo,batinfo,depthname,outname,batname
-      integer kmax,nb,ipr,i,k,zero,one
+      integer kmax,nb,ipr,i,k,iizero,iione
       integer imax,jmax,nbdepth,nsom,nd1(n1max),nd2(n1max), &
              nd3(n1max),nnt1,nnint,nelt,inter,val,line(200)
       real*4 BAT(5000000),valex,depth(200),xel(n1max),                 &
             yel(n1max),zel(n1max),xsom(n1max),ysom(n1max),zsom(n1max),&
             xbatmin,xbatmax,ybatmin,ybatmax,xmax,ymax,xmin,ymin, &
             dxbat,dybat
-      real*8 c8
-      zero=0
-      one=1
+      real*8 c8(1)
+      iizero=0
+      iione=1
 
       read(5,'(A)')batname
       read(5,'(A)')mh4
@@ -111,16 +112,16 @@
       do 100 k=1,nelt
       do i=1,nbdepth
       if (zel(k) .GE. depth(i)) then
-        line(i)=one
+        line(i)=iione
       else
         val=0
         if (zsom(nd1(k)) .GE. depth(i)) val=val+1
         if (zsom(nd2(k)) .GE. depth(i)) val=val+1
         if (zsom(nd3(k)) .GE. depth(i)) val=val+1
         if (val .GE. 2) then 
-          line(i)=one   
+          line(i)=iione   
         else
-          line(i)=zero
+          line(i)=iizero
         endif 
       endif 
       enddo
@@ -133,7 +134,7 @@
 
       close(14)
 
-      end
+ CONTAINS
 
 !C***************************************************************
 
@@ -222,86 +223,6 @@
 
       z=(x*(XX1-XX2+XX3)+y*(YY2-YY1-YY3)-I)/(ZZ2-ZZ1-ZZ3)
 
-      end
+      end subroutine
 
-!C***************************************************************
-
-      Subroutine UREADC(iu,c8,c4,valexr,iprecr,imaxr,jmaxr,kmaxr,nbmotr)
-!c                ======
-!cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-!c Reads the field C(I,J,K) from fortran unit iu
-!c returns the field in the array c4 if the returned iprecr=4
-!c returns the field in the array c8 if the returned iprecr=8
-!c returns the values if imaxr,jmaxr,kmaxr found in the file
-!c
-!c JMB 6/3/91
-!cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-!c
-      PARAMETER(KBLANC=10)
-      real*4 c4(*)
-      real*8 c8(*)
-!c in the calling routin you can specify the following equivalence to
-!c save memory space:
-!c      equivalence(c,c4)
-!c      equivalence(c,c8)
-!c
-!c skip KBLANC lines
-       do 1 kb=1,KBLANC
-        read(iu,ERR=99)
- 1     continue
-!c
-        read(iu) imaxc,jmaxc,kmaxc,iprec,nbmots,valexc
-!c
-!c pass the values read to the calling routine
-        iprecr=iprec
-        imaxr=imaxc
-        jmaxr=jmaxc
-        kmaxr=kmaxc
-        nbmotr=nbmots
-        valexr=valexc
-!c
-!c compute the number of full records to read and the remaining words
-        nl=(imaxc*jmaxc*kmaxc)/nbmots
-        ir=imaxc*jmaxc*kmaxc-nbmots*nl
-        ide=0
-!c
-!c if pathological case, read only four values C0 and DCI,DCJ,DCK
-!c and return
-!c them as the two four elements of the array
-        if(imaxc.lt.0.or.jmaxc.lt.0.or.kmaxc.lt.0) then
-         nl=0
-         ir=4
-        endif
-!c
-!c
-!c single precision
-        if(iprec.eq.4) then
-         do 10 kl=1,nl
-          read(iu,ERR=99,END=100) (c4(ide+kc),kc=1,nbmots)
-          ide=ide+nbmots
- 10      continue
-          read(iu,ERR=99,END=100) (c4(ide+kc),kc=1,ir)
-                       else
-!c
-!c double precision
-        if(iprec.eq.8) then
-         do 20 kl=1,nl
-          read(iu,ERR=99,END=100) (c8(ide+kc),kc=1,nbmots)
-          ide=ide+nbmots
- 20      continue
-          read(iu,ERR=99,END=100) (c8(ide+kc),kc=1,ir)
-                       else
-           goto 99
-         endif
-         endif
-!c
-         return
- 99      continue
-         write(*,*) 'Data error in UREADC, not a conform file'
-         return
-100      continue
-         write(*,*) 'Data error in UREADC, EOF reached'
-         write(*,*)' number of values retrieved:', (kl-1)*nbmots+kc-1
-
-         return
-         end
+END PROGRAM

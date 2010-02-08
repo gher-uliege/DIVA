@@ -1,0 +1,17 @@
+preproFlag=$preproFlag' -D=_BATCH_MODE_'
+preproFlag=$preproFlag' -DINTEGERType=INTEGER(KIND=4) -DREALType=REAL(KIND=8)'
+export preproFlag
+
+for jj in `ls *.f95`
+do
+k=`basename $jj .f95`
+rm -f $divaDir/Bin/$k.a
+$divaDir/compileAndLinkFile $k
+mv $k.a $divaDir/Bin
+done
+
+if [ $compiler == ifort ]
+then
+rm -f *.mod
+rm -f *.f90
+fi

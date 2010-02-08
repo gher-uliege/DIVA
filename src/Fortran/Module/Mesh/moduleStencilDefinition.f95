@@ -16,12 +16,12 @@ USE vectorInterface
 
 TYPE stencilType
 
-  INTEGER(KIND=4) :: indexValue
+  INTEGER :: indexValue
 
   TYPE(vectorInteger4) :: stencilNode
   TYPE(vectorInteger4) :: stencilCell
-  INTEGER(KIND=4) :: lastPositionNode
-  INTEGER(KIND=4) :: lastPositionCell
+  INTEGER :: lastPositionNode
+  INTEGER :: lastPositionCell
 
 END TYPE stencilType
 

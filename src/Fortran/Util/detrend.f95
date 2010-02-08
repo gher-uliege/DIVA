@@ -1,12 +1,12 @@
-       parameter(icl=50,imax=1000000,ig=5)
+       integer, parameter :: icl=50,imax=1000000,ig=5
 !C First; data index, second: class index, third: group index
-       real*4 d(imax*icl)
-       real*4 da(imax*icl)
-       real*4 w(imax*icl)
-       integer*4 ic(icl,ig),ipoint(imax,icl,ig),indy
-       integer*4 indi(ig),ndata,iclm(ig),nd
-       real*4 rm(icl,ig),wm(icl,ig)
-       real*8 rms1,rms2,rms3
+       REAL(KIND=4) ::  d(imax*icl)
+       REAL(KIND=4) ::  da(imax*icl)
+       REAL(KIND=4) ::  w(imax*icl)
+       INTEGER(KIND=4) ::  ic(icl,ig),ipoint(imax,icl,ig),indy
+       INTEGER(KIND=4) ::  indi(ig),ndata,iclm(ig),nd
+       REAL(KIND=4) ::  rm(icl,ig),wm(icl,ig)
+       REAL(KIND=8) ::  rms1,rms2,rms3
      
        
        character*12 cn

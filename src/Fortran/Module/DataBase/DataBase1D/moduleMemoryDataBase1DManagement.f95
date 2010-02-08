@@ -100,6 +100,8 @@ MODULE moduleMemoryDataBase1DManagement
                 CALL memoryDefineLastIndex()
                 CALL memoryAllocateMemory()
                 CALL memoryTransferIntermediateDBToDB()
+            ELSE
+                CALL memoryDefineLastIndex()
             END IF
          CASE (.FALSE.)
             CALL memoryFirstAllocateMemory()

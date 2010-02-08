@@ -19,7 +19,7 @@ TYPE lineType
   TYPE(nodeType) :: startNode
   TYPE(nodeType) :: endNode
 
-  INTEGER(KIND=4) :: indexValue
+  INTEGER :: indexValue
   VARType :: characteristicLength
 
 END TYPE lineType

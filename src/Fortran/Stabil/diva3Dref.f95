@@ -1,7 +1,10 @@
 !
       PROGRAM DIVA3Dref
 !
+      USE ioInterface
       implicit none
+
+      
 !
 !------------------------------------------------------------------
 !
@@ -10,7 +13,7 @@
 !
       DOUBLE PRECISION :: lon,lat,val
 !
-      real*8                           :: W8
+      real*8, DIMENSION(1)                  :: W8
       REAL*4, DIMENSION(:) ,    ALLOCATABLE :: U,W
 !
       REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: z_watercolumn,  Z, dep
@@ -25,8 +28,8 @@
 !
       integer                   :: i,j,k,klev,ic,top_lev,kuw
       integer                   :: NX, NY, NK, ndata, nl
-      integer*4                   :: KMAX, ipr, nw, IMAX, JMAX
-!!      integer                   :: KMAX, ipr, nw, IMAX, JMAX
+!      integer*4                   :: KMAX, nw, IMAX, JMAX, ipr
+      integer                   :: KMAX, ipr, nw, IMAX, JMAX
       real*4                      :: VALEXU, zz,var_min,var_max,ver_min,ver_max,dbin_min,dbin_max
       real*4                      :: xorig, yorig, dx, dy, xend, yend
 !
@@ -269,7 +272,8 @@
       ipr=4
       close(84)
       open (unit=84,file=TRIM(divafile),form='unformatted')
-      CALL UWRITC(84,W8,W,VALEXU,IPR,IMAX,JMAX,KMAX,1)
+      nw=1
+      CALL UWRITC(84,W8,W,VALEXU,IPR,IMAX,JMAX,KMAX,nw)
 
       stop
       end

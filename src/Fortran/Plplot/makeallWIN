@@ -1,6 +1,0 @@
-for jj in `ls *.f` 
-do
-echo $jj
-f77 -O3 -mno-cygwin $jj   -o `basename $jj .f`.a
-done
-mv *.a ../../../bin

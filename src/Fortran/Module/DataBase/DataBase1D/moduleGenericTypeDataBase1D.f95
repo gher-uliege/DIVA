@@ -343,7 +343,7 @@ MODULE moduleGenericTypeDataBase1D
 
 !     Body
 !     - - -
-      i1 = memoryGetSize() + 1
+      i1 = memoryGetLastIndex() + 1
       val2 => val
       CALL memoryDataBaseInsertValue(i1,val2)
 
@@ -371,10 +371,10 @@ MODULE moduleGenericTypeDataBase1D
 
 !     Body
 !     - - -
-      i1 = memoryGetSize() + 1
+      i1 = memoryGetLastIndex() + 1
       val2 => val
       CALL memoryDataBaseFastInsertValue(i1,val2)
-      CALL memorySetSize(i1)
+      CALL memorySetSize(memoryGetSize()+1)
       CALL memoryDefineLastIndex()
 
 !     Nullify pointer

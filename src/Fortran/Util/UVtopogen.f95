@@ -1,7 +1,7 @@
-      parameter(nm=5000000)
-      real*4 topo(nm),u(nm),v(nm)
-      real*4 unn(nm),vnn(nm)
-      real*8 c8
+      integer, parameter :: nm=5000000
+      REAL(KIND=4) ::  topo(nm),u(nm),v(nm)
+      REAL(KIND=4) ::  unn(nm),vnn(nm)
+      REAL(KIND=8) ::  c8
       
       character*4 uname,vname
       character*10 un,vn
@@ -61,9 +61,9 @@
       end
       
       subroutine uvg(topo,U,V,UN,VN,M,N,z,dx,dy,valex)
-      real*4 TOPO(M,N),U(M,N),V(M,N),UN(M,N),VN(M,N)
-      real*8 c8,DMEAN
-      real*4 valex
+      REAL(KIND=4) ::  TOPO(M,N),U(M,N),V(M,N),UN(M,N),VN(M,N)
+      REAL(KIND=8) ::  c8,DMEAN
+      REAL(KIND=4) ::  valex
       
 !C Calculate mean depth
       DMEAN=0
@@ -177,8 +177,8 @@
 !C-----------------------------------------------------------------------
 !C
       PARAMETER(KBLANC=10)
-      real*4 c4(*)
-      real*8 c8(*)
+      REAL(KIND=4) ::  c4(*)
+      REAL(KIND=8) ::  c8(*)
 
 !C in the calling routin you can specify the following equivalence to
 !C save memory space:
@@ -278,10 +278,10 @@
 !cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 !c
       PARAMETER(KBLANC=10)
-      real*4 c4(*)
-      real*8 c8(*)
-      real*4 valex8
-      real*4 valexc
+      REAL(KIND=4) ::  c4(*)
+      REAL(KIND=8) ::  c8(*)
+      REAL(KIND=4) ::  valex8
+      REAL(KIND=4) ::  valexc
 !c in the calling routin you can specify the following equivalence to
 !c save memory space:
 !c      equivalence(c,c4)

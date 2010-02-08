@@ -125,8 +125,9 @@
 !C
 !C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-      include'divapre.h'
-      include'divainc.h'
+      include'../Module/Calc/divapre.h'
+      include'../Module/Calc/divainc.h'
+      
       character*6 modul
 
       RPI=2*asin(1.D0)

@@ -31,7 +31,7 @@
        read(66,*) x(j,i),y(j,i)
 	    j=j+1
 	    goto 17
- 101    continue
+101    continue
       
       enddo
       

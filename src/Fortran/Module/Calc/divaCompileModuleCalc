@@ -1,0 +1,39 @@
+#!/bin/bash
+
+echo ==========================================
+echo ==========================================
+echo ==                                      ==
+echo ==   Compilation of DIVA Calc Module  ==
+echo ==                                      ==
+echo ==========================================
+echo ==========================================
+echo ' '
+
+baseDir=$PWD
+
+echo ===========================
+echo ===========================
+echo = Compiling Calc Module =
+echo ===========================
+echo ===========================
+echo ' '
+
+preproFlag=''
+associateDir='-I'$divaDir'/Module/General -I'$divaDir'/Module/IOModule '
+export preproFlag
+export associateDir
+
+libName=libCalc$compiler.a
+export libName
+rm -f $divaModuleLib/$libName
+
+# Compilation of : moduleCalc
+# =============================
+$divaDir/compileFile moduleCalc.f95 moduleCalc
+
+echo ' '
+
+mv *.mod $divaModuleLib
+
+cd $baseDir
+

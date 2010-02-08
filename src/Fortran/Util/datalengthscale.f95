@@ -1,9 +1,9 @@
 !C Template for calculating relative length scale based on data coverage
 !C
-             PARAMETER(IW=5000000)
-             REAL*4 C(IW),RL(IW),RN(IW)
-             REAL*8 C8,RRR
-             REAL*4 X(IW),Y(IW)
+             INTEGER, PARAMETER :: IW = 5000000
+             REAL(KIND=4) ::  C(IW),RL(IW),RN(IW)
+             REAL(KIND=8) ::  C8,RRR
+             REAL(KIND=4) ::  X(IW),Y(IW)
 !C Read data (just coordinates, not value)
           
              NDATA=0
@@ -37,11 +37,11 @@
       end
 !C From here make a subroutine call to be able to use n(NX,NY) and RL(NX,NY)
              subroutine RLBIN(C,RN,RL,X,Y,NDATA,X1,Y1,DX,DY,NX,NY,RATIO,VALEX)
-             REAL*4 RL(NX,NY)
-             REAL*4 RN(NX,NY)
-             REAL*4 C(NX,NY)
-             REAL*4 X(*),Y(*)
-             REAL*8 RNDATA,RWET,RVAR,C8,RLM
+             REAL(KIND=4) ::  RL(NX,NY)
+             REAL(KIND=4) ::  RN(NX,NY)
+             REAL(KIND=4) ::  C(NX,NY)
+             REAL(KIND=4) ::  X(*),Y(*)
+             REAL(KIND=8) ::  RNDATA,RWET,RVAR,C8,RLM
 !C Now do binning n(i,j): number of data points in box of size DELTAxDELTA
 !C n(NX,NY)
              do i=1,NX
@@ -204,9 +204,9 @@
 !c
 !c JMB 3/4/91
 !ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-       real*4 C(imax,jmax,kmax),valexc
+       REAL(KIND=4) ::  C(imax,jmax,kmax),valexc
        parameter(iwork=1000000)
-       real*4 work(iwork),work2(iwork)
+       REAL(KIND=4) ::  work(iwork),work2(iwork)
        integer*2 ic(iwork)
        integer*2 ic2(iwork)
        if( (imax+2)*(jmax+2)*(kmax+2).gt.iwork) then
@@ -221,9 +221,9 @@
        subroutine JM0000(c,valexc,imax,jmax,kmax,work,work2,ic,ic2)
 !c      parameter(A1=5,A2=2,A3=4)
        parameter(A1=5,A2=0,A3=0)
-       real*4 C(imax,jmax,kmax),valexc
-       real*4 work(0:imax+1,0:jmax+1,0:kmax+1)
-       real*4 work2(0:imax+1,0:jmax+1,0:kmax+1)
+       REAL(KIND=4) ::  C(imax,jmax,kmax),valexc
+       REAL(KIND=4) ::  work(0:imax+1,0:jmax+1,0:kmax+1)
+       REAL(KIND=4) ::  work2(0:imax+1,0:jmax+1,0:kmax+1)
        integer*2 ic(0:imax+1,0:jmax+1,0:kmax+1)
        integer*2 ic2(0:imax+1,0:jmax+1,0:kmax+1)
 !c fill the borders...
@@ -354,8 +354,8 @@
 !cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 !c23456
        PARAMETER(KBLANC=10)
-       real*4 c4(*)
-       real*8 c8(*)
+       REAL(KIND=4) ::  c4(*)
+       REAL(KIND=8) ::  c8(*)
 !c in the calling routin you can specify the following equivalence to
 !c save memory space:
 !c      equivalence(c,c4)
@@ -448,10 +448,10 @@
 !cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 !c
       PARAMETER(KBLANC=10)
-      real*4 c4(*)
-      real*8 c8(*)
-      real*4 valex8
-      real*4 valexc
+      REAL(KIND=4) ::  c4(*)
+      REAL(KIND=8) ::  c8(*)
+      REAL(KIND=4) ::  valex8
+      REAL(KIND=4) ::  valexc
 !c in the calling routin you can specify the following equivalence to
 !c save memory space:
 !c      equivalence(c,c4)

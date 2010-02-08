@@ -21,7 +21,7 @@ TYPE contourType
   TYPE(vectorInteger4) :: insideContour
   LOGICAL :: meshFlag
 
-  INTEGER(KIND=4) :: indexValue
+  INTEGER :: indexValue
 
 END TYPE contourType
 

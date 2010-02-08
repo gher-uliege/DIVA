@@ -92,7 +92,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
- The vector containing            3 values with the exclusion value   1.0000000E+12  will not be saved
+ The vector containing            3 values with the exclusion value   9.99999996E+11  will not be saved
   
  checkVectorMin
  ==============
@@ -300,7 +300,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
- The vector containing            3 values with the exclusion value   1.0000000E+12  will not be saved
+ The vector containing            3 values with the exclusion value   9.99999996E+11  will not be saved
   
  checkVectorMin
  ==============
@@ -508,7 +508,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
- The vector containing            3 values with the exclusion value   1.0000000E+12  will not be saved
+ The vector containing            3 values with the exclusion value   9.99999996E+11  will not be saved
   
  checkVectorMin
  ==============
@@ -716,7 +716,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
- The vector containing            3 values with the exclusion value   1.0000000E+12  will not be saved
+ The vector containing            3 values with the exclusion value   9.99999996E+11  will not be saved
   
  checkVectorMin
  ==============
@@ -924,7 +924,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
- The vector containing            3 values with the exclusion value   1.0000000E+12  will not be saved
+ The vector containing            3 values with the exclusion value   9.99999996E+11  will not be saved
   
  checkVectorMin
  ==============
@@ -1132,7 +1132,7 @@
  checkWriteProcedure
  ===================
  No writing procedure for integer with GHER format
- The vector containing            3 values with the exclusion value   1.0000000E+12  will not be saved
+ The vector containing            3 values with the exclusion value   9.99999996E+11  will not be saved
   
  checkVectorMin
  ==============

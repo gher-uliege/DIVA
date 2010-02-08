@@ -1,5 +1,5 @@
-       parameter (nmax=30000000)
-       integer*2 ic(nmax) 
+       integer, parameter :: nmax=30000000
+       INTEGER(KIND=2) :: ic(nmax) 
   
   
   

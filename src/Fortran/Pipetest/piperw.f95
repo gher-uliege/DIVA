@@ -1,6 +1,6 @@
        parameter(n=50,m=10000)
        
-       real*8 X(m)
+       REAL(KIND=8) ::  X(m)
        read(55,*) IFL
        if(ifl.eq.0) then
        rewind(66)

@@ -1,6 +1,5 @@
-      integer XM
-      parameter(XM=10000000)
-      real*4 A(XM),B(XM),C(XM)
+      integer, parameter :: XM=10000000
+      REAL(KIND=4) ::  A(XM),B(XM),C(XM)
       
       read(5,*,end=200) valex,M,N
       call RDMAT(A,M,N,M,20)
@@ -10,9 +9,10 @@
  200  continue
       stop
       end
+      
       subroutine msum(A,B,C,N,M,valex)
-!c      real*4 A(N,M),B(N,M),C(N,M)
-      real*4 A(M,N),B(M,N),C(M,N)
+!c      REAL(KIND=4) ::  A(N,M),B(N,M),C(N,M)
+      REAL(KIND=4) ::  A(M,N),B(M,N),C(M,N)
       do i=1,M
       do j=1,N
       val=A(i,j)+B(i,j)

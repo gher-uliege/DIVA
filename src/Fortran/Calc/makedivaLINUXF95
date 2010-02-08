@@ -1,2 +1,0 @@
-ifort -O  *.f95 -o diva.a
-mv diva.a ../../../bin/

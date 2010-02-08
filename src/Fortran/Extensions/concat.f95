@@ -1,3 +1,7 @@
+PROGRAM concat
+
+      USE ioInterface
+      
       real*4 AA(1500000),A(50000)
       
       integer imax,jmax,kmax
@@ -5,11 +9,11 @@
       read(5,*)jmax
       read(5,*)kmax
       call concat2(A,AA,imax,jmax,kmax)
-      end
 
+ CONTAINS
       subroutine concat2(A,AA,imax,jmax,kmax)
       character*100 outname,name
-      real*8 c8
+      real*8 c8(1)
       integer imax,jmax,kmax
       real*4 A(imax,jmax),AA(imax,jmax,kmax)
 
@@ -28,8 +32,8 @@
       enddo
    
       OPEN (UNIT=10,FILE=outname,FORM='UNFORMATTED')
-      call uwritc (10,c8,AA,VALEX,IPR,imax,jmax,kmax,imax*jmax)
+      NB=imax*jmax
+      call uwritc (10,c8,AA,VALEX,IPR,imax,jmax,kmax,NB)
       close (10)
-      end  
-      include "ureadc.f95"
-      include "uwritc.f95"
+      end subroutine
+END PROGRAM  

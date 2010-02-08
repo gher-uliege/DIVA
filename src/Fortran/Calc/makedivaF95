@@ -1,2 +1,0 @@
-g95 -O0 *.f95 -o diva.a
-mv diva.a ../../../bin/

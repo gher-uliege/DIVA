@@ -4,8 +4,9 @@
 # ======================================
 compiler=ifort
 
+#flag='-fast'
 #flag='-fast -warn all -implicitnone'
-flag='-fast -xSSE4.2 -unroll-aggressive -scalar-rep -mkl=parallel -parallel -inline-level=2 -warn all -implicitnone'
+flag='-fast -xSSE4.2 -unroll-aggressive -scalar-rep -inline-level=2 -warn all -implicitnone'
 export compiler
 export flag
 
@@ -19,28 +20,6 @@ export preprocessor
 export preprocessorFlag
 
 
-# Definition of the library directory
-# ====================================
-libraryDir='-I'$divaModuleLib
-libraryObj=$divaModuleLib/*.o
-
-export libraryDir
-export libraryObj
-
-# Definition of the library directory
-# ====================================
-libraryMod='-I'$divaModuleMod
-libraryPath='-L'$divaModuleLib
-libraryLink='-ldiva'$compiler
-libraryLink=$libraryLink' -lCommonDiva'$compiler
-libraryLink=$libraryLink' -lMath'$compiler
-libraryLink=$libraryLink' -lVector'$compiler
-libraryLink=$libraryLink' -lMatrix'$compiler
-libraryLink=$libraryLink' -lArray'$compiler
-libraryLink=$libraryLink' -lSparseMatrix'$compiler
-libraryLink=$libraryLink' -lIO'$compiler
-#libraryLink=$libraryLink' -lMesh'$compiler
-
-export libraryMod
-export libraryPath
-export libraryLink
+# Definition of the library
+# =========================
+source ./defineLibrary

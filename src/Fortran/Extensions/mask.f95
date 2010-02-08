@@ -1,6 +1,8 @@
+PROGRAM mask
+      USE ioInterface
       real*4 BAT(3000000),IN(8000000)
       character*100 batname,inname
-      real*8 c8
+      real*8 c8(1)
 
 !c     batname='/home/walrave/Modb/Travail/DATA/adr.GHER.bat'
 !c     inname='/home/walrave/Modb/Travail/RESULTS/adr.res'
@@ -17,7 +19,7 @@
 
       call MASK2(BAT,IN,imaxbat,jmaxbat,valexbat,valexin,iprin,imaxin,jmaxin,kmaxin,nbin)
 
-      end
+ CONTAINS
 
 !C***************************************************************
 
@@ -29,7 +31,7 @@
             ybatmin,ybatmax,xinmin,xinmax,yinmin,yinmax,dxbat,dybat,        &
             dxin,dyin,xin,yin,zin
       character*100 batinfo,ininfo,outname
-            real*8 c8
+            real*8 c8(1)
 
 
 !c     batinfo='/home/walrave/Modb/Travail/DATA/adr.GHER.bat.info'
@@ -104,10 +106,7 @@
       call uwritc(13,c8,IN,valexin,iprin,imaxin,jmaxin,kmaxin,nbin)
       close(13)
 
-      end
-
-      include "ureadc.f95"
-      include "uwritc.f95"
+      end subroutine
 
 !C***************************************************************
 
@@ -195,5 +194,6 @@
 
       z=(x*(XX1-XX2+XX3)+y*(YY2-YY1-YY3)-I)/(ZZ2-ZZ1-ZZ3)
 
-      end
+      end subroutine
+end program
 

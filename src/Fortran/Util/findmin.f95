@@ -1,5 +1,5 @@
-       parameter (nm=1000)
-       real*4 x(nm),y(nm)
+       integer, parameter :: nm=1000
+       REAL(KIND=4) ::  x(nm),y(nm)
        i=0
        needs=0
        write(6,*) 'Searching for a minimum from'
@@ -113,10 +113,10 @@
 !C     .. Scalar Arguments ..
       INTEGER N
 !C     .. Array Arguments ..
-      real*4 IA(N), JA(N)
+      REAL(KIND=4) ::  IA(N), JA(N)
 !C     .. Local Scalars ..
       REAL R 
-      REAL*4  IIT, IT,  JJT, JT
+      REAL(KIND=4) ::   IIT, IT,  JJT, JT
       INTEGER IJ
 !C     .. Local Arrays ..
       INTEGER IL(21), IU(21),I,J,K,NN,L,M

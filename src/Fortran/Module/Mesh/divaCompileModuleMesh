@@ -23,10 +23,10 @@ associateDir='-I'$divaDir'/Module/General -I'$divaDir'/Module/IOModule '
 export preproFlag
 export associateDir
 
-#libName=libMesh$compiler.a
-libName=libMath$compiler.a
+libName=libMesh$compiler.a
+#libName=libMath$compiler.a
 export libName
-#rm -f $divaModuleLib/$libName
+rm -f $divaModuleLib/$libName
 
 # Compilation of : node
 # =====================

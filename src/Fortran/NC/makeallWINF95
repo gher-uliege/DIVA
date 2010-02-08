@@ -1,6 +1,0 @@
-for jj in `ls *.f95`
-do
-echo $jj
-g95 -O0 -mno-cygwin $jj  ./Win32/libnetcdf.a -o `basename $jj .f95`.a
-done
-mv *.a ../../../bin

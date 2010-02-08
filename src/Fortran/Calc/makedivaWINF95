@@ -1,2 +1,0 @@
-f95 -O3 -mno-cygwin *.f95 -o diva.a
-mv diva.a ../../../bin

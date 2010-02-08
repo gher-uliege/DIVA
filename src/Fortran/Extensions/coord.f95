@@ -10,6 +10,7 @@
 !CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
       PROGRAM COORD
+      USE ioInterface
       IMPLICIT NONE
 
 
@@ -80,8 +81,7 @@
         write(6,880)
       ENDIF
 
-      end
-
+ CONTAINS
 !C ---------------------------------------------------------------------
 
       SUBROUTINE ConvertContourAngCart(input, output, lambda)
@@ -90,7 +90,7 @@
 
       CHARACTER*80 input, output
       INTEGER nb_contour, nb_points,i, j, orientation
-      REAL*4  longitude, latitude, X, Y, FCT_X, FCT_Y, lambda
+      REAL*4  longitude, latitude, X, Y, lambda
 
       OPEN (UNIT=10,FILE=input)
       OPEN (UNIT=11,FILE=output)
@@ -113,7 +113,7 @@
       
       CLOSE(10)
       CLOSE(11)
-      END
+      END SUBROUTINE
 
 !C ---------------------------------------------------------------------
 
@@ -123,7 +123,7 @@
 
       CHARACTER*80 input, output
       INTEGER IOERR
-      REAL*4  longitude, latitude, val, X, Y, FCT_X, FCT_Y, lambda
+      REAL*4  longitude, latitude, val, X, Y, lambda
 
       OPEN (UNIT=10,FILE=input)
       OPEN (UNIT=11,FILE=output)
@@ -145,7 +145,7 @@
 
   400 IF (IOERR.GT.0) WRITE(6,*) 'READ ERROR ON ', input
 
-      END
+      END SUBROUTINE
 
 !C ---------------------------------------------------------------------
 
@@ -155,7 +155,7 @@
 
       CHARACTER*80 input, output
       INTEGER IOERR
-      REAL*4  longitude, latitude, X, Y, FCT_X, FCT_Y, lambda
+      REAL*4  longitude, latitude, X, Y, lambda
 
       OPEN (UNIT=10,FILE=input)
       OPEN (UNIT=11,FILE=output)
@@ -176,7 +176,7 @@
 
   600 IF (IOERR.GT.0) WRITE(6,*) 'READ ERROR ON ', input
 
-      END
+      END SUBROUTINE
 
 !C ---------------------------------------------------------------------
 
@@ -186,7 +186,7 @@
 
       CHARACTER*80 input, output
       INTEGER IOERR, valex, nbx, nby
-      REAL*4  xorigin,yorigin,dx,dy, X, Y, FCT_X, FCT_Y, lambda
+      REAL*4  xorigin,yorigin,dx,dy, X, Y, lambda
 
       OPEN (UNIT=10,FILE=input)
       READ(10,*) xorigin, yorigin
@@ -207,7 +207,7 @@
       WRITE(11,*) valex
       CLOSE(11)
 
-      END
+      END SUBROUTINE
 
 !C ---------------------------------------------------------------------
 
@@ -216,8 +216,8 @@
       IMPLICIT NONE
 
       CHARACTER*80 input, input_mh4, output, line
-      INTEGER IOERR, node, nb_node, nb_int, nb_mesh, i, length, strlg
-      REAL*4  longitude, latitude, X, Y, FCT_LONG, FCT_LAT, lambda
+      INTEGER IOERR, node, nb_node, nb_int, nb_mesh, i, length
+      REAL*4  longitude, latitude, X, Y, lambda
 
       length=STRLG(output)
       input_mh4=output(1:length)//'.mh4'
@@ -252,7 +252,7 @@
       CLOSE(12)
       RETURN
  
-      END
+      END SUBROUTINE
 
 !C ---------------------------------------------------------------------
 
@@ -261,8 +261,8 @@
       CHARACTER*80 input, output
       INTEGER IMAX,JMAX,KMAX,I,J, K, IPR, NB
       REAL*4  A(500000),VALEX,longitude, latitude
-      REAL*4  val, X, Y, FCT_LONG, FCT_LAT, lambda
-      REAL*8  c8
+      REAL*4  val, X, Y, lambda
+      REAL*8  c8(1)
 
       OPEN (UNIT=10,FILE=input, FORM='UNFORMATTED')
       OPEN (UNIT=11,FILE=output, FORM='UNFORMATTED')
@@ -283,85 +283,86 @@
       CLOSE(11)
       RETURN
 
-      END
+      END SUBROUTINE
 
 !C ---------------------------------------------------------------------
 
-      REAL*4 FUNCTION FCT_X(longitude, latitude, lambda)
+      FUNCTION FCT_X(longitude, latitude, lambda) RESULT(Value)
       
       IMPLICIT NONE
 
-      REAL*4 latitude, longitude, lambda 
+      REAL*4 latitude, longitude, lambda, Value 
 
-      FCT_X = longitude*COS(lambda)
+      Value = longitude*COS(lambda)
 
       RETURN 
 
-      END
+      END FUNCTION
 
 !C ---------------------------------------------------------------------
 
-      REAL*4 FUNCTION FCT_Y(longitude, latitude, lambda)
+      FUNCTION FCT_Y(longitude, latitude, lambda) RESULT(Value)
       
       IMPLICIT NONE
 
-      REAL*4 latitude, longitude, lambda
+      REAL*4 latitude, longitude, lambda, Value
 
-      FCT_Y = latitude
+      Value = latitude
 
       RETURN
 
-      END
+      END FUNCTION
 
 !C ---------------------------------------------------------------------
 
-      REAL*4 FUNCTION FCT_LAT(x, y, lambda)
+      FUNCTION FCT_LAT(x, y, lambda) RESULT(Value)
 
       IMPLICIT NONE
 
-      REAL*4 x, y, lambda
+      REAL*4 x, y, lambda, Value
 
-      FCT_LAT = y 
+      Value = y 
 
       RETURN
 
-      END
+      END FUNCTION
 
 !C ---------------------------------------------------------------------
 
-      REAL*4 FUNCTION FCT_LONG(x, y, lambda)
+      FUNCTION FCT_LONG(x, y, lambda) RESULT(Value)
 
       IMPLICIT NONE
 
-      REAL*4 x, y, lambda
+      REAL*4 x, y, lambda, Value
 
-      FCT_LONG = x/COS(lambda) 
+      Value = x/COS(lambda) 
 
       RETURN
 
-      END
+      END FUNCTION
 
 !C -----------------------------------------------
 !C --- COUNT LENGTH OF CHAR
 !C -----------------------------------------------
 
-      INTEGER FUNCTION STRLG (NOM)
+      FUNCTION STRLG (NOM) RESULT(Value)
 
+      INTEGER I, Value
       CHARACTER*80 NOM
 
-      STRLG = 1
+      Value = 1
 
       DO I = LEN(NOM), 1, -1
          IF (NOM(I:I) .NE. ' ') THEN
-            STRLG = I
+            Value = I
             GOTO 10
          ENDIF
       ENDDO
 
 10    RETURN
 
-      END
+      END FUNCTION
 
 !C -----------------------------------------------
-      INCLUDE 'ureadc.f95'
-      INCLUDE 'uwritc.f95'
+
+END PROGRAM

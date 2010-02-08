@@ -1,4 +1,4 @@
-       parameter(nm=50000000)
+       integer, parameter :: nm=50000000
        
        real*4 c(nm)
        real*8 c8

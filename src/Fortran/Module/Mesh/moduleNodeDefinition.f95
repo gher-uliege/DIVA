@@ -18,7 +18,7 @@ TYPE nodeType
   VARType :: yValue
   VARType :: zValue
 
-  INTEGER(KIND=4) :: indexValue
+  INTEGER :: indexValue
   VARType :: characteristicLength
 
 END TYPE nodeType

@@ -1,4 +1,4 @@
-       parameter(nm=10000000)
+       integer, parameter :: nm=10000000
        integer*4 inode(nm)
        real*4 x(nm),y(nm)
        FAC=1

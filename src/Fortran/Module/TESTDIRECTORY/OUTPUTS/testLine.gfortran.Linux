@@ -15,7 +15,7 @@
  value(           2 ) is 
  object type is node
     index  =            2
-    xValue =   1.00000000000000000     
+    xValue =    1.0000000000000000     
     yValue =    0.0000000000000000     
     zValue =    0.0000000000000000     
     characteristicLength =   0.50000000000000000     
@@ -24,7 +24,7 @@
  object type is node
     index  =            3
     xValue =   0.50000000000000000     
-    yValue =   1.00000000000000000     
+    yValue =    1.0000000000000000     
     zValue =    0.0000000000000000     
     characteristicLength =   0.50000000000000000     
   
@@ -46,7 +46,7 @@
   
  object type is node
     index  =            2
-    xValue =   1.00000000000000000     
+    xValue =    1.0000000000000000     
     yValue =    0.0000000000000000     
     zValue =    0.0000000000000000     
     characteristicLength =   0.50000000000000000     
@@ -57,7 +57,7 @@
     index  =            2
  object type is node
     index  =            2
-    xValue =   1.00000000000000000     
+    xValue =    1.0000000000000000     
     yValue =    0.0000000000000000     
     zValue =    0.0000000000000000     
     characteristicLength =   0.50000000000000000     
@@ -65,7 +65,7 @@
  object type is node
     index  =            3
     xValue =   0.50000000000000000     
-    yValue =   1.00000000000000000     
+    yValue =    1.0000000000000000     
     zValue =    0.0000000000000000     
     characteristicLength =   0.50000000000000000     
   
@@ -76,7 +76,7 @@
  object type is node
     index  =            3
     xValue =   0.50000000000000000     
-    yValue =   1.00000000000000000     
+    yValue =    1.0000000000000000     
     zValue =    0.0000000000000000     
     characteristicLength =   0.50000000000000000     
   

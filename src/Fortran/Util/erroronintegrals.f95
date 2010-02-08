@@ -1,8 +1,9 @@
-      include'../Calc/divapre.h'
-      parameter(npmax=1000000)
-      real*8 tbess(40000)
+program erroronintegrals
+!      include'../Calc/divapre.h'
+      integer, parameter :: npmax=1000000
+      REAL(KIND=8) ::  tbess(40000)
       common/tabbess/tbess
-      real*8 x(npmax),y(npmax),h(npmax)
+      REAL(KIND=8) ::  x(npmax),y(npmax),h(npmax)
       
       call tabess
         
@@ -79,14 +80,13 @@
       goto 444
  111  continue
       write(14,*) rsum
-      stop
-      end
+
+ contains
       subroutine tabess
 !C=============================================================================
-      include'../Calc/divapre.h'
-      real*8 tbess(40000),eps,bessk1
+!      include'../Calc/divapre.h'
+      REAL(KIND=8) ::  tbess(40000),eps
       common/tabbess/tbess
-      external bessk1
       eps=0
       do 10 i=1,40000
       eps=eps+0.0005
@@ -94,12 +94,12 @@
  10   continue
 !C=============================================================================
       return                                                            
-      end                                                               
+      end subroutine                                                               
 !C=======================================================================
-      function bessk1(X)
+      function bessk1(X) result(value)
       
-      include'../Calc/divapre.h'
-      EXTERNAL BESSI1
+!      include'../Calc/divapre.h'
+      real(kind=8) :: value,X,Y,P1,P2,P3,P4,P5,P6,P7,Q1,Q2,Q3,Q4,Q5,Q6,Q7
 
       DATA P1,P2,P3,P4,P5,P6,P7/1.0D0,0.15443144D0,-0.67278579D0,-0.18156897D0,-0.1919402D-1,-0.110404D-2,-0.4686D-4/
       DATA Q1,Q2,Q3,Q4,Q5,Q6,Q7/1.25331414D0,0.23498619D0,-0.3655620D-1,0.1504268D-1,-0.780353D-2,0.325614D-2,-0.68245D-3/
@@ -110,32 +110,38 @@
 
       IF(X.LE.2.0) THEN
          Y = X * X * 0.25
-         BESSK1 = (LOG(X/2.0)*BESSI1(X))+(1.0/X)*(P1+Y*(P2+Y*(P3+Y*(P4+Y*(P5+Y*(P6+Y*P7))))))
+         value = (LOG(X/2.0)*BESSI1(X))+(1.0/X)*(P1+Y*(P2+Y*(P3+Y*(P4+Y*(P5+Y*(P6+Y*P7))))))
       ELSE
          Y = 2.0 / X
-         BESSK1 = (EXP(-X)/SQRT(X))*(Q1+Y*(Q2+Y*(Q3+Y*(Q4+Y*(Q5+Y*(Q6+Y*Q7))))))
+         value = (EXP(-X)/SQRT(X))*(Q1+Y*(Q2+Y*(Q3+Y*(Q4+Y*(Q5+Y*(Q6+Y*Q7))))))
       ENDIF
       RETURN
-      END
+      END function
 
 !C=========================================================================
-      function bessi1(X)
+      function bessi1(X) result(value)
 
-      include'../Calc/divapre.h'
+!      include'../Calc/divapre.h'
+
+      real(kind=8) :: value,X,Y,P1,P2,P3,P4,P5,P6,P7,Q1,Q2,Q3,Q4,Q5,Q6,Q7
 
       DATA P1,P2,P3,P4,P5,P6,P7/0.5D0,0.87890594D0,0.51498869D0,0.15084934D0,0.2658733D-1,0.301532D-2,0.32411D-3/
       DATA Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9/0.39894228D0,-0.3988024D-1,-0.362018D-2,0.163801D-2,-0.1031555D-1,0.2282967D-1, &
           -0.2895312D-1,0.1787654D-1,-0.420059D-2/
+          
 
       IF(ABS(X).LT.3.75) THEN
          Y = X*X / (3.75*3.75)
-         BESSI1 = X*(P1+Y*(P2+Y*(P3+Y*(P4+Y*(P5+Y*(P6+Y*P7))))))
+         value = X*(P1+Y*(P2+Y*(P3+Y*(P4+Y*(P5+Y*(P6+Y*P7))))))
       ELSE
          AX = ABS(X)
          Y = 3.75 / AX
-         BESSI1 = (EXP(AX)/SQRT(AX))*(Q1+Y*(Q2+Y*(Q3+Y*(Q4+Y*(Q5+Y*(Q6+Y*(Q7+Y*(Q8+Y*Q9))))))))
-         IF(X.LT.0.) BESSI1 = - BESSI1
+         value = (EXP(AX)/SQRT(AX))*(Q1+Y*(Q2+Y*(Q3+Y*(Q4+Y*(Q5+Y*(Q6+Y*(Q7+Y*(Q8+Y*Q9))))))))
+         IF(X.LT.0.) then 
+           value = (-1.) *  value
+         endif
       ENDIF
 
       RETURN
-      END
+      END function
+end program

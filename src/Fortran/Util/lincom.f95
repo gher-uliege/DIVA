@@ -1,7 +1,9 @@
 !C
-        REAL*4 U(5000000)
-        REAL*4 V(5000000)
-        REAL*8 W8
+PROGRAM lincom
+USE ioInterface
+        REAL(KIND=4) ::  U(5000000)
+        REAL(KIND=4) ::  V(5000000)
+        REAL(KIND=8) ::  W8(1)
 
 
         CALL UREADC(10,W8,U,VALEXU,IPR,IMAX,JMAX,KMAX,NW)
@@ -19,12 +21,12 @@
         call usum(u,v,valexu,imax,jmax,kmax,a1,b1,a2,b2,a3,b3,a4,b4)
         CALL UWRITC(12,W8,U,VALEXU,IPR,IMAX,JMAX,KMAX,NW)
         CALL UWRITC(13,W8,V,VALEXU,IPR,IMAX,JMAX,KMAX,NW)
-        STOP
-        END
+
+ CONTAINS
 
 !CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
         subroutine usum(u,v,valexu,imax,jmax,kmax,a1,b1,a2,b2,a3,b3,a4,b4)
-        real*4 u(imax,jmax,kmax),v(imax,jmax,kmax)
+        REAL(KIND=4) ::  u(imax,jmax,kmax),v(imax,jmax,kmax)
         do k=1,kmax
          do j=1,jmax
           do i=1,imax
@@ -38,6 +40,5 @@
          enddo
         enddo
         return
-        end
-        INCLUDE '../Extensions/ureadc.f95'
-        INCLUDE '../Extensions/uwritc.f95'
+        end subroutine
+END PROGRAM

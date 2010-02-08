@@ -4,6 +4,13 @@ PROGRAM gmshDriver
 ! to make the meshing procedure with GMSH.
 !
 
+#define _RELEASE_VERSION_
+!#define _WITH_DEBUG_
+
+#ifdef _WITH_DEBUG_
+#undef _RELEASE_VERSION_
+#endif
+
 ! Module to use
 ! =============
  USE moduleDIVA
@@ -56,13 +63,20 @@ PROGRAM gmshDriver
 
 !        Reload result
 !        -------------
-         INTEGER, PARAMETER :: waitingTime = 5, informationLine = 3, defaultIncrease = 1000
+         TYPE(file) :: outputDIVAFile, outputDIVAFileValue
+#ifdef _WITH_DEBUG_         
+         TYPE(file) :: outputGMSHMeshFile2
+#endif         
+         INTEGER, PARAMETER :: waitingTime = 1, informationLine = 4
 
-         INTEGER :: nbOfVertices, nbOfCell, localNbOfCell, localNbOfVertices
-         REAL(KIND=8) :: lengthX, lengthY
+         INTEGER :: nbOfVertices, nbOfCell, nbOfEdges, nbOfSortingNode
          TYPE(nodeDataBase) :: vertices
          TYPE(tria3DataBase) :: cells
          TYPE(tria3), POINTER :: ptrCell
+         TYPE(vectorInteger4) :: nodeSorting, nodeSorting2
+         INTEGER(KIND=4), DIMENSION(:), POINTER :: ptrNodeSorting, ptrNodeSorting2
+         TYPE(node), DIMENSION(:), POINTER :: ptrNodeDB
+         TYPE(tria3), DIMENSION(:), POINTER :: ptrCellDB
 
 ! ==================================================================================
 ! ==================================================================================
@@ -301,6 +315,7 @@ PROGRAM gmshDriver
     CALL setMaximumLongitude(Xmax)
     CALL setMinimumLatitude(Ymin)
     CALL setMaximumLatitude(Ymax)
+    
     CALL computeMeanLongitude()
     CALL computeMeanLatitude()
 
@@ -359,7 +374,7 @@ PROGRAM gmshDriver
     CALL computeDimensionLessLength()
     PRINT*,'characteristicLength ',getDimensionLessLength()
     meshCharacteristicLength = meshCharacteristicLength / getDimensionLessLength()
-
+    
     CALL shiftAllCoordinate(boundaryLoops)
     CALL shiftMinimumLongitude()
     CALL shiftMinimumLatitude()
@@ -373,13 +388,13 @@ PROGRAM gmshDriver
 ! ==================================================================================
 ! ==================================================================================
 
-#ifdef _WITH_GMSH_
      CALL createFile(outputGMSHFile,'diva.geo',formType=STD_FORMATTED)
-     CALL createFile(outputGMSHMeshFile,'diva.msh',formType=STD_FORMATTED)
+     CALL createFile(outputGMSHMeshFile,'diva.mesh',formType=STD_FORMATTED)
      CALL exportBoundaryToGMSH(outputGMSHFile,boundaryLoops,meshCharacteristicLength)
      CALL runGMSH(outputGMSHFile,outputGMSHMeshFile)
 
-
+     CALL contourDBDestroy(boundaryLoops)
+     
 ! ==================================================================================
 ! ==================================================================================
 ! read the result
@@ -403,17 +418,25 @@ PROGRAM gmshDriver
 
 !     Read vertices
 !     -------------
-      READ(fileUnit,*)
 
       READ(fileUnit,*) nbOfVertices
       CALL nodeDBCreate(vertices,nbOfVertices)
 
       DO i1 = 1, nbOfVertices
          ptrNode => vertices%values(i1)
-         READ(fileUnit,*) ptrNode%indexValue, ptrNode%xValue, ptrNode%yValue, ptrNode%zValue
+         ptrNode%indexValue = i1
+         READ(fileUnit,*) ptrNode%xValue, ptrNode%yValue, ptrNode%zValue
       ENDDO
 
+!     Read contour edges (not used in Diva)
+!     ------------------
       READ(fileUnit,*)
+
+      READ(fileUnit,*) nbOfEdges
+
+      DO i1 = 1, nbOfEdges
+         READ(fileUnit,*)
+      ENDDO
 
 !     Read information
 !     ----------------
@@ -423,106 +446,107 @@ PROGRAM gmshDriver
       CALL tria3DBCreate(cells,nbOfCell)
       DO i1 = 1, nbOfCell
           ptrCell => cells%values(i1)
-          READ(fileUnit,*) ptrCell%indexValue,i2,i2,i2,i2,ptrCell%node1,ptrCell%node2,ptrCell%node3
+          ptrCell%indexValue = i1
+          READ(fileUnit,*) ptrCell%node1,ptrCell%node2,ptrCell%node3,ptrCell%neighbor1,ptrCell%neighbor2,ptrCell%neighbor3
       ENDDO
 
       READ(fileUnit,*)
 
    CALL closeFile(outputGMSHMeshFile)
+   
+! ==================================================================================
+! ==================================================================================
+! Prepare data for outputs
+! ==================================================================================
+! ==================================================================================
+   nbOfSortingNode = nbOfVertices
+   nbOfVertices = nbOfSortingNode - ( nbOfEdges + ( nbOfCell * 3 - nbOfEdges ) / 2 )
+   
+   CALL vectorCreate(nodeSorting,nbOfSortingNode)
+   CALL vectorCreate(nodeSorting2,nbOfSortingNode)
+   CALL sortingNode(vertices,cells,nodeSorting,nodeSorting2,nbOfVertices)
+   
+! ==================================================================================
+! ==================================================================================
+! Write results for DIVA
+! ==================================================================================
+! ==================================================================================
+
+!  Defined file name and open the file
+!  ====================================
+   CALL createFile(outputDIVAFile,'fort.22',formType=STD_FORMATTED)
+
+   IF ( iodv == 1 ) THEN
+      CALL defineFileName(outputDIVAFile,'fort.11')
+   ENDIF
+
+   CALL openFile(outputDIVAFile)
+   fileUnit = getFileUnit(outputDIVAFile)
+
+! Write data
+! ==========
+   CALL unshiftAllCoordinate(vertices)
+   CALL unshiftMinimumLongitude()
+   CALL unshiftMinimumLatitude()
+   CALL unshiftMaximumLongitude()
+   CALL unshiftMaximumLatitude()
+   
+   IF ( getIChangeCoordinate() /= 0 ) THEN
+     CALL changeXYToLongLat(vertices)
+   ENDIF
+
+   ptrNodeSorting => vectorGetValues(nodeSorting)
+   ptrNodeSorting2 => vectorGetValues(nodeSorting2)
+   ptrCellDB => tria3DBGetValues(cells)
+   ptrNodeDB => nodeDBGetValues(vertices)
+
+   DO i1 = 1, nbOfVertices
+      i2 = ptrNodeSorting2(i1)
+      ptrNode => ptrNodeDB(i2)
+      WRITE(fileUnit,*) ptrNodeSorting(i1), ptrNode%xValue,ptrNode%yValue
+   ENDDO
+   
+   DO i1 = nbOfVertices + 1, nbOfSortingNode
+      WRITE(fileUnit,*) ptrNodeSorting(i1)
+   ENDDO
+   
+   DO i1 = 1, nbOfCell
+      ptrCell => ptrCellDB(i1)
+      WRITE(fileUnit,*) ptrCell%node1, ptrCell%neighbor1, ptrCell%node2, ptrCell%neighbor2, ptrCell%node3, ptrCell%neighbor3 
+   ENDDO
+
+   CALL closeFile(outputDIVAFile)
+   
+!  Defined file name and open the file
+!  ====================================
+   CALL createFile(outputDIVAFileValue,'fort.23',formType=STD_FORMATTED)
+
+   CALL openFile(outputDIVAFileValue)
+   fileUnit = getFileUnit(outputDIVAFileValue)
+
+   WRITE(fileUnit,*) nbOfVertices
+   WRITE(fileUnit,*) nbOfSortingNode - nbOfVertices
+   WRITE(fileUnit,*) nbOfCell
+
+   CALL closeFile(outputDIVAFileValue)   
+   
+   ptrNodeDB(1:nbOfVertices) = ptrNodeDB(ptrNodeSorting2(1:nbOfVertices))
+   DO i1 = 1,nbOfVertices
+       ptrNode => ptrNodeDB(i1)
+       ptrNode%indexValue = i1
+   ENDDO
+   
+#ifdef _RELEASE_VERSION_
+   CALL removeUnsedFile(outputGMSHFile,outputGMSHMeshFile)
+#else
+   CALL createFile(outputGMSHMeshFile2,'test.msh',formType=STD_FORMATTED)
+   CALL exportToGMSH(outputGMSHMeshFile2,vertices,cells)
+#endif   
 
    CALL nodeDBDestroy(vertices)
    CALL tria3DBDestroy(cells)
-
-#endif
-
-! ==================================================================================
-! ==================================================================================
-! Meshing procedure
-! ==================================================================================
-! ==================================================================================
-
-!  Estimation of the number of cell and vertices
-!  ==============================================
-
-   nbOfVertices = 0
-   nbOfCell = 0
-
-   DO i1 = 1, nbOfContour
-       ptrBoundaryLoop => contourDBGetValue(boundaryLoops,i1) ! take a pointer on the i1_th boundary loop in the data base
-       CALL evaluateMeshSize(ptrBoundaryLoop,localNbOfVertices,localNbOfCell,meshCharacteristicLength)
-       nbOfVertices = nbOfVertices + localNbOfVertices
-       nbOfCell = nbOfCell + localNbOfCell
-   ENDDO
-
-   CALL nodeDBCreate(vertices,4,-3)
-   CALL nodeDBAddSize(vertices,nbOfVertices)
-   CALL nodeDBSetIncreaseSize(vertices,defaultIncrease)
-   CALL tria3DBCreate(cells,2)
-   CALL tria3DBAddSize(cells,nbOfCell)
-   CALL tria3DBSetIncreaseSize(cells,defaultIncrease)
-
-
-!  Insert new node on the boundaries if needed (distance between two nodes higher
-!  than 2 * meshCharacteristicLength
-!  ==================================================================================
-
-print*,meshCharacteristicLength
-  CALL insertNodesOnBoundary(boundaryLoops,meshCharacteristicLength)
-
-!  Starting mesh
-!  =============
-   lengthX = getMaximumLongitude() - getMinimumLongitude()
-   lengthY = getMaximumLatitude() - getMinimumLatitude()
-
-   vertices%values(-3)%indexValue = -3
-   vertices%values(-3)%xValue = getMinimumLongitude() - lengthX
-   vertices%values(-3)%yValue = getMinimumLatitude() - lengthY
-
-   vertices%values(-2)%indexValue = -2
-   vertices%values(-2)%xValue = getMaximumLongitude() + lengthX
-   vertices%values(-2)%yValue = getMinimumLatitude() - lengthY
-
-   vertices%values(-1)%indexValue = -1
-   vertices%values(-1)%xValue = getMaximumLongitude() + lengthX
-   vertices%values(-1)%yValue = getMaximumLatitude() + lengthY
-
-   vertices%values(0)%indexValue = 0
-   vertices%values(0)%xValue = getMinimumLongitude() - lengthX
-   vertices%values(0)%yValue = getMaximumLatitude() + lengthY
-
-   cells%values(1)%indexValue = 1
-   cells%values(1)%node1 = -3
-   cells%values(1)%node2 = -2
-   cells%values(1)%node3 = -1
-
-   cells%values(1)%neighbor1 = 0
-   cells%values(1)%neighbor2 = 0
-   cells%values(1)%neighbor3 = 2
-
-   cells%values(2)%indexValue = 1
-   cells%values(2)%node1 = -1
-   cells%values(2)%node2 = 0
-   cells%values(2)%node3 = -3
-
-   cells%values(2)%neighbor1 = 0
-   cells%values(2)%neighbor2 = 0
-   cells%values(2)%neighbor3 = 1
-
-!  Introducing all boundary nodes
-!  ==============================
-
-   DO i1 = 1, nbOfContour
-       ptrBoundaryLoop => contourDBGetValue(boundaryLoops,i1) ! take a pointer on the i1_th boundary loop in the data base
-       CALL insertBoundaryNodesInMesh(vertices,cells,ptrBoundaryLoop)
-   ENDDO
-
-
-   CALL createFile(outputGMSHMeshFile,'diva.msh',formType=STD_FORMATTED)
-   CALL exportToGMSH(outputGMSHMeshFile,vertices,cells)
-
-   CALL contourDBDestroy(boundaryLoops)
-   CALL nodeDBDestroy(vertices)
-   CALL tria3DBDestroy(cells)
+   CALL vectorDestroy(nodeSorting)
+   CALL vectorDestroy(nodeSorting2)
    CALL finaliseDIVAContext()
 
 ! ============================================================
@@ -538,7 +562,7 @@ print*,meshCharacteristicLength
 ! ============================================================
  CONTAINS
 
-! Procedure 2 : check if the new node is equal or not to previous one
+! Procedure 1 : check if the new node is equal or not to previous one
 ! -------------------------------------------------------------------
 FUNCTION  checkNewNode(ptrNode,newNode) RESULT(check)
 
@@ -576,7 +600,7 @@ FUNCTION  checkNewNode(ptrNode,newNode) RESULT(check)
 
 END FUNCTION
 
-! Procedure 3 : export data to GMSH
+! Procedure 2 : export data to GMSH
 ! ---------------------------------
 SUBROUTINE exportBoundaryToGMSH(outputGMSHFile,boundaryLoops,meshCharacteristicLength)
 
@@ -649,7 +673,7 @@ SUBROUTINE exportBoundaryToGMSH(outputGMSHFile,boundaryLoops,meshCharacteristicL
 
 END SUBROUTINE
 
-! Procedure 4 : export nodes to GMSH
+! Procedure 3 : export nodes to GMSH
 ! -----------------------------------
 SUBROUTINE exportBoundaryLoopNodesToGMSH(fileUnit,ptrLineDB)
 
@@ -669,7 +693,7 @@ SUBROUTINE exportBoundaryLoopNodesToGMSH(fileUnit,ptrLineDB)
 
 END SUBROUTINE
 
-! Procedure 5 : export boundary loop database to GMSH
+! Procedure 4 : export boundary loop database to GMSH
 ! ----------------------------------------------------
 SUBROUTINE exportBoundaryLoopDataBaseToGMSH(fileUnit,ptrLineDB)
 
@@ -689,7 +713,7 @@ SUBROUTINE exportBoundaryLoopDataBaseToGMSH(fileUnit,ptrLineDB)
 
 END SUBROUTINE
 
-! Procedure 6 : export boundary segment to GMSH
+! Procedure 5 : export boundary segment to GMSH
 ! ----------------------------------------------
 SUBROUTINE exportBoundarySegmentToGMSH(fileUnit,ptrLine)
 
@@ -706,7 +730,7 @@ SUBROUTINE exportBoundarySegmentToGMSH(fileUnit,ptrLine)
 
 END SUBROUTINE
 
-! Procedure 7 : export node to GMSH
+! Procedure 6 : export node to GMSH
 ! ----------------------------------
 SUBROUTINE exportNodeToGMSH(fileUnit,nodeToExport)
 
@@ -724,7 +748,7 @@ SUBROUTINE exportNodeToGMSH(fileUnit,nodeToExport)
 
 END SUBROUTINE
 
-! Procedure 8 : export loop to GMSH
+! Procedure 7 : export loop to GMSH
 ! ----------------------------------
 SUBROUTINE exportLoopToGMSH(fileUnit,ptrBoundaryLoop)
 
@@ -762,7 +786,7 @@ SUBROUTINE exportLoopToGMSH(fileUnit,ptrBoundaryLoop)
 
 END SUBROUTINE
 
-! Procedure 9 : export contour to GMSH
+! Procedure 8 : export contour to GMSH
 ! ----------------------------------
 SUBROUTINE exportContourToGMSH(fileUnit,ptrBoundaryLoop)
 
@@ -801,7 +825,7 @@ SUBROUTINE exportContourToGMSH(fileUnit,ptrBoundaryLoop)
 END SUBROUTINE
 
 
-! Procedure 10 : search computational domain which has to be meshed
+! Procedure 9 : search computational domain which has to be meshed
 ! -----------------------------------------------------------------
 SUBROUTINE searchDomainToBeMeshed(boundaryLoops)
 
@@ -822,7 +846,7 @@ SUBROUTINE searchDomainToBeMeshed(boundaryLoops)
 
 END SUBROUTINE
 
-! Procedure 11 : search inside domain in a specific boundary loop
+! Procedure 10 : search inside domain in a specific boundary loop
 ! ---------------------------------------------------------------
 SUBROUTINE searchInsideDomainOfBoundaryLoop(boundaryLoops,contourNumber)
 
@@ -833,6 +857,7 @@ SUBROUTINE searchInsideDomainOfBoundaryLoop(boundaryLoops,contourNumber)
 
       TYPE(contour), POINTER :: ptrBoundaryLoop, ptrBoundaryLoop1
       INTEGER :: i1, i2, nbOfContour
+      INTEGER(KIND=4) :: index
 
 !     Body
 !     - - -
@@ -846,14 +871,15 @@ SUBROUTINE searchInsideDomainOfBoundaryLoop(boundaryLoops,contourNumber)
           ptrBoundaryLoop1 => contourDBGetValue(boundaryLoops,i1)
           IF ( checkIsInside(ptrBoundaryLoop,ptrBoundaryLoop1) ) THEN
              i2 = i2 + 1
-             CALL vectorInsertValue(ptrBoundaryLoop%insideContour,i2,ptrBoundaryLoop1%indexValue)
+             index = ptrBoundaryLoop1%indexValue
+             CALL vectorInsertValue(ptrBoundaryLoop%insideContour,i2,index)
           ENDIF
          ENDIF
       ENDDO
 
 END SUBROUTINE
 
-! Procedure 12 : check if the  boundary loop 1 is inside boundary loop
+! Procedure 11 : check if the  boundary loop 1 is inside boundary loop
 ! --------------------------------------------------------------------
 FUNCTION checkIsInside(ptrBoundaryLoop,ptrBoundaryLoop1) RESULT(check)
 
@@ -868,6 +894,7 @@ FUNCTION checkIsInside(ptrBoundaryLoop,ptrBoundaryLoop1) RESULT(check)
       INTEGER :: nbOfBoundarySegment
       REAL(KIND=8) :: xValueNode1, yValueNode1, xValueNodeStart, yValueNodeStart, xValueNodeEnd, yValueNodeEnd
       REAL(KIND=8) :: distance, distanceBelow, distanceAbove, distanceRight, distanceLeft, slope, xIntersection, yIntersection
+      REAL(KIND=8) :: distance1, distance2, d1, d2, d3, d4
       TYPE(lineDataBase), POINTER :: ptrLineDB
       TYPE(line), POINTER :: lineBelow, lineAbove, lineRight, lineLeft, ptrLine
 
@@ -912,14 +939,48 @@ FUNCTION checkIsInside(ptrBoundaryLoop,ptrBoundaryLoop1) RESULT(check)
             distance = abs(yIntersection - yValueNode1)
 
             IF ( yIntersection > yValueNode1 ) THEN
-               IF ( distance < distanceAbove ) THEN
-                   distanceAbove = distance
-                   lineAbove => ptrLine
+               IF ( distance <= distanceAbove ) THEN
+                  IF ( distance < distanceAbove ) THEN 
+                      distanceAbove = distance
+                      lineAbove => ptrLine
+                  ELSE
+                      d1 = lineAbove%startNode%xValue-xValueNode1
+                      d2 = lineAbove%startNode%yValue-yValueNode1
+                      d3 = lineAbove%endNode%xValue-xValueNode1
+                      d4 = lineAbove%endNode%yValue-yValueNode1
+                      distance1 = min(d1*d1+d2*d2,d3*d3+d4*d4)
+                      d1 = ptrLine%startNode%xValue-xValueNode1
+                      d2 = ptrLine%startNode%yValue-yValueNode1
+                      d3 = ptrLine%endNode%xValue-xValueNode1
+                      d4 = ptrLine%endNode%yValue-yValueNode1
+                      distance2 = min(d1*d1+d2*d2,d3*d3+d4*d4)
+                      IF ( distance2 < distance1 ) THEN
+                         distanceAbove = distance
+                         lineAbove => ptrLine
+                      ENDIF
+                  ENDIF
                ENDIF
             ELSE
-               IF ( distance < distanceBelow ) THEN
-                   distanceBelow = distance
-                   lineBelow => ptrLine
+               IF ( distance <= distanceBelow ) THEN
+                  IF ( distance < distanceBelow ) THEN
+                      distanceBelow = distance
+                      lineBelow => ptrLine
+                  ELSE
+                      d1 = lineBelow%startNode%xValue-xValueNode1
+                      d2 = lineBelow%startNode%yValue-yValueNode1
+                      d3 = lineBelow%endNode%xValue-xValueNode1
+                      d4 = lineBelow%endNode%yValue-yValueNode1
+                      distance1 = min(d1*d1+d2*d2,d3*d3+d4*d4)
+                      d1 = ptrLine%startNode%xValue-xValueNode1
+                      d2 = ptrLine%startNode%yValue-yValueNode1
+                      d3 = ptrLine%endNode%xValue-xValueNode1
+                      d4 = ptrLine%endNode%yValue-yValueNode1
+                      distance2 = min(d1*d1+d2*d2,d3*d3+d4*d4)
+                      IF ( distance2 < distance1 ) THEN
+                         distanceBelow = distance
+                         lineBelow => ptrLine
+                      ENDIF
+                  ENDIF
                ENDIF
             ENDIF
             CYCLE
@@ -934,15 +995,50 @@ FUNCTION checkIsInside(ptrBoundaryLoop,ptrBoundaryLoop1) RESULT(check)
             distance = abs(xIntersection - xValueNode1)
 
             IF ( xIntersection > xValueNode1 ) THEN
-               IF ( distance < distanceRight ) THEN
-                   distanceRight = distance
-                   lineRight => ptrLine
+               IF ( distance <= distanceRight ) THEN
+                  IF ( distance < distanceRight ) THEN
+                      distanceRight = distance
+                      lineRight => ptrLine
+                  ELSE
+                      d1 = lineRight%startNode%xValue-xValueNode1
+                      d2 = lineRight%startNode%yValue-yValueNode1
+                      d3 = lineRight%endNode%xValue-xValueNode1
+                      d4 = lineRight%endNode%yValue-yValueNode1
+                      distance1 = min(d1*d1+d2*d2,d3*d3+d4*d4)
+                      d1 = ptrLine%startNode%xValue-xValueNode1
+                      d2 = ptrLine%startNode%yValue-yValueNode1
+                      d3 = ptrLine%endNode%xValue-xValueNode1
+                      d4 = ptrLine%endNode%yValue-yValueNode1
+                      distance2 = min(d1*d1+d2*d2,d3*d3+d4*d4)
+                      IF ( distance2 < distance1 ) THEN
+                         distanceRight = distance
+                         lineRight => ptrLine
+                      ENDIF
+                  ENDIF
                ENDIF
             ELSE
-               IF ( distance < distanceLeft ) THEN
-                   distanceLeft = distance
-                   lineLeft => ptrLine
+               IF ( distance <= distanceLeft ) THEN
+                  IF ( distance < distanceLeft ) THEN
+                      distanceLeft = distance
+                      lineLeft => ptrLine
+                  ELSE
+                      d1 = lineLeft%startNode%xValue-xValueNode1
+                      d2 = lineLeft%startNode%yValue-yValueNode1
+                      d3 = lineLeft%endNode%xValue-xValueNode1
+                      d4 = lineLeft%endNode%yValue-yValueNode1
+                      distance1 = min(d1*d1+d2*d2,d3*d3+d4*d4)
+                      d1 = ptrLine%startNode%xValue-xValueNode1
+                      d2 = ptrLine%startNode%yValue-yValueNode1
+                      d3 = ptrLine%endNode%xValue-xValueNode1
+                      d4 = ptrLine%endNode%yValue-yValueNode1
+                      distance2 = min(d1*d1+d2*d2,d3*d3+d4*d4)
+                      IF ( distance2 < distance1 ) THEN
+                         distanceLeft = distance
+                         lineLeft => ptrLine
+                      ENDIF
+                  ENDIF
                ENDIF
+               
             ENDIF
             CYCLE
          ENDIF
@@ -978,7 +1074,7 @@ FUNCTION checkIsInside(ptrBoundaryLoop,ptrBoundaryLoop1) RESULT(check)
 
 END FUNCTION
 
-! Procedure 13 : check if the node is on the right side of the boundary
+! Procedure 12 : check if the node is on the right side of the boundary
 ! ---------------------------------------------------------------------
 FUNCTION checkPosition(ptrLine,ptrNode1,contourType) RESULT (check)
 
@@ -1013,7 +1109,7 @@ FUNCTION checkPosition(ptrLine,ptrNode1,contourType) RESULT (check)
 
 END FUNCTION
 
-! Procedure 14 : check if the computational domain is on the left side of the boundary or on the right side
+! Procedure 13 : check if the computational domain is on the left side of the boundary or on the right side
 ! ---------------------------------------------------------------------------------------------------------
 SUBROUTINE checkDomainPosition(ptrBoundaryLoop, check)
 
@@ -1036,25 +1132,7 @@ SUBROUTINE checkDomainPosition(ptrBoundaryLoop, check)
 END SUBROUTINE
 
 
-! Procedure 15 : compute the distance between a boundary segment and a node
-! -------------------------------------------------------------------------
-FUNCTION computeDistance(xValueNodeStart,yValueNodeStart,xValueNodeEnd,yValueNodeEnd,xValueNode1,yValueNode1) RESULT(distance)
-
-!     Declaration
-!     - - - - - -
-      REAL(KIND=8), INTENT(IN) :: xValueNodeStart,yValueNodeStart,xValueNodeEnd,yValueNodeEnd,xValueNode1,yValueNode1
-      REAL(KIND=8) :: distance, xMiddle, yMiddle
-
-!     Body
-!     - - -
-
-      xMiddle = 0.5 * (xValueNodeStart+xValueNodeEnd)
-      yMiddle = 0.5 * (yValueNodeStart+yValueNodeEnd)
-      distance = sqrt((xMiddle-xValueNode1)*(xMiddle-xValueNode1)+(yMiddle-yValueNode1)*(yMiddle-yValueNode1))
-
-END FUNCTION
-
-! Procedure 16 : flag to domain which has to be meshed
+! Procedure 14 : flag to domain which has to be meshed
 ! ----------------------------------------------------
 SUBROUTINE flagDomainToBeMeshed(boundaryLoops)
 
@@ -1066,13 +1144,17 @@ SUBROUTINE flagDomainToBeMeshed(boundaryLoops)
       TYPE(vectorInteger4), POINTER :: ptrInsideContour
       INTEGER(KIND=4), DIMENSION(:), POINTER :: ptrValues
 
-      INTEGER :: i1, i2, nbOfContour, nbOfValues
+      INTEGER :: i1, nbOfContour, nbOfValues
       TYPE(vectorInteger4) :: storageVector
+      INTEGER(KIND=4), DIMENSION(:), POINTER :: ptrStorageVector
+      INTEGER(KIND=4) :: two = 2
+      
 !     Body
 !     - - -
 
       nbOfContour = contourDBGetSize(boundaryLoops)
       CALL vectorCreate(storageVector,nbOfContour)
+      ptrStorageVector => vectorGetValues(storageVector)
       CALL vectorSetToZero(storageVector)
 
       DO i1 = 1, nbOfContour
@@ -1080,18 +1162,16 @@ SUBROUTINE flagDomainToBeMeshed(boundaryLoops)
           ptrInsideContour => ptrBoundaryLoop%insideContour
           ptrValues => vectorGetValues(ptrInsideContour)
           nbOfValues = vectorGetSize(ptrInsideContour)
-
-          DO i2 = 1, nbOfValues
-             CALL vectorFastAddValue(storageVector,ptrValues(i2),1)
-          ENDDO
+          
+          ptrStorageVector(ptrValues(1:nbOfValues)) = ptrStorageVector(ptrValues(1:nbOfValues)) + 1
+          
       ENDDO
 
-      ptrValues => vectorGetValues(storageVector)
-      ptrValues = modulo(ptrValues,2)
+      ptrStorageVector = modulo(ptrStorageVector,two)
 
       DO i1 = 1, nbOfContour
           ptrBoundaryLoop => contourDBGetValue(boundaryLoops,i1)
-          IF ( ptrValues(i1) == 0 ) THEN
+          IF ( ptrStorageVector(i1) == 0 ) THEN
              ptrBoundaryLoop%meshFlag = .TRUE.
           ELSE
              ptrBoundaryLoop%meshFlag = .FALSE.
@@ -1102,7 +1182,7 @@ SUBROUTINE flagDomainToBeMeshed(boundaryLoops)
 
 END SUBROUTINE
 
-! Procedure 17 : write command for meshing properties in gmsh
+! Procedure 15 : write command for meshing properties in gmsh
 ! -----------------------------------------------------------
 SUBROUTINE exportCommandToGMSHWithoutRefinement(fileUnit,boundaryLoops,meshCharacteristicLength)
 
@@ -1155,7 +1235,7 @@ SUBROUTINE exportCommandToGMSHWithoutRefinement(fileUnit,boundaryLoops,meshChara
 
 END SUBROUTINE
 
-! Procedure 18 : write command for meshing properties in gmsh
+! Procedure 16 : write command for meshing properties in gmsh
 ! -----------------------------------------------------------
 SUBROUTINE exportCommandToGMSHWithRefinement(fileUnit,boundaryLoops,meshCharacteristicLength)
 
@@ -1166,6 +1246,7 @@ SUBROUTINE exportCommandToGMSHWithRefinement(fileUnit,boundaryLoops,meshCharacte
      INTEGER, INTENT(IN) :: fileUnit
 
      INTEGER :: i1 ,i2, i3,  nbOfContour, nbOfBoundarySegment, totalNbOfBoundarySegment, iLower, iHigher
+     INTEGER(KIND=4) :: index
      TYPE(contour), POINTER :: ptrBoundaryLoop
      TYPE(lineDataBase), POINTER :: ptrLineDB
      TYPE(line), POINTER :: ptrLine
@@ -1213,11 +1294,13 @@ SUBROUTINE exportCommandToGMSHWithRefinement(fileUnit,boundaryLoops,meshCharacte
 
           IF ( length < meshCharacteristicLength ) THEN
               iLower = iLower + 1
-              CALL vectorFastInsertValue(attractorLengthLowerMeshCharacteristic,iLower,ptrLine%indexValue)
+              index = ptrLine%indexValue
+              CALL vectorFastInsertValue(attractorLengthLowerMeshCharacteristic,iLower,index)
               characteristicLength = characteristicLength + length
           ELSE
               iHigher = iHigher + 1
-              CALL vectorFastInsertValue(attractorLengthHigherMeshCharacteristic,iHigher,ptrLine%indexValue)
+              index = ptrLine%indexValue
+              CALL vectorFastInsertValue(attractorLengthHigherMeshCharacteristic,iHigher,index)
           ENDIF
         ENDDO
 
@@ -1279,26 +1362,26 @@ SUBROUTINE exportCommandToGMSHWithRefinement(fileUnit,boundaryLoops,meshCharacte
 
 END SUBROUTINE
 
-! Procedure 19 : run gmsh
+! Procedure 17 : run gmsh
 ! -----------------------
 SUBROUTINE runGMSH(outputGMSHFile,outputGMSHMeshFile)
 
 ! Declaration
 ! -----------
      TYPE(file), INTENT(IN) :: outputGMSHFile, outputGMSHMeshFile
-     CHARACTER(LEN=301) :: command
+     CHARACTER(LEN=323) :: command
 
 ! Body
 ! ----
-     command = 'gmsh -2 -smooth 10 -algo meshadapt ' // outputGMSHFile%fileName &
+     command = 'gmsh -2 -smooth 10 -algo meshadapt -format mesh -order 2 ' // outputGMSHFile%fileName &
                // ' -o ' // outputGMSHMeshFile%fileName
-     print*,command
+     
+     PRINT*,'GMSH is running ...'
      CALL system(command)
-     print*,command
 
 END SUBROUTINE
 
-! Procedure 20 : change coordinate
+! Procedure 18 : change coordinate
 ! --------------------------------
 SUBROUTINE changeLongLatToXY(ptrBoundaryLoopSegment)
 
@@ -1355,7 +1438,7 @@ SUBROUTINE changeLongLatToXY(ptrBoundaryLoopSegment)
 
 END SUBROUTINE
 
-! Procedure 21 : compute mean value of latitude and longitude
+! Procedure 19 : compute mean value of latitude and longitude
 ! -----------------------------------------------------------
 SUBROUTINE computeMeanCoordinate(boundaryLoops)
 
@@ -1394,7 +1477,7 @@ SUBROUTINE computeMeanCoordinate(boundaryLoops)
 
 END SUBROUTINE
 
-! Procedure 22 : shift all coordinate with respect to meanX and meanY
+! Procedure 20 : shift all coordinate with respect to meanX and meanY
 ! -------------------------------------------------------------------
 SUBROUTINE shiftAllCoordinate(boundaryLoops)
 
@@ -1434,175 +1517,388 @@ SUBROUTINE shiftAllCoordinate(boundaryLoops)
 
 END SUBROUTINE
 
-! Procedue 23 : insert new nodes on the boundaries
-! ------------------------------------------------
-SUBROUTINE insertNodesOnBoundary(boundaryLoops,meshCharacteristicLength)
+
+! Procedure 21 : sort nodes
+! -------------------------
+SUBROUTINE sortingNode(vertices,cells,nodeSorting,nodeSorting2,nbOfVertices)
 
 !     Declaration
 !     - - - - - -
-      REAL(KIND=8), INTENT(IN) :: meshCharacteristicLength
-      TYPE(contourDataBase), INTENT(INOUT) :: boundaryLoops
-      TYPE(contour), POINTER :: ptrBoundaryLoop
+      TYPE(nodeDataBase), INTENT(IN) :: vertices
+      TYPE(tria3DataBase),INTENT(INOUT) :: cells
+      TYPE(vectorInteger4), INTENT(INOUT) :: nodeSorting, nodeSorting2
+      INTEGER, INTENT(IN) :: nbOfVertices
 
-      TYPE(lineDataBase), POINTER :: ptrLineDB
-      TYPE(line), POINTER :: ptrSpecificLine
-
-      INTEGER :: i1, nbOfContour, nbOfBoundarySegment, lastNodeIndex
+      INTEGER :: nbOfDataToSort, nbOfCell, i1
+      INTEGER(KIND=4) :: iNode, iIntermediateNode
+      INTEGER(KIND=4), PARAMETER :: iOne = 1.
+      TYPE(tria3), DIMENSION(:), POINTER :: ptrCellDB
+      TYPE(tria3), POINTER :: ptrCell
+      INTEGER(KIND=4), DIMENSION(:), POINTER ::  ptrNodeSorting, ptrNodeSorting2
+      REAL(KIND=8), DIMENSION(:), POINTER ::  ptrNodeSortingRef
+      TYPE(vectorReal8) :: nodeSortingRef
+      TYPE(vectorInteger4) :: nodeSorting3
+      TYPE(node), DIMENSION(:), POINTER :: ptrNodeDB
+      INTEGER, POINTER :: ptrNodeValue
+      INTEGER(KIND=4), POINTER :: ptrIntValue
 
 !     Body
 !     - - -
+      nbOfDataToSort = vectorGetSize(nodeSorting)
+      
+      CALL vectorCreate(nodeSortingRef,nbOfDataToSort)
+      CALL vectorCreate(nodeSorting3,nbOfDataToSort)
+      CALL vectorSetToZero(nodeSorting3)
+      
+      ptrNodeSorting => vectorGetValues(nodeSorting)
+      ptrNodeSorting2 => vectorGetValues(nodeSorting3)
+      ptrNodeSortingRef => vectorGetValues(nodeSortingRef)
+      ptrNodeDB => nodeDBGetValues(vertices)
+      
+      nbOfCell = tria3DBGetSize(cells)
+      ptrCellDB => tria3DBGetValues(cells)
 
-      nbOfContour = contourDBGetSize(boundaryLoops)
-      ptrBoundaryLoop => contourDBGetValue(boundaryLoops,nbOfContour)
-      ptrLineDB => ptrBoundaryLoop%lineDB
-      nbOfBoundarySegment = lineDBGetSize(ptrLineDB)
-      ptrSpecificLine => lineDBGetValue(ptrLineDB,nbOfBoundarySegment)
-      lastNodeIndex = ptrSpecificLine%startNode%indexValue
-
-      DO i1 = 1, nbOfContour
-         ptrBoundaryLoop => contourDBGetValue(boundaryLoops,i1)
-         CALL insertNodesOnSpecificBoundary(ptrBoundaryLoop,meshCharacteristicLength,lastNodeIndex)
+!     1) Introduction of existing nodes in the vector to sort
+!     + + + + + + + + + + + + + + + + + + + + + + + + + + + +       
+      DO i1 = 1, nbOfDataToSort
+         ptrNodeSorting(i1) = i1
+         ptrNode => ptrNodeDB(i1)
+         ptrNodeSortingRef(i1) = ptrNode%xValue + 1.D-7 * ptrNode%yValue
       ENDDO
 
+!     2) Sort procedure
+!     + + + + + + + + +
+      CALL QS2I1R(ptrNodeSortingRef,ptrNodeSorting,nbOfDataToSort)
+
+!     3) Reorganisation of the nodes
+!     + + + + + + + + + + + + + + + +
+
+      iNode = 0
+      iIntermediateNode = nbOfVertices
+      
+      DO i1 = 1, nbOfCell
+         ptrCell => ptrCellDB(i1)
+         
+         ptrNodeValue => ptrCell%node1
+         ptrIntValue => ptrNodeSorting2(ptrNodeValue)
+         IF ( ptrIntValue <= 0 ) THEN
+            iNode = iNode + iOne
+            ptrIntValue = iNode
+         ENDIF
+         ptrNodeValue = ptrIntValue
+                  
+         ptrNodeValue => ptrCell%node2
+         ptrIntValue => ptrNodeSorting2(ptrNodeValue)
+         IF ( ptrIntValue <= 0 ) THEN
+            iNode = iNode + iOne
+            ptrIntValue = iNode
+         ENDIF
+         ptrNodeValue = ptrIntValue
+
+         ptrNodeValue => ptrCell%node3
+         ptrIntValue => ptrNodeSorting2(ptrNodeValue)
+         IF ( ptrIntValue <= 0 ) THEN
+            iNode = iNode + iOne
+            ptrIntValue = iNode
+         ENDIF
+         ptrNodeValue = ptrIntValue
+
+         ptrNodeValue => ptrCell%neighbor1
+         IF ( ptrNodeValue >= 0 ) THEN
+             ptrIntValue => ptrNodeSorting2(ptrNodeValue)
+             IF ( ptrIntValue <= 0 ) THEN
+                iIntermediateNode = iIntermediateNode + iOne
+                ptrIntValue = iIntermediateNode
+             ENDIF
+             ptrNodeValue = (-1) * ptrIntValue        
+         ENDIF 
+
+         ptrNodeValue => ptrCell%neighbor2
+         IF ( ptrNodeValue >= 0 ) THEN
+             ptrIntValue => ptrNodeSorting2(ptrNodeValue)
+             IF ( ptrIntValue <= 0 ) THEN
+                iIntermediateNode = iIntermediateNode + iOne
+                ptrIntValue = iIntermediateNode
+             ENDIF
+             ptrNodeValue = (-1) * ptrIntValue        
+         ENDIF 
+
+         ptrNodeValue => ptrCell%neighbor3
+         IF ( ptrNodeValue >= 0 ) THEN
+             ptrIntValue => ptrNodeSorting2(ptrNodeValue)
+             IF ( ptrIntValue <= 0 ) THEN
+                iIntermediateNode = iIntermediateNode + iOne
+                ptrIntValue = iIntermediateNode
+             ENDIF
+             ptrNodeValue = (-1) * ptrIntValue        
+         ENDIF 
+      ENDDO
+      
+      
+      ptrNodeSorting => vectorGetValues(nodeSorting2)
+      
+      DO i1 = 1, nbOfDataToSort
+         ptrNodeSorting(ptrNodeSorting2(i1)) = i1
+      ENDDO
+
+      ptrNodeSorting => vectorGetValues(nodeSorting)
+      ptrNodeSorting(1:nbOfDataToSort)=ptrNodeSorting2(ptrNodeSorting(1:nbOfDataToSort))
+     
+      CALL vectorDestroy(nodeSortingRef)
+      CALL vectorDestroy(nodeSorting3)
+            
+      PRINT*, 'Finish sorting'
+      
 END SUBROUTINE
 
-! Procedure 24 : insert new nodes on a specific boundary
-! ------------------------------------------------------
-SUBROUTINE insertNodesOnSpecificBoundary(ptrBoundaryLoop,meshCharacteristicLength,lastNodeIndex)
+! Procedure 22 : sorting procedure
+! --------------------------------
+SUBROUTINE QS2I1R (IA,JA,N)
+
+!=============================================================================
+! *** DESCRIPTION (from www.netlib.org)
+!     Written by Rondall E Jones
+!     Modified by John A. Wisniewski to use the Singleton QUICKSORT
+!     algorithm. date 18 November 1976.
+!
+!     Further modified by David K. Kahaner
+!     National Bureau of Standards
+!     August, 1981
+!
+!     Even further modification made to bring the code up to the
+!     Fortran 77 level and make it more readable and to carry
+!     along one integer array and one REAL(KIND=8) ::  array during the sort by
+!     Mark K. Seager
+!     Lawrence Livermore National Laboratory
+!     November, 1987
+!     This routine was adapted from the ISORT routine.
+!
+!     ABSTRACT
+!         This routine sorts an  array IA and makes the same
+!         interchanges in the integer array JA
+!         The array IA may be sorted in increasing order
+!         A slightly modified quicksort algorithm is used.
+!
+!     DESCRIPTION OF PARAMETERS
+!        IA -  array of values to be sorted.
+!        JA - Integer array to be carried along.
+!
+!         N - Number of values in integer array IA to be sorted.
+!
+!     .. Scalar Arguments ..
 
 !     Declaration
 !     - - - - - -
-      REAL(KIND=8), INTENT(IN) :: meshCharacteristicLength
-      INTEGER, INTENT(INOUT) :: lastNodeIndex
-      TYPE(contour), POINTER :: ptrBoundaryLoop
-
-      TYPE(lineDataBase), POINTER :: ptrLineDB
-      TYPE(line), POINTER :: ptrSpecificLine
-      TYPE(line) :: lineElement
-
-      INTEGER :: i1, nbOfBoundarySegment, tooFineCounter, lineIndex, nbOfAddedNode, nbOfAddedNode1
-      REAL(KIND=8) :: length, xStart, yStart, xEnd, yEnd, lambda
-
-      TYPE(vectorInteger4) :: checkingVector
-      INTEGER(KIND=4), DIMENSION(:), POINTER :: ptrCheckingVector
-      TYPE(node) :: endLineNode = node(0.,0.,0.,0,0.), nodeElement = node(0.,0.,0.,0,0.)
+      INTEGER, INTENT(IN) ::  N
+      REAL(KIND=8), DIMENSION(:), POINTER :: IA
+      INTEGER(KIND=4), DIMENSION(:), POINTER :: JA
+      
+      REAL(KIND=8) ::  R
+      INTEGER(KIND=4) ::  I,  IJ,  J, JJT, JT, K, L, M,NN
+      REAL(KIND=8) ::    IIT,  IT
+      INTEGER(KIND=4) ::  IL(21), IU(21)
 
 !     Body
-!     - - -
-      ptrLineDB => ptrBoundaryLoop%lineDB
-      nbOfBoundarySegment = lineDBGetSize(ptrLineDB)
+!     - - - 
 
-      tooFineCounter = 0
-      lineIndex = nbOfBoundarySegment
-
-      CALL vectorCreate(checkingVector,nbOfBoundarySegment)
-      CALL vectorSetToZero(checkingVector)
-
-!     1) Check if the boundary segment has to be refined
-!     ++++++++++++++++++++++++++++++++++++++++++++++++++
-
-      DO i1 = 1, nbOfBoundarySegment
-
-         ptrSpecificLine => lineDBGetValue(ptrLineDB,i1)
-         length = lineComputeLength(ptrSpecificLine)
-
-         IF ( length < 0.5 * meshCharacteristicLength ) THEN
-            tooFineCounter = tooFineCounter + 1
-            CYCLE
-         ENDIF
-
-         CALL vectorFastInsertValue(checkingVector,i1,INT(length/meshCharacteristicLength))
-
-      ENDDO
-
-      IF ( tooFineCounter > 0 ) THEN
-        PRINT*, 'Warning, contour is too fine for ', tooFineCounter, ' segments. '
+!C --- FIRST EXECUTABLE STATEMENT  QS2I1R ---
+      NN=N
+      IF ( N == 1 ) THEN
+          PRINT*, 'No need to sort a single data point'
+      RETURN
       ENDIF
 
-!     2) Insert nodes on too long boundary segment
-!     ++++++++++++++++++++++++++++++++++++++++++++
-      ptrCheckingVector => vectorGetValues(checkingVector)
+!C     Sort IA and carry JA and A along.
+!C     And now...Just a little black magic...
 
-      DO i1 = 1, nbOfBoundarySegment
+      M = 1
+      I = 1
+      J = NN
+      R = .375E0
+ 210  IF( R.LE.0.5898437E0 ) THEN
+         R = R + 3.90625E-2
+      ELSE
+         R = R-.21875E0
+      ENDIF
+ 225  K = I
 
-         IF ( ptrCheckingVector(i1) <= 0 ) THEN
-            CYCLE
+!C     Select a central element of the array and save it in location
+!C     it, jt, at.
+      IJ = I + INT ((J-I)*R)
+      IT = IA(IJ)
+      JT = JA(IJ)
+
+!C     If first element of array is greater than it, interchange with it.
+      IF( IA(I).GT.IT ) THEN
+         IA(IJ) = IA(I)
+         IA(I)  = IT
+         IT     = IA(IJ)
+         JA(IJ) = JA(I)
+         JA(I)  = JT
+         JT     = JA(IJ)
+      ENDIF
+      L=J
+
+!C     If last element of array is less than it, swap with it.
+      IF( IA(J).LT.IT ) THEN
+         IA(IJ) = IA(J)
+         IA(J)  = IT
+         IT     = IA(IJ)
+         JA(IJ) = JA(J)
+         JA(J)  = JT
+         JT     = JA(IJ)
+
+!C     If first element of array is greater than it, swap with it.
+         IF ( IA(I).GT.IT ) THEN
+            IA(IJ) = IA(I)
+            IA(I)  = IT
+            IT     = IA(IJ)
+            JA(IJ) = JA(I)
+            JA(I)  = JT
+            JT     = JA(IJ)
          ENDIF
+      ENDIF
 
-         ptrSpecificLine => lineDBGetValue(ptrLineDB,i1)
+!C     Find an element in the second half of the array which is
+!C     smaller than it.
+  240 L=L-1
+      IF( IA(L).GT.IT ) GO TO 240
 
-         xStart = ptrSpecificLine%startNode%xValue
-         yStart = ptrSpecificLine%startNode%yValue
+!C     Find an element in the first half of the array which is
+!C     greater than it.
+  245 K=K+1
+      IF( IA(K).LT.IT ) GO TO 245
 
-         endLineNode = ptrSpecificLine%endNode
-         xEnd = ptrSpecificLine%endNode%xValue
-         yEnd = ptrSpecificLine%endNode%yValue
+!C     Interchange these elements.
+      IF( K.LE.L ) THEN
+         IIT   = IA(L)
+         IA(L) = IA(K)
+         IA(K) = IIT
+         JJT   = JA(L)
+         JA(L) = JA(K)
+         JA(K) = JJT
+         GOTO 240
+      ENDIF
 
-         length = lineComputeLength(ptrSpecificLine)
+!C     Save upper and lower subscripts of the array yet to be sorted.
+      IF( L-I.GT.J-K ) THEN
+         IL(M) = I
+         IU(M) = L
+         I = K
+         M = M+1
+      ELSE
+         IL(M) = K
+         IU(M) = J
+         J = L
+         M = M+1
+      ENDIF
+      GO TO 260
 
-         nbOfAddedNode = ptrCheckingVector(i1) - 1
-         nbOfAddedNode1 = nbOfAddedNode + 1
+!C     Begin again on another portion of the unsorted array.
+  255 M = M-1
+      IF( M.EQ.0 ) GO TO 300
+      I = IL(M)
+      J = IU(M)
+  260 IF( J-I.GE.1 ) GO TO 225
+      IF( I.EQ.J ) GO TO 255
+      IF( I.EQ.1 ) GO TO 210
+      I = I-1
+  265 I = I+1
+      IF( I.EQ.J ) GO TO 255
+      IT = IA(I+1)
+      JT = JA(I+1)
+      IF( IA(I).LE.IT ) GO TO 265
+      K=I
+  270 IA(K+1) = IA(K)
+      JA(K+1) = JA(K)
+      K = K-1
+      IF( IT.LT.IA(K) ) GO TO 270
+      IA(K+1) = IT
+      JA(K+1) = JT
+      GO TO 265
 
-         CALL lineDBSetIncreaseSize(ptrLineDB,nbOfAddedNode)
-
-         lastNodeIndex = lastNodeIndex + 1
-         nodeElement%indexValue = lastNodeIndex
-         lambda = REAL(1,KIND=8) / REAL(nbOfAddedNode1,KIND=8)
-         nodeElement%xValue = xStart + lambda * ( xEnd - xStart )
-         nodeElement%yValue = yStart + lambda * ( yEnd - yStart )
-
-         ptrSpecificLine%endNode = nodeElement
-
-         DO i2 = 2, nbOfAddedNode
-
-            lineIndex = lineIndex + 1
-            lineElement%indexValue = lineIndex
-            lineElement%startNode = nodeElement
-
-            lastNodeIndex = lastNodeIndex + 1
-            nodeElement%indexValue = lastNodeIndex
-            lambda = REAL(i2,KIND=8) / REAL(nbOfAddedNode1,KIND=8)
-            nodeElement%xValue = xStart + lambda * ( xEnd - xStart )
-            nodeElement%yValue = yStart + lambda * ( yEnd - yStart )
-
-            lineElement%endNode = nodeElement
-
-            CALL lineDBPushBack(ptrLineDB,lineElement)
-
-         ENDDO
-
-         lineIndex = lineIndex + 1
-         lineElement%indexValue = lineIndex
-         lineElement%startNode = nodeElement
-         lineElement%endNode = endLineNode
-
-         CALL lineDBPushBack(ptrLineDB,lineElement)
-
-      ENDDO
+ 300  CONTINUE
 
 END SUBROUTINE
 
-! Procedure 25 : estimation of mesh size
-! --------------------------------------
-SUBROUTINE evaluateMeshSize(ptrBoundaryLoop,nbOfVertices,nbOfCell,meshCharacteristicLength)
+! Procedure 23 : unshift all coordinate with respect to meanX and meanY
+! -------------------------------------------------------------------
+SUBROUTINE unshiftAllCoordinate(vertices)
 
 !     Declaration
 !     - - - - - -
-      REAL(KIND=8), INTENT(IN) :: meshCharacteristicLength
-      INTEGER, INTENT(INOUT) :: nbOfVertices, nbOfCell
-      TYPE(contour), POINTER :: ptrBoundaryLoop
+      TYPE(nodeDataBase), INTENT(INOUT) :: vertices
 
-      REAL(KIND=8) :: surface, length
-      INTEGER :: refValue
+      INTEGER :: nbOfVertice
+      REAL(KIND=8) :: meanX, meanY, characteristicLength
+      TYPE(node), DIMENSION(:), POINTER :: ptrNodeDB
 
 !     Body
 !     - - -
-      surface = abs(contourComputeSurface(ptrBoundaryLoop))
-      length = sqrt(surface)
+      nbOfVertice = nodeDBgetSize(vertices)
+      ptrNodeDB => nodeDBGetValues(vertices)
+      meanX = getMeanXCoordinate()
+      meanY = getMeanYCoordinate()
+      characteristicLength = getDimensionLessLength()
+      
+      ptrNodeDB(1:nbOfVertice)%xValue = ptrNodeDB(1:nbOfVertice)%xValue * characteristicLength + meanX
+      ptrNodeDB(1:nbOfVertice)%yValue = ptrNodeDB(1:nbOfVertice)%yValue * characteristicLength + meanY
 
-      refValue = INT(length / meshCharacteristicLength)
-      nbOfVertices = ( refValue + 1 ) * ( refValue + 1 )
-      nbOfCell = 2 * refValue * refValue
+END SUBROUTINE
+
+! Procedure 24 : change coordinate
+! --------------------------------
+SUBROUTINE changeXYToLongLat(vertices)
+
+!     Declaration
+!     - - - - - -
+      TYPE(nodeDataBase) :: vertices
+
+      INTEGER :: i1, nbOfData
+      REAL(KIND=8), POINTER :: xValue, yValue
+      REAL(KIND=8) :: deltaXInKm, deltaYInKm, meanLongitude, meanLatitude, deltaY, pi
+      REAL(KIND=8), PARAMETER :: cst1 = 180., cst2 = 90., cst3 = 0.001
+      TYPE(node), DIMENSION(:), POINTER :: ptrVertices
+      TYPE(node), POINTER :: ptrNode
+
+!     Body
+!     - - -
+      meanLongitude = getMeanLongitude()
+      nbOfData = nodeDBGetSize(vertices)
+      ptrVertices => nodeDBGetValues(vertices)
+      
+
+      SELECT CASE (getISpheric())
+         CASE (1)
+            pi = getPi() / cst1
+            deltaY = cst3 * ( getMaximumLatitude() - getMinimumLatitude() )
+
+            DO i1 = 1, nbOfData
+               ptrNode => ptrVertices(i1)
+               xValue =>  ptrNode%xValue
+               yValue =>  ptrNode%yValue
+               
+               xValue = xValue / max(cos(yValue*pi),cos(cst2*pi-deltaY*pi)) + meanLongitude
+               xValue = max(xValue,(-1.)*cst1)
+               xValue = min(xValue,cst1)
+
+            ENDDO
+
+         CASE DEFAULT
+            deltaXInKm = getDeltaXInKm()
+            deltaYInKm = getDeltaYInKm()
+
+            meanLatitude = getMeanLatitude()
+
+            DO i1 = 1, nbOfData
+               ptrNode => ptrVertices(i1)
+               xValue =>  ptrNode%xValue
+               yValue =>  ptrNode%yValue
+               xValue = xValue / deltaXInKm + meanLongitude
+               yValue = yValue / deltaYInKm + meanLatitude
+            ENDDO
+
+      END SELECT
 
 END SUBROUTINE
 
@@ -1672,455 +1968,23 @@ SUBROUTINE exportToGMSH(fileToWrite,vertices,cells)
 
 END SUBROUTINE
 
-! Procedure 27 : inserting boundary nodes in the mesh
-! ---------------------------------------------------
-SUBROUTINE insertBoundaryNodesInMesh(vertices,cells,ptrBoundaryLoop)
+! Procedure 27 : remove temporary gmsh files
+! ------------------------------------------
+SUBROUTINE removeUnsedFile(file1,file2)
 
 !     Declaration
 !     - - - - - -
-      TYPE(nodeDataBase), INTENT(IN) :: vertices
-      TYPE(tria3DataBase),INTENT(IN) :: cells
-      TYPE(contour), POINTER :: ptrBoundaryLoop
-
-      INTEGER :: nbOfBoundaryNode
-      TYPE(lineDataBase), POINTER :: ptrLineDB
-      TYPE(node), POINTER :: ptrNode
-
+      TYPE(file), INTENT(IN) :: file1, file2
+      CHARACTER(LEN=323) :: command
+      
 !     Body
 !     - - -
-
-      ptrLineDB => ptrBoundaryLoop%lineDB
-      nbOfBoundaryNode = lineDBGetSize(ptrLineDB)
-
-      DO i1 = 1, nbOfBoundaryNode
-         ptrNode => ptrLineDB%values(i1)%startNode
-         CALL insertNodeInMesh(vertices,cells,ptrNode)
-      ENDDO
+      command = 'rm -f '// file1%fileName
+      CALL system(command)       
+      command = 'rm -f '// file2%fileName
+      CALL system(command)       
 
 END SUBROUTINE
-
-! Procedure 28 : insert a node in the mesh
-! ----------------------------------------
-SUBROUTINE insertNodeInMesh(vertices,cells,ptrNode,motherCellNumber)
-
-!     Declaration
-!     - - - - - -
-      TYPE(nodeDataBase), INTENT(IN) :: vertices
-      TYPE(tria3DataBase),INTENT(IN) :: cells
-      TYPE(node), POINTER :: ptrNode
-
-      TYPE(tria3), OPTIONAL, POINTER :: motherCellNumber
-      TYPE(tria3), POINTER :: ptrCell
-
-      INTEGER, PARAMETER :: defautlSize = 20
-      TYPE(vectorInteger4) :: affectedCell, affectedCellCheck, finalAffectedCell
-      INTEGER(KIND=4), DIMENSION(:), POINTER :: ptrAffectedCellValue, ptrAffectedCellCheckValue, ptrFinalAffectedCellValue
-      INTEGER :: iCheck, iTotalCheck, n1, nbOfAffectedCell, nbOfVertice, i1, i2
-
-      TYPE(tria3DataBase) :: localMesh
-      TYPE(tria3), DIMENSION(:), POINTER :: ptrLocalMesh
-      TYPE(tria3) :: localCell = tria3(0,0,0,0,0,0,0)
-
-!     Body
-!     - - -
-
-!     1) Search cell containing the node
-!     ++++++++++++++++++++++++++++++++++
-      IF ( PRESENT(motherCellNumber) ) THEN
-         ptrCell => motherCellNumber
-      ELSE
-         ptrCell => searchInitialCell(vertices,cells,ptrNode)
-      ENDIF
-
-!     2) Search complete affected stencil (delaunay criterion)
-!     ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-      CALL vectorCreate(affectedCell,defautlSize)
-      CALL vectorSetIncreaseSize(affectedCell,defautlSize)
-      CALL vectorCreate(affectedCellCheck,defautlSize)
-      CALL vectorSetIncreaseSize(affectedCellCheck,defautlSize)
-
-      ptrAffectedCellValue => affectedCell%values
-
-      CALL vectorFastInsertValue(affectedCell,1,ptrCell%indexValue)
-      CALL vectorFastInsertValue(affectedCellCheck,1,1)
-      iTotalCheck = 1
-      n1 = ptrCell%neighbor1
-      IF ( n1 > 0 ) THEN
-         iTotalCheck = iTotalCheck + 1
-         CALL vectorInsertValue(affectedCell,iTotalCheck,n1)
-         CALL vectorInsertValue(affectedCellCheck,iTotalCheck,0)
-      ENDIF
-      n1 = ptrCell%neighbor2
-      IF ( n1 > 0 ) THEN
-         iTotalCheck = iTotalCheck + 1
-         CALL vectorInsertValue(affectedCell,iTotalCheck,n1)
-         CALL vectorInsertValue(affectedCellCheck,iTotalCheck,0)
-      ENDIF
-      n1 = ptrCell%neighbor3
-      IF ( n1 > 0 ) THEN
-         iTotalCheck = iTotalCheck + 1
-         CALL vectorInsertValue(affectedCell,iTotalCheck,n1)
-         CALL vectorInsertValue(affectedCellCheck,iTotalCheck,0)
-      ENDIF
-
-      iCheck = 2
-
-      DO WHILE ( iCheck <= iTotalCheck )
-
-           ptrCell => tria3DBGetValue(cells,ptrAffectedCellValue(iCheck))
-           IF ( delaunayCriterion(ptrNode,ptrCell,vertices) ) THEN
-
-              n1 = ptrCell%neighbor1
-              IF ( n1 > 0 ) THEN
-                 IF ( .NOT.(vectorIsAlreadyIn(affectedCell,n1) )) THEN
-                    iTotalCheck = iTotalCheck + 1
-                    CALL vectorInsertValue(affectedCell,iTotalCheck,n1)
-                    CALL vectorInsertValue(affectedCellCheck,iTotalCheck,0)
-                 ENDIF
-              ENDIF
-
-              n1 = ptrCell%neighbor2
-              IF ( n1 > 0 ) THEN
-                 IF ( .NOT.(vectorIsAlreadyIn(affectedCell,n1) )) THEN
-                    iTotalCheck = iTotalCheck + 1
-                    CALL vectorInsertValue(affectedCell,iTotalCheck,n1)
-                    CALL vectorInsertValue(affectedCellCheck,iTotalCheck,0)
-                 ENDIF
-              ENDIF
-
-              n1 = ptrCell%neighbor3
-              IF ( n1 > 0 ) THEN
-                 IF ( .NOT.(vectorIsAlreadyIn(affectedCell,n1) )) THEN
-                    iTotalCheck = iTotalCheck + 1
-                    CALL vectorInsertValue(affectedCell,iTotalCheck,n1)
-                    CALL vectorInsertValue(affectedCellCheck,iTotalCheck,0)
-                 ENDIF
-              ENDIF
-
-              CALL vectorInsertValue(affectedCellCheck,iCheck,1)
-           ELSE
-              CALL vectorInsertValue(affectedCellCheck,iCheck,0)
-           ENDIF
-
-           iCheck = iCheck + 1
-      END DO
-
-      nbOfAffectedCell = vectorSum(affectedCellCheck)
-      ptrAffectedCellCheckValue => vectorGetValues(affectedCellCheck)
-
-      CALL vectorCreate(finalAffectedCell,nbOfAffectedCell)
-      ptrFinalAffectedCellValue => vectorGetValues(finalAffectedCell)
-
-      i2 = 0
-      DO i1 = 1, iTotalCheck
-         IF ( ptrAffectedCellCheckValue(i1) == 1 ) THEN
-            i2 = i2 + 1
-            ptrFinalAffectedCellValue(i2) = ptrAffectedCellValue(i1)
-         ENDIF
-      ENDDO
-
-      CALL vectorDestroy(affectedCell)
-      CALL vectorDestroy(affectedCellCheck)
-
-!     3) Insert the new node in the database
-!     ++++++++++++++++++++++++++++++++++++++
-      nbOfVertice = nodeDBGetLastIndex(vertices)
-      CALL nodeDBInsert(vertices,nbOfVertice+1,ptrNode)
-
-!     4) organize the stencil to be modified
-!     ++++++++++++++++++++++++++++++++++++++
-
-      CALL tria3DBCreate(localMesh,2*nbOfAffectedCell)
-      ptrLocalMesh => tria3DBGetValues(localMesh)
-
-      i2 = 0
-      DO i1 = 1, nbOfAffectedCell
-          ptrCell => tria3DBGetValue(cells,ptrFinalAffectedCellValue(i1))
-          n1 = ptrCell%neighbor1
-          IF ( .NOT.(vectorIsAlreadyIn(finalAffectedCell,n1))) THEN
-             i2 = i2 + 1
-             localCell%indexValue = i2
-             localCell%node1 = ptrCell%node1
-             localCell%node2 = ptrCell%node2
-             localCell%node3 = ptrNode%indexValue
-             localCell%neighbor1 = n1
-             ptrLocalMesh(i2) = localCell
-          ENDIF
-          n1 = ptrCell%neighbor2
-          IF ( .NOT.(vectorIsAlreadyIn(finalAffectedCell,n1) )) THEN
-             i2 = i2 + 1
-             localCell%indexValue = i2
-             localCell%node1 = ptrCell%node2
-             localCell%node2 = ptrCell%node3
-             localCell%node3 = ptrNode%indexValue
-             localCell%neighbor1 = ptrCell%neighbor2
-             ptrLocalMesh(i2) = localCell
-          ENDIF
-          n1 = ptrCell%neighbor3
-          IF ( .NOT.(vectorIsAlreadyIn(finalAffectedCell,n1) )) THEN
-             i2 = i2 + 1
-             localCell%indexValue = i2
-             localCell%node1 = ptrCell%node3
-             localCell%node2 = ptrCell%node1
-             localCell%node3 = ptrNode%indexValue
-             localCell%neighbor1 = ptrCell%neighbor3
-             ptrLocalMesh(i2) = localCell
-          ENDIF
-
-      ENDDO
-
-      call tria3DBPrint(localMesh)
-      stop
-
-
-!      nbOfLocalCell = i2
-!      nbOfnewCell = nbOfLocalCell - nbOfAffectedCell
-!
-!      DO i1 = 1, nbOfLocalCell
-!         ptrLocalCell => ptrLocalMesh%values(i1)
-!         no1 = ptrLocalCell%node1
-!         no2 = ptrLocalCell%node2
-!         no3 = ptrLocalCell%node3
-!
-!         DO i2 = 1, nbOfLocalCell
-!            ptrLocalCell2 => ptrLocalMesh%values(i2)
-!            no1b = ptrLocalCell2%node1
-!            no2b = ptrLocalCell2%node2
-!            no3b = ptrLocalCell2%node3
-!
-!            IF (
-!
-!         ENDDO
-!      ENDDO
-
-      CALL tria3DBDestroy(localMesh)
-END SUBROUTINE
-
-! Procedure 29 : search cell in which the node is located
-! -------------------------------------------------------
-FUNCTION searchInitialCell(vertices,cells,ptrNode) RESULT(ptrCell)
-
-!     Declaration
-!     - - - - - -
-      TYPE(nodeDataBase), INTENT(IN) :: vertices
-      TYPE(tria3DataBase),INTENT(IN) :: cells
-      TYPE(node), POINTER :: ptrNode
-
-      INTEGER :: neighborConcerned, neighbor
-      TYPE(tria3), DIMENSION(:), POINTER :: ptrCellDB
-      TYPE(node), DIMENSION(:), POINTER :: ptrVerticesDB
-      TYPE(tria3), POINTER :: ptrCell
-      LOGICAL :: repositionning
-      REAL(KIND=8) :: lambda
-      TYPE(node), POINTER :: ptrNode1, ptrNode2
-
-!     Body
-!     - - -
-      ptrCellDB => tria3DBGetValues(cells)
-      ptrVerticesDB => nodeDBGetValues(vertices)
-
-      ptrCell => ptrCellDB(1)
-
-10    CONTINUE
-
-      repositionning = .FALSE.
-
-      IF ( .NOT.(vectorialProduct(ptrNode,ptrVerticesDB(ptrCell%node1),ptrVerticesDB(ptrCell%node2))) ) THEN
-         neighbor = ptrCell%neighbor1
-         IF ( neighbor <= 0 ) THEN
-            repositionning = .TRUE.
-            neighborConcerned = 1
-            GOTO 20
-         ENDIF
-         ptrCell => ptrCellDB(neighbor)
-         GOTO 10
-      ENDIF
-
-20    CONTINUE
-
-      IF ( .NOT.(vectorialProduct(ptrNode,ptrVerticesDB(ptrCell%node2),ptrVerticesDB(ptrCell%node3))) ) THEN
-         neighbor = ptrCell%neighbor2
-         IF ( neighbor <= 0 ) THEN
-            repositionning = .TRUE.
-            neighborConcerned = 2
-            GOTO 30
-         ENDIF
-         ptrCell => ptrCellDB(neighbor)
-         GOTO 10
-      ENDIF
-
-30    CONTINUE
-
-      IF ( .NOT.(vectorialProduct(ptrNode,ptrVerticesDB(ptrCell%node3),ptrVerticesDB(ptrCell%node1))) ) THEN
-         neighbor = ptrCell%neighbor3
-         IF ( neighbor <= 0 ) THEN
-            repositionning = .TRUE.
-            neighborConcerned = 3
-            GOTO 40
-         ENDIF
-         ptrCell => ptrCellDB(neighbor)
-         GOTO 10
-      ENDIF
-40    CONTINUE
-
-      IF ( repositionning ) THEN
-
-         SELECT CASE ( neighborConcerned )
-            CASE (1)
-                ptrNode1 => ptrVerticesDB(ptrCell%node1)
-                ptrNode2 => ptrVerticesDB(ptrCell%node2)
-                lambda = scalarProduct(ptrNode,ptrNode1,ptrNode2)
-                ptrNode%xValue = ptrNode1%xValue + lambda * ( ptrNode2%xValue - ptrNode1%xValue )
-                ptrNode%yValue = ptrNode1%yValue + lambda * ( ptrNode2%yValue - ptrNode1%yValue )
-            CASE (2)
-                ptrNode1 => ptrVerticesDB(ptrCell%node2)
-                ptrNode2 => ptrVerticesDB(ptrCell%node3)
-                lambda = scalarProduct(ptrNode,ptrNode1,ptrNode2)
-                ptrNode%xValue = ptrNode1%xValue + lambda * ( ptrNode2%xValue - ptrNode1%xValue )
-                ptrNode%yValue = ptrNode1%yValue + lambda * ( ptrNode2%yValue - ptrNode1%yValue )
-            CASE (3)
-                ptrNode1 => ptrVerticesDB(ptrCell%node3)
-                ptrNode2 => ptrVerticesDB(ptrCell%node1)
-                lambda = scalarProduct(ptrNode,ptrNode1,ptrNode2)
-                ptrNode%xValue = ptrNode1%xValue + lambda * ( ptrNode2%xValue - ptrNode1%xValue )
-                ptrNode%yValue = ptrNode1%yValue + lambda * ( ptrNode2%yValue - ptrNode1%yValue )
-         END SELECT
-      ENDIF
-
-END FUNCTION
-
-! Procedure 30 : compute vectorial product
-! ----------------------------------------
-FUNCTION vectorialProduct(ptrNodeCheck, ptrNodeStart, ptrNodeEnd) RESULT(check)
-
-!     Declaration
-!     - - - - - -
-      TYPE(node), POINTER :: ptrNodeCheck
-      TYPE(node), INTENT(IN) ::  ptrNodeStart, ptrNodeEnd
-      LOGICAL :: check
-
-      REAL(KIND=8), DIMENSION(2) :: a, b
-      REAL(KIND=8) :: pVectoriel
-      REAL(KIND=8), PARAMETER :: tolerance = -1.D-8
-
-!     Body
-!     - - -
-
-      a(1) = ptrNodeEnd%xValue - ptrNodeStart%xValue
-      a(2) = ptrNodeEnd%yValue - ptrNodeStart%yValue
-      b(1) = ptrNodeCheck%xValue - ptrNodeStart%xValue
-      b(2) = ptrNodeCheck%yValue - ptrNodeStart%yValue
-
-      pVectoriel = a(1) * b(2) - a(2) * b(1)
-
-      check = .TRUE.
-
-      IF ( pVectoriel < tolerance ) THEN
-         check = .FALSE.
-      ENDIF
-
-END FUNCTION
-
-! Procedure 31 : compute scalar product
-! ----------------------------------------
-FUNCTION scalarProduct(ptrNodeCheck, ptrNodeStart, ptrNodeEnd) RESULT(pScalar)
-
-!     Declaration
-!     - - - - - -
-      TYPE(node), POINTER :: ptrNodeCheck, ptrNodeStart, ptrNodeEnd
-
-      REAL(KIND=8), DIMENSION(2) :: a, b
-      REAL(KIND=8) :: pScalar
-
-!     Body
-!     - - -
-
-      a(1) = ptrNodeEnd%xValue - ptrNodeStart%xValue
-      a(2) = ptrNodeEnd%yValue - ptrNodeStart%yValue
-      b(1) = ptrNodeCheck%xValue - ptrNodeStart%xValue
-      b(2) = ptrNodeCheck%yValue - ptrNodeStart%yValue
-
-      pScalar = a(1) * b(1) - a(2) * b(2)
-
-END FUNCTION
-
-! Procedure 32 : delaunay criterion to accept a cell
-! --------------------------------------------------
-FUNCTION delaunayCriterion(ptrNode,ptrCell,vertices) RESULT(check)
-
-!     Declaration
-!     - - - - - -
-      TYPE(node), POINTER :: ptrNode
-      TYPE(tria3), POINTER :: ptrCell
-      TYPE(nodeDataBase), INTENT(IN) :: vertices
-
-      LOGICAL :: check
-
-      REAL(KIND=8) :: xp,yp,x0,y0,x1,y1,x2,y2,x3,y3,dx10,dy10,dx20,dy20,dx30,dy30,dx12,dy12,dx23,dy23,dx31,dy31, &
-                      matA11,matA12,matA22,vecB1,vecB2,b1,b2,b3,dtm,rayonCercle,dx0p,dy0p,distP0Px
-      REAL(KIND=8) :: three = 3.0
-
-!     Body
-!     - - -
-
-      xp = ptrNode%xValue
-      yp = ptrNode%yValue
-
-      x1 = vertices%values(ptrCell%node1)%xValue
-      y1 = vertices%values(ptrCell%node1)%yValue
-
-      x2 = vertices%values(ptrCell%node2)%xValue
-      y2 = vertices%values(ptrCell%node2)%yValue
-
-      x3 = vertices%values(ptrCell%node3)%xValue
-      y3 = vertices%values(ptrCell%node3)%yValue
-
-      dx12 = x1 - x2
-      dx23 = x2 - x3
-      dx31 = x3 - x1
-
-      dy12 = y1 - y2
-      dy23 = y2 - y3
-      dy31 = y3 - y1
-
-      matA11 = dx12*dx12 + dx23*dx23 + dx31*dx31
-      matA12 = dx12*dy12 + dx23*dy23 + dx31*dy31
-      matA22 = dy12*dy12 + dy23*dy23 + dy31*dy31
-
-      b1 = 0.5 * ( ( (x1*x1)-(x2*x2) ) + ( (y1*y1)-(y2*y2) ) )
-      b2 = 0.5 * ( ( (x2*x2)-(x3*x3) ) + ( (y2*y2)-(y3*y3) ) )
-      b3 = 0.5 * ( ( (x3*x3)-(x1*x1) ) + ( (y3*y3)-(y1*y1) ) )
-
-      vecB1 = dx12 * b1 + dx23 * b2 + dx31 * b3
-      vecB2 = dy12 * b1 + dy23 * b2 + dy31 * b3
-
-      dtm = matA11 * matA22 - matA12 * matA12
-      x0 = (vecB1 * matA22 - vecB2 * matA12) / dtm
-      y0 = (vecB2 * matA11 - vecB1 * matA12) / dtm
-
-      dx10 = x1 - x0
-      dx20 = x2 - x0
-      dx30 = x3 - x0
-
-      dy10 = y1 - y0
-      dy20 = y2 - y0
-      dy30 = y3 - y0
-
-      rayonCercle = dx10*dx10 + dy10*dy10
-      rayonCercle = rayonCercle + dx20*dx20 + dy20 * dy20
-      rayonCercle = ( rayonCercle + dx30*dx30 + dy30 * dy30 ) / three
-
-      dx0p = xp - x0
-      dy0p = yp - y0
-      distP0Px = dx0p*dx0p + dy0p*dy0p
-
-      check = .FALSE.
-
-      IF ( distP0Px <= rayonCercle ) THEN
-         check = .TRUE.
-      ENDIF
-
-END FUNCTION
 
 END PROGRAM gmshDriver
+

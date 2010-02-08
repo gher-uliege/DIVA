@@ -1,4 +1,4 @@
-       parameter(nm=30000000)
+       integer, parameter :: nm=30000000
        integer*4 inode(nm)
        real*4 u(nm),v(nm)
        real*8 c8

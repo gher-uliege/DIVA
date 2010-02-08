@@ -1,10 +1,10 @@
        integer imax
        parameter(imax=1000000)
-       real*8 s(imax),sa(imax)
-       real*4 dd(imax),dad(imax),ed(imax)
-       real*4 xd(imax),yd(imax)
-       integer*4 iw(imax)
-       real*8 smean,svar,mad,med
+       REAL(KIND=8) ::  s(imax),sa(imax)
+       REAL(KIND=4) ::  dd(imax),dad(imax),ed(imax)
+       REAL(KIND=4) ::  xd(imax),yd(imax)
+       INTEGER(KIND=4) ::  iw(imax)
+       REAL(KIND=8) ::  smean,svar,mad,med
        n=0
        no=0
        eps=0.00001
@@ -112,8 +112,8 @@
        end
        
        subroutine median(s,med,n,iw)
-       real*8 s(n),med
-       integer*4 iw(n)
+       REAL(KIND=8) ::  s(n),med
+       INTEGER(KIND=4) ::  iw(n)
        call QS2I1R(s,iw,n)
        if (mod(n,2).eq.0) then
        med=(s(n/2)+s(n/2+1))/2.
@@ -125,8 +125,8 @@
        
        subroutine madmed(s,mad,med,n,iw)
        
-       real*8 s(n),med,mad
-       integer*4 iw(n)
+       REAL(KIND=8) ::  s(n),med,mad
+       INTEGER(KIND=4) ::  iw(n)
        
        call median(s,med,n,iw)
        
@@ -180,14 +180,14 @@
       implicit none
       INTEGER N
 !C     .. Array Arguments ..
-      real*8  IA(N) 
-      integer*4 JA(N)
+      REAL(KIND=8) ::   IA(N) 
+      INTEGER(KIND=4) ::  JA(N)
 !C     .. Local Scalars ..
       REAL*4 R 
-      INTEGER*4 I,  IJ,  J, JJT, JT, K, L, M,NN
+      INTEGER(KIND=4) ::  I,  IJ,  J, JJT, JT, K, L, M,NN
       REAL*8   IIT,  IT
 !C     .. Local Arrays ..
-      INTEGER*4 IL(21), IU(21)
+      INTEGER(KIND=4) ::  IL(21), IU(21)
 
 !C --- FIRST EXECUTABLE STATEMENT  QS2I1R ---
       NN=N

@@ -1,8 +1,10 @@
 !C
+PROGRAM sum
+        USE ioInterface
         REAL*4 U(5000000)
         REAL*4 V(5000000)
         REAL*4 W(5000000)
-        REAL*8 W8
+        REAL*8 W8(1)
 
 
         character*100 in1,in2,out
@@ -29,8 +31,8 @@
         CALL UWRITC(12,W8,W,VALEXU,IPR,IMAX,JMAX,KMAX,NW)
 
         STOP
-        END
 
+ CONTAINS
 !CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
         subroutine usum(u,v,w,valexu,imax,jmax,kmax)
         real*4 u(imax,jmax,kmax),v(imax,jmax,kmax)
@@ -44,6 +46,6 @@
          enddo
         enddo
         return
-        end
-        INCLUDE 'ureadc.f95'
-        INCLUDE 'uwritc.f95'
+        end subroutine
+
+end program

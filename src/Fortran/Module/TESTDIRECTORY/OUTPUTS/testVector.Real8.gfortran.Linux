@@ -6,40 +6,40 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    0.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    0.00000000000000     
+ value(           1 ) =    0.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    0.0000000000000000     
  The size of the array is :            9
     The allocated memory is :            9
     The increase allocation memory is :            0
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            9
- value(           1 ) =    0.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    0.00000000000000     
- value(           4 ) =    0.00000000000000     
- value(           5 ) =    0.00000000000000     
- value(           6 ) =    0.00000000000000     
- value(           7 ) =    0.00000000000000     
- value(           8 ) =    0.00000000000000     
- value(           9 ) =    0.00000000000000     
+ value(           1 ) =    0.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    0.0000000000000000     
+ value(           4 ) =    0.0000000000000000     
+ value(           5 ) =    0.0000000000000000     
+ value(           6 ) =    0.0000000000000000     
+ value(           7 ) =    0.0000000000000000     
+ value(           8 ) =    0.0000000000000000     
+ value(           9 ) =    0.0000000000000000     
  The size of the array is :           10
     The allocated memory is :           15
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :           10
- value(           1 ) =    0.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    0.00000000000000     
- value(           4 ) =    0.00000000000000     
- value(           5 ) =    0.00000000000000     
- value(           6 ) =    0.00000000000000     
- value(           7 ) =    0.00000000000000     
- value(           8 ) =    0.00000000000000     
- value(           9 ) =    0.00000000000000     
- value(          10 ) =    0.00000000000000     
+ value(           1 ) =    0.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    0.0000000000000000     
+ value(           4 ) =    0.0000000000000000     
+ value(           5 ) =    0.0000000000000000     
+ value(           6 ) =    0.0000000000000000     
+ value(           7 ) =    0.0000000000000000     
+ value(           8 ) =    0.0000000000000000     
+ value(           9 ) =    0.0000000000000000     
+ value(          10 ) =    0.0000000000000000     
   
  checkVectorSetToZero
  ====================
@@ -49,9 +49,9 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    0.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    0.00000000000000     
+ value(           1 ) =    0.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    0.0000000000000000     
   
  checkVectorSetToValue
  =====================
@@ -61,9 +61,9 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    25.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    25.0000000000000     
+ value(           1 ) =    25.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    25.000000000000000     
   
  checkVectorSetInsertValue
  =========================
@@ -73,9 +73,9 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    15.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    25.0000000000000     
+ value(           1 ) =    15.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    25.000000000000000     
   
  checkVectorSetAddValue
  ======================
@@ -85,43 +85,43 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    60.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    25.0000000000000     
+ value(           1 ) =    60.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    25.000000000000000     
   
  checkWriteProcedure
  ===================
   
  checkReadProcedure
  ===================
- exclusionValue =    998.0000    
+ exclusionValue =    998.00000    
  The size of the array is :            3
     The allocated memory is :            8
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    60.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    25.0000000000000     
+ value(           1 ) =    60.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    25.000000000000000     
  The size of the array is :            3
     The allocated memory is :            3
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    60.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    25.0000000000000     
+ value(           1 ) =    60.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    25.000000000000000     
   
  checkVectorNorm
  ===============
- Norm L1 :    110.000000000000     
- Norm L2 :    69.6419413859206     
- Norm Inf :    60.0000000000000     
- Norm L1 :    110.000000000000     
- Norm L2 :    69.6419413859206     
- Norm Inf :    60.0000000000000     
+ Norm L1 :    110.00000000000000     
+ Norm L2 :    69.641941385920603     
+ Norm Inf :    60.000000000000000     
+ Norm L1 :    110.00000000000000     
+ Norm L2 :    69.641941385920603     
+ Norm Inf :    60.000000000000000     
   
  checkVectorScale
  ================
@@ -131,9 +131,9 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    19.1999995708466     
- value(           2 ) =    7.99999982118607     
- value(           3 ) =    7.99999982118607     
+ value(           1 ) =    19.199999570846558     
+ value(           2 ) =    7.9999998211860657     
+ value(           3 ) =    7.9999998211860657     
   
  checkVectorSqrt
  ===============
@@ -143,29 +143,29 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    4.38178041107112     
- value(           2 ) =    2.82842709313605     
- value(           3 ) =    2.82842709313605     
+ value(           1 ) =    4.3817804110711158     
+ value(           2 ) =    2.8284270931360536     
+ value(           3 ) =    2.8284270931360536     
   
  checkVectorSum
  ==============
- Vector sum :    10.0386345973432     
+ Vector sum :    10.038634597343222     
   
  checkVectorMin
  ==============
- Vector min :    2.82842709313605     
+ Vector min :    2.8284270931360536     
   
  checkVectorMax
  ==============
- Vector abs max :    4.38178041107112     
+ Vector abs max :    4.3817804110711158     
   
  checkVectorAbsMin
  =================
- Vector abs min :    2.82842709313605     
+ Vector abs min :    2.8284270931360536     
   
  checkVectorAbsMax
  =================
- Vector max :    4.38178041107112     
+ Vector max :    4.3817804110711158     
   
  checkVectorDot
  ==============
@@ -175,10 +175,10 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    2.29999995231628     
- value(           2 ) =    2.29999995231628     
- value(           3 ) =    2.29999995231628     
- Dot product :    23.0888590952100     
+ value(           1 ) =    2.2999999523162842     
+ value(           2 ) =    2.2999999523162842     
+ value(           3 ) =    2.2999999523162842     
+ Dot product :    23.088859095210012     
   
  checkVectorGetValues
  ====================
@@ -188,9 +188,9 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    23.0000000000000     
- value(           2 ) =    23.0000000000000     
- value(           3 ) =    23.0000000000000     
+ value(           1 ) =    23.000000000000000     
+ value(           2 ) =    23.000000000000000     
+ value(           3 ) =    23.000000000000000     
   
  checkVectorSetSize
  ==================
@@ -200,22 +200,22 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    2.30000001192093     
- value(           2 ) =    2.30000001192093     
- value(           3 ) =    2.30000001192093     
+ value(           1 ) =    2.3000000119209290     
+ value(           2 ) =    2.3000000119209290     
+ value(           3 ) =    2.3000000119209290     
  The size of the array is :            7
     The allocated memory is :           10
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            5
- value(          -1 ) =   -3.29999995231628     
- value(           0 ) =   -3.29999995231628     
- value(           1 ) =    2.30000001192093     
- value(           2 ) =    2.30000001192093     
- value(           3 ) =    2.30000001192093     
- value(           4 ) =    3.29999995231628     
- value(           5 ) =    3.29999995231628     
+ value(          -1 ) =   -3.2999999523162842     
+ value(           0 ) =   -3.2999999523162842     
+ value(           1 ) =    2.3000000119209290     
+ value(           2 ) =    2.3000000119209290     
+ value(           3 ) =    2.3000000119209290     
+ value(           4 ) =    3.2999999523162842     
+ value(           5 ) =    3.2999999523162842     
   
  checkPutInProcedure
  ===================
@@ -225,99 +225,99 @@
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            5
- value(          -1 ) =   -1.00000000000000     
- value(           0 ) =    0.00000000000000     
- value(           1 ) =    1.00000000000000     
- value(           2 ) =    2.00000000000000     
- value(           3 ) =    3.00000000000000     
- value(           4 ) =    4.00000000000000     
- value(           5 ) =    5.00000000000000     
+ value(          -1 ) =   -1.0000000000000000     
+ value(           0 ) =    0.0000000000000000     
+ value(           1 ) =    1.0000000000000000     
+ value(           2 ) =    2.0000000000000000     
+ value(           3 ) =    3.0000000000000000     
+ value(           4 ) =    4.0000000000000000     
+ value(           5 ) =    5.0000000000000000     
  The size of the array is :            9
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :            5
- value(          -3 ) =   -50.0000000000000     
- value(          -2 ) =    0.00000000000000     
- value(          -1 ) =   -1.00000000000000     
- value(           0 ) =    0.00000000000000     
- value(           1 ) =    1.00000000000000     
- value(           2 ) =    2.00000000000000     
- value(           3 ) =    3.00000000000000     
- value(           4 ) =    4.00000000000000     
- value(           5 ) =    5.00000000000000     
+ value(          -3 ) =   -50.000000000000000     
+ value(          -2 ) =    0.0000000000000000     
+ value(          -1 ) =   -1.0000000000000000     
+ value(           0 ) =    0.0000000000000000     
+ value(           1 ) =    1.0000000000000000     
+ value(           2 ) =    2.0000000000000000     
+ value(           3 ) =    3.0000000000000000     
+ value(           4 ) =    4.0000000000000000     
+ value(           5 ) =    5.0000000000000000     
  The size of the array is :           10
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :            6
- value(          -3 ) =   -50.0000000000000     
- value(          -2 ) =    0.00000000000000     
- value(          -1 ) =    50.0000000000000     
- value(           0 ) =   -1.00000000000000     
- value(           1 ) =    0.00000000000000     
- value(           2 ) =    1.00000000000000     
- value(           3 ) =    2.00000000000000     
- value(           4 ) =    3.00000000000000     
- value(           5 ) =    4.00000000000000     
- value(           6 ) =    5.00000000000000     
+ value(          -3 ) =   -50.000000000000000     
+ value(          -2 ) =    0.0000000000000000     
+ value(          -1 ) =    50.000000000000000     
+ value(           0 ) =   -1.0000000000000000     
+ value(           1 ) =    0.0000000000000000     
+ value(           2 ) =    1.0000000000000000     
+ value(           3 ) =    2.0000000000000000     
+ value(           4 ) =    3.0000000000000000     
+ value(           5 ) =    4.0000000000000000     
+ value(           6 ) =    5.0000000000000000     
  The size of the array is :           11
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :            7
- value(          -3 ) =   -50.0000000000000     
- value(          -2 ) =    0.00000000000000     
- value(          -1 ) =    150.000000000000     
- value(           0 ) =    50.0000000000000     
- value(           1 ) =   -1.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    1.00000000000000     
- value(           4 ) =    2.00000000000000     
- value(           5 ) =    3.00000000000000     
- value(           6 ) =    4.00000000000000     
- value(           7 ) =    5.00000000000000     
+ value(          -3 ) =   -50.000000000000000     
+ value(          -2 ) =    0.0000000000000000     
+ value(          -1 ) =    150.00000000000000     
+ value(           0 ) =    50.000000000000000     
+ value(           1 ) =   -1.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    1.0000000000000000     
+ value(           4 ) =    2.0000000000000000     
+ value(           5 ) =    3.0000000000000000     
+ value(           6 ) =    4.0000000000000000     
+ value(           7 ) =    5.0000000000000000     
  The size of the array is :           12
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :            8
- value(          -3 ) =   -50.0000000000000     
- value(          -2 ) =    0.00000000000000     
- value(          -1 ) =    150.000000000000     
- value(           0 ) =    50.0000000000000     
- value(           1 ) =   -1.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    1.00000000000000     
- value(           4 ) =    2.00000000000000     
- value(           5 ) =    3.00000000000000     
- value(           6 ) =    4.00000000000000     
- value(           7 ) =    250.000000000000     
- value(           8 ) =    5.00000000000000     
+ value(          -3 ) =   -50.000000000000000     
+ value(          -2 ) =    0.0000000000000000     
+ value(          -1 ) =    150.00000000000000     
+ value(           0 ) =    50.000000000000000     
+ value(           1 ) =   -1.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    1.0000000000000000     
+ value(           4 ) =    2.0000000000000000     
+ value(           5 ) =    3.0000000000000000     
+ value(           6 ) =    4.0000000000000000     
+ value(           7 ) =    250.00000000000000     
+ value(           8 ) =    5.0000000000000000     
  The size of the array is :           14
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :           10
- value(          -3 ) =   -50.0000000000000     
- value(          -2 ) =    0.00000000000000     
- value(          -1 ) =    150.000000000000     
- value(           0 ) =    50.0000000000000     
- value(           1 ) =   -1.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    1.00000000000000     
- value(           4 ) =    2.00000000000000     
- value(           5 ) =    3.00000000000000     
- value(           6 ) =    4.00000000000000     
- value(           7 ) =    250.000000000000     
- value(           8 ) =    5.00000000000000     
- value(           9 ) =    0.00000000000000     
- value(          10 ) =   -250.000000000000     
+ value(          -3 ) =   -50.000000000000000     
+ value(          -2 ) =    0.0000000000000000     
+ value(          -1 ) =    150.00000000000000     
+ value(           0 ) =    50.000000000000000     
+ value(           1 ) =   -1.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    1.0000000000000000     
+ value(           4 ) =    2.0000000000000000     
+ value(           5 ) =    3.0000000000000000     
+ value(           6 ) =    4.0000000000000000     
+ value(           7 ) =    250.00000000000000     
+ value(           8 ) =    5.0000000000000000     
+ value(           9 ) =    0.0000000000000000     
+ value(          10 ) =   -250.00000000000000     
   
  checkVectorSetToZero
  ====================
@@ -327,9 +327,9 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    0.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    0.00000000000000     
+ value(           1 ) =    0.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    0.0000000000000000     
   
  checkVectorSetToValue
  =====================
@@ -339,9 +339,9 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    25.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    25.0000000000000     
+ value(           1 ) =    25.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    25.000000000000000     
   
  checkVectorSetInsertValue
  =========================
@@ -351,9 +351,9 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    15.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    25.0000000000000     
+ value(           1 ) =    15.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    25.000000000000000     
   
  checkVectorSetAddValue
  ======================
@@ -363,43 +363,43 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    60.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    25.0000000000000     
+ value(           1 ) =    60.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    25.000000000000000     
   
  checkWriteProcedure
  ===================
   
  checkReadProcedure
  ===================
- exclusionValue =    998.0000    
+ exclusionValue =    998.00000    
  The size of the array is :            3
     The allocated memory is :            8
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    60.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    25.0000000000000     
+ value(           1 ) =    60.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    25.000000000000000     
  The size of the array is :            3
     The allocated memory is :            3
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    60.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    25.0000000000000     
+ value(           1 ) =    60.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    25.000000000000000     
   
  checkVectorNorm
  ===============
- Norm L1 :    110.000000000000     
- Norm L2 :    69.6419413859206     
- Norm Inf :    60.0000000000000     
- Norm L1 :    110.000000000000     
- Norm L2 :    69.6419413859206     
- Norm Inf :    60.0000000000000     
+ Norm L1 :    110.00000000000000     
+ Norm L2 :    69.641941385920603     
+ Norm Inf :    60.000000000000000     
+ Norm L1 :    110.00000000000000     
+ Norm L2 :    69.641941385920603     
+ Norm Inf :    60.000000000000000     
   
  checkVectorScale
  ================
@@ -409,9 +409,9 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    19.1999995708466     
- value(           2 ) =    7.99999982118607     
- value(           3 ) =    7.99999982118607     
+ value(           1 ) =    19.199999570846558     
+ value(           2 ) =    7.9999998211860657     
+ value(           3 ) =    7.9999998211860657     
   
  checkVectorSqrt
  ===============
@@ -421,29 +421,29 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    4.38178041107112     
- value(           2 ) =    2.82842709313605     
- value(           3 ) =    2.82842709313605     
+ value(           1 ) =    4.3817804110711158     
+ value(           2 ) =    2.8284270931360536     
+ value(           3 ) =    2.8284270931360536     
   
  checkVectorSum
  ==============
- Vector sum :    10.0386345973432     
+ Vector sum :    10.038634597343222     
   
  checkVectorMin
  ==============
- Vector min :    2.82842709313605     
+ Vector min :    2.8284270931360536     
   
  checkVectorMax
  ==============
- Vector abs max :    4.38178041107112     
+ Vector abs max :    4.3817804110711158     
   
  checkVectorAbsMin
  =================
- Vector abs min :    2.82842709313605     
+ Vector abs min :    2.8284270931360536     
   
  checkVectorAbsMax
  =================
- Vector max :    4.38178041107112     
+ Vector max :    4.3817804110711158     
   
  checkVectorDot
  ==============
@@ -453,10 +453,10 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    2.29999995231628     
- value(           2 ) =    2.29999995231628     
- value(           3 ) =    2.29999995231628     
- Dot product :    23.0888590952100     
+ value(           1 ) =    2.2999999523162842     
+ value(           2 ) =    2.2999999523162842     
+ value(           3 ) =    2.2999999523162842     
+ Dot product :    23.088859095210012     
   
  checkVectorGetValues
  ====================
@@ -466,9 +466,9 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    23.0000000000000     
- value(           2 ) =    23.0000000000000     
- value(           3 ) =    23.0000000000000     
+ value(           1 ) =    23.000000000000000     
+ value(           2 ) =    23.000000000000000     
+ value(           3 ) =    23.000000000000000     
   
  checkVectorSetSize
  ==================
@@ -478,22 +478,22 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    2.30000001192093     
- value(           2 ) =    2.30000001192093     
- value(           3 ) =    2.30000001192093     
+ value(           1 ) =    2.3000000119209290     
+ value(           2 ) =    2.3000000119209290     
+ value(           3 ) =    2.3000000119209290     
  The size of the array is :            7
     The allocated memory is :           10
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            5
- value(          -1 ) =   -3.29999995231628     
- value(           0 ) =   -3.29999995231628     
- value(           1 ) =    2.30000001192093     
- value(           2 ) =    2.30000001192093     
- value(           3 ) =    2.30000001192093     
- value(           4 ) =    3.29999995231628     
- value(           5 ) =    3.29999995231628     
+ value(          -1 ) =   -3.2999999523162842     
+ value(           0 ) =   -3.2999999523162842     
+ value(           1 ) =    2.3000000119209290     
+ value(           2 ) =    2.3000000119209290     
+ value(           3 ) =    2.3000000119209290     
+ value(           4 ) =    3.2999999523162842     
+ value(           5 ) =    3.2999999523162842     
   
  checkPutInProcedure
  ===================
@@ -503,99 +503,99 @@
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            5
- value(          -1 ) =   -1.00000000000000     
- value(           0 ) =    0.00000000000000     
- value(           1 ) =    1.00000000000000     
- value(           2 ) =    2.00000000000000     
- value(           3 ) =    3.00000000000000     
- value(           4 ) =    4.00000000000000     
- value(           5 ) =    5.00000000000000     
+ value(          -1 ) =   -1.0000000000000000     
+ value(           0 ) =    0.0000000000000000     
+ value(           1 ) =    1.0000000000000000     
+ value(           2 ) =    2.0000000000000000     
+ value(           3 ) =    3.0000000000000000     
+ value(           4 ) =    4.0000000000000000     
+ value(           5 ) =    5.0000000000000000     
  The size of the array is :            9
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :            5
- value(          -3 ) =   -50.0000000000000     
- value(          -2 ) =    0.00000000000000     
- value(          -1 ) =   -1.00000000000000     
- value(           0 ) =    0.00000000000000     
- value(           1 ) =    1.00000000000000     
- value(           2 ) =    2.00000000000000     
- value(           3 ) =    3.00000000000000     
- value(           4 ) =    4.00000000000000     
- value(           5 ) =    5.00000000000000     
+ value(          -3 ) =   -50.000000000000000     
+ value(          -2 ) =    0.0000000000000000     
+ value(          -1 ) =   -1.0000000000000000     
+ value(           0 ) =    0.0000000000000000     
+ value(           1 ) =    1.0000000000000000     
+ value(           2 ) =    2.0000000000000000     
+ value(           3 ) =    3.0000000000000000     
+ value(           4 ) =    4.0000000000000000     
+ value(           5 ) =    5.0000000000000000     
  The size of the array is :           10
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :            6
- value(          -3 ) =   -50.0000000000000     
- value(          -2 ) =    0.00000000000000     
- value(          -1 ) =    50.0000000000000     
- value(           0 ) =   -1.00000000000000     
- value(           1 ) =    0.00000000000000     
- value(           2 ) =    1.00000000000000     
- value(           3 ) =    2.00000000000000     
- value(           4 ) =    3.00000000000000     
- value(           5 ) =    4.00000000000000     
- value(           6 ) =    5.00000000000000     
+ value(          -3 ) =   -50.000000000000000     
+ value(          -2 ) =    0.0000000000000000     
+ value(          -1 ) =    50.000000000000000     
+ value(           0 ) =   -1.0000000000000000     
+ value(           1 ) =    0.0000000000000000     
+ value(           2 ) =    1.0000000000000000     
+ value(           3 ) =    2.0000000000000000     
+ value(           4 ) =    3.0000000000000000     
+ value(           5 ) =    4.0000000000000000     
+ value(           6 ) =    5.0000000000000000     
  The size of the array is :           11
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :            7
- value(          -3 ) =   -50.0000000000000     
- value(          -2 ) =    0.00000000000000     
- value(          -1 ) =    150.000000000000     
- value(           0 ) =    50.0000000000000     
- value(           1 ) =   -1.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    1.00000000000000     
- value(           4 ) =    2.00000000000000     
- value(           5 ) =    3.00000000000000     
- value(           6 ) =    4.00000000000000     
- value(           7 ) =    5.00000000000000     
+ value(          -3 ) =   -50.000000000000000     
+ value(          -2 ) =    0.0000000000000000     
+ value(          -1 ) =    150.00000000000000     
+ value(           0 ) =    50.000000000000000     
+ value(           1 ) =   -1.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    1.0000000000000000     
+ value(           4 ) =    2.0000000000000000     
+ value(           5 ) =    3.0000000000000000     
+ value(           6 ) =    4.0000000000000000     
+ value(           7 ) =    5.0000000000000000     
  The size of the array is :           12
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :            8
- value(          -3 ) =   -50.0000000000000     
- value(          -2 ) =    0.00000000000000     
- value(          -1 ) =    150.000000000000     
- value(           0 ) =    50.0000000000000     
- value(           1 ) =   -1.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    1.00000000000000     
- value(           4 ) =    2.00000000000000     
- value(           5 ) =    3.00000000000000     
- value(           6 ) =    4.00000000000000     
- value(           7 ) =    250.000000000000     
- value(           8 ) =    5.00000000000000     
+ value(          -3 ) =   -50.000000000000000     
+ value(          -2 ) =    0.0000000000000000     
+ value(          -1 ) =    150.00000000000000     
+ value(           0 ) =    50.000000000000000     
+ value(           1 ) =   -1.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    1.0000000000000000     
+ value(           4 ) =    2.0000000000000000     
+ value(           5 ) =    3.0000000000000000     
+ value(           6 ) =    4.0000000000000000     
+ value(           7 ) =    250.00000000000000     
+ value(           8 ) =    5.0000000000000000     
  The size of the array is :           14
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :           10
- value(          -3 ) =   -50.0000000000000     
- value(          -2 ) =    0.00000000000000     
- value(          -1 ) =    150.000000000000     
- value(           0 ) =    50.0000000000000     
- value(           1 ) =   -1.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    1.00000000000000     
- value(           4 ) =    2.00000000000000     
- value(           5 ) =    3.00000000000000     
- value(           6 ) =    4.00000000000000     
- value(           7 ) =    250.000000000000     
- value(           8 ) =    5.00000000000000     
- value(           9 ) =    0.00000000000000     
- value(          10 ) =   -250.000000000000     
+ value(          -3 ) =   -50.000000000000000     
+ value(          -2 ) =    0.0000000000000000     
+ value(          -1 ) =    150.00000000000000     
+ value(           0 ) =    50.000000000000000     
+ value(           1 ) =   -1.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    1.0000000000000000     
+ value(           4 ) =    2.0000000000000000     
+ value(           5 ) =    3.0000000000000000     
+ value(           6 ) =    4.0000000000000000     
+ value(           7 ) =    250.00000000000000     
+ value(           8 ) =    5.0000000000000000     
+ value(           9 ) =    0.0000000000000000     
+ value(          10 ) =   -250.00000000000000     
   
  checkVectorSetToZero
  ====================
@@ -605,9 +605,9 @@
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            1
- value(          -1 ) =    0.00000000000000     
- value(           0 ) =    0.00000000000000     
- value(           1 ) =    0.00000000000000     
+ value(          -1 ) =    0.0000000000000000     
+ value(           0 ) =    0.0000000000000000     
+ value(           1 ) =    0.0000000000000000     
   
  checkVectorSetToValue
  =====================
@@ -617,9 +617,9 @@
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            1
- value(          -1 ) =    25.0000000000000     
- value(           0 ) =    25.0000000000000     
- value(           1 ) =    25.0000000000000     
+ value(          -1 ) =    25.000000000000000     
+ value(           0 ) =    25.000000000000000     
+ value(           1 ) =    25.000000000000000     
   
  checkVectorSetInsertValue
  =========================
@@ -629,9 +629,9 @@
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            1
- value(          -1 ) =    25.0000000000000     
- value(           0 ) =    25.0000000000000     
- value(           1 ) =    15.0000000000000     
+ value(          -1 ) =    25.000000000000000     
+ value(           0 ) =    25.000000000000000     
+ value(           1 ) =    15.000000000000000     
   
  checkVectorSetAddValue
  ======================
@@ -641,43 +641,43 @@
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            1
- value(          -1 ) =    25.0000000000000     
- value(           0 ) =    25.0000000000000     
- value(           1 ) =    60.0000000000000     
+ value(          -1 ) =    25.000000000000000     
+ value(           0 ) =    25.000000000000000     
+ value(           1 ) =    60.000000000000000     
   
  checkWriteProcedure
  ===================
   
  checkReadProcedure
  ===================
- exclusionValue =    998.0000    
+ exclusionValue =    998.00000    
  The size of the array is :            3
     The allocated memory is :            8
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            1
- value(          -1 ) =    25.0000000000000     
- value(           0 ) =    25.0000000000000     
- value(           1 ) =    60.0000000000000     
+ value(          -1 ) =    25.000000000000000     
+ value(           0 ) =    25.000000000000000     
+ value(           1 ) =    60.000000000000000     
  The size of the array is :            3
     The allocated memory is :            3
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    25.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    60.0000000000000     
+ value(           1 ) =    25.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    60.000000000000000     
   
  checkVectorNorm
  ===============
- Norm L1 :    110.000000000000     
- Norm L2 :    69.6419413859206     
- Norm Inf :    60.0000000000000     
- Norm L1 :    110.000000000000     
- Norm L2 :    69.6419413859206     
- Norm Inf :    60.0000000000000     
+ Norm L1 :    110.00000000000000     
+ Norm L2 :    69.641941385920603     
+ Norm Inf :    60.000000000000000     
+ Norm L1 :    110.00000000000000     
+ Norm L2 :    69.641941385920603     
+ Norm Inf :    60.000000000000000     
   
  checkVectorScale
  ================
@@ -687,9 +687,9 @@
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            1
- value(          -1 ) =    7.99999982118607     
- value(           0 ) =    7.99999982118607     
- value(           1 ) =    19.1999995708466     
+ value(          -1 ) =    7.9999998211860657     
+ value(           0 ) =    7.9999998211860657     
+ value(           1 ) =    19.199999570846558     
   
  checkVectorSqrt
  ===============
@@ -699,29 +699,29 @@
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            1
- value(          -1 ) =    2.82842709313605     
- value(           0 ) =    2.82842709313605     
- value(           1 ) =    4.38178041107112     
+ value(          -1 ) =    2.8284270931360536     
+ value(           0 ) =    2.8284270931360536     
+ value(           1 ) =    4.3817804110711158     
   
  checkVectorSum
  ==============
- Vector sum :    10.0386345973432     
+ Vector sum :    10.038634597343222     
   
  checkVectorMin
  ==============
- Vector min :    2.82842709313605     
+ Vector min :    2.8284270931360536     
   
  checkVectorMax
  ==============
- Vector abs max :    4.38178041107112     
+ Vector abs max :    4.3817804110711158     
   
  checkVectorAbsMin
  =================
- Vector abs min :    2.82842709313605     
+ Vector abs min :    2.8284270931360536     
   
  checkVectorAbsMax
  =================
- Vector max :    4.38178041107112     
+ Vector max :    4.3817804110711158     
   
  checkVectorDot
  ==============
@@ -731,10 +731,10 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    2.29999995231628     
- value(           2 ) =    2.29999995231628     
- value(           3 ) =    2.29999995231628     
- Dot product :    23.0888590952100     
+ value(           1 ) =    2.2999999523162842     
+ value(           2 ) =    2.2999999523162842     
+ value(           3 ) =    2.2999999523162842     
+ Dot product :    23.088859095210012     
   
  checkVectorGetValues
  ====================
@@ -744,9 +744,9 @@
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            1
- value(          -1 ) =    23.0000000000000     
- value(           0 ) =    23.0000000000000     
- value(           1 ) =    23.0000000000000     
+ value(          -1 ) =    23.000000000000000     
+ value(           0 ) =    23.000000000000000     
+ value(           1 ) =    23.000000000000000     
   
  checkVectorSetSize
  ==================
@@ -756,22 +756,22 @@
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            1
- value(          -1 ) =    2.30000001192093     
- value(           0 ) =    2.30000001192093     
- value(           1 ) =    2.30000001192093     
+ value(          -1 ) =    2.3000000119209290     
+ value(           0 ) =    2.3000000119209290     
+ value(           1 ) =    2.3000000119209290     
  The size of the array is :            7
     The allocated memory is :           10
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :            3
- value(          -3 ) =   -3.29999995231628     
- value(          -2 ) =   -3.29999995231628     
- value(          -1 ) =    2.30000001192093     
- value(           0 ) =    2.30000001192093     
- value(           1 ) =    2.30000001192093     
- value(           2 ) =    3.29999995231628     
- value(           3 ) =    3.29999995231628     
+ value(          -3 ) =   -3.2999999523162842     
+ value(          -2 ) =   -3.2999999523162842     
+ value(          -1 ) =    2.3000000119209290     
+ value(           0 ) =    2.3000000119209290     
+ value(           1 ) =    2.3000000119209290     
+ value(           2 ) =    3.2999999523162842     
+ value(           3 ) =    3.2999999523162842     
   
  checkPutInProcedure
  ===================
@@ -781,99 +781,99 @@
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :            3
- value(          -3 ) =   -3.00000000000000     
- value(          -2 ) =   -2.00000000000000     
- value(          -1 ) =   -1.00000000000000     
- value(           0 ) =    0.00000000000000     
- value(           1 ) =    1.00000000000000     
- value(           2 ) =    2.00000000000000     
- value(           3 ) =    3.00000000000000     
+ value(          -3 ) =   -3.0000000000000000     
+ value(          -2 ) =   -2.0000000000000000     
+ value(          -1 ) =   -1.0000000000000000     
+ value(           0 ) =    0.0000000000000000     
+ value(           1 ) =    1.0000000000000000     
+ value(           2 ) =    2.0000000000000000     
+ value(           3 ) =    3.0000000000000000     
  The size of the array is :            9
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -5
     Last positions are  :            3
- value(          -5 ) =   -50.0000000000000     
- value(          -4 ) =    0.00000000000000     
- value(          -3 ) =   -3.00000000000000     
- value(          -2 ) =   -2.00000000000000     
- value(          -1 ) =   -1.00000000000000     
- value(           0 ) =    0.00000000000000     
- value(           1 ) =    1.00000000000000     
- value(           2 ) =    2.00000000000000     
- value(           3 ) =    3.00000000000000     
+ value(          -5 ) =   -50.000000000000000     
+ value(          -4 ) =    0.0000000000000000     
+ value(          -3 ) =   -3.0000000000000000     
+ value(          -2 ) =   -2.0000000000000000     
+ value(          -1 ) =   -1.0000000000000000     
+ value(           0 ) =    0.0000000000000000     
+ value(           1 ) =    1.0000000000000000     
+ value(           2 ) =    2.0000000000000000     
+ value(           3 ) =    3.0000000000000000     
  The size of the array is :           10
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -5
     Last positions are  :            4
- value(          -5 ) =   -50.0000000000000     
- value(          -4 ) =    0.00000000000000     
- value(          -3 ) =    50.0000000000000     
- value(          -2 ) =   -3.00000000000000     
- value(          -1 ) =   -2.00000000000000     
- value(           0 ) =   -1.00000000000000     
- value(           1 ) =    0.00000000000000     
- value(           2 ) =    1.00000000000000     
- value(           3 ) =    2.00000000000000     
- value(           4 ) =    3.00000000000000     
+ value(          -5 ) =   -50.000000000000000     
+ value(          -4 ) =    0.0000000000000000     
+ value(          -3 ) =    50.000000000000000     
+ value(          -2 ) =   -3.0000000000000000     
+ value(          -1 ) =   -2.0000000000000000     
+ value(           0 ) =   -1.0000000000000000     
+ value(           1 ) =    0.0000000000000000     
+ value(           2 ) =    1.0000000000000000     
+ value(           3 ) =    2.0000000000000000     
+ value(           4 ) =    3.0000000000000000     
  The size of the array is :           11
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -5
     Last positions are  :            5
- value(          -5 ) =   -50.0000000000000     
- value(          -4 ) =    0.00000000000000     
- value(          -3 ) =    150.000000000000     
- value(          -2 ) =    50.0000000000000     
- value(          -1 ) =   -3.00000000000000     
- value(           0 ) =   -2.00000000000000     
- value(           1 ) =   -1.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    1.00000000000000     
- value(           4 ) =    2.00000000000000     
- value(           5 ) =    3.00000000000000     
+ value(          -5 ) =   -50.000000000000000     
+ value(          -4 ) =    0.0000000000000000     
+ value(          -3 ) =    150.00000000000000     
+ value(          -2 ) =    50.000000000000000     
+ value(          -1 ) =   -3.0000000000000000     
+ value(           0 ) =   -2.0000000000000000     
+ value(           1 ) =   -1.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    1.0000000000000000     
+ value(           4 ) =    2.0000000000000000     
+ value(           5 ) =    3.0000000000000000     
  The size of the array is :           12
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -5
     Last positions are  :            6
- value(          -5 ) =   -50.0000000000000     
- value(          -4 ) =    0.00000000000000     
- value(          -3 ) =    150.000000000000     
- value(          -2 ) =    50.0000000000000     
- value(          -1 ) =   -3.00000000000000     
- value(           0 ) =   -2.00000000000000     
- value(           1 ) =   -1.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    1.00000000000000     
- value(           4 ) =    2.00000000000000     
- value(           5 ) =    250.000000000000     
- value(           6 ) =    3.00000000000000     
+ value(          -5 ) =   -50.000000000000000     
+ value(          -4 ) =    0.0000000000000000     
+ value(          -3 ) =    150.00000000000000     
+ value(          -2 ) =    50.000000000000000     
+ value(          -1 ) =   -3.0000000000000000     
+ value(           0 ) =   -2.0000000000000000     
+ value(           1 ) =   -1.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    1.0000000000000000     
+ value(           4 ) =    2.0000000000000000     
+ value(           5 ) =    250.00000000000000     
+ value(           6 ) =    3.0000000000000000     
  The size of the array is :           14
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -5
     Last positions are  :            8
- value(          -5 ) =   -50.0000000000000     
- value(          -4 ) =    0.00000000000000     
- value(          -3 ) =    150.000000000000     
- value(          -2 ) =    50.0000000000000     
- value(          -1 ) =   -3.00000000000000     
- value(           0 ) =   -2.00000000000000     
- value(           1 ) =   -1.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    1.00000000000000     
- value(           4 ) =    2.00000000000000     
- value(           5 ) =    250.000000000000     
- value(           6 ) =    3.00000000000000     
- value(           7 ) =    0.00000000000000     
- value(           8 ) =   -250.000000000000     
+ value(          -5 ) =   -50.000000000000000     
+ value(          -4 ) =    0.0000000000000000     
+ value(          -3 ) =    150.00000000000000     
+ value(          -2 ) =    50.000000000000000     
+ value(          -1 ) =   -3.0000000000000000     
+ value(           0 ) =   -2.0000000000000000     
+ value(           1 ) =   -1.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    1.0000000000000000     
+ value(           4 ) =    2.0000000000000000     
+ value(           5 ) =    250.00000000000000     
+ value(           6 ) =    3.0000000000000000     
+ value(           7 ) =    0.0000000000000000     
+ value(           8 ) =   -250.00000000000000     
   
  checkVectorSetToZero
  ====================
@@ -883,9 +883,9 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    0.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    0.00000000000000     
+ value(           1 ) =    0.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    0.0000000000000000     
   
  checkVectorSetToValue
  =====================
@@ -895,9 +895,9 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    25.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    25.0000000000000     
+ value(           1 ) =    25.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    25.000000000000000     
   
  checkVectorSetInsertValue
  =========================
@@ -907,9 +907,9 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    15.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    25.0000000000000     
+ value(           1 ) =    15.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    25.000000000000000     
   
  checkVectorSetAddValue
  ======================
@@ -919,43 +919,43 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    60.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    25.0000000000000     
+ value(           1 ) =    60.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    25.000000000000000     
   
  checkWriteProcedure
  ===================
   
  checkReadProcedure
  ===================
- exclusionValue =    998.0000    
+ exclusionValue =    998.00000    
  The size of the array is :            3
     The allocated memory is :            3
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    60.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    25.0000000000000     
+ value(           1 ) =    60.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    25.000000000000000     
  The size of the array is :            3
     The allocated memory is :            3
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    60.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    25.0000000000000     
+ value(           1 ) =    60.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    25.000000000000000     
   
  checkVectorNorm
  ===============
- Norm L1 :    110.000000000000     
- Norm L2 :    69.6419413859206     
- Norm Inf :    60.0000000000000     
- Norm L1 :    110.000000000000     
- Norm L2 :    69.6419413859206     
- Norm Inf :    60.0000000000000     
+ Norm L1 :    110.00000000000000     
+ Norm L2 :    69.641941385920603     
+ Norm Inf :    60.000000000000000     
+ Norm L1 :    110.00000000000000     
+ Norm L2 :    69.641941385920603     
+ Norm Inf :    60.000000000000000     
   
  checkVectorScale
  ================
@@ -965,9 +965,9 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    19.1999995708466     
- value(           2 ) =    7.99999982118607     
- value(           3 ) =    7.99999982118607     
+ value(           1 ) =    19.199999570846558     
+ value(           2 ) =    7.9999998211860657     
+ value(           3 ) =    7.9999998211860657     
   
  checkVectorSqrt
  ===============
@@ -977,29 +977,29 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    4.38178041107112     
- value(           2 ) =    2.82842709313605     
- value(           3 ) =    2.82842709313605     
+ value(           1 ) =    4.3817804110711158     
+ value(           2 ) =    2.8284270931360536     
+ value(           3 ) =    2.8284270931360536     
   
  checkVectorSum
  ==============
- Vector sum :    10.0386345973432     
+ Vector sum :    10.038634597343222     
   
  checkVectorMin
  ==============
- Vector min :    2.82842709313605     
+ Vector min :    2.8284270931360536     
   
  checkVectorMax
  ==============
- Vector abs max :    4.38178041107112     
+ Vector abs max :    4.3817804110711158     
   
  checkVectorAbsMin
  =================
- Vector abs min :    2.82842709313605     
+ Vector abs min :    2.8284270931360536     
   
  checkVectorAbsMax
  =================
- Vector max :    4.38178041107112     
+ Vector max :    4.3817804110711158     
   
  checkVectorDot
  ==============
@@ -1009,10 +1009,10 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    2.29999995231628     
- value(           2 ) =    2.29999995231628     
- value(           3 ) =    2.29999995231628     
- Dot product :    23.0888590952100     
+ value(           1 ) =    2.2999999523162842     
+ value(           2 ) =    2.2999999523162842     
+ value(           3 ) =    2.2999999523162842     
+ Dot product :    23.088859095210012     
   
  checkVectorGetValues
  ====================
@@ -1022,9 +1022,9 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    23.0000000000000     
- value(           2 ) =    23.0000000000000     
- value(           3 ) =    23.0000000000000     
+ value(           1 ) =    23.000000000000000     
+ value(           2 ) =    23.000000000000000     
+ value(           3 ) =    23.000000000000000     
   
  checkVectorSetSize
  ==================
@@ -1034,22 +1034,22 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    2.30000001192093     
- value(           2 ) =    2.30000001192093     
- value(           3 ) =    2.30000001192093     
+ value(           1 ) =    2.3000000119209290     
+ value(           2 ) =    2.3000000119209290     
+ value(           3 ) =    2.3000000119209290     
  The size of the array is :            7
     The allocated memory is :           10
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            5
- value(          -1 ) =   -3.29999995231628     
- value(           0 ) =   -3.29999995231628     
- value(           1 ) =    2.30000001192093     
- value(           2 ) =    2.30000001192093     
- value(           3 ) =    2.30000001192093     
- value(           4 ) =    3.29999995231628     
- value(           5 ) =    3.29999995231628     
+ value(          -1 ) =   -3.2999999523162842     
+ value(           0 ) =   -3.2999999523162842     
+ value(           1 ) =    2.3000000119209290     
+ value(           2 ) =    2.3000000119209290     
+ value(           3 ) =    2.3000000119209290     
+ value(           4 ) =    3.2999999523162842     
+ value(           5 ) =    3.2999999523162842     
   
  checkPutInProcedure
  ===================
@@ -1059,99 +1059,99 @@
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            5
- value(          -1 ) =   -1.00000000000000     
- value(           0 ) =    0.00000000000000     
- value(           1 ) =    1.00000000000000     
- value(           2 ) =    2.00000000000000     
- value(           3 ) =    3.00000000000000     
- value(           4 ) =    4.00000000000000     
- value(           5 ) =    5.00000000000000     
+ value(          -1 ) =   -1.0000000000000000     
+ value(           0 ) =    0.0000000000000000     
+ value(           1 ) =    1.0000000000000000     
+ value(           2 ) =    2.0000000000000000     
+ value(           3 ) =    3.0000000000000000     
+ value(           4 ) =    4.0000000000000000     
+ value(           5 ) =    5.0000000000000000     
  The size of the array is :            9
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :            5
- value(          -3 ) =   -50.0000000000000     
- value(          -2 ) =    0.00000000000000     
- value(          -1 ) =   -1.00000000000000     
- value(           0 ) =    0.00000000000000     
- value(           1 ) =    1.00000000000000     
- value(           2 ) =    2.00000000000000     
- value(           3 ) =    3.00000000000000     
- value(           4 ) =    4.00000000000000     
- value(           5 ) =    5.00000000000000     
+ value(          -3 ) =   -50.000000000000000     
+ value(          -2 ) =    0.0000000000000000     
+ value(          -1 ) =   -1.0000000000000000     
+ value(           0 ) =    0.0000000000000000     
+ value(           1 ) =    1.0000000000000000     
+ value(           2 ) =    2.0000000000000000     
+ value(           3 ) =    3.0000000000000000     
+ value(           4 ) =    4.0000000000000000     
+ value(           5 ) =    5.0000000000000000     
  The size of the array is :           10
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :            6
- value(          -3 ) =   -50.0000000000000     
- value(          -2 ) =    0.00000000000000     
- value(          -1 ) =    50.0000000000000     
- value(           0 ) =   -1.00000000000000     
- value(           1 ) =    0.00000000000000     
- value(           2 ) =    1.00000000000000     
- value(           3 ) =    2.00000000000000     
- value(           4 ) =    3.00000000000000     
- value(           5 ) =    4.00000000000000     
- value(           6 ) =    5.00000000000000     
+ value(          -3 ) =   -50.000000000000000     
+ value(          -2 ) =    0.0000000000000000     
+ value(          -1 ) =    50.000000000000000     
+ value(           0 ) =   -1.0000000000000000     
+ value(           1 ) =    0.0000000000000000     
+ value(           2 ) =    1.0000000000000000     
+ value(           3 ) =    2.0000000000000000     
+ value(           4 ) =    3.0000000000000000     
+ value(           5 ) =    4.0000000000000000     
+ value(           6 ) =    5.0000000000000000     
  The size of the array is :           11
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :            7
- value(          -3 ) =   -50.0000000000000     
- value(          -2 ) =    0.00000000000000     
- value(          -1 ) =    150.000000000000     
- value(           0 ) =    50.0000000000000     
- value(           1 ) =   -1.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    1.00000000000000     
- value(           4 ) =    2.00000000000000     
- value(           5 ) =    3.00000000000000     
- value(           6 ) =    4.00000000000000     
- value(           7 ) =    5.00000000000000     
+ value(          -3 ) =   -50.000000000000000     
+ value(          -2 ) =    0.0000000000000000     
+ value(          -1 ) =    150.00000000000000     
+ value(           0 ) =    50.000000000000000     
+ value(           1 ) =   -1.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    1.0000000000000000     
+ value(           4 ) =    2.0000000000000000     
+ value(           5 ) =    3.0000000000000000     
+ value(           6 ) =    4.0000000000000000     
+ value(           7 ) =    5.0000000000000000     
  The size of the array is :           12
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :            8
- value(          -3 ) =   -50.0000000000000     
- value(          -2 ) =    0.00000000000000     
- value(          -1 ) =    150.000000000000     
- value(           0 ) =    50.0000000000000     
- value(           1 ) =   -1.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    1.00000000000000     
- value(           4 ) =    2.00000000000000     
- value(           5 ) =    3.00000000000000     
- value(           6 ) =    4.00000000000000     
- value(           7 ) =    250.000000000000     
- value(           8 ) =    5.00000000000000     
+ value(          -3 ) =   -50.000000000000000     
+ value(          -2 ) =    0.0000000000000000     
+ value(          -1 ) =    150.00000000000000     
+ value(           0 ) =    50.000000000000000     
+ value(           1 ) =   -1.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    1.0000000000000000     
+ value(           4 ) =    2.0000000000000000     
+ value(           5 ) =    3.0000000000000000     
+ value(           6 ) =    4.0000000000000000     
+ value(           7 ) =    250.00000000000000     
+ value(           8 ) =    5.0000000000000000     
  The size of the array is :           14
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :           10
- value(          -3 ) =   -50.0000000000000     
- value(          -2 ) =    0.00000000000000     
- value(          -1 ) =    150.000000000000     
- value(           0 ) =    50.0000000000000     
- value(           1 ) =   -1.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    1.00000000000000     
- value(           4 ) =    2.00000000000000     
- value(           5 ) =    3.00000000000000     
- value(           6 ) =    4.00000000000000     
- value(           7 ) =    250.000000000000     
- value(           8 ) =    5.00000000000000     
- value(           9 ) =    0.00000000000000     
- value(          10 ) =   -250.000000000000     
+ value(          -3 ) =   -50.000000000000000     
+ value(          -2 ) =    0.0000000000000000     
+ value(          -1 ) =    150.00000000000000     
+ value(           0 ) =    50.000000000000000     
+ value(           1 ) =   -1.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    1.0000000000000000     
+ value(           4 ) =    2.0000000000000000     
+ value(           5 ) =    3.0000000000000000     
+ value(           6 ) =    4.0000000000000000     
+ value(           7 ) =    250.00000000000000     
+ value(           8 ) =    5.0000000000000000     
+ value(           9 ) =    0.0000000000000000     
+ value(          10 ) =   -250.00000000000000     
   
  checkVectorSetToZero
  ====================
@@ -1161,9 +1161,9 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    0.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    0.00000000000000     
+ value(           1 ) =    0.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    0.0000000000000000     
   
  checkVectorSetToValue
  =====================
@@ -1173,9 +1173,9 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    25.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    25.0000000000000     
+ value(           1 ) =    25.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    25.000000000000000     
   
  checkVectorSetInsertValue
  =========================
@@ -1185,9 +1185,9 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    15.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    25.0000000000000     
+ value(           1 ) =    15.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    25.000000000000000     
   
  checkVectorSetAddValue
  ======================
@@ -1197,43 +1197,43 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    60.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    25.0000000000000     
+ value(           1 ) =    60.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    25.000000000000000     
   
  checkWriteProcedure
  ===================
   
  checkReadProcedure
  ===================
- exclusionValue =    998.0000    
+ exclusionValue =    998.00000    
  The size of the array is :            3
     The allocated memory is :            3
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    60.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    25.0000000000000     
+ value(           1 ) =    60.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    25.000000000000000     
  The size of the array is :            3
     The allocated memory is :            3
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    60.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    25.0000000000000     
+ value(           1 ) =    60.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    25.000000000000000     
   
  checkVectorNorm
  ===============
- Norm L1 :    110.000000000000     
- Norm L2 :    69.6419413859206     
- Norm Inf :    60.0000000000000     
- Norm L1 :    110.000000000000     
- Norm L2 :    69.6419413859206     
- Norm Inf :    60.0000000000000     
+ Norm L1 :    110.00000000000000     
+ Norm L2 :    69.641941385920603     
+ Norm Inf :    60.000000000000000     
+ Norm L1 :    110.00000000000000     
+ Norm L2 :    69.641941385920603     
+ Norm Inf :    60.000000000000000     
   
  checkVectorScale
  ================
@@ -1243,9 +1243,9 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    19.1999995708466     
- value(           2 ) =    7.99999982118607     
- value(           3 ) =    7.99999982118607     
+ value(           1 ) =    19.199999570846558     
+ value(           2 ) =    7.9999998211860657     
+ value(           3 ) =    7.9999998211860657     
   
  checkVectorSqrt
  ===============
@@ -1255,29 +1255,29 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    4.38178041107112     
- value(           2 ) =    2.82842709313605     
- value(           3 ) =    2.82842709313605     
+ value(           1 ) =    4.3817804110711158     
+ value(           2 ) =    2.8284270931360536     
+ value(           3 ) =    2.8284270931360536     
   
  checkVectorSum
  ==============
- Vector sum :    10.0386345973432     
+ Vector sum :    10.038634597343222     
   
  checkVectorMin
  ==============
- Vector min :    2.82842709313605     
+ Vector min :    2.8284270931360536     
   
  checkVectorMax
  ==============
- Vector abs max :    4.38178041107112     
+ Vector abs max :    4.3817804110711158     
   
  checkVectorAbsMin
  =================
- Vector abs min :    2.82842709313605     
+ Vector abs min :    2.8284270931360536     
   
  checkVectorAbsMax
  =================
- Vector max :    4.38178041107112     
+ Vector max :    4.3817804110711158     
   
  checkVectorDot
  ==============
@@ -1287,10 +1287,10 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    2.29999995231628     
- value(           2 ) =    2.29999995231628     
- value(           3 ) =    2.29999995231628     
- Dot product :    23.0888590952100     
+ value(           1 ) =    2.2999999523162842     
+ value(           2 ) =    2.2999999523162842     
+ value(           3 ) =    2.2999999523162842     
+ Dot product :    23.088859095210012     
   
  checkVectorGetValues
  ====================
@@ -1300,9 +1300,9 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    23.0000000000000     
- value(           2 ) =    23.0000000000000     
- value(           3 ) =    23.0000000000000     
+ value(           1 ) =    23.000000000000000     
+ value(           2 ) =    23.000000000000000     
+ value(           3 ) =    23.000000000000000     
   
  checkVectorSetSize
  ==================
@@ -1312,22 +1312,22 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    2.30000001192093     
- value(           2 ) =    2.30000001192093     
- value(           3 ) =    2.30000001192093     
+ value(           1 ) =    2.3000000119209290     
+ value(           2 ) =    2.3000000119209290     
+ value(           3 ) =    2.3000000119209290     
  The size of the array is :            7
     The allocated memory is :           10
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            5
- value(          -1 ) =   -3.29999995231628     
- value(           0 ) =   -3.29999995231628     
- value(           1 ) =    2.30000001192093     
- value(           2 ) =    2.30000001192093     
- value(           3 ) =    2.30000001192093     
- value(           4 ) =    3.29999995231628     
- value(           5 ) =    3.29999995231628     
+ value(          -1 ) =   -3.2999999523162842     
+ value(           0 ) =   -3.2999999523162842     
+ value(           1 ) =    2.3000000119209290     
+ value(           2 ) =    2.3000000119209290     
+ value(           3 ) =    2.3000000119209290     
+ value(           4 ) =    3.2999999523162842     
+ value(           5 ) =    3.2999999523162842     
   
  checkPutInProcedure
  ===================
@@ -1337,99 +1337,99 @@
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            5
- value(          -1 ) =   -1.00000000000000     
- value(           0 ) =    0.00000000000000     
- value(           1 ) =    1.00000000000000     
- value(           2 ) =    2.00000000000000     
- value(           3 ) =    3.00000000000000     
- value(           4 ) =    4.00000000000000     
- value(           5 ) =    5.00000000000000     
+ value(          -1 ) =   -1.0000000000000000     
+ value(           0 ) =    0.0000000000000000     
+ value(           1 ) =    1.0000000000000000     
+ value(           2 ) =    2.0000000000000000     
+ value(           3 ) =    3.0000000000000000     
+ value(           4 ) =    4.0000000000000000     
+ value(           5 ) =    5.0000000000000000     
  The size of the array is :            9
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :            5
- value(          -3 ) =   -50.0000000000000     
- value(          -2 ) =    0.00000000000000     
- value(          -1 ) =   -1.00000000000000     
- value(           0 ) =    0.00000000000000     
- value(           1 ) =    1.00000000000000     
- value(           2 ) =    2.00000000000000     
- value(           3 ) =    3.00000000000000     
- value(           4 ) =    4.00000000000000     
- value(           5 ) =    5.00000000000000     
+ value(          -3 ) =   -50.000000000000000     
+ value(          -2 ) =    0.0000000000000000     
+ value(          -1 ) =   -1.0000000000000000     
+ value(           0 ) =    0.0000000000000000     
+ value(           1 ) =    1.0000000000000000     
+ value(           2 ) =    2.0000000000000000     
+ value(           3 ) =    3.0000000000000000     
+ value(           4 ) =    4.0000000000000000     
+ value(           5 ) =    5.0000000000000000     
  The size of the array is :           10
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :            6
- value(          -3 ) =   -50.0000000000000     
- value(          -2 ) =    0.00000000000000     
- value(          -1 ) =    50.0000000000000     
- value(           0 ) =   -1.00000000000000     
- value(           1 ) =    0.00000000000000     
- value(           2 ) =    1.00000000000000     
- value(           3 ) =    2.00000000000000     
- value(           4 ) =    3.00000000000000     
- value(           5 ) =    4.00000000000000     
- value(           6 ) =    5.00000000000000     
+ value(          -3 ) =   -50.000000000000000     
+ value(          -2 ) =    0.0000000000000000     
+ value(          -1 ) =    50.000000000000000     
+ value(           0 ) =   -1.0000000000000000     
+ value(           1 ) =    0.0000000000000000     
+ value(           2 ) =    1.0000000000000000     
+ value(           3 ) =    2.0000000000000000     
+ value(           4 ) =    3.0000000000000000     
+ value(           5 ) =    4.0000000000000000     
+ value(           6 ) =    5.0000000000000000     
  The size of the array is :           11
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :            7
- value(          -3 ) =   -50.0000000000000     
- value(          -2 ) =    0.00000000000000     
- value(          -1 ) =    150.000000000000     
- value(           0 ) =    50.0000000000000     
- value(           1 ) =   -1.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    1.00000000000000     
- value(           4 ) =    2.00000000000000     
- value(           5 ) =    3.00000000000000     
- value(           6 ) =    4.00000000000000     
- value(           7 ) =    5.00000000000000     
+ value(          -3 ) =   -50.000000000000000     
+ value(          -2 ) =    0.0000000000000000     
+ value(          -1 ) =    150.00000000000000     
+ value(           0 ) =    50.000000000000000     
+ value(           1 ) =   -1.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    1.0000000000000000     
+ value(           4 ) =    2.0000000000000000     
+ value(           5 ) =    3.0000000000000000     
+ value(           6 ) =    4.0000000000000000     
+ value(           7 ) =    5.0000000000000000     
  The size of the array is :           12
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :            8
- value(          -3 ) =   -50.0000000000000     
- value(          -2 ) =    0.00000000000000     
- value(          -1 ) =    150.000000000000     
- value(           0 ) =    50.0000000000000     
- value(           1 ) =   -1.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    1.00000000000000     
- value(           4 ) =    2.00000000000000     
- value(           5 ) =    3.00000000000000     
- value(           6 ) =    4.00000000000000     
- value(           7 ) =    250.000000000000     
- value(           8 ) =    5.00000000000000     
+ value(          -3 ) =   -50.000000000000000     
+ value(          -2 ) =    0.0000000000000000     
+ value(          -1 ) =    150.00000000000000     
+ value(           0 ) =    50.000000000000000     
+ value(           1 ) =   -1.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    1.0000000000000000     
+ value(           4 ) =    2.0000000000000000     
+ value(           5 ) =    3.0000000000000000     
+ value(           6 ) =    4.0000000000000000     
+ value(           7 ) =    250.00000000000000     
+ value(           8 ) =    5.0000000000000000     
  The size of the array is :           14
     The allocated memory is :           14
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :           10
- value(          -3 ) =   -50.0000000000000     
- value(          -2 ) =    0.00000000000000     
- value(          -1 ) =    150.000000000000     
- value(           0 ) =    50.0000000000000     
- value(           1 ) =   -1.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    1.00000000000000     
- value(           4 ) =    2.00000000000000     
- value(           5 ) =    3.00000000000000     
- value(           6 ) =    4.00000000000000     
- value(           7 ) =    250.000000000000     
- value(           8 ) =    5.00000000000000     
- value(           9 ) =    0.00000000000000     
- value(          10 ) =   -250.000000000000     
+ value(          -3 ) =   -50.000000000000000     
+ value(          -2 ) =    0.0000000000000000     
+ value(          -1 ) =    150.00000000000000     
+ value(           0 ) =    50.000000000000000     
+ value(           1 ) =   -1.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    1.0000000000000000     
+ value(           4 ) =    2.0000000000000000     
+ value(           5 ) =    3.0000000000000000     
+ value(           6 ) =    4.0000000000000000     
+ value(           7 ) =    250.00000000000000     
+ value(           8 ) =    5.0000000000000000     
+ value(           9 ) =    0.0000000000000000     
+ value(          10 ) =   -250.00000000000000     
   
  checkVectorSetToZero
  ====================
@@ -1439,9 +1439,9 @@
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            1
- value(          -1 ) =    0.00000000000000     
- value(           0 ) =    0.00000000000000     
- value(           1 ) =    0.00000000000000     
+ value(          -1 ) =    0.0000000000000000     
+ value(           0 ) =    0.0000000000000000     
+ value(           1 ) =    0.0000000000000000     
   
  checkVectorSetToValue
  =====================
@@ -1451,9 +1451,9 @@
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            1
- value(          -1 ) =    25.0000000000000     
- value(           0 ) =    25.0000000000000     
- value(           1 ) =    25.0000000000000     
+ value(          -1 ) =    25.000000000000000     
+ value(           0 ) =    25.000000000000000     
+ value(           1 ) =    25.000000000000000     
   
  checkVectorSetInsertValue
  =========================
@@ -1463,9 +1463,9 @@
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            1
- value(          -1 ) =    25.0000000000000     
- value(           0 ) =    25.0000000000000     
- value(           1 ) =    15.0000000000000     
+ value(          -1 ) =    25.000000000000000     
+ value(           0 ) =    25.000000000000000     
+ value(           1 ) =    15.000000000000000     
   
  checkVectorSetAddValue
  ======================
@@ -1475,43 +1475,43 @@
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            1
- value(          -1 ) =    25.0000000000000     
- value(           0 ) =    25.0000000000000     
- value(           1 ) =    60.0000000000000     
+ value(          -1 ) =    25.000000000000000     
+ value(           0 ) =    25.000000000000000     
+ value(           1 ) =    60.000000000000000     
   
  checkWriteProcedure
  ===================
   
  checkReadProcedure
  ===================
- exclusionValue =    998.0000    
+ exclusionValue =    998.00000    
  The size of the array is :            3
     The allocated memory is :            3
     The increase allocation memory is :            0
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            1
- value(          -1 ) =    25.0000000000000     
- value(           0 ) =    25.0000000000000     
- value(           1 ) =    60.0000000000000     
+ value(          -1 ) =    25.000000000000000     
+ value(           0 ) =    25.000000000000000     
+ value(           1 ) =    60.000000000000000     
  The size of the array is :            3
     The allocated memory is :            3
     The increase allocation memory is :            5
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    25.0000000000000     
- value(           2 ) =    25.0000000000000     
- value(           3 ) =    60.0000000000000     
+ value(           1 ) =    25.000000000000000     
+ value(           2 ) =    25.000000000000000     
+ value(           3 ) =    60.000000000000000     
   
  checkVectorNorm
  ===============
- Norm L1 :    110.000000000000     
- Norm L2 :    69.6419413859206     
- Norm Inf :    60.0000000000000     
- Norm L1 :    110.000000000000     
- Norm L2 :    69.6419413859206     
- Norm Inf :    60.0000000000000     
+ Norm L1 :    110.00000000000000     
+ Norm L2 :    69.641941385920603     
+ Norm Inf :    60.000000000000000     
+ Norm L1 :    110.00000000000000     
+ Norm L2 :    69.641941385920603     
+ Norm Inf :    60.000000000000000     
   
  checkVectorScale
  ================
@@ -1521,9 +1521,9 @@
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            1
- value(          -1 ) =    7.99999982118607     
- value(           0 ) =    7.99999982118607     
- value(           1 ) =    19.1999995708466     
+ value(          -1 ) =    7.9999998211860657     
+ value(           0 ) =    7.9999998211860657     
+ value(           1 ) =    19.199999570846558     
   
  checkVectorSqrt
  ===============
@@ -1533,29 +1533,29 @@
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            1
- value(          -1 ) =    2.82842709313605     
- value(           0 ) =    2.82842709313605     
- value(           1 ) =    4.38178041107112     
+ value(          -1 ) =    2.8284270931360536     
+ value(           0 ) =    2.8284270931360536     
+ value(           1 ) =    4.3817804110711158     
   
  checkVectorSum
  ==============
- Vector sum :    10.0386345973432     
+ Vector sum :    10.038634597343222     
   
  checkVectorMin
  ==============
- Vector min :    2.82842709313605     
+ Vector min :    2.8284270931360536     
   
  checkVectorMax
  ==============
- Vector abs max :    4.38178041107112     
+ Vector abs max :    4.3817804110711158     
   
  checkVectorAbsMin
  =================
- Vector abs min :    2.82842709313605     
+ Vector abs min :    2.8284270931360536     
   
  checkVectorAbsMax
  =================
- Vector max :    4.38178041107112     
+ Vector max :    4.3817804110711158     
   
  checkVectorDot
  ==============
@@ -1565,10 +1565,10 @@
     Allocation status of the vector :  T
     First positions are :            1
     Last positions are  :            3
- value(           1 ) =    2.29999995231628     
- value(           2 ) =    2.29999995231628     
- value(           3 ) =    2.29999995231628     
- Dot product :    23.0888590952100     
+ value(           1 ) =    2.2999999523162842     
+ value(           2 ) =    2.2999999523162842     
+ value(           3 ) =    2.2999999523162842     
+ Dot product :    23.088859095210012     
   
  checkVectorGetValues
  ====================
@@ -1578,9 +1578,9 @@
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            1
- value(          -1 ) =    23.0000000000000     
- value(           0 ) =    23.0000000000000     
- value(           1 ) =    23.0000000000000     
+ value(          -1 ) =    23.000000000000000     
+ value(           0 ) =    23.000000000000000     
+ value(           1 ) =    23.000000000000000     
   
  checkVectorSetSize
  ==================
@@ -1590,22 +1590,22 @@
     Allocation status of the vector :  T
     First positions are :           -1
     Last positions are  :            1
- value(          -1 ) =    2.30000001192093     
- value(           0 ) =    2.30000001192093     
- value(           1 ) =    2.30000001192093     
+ value(          -1 ) =    2.3000000119209290     
+ value(           0 ) =    2.3000000119209290     
+ value(           1 ) =    2.3000000119209290     
  The size of the array is :            7
     The allocated memory is :            7
     The increase allocation memory is :            0
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :            3
- value(          -3 ) =   -3.29999995231628     
- value(          -2 ) =   -3.29999995231628     
- value(          -1 ) =    2.30000001192093     
- value(           0 ) =    2.30000001192093     
- value(           1 ) =    2.30000001192093     
- value(           2 ) =    3.29999995231628     
- value(           3 ) =    3.29999995231628     
+ value(          -3 ) =   -3.2999999523162842     
+ value(          -2 ) =   -3.2999999523162842     
+ value(          -1 ) =    2.3000000119209290     
+ value(           0 ) =    2.3000000119209290     
+ value(           1 ) =    2.3000000119209290     
+ value(           2 ) =    3.2999999523162842     
+ value(           3 ) =    3.2999999523162842     
   
  checkPutInProcedure
  ===================
@@ -1615,97 +1615,97 @@
     Allocation status of the vector :  T
     First positions are :           -3
     Last positions are  :            3
- value(          -3 ) =   -3.00000000000000     
- value(          -2 ) =   -2.00000000000000     
- value(          -1 ) =   -1.00000000000000     
- value(           0 ) =    0.00000000000000     
- value(           1 ) =    1.00000000000000     
- value(           2 ) =    2.00000000000000     
- value(           3 ) =    3.00000000000000     
+ value(          -3 ) =   -3.0000000000000000     
+ value(          -2 ) =   -2.0000000000000000     
+ value(          -1 ) =   -1.0000000000000000     
+ value(           0 ) =    0.0000000000000000     
+ value(           1 ) =    1.0000000000000000     
+ value(           2 ) =    2.0000000000000000     
+ value(           3 ) =    3.0000000000000000     
  The size of the array is :            9
     The allocated memory is :            9
     The increase allocation memory is :            0
     Allocation status of the vector :  T
     First positions are :           -5
     Last positions are  :            3
- value(          -5 ) =   -50.0000000000000     
- value(          -4 ) =    0.00000000000000     
- value(          -3 ) =   -3.00000000000000     
- value(          -2 ) =   -2.00000000000000     
- value(          -1 ) =   -1.00000000000000     
- value(           0 ) =    0.00000000000000     
- value(           1 ) =    1.00000000000000     
- value(           2 ) =    2.00000000000000     
- value(           3 ) =    3.00000000000000     
+ value(          -5 ) =   -50.000000000000000     
+ value(          -4 ) =    0.0000000000000000     
+ value(          -3 ) =   -3.0000000000000000     
+ value(          -2 ) =   -2.0000000000000000     
+ value(          -1 ) =   -1.0000000000000000     
+ value(           0 ) =    0.0000000000000000     
+ value(           1 ) =    1.0000000000000000     
+ value(           2 ) =    2.0000000000000000     
+ value(           3 ) =    3.0000000000000000     
  The size of the array is :           10
     The allocated memory is :           10
     The increase allocation memory is :            0
     Allocation status of the vector :  T
     First positions are :           -5
     Last positions are  :            4
- value(          -5 ) =   -50.0000000000000     
- value(          -4 ) =    0.00000000000000     
- value(          -3 ) =    50.0000000000000     
- value(          -2 ) =   -3.00000000000000     
- value(          -1 ) =   -2.00000000000000     
- value(           0 ) =   -1.00000000000000     
- value(           1 ) =    0.00000000000000     
- value(           2 ) =    1.00000000000000     
- value(           3 ) =    2.00000000000000     
- value(           4 ) =    3.00000000000000     
+ value(          -5 ) =   -50.000000000000000     
+ value(          -4 ) =    0.0000000000000000     
+ value(          -3 ) =    50.000000000000000     
+ value(          -2 ) =   -3.0000000000000000     
+ value(          -1 ) =   -2.0000000000000000     
+ value(           0 ) =   -1.0000000000000000     
+ value(           1 ) =    0.0000000000000000     
+ value(           2 ) =    1.0000000000000000     
+ value(           3 ) =    2.0000000000000000     
+ value(           4 ) =    3.0000000000000000     
  The size of the array is :           11
     The allocated memory is :           11
     The increase allocation memory is :            0
     Allocation status of the vector :  T
     First positions are :           -5
     Last positions are  :            5
- value(          -5 ) =   -50.0000000000000     
- value(          -4 ) =    0.00000000000000     
- value(          -3 ) =    150.000000000000     
- value(          -2 ) =    50.0000000000000     
- value(          -1 ) =   -3.00000000000000     
- value(           0 ) =   -2.00000000000000     
- value(           1 ) =   -1.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    1.00000000000000     
- value(           4 ) =    2.00000000000000     
- value(           5 ) =    3.00000000000000     
+ value(          -5 ) =   -50.000000000000000     
+ value(          -4 ) =    0.0000000000000000     
+ value(          -3 ) =    150.00000000000000     
+ value(          -2 ) =    50.000000000000000     
+ value(          -1 ) =   -3.0000000000000000     
+ value(           0 ) =   -2.0000000000000000     
+ value(           1 ) =   -1.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    1.0000000000000000     
+ value(           4 ) =    2.0000000000000000     
+ value(           5 ) =    3.0000000000000000     
  The size of the array is :           12
     The allocated memory is :           12
     The increase allocation memory is :            0
     Allocation status of the vector :  T
     First positions are :           -5
     Last positions are  :            6
- value(          -5 ) =   -50.0000000000000     
- value(          -4 ) =    0.00000000000000     
- value(          -3 ) =    150.000000000000     
- value(          -2 ) =    50.0000000000000     
- value(          -1 ) =   -3.00000000000000     
- value(           0 ) =   -2.00000000000000     
- value(           1 ) =   -1.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    1.00000000000000     
- value(           4 ) =    2.00000000000000     
- value(           5 ) =    250.000000000000     
- value(           6 ) =    3.00000000000000     
+ value(          -5 ) =   -50.000000000000000     
+ value(          -4 ) =    0.0000000000000000     
+ value(          -3 ) =    150.00000000000000     
+ value(          -2 ) =    50.000000000000000     
+ value(          -1 ) =   -3.0000000000000000     
+ value(           0 ) =   -2.0000000000000000     
+ value(           1 ) =   -1.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    1.0000000000000000     
+ value(           4 ) =    2.0000000000000000     
+ value(           5 ) =    250.00000000000000     
+ value(           6 ) =    3.0000000000000000     
  The size of the array is :           14
     The allocated memory is :           14
     The increase allocation memory is :            0
     Allocation status of the vector :  T
     First positions are :           -5
     Last positions are  :            8
- value(          -5 ) =   -50.0000000000000     
- value(          -4 ) =    0.00000000000000     
- value(          -3 ) =    150.000000000000     
- value(          -2 ) =    50.0000000000000     
- value(          -1 ) =   -3.00000000000000     
- value(           0 ) =   -2.00000000000000     
- value(           1 ) =   -1.00000000000000     
- value(           2 ) =    0.00000000000000     
- value(           3 ) =    1.00000000000000     
- value(           4 ) =    2.00000000000000     
- value(           5 ) =    250.000000000000     
- value(           6 ) =    3.00000000000000     
- value(           7 ) =    0.00000000000000     
- value(           8 ) =   -250.000000000000     
+ value(          -5 ) =   -50.000000000000000     
+ value(          -4 ) =    0.0000000000000000     
+ value(          -3 ) =    150.00000000000000     
+ value(          -2 ) =    50.000000000000000     
+ value(          -1 ) =   -3.0000000000000000     
+ value(           0 ) =   -2.0000000000000000     
+ value(           1 ) =   -1.0000000000000000     
+ value(           2 ) =    0.0000000000000000     
+ value(           3 ) =    1.0000000000000000     
+ value(           4 ) =    2.0000000000000000     
+ value(           5 ) =    250.00000000000000     
+ value(           6 ) =    3.0000000000000000     
+ value(           7 ) =    0.0000000000000000     
+ value(           8 ) =   -250.00000000000000     
   

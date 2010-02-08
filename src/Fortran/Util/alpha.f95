@@ -7,8 +7,8 @@ PROGRAM Alpha0_Alpha1
 
 ! Include file
 ! ============
-   include 'constantParameter.h'
-   include 'ioParameter.h'
+   INCLUDE 'constantParameter.h'
+   INCLUDE 'ioParameter.h'
 
 ! Declaration
 ! ===========

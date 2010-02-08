@@ -14,8 +14,8 @@ MODULE moduleTria3Definition
 
 TYPE tria3Type
 
-  INTEGER(KIND=4) :: indexValue, node1, node2, node3
-  INTEGER(KIND=4) :: neighbor1, neighbor2, neighbor3
+  INTEGER :: indexValue, node1, node2, node3
+  INTEGER :: neighbor1, neighbor2, neighbor3
 
 END TYPE tria3Type
 

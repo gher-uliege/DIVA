@@ -7,8 +7,8 @@ PROGRAM datadiff
 
 ! Include file
 ! ============
-   include 'constantParameter.h'
-   include 'ioParameter.h'
+   INCLUDE 'constantParameter.h'
+   INCLUDE 'ioParameter.h'
 
 ! Declaration
 ! ===========

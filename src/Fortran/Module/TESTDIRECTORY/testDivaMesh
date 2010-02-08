@@ -27,7 +27,11 @@ echo ------ >> testing.log
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
 ./$fileToCheck.a >> $fileToCheck.$compiler.$OSused
-#cp ./$fileToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$compiler.$OSused
+if [ $action == copy ] 
+then
+echo 'Copy result files'
+cp ./$fileToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$compiler.$OSused
+fi
 diff -s ./$fileToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$compiler.$OSused >> testing.log
 
 rm ./$fileToCheck.a
@@ -51,7 +55,11 @@ echo ------ >> testing.log
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
 ./$fileToCheck.a >> $fileToCheck.$compiler.$OSused
-#cp ./$fileToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$compiler.$OSused
+if [ $action == copy ] 
+then
+echo 'Copy result files'
+cp ./$fileToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$compiler.$OSused
+fi
 diff -s ./$fileToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$compiler.$OSused >> testing.log
 
 rm ./$fileToCheck.a

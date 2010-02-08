@@ -13,6 +13,14 @@ baseDir=$PWD
 
 _WITH_MESH_=1 ; export _WITH_MESH_
 _WITH_UTIL_=1 ; export _WITH_UTIL_
+_WITH_STABIL_=0 ; export _WITH_STABIL_
+_WITH_PLPLOT_=0 ; export _WITH_PLPLOT_
+_WITH_PIPETEST_=1 ; export _WITH_PIPETEST_
+_WITH_NOPLPLOT_=1 ; export _WITH_NOPLPLOT_
+_WITH_NETCDF_=0 ; export _WITH_NETCDF_
+_WITH_EXTENSION_=1 ; export _WITH_EXTENSION_
+_WITH_CALC_=1 ; export _WITH_CALC_
+
 
 # Compilation of Mesh
 # ===================
@@ -30,6 +38,69 @@ if [ $_WITH_UTIL_ == 1 ]
 then
 cd $divaDir/Util
 ./makeDivaUtil
+fi
+
+# Compilation of Stabil
+# =====================
+
+if [ $_WITH_STABIL_ == 1 ]
+then
+cd $divaDir/Stabil
+./makeDivaStabil
+fi
+
+# Compilation of Plplot
+# =====================
+
+if [ $_WITH_PLPLOT_ == 1 ]
+then
+cd $divaDir/Plplot
+./makeDivaPlplot
+fi
+
+# Compilation of PipeTest
+# =======================
+
+if [ $_WITH_PIPETEST_ == 1 ]
+then
+cd $divaDir/Pipetest
+./makeDivaPipeTest
+fi
+
+# Compilation of NoPlplot
+# =====================
+
+if [ $_WITH_NOPLPLOT_ == 1 ]
+then
+cd $divaDir/NoPlplot
+./makeDivaNoPlplot
+fi
+
+# Compilation of NC
+# ==================
+
+if [ $_WITH_NETCDF_ == 1 ]
+then
+cd $divaDir/NC
+./makeDivaNC
+fi
+
+# Compilation of Extension
+# ========================
+
+if [ $_WITH_EXTENSION_ == 1 ]
+then
+cd $divaDir/Extensions
+./makeDivaExtensions
+fi
+
+# Compilation of Calc
+# ========================
+
+if [ $_WITH_CALC_ == 1 ]
+then
+cd $divaDir/Calc
+./makeDivaCalc
 fi
 
 cd $baseDir

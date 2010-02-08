@@ -33,7 +33,7 @@ TYPE(Chronometer) :: chron, chron1
       INTEGER(KIND=4) ::  I,J,N,M,NP,NC,NP2,A,B,NO,MA,MAILLE(MMAX,6)
       INTEGER(KIND=4) ::  MP,PPTC(NCMAX),PTC,K,E,F,NPC
  
-      INTEGER(KIND=4) ::  NR,KNMAX(NRMAX),P,jj,kk
+      INTEGER(KIND=4) ::  NR,KNMAX(NRMAX),P,jj,kk,NS
 
       REAL(KIND=8) ::  KN(NMAX,2),G(NRMAX)
       INTEGER(KIND=4) ::  NTRI(NMAX)
@@ -290,17 +290,17 @@ TYPE(Chronometer) :: chron, chron1
 
 !      CALL meshWithGMSH(PPTC,X,Y,S,NC)
       
-!        stop
+       
 
 !C     RAJOUT DE POINT DANS LE CONTOUR SI LA DISTANCE ENTRE
 !C      DEUX POINTS DIFFERE BCP (+ DE 2*) DE LA LONGUEUR CARACT.
  
- do i=1,n
-  print*,i,x(i),y(i)
-  enddo
+! do i=1,n
+!  print*,i,x(i),y(i)
+!  enddo
 ! stop
 
-print*,'length scale', S
+!print*,'length scale', S
 
       NP=0
       NPC=0
@@ -326,7 +326,7 @@ print*,'length scale', S
        ENDIF
        D=SQRT(1.D0*(X(A)-X(B))**2+1.D0*(Y(A)-Y(B))**2)
        M=INT(D/L)
-       write(6,*) M,D,L,A,B,X(A),X(B)
+!       write(6,*) M,D,L,A,B,X(A),X(B)
        IF((D/L).LT.(.5)) K=K+1 
        IF(M.GT.1) THEN
           DO 60 J=1,(M-1)
@@ -398,11 +398,11 @@ print*,'length scale', S
       L=S
 !C     CREATION DE LA BOITE
       
-      print*,'ajout'
- do i=1,n
-  print*,i,x(i),y(i)
-  enddo
-stop
+!      print*,'ajout'
+! do i=1,n
+!  print*,i,x(i),y(i)
+!  enddo
+!stop
       DX=XMAX-XMIN
       DY=YMAX-YMIN
       NOEUD(1,1)=XMIN-DX
@@ -558,8 +558,13 @@ stop
 !C     RAFFINAGE
 !C -----------------
 
+!print*, 'maille 1', maille(1,1:6)
+!print*, 'maille 2', maille(2,1:6)
+
       WRITE(*,'(A)') 'REFINEMENT'
       CALL RAFFIN1(MAILLE,NOEUD,NMAX,MMAX,NO,MA,S,G,KN,NR,NRMAX,KNMAX,P)
+!print*, 'maille 1', maille(1,1:6)
+!print*, 'maille 2', maille(2,1:6)
 
 
 !C --------------
@@ -569,23 +574,62 @@ stop
       WRITE(*,'(A)') 'SMOOTHING OF GRID'
       CALL LISSAGE(MAILLE,NOEUD,NMAX,MMAX,NO,MA,N)
 
-
+!print*, 'maille 1', maille(1,1:6)
+!print*, 'maille 2', maille(2,1:6)
 !C --------------
 !C     SORTIE
 !C --------------
 
 !C      CALL SORTIE(MAILLE,NOEUD,NMAX,MMAX,NO,MA)
 !      CALL exportToGMSH(MAILLE,NOEUD,NMAX,MMAX,NO,MA)
-      CALL finishChrono(chron1)
+!      CALL finishChrono(chron1)
       CALL printInformationChrono(chron1)
 
-      CALL REORG(MAILLE,NOEUD,NMAX,MMAX,NO,MA,NTRI)
-      CALL exportToGMSH(MAILLE,NOEUD,NMAX,MMAX,NO,MA)
+MA=4
+NO=5
+NOEUD(1,1)=0.
+NOEUD(1,2)=0.
+NOEUD(2,1)=10.
+NOEUD(2,2)=0.
+NOEUD(3,1)=10.
+NOEUD(3,2)=10.
+NOEUD(4,1)=0.
+NOEUD(4,2)=10.
+NOEUD(5,1)=5.
+NOEUD(5,2)=5.
+MAILLE(1,1)=1
+MAILLE(1,2)=2
+MAILLE(1,3)=5
+MAILLE(1,4)=0
+MAILLE(1,5)=2
+MAILLE(1,6)=4
+MAILLE(2,1)=2
+MAILLE(2,2)=3
+MAILLE(2,3)=5
+MAILLE(2,4)=0
+MAILLE(2,5)=3
+MAILLE(2,6)=1
+MAILLE(3,1)=3
+MAILLE(3,2)=4
+MAILLE(3,3)=5
+MAILLE(3,4)=0
+MAILLE(3,5)=4
+MAILLE(3,6)=2
+MAILLE(4,1)=4
+MAILLE(4,2)=1
+MAILLE(4,3)=5
+MAILLE(4,4)=0
+MAILLE(4,5)=1
+MAILLE(4,6)=3
+
+
+      CALL REORG(MAILLE,NOEUD,NMAX,MMAX,NO,MA,NTRI,NS)
+      CALL exportToGMSH(MAILLE,NOEUD,NMAX,MMAX,NS,MA)
       write(6,*) 'FINISHED mesh generation'
-      CALL finishChrono(chron)
-      CALL printInformationChrono(chron)
-      CALL finaliseDIVAContext()
-      stop 
+!      CALL finishChrono(chron)
+!      CALL printInformationChrono(chron)
+!      CALL finaliseDIVAContext()
+!      stop 
 
  CONTAINS
 !C --------------------------------------
@@ -1508,7 +1552,7 @@ stop
       RETURN 
       END subroutine
 
-      subroutine REORG(MAILLE,NOEUD,NMAX,MMAX,NO,MA,NTRI)
+      subroutine REORG(MAILLE,NOEUD,NMAX,MMAX,NO,MA,NTRI,NS)
 !C ------------------------------------------------------------------
 !C ---                                                            ---
 !C ---   REORGANISATION DE LA LISTE DES NOEUDS ET DES MAILLES     ---
@@ -1534,7 +1578,8 @@ stop
       REAL(KIND=8) ::  NOEUD(NMAX,2),X1,X2,Y1,Y2,X,Y
 
       INTEGER(KIND=4) ::  MAILLE(MMAX,6),MA,NO,NS,JJ
-      INTEGER(KIND=4) ::  I,J,K,L,NTRI(NMAX),IND,I0,I1
+      INTEGER(KIND=4) ::  I,J,K,L,IND,I0,I1
+      INTEGER(KIND=4) :: NTRI(NMAX)
       REAL(KIND=8) ::  rlonmin,rlonmax
       REAL(KIND=8) ::  rlatmin,rlatmax,rlonmean,rlatmean,dxkm,dykm,rpi
       REAL(KIND=8) ::  rcoordchange
@@ -1572,11 +1617,25 @@ stop
 !C20    CONTINUE
 !C      CLOSE(20)
 
+!      OPEN(UNIT=20,file='fort.56')
+!      DO 10 I=1,NO
+!        WRITE(20,*) I,NOEUD(I,1:2)
+!10    CONTINUE
+
+!      DO 20 I=1,MA
+!        WRITE(20,*) I,MAILLE(I,1:6)
+!20    CONTINUE
+!      CLOSE(20)
+
 !C --- INTRODUCTION DES NOEUDS D'INTERFACE
 
+!do i=1,no
+! print*,'node ',i,noeud(i,1:2)
+!enddo
       NS=NO
       DO 70 I=1,MA
          DO 60 J=1,3
+             !print*,'maille ',I, ' voisin ',J, ' is ', maille(i,j+3)
             IF(MAILLE(I,J+3).GE.0) THEN 
                 X1=NOEUD(MAILLE(I,J),1)
                 Y1=NOEUD(MAILLE(I,J),2)
@@ -1612,6 +1671,10 @@ stop
             ENDIF
 60       CONTINUE
 70    CONTINUE
+
+!do i=1,no
+! print*,'node ',i,noeud(i,1:2)
+!enddo
 
 !C --- TRI DES NOEUDS,  DANS UN TABLEAU NTRI
       JMBOPT=1
@@ -1793,7 +1856,7 @@ stop
 !
 !C     .. Scalar Arguments ..
       implicit none
-      INTEGER N
+      INTEGER(KIND=4) :: N
 !C     .. Array Arguments ..
       REAL(KIND=8) ::   IA(N)
       INTEGER(KIND=4) ::  JA(N)
@@ -2215,10 +2278,11 @@ SUBROUTINE writeSurfaceToGeoFile(logicalUnit,listOfContour,xNode,yNode,character
      INTEGER, INTENT(IN) :: nbOfContour
 
      INTEGER :: i1, i2, istart, ifirstSurface
+     INTEGER(KIND=4) :: nbOfDataToSort
      INTEGER, PARAMETER :: nbOfContourMax = 1000
      LOGICAL, DIMENSION(nbOfContourMax) :: check
      INTEGER, DIMENSION(nbOfContourMax) :: checkIn
-     INTEGER, DIMENSION(nbOfContourMax) :: sortContour
+     INTEGER(KIND=4), DIMENSION(nbOfContourMax) :: sortContour
      INTEGER, DIMENSION(nbOfContourMax,2) :: sortBounds
      REAL(KIND=8), DIMENSION(nbOfContourMax) :: sortSize
      REAL(KIND=8) :: xCenter, yCenter
@@ -2244,7 +2308,9 @@ SUBROUTINE writeSurfaceToGeoFile(logicalUnit,listOfContour,xNode,yNode,character
         sortBounds(i1,2)= istart - 1
      ENDDO
 
-     CALL QS2I1R (sortSize,sortContour,i2)
+     nbOfDataToSort = i2
+     
+     CALL QS2I1R (sortSize,sortContour,nbOfDataToSort)
 
      DO i1 = 1, nbOfContour
         IF ( check(i1) ) THEN
@@ -2296,7 +2362,8 @@ RECURSIVE SUBROUTINE searchSurroundingContour(contourNb,checkIn,sortBounds,xCent
     IMPLICIT NONE
     INTEGER, INTENT(IN) :: nbOfContourMax
     INTEGER, INTENT(IN) :: contourNb, contourToCheck, maxContourToCheck
-    INTEGER, INTENT(IN) :: sortBounds(nbOfContourMax,2), sortContour(nbOfContourMax)
+    INTEGER, INTENT(IN) :: sortBounds(nbOfContourMax,2)
+    INTEGER(KIND=4), INTENT(IN) :: sortContour(nbOfContourMax)
     REAL(KIND=8), INTENT(IN) :: xCenter,yCenter
     REAL(KIND=8), INTENT(IN) :: xNode(*), yNode(*)
     LOGICAL, INTENT(OUT) :: check

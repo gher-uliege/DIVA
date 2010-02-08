@@ -11,6 +11,8 @@ echo =================================
 echo =================================
 echo ' '
 
+action=eval ; export action
+
 cp ./Mathematic/testMatrix.f95 .
 cp ./Mathematic/testIntegerMatrix.f95 .
 
@@ -32,9 +34,13 @@ export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
 ./$fileToCheck.a >> $fileToCheck.$typeToCheck.$compiler.$OSused
-#cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
-#cp ./$fileToCheck'Write'.$typeToCheck.out ./OUTPUTS/$fileToCheck'Write'.$typeToCheck.$compiler.$OSused
-#cp ./$fileToCheck'WriteTHK'.$typeToCheck.out ./OUTPUTS/$fileToCheck'WriteTHK'.$typeToCheck.$compiler.$OSused
+if [ $action == copy ] 
+then
+echo 'Copy result files'
+cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
+cp ./$fileToCheck'Write'.$typeToCheck.out ./OUTPUTS/$fileToCheck'Write'.$typeToCheck.$compiler.$OSused
+cp ./$fileToCheck'WriteTHK'.$typeToCheck.out ./OUTPUTS/$fileToCheck'WriteTHK'.$typeToCheck.$compiler.$OSused
+fi
 diff -s ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused >> testing.log
 diff -s ./$fileToCheck'Write'.$typeToCheck.out ./OUTPUTS/$fileToCheck'Write'.$typeToCheck.$compiler.$OSused >> testing.log
 diff -s ./$fileToCheck'WriteTHK'.$typeToCheck.out ./OUTPUTS/$fileToCheck'WriteTHK'.$typeToCheck.$compiler.$OSused >> testing.log
@@ -61,9 +67,13 @@ export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
 ./$fileToCheck.a >> $fileToCheck.$typeToCheck.$compiler.$OSused
-#cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
-#cp ./$fileToCheck'Write'.$typeToCheck.out ./OUTPUTS/$fileToCheck'Write'.$typeToCheck.$compiler.$OSused
-#cp ./$fileToCheck'WriteTHK'.$typeToCheck.out ./OUTPUTS/$fileToCheck'WriteTHK'.$typeToCheck.$compiler.$OSused
+if [ $action == copy ] 
+then
+echo 'Copy result files'
+cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
+cp ./$fileToCheck'Write'.$typeToCheck.out ./OUTPUTS/$fileToCheck'Write'.$typeToCheck.$compiler.$OSused
+cp ./$fileToCheck'WriteTHK'.$typeToCheck.out ./OUTPUTS/$fileToCheck'WriteTHK'.$typeToCheck.$compiler.$OSused
+fi
 diff -s ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused >> testing.log
 diff -s ./$fileToCheck'Write'.$typeToCheck.out ./OUTPUTS/$fileToCheck'Write'.$typeToCheck.$compiler.$OSused >> testing.log
 diff -s ./$fileToCheck'WriteTHK'.$typeToCheck.out ./OUTPUTS/$fileToCheck'WriteTHK'.$typeToCheck.$compiler.$OSused >> testing.log
@@ -92,8 +102,12 @@ export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
 ./$fileToCheck.a >> $fileToCheck.$typeToCheck.$compiler.$OSused
-#cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
-#cp ./$fileToCheck'WriteTHK'.$typeToCheck.out ./OUTPUTS/$fileToCheck'WriteTHK'.$typeToCheck.$compiler.$OSused
+if [ $action == copy ] 
+then
+echo 'Copy result files'
+cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
+cp ./$fileToCheck'WriteTHK'.$typeToCheck.out ./OUTPUTS/$fileToCheck'WriteTHK'.$typeToCheck.$compiler.$OSused
+fi
 diff -s ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused >> testing.log
 diff -s ./$fileToCheck'WriteTHK'.$typeToCheck.out ./OUTPUTS/$fileToCheck'WriteTHK'.$typeToCheck.$compiler.$OSused >> testing.log
 rm ./$fileToCheck'WriteTHK'.$typeToCheck.out
@@ -117,8 +131,12 @@ export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
 ./$fileToCheck.a >> $fileToCheck.$typeToCheck.$compiler.$OSused
-#cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
-#cp ./$fileToCheck'WriteTHK'.$typeToCheck.out ./OUTPUTS/$fileToCheck'WriteTHK'.$typeToCheck.$compiler.$OSused
+if [ $action == copy ] 
+then
+echo 'Copy result files'
+cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
+cp ./$fileToCheck'WriteTHK'.$typeToCheck.out ./OUTPUTS/$fileToCheck'WriteTHK'.$typeToCheck.$compiler.$OSused
+fi
 diff -s ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused >> testing.log
 diff -s ./$fileToCheck'WriteTHK'.$typeToCheck.out ./OUTPUTS/$fileToCheck'WriteTHK'.$typeToCheck.$compiler.$OSused >> testing.log
 rm ./$fileToCheck'WriteTHK'.$typeToCheck.out
@@ -142,8 +160,12 @@ export preproFlag
 
 $divaDir/compileAndLinkFile $fileToCheck >> testing.log
 ./$fileToCheck.a >> $fileToCheck.$typeToCheck.$compiler.$OSused
-#cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
-#cp ./$fileToCheck'WriteTHK'.$typeToCheck.out ./OUTPUTS/$fileToCheck'WriteTHK'.$typeToCheck.$compiler.$OSused
+if [ $action == copy ] 
+then
+echo 'Copy result files'
+cp ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused
+cp ./$fileToCheck'WriteTHK'.$typeToCheck.out ./OUTPUTS/$fileToCheck'WriteTHK'.$typeToCheck.$compiler.$OSused
+fi
 diff -s ./$fileToCheck.$typeToCheck.$compiler.$OSused ./OUTPUTS/$fileToCheck.$typeToCheck.$compiler.$OSused >> testing.log
 diff -s ./$fileToCheck'WriteTHK'.$typeToCheck.out ./OUTPUTS/$fileToCheck'WriteTHK'.$typeToCheck.$compiler.$OSused >> testing.log
 rm ./$fileToCheck'WriteTHK'.$typeToCheck.out

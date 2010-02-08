@@ -1,3 +1,0 @@
-f95 -O *.f95 -o diva.a
-cp diva.a ../../../bin/SGI
-rm *.o
