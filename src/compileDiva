@@ -1,0 +1,167 @@
+#!/bin/bash
+
+OSused='uname -s'
+
+if [ "OSused" == Linux ]
+then
+cp ./Fortran/Bin/Gmsh/gmshLinux ./Fortran/Bin/gmsh
+else
+cp ./Fortran/Bin/Gmsh/gmshWindows.exe ./Fortran/Bin/gmsh
+fi
+
+rm -f ./error.log
+check=0
+
+cd ./Fortran
+
+if [ "$1" == g95 ]
+then
+source ./divaCompileG95
+
+if [ -f ./error.log ]
+then
+cp ./error.log ../
+else
+source ./makeDivaG95
+fi
+
+if [ -f ./error.log ]
+then
+cp ./error.log ../
+fi
+
+check=1
+fi
+
+if [ "$1" == g95Mod ]
+then
+source ./divaCompileG95
+
+if [ -f ./error.log ]
+then
+cp ./error.log ../
+fi
+
+check=1
+fi
+
+if [ "$1" == g95Prog ]
+then
+source ./makeDivaG95
+
+if [ -f ./error.log ]
+then
+cp ./error.log ../
+fi
+
+check=1
+fi
+
+if [ "$1" == intel ]
+then
+source ./divaCompileIntelFortran
+
+if [ -f ./error.log ]
+then
+cp ./error.log ../
+else
+source ./makeDivaIntelFortran
+fi
+
+if [ -f ./error.log ]
+then
+cp ./error.log ../
+fi
+
+check=1
+fi
+
+if [ "$1" == intelMod ]
+then
+source ./divaCompileIntelFortran
+
+if [ -f ./error.log ]
+then
+cp ./error.log ../
+fi
+
+check=1
+fi
+
+if [ "$1" == intelProg ]
+then
+source ./makeDivaIntelFortran
+
+if [ -f ./error.log ]
+then
+cp ./error.log ../
+fi
+
+check=1
+fi
+
+if [ "$1" == gfortran ]
+then
+source ./divaCompileGFortran
+
+if [ -f ./error.log ]
+then
+cp ./error.log ../
+else
+source ./makeDivaGFortran
+fi
+
+if [ -f ./error.log ]
+then
+cp ./error.log ../
+fi
+
+check=1
+fi
+
+if [ "$1" == gfortranMod ]
+then
+source ./divaCompileGFortran
+
+if [ -f ./error.log ]
+then
+cp ./error.log ../
+fi
+
+check=1
+fi
+
+if [ "$1" == gfortranProg ]
+then
+source ./makeDivaGFortran
+
+if [ -f ./error.log ]
+then
+cp ./error.log ../
+fi
+
+check=1
+fi
+
+if [ $check == 0 ]
+then
+
+source ./divaCompileGFortran
+
+if [ -f ./error.log ]
+then
+cp ./error.log ../
+else
+source ./makeDivaGFortran
+fi
+
+
+if [ -f ./error.log ]
+then
+cp ./error.log ../
+fi
+
+fi
+
+cd ../
+
