@@ -29,7 +29,33 @@ rm -f $divaModuleLib/$libName
 
 # Compilation of : moduleCalc
 # =============================
-$divaDir/compileFile moduleCalc.f95 moduleCalc
+#$divaDir/compileFile moduleCalc.f95 moduleCalc
+
+$divaDir/compileFile allody.f allody
+$divaDir/compileFile bcondi.f bcondi
+$divaDir/compileFile bilinin.f bilinin
+$divaDir/compileFile constr.f constr
+$divaDir/compileFile coord.f coord
+$divaDir/compileFile covar.f covar
+$divaDir/compileFile datapr.f datapr
+$divaDir/compileFile dataqc.f dataqc
+$divaDir/compileFile esterr.f esterr
+$divaDir/compileFile findca.f findca
+$divaDir/compileFile gcvfac.f gcvfac
+$divaDir/compileFile mathpr.f mathpr
+$divaDir/compileFile meshgn.f meshgn
+$divaDir/compileFile optimi.f optimi
+$divaDir/compileFile repeltest.f repeltest
+$divaDir/compileFile shapef.f shapef
+$divaDir/compileFile solver.f solver
+$divaDir/compileFile stores.f stores
+$divaDir/compileFile topolo.f topolo
+$divaDir/compileFile ureadc.f ureadc
+$divaDir/compileFile utilit.f utilit
+$divaDir/compileFile uur.f uur
+$divaDir/compileFile uwrit2.f uwrit2
+$divaDir/compileFile varl.f varl
+$divaDir/compileFile vtools.f vtools
 
 echo ' '
 

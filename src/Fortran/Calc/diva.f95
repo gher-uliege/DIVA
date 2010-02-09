@@ -1,129 +1,129 @@
-!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-!C                                                                      C
-!C           Data Interpolating Variational Analysis  (4.1)             C
-!C           ========================================                   C
-!C                                                                      C
-!C                     GHER - UNIVERSITY OF LIEGE                       C
-!C                                                                      C
-!C                        ver 4.1     March 2007                        C
-!C                        ver 4.1.2   November 2007                     C
-!C                        ver 4.2     Januaray 2008                     C
-!C     Jean-Marie Beckers, Damien Sirjacobs, Mohamed Ouberdous          C
-!C     Charles Troupin                                                  C
-!C                                                                      C
-!C                                                                      C
-!C   This code is designed to solve 2-D differential or variational     C
-!C   problems of elliptic type, using the finite element method.        C
-!C                                                                      C
-!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-!
-!C**********************************************************************
-!C
-!C                   List of data files and modules:
-!C                   -------------------------------
-!C
-!C   - General file:                          *FORT.10: module driver
-!C   --------------------------------------------------------------------
-!C   - MATHPR module
-!C   (description of the mathematical problem)
-!C                                            *FORT.12: parameters
-!C   --------------------------------------------------------------------
-!C   - TOPOLO module
-!C   (topological data input)
-!C                                            *FORT.11: F.E. topology
-!C   --------------------------------------------------------------------
-!C   - MESHGN module
-!C   (generation of a regular f.e. mesh)
-!C                                            *FORT.14: topology matrix
-!C   --------------------------------------------------------------------
-!C   - DATAPR module
-!C   (data to be fitted by r.m.s. approximation)
-!C                                            *FORT.20: data to be fitted
-!C                                            *FORT.22: regression param.
-!C   --------------------------------------------------------------------
-!C   - BCONDI module
-!C   (boundary conditions)
-!C                                            *FORT.30: bound. conditions
-!C   --------------------------------------------------------------------
-!C   - VARSSK
-!C   (sources and sinks variable in space)
-!C                                            *FORT.40: sources distrib.
-!C   --------------------------------------------------------------------
-!C   - CONSTR
-!C   (additional constraint)
-!C                                            *FORT.50: constraint descr.
-!C                                                 (nodal properties)
-!C   --------------------------------------------------------------------
-!C   - SOLVER
-!C   (resolution of linear system)            *FORT.60: elementary stifness
-!C                                               (pseudo-topology)
-!C   --------------------------------------------------------------------
-!C   - STORES
-!C   (results storage)           *FORT.13: xori,yori,dx,dy
-!C                               *FORT.22: regression parameters
-!C                               *FORT.79: x,y (sparse points for sol.)
-!C                               *FORT.80: x,y,iel,isub (gridded)
-!C                               *FORT.81: nodes, ddl, sol
-!C                               *FORT.82: field estimate at x,y (sparse)
-!C                               *FORT.83: gridded field estimate (ascii)
-!C                               *FORT.84: gridded field estimate (standard bimg)
-!C
-!C   --------------------------------------------------------------------
-!C   - ESTERR
-!C   (error estimation)
-!C                               *FORT.15: variance of background field
-!C                               *FORT.85: error estimate at x,y (sparse)
-!C                               *FORT.86: gridded error estimate (ascii)
-!C                               *FORT.87: gridded error estimate (standard bimg)
-!C   --------------------------------------------------------------------
-!C   - COORD
-!C   (coord change)            works on data read in
-!C                               *FORT.20: input data
-!C                               *FORT.11: topology
-!C
-!C   --------------------------------------------------------------------
-!C   - GCVFAC
-!C   (Generalized Cross Validation
-!C                             Estimates the analysis error
-!C                             (same grid as the analysis)
-!C
-!C   --------------------------------------------------------------------
-!C   - DATAQC
-!C   (data quality check)
-!C                             Estimates of expected
-!C                             data-analysis differences
-!C   - COVAR
-!C   (Diva covariance calculation)
-!C                             Calculation of Diva kernel
-!C                             for subsequent error fields
-!C
-!C**********************************************************************
-!C
-!C                       List of temporary files
-!C                       ------------------------
-!C
-!C   - when ITYP=2 :                          *FORT.32: condensation vct
-!C
-!C**********************************************************************
-!C                      Variable names nomenclature
-!C                      ---------------------------
-!C
-!C     - T....   : table of real variables
-!C     - K....   : table of integer variables
-!C     - N....   : integer, number of smth.
-!C     - I....   : integer, index in a sequence
-!C
-!C     Variables type : implicit real*4 or integer*4
-!C                      (unless otherwise stated)
-!C
-!C***********************************************************************
-!
-!C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-!C
-!C   SUBROUTINE LIST:
-!C     -  (MAIN PROGRAM)
-!C
-!C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+C!RefCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+C!RefC                                                                      C
+C!RefC           Data Interpolating Variational Analysis  (4.1)             C
+C!RefC           ========================================                   C
+C!RefC                                                                      C
+C!RefC                     GHER - UNIVERSITY OF LIEGE                       C
+C!RefC                                                                      C
+C!RefC                        ver 4.1     March 2007                        C
+C!RefC                        ver 4.1.2   November 2007                     C
+C!RefC                        ver 4.2     Januaray 2008                     C
+C!RefC     Jean-Marie Beckers, Damien Sirjacobs, Mohamed Ouberdous          C
+C!RefC     Charles Troupin                                                  C
+C!RefC                                                                      C
+C!RefC                                                                      C
+C!RefC   This code is designed to solve 2-D differential or variational     C
+C!RefC   problems of elliptic type, using the finite element method.        C
+C!RefC                                                                      C
+C!RefCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+C!Ref
+C!RefC**********************************************************************
+C!RefC
+C!RefC                   List of data files and modules:
+C!RefC                   -------------------------------
+C!RefC
+C!RefC   - General file:                          *FORT.10: module driver
+C!RefC   --------------------------------------------------------------------
+C!RefC   - MATHPR module
+C!RefC   (description of the mathematical problem)
+C!RefC                                            *FORT.12: parameters
+C!RefC   --------------------------------------------------------------------
+C!RefC   - TOPOLO module
+C!RefC   (topological data input)
+C!RefC                                            *FORT.11: F.E. topology
+C!RefC   --------------------------------------------------------------------
+C!RefC   - MESHGN module
+C!RefC   (generation of a regular f.e. mesh)
+C!RefC                                            *FORT.14: topology matrix
+C!RefC   --------------------------------------------------------------------
+C!RefC   - DATAPR module
+C!RefC   (data to be fitted by r.m.s. approximation)
+C!RefC                                            *FORT.20: data to be fitted
+C!RefC                                            *FORT.22: regression param.
+C!RefC   --------------------------------------------------------------------
+C!RefC   - BCONDI module
+C!RefC   (boundary conditions)
+C!RefC                                            *FORT.30: bound. conditions
+C!RefC   --------------------------------------------------------------------
+C!RefC   - VARSSK
+C!RefC   (sources and sinks variable in space)
+C!RefC                                            *FORT.40: sources distrib.
+C!RefC   --------------------------------------------------------------------
+C!RefC   - CONSTR
+C!RefC   (additional constraint)
+C!RefC                                            *FORT.50: constraint descr.
+C!RefC                                                 (nodal properties)
+C!RefC   --------------------------------------------------------------------
+C!RefC   - SOLVER
+C!RefC   (resolution of linear system)            *FORT.60: elementary stifness
+C!RefC                                               (pseudo-topology)
+C!RefC   --------------------------------------------------------------------
+C!RefC   - STORES
+C!RefC   (results storage)           *FORT.13: xori,yori,dx,dy
+C!RefC                               *FORT.22: regression parameters
+C!RefC                               *FORT.79: x,y (sparse points for sol.)
+C!RefC                               *FORT.80: x,y,iel,isub (gridded)
+C!RefC                               *FORT.81: nodes, ddl, sol
+C!RefC                               *FORT.82: field estimate at x,y (sparse)
+C!RefC                               *FORT.83: gridded field estimate (ascii)
+C!RefC                               *FORT.84: gridded field estimate (standard bimg)
+C!RefC
+C!RefC   --------------------------------------------------------------------
+C!RefC   - ESTERR
+C!RefC   (error estimation)
+C!RefC                               *FORT.15: variance of background field
+C!RefC                               *FORT.85: error estimate at x,y (sparse)
+C!RefC                               *FORT.86: gridded error estimate (ascii)
+C!RefC                               *FORT.87: gridded error estimate (standard bimg)
+C!RefC   --------------------------------------------------------------------
+C!RefC   - COORD
+C!RefC   (coord change)            works on data read in
+C!RefC                               *FORT.20: input data
+C!RefC                               *FORT.11: topology
+C!RefC
+C!RefC   --------------------------------------------------------------------
+C!RefC   - GCVFAC
+C!RefC   (Generalized Cross Validation
+C!RefC                             Estimates the analysis error
+C!RefC                             (same grid as the analysis)
+C!RefC
+C!RefC   --------------------------------------------------------------------
+C!RefC   - DATAQC
+C!RefC   (data quality check)
+C!RefC                             Estimates of expected
+C!RefC                             data-analysis differences
+C!RefC   - COVAR
+C!RefC   (Diva covariance calculation)
+C!RefC                             Calculation of Diva kernel
+C!RefC                             for subsequent error fields
+C!RefC
+C!RefC**********************************************************************
+C!RefC
+C!RefC                       List of temporary files
+C!RefC                       ------------------------
+C!RefC
+C!RefC   - when ITYP=2 :                          *FORT.32: condensation vct
+C!RefC
+C!RefC**********************************************************************
+C!RefC                      Variable names nomenclature
+C!RefC                      ---------------------------
+C!RefC
+C!RefC     - T....   : table of real variables
+C!RefC     - K....   : table of integer variables
+C!RefC     - N....   : integer, number of smth.
+C!RefC     - I....   : integer, index in a sequence
+C!RefC
+C!RefC     Variables type : implicit real*4 or integer*4
+C!RefC                      (unless otherwise stated)
+C!RefC
+C!RefC***********************************************************************
+C!Ref
+C!RefC%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+C!RefC
+C!RefC   SUBROUTINE LIST:
+C!RefC     -  (MAIN PROGRAM)
+C!RefC
+C!RefC%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
       include'../Module/Calc/divapre.h'
       include'../Module/Calc/divainc.h'
@@ -131,17 +131,17 @@
       character*6 modul
 
       RPI=2*asin(1.D0)
-!c      write(6,*) 'Pi',RPI
+C!Refc      write(6,*) 'Pi',RPI
       IJMB=0
-!C  DIMENSION OF STORAGE VECTORS (see include file)
+C!RefC  DIMENSION OF STORAGE VECTORS (see include file)
       iprc=4
       iprc=8
 
-!C  By DEFAULT : NO COORDINATE CHANGE REQUESTED
+C!RefC  By DEFAULT : NO COORDINATE CHANGE REQUESTED
       icoordchange=0
       itcs=0
 
-!C  INPUT/OUTPUT FILES : OPEN statement
+C!RefC  INPUT/OUTPUT FILES : OPEN statement
 
       open(unit=10,file='fort.10')
       open(unit=11,file='fort.11')
@@ -166,9 +166,9 @@
 
       write(6,920)
  920  format(72('&'),/,20x,'D.I.V.A. - 4.2.2 - Execution track ...',/,72('&'),/)
-!C
-!C  INPUT OF MODULES (ipr is an indicator of the amount of data
-!C                    to be printed)
+C!RefC
+C!RefC  INPUT OF MODULES (ipr is an indicator of the amount of data
+C!RefC                    to be printed)
 
  810  format(a6,i2)
  820  format(/,10x,31('$'),/,10x,'CALL TO MATHPR MODULE: IPR = ',I2,/,10x,31('$'),/)
@@ -191,13 +191,13 @@
       NINTDIVA=II
       NREADIVA=JJ
  1010 continue
-!C#ifdef DIVADYNAMIC
-!C      write(6,*) 'Dynamic memory allocation'
-!C      write(6,*) 'Integer',NINTDIVA
-!C      write(6,*) 'Real',NREADIVA
-!C     allocate S(NREADIVA)
-!C     allocate L(NINTDIVA)
-!C#endif
+C!RefC#ifdef DIVADYNAMIC
+C!RefC      write(6,*) 'Dynamic memory allocation'
+C!RefC      write(6,*) 'Integer',NINTDIVA
+C!RefC      write(6,*) 'Real',NREADIVA
+C!RefC     allocate S(NREADIVA)
+C!RefC     allocate L(NINTDIVA)
+C!RefC#endif
  10   read(10,810) modul,ipr
       if(modul.eq.'mathpr') then
          write(6,820) ipr
@@ -266,7 +266,7 @@
       endif
       
       if(modul.eq.'stopex') goto 999
-      write(6,*) '!!!! Undefined module: execution stopped !!!!'
+      write(6,*) 'C!RefC!RefC!RefC!Ref Undefined module: execution stopped C!RefC!RefC!RefC!Ref'
       stop
  999  write(6,*)' MAXIMUM NUMBER OF INTEGER USED: ',IENMAX
       write(6,*)' MAXIMUM NUMBER OF REAL    USED: ',IREMAX
