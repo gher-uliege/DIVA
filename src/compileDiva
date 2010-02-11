@@ -7,9 +7,9 @@ OSused='uname -s'
 
 if [ "OSused" == Linux ]
 then
-cp ./Fortran/Bin/Gmsh/gmshLinux ./Fortran/Bin/gmsh
+cp ./Fortran/Bin/GmshDir/gmshLinux ./Fortran/Bin/gmsh
 else
-cp ./Fortran/Bin/Gmsh/gmshWindows.exe ./Fortran/Bin/gmsh
+cp ./Fortran/Bin/GmshDir/gmshWindows.exe ./Fortran/Bin/gmsh
 fi
 
 # Check if testing procedure after compilation is required
