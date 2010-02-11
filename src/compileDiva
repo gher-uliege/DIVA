@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Check OS for gmsh
+# =================
+
 OSused='uname -s'
 
 if [ "OSused" == Linux ]
@@ -9,11 +12,31 @@ else
 cp ./Fortran/Bin/Gmsh/gmshWindows.exe ./Fortran/Bin/gmsh
 fi
 
+# Check if testing procedure after compilation is required
+# ========================================================
+testProcedure=0
+if [ "$2" == withTest ]
+then
+testProcedure=1
+fi
+
+# Starting compilation
+# ====================
 rm -f ./error.log
 check=0
 
 cd ./Fortran
+rm -f ./Fortran/Module/lib/*.a
+rm -f ./Fortran/Module/INCLUDE/G95/*.mod
+rm -f ./Fortran/Module/INCLUDE/GFORTRAN/*.mod
+rm -f ./Fortran/Module/INCLUDE/INTEL/*.mod
 
+chmod 777 compileFile
+
+# Compilation if g95
+# ==================
+#   Compilation modules + compilation programs + testing if needed
+#   --------------------------------------------------------------
 if [ "$1" == g95 ]
 then
 source ./divaCompileG95
@@ -21,18 +44,41 @@ source ./divaCompileG95
 if [ -f ./error.log ]
 then
 cp ./error.log ../
-else
-source ./makeDivaG95
 fi
+
+source ./makeDivaG95
+
+if [ -f ./error.log ]
+then
+cat ./error.log >> ../error.log
+fi
+
+if [ $testProcedure == 1 ]
+then
+rm -f ./error.log
+./testDivaModuleG95
 
 if [ -f ./error.log ]
 then
 cp ./error.log ../
 fi
 
+cp ./testing.log ../
+./testDivaProgramsG95
+if [ -f ./error.log ]
+then
+cat ./error.log >> ../error.log
+fi
+
+cat ./testing.log >> ../testing.log
+
+fi
+
 check=1
 fi
 
+#   Compilation modules
+#   -------------------
 if [ "$1" == g95Mod ]
 then
 source ./divaCompileG95
@@ -45,38 +91,88 @@ fi
 check=1
 fi
 
+#   Compilation programs + testing if needed
+#   ----------------------------------------
 if [ "$1" == g95Prog ]
 then
 source ./makeDivaG95
 
 if [ -f ./error.log ]
 then
+cp ./error.log >> ../
+fi
+
+if [ $testProcedure == 1 ]
+then
+rm -f ./error.log
+./testDivaModuleG95
+
+if [ -f ./error.log ]
+then
 cp ./error.log ../
+fi
+
+cp ./testing.log ../
+./testDivaProgramsG95
+if [ -f ./error.log ]
+then
+cat ./error.log >> ../error.log
+fi
+
+cat ./testing.log >> ../testing.log
+
 fi
 
 check=1
 fi
 
-if [ "$1" == intel ]
+# Compilation if ifort
+# ====================
+#   Compilation modules + compilation programs + testing if needed
+#   --------------------------------------------------------------
+if [ "$1" == ifort ]
 then
 source ./divaCompileIntelFortran
 
 if [ -f ./error.log ]
 then
 cp ./error.log ../
-else
-source ./makeDivaIntelFortran
 fi
+
+source ./makeDivaIntelFortran
+
+if [ -f ./error.log ]
+then
+cat ./error.log >> ../error.log
+fi
+
+if [ $testProcedure == 1 ]
+then
+rm -f ./error.log
+./testDivaModuleIntelFortran
 
 if [ -f ./error.log ]
 then
 cp ./error.log ../
 fi
 
+cp ./testing.log ../
+./testDivaProgramsIntelFortran
+if [ -f ./error.log ]
+then
+cat ./error.log >> ../error.log
+fi
+
+cat ./testing.log >> ../testing.log
+
+fi
+
 check=1
 fi
 
-if [ "$1" == intelMod ]
+#   Compilation modules
+#   -------------------
+if [ "$1" == ifortMod ]
 then
 source ./divaCompileIntelFortran
 
@@ -88,38 +184,89 @@ fi
 check=1
 fi
 
-if [ "$1" == intelProg ]
+#   Compilation programs + testing if needed
+#   ----------------------------------------
+if [ "$1" == ifortProg ]
 then
 source ./makeDivaIntelFortran
 
 if [ -f ./error.log ]
 then
+cp ./error.log >> ../
+fi
+
+if [ $testProcedure == 1 ]
+then
+rm -f ./error.log
+./testDivaModuleIntelFortran
+
+if [ -f ./error.log ]
+then
 cp ./error.log ../
+fi
+
+cp ./testing.log ../
+./testDivaProgramsIntelFortran
+if [ -f ./error.log ]
+then
+cat ./error.log >> ../error.log
+fi
+
+cat ./testing.log >> ../testing.log
+
 fi
 
 check=1
 fi
 
-if [ "$1" == gfortran ]
+
+# Compilation if gfortran
+# =======================
+#   Compilation modules + compilation programs + testing if needed
+#   --------------------------------------------------------------
+if [ "$1" == gfortran -o $check == 0 ]
 then
 source ./divaCompileGFortran
 
 if [ -f ./error.log ]
 then
 cp ./error.log ../
-else
-source ./makeDivaGFortran
 fi
+
+source ./makeDivaGFortran
+
+if [ -f ./error.log ]
+then
+cat ./error.log >> ../error.log
+fi
+
+if [ $testProcedure == 1 ]
+then
+rm -f ./error.log
+./testDivaModuleGFortran
 
 if [ -f ./error.log ]
 then
 cp ./error.log ../
 fi
 
+cp ./testing.log ../
+./testDivaProgramsGFortran
+if [ -f ./error.log ]
+then
+cat ./error.log >> ../error.log
+fi
+
+cat ./testing.log >> ../testing.log
+
+fi
+
 check=1
 fi
 
-if [ "$1" == gfortranMod ]
+#   Compilation modules
+#   -------------------
+if [ "$1" == gfortranMod -o $check == 0 ]
 then
 source ./divaCompileGFortran
 
@@ -131,36 +278,39 @@ fi
 check=1
 fi
 
-if [ "$1" == gfortranProg ]
+#   Compilation programs + testing if needed
+#   ----------------------------------------
+if [ "$1" == gfortranProg -o $check == 0 ]
 then
 source ./makeDivaGFortran
 
 if [ -f ./error.log ]
 then
+cp ./error.log >> ../
+fi
+
+if [ $testProcedure == 1 ]
+then
+rm -f ./error.log
+./testDivaModuleGFortran
+
+if [ -f ./error.log ]
+then
 cp ./error.log ../
+fi
+
+cp ./testing.log ../
+./testDivaProgramsGFortran
+if [ -f ./error.log ]
+then
+cat ./error.log >> ../error.log
+fi
+
+cat ./testing.log >> ../testing.log
+
 fi
 
 check=1
-fi
-
-if [ $check == 0 ]
-then
-
-source ./divaCompileGFortran
-
-if [ -f ./error.log ]
-then
-cp ./error.log ../
-else
-source ./makeDivaGFortran
-fi
-
-
-if [ -f ./error.log ]
-then
-cp ./error.log ../
-fi
-
 fi
 
 cd ../

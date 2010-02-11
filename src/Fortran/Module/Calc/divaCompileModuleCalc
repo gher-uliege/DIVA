@@ -31,35 +31,36 @@ rm -f $divaModuleLib/$libName
 # =============================
 #$divaDir/compileFile moduleCalc.f95 moduleCalc
 
-$divaDir/compileFile allody.f allody
-$divaDir/compileFile bcondi.f bcondi
-$divaDir/compileFile bilinin.f bilinin
-$divaDir/compileFile constr.f constr
-$divaDir/compileFile coord.f coord
-$divaDir/compileFile covar.f covar
-$divaDir/compileFile datapr.f datapr
-$divaDir/compileFile dataqc.f dataqc
-$divaDir/compileFile esterr.f esterr
-$divaDir/compileFile findca.f findca
-$divaDir/compileFile gcvfac.f gcvfac
-$divaDir/compileFile mathpr.f mathpr
-$divaDir/compileFile meshgn.f meshgn
-$divaDir/compileFile optimi.f optimi
-$divaDir/compileFile repeltest.f repeltest
-$divaDir/compileFile shapef.f shapef
-$divaDir/compileFile solver.f solver
-$divaDir/compileFile stores.f stores
-$divaDir/compileFile topolo.f topolo
-$divaDir/compileFile ureadc.f ureadc
-$divaDir/compileFile utilit.f utilit
-$divaDir/compileFile uur.f uur
-$divaDir/compileFile uwrit2.f uwrit2
-$divaDir/compileFile varl.f varl
-$divaDir/compileFile vtools.f vtools
+$divaDir/compileFile allody.f allody fSTD
+$divaDir/compileFile bcondi.f bcondi fSTD
+$divaDir/compileFile bilinin.f bilinin fSTD
+$divaDir/compileFile constr.f constr fSTD
+$divaDir/compileFile coord.f coord fSTD
+$divaDir/compileFile covar.f covar fSTD
+$divaDir/compileFile datapr.f datapr fSTD
+$divaDir/compileFile dataqc.f dataqc fSTD
+$divaDir/compileFile esterr.f esterr fSTD
+$divaDir/compileFile findca.f findca fSTD
+$divaDir/compileFile gcvfac.f gcvfac fSTD
+$divaDir/compileFile mathpr.f mathpr fSTD
+$divaDir/compileFile meshgn.f meshgn fSTD
+$divaDir/compileFile optimi.f optimi fSTD
+$divaDir/compileFile repeltest.f repeltest fSTD
+$divaDir/compileFile shapef.f shapef fSTD
+$divaDir/compileFile solver.f solver fSTD
+$divaDir/compileFile stores.f stores fSTD
+$divaDir/compileFile topolo.f topolo fSTD
+$divaDir/compileFile ureadc.f ureadc fSTD
+$divaDir/compileFile utilit.f utilit fSTD
+$divaDir/compileFile uur.f uur fSTD
+$divaDir/compileFile uwrit2.f uwrit2 fSTD
+$divaDir/compileFile varl.f varl fSTD
+$divaDir/compileFile vtools.f vtools fSTD
+
 
 echo ' '
 
-mv *.mod $divaModuleLib
+#mv *.mod $divaModuleLib
 
 cd $baseDir
 

@@ -13,11 +13,17 @@ echo 'Compiling ' $2
 
 rm -f $2.o
 
+extension=f90
+if [ "$3" = fSTD ]
+then
+extension=f
+fi
+
 if [ "$compiler" = ifort ] 
 then
-cp $1 $1.f90
-$compiler $flag -c $preprocessor $preprocessorFlag $library $libraryMod $1.f90 -o $2.o 
-rm $1.f90
+cp $1 $1.$extension
+$compiler $flag -c $preprocessor $preprocessorFlag $library $libraryMod $1.$extension -o $2.o 
+rm $1.$extension
 xiar -csr $divaDir/Module/lib/$libName $2.o
 else
 $compiler $flag -c $preprocessor $preprocessorFlag $library $libraryMod $1 -o $2.o
