@@ -117,7 +117,7 @@ let NINT=$NINT+2*$NDDLE
 let NTERM=$NDDLT*$NDDLT
 # instead of 90, square root of $NDDLT
 let NDDLTB=$NDDLT
-echo Square root of $NDDLTB
+#echo Square root of $NDDLTB
 #sqrt() { local x=$1 s=$1 os=0;while ((s!=os));\
 #do os=$s;s=$(((s+x/s)/2)); done;echo $s; }
 ##sqrt() { local x=$1 s=$1 os=0; \
@@ -126,7 +126,7 @@ echo Square root of $NDDLTB
 ##xx=$(sqrt $NDDLTB)
 
 xx=$(echo $NDDLTB | awk '{print int(sqrt($1))}')
-echo root is $xx $xxb
+#echo root is $xx $xxb
 let NTERM=$NDDLT*$xx
 let NTERM=$NTERM+$NTERM/2
 let NREA=$NREA+$nelt
@@ -364,7 +364,16 @@ fi
 
 #creation of file fort.20
 nbccol=$(head -n 1 ./fort.44 | wc -w)
-echo $lc $snr $nbccol $xi | ../../bin/calcmu.a >> diva.log
+
+
+#echo $lc $snr $nbccol $xi | ../../bin/calcmu.a >> diva.log
+
+# New version
+multconst=$(echo $lc $snr $xi | ../../bin/calcmuc.a)
+multvar=$(echo $multconst | awk '{print 1*$1}')
+#echo multiply weight $multvar $multconst so what
+
+awk -v multconst=$multvar '{ if ($4 > "") {$4=$4*multconst} else {$4=multconst}; print $1,$2,$3,$4}' fort.44 > fort.20
 
 if [ $? -ne 0 ];then
 echo ' '
