@@ -1,0 +1,90 @@
+ The size of the data base is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) is 
+ object type is node
+    index  =            1
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =   0.50000000000000000     
+  
+ value(           2 ) is 
+ object type is node
+    index  =            2
+    xValue =    1.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =   0.50000000000000000     
+  
+ value(           3 ) is 
+ object type is node
+    index  =            3
+    xValue =   0.50000000000000000     
+    yValue =    1.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =   0.50000000000000000     
+  
+ The size of the data base is :            3
+    The allocated memory is :            8
+    The increase allocation memory is :            5
+    Allocation status of the data base :  T
+    First positions are :            1
+    Last positions are  :            3
+ value(           1 ) is 
+ object type is line
+    index  =            1
+ object type is node
+    index  =            1
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =   0.50000000000000000     
+  
+ object type is node
+    index  =            2
+    xValue =    1.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =   0.50000000000000000     
+  
+  
+ value(           2 ) is 
+ object type is line
+    index  =            2
+ object type is node
+    index  =            2
+    xValue =    1.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =   0.50000000000000000     
+  
+ object type is node
+    index  =            3
+    xValue =   0.50000000000000000     
+    yValue =    1.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =   0.50000000000000000     
+  
+  
+ value(           3 ) is 
+ object type is line
+    index  =            3
+ object type is node
+    index  =            3
+    xValue =   0.50000000000000000     
+    yValue =    1.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =   0.50000000000000000     
+  
+ object type is node
+    index  =            1
+    xValue =    0.0000000000000000     
+    yValue =    0.0000000000000000     
+    zValue =    0.0000000000000000     
+    characteristicLength =   0.50000000000000000     
+  
+  
