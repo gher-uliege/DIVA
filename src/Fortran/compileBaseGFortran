@@ -3,9 +3,9 @@
 # Definition of the compiler and options
 # ======================================
 compiler=gfortran
-flag='-O0 '
+#flag='-O0 '
 #flag='-O3 -pedantic -ffree-line-length-none -fmax-identifier-length=63 '
-#flag='-O3 -Wall -fimplicit-none -pedantic -fbounds-check -ffree-line-length-none -fmax-identifier-length=63 '
+flag='-O3 -Wall -fimplicit-none -pedantic -fbounds-check -ffree-line-length-none -fmax-identifier-length=63 -fopenmp'
 
 export compiler
 export flag

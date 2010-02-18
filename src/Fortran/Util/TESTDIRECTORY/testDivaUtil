@@ -389,6 +389,37 @@ rm ./fort.11
 rm ./$fileToCheck.*
 echo ' ' >> testing.log
 
+# Chech program : lincom.a
+# ------------------------
+fileToCheck=lincom
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+cp ./INPUTS/fort.20.$fileToCheck.$compiler ./fort.20
+cp ./INPUTS/fort.10.$fileToCheck.$compiler ./fort.10
+cp ./INPUTS/fort.11.$fileToCheck.$compiler ./fort.11
+./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.12 ./OUTPUTS/fort.12.$fileToCheck.$compiler
+cp ./fort.13 ./OUTPUTS/fort.12.$fileToCheck.$compiler
+fi
+ 
+diff -s ./fort.12 ./OUTPUTS/fort.12.$fileToCheck.$compiler >> testing.log
+diff -s ./fort.13 ./OUTPUTS/fort.13.$fileToCheck.$compiler >> testing.log
+rm ./fort.10
+rm ./fort.11
+rm ./fort.20
+rm ./fort.12
+rm ./fort.13
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+
 # Chech program : multiply.a
 # ---------------------------
 fileToCheck=multiply
@@ -408,6 +439,35 @@ cp ./$fileToCheck.log ./OUTPUTS/$fileToCheck.$compiler
 fi
 
 diff -s ./$fileToCheck.log ./OUTPUTS/$fileToCheck.$compiler >> testing.log
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : sumgrid.a
+# ---------------------------
+fileToCheck=sumgrid
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+exclusionValue=999.
+nbOfRow=5
+nbOfColumn=10
+cp ./INPUTS/fort.20.$fileToCheck.$compiler ./fort.20
+cp ./INPUTS/fort.21.$fileToCheck.$compiler ./fort.21
+echo $exclusionValue $nbOfRow $nbOfColumn | ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.22 ./OUTPUTS/fort.22.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.22 ./OUTPUTS/fort.22.$fileToCheck.$compiler >> testing.log
+rm ./fort.20
+rm ./fort.21
+rm ./fort.22 
 
 rm ./$fileToCheck.*
 echo ' ' >> testing.log
@@ -435,6 +495,36 @@ diff -s ./fort.22 ./OUTPUTS/fort.22.$fileToCheck.$compiler >> testing.log
 rm ./fort.20
 rm ./fort.21
 rm ./fort.22 
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : topoprep.a
+# ---------------------------
+fileToCheck=topoprep
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+cp ./INPUTS/fort.10.$fileToCheck.$compiler ./fort.10
+./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.11 ./OUTPUTS/fort.11.$fileToCheck.$compiler
+cp ./fort.20 ./OUTPUTS/fort.20.$fileToCheck.$compiler
+cp ./fort.30 ./OUTPUTS/fort.30.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.11 ./OUTPUTS/fort.11.$fileToCheck.$compiler >> testing.log
+diff -s ./fort.20 ./OUTPUTS/fort.20.$fileToCheck.$compiler >> testing.log
+diff -s ./fort.30 ./OUTPUTS/fort.30.$fileToCheck.$compiler >> testing.log
+rm ./fort.10
+rm ./fort.11
+rm ./fort.20
+rm ./fort.30
 
 rm ./$fileToCheck.*
 echo ' ' >> testing.log

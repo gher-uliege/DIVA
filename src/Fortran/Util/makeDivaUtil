@@ -1,5 +1,4 @@
 
-preproFlag=$preproFlag' -D=_BATCH_MODE_'
 preproFlag=$preproFlag' -DINTEGERType=INTEGER(KIND=4) -DREALType=REAL(KIND=8)'
 export preproFlag
 
@@ -10,6 +9,9 @@ rm -f $divaDir/Bin/$k.a
 $divaDir/compileAndLinkFile $k
 mv $k.a $divaDir/Bin
 done
+
+#$divaDir/compileAndLinkFile sumgrid
+#$divaDir/compileAndLinkFile createWorkingFile
 
 if [ $compiler == ifort ]
 then

@@ -160,7 +160,7 @@ MODULE moduleReadGHER
       IF ( icheckError == ione ) THEN
          GOTO 99
       END IF
-
+      
 
 !         compute information to read the file
 !         --  --  --  --  --  --  --  --  --  --

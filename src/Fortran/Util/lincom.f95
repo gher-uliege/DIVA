@@ -1,44 +1,159 @@
-!C
 PROGRAM lincom
-USE ioInterface
-        REAL(KIND=4) ::  U(5000000)
-        REAL(KIND=4) ::  V(5000000)
-        REAL(KIND=8) ::  W8(1)
 
+! Module
+! ======
+  USE moduleDIVA
+  USE moduleFile
+  USE ioInterface
+  USE array3DInterface
 
-        CALL UREADC(10,W8,U,VALEXU,IPR,IMAX,JMAX,KMAX,NW)
-        CALL UREADC(11,W8,V,VALEXW,IPR,IMAX,JMAX,KMAX,NW)
-        read(20,*) a1,b1
-        read(20,*) a2,b2
-        read(20,*) a3,b3
-        read(20,*) a4,b4
-        ipr=4
-        nw=imax*jmax
-!C        valexw = valexu
-        WRITE(6,*) ' VALEUR D EXCLUSION POUR B: ',VALEXU
-        WRITE(6,*) ' VALEUR D EXCLUSION POUR X: ',VALEXW
+! Declaration
+! ===========
+   INTEGER :: inputFileUnit3
+   REAL(KIND=4) :: exclusionValueFieldU, exclusionValueFieldV
+   REAL(KIND=4) :: coeffA1, coeffA2, coeffA3, coeffA4
+   REAL(KIND=4) :: coeffB1, coeffB2, coeffB3, coeffB4
 
-        call usum(u,v,valexu,imax,jmax,kmax,a1,b1,a2,b2,a3,b3,a4,b4)
-        CALL UWRITC(12,W8,U,VALEXU,IPR,IMAX,JMAX,KMAX,NW)
-        CALL UWRITC(13,W8,V,VALEXU,IPR,IMAX,JMAX,KMAX,NW)
+   Type(file) :: outputFile1, outputFile2 , inputFile1, inputFile2, inputFile3
+   TYPE(arrayReal4) :: fieldU, fieldV
 
+! ==================
+! ==================
+! == Main program ==
+! ==================
+! ==================
+
+!  Always start the DIVA context
+!  =============================
+   CALL createDIVAContext()
+
+!  Body
+!  ====
+!     1) Creation of array to store fieldU and fieldV
+!     -----------------------------------------------
+   CALL arrayCreate(fieldU)
+   CALL arrayCreate(fieldV)
+
+!     2) Creation of needed files
+!     ---------------------------
+   CALL createFile(inputFile1,'fort.10',formType=GHER_UNFORMATTED)
+   CALL createFile(inputFile2,'fort.11',formType=GHER_UNFORMATTED)
+   CALL createFile(inputFile3,'fort.20',formType=STD_FORMATTED)
+   CALL createFile(outputFile1,'fort.12',formType=GHER_UNFORMATTED)
+   CALL createFile(outputFile2,'fort.13',formType=GHER_UNFORMATTED)
+   
+!     3) Reading fieldU and fieldV
+!     ----------------------------   
+   CALL arrayRead(fieldU,inputFile1,exclusionValueFieldU)
+   CALL arrayRead(fieldV,inputFile2,exclusionValueFieldV)
+   
+   PRINT*, ' VALEUR D EXCLUSION POUR B: ',exclusionValueFieldU
+   PRINT*, ' VALEUR D EXCLUSION POUR X: ',exclusionValueFieldV
+
+!     4) Reading coefficients to modify fieldU and fieldV
+!     ---------------------------------------------------
+   CALL openFile(inputFile3)
+   inputFileUnit3 = getFileUnit(inputFile3)
+   
+   READ(inputFileUnit3,*) coeffA1, coeffB1
+   READ(inputFileUnit3,*) coeffA2, coeffB2
+   READ(inputFileUnit3,*) coeffA3, coeffB3
+   READ(inputFileUnit3,*) coeffA4, coeffB4
+   
+   CALL closeFile(inputFile3)
+
+!     5) Modification of fields
+!     -------------------------
+   CALL uSum(fieldU,fieldV,exclusionValueFieldU,coeffA1,coeffA2,coeffA3,coeffA4,coeffB1,coeffB2,coeffB3,coeffB4)
+
+!     6) Writing modified fields
+!     --------------------------
+   CALL arrayWrite(fieldU,outputFile1,exclusionValueFieldU)
+   CALL arrayWrite(fieldV,outputFile2,exclusionValueFieldV)
+      
+!  Always finalise the DIVA context
+!  ================================
+   CALL arrayDestroy(fieldU)      
+   CALL arrayDestroy(fieldV)      
+   CALL finaliseDIVAContext()
+
+! ============================================================
+! ============================================================
+! ============================================================
+! ===                                                      ===
+! ===                                                      ===
+! ===                  Program procedures                  ===
+! ===                                                      ===
+! ===                                                      ===
+! ============================================================
+! ============================================================
+! ============================================================
  CONTAINS
 
-!CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-        subroutine usum(u,v,valexu,imax,jmax,kmax,a1,b1,a2,b2,a3,b3,a4,b4)
-        REAL(KIND=4) ::  u(imax,jmax,kmax),v(imax,jmax,kmax)
-        do k=1,kmax
-         do j=1,jmax
-          do i=1,imax
-           if(u(i,j,k).ne.valexu) then
-           rr=u(i,j,k)+a1*v(i,j,k)+b1
-           tt=v(i,j,k)+a2*u(i,j,k)+b2
-           u(i,j,k)=rr*b3+a3
-           v(i,j,k)=tt*b4+a4
-           endif
-          enddo
-         enddo
-        enddo
-        return
-        end subroutine
-END PROGRAM
+! Procedure 1 : compute modified fields
+! -------------------------------------
+SUBROUTINE uSum(fieldU,fieldV,exclusionValueFieldU,coeffA1,coeffA2,coeffA3,coeffA4,coeffB1,coeffB2,coeffB3,coeffB4)
+
+!     Declaration
+!     - - - - - -
+      INTEGER :: i1, i2, i3, iMaxU, jMaxU, kMaxU, iMaxV, jMaxV, kMaxV
+      REAL(KIND=4), INTENT(IN) :: exclusionValueFieldU
+      REAL(KIND=4), INTENT(IN) :: coeffA1, coeffA2, coeffA3, coeffA4
+      REAL(KIND=4), INTENT(IN) :: coeffB1, coeffB2, coeffB3, coeffB4
+      TYPE(arrayReal4), INTENT(INOUT) :: fieldU, fieldV
+      REAL(KIND=4), DIMENSION(:,:,:), POINTER :: ptrFieldU, ptrFieldV
+      REAL(KIND=4), POINTER :: ptrFieldUValue, ptrFieldVValue
+      REAL(KIND=4) :: value1, value2
+
+!     Body
+!     - - -
+      ptrFieldU => arrayGetValues(fieldU)
+      ptrFieldV => arrayGetValues(fieldV)
+      
+      iMaxU = arrayGetSizeX(fieldU)
+      jMaxU = arrayGetSizeY(fieldU)
+      kMaxU = arrayGetSizeZ(fieldU)
+
+      iMaxV = arrayGetSizeX(fieldV)
+      jMaxV = arrayGetSizeY(fieldV)
+      kMaxV = arrayGetSizeZ(fieldV)
+      
+      IF ( iMaxV /= iMaxU ) THEN
+         STOP 'Error in matrix dimension : iMax1 /= iMax2'
+      ENDIF
+      IF ( jMaxV /= jMaxU ) THEN
+         STOP 'Error in matrix dimension : jMax1 /= jMax2'
+      ENDIF
+      IF ( kMaxV /= kMaxU ) THEN
+         STOP 'Error in matrix dimension : kMax1 /= kMax2'
+      ENDIF
+
+!$OMP PARALLEL DEFAULT(NONE) SHARED(ptrFieldU,ptrFieldV,iMaxU,jMaxU,kMaxU,exclusionValueFieldU,      &
+!$OMP                               coeffA1,coeffA2,coeffA3,coeffA4,coeffB1,coeffB2,coeffB3,coeffB4) & 
+!$OMP                        PRIVATE(i1,i2,i3,ptrFieldUValue,ptrFieldVValue,value1,value2)
+!$OMP DO
+
+      DO i3 = 1, kMaxU
+        DO i2 = 1, jMaxU
+          DO i1 = 1, iMaxU
+            ptrFieldUValue => ptrFieldU(i1,i2,i3)
+            IF ( ptrFieldUValue /= exclusionValueFieldU ) THEN
+               ptrFieldVValue => ptrFieldV(i1,i2,i3)
+               
+               value1 = ptrFieldUValue + coeffA1 * ptrFieldVValue + coeffB1
+               value2 = ptrFieldVValue + coeffA2 * ptrFieldUValue + coeffB2
+               
+               ptrFieldUValue = value1 * coeffB3 + coeffA3
+               ptrFieldVValue = value2 * coeffB4 + coeffA4
+            
+            ENDIF         
+          ENDDO
+        ENDDO
+      ENDDO 
+      
+!$OMP END DO
+!$OMP END PARALLEL      
+      
+END SUBROUTINE
+
+END PROGRAM lincom
