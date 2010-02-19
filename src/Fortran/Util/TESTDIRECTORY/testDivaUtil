@@ -342,6 +342,234 @@ rm ./fort.46
 rm ./$fileToCheck.*
 echo ' ' >> testing.log
 
+# Chech program : forgnuplotanalysis.a
+# ------------------------------------
+fileToCheck=forgnuplotanalysis
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+cp ./INPUTS/fort.19a.$fileToCheck.$compiler ./fort.19
+cp ./INPUTS/fort.20.$fileToCheck.$compiler ./fort.20
+cp ./INPUTS/fort.21.$fileToCheck.$compiler ./fort.21
+./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.40 ./OUTPUTS/fort.40a.$fileToCheck.$compiler
+cp ./fort.41 ./OUTPUTS/fort.41a.$fileToCheck.$compiler
+cp ./fort.47 ./OUTPUTS/fort.47a.$fileToCheck.$compiler
+cp ./fort.68 ./OUTPUTS/fort.68a.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.40 ./OUTPUTS/fort.40a.$fileToCheck.$compiler >> testing.log
+diff -s ./fort.41 ./OUTPUTS/fort.41a.$fileToCheck.$compiler >> testing.log
+diff -s ./fort.47 ./OUTPUTS/fort.47a.$fileToCheck.$compiler >> testing.log
+diff -s ./fort.68 ./OUTPUTS/fort.68a.$fileToCheck.$compiler >> testing.log
+
+rm ./fort.19
+rm ./fort.40
+rm ./fort.41
+rm ./fort.47
+rm ./fort.68
+
+cp ./INPUTS/fort.19b.$fileToCheck.$compiler ./fort.19
+./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.40 ./OUTPUTS/fort.40b.$fileToCheck.$compiler
+cp ./fort.41 ./OUTPUTS/fort.41b.$fileToCheck.$compiler
+cp ./fort.47 ./OUTPUTS/fort.47b.$fileToCheck.$compiler
+cp ./fort.68 ./OUTPUTS/fort.68b.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.40 ./OUTPUTS/fort.40b.$fileToCheck.$compiler >> testing.log
+diff -s ./fort.41 ./OUTPUTS/fort.41b.$fileToCheck.$compiler >> testing.log
+diff -s ./fort.47 ./OUTPUTS/fort.47b.$fileToCheck.$compiler >> testing.log
+diff -s ./fort.68 ./OUTPUTS/fort.68b.$fileToCheck.$compiler >> testing.log
+
+rm ./fort.19
+rm ./fort.20
+rm ./fort.21
+rm ./fort.40
+rm ./fort.41
+rm ./fort.47
+rm ./fort.68
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : forgnuplotanalysissmooth.a
+# ------------------------------------------
+fileToCheck=forgnuplotanalysissmooth
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+cp ./INPUTS/fort.19a.$fileToCheck.$compiler ./fort.19
+cp ./INPUTS/fort.20.$fileToCheck.$compiler ./fort.20
+cp ./INPUTS/fort.21.$fileToCheck.$compiler ./fort.21
+./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.40 ./OUTPUTS/fort.40a.$fileToCheck.$compiler
+cp ./fort.41 ./OUTPUTS/fort.41a.$fileToCheck.$compiler
+cp ./fort.47 ./OUTPUTS/fort.47a.$fileToCheck.$compiler
+cp ./fort.68 ./OUTPUTS/fort.68a.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.40 ./OUTPUTS/fort.40a.$fileToCheck.$compiler >> testing.log
+diff -s ./fort.41 ./OUTPUTS/fort.41a.$fileToCheck.$compiler >> testing.log
+diff -s ./fort.47 ./OUTPUTS/fort.47a.$fileToCheck.$compiler >> testing.log
+diff -s ./fort.68 ./OUTPUTS/fort.68a.$fileToCheck.$compiler >> testing.log
+
+rm ./fort.19
+rm ./fort.40
+rm ./fort.41
+rm ./fort.47
+rm ./fort.68
+
+cp ./INPUTS/fort.19b.$fileToCheck.$compiler ./fort.19
+./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.40 ./OUTPUTS/fort.40b.$fileToCheck.$compiler
+cp ./fort.41 ./OUTPUTS/fort.41b.$fileToCheck.$compiler
+cp ./fort.47 ./OUTPUTS/fort.47b.$fileToCheck.$compiler
+cp ./fort.68 ./OUTPUTS/fort.68b.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.40 ./OUTPUTS/fort.40b.$fileToCheck.$compiler >> testing.log
+diff -s ./fort.41 ./OUTPUTS/fort.41b.$fileToCheck.$compiler >> testing.log
+diff -s ./fort.47 ./OUTPUTS/fort.47b.$fileToCheck.$compiler >> testing.log
+diff -s ./fort.68 ./OUTPUTS/fort.68b.$fileToCheck.$compiler >> testing.log
+
+rm ./fort.19
+rm ./fort.20
+rm ./fort.21
+rm ./fort.40
+rm ./fort.41
+rm ./fort.47
+rm ./fort.68
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : forgnuplotcoast.a
+# ---------------------------------
+fileToCheck=forgnuplotcoast
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+cp ./INPUTS/fort.66.$fileToCheck.$compiler ./fort.66
+./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.67 ./OUTPUTS/fort.67.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.67 ./OUTPUTS/fort.67.$fileToCheck.$compiler >> testing.log
+
+rm ./fort.66
+rm ./fort.67
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : forgnuplotmesh.a
+# ---------------------------------
+fileToCheck=forgnuplotmesh
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+cp ./INPUTS/fort.22.$fileToCheck.$compiler ./fort.22
+cp ./INPUTS/fort.23.$fileToCheck.$compiler ./fort.23
+./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.69 ./OUTPUTS/fort.69.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.69 ./OUTPUTS/fort.69.$fileToCheck.$compiler >> testing.log
+
+rm ./fort.22
+rm ./fort.23
+rm ./fort.69
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : forgnuplotmeshl.a
+# ---------------------------------
+fileToCheck=forgnuplotmeshl
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+cp ./INPUTS/fort.22.$fileToCheck.$compiler ./fort.22
+cp ./INPUTS/fort.23.$fileToCheck.$compiler ./fort.23
+./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.71 ./OUTPUTS/fort.71.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.71 ./OUTPUTS/fort.71.$fileToCheck.$compiler >> testing.log
+
+rm ./fort.22
+rm ./fort.23
+rm ./fort.71
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : forgnuplotuv.a
+# ---------------------------------
+fileToCheck=forgnuplotuv
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+cp ./INPUTS/fort.30.$fileToCheck.$compiler ./fort.30
+cp ./INPUTS/fort.31.$fileToCheck.$compiler ./fort.31
+cp ./INPUTS/fort.32.$fileToCheck.$compiler ./fort.32
+./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.55 ./OUTPUTS/fort.55.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.55 ./OUTPUTS/fort.55.$fileToCheck.$compiler >> testing.log
+
+rm ./fort.30
+rm ./fort.31
+rm ./fort.32
+rm ./fort.55
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
 # Chech program : griddef.a
 # ---------------------------
 fileToCheck=griddef

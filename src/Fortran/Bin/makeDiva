@@ -11,7 +11,7 @@ echo ' '
 
 baseDir=$PWD
 
-_WITH_MESH_=1 ; export _WITH_MESH_
+_WITH_MESH_=0 ; export _WITH_MESH_
 _WITH_UTIL_=1 ; export _WITH_UTIL_
 _WITH_STABIL_=0 ; export _WITH_STABIL_
 _WITH_PLPLOT_=0 ; export _WITH_PLPLOT_
@@ -19,7 +19,7 @@ _WITH_PIPETEST_=0 ; export _WITH_PIPETEST_
 _WITH_NOPLPLOT_=0 ; export _WITH_NOPLPLOT_
 _WITH_NETCDF_=0 ; export _WITH_NETCDF_
 _WITH_EXTENSION_=0 ; export _WITH_EXTENSION_
-_WITH_CALC_=1 ; export _WITH_CALC_
+_WITH_CALC_=0 ; export _WITH_CALC_
 
 
 # Compilation of Mesh

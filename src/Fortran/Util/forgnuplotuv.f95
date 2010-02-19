@@ -1,134 +1,177 @@
-       integer, parameter :: nm=30000000
-       integer*4 inode(nm)
-       real*4 u(nm),v(nm)
-       real*8 c8
-       
-       call ureadc(30,c8,u,valex,ipr,imax,jmax,kmax,nb)
-       call ureadc(31,c8,v,valex,ipr,imax,jmax,kmax,nb)
-       call gognuv(u,v,imax,jmax,valex)
-       stop
-       end
-       subroutine gognuv(u,v,imax,jmax,valex)
-       real*4 u(imax,jmax)
-       real*4 v(imax,jmax)
-       
-       read(32,*) x0
-       read(32,*) y0
-       read(32,*) dx
-       read(32,*) dy
-       read(32,*) im
-       read(32,*) jm
-       write(6,*) 'valex',valex,im,jm,dx,dy
-       if (im.ne.imax) stop 'incoherent files'
-       if (jm.ne.jmax) stop 'incoherent files'
-       vscale=0
-       iscale=0
-       do i=1,im
-       do j=1,jm
-       if (v(i,j).ne.valex) then
-       iscale=iscale+1
-       vscale=vscale+u(i,j)*u(i,j)+v(i,j)*v(i,j)
-       endif
-       enddo
-       enddo
-       vscale=sqrt(vscale/iscale)
-       scale=sqrt(dx*dy)/vscale*2
-       do i=1,im
-       do j=1,jm
-       if (v(i,j).ne.valex) then
-       
-       x1=x0+(i-1)*dx
-       y1=y0+(j-1)*dy
-       x2=x1+u(i,j)*scale
-       y2=y1+v(i,j)*scale
-       write(55,*) x1,y1,u(i,j)*scale,v(i,j)*scale
-!C       write(55,*) x2,y2
-!C       write(55,*)
-       endif
-       enddo
-       enddo
-       stop
-       end
-       
-      Subroutine UREADC(iu,c8,c4,valexr,iprecr,imaxr,jmaxr,kmaxr,nbmotr)
-!c23456                ======
-!cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-!c Reads the field C(I,J,K) from fortran unit iu
-!c returns the field in the array c4 if the returned iprecr=4
-!c returns the field in the array c8 if the returned iprecr=8
-!c returns the values if imaxr,jmaxr,kmaxr found in the file
-!c
-!c JMB 6/3/91
-!cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-!c23456
-       PARAMETER(KBLANC=10)
-       real*4 c4(*)
-       real*8 c8(*)
-!c in the calling routin you can specify the following equivalence to
-!c save memory space:
-!c      equivalence(c,c4)
-!c      equivalence(c,c8)
-!c
-!c skip KBLANC lines
-       do 1 kb=1,KBLANC
-        read(iu,ERR=99)
- 1     continue
-!c
-        read(iu) imaxc,jmaxc,kmaxc,iprec,nbmots,valexc
-!c
-!c pass the values read to the calling routine
-        iprecr=iprec
-        imaxr=imaxc
-        jmaxr=jmaxc
-        kmaxr=kmaxc
-        nbmotr=nbmots
-        valexr=valexc
-!c
-!c compute the number of full records to read and the remaining words
-        nl=(imaxc*jmaxc*kmaxc)/nbmots
-        ir=imaxc*jmaxc*kmaxc-nbmots*nl
-        ide=0
-!c
-!c if pathological case, read only four values C0 and DCI,DCJ,DCK
-!c and return
-!c them as the two four elements of the array
-        if(imaxc.lt.0.or.jmaxc.lt.0.or.kmaxc.lt.0) then
-         nl=0
-         ir=4
-        endif
-!c
-!c
-!c single precision
-        if(iprec.eq.4) then
-         do 10 kl=1,nl
-          read(iu,ERR=99,END=100) (c4(ide+kc),kc=1,nbmots)
-          ide=ide+nbmots
- 10      continue
-          read(iu,ERR=99,END=100) (c4(ide+kc),kc=1,ir)
-                       else
-!c
-!c double precision
-        if(iprec.eq.8) then
-         do 20 kl=1,nl
-          read(iu,ERR=99,END=100) (c8(ide+kc),kc=1,nbmots)
-          ide=ide+nbmots
- 20      continue
-          read(iu,ERR=99,END=100) (c8(ide+kc),kc=1,ir)
-                       else
-           goto 99
-         endif
-         endif
-!c
-         return
- 99      continue
-         write(*,*) 'Data error in UREADC, not a conform file'
-         return
-100      continue
-         write(*,*) 'Data error in UREADC, EOF reached'
-         write(*,*)' number of values retrieved:', (kl-1)*nbmots+kc-1
+PROGRAM forGnuPlotUV
 
-         return
-         end
+! Module
+! ======
+  USE moduleDIVA
+  USE moduleFile
+  USE ioInterface
+  USE array3DInterface
+
+! Declaration
+! ===========
+   REAL(KIND=4) :: exclusionValueField
+   INTEGER :: iMax1, jMax1, iMax2, jMax2
+
+   Type(file) :: inputFile1, inputFile2, inputFile3
+   Type(file) :: outputFile
+   TYPE(arrayReal4) :: fieldU, fieldV
+   REAL(KIND=4), DIMENSION(:,:,:), POINTER :: ptrFieldU, ptrFieldV
+
+! ==================
+! ==================
+! == Main program ==
+! ==================
+! ==================
+
+!  Always start the DIVA context
+!  =============================
+   CALL createDIVAContext()
+
+!  Body
+!  ====
+!     1) Creation of array to store fieldU and fieldV
+!     -----------------------------------------------
+   CALL arrayCreate(fieldU)
+   CALL arrayCreate(fieldV)
+
+!     2) Creation of needed files
+!     ---------------------------
+   CALL createFile(inputFile1,'fort.30',formType=GHER_UNFORMATTED)
+   CALL createFile(inputFile2,'fort.31',formType=GHER_UNFORMATTED)
+   CALL createFile(inputFile3,'fort.32',formType=STD_FORMATTED)
+
+   CALL createFile(outputFile,'fort.55',formType=STD_FORMATTED)
+   
+!     3) Reading fieldU and field2
+!     ----------------------------   
+   CALL arrayRead(fieldU,inputFile1,exclusionValueField)
+   CALL arrayRead(fieldV,inputFile2,exclusionValueField)
+   
+!     4) Check how many gridded field
+!     -------------------------------
+   iMax1 = arrayGetSizeX(fieldU)
+   jMax1 = arrayGetSizeY(fieldU)
+
+   iMax2 = arrayGetSizeX(fieldV)
+   jMax2 = arrayGetSizeY(fieldV)
+     
+   IF ( (iMax1/=iMax2).OR.(jMax1/=jMax2) ) THEN
+      STOP 'Error of dimension in fieldU or fieldV'
+   ENDIF
+   
+!     5) Write to gnu format (only for k = 1)
+!     ---------------------------------------
+   
+   ptrFieldU => arrayGetValues(fieldU)
+   ptrFieldV => arrayGetValues(fieldV)
+   
+   CALL convertToGnu(ptrFieldU(1:iMax1,1:jMax1,1),ptrFieldV(1:iMax1,1:jMax1,1),iMax1,jMax1, &
+                     exclusionValueField,inputFile3,outputFile)
          
+!  Always finalise the DIVA context
+!  ================================
+   CALL arrayDestroy(fieldU)      
+   CALL arrayDestroy(fieldV)      
+   CALL finaliseDIVAContext()
 
+! ============================================================
+! ============================================================
+! ============================================================
+! ===                                                      ===
+! ===                                                      ===
+! ===                  Program procedures                  ===
+! ===                                                      ===
+! ===                                                      ===
+! ============================================================
+! ============================================================
+! ============================================================
+ CONTAINS
+
+! Procedure 1 : convert to Gnu
+! ----------------------------
+SUBROUTINE convertToGnu(ptrFieldU,ptrFieldV,iMax,jMax,exclusionValueField, &
+                        inputFile,outputFile)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: iMax, jMax
+      REAL(KIND=4), INTENT(IN) :: exclusionValueField
+      REAL(KIND=4), DIMENSION(:,:), TARGET :: ptrFieldU, ptrFieldV
+      TYPE(file) :: inputFile, outputFile
+      
+      INTEGER :: inputFileUnit, outputFileUnit, checkScaling
+      INTEGER :: nbOfGridPointX, nbOfGridPointY, i1, i2
+      REAL(KIND=4) :: gridOriginX, gridOriginY, gridStepX, gridStepY, fieldVscalingFactor, scalingFactor, &
+                      xCoordinateP1,yCoordinateP1
+
+      REAL(KIND=4), POINTER :: ptrValueFieldU, ptrValueFieldV
+
+!     Body
+!     - - -
+
+!        1) Reading input file
+!        + + + + + + + + + + +
+     CALL openFile(inputFile)
+     inputFileUnit = getFileUnit(inputFile) 
+     
+     READ(inputFileUnit,*) gridOriginX
+     READ(inputFileUnit,*) gridOriginY
+     READ(inputFileUnit,*) gridStepX
+     READ(inputFileUnit,*) gridStepY
+     READ(inputFileUnit,*) nbOfGridPointX
+     READ(inputFileUnit,*) nbOfGridPointY
+
+     CALL closeFile(inputFile)
+     
+     PRINT*,'valex', exclusionValueField, nbOfGridPointX, nbOfGridPointY, gridStepX, gridStepY
+     
+     IF ( nbOfGridPointX /= iMax ) THEN
+        STOP 'incoherent files'
+     ENDIF     
+     IF ( nbOfGridPointY /= jMax ) THEN
+        STOP 'incoherent files'
+     ENDIF     
+
+!       2) Computing scaling factor
+!       + + + + + + + + + + + + + + +
+     fieldVscalingFactor = 0.
+     checkScaling = 0
+     
+     DO i1 = 1, nbOfGridPointX
+      DO i2 = 1, nbOfGridPointY
+        ptrValueFieldV => ptrFieldV(i1,i2)
+        IF ( ptrValueFieldV /= exclusionValueField ) THEN
+           ptrValueFieldU => ptrFieldU(i1,i2)       
+           checkScaling = checkScaling + 1
+           fieldVscalingFactor = fieldVscalingFactor + ptrValueFieldV * ptrValueFieldV + ptrValueFieldU * ptrValueFieldU
+        ENDIF
+      ENDDO
+     ENDDO
+     
+     fieldVscalingFactor = sqrt(fieldVscalingFactor/checkScaling)
+     scalingFactor = sqrt(gridStepX*gridStepY)/(2.0*fieldVscalingFactor)
+
+!       3) Writing result
+!       + + + + + + + + +
+     CALL openFile(outputFile)
+     outputFileUnit = getFileUnit(outputFile)
+     
+     DO i1 = 1, nbOfGridPointX
+      DO i2 = 1, nbOfGridPointY
+        ptrValueFieldV => ptrFieldV(i1,i2)
+        IF ( ptrValueFieldV /= exclusionValueField ) THEN
+           ptrValueFieldU => ptrFieldU(i1,i2)
+           xCoordinateP1 = gridOriginX + ( i1 - 1 ) * gridStepX
+           yCoordinateP1 = gridOriginY + ( i2 - 1 ) * gridStepY
+           
+           WRITE(outputFileUnit,*) xCoordinateP1, yCoordinateP1, ptrValueFieldU * scalingFactor, ptrValueFieldV * scalingFactor 
+                             
+        ENDIF
+      ENDDO
+     ENDDO
        
+     CALL closeFile(outputFile)
+     
+END SUBROUTINE
+   
+END PROGRAM forGnuPlotUV

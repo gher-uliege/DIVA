@@ -1,245 +1,300 @@
-       integer, parameter :: nm=50000000
-       
-       real*4 c(nm),ce(nm)
-       real*8 c8
-       
-       call ureadc(20,c8,c,valex,ipr,imax,jmax,kmax,nb)
-       write(6,*) 'Have read a gridded field'
-       call ureadc(19,c8,ce,valexe,ipr,imaxe,jmaxe,kmaxe,nb)
-       if (imax.eq.imaxe.and.jmax.eq.jmaxe.and.kmax.eq.kmaxe) then
-       write(6,*) 'Found a second gridded field'
-       do i=1,imax*jmax*kmax
-       if (ce(i).eq.valexe) ce(i)=valex
-       enddo
-       else
-       do ii=1,imax*jmax*kmax
-       ce(ii)=0
-       enddo
-       endif
-       if(kmax.gt.1) then
-       write(6,*) '3D files; using k=1'
-       endif
-       call gognu(c,ce,imax,jmax,valex)
-       stop
-       end
-       subroutine gognu(c,ce,imax,jmax,valex)
-       real*4 c(imax,jmax)
-       real*4 ce(imax,jmax)
-       
-       read(21,*) x0
-       read(21,*) y0
-       read(21,*) dx
-       read(21,*) dy
-       read(21,*) im
-       read(21,*) jm
-       write(6,*) 'valex',valex,im,jm,dx,dy
-       if (im.ne.imax) stop 'incoherent files'
-       if (jm.ne.jmax) stop 'incoherent files'
-       cmin=1E36
-       cmax=-cmin
-       do i=1,im
-       do j=1,jm
-       if(c(i,j).ne.valex) then
-       cmin=min(cmin,c(i,j))
-       cmax=max(cmax,c(i,j))
-       endif
-       enddo
-       enddo
-       
-       
-       do i=1,im-1
-       do j=1,jm-1
-       icc=0
-       if (c(i,j).ne.valex) then
-       icc=icc+1
-       endif
-       if (c(i+1,j).ne.valex) then
-       icc=icc+1
-       endif
-       if (c(i,j+1).ne.valex) then
-       icc=icc+1
-       endif
-       if (c(i+1,j+1).ne.valex) then
-       icc=icc+1
-       endif
-       if(icc.ge.3) then
-       
-       
-       x1=x0+(i-1)*dx
-       x2=x1+dx
-       x3=x2
-       x4=x1
-       y1=y0+(j-1)*dy
-       y2=y1
-       y3=y2+dy
-       y4=y3
-       vala1=c(i,j)
-       vale1=ce(i,j)
-       vala2=c(i+1,j)
-       vale2=ce(i+1,j)
-       vala3=c(i+1,j+1)
-       vale3=ce(i+1,j+1)
-       vala4=c(i,j+1)
-       vale4=ce(i,j+1)
-       
-       if(icc.eq.4) then
-       write(68,*) '#'
-       write(68,*) x1,y1,vala1,vale1
-       write(68,*) x2,y2,vala2,vale2
-       write(68,*)
-       write(68,*) x4,y4,vala4,vale4
-       write(68,*) x3,y3,vala3,vale3
-       write(68,*)
-       write(68,*)
-       endif
-       
-       if(icc.eq.3) then
-       if(c(i,j).eq.valex) then
-       write(68,*) '#'
-       write(68,*) x2,y2,vala2,vale2
-       write(68,*) x2,y2,vala2,vale2
-       write(68,*)
-       write(68,*) x4,y4,vala4,vale4
-       write(68,*) x3,y3,vala3,vale3
-       write(68,*)
-       write(68,*)
-       endif
-       if(c(i+1,j).eq.valex) then
-       write(68,*) '#'
-       write(68,*) x1,y1,vala1,vale1
-       write(68,*) x1,y1,vala1,vale1
-       write(68,*)
-       write(68,*) x4,y4,vala4,vale4
-       write(68,*) x3,y3,vala3,vale3
-       write(68,*)
-       write(68,*)
-       endif
-       if(c(i+1,j+1).eq.valex) then
-       write(68,*) '#'
-       write(68,*) x1,y1,vala1,vale1
-       write(68,*) x2,y2,vala2,vale2
-       write(68,*)
-       write(68,*) x4,y4,vala4,vale4
-       write(68,*) x4,y4,vala4,vale4
-       write(68,*)
-       write(68,*)
-       endif
-       if(c(i,j+1).eq.valex) then
-       write(68,*) '#'
-       write(68,*) x1,y1,vala1,vale1
-       write(68,*) x2,y2,vala2,vale2
-       write(68,*)
-       write(68,*) x3,y3,vala3,vale3
-       write(68,*) x3,y3,vala3,vale3
-       write(68,*)
-       write(68,*)
-       endif
-       
-       
-       endif
-       
-       
-       
-       endif
-       enddo
-       enddo
-       
-       xmin=x0
-       ymin=y0
-       xmax=x0+(im-1)*dx
-       ymax=y0+(jm-1)*dy
-       write(41,*) 'set cbrange[',cmin,':',cmax,']'
-       write(41,*) 'set xrange[',xmin,':',xmax,']'
-       write(41,*) 'set yrange[',ymin,':',ymax,']'
-       write(40,*) 'longref=',x0+(im/2-1)*dx
-!C box for .klm files
-       write(47,*) '      <north>',ymax,'</north>'
-       write(47,*) '      <south>',ymin,'</south>'
-       write(47,*) '      <east>',xmax,'</east>'
-       write(47,*) '      <west>',xmin,'</west>'
-       stop
-       end
-       
-      Subroutine UREADC(iu,c8,c4,valexr,iprecr,imaxr,jmaxr,kmaxr,nbmotr)
-!c23456                ======
-!cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-!c Reads the field C(I,J,K) from fortran unit iu
-!c returns the field in the array c4 if the returned iprecr=4
-!c returns the field in the array c8 if the returned iprecr=8
-!c returns the values if imaxr,jmaxr,kmaxr found in the file
-!c
-!c JMB 6/3/91
-!cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-!c23456
-       PARAMETER(KBLANC=10)
-       real*4 c4(*)
-       real*8 c8(*)
-!c in the calling routin you can specify the following equivalence to
-!c save memory space:
-!c      equivalence(c,c4)
-!c      equivalence(c,c8)
-!c
-!c skip KBLANC lines
-       do 1 kb=1,KBLANC
-        read(iu,end=99,ERR=99)
- 1     continue
-!c
-        read(iu,end=99,err=99) imaxc,jmaxc,kmaxc,iprec,nbmots,valexc
-!c
-!c pass the values read to the calling routine
-        iprecr=iprec
-        imaxr=imaxc
-        jmaxr=jmaxc
-        kmaxr=kmaxc
-        nbmotr=nbmots
-        valexr=valexc
-!c
-!c compute the number of full records to read and the remaining words
-        nl=(imaxc*jmaxc*kmaxc)/nbmots
-        ir=imaxc*jmaxc*kmaxc-nbmots*nl
-        ide=0
-!c
-!c if pathological case, read only four values C0 and DCI,DCJ,DCK
-!c and return
-!c them as the two four elements of the array
-        if(imaxc.lt.0.or.jmaxc.lt.0.or.kmaxc.lt.0) then
-         nl=0
-         ir=4
-        endif
-!c
-!c
-!c single precision
-        if(iprec.eq.4) then
-         do 10 kl=1,nl
-          read(iu,ERR=99,END=100) (c4(ide+kc),kc=1,nbmots)
-          ide=ide+nbmots
- 10      continue
-          read(iu,ERR=99,END=100) (c4(ide+kc),kc=1,ir)
-                       else
-!c
-!c double precision
-        if(iprec.eq.8) then
-         do 20 kl=1,nl
-          read(iu,ERR=99,END=100) (c8(ide+kc),kc=1,nbmots)
-          ide=ide+nbmots
- 20      continue
-          read(iu,ERR=99,END=100) (c8(ide+kc),kc=1,ir)
-                       else
-           goto 99
-         endif
-         endif
-!c
-         return
- 99      continue
-         write(*,*) 'Data error in UREADC, not a conform file'
-         imaxr=0
-         return
-100      continue
-         write(*,*) 'Data error in UREADC, EOF reached'
-         write(*,*)' number of values retrieved:', (kl-1)*nbmots+kc-1
-         imaxr=0
-         return
-         end
-         
+PROGRAM forGnuPlotAnalysisSmooth
 
-       
+! Module
+! ======
+  USE moduleDIVA
+  USE moduleFile
+  USE ioInterface
+  USE array3DInterface
+
+! Declaration
+! ===========
+   REAL(KIND=4) :: exclusionValueGridField1, exclusionValueGridField2
+   INTEGER :: i1, i2, i3, iMax1, jMax1, kMax1, iMax2, jMax2, kMax2
+
+   Type(file) :: inputFile1, inputFile2, inputFile3
+   Type(file) :: outputFile40, outputFile41, outputFile47, outputFile68
+   TYPE(arrayReal4) :: gridField1, gridField2
+   REAL(KIND=4), DIMENSION(:,:,:), POINTER :: ptrGridField1, ptrGridField2
+   REAL(KIND=4), POINTER :: ptrValueGridField2
+
+! ==================
+! ==================
+! == Main program ==
+! ==================
+! ==================
+
+!  Always start the DIVA context
+!  =============================
+   CALL createDIVAContext()
+
+!  Body
+!  ====
+!     1) Creation of array to store gridField1 and gridField2
+!     -------------------------------------------------------
+   CALL arrayCreate(gridField1)
+   CALL arrayCreate(gridField2)
+
+!     2) Creation of needed files
+!     ---------------------------
+   CALL createFile(inputFile1,'fort.20',formType=GHER_UNFORMATTED)
+   CALL createFile(inputFile2,'fort.19',formType=GHER_UNFORMATTED)
+   CALL createFile(inputFile3,'fort.21',formType=STD_FORMATTED)
+   CALL createFile(outputFile40,'fort.40',formType=STD_FORMATTED)
+   CALL createFile(outputFile41,'fort.41',formType=STD_FORMATTED)
+   CALL createFile(outputFile47,'fort.47',formType=STD_FORMATTED)
+   CALL createFile(outputFile68,'fort.68',formType=STD_FORMATTED)
+   
+!     3) Reading Grid1 and Grid2
+!     ----------------------------   
+   PRINT*, 'Into reading'
+   CALL arrayRead(gridField1,inputFile1,exclusionValueGridField1)
+   PRINT*, 'Have read a gridded field'
+   CALL arrayRead(gridField2,inputFile2,exclusionValueGridField2)
+   
+!     4) Check how many gridded field
+!     -------------------------------
+   iMax1 = arrayGetSizeX(gridField1)
+   jMax1 = arrayGetSizeY(gridField1)
+   kMax1 = arrayGetSizeZ(gridField1)
+
+   iMax2 = arrayGetSizeX(gridField2)
+   jMax2 = arrayGetSizeY(gridField2)
+   kMax2 = arrayGetSizeZ(gridField2)
+      
+   IF ( (iMax1==iMax2).AND.(jMax1==jMax2).AND.(kMax1==kMax2) ) THEN
+
+      PRINT*, 'Found a second gridded field'
+      ptrGridField2 => arrayGetValues(gridField2)
+      
+!$OMP PARALLEL DEFAULT(NONE) SHARED(iMax1,jMax1,kMax1,exclusionValueGridField1,exclusionValueGridField2,      &
+!$OMP                               ptrGridField2) & 
+!$OMP                        PRIVATE(i1,i2,i3,ptrValueGridField2)
+!$OMP DO
+
+      DO i3 = 1, kMax1
+       DO i2 = 1, jMax1
+        DO i1 = 1, iMax1
+           ptrValueGridField2 => ptrGridField2(i1,i2,i3)
+           IF ( ptrValueGridField2 == exclusionValueGridField2 ) THEN
+             ptrValueGridField2 = exclusionValueGridField1
+           ENDIF
+        ENDDO
+       ENDDO
+      ENDDO
+     
+!$OMP END DO
+!$OMP END PARALLEL      
+
+   ELSE
+   
+      PRINT*, ' Found only one gridded file'
+      CALL arraySetSize(gridField2,iMax1,jMax1,kMax1)
+      CALL arraySetToZero(gridField2)
+   
+   ENDIF
+   
+!     5) Write to gnu format (only for k = 1)
+!     ---------------------------------------
+   IF ( kMax1 > 1 ) THEN
+      PRINT*,'3D files; using k=1'  
+   ENDIF
+   
+   ptrGridField1 => arrayGetValues(gridField1)
+   ptrGridField2 => arrayGetValues(gridField2)
+   
+   CALL convertToGnu(ptrGridField1(1:iMax1,1:jMax1,1),ptrGridField2(1:iMax1,1:jMax1,1),iMax1,jMax1, &
+                     exclusionValueGridField1,inputFile3,outputFile40,outputFile41,outputFile47,outputFile68)
+         
+!  Always finalise the DIVA context
+!  ================================
+   CALL arrayDestroy(gridField1)      
+   CALL arrayDestroy(gridField2)      
+   CALL finaliseDIVAContext()
+
+! ============================================================
+! ============================================================
+! ============================================================
+! ===                                                      ===
+! ===                                                      ===
+! ===                  Program procedures                  ===
+! ===                                                      ===
+! ===                                                      ===
+! ============================================================
+! ============================================================
+! ============================================================
+ CONTAINS
+
+! Procedure 1 : convert to Gnu
+! ----------------------------
+SUBROUTINE convertToGnu(ptrGridField1,ptrGridField2,iMax,jMax,exclusionValueGridField, &
+                        inputFile,outputFile40,outputFile41,outputFile47,outputFile68)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: iMax, jMax
+      REAL(KIND=4), INTENT(IN) :: exclusionValueGridField
+      REAL(KIND=4), DIMENSION(:,:), TARGET :: ptrGridField1, ptrGridField2
+      TYPE(file) :: inputFile, outputFile40, outputFile41, outputFile47, outputFile68
+      
+      INTEGER :: inputFileUnit, outputFileUnit
+      INTEGER :: nbOfGridPointX, nbOfGridPointY, i1, i2, nbOfDataOK, iCheck
+      REAL(KIND=4) :: gridOriginX, gridOriginY, gridStepX, gridStepY, &
+                      xCoordinateP1, xCoordinateP2, xCoordinateP3, xCoordinateP4, &
+                      yCoordinateP1, yCoordinateP2, yCoordinateP3, yCoordinateP4
+
+      REAL(KIND=4), POINTER :: ptrValueGridField11 ,ptrValueGridField12 ,ptrValueGridField13 ,ptrValueGridField14, &
+                               ptrValueGridField21 ,ptrValueGridField22 ,ptrValueGridField23 ,ptrValueGridField24
+
+!     Body
+!     - - -
+
+!        1) Reading input file
+!        + + + + + + + + + + +
+     CALL openFile(inputFile)
+     inputFileUnit = getFileUnit(inputFile) 
+     
+     READ(inputFileUnit,*) gridOriginX
+     READ(inputFileUnit,*) gridOriginY
+     READ(inputFileUnit,*) gridStepX
+     READ(inputFileUnit,*) gridStepY
+     READ(inputFileUnit,*) nbOfGridPointX
+     READ(inputFileUnit,*) nbOfGridPointY
+
+     CALL closeFile(inputFile)
+     
+     PRINT*,'valex', exclusionValueGridField, nbOfGridPointX, nbOfGridPointY, gridStepX, gridStepY
+     
+     IF ( nbOfGridPointX /= iMax ) THEN
+        STOP 'incoherent files'
+     ENDIF     
+     IF ( nbOfGridPointY /= jMax ) THEN
+        STOP 'incoherent files'
+     ENDIF     
+
+!       2) Writing first output file
+!       + + + + + + + + + + + + + + +
+     CALL openFile(outputFile68)
+     outputFileUnit = getFileUnit(outputFile68)
+     
+     DO i1 = 1, nbOfGridPointX - 1
+      DO i2 = 1, nbOfGridPointY - 1
+        ptrValueGridField11 => ptrGridField1(i1,i2)
+        ptrValueGridField12 => ptrGridField1(i1+1,i2)
+        ptrValueGridField13 => ptrGridField1(i1+1,i2+1)
+        ptrValueGridField14 => ptrGridField1(i1,i2+1)
+        
+        nbOfDataOK = 0
+        iCheck = 0
+        IF ( ptrValueGridField11 /= exclusionValueGridField ) THEN
+           nbOfDataOK = nbOfDataOK + 1
+        ELSE
+           iCheck = 1
+        ENDIF
+        IF ( ptrValueGridField12 /= exclusionValueGridField ) THEN
+           nbOfDataOK = nbOfDataOK + 1
+        ELSE
+           iCheck = 2
+        ENDIF
+        IF ( ptrValueGridField13 /= exclusionValueGridField ) THEN
+           nbOfDataOK = nbOfDataOK + 1
+        ELSE
+           iCheck = 3
+        ENDIF
+        IF ( ptrValueGridField14 /= exclusionValueGridField ) THEN
+           nbOfDataOK = nbOfDataOK + 1
+        ELSE
+           iCheck = 4
+        ENDIF
+        
+        IF ( nbOfDataOK >= 3 ) THEN
+          xCoordinateP1 = gridOriginX + ( i1 - 1 ) * gridStepX - 0.5 * gridStepX
+          yCoordinateP1 = gridOriginY + ( i2 - 1 ) * gridStepY - 0.5 * gridStepY
+
+          xCoordinateP2 = xCoordinateP1 + gridStepX
+          yCoordinateP2 = yCoordinateP1
+          
+          xCoordinateP3 = xCoordinateP2
+          yCoordinateP3 = yCoordinateP2 + gridStepY
+
+          xCoordinateP4 = xCoordinateP1
+          yCoordinateP4 = yCoordinateP3
+          
+          ptrValueGridField21 => ptrGridField2(i1,i2)
+          ptrValueGridField22 => ptrGridField2(i1+1,i2)
+          ptrValueGridField23 => ptrGridField2(i1+1,i2+1)
+          ptrValueGridField24 => ptrGridField2(i1,i2+1)
+          
+          SELECT CASE (iCheck)
+             CASE (1)
+                 ptrValueGridField11 => ptrValueGridField12
+                 ptrValueGridField21 => ptrValueGridField22
+             CASE (2)
+                 ptrValueGridField12 => ptrValueGridField11
+                 ptrValueGridField22 => ptrValueGridField21
+             CASE (3)
+                 ptrValueGridField13 => ptrValueGridField14
+                 ptrValueGridField23 => ptrValueGridField24
+             CASE (4)
+                 ptrValueGridField14 => ptrValueGridField13
+                 ptrValueGridField24 => ptrValueGridField23
+          END SELECT
+          
+          WRITE(outputFileUnit,*) '#'
+          WRITE(outputFileUnit,*) xCoordinateP1, yCoordinateP1, ptrValueGridField11, ptrValueGridField21
+          WRITE(outputFileUnit,*) xCoordinateP2, yCoordinateP2, ptrValueGridField12, ptrValueGridField22
+          WRITE(outputFileUnit,*)
+          WRITE(outputFileUnit,*) xCoordinateP4, yCoordinateP4, ptrValueGridField14, ptrValueGridField24
+          WRITE(outputFileUnit,*) xCoordinateP3, yCoordinateP3, ptrValueGridField13, ptrValueGridField23
+          WRITE(outputFileUnit,*)
+          WRITE(outputFileUnit,*)
+          
+        ENDIF
+      ENDDO
+     ENDDO
+     
+     CALL closeFile(outputFile68)
+     
+!       3) Writing second output file
+!       + + + + + + + + + + + + + + +
+     CALL openFile(outputFile41)
+     outputFileUnit = getFileUnit(outputFile41)
+
+     xCoordinateP1 = gridOriginX     
+     yCoordinateP1 = gridOriginY     
+
+     xCoordinateP3 = gridOriginX + ( nbOfGridPointX - 1 ) * gridStepX   
+     yCoordinateP3 = gridOriginY + ( nbOfGridPointY - 1 ) * gridStepY
+     
+     WRITE(outputFileUnit,*) 'set cbrange[', &
+               minval(ptrGridField1(1:iMax1,1:jMax1),MASK=ptrGridField1/=exclusionValueGridField),':', &
+               maxval(ptrGridField1(1:iMax1,1:jMax1),MASK=ptrGridField1/=exclusionValueGridField),']'
+     WRITE(outputFileUnit,*) 'set xrange[',xCoordinateP1,':',xCoordinateP3,']'
+     WRITE(outputFileUnit,*) 'set yrange[',yCoordinateP1,':',yCoordinateP3,']'
+     
+     CALL closeFile(outputFile41)
+
+!       4) Writing third output file
+!       + + + + + + + + + + + + + + +
+     CALL openFile(outputFile40)
+     outputFileUnit = getFileUnit(outputFile40)
+     
+     WRITE(outputFileUnit,*) 'longref=',gridOriginX + ( nbOfGridPointX / 2 - 1 ) * gridStepX
+     
+     CALL closeFile(outputFile40)
+     
+!       5) Writing fourth output file
+!       + + + + + + + + + + + + + + +
+     CALL openFile(outputFile47)
+     outputFileUnit = getFileUnit(outputFile47)
+     
+     WRITE(outputFileUnit,*) '      <north>',yCoordinateP3,'</north>'
+     WRITE(outputFileUnit,*) '      <south>',yCoordinateP1,'</south>'
+     WRITE(outputFileUnit,*) '      <east>',xCoordinateP3,'</east>'
+     WRITE(outputFileUnit,*) '      <west>',xCoordinateP1,'</west>'
+     
+     CALL closeFile(outputFile47)
+     
+END SUBROUTINE
+   
+END PROGRAM forGnuPlotAnalysisSmooth
