@@ -179,15 +179,12 @@ MODULE moduleReadGHER
                 nbOfDataI,nbOfDataJ,nbOfDataK,iprecision)
       END SELECT
 
-
       IF ( ( icheckError == izero ).AND.( icheckEnd == izero ) ) THEN
       ELSE IF ( icheckError == ione ) THEN
          GOTO 99
       ELSE
          GOTO 100
       END IF
-
-      CALL closeFile()
 
       CALL fillDimension(nbOfDataI,nbOfDataJ,nbOfDataK,nbOfDataIinput,nbOfDataJinput,nbOfDataKinput)
 
@@ -199,7 +196,6 @@ MODULE moduleReadGHER
       nbOfDataJ = ione
       nbOfDataK = ione
 
-      CALL closeFile()
       CALL fillDimension(nbOfDataI,nbOfDataJ,nbOfDataK,nbOfDataIinput,nbOfDataJinput,nbOfDataKinput)
       RETURN
 
@@ -207,7 +203,7 @@ MODULE moduleReadGHER
       WRITE(stdOutput,*) 'Data error in UREADC, EOF reached'
       WRITE(stdOutput,*) ' number of values retrieved:', icheckEnd
       nbOfDataI = izero
-      CALL closeFile()
+
       CALL fillDimension(nbOfDataI,nbOfDataJ,nbOfDataK,nbOfDataIinput,nbOfDataJinput,nbOfDataKinput)
 
    END SUBROUTINE
@@ -689,7 +685,6 @@ MODULE moduleReadGHER
 !     - - -
       CALL readData(logicalUnit,realVectorEntries,realMatrixEntries,realArrayEntries,oldEntries,exclusionValue,&
                        nbOfDataIinput,nbOfDataJinput,nbOfDataKinput)
-
    END SUBROUTINE
 
 ! Procedure 12 : get information to read value

@@ -16,6 +16,8 @@ echo ================================
 rm -f ./testing.log
 rm -f ./*.a
 
+cp $divaDir/Bin/convertGHERFile.a ./convertGHERFile.a
+
 # Chech program : alpha.a
 # -----------------------
 fileToCheck=alpha
@@ -354,6 +356,8 @@ cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
 cp ./INPUTS/fort.19a.$fileToCheck.$compiler ./fort.19
 cp ./INPUTS/fort.20.$fileToCheck.$compiler ./fort.20
 cp ./INPUTS/fort.21.$fileToCheck.$compiler ./fort.21
+echo fort.19 1 | ./convertGHERFile.a
+echo fort.20 1 | ./convertGHERFile.a
 ./$fileToCheck.a >> testing.log
 
 if [ $makeRef == 1 ]
@@ -376,6 +380,7 @@ rm ./fort.47
 rm ./fort.68
 
 cp ./INPUTS/fort.19b.$fileToCheck.$compiler ./fort.19
+echo fort.19 1 | ./convertGHERFile.a
 ./$fileToCheck.a >> testing.log
 
 if [ $makeRef == 1 ]
@@ -414,6 +419,8 @@ cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
 cp ./INPUTS/fort.19a.$fileToCheck.$compiler ./fort.19
 cp ./INPUTS/fort.20.$fileToCheck.$compiler ./fort.20
 cp ./INPUTS/fort.21.$fileToCheck.$compiler ./fort.21
+echo fort.19 1 | ./convertGHERFile.a
+echo fort.20 1 | ./convertGHERFile.a
 ./$fileToCheck.a >> testing.log
 
 if [ $makeRef == 1 ]
@@ -436,6 +443,7 @@ rm ./fort.47
 rm ./fort.68
 
 cp ./INPUTS/fort.19b.$fileToCheck.$compiler ./fort.19
+echo fort.19 1 | ./convertGHERFile.a
 ./$fileToCheck.a >> testing.log
 
 if [ $makeRef == 1 ]
@@ -553,6 +561,8 @@ cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
 cp ./INPUTS/fort.30.$fileToCheck.$compiler ./fort.30
 cp ./INPUTS/fort.31.$fileToCheck.$compiler ./fort.31
 cp ./INPUTS/fort.32.$fileToCheck.$compiler ./fort.32
+echo fort.30 1 | ./convertGHERFile.a
+echo fort.31 1 | ./convertGHERFile.a
 ./$fileToCheck.a >> testing.log
 
 if [ $makeRef == 1 ]
@@ -567,6 +577,32 @@ rm ./fort.31
 rm ./fort.32
 rm ./fort.55
 
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : ghervalex.a
+# ---------------------------
+fileToCheck=ghervalex
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+nbOfRow=3
+nbOfColumn=3
+exclusionValue=999.
+echo $nbOfRow $nbOfColumn $exclusionValue | ./$fileToCheck.a >> testing.log
+echo fort.84 2 | ./convertGHERFile.a
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.84 ./OUTPUTS/fort.84.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.84 ./OUTPUTS/fort.84.$fileToCheck.$compiler >> testing.log
+
+rm ./fort.84
 rm ./$fileToCheck.*
 echo ' ' >> testing.log
 
@@ -629,12 +665,16 @@ cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
 cp ./INPUTS/fort.20.$fileToCheck.$compiler ./fort.20
 cp ./INPUTS/fort.10.$fileToCheck.$compiler ./fort.10
 cp ./INPUTS/fort.11.$fileToCheck.$compiler ./fort.11
+echo fort.10 1 | ./convertGHERFile.a
+echo fort.11 1 | ./convertGHERFile.a
 ./$fileToCheck.a >> testing.log
+echo fort.12 2 | ./convertGHERFile.a
+echo fort.13 2 | ./convertGHERFile.a
 
 if [ $makeRef == 1 ]
 then
 cp ./fort.12 ./OUTPUTS/fort.12.$fileToCheck.$compiler
-cp ./fort.13 ./OUTPUTS/fort.12.$fileToCheck.$compiler
+cp ./fort.13 ./OUTPUTS/fort.13.$fileToCheck.$compiler
 fi
  
 diff -s ./fort.12 ./OUTPUTS/fort.12.$fileToCheck.$compiler >> testing.log
@@ -760,4 +800,5 @@ echo ' ' >> testing.log
 echo Testing procedure finished
 echo ==========================
 echo Check 'testing.log'
- 
+
+rm -f convertGHERFile.a 

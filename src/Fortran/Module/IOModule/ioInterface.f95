@@ -15,7 +15,8 @@ MODULE ioInterface
 ! ============
    USE logicalUnitManager
    USE moduleFile
-   USE moduleIOBase, ONLY : setFileFormType
+   USE moduleIOBase, ONLY : setFileFormType,  setFileIO => setFile, getLogicalUnitIO => getLogicalUnit, &
+                            openFileIO => openFile, closeFileIO => closeFile
    USE moduleReadGHERReal4, ONLY : readVectorGHERReal4 => readVector, &
                                readMatrixGHERReal4 => readMatrix, &
                                readArrayGHERReal4 => readArray, &
@@ -53,6 +54,7 @@ MODULE ioInterface
 ! Procedure status
 ! ================
   PUBLIC :: uwritc, ureadc  ! for compatibility with previous version
+  PUBLIC :: uwritcNew, ureadcNew
 
 ! ============================================================
 ! ============================================================
@@ -95,7 +97,8 @@ MODULE ioInterface
 
   END SUBROUTINE
 
-! Procedure 1 : writeData to file
+! Procedure 2 : readData from file
+! -------------------------------! Procedure 2 : readData from file
 ! -------------------------------
   SUBROUTINE ureadc(fileUnit,entries8,entries4,exclusionValue,iprecision,nbOfDataI, nbOfDataJ, nbOfDataK, nbOfWords)
 
@@ -119,5 +122,63 @@ MODULE ioInterface
       END IF
 
   END SUBROUTINE
+
+! Procedure 3 : writeData to file (new version)
+! -------------------------------
+  SUBROUTINE uwritcNew(fileToWrite,entries8,entries4,exclusionValue,iprecision,nbOfDataI, nbOfDataJ, nbOfDataK, nbOfWords)
+
+!     Declaration
+!     - - - - - -
+      TYPE(file) :: fileToWrite
+      INTEGER, INTENT(IN) :: iprecision, nbOfDataI, nbOfDataJ, nbOfDataK
+      INTEGER, INTENT(INOUT) :: nbOfWords
+      REAL(KIND=4), INTENT(IN) :: exclusionValue
+      REAL(KIND=8), INTENT(IN) :: entries8(*)
+      REAL(KIND=4), INTENT(IN) :: entries4(*)
+      INTEGER :: fileUnit
+
+!     Body
+!     - - -
+      CALL setFileIO(fileToWrite)
+      CALL openFileIO()
+      fileUnit = getLogicalUnitIO()
+      IF ( iprecision == ifour ) THEN
+         CALL writeDataGHERReal4(fileUnit,entries4,exclusionValue,iprecision,nbOfDataI, nbOfDataJ, nbOfDataK, nbOfWords)
+      ELSEIF ( iprecision == ieight ) THEN
+         CALL writeDataGHERReal8(fileUnit,entries8,exclusionValue,iprecision,nbOfDataI, nbOfDataJ, nbOfDataK, nbOfWords)
+      END IF
+      CALL closeFileIO()
+
+  END SUBROUTINE
+
+! Procedure 4 : readData from file (new version)
+! -------------------------------
+  SUBROUTINE ureadcNew(fileToRead,entries8,entries4,exclusionValue,iprecision,nbOfDataI, nbOfDataJ, nbOfDataK, nbOfWords)
+
+!     Declaration
+!     - - - - - -
+      TYPE(file) :: fileToRead
+      INTEGER, INTENT(OUT) :: nbOfWords, iprecision, nbOfDataI, nbOfDataJ, nbOfDataK
+      REAL(KIND=4), INTENT(OUT) :: exclusionValue
+      REAL(KIND=8), INTENT(OUT) :: entries8(*)
+      REAL(KIND=4), INTENT(OUT) :: entries4(*)
+      INTEGER :: fileUnit
+
+!     Body
+!     - - -
+      CALL setFileIO(fileToRead)
+      CALL openFileIO()
+      fileUnit = getLogicalUnitIO()
+      CALL getInformationToReadGHER(fileUnit,nbOfDataI,nbOfDataJ,nbOfDataK,iprecision,nbOfWords,exclusionValue)
+      REWIND(fileUnit)
+      IF ( iprecision == ifour ) THEN
+         CALL readDataOldFormatGHERReal4(fileUnit,entries4,exclusionValue,nbOfDataI,nbOfDataJ,nbOfDataK)
+      ELSEIF ( iprecision == ieight ) THEN
+         CALL readDataOldFormatGHERReal8(fileUnit,entries8,exclusionValue,nbOfDataI,nbOfDataJ,nbOfDataK)
+      END IF
+      CALL closeFileIO()
+
+  END SUBROUTINE
+
 
 END MODULE ioInterface
