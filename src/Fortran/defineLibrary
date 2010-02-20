@@ -25,3 +25,4 @@ libraryLink=$libraryLink' -lCalc'$compiler
 export libraryMod
 export libraryPath
 export libraryLink
+

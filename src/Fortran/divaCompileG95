@@ -43,7 +43,6 @@ echo 'Compilation encountered some warnings or errors'
 echo 'check : error.log file'
 fi
 
-
 echo ' '
 echo --------------------
 echo Compilation finished

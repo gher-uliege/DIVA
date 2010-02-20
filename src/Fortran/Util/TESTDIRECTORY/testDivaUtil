@@ -344,6 +344,64 @@ rm ./fort.46
 rm ./$fileToCheck.*
 echo ' ' >> testing.log
 
+# Chech program : dbdb2diva.a
+# ---------------------------
+fileToCheck=dbdb2diva
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+cp ./INPUTS/fort.10.$fileToCheck.$compiler ./fort.10
+cp ./INPUTS/fort.11.$fileToCheck.$compiler ./fort.11
+
+./$fileToCheck.a >> testing.log
+echo fort.12 2 | ./convertGHERFile.a
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.12 ./OUTPUTS/fort.12.$fileToCheck.$compiler
+cp ./fort.20 ./OUTPUTS/fort.20.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.12 ./OUTPUTS/fort.12.$fileToCheck.$compiler >> testing.log
+diff -s ./fort.20 ./OUTPUTS/fort.20.$fileToCheck.$compiler >> testing.log
+
+rm ./fort.10
+rm ./fort.11
+rm ./fort.12
+rm ./fort.20
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : filtercv.a
+# ---------------------------
+fileToCheck=filtercv
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+cp ./INPUTS/fort.20.$fileToCheck.$compiler ./fort.20
+
+nbOfLayer=10
+nbOfSample=12
+echo $nbOfSample $nbOfLayer | ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.21 ./OUTPUTS/fort.21.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.21 ./OUTPUTS/fort.21.$fileToCheck.$compiler >> testing.log
+
+rm ./fort.20
+rm ./fort.21
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
 # Chech program : forgnuplotanalysis.a
 # ------------------------------------
 fileToCheck=forgnuplotanalysis
@@ -580,6 +638,35 @@ rm ./fort.55
 rm ./$fileToCheck.*
 echo ' ' >> testing.log
 
+# Chech program : ghermask.a
+# ---------------------------
+fileToCheck=ghermask
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+cp ./INPUTS/fort.98.$fileToCheck.$compiler ./fort.98
+cp ./INPUTS/fort.99.$fileToCheck.$compiler ./fort.99
+echo fort.99 1 | ./convertGHERFile.a
+echo fort.98 1 | ./convertGHERFile.a
+echo $nbOfRow $nbOfColumn $exclusionValue | ./$fileToCheck.a >> testing.log
+echo fort.97 2 | ./convertGHERFile.a
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.97 ./OUTPUTS/fort.97.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.97 ./OUTPUTS/fort.97.$fileToCheck.$compiler >> testing.log
+
+rm ./fort.97
+rm ./fort.98
+rm ./fort.99
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
 # Chech program : ghervalex.a
 # ---------------------------
 fileToCheck=ghervalex
@@ -628,6 +715,58 @@ diff -s ./fort.13 ./OUTPUTS/fort.13.$fileToCheck.$compiler >> testing.log
 rm ./fort.13
 rm ./$fileToCheck.*
 echo ' ' >> testing.log
+
+# Chech program : gridpointlist.a
+# -------------------------------
+fileToCheck=gridpointlist
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+cp ./INPUTS/fort.20.$fileToCheck.$compiler ./fort.20
+cp ./INPUTS/fort.21.$fileToCheck.$compiler ./fort.21
+echo fort.20 1 | ./convertGHERFile.a
+./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.22 ./OUTPUTS/fort.22.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.22 ./OUTPUTS/fort.22.$fileToCheck.$compiler >> testing.log
+
+rm ./fort.20
+rm ./fort.21
+rm ./fort.22
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : inversecont.a
+# -------------------------------
+fileToCheck=inversecont
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+cp ./INPUTS/fort.10.$fileToCheck.$compiler ./fort.10
+./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./coastinv.cont ./OUTPUTS/coastinv.cont.$fileToCheck.$compiler
+fi
+
+diff -s ./coastinv.cont ./OUTPUTS/coastinv.cont.$fileToCheck.$compiler >> testing.log
+
+rm ./fort.10
+rm ./coastinv.cont
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
 
 # Chech program : lcelem.a
 # ---------------------------
@@ -709,6 +848,59 @@ fi
 diff -s ./$fileToCheck.log ./OUTPUTS/$fileToCheck.$compiler >> testing.log
 
 rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+# Chech program : subsampling.a
+# -------------------------------
+fileToCheck=subsampling
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+cp ./INPUTS/fort.203.$fileToCheck.$compiler ./fort.20
+nbOfSample=1
+nbOfData=2
+seed=35
+nbOfColumn=3
+echo $nbOfSample $nbOfData $seed $nbOfColumn | ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.44 ./OUTPUTS/fort.443.$fileToCheck.$compiler
+cp ./fort.45 ./OUTPUTS/fort.453.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.44 ./OUTPUTS/fort.443.$fileToCheck.$compiler >> testing.log
+diff -s ./fort.45 ./OUTPUTS/fort.453.$fileToCheck.$compiler >> testing.log
+
+rm ./fort.44
+rm ./fort.45
+
+echo ' ' >> testing.log
+
+cp ./INPUTS/fort.204.$fileToCheck.$compiler ./fort.20
+nbOfSample=1
+nbOfData=2
+seed=35
+nbOfColumn=4
+echo $nbOfSample $nbOfData $seed $nbOfColumn | ./$fileToCheck.a >> testing.log
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.44 ./OUTPUTS/fort.444.$fileToCheck.$compiler
+cp ./fort.45 ./OUTPUTS/fort.454.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.44 ./OUTPUTS/fort.444.$fileToCheck.$compiler >> testing.log
+diff -s ./fort.45 ./OUTPUTS/fort.454.$fileToCheck.$compiler >> testing.log
+
+rm ./fort.44
+rm ./fort.45
+rm ./fort.20
+rm ./$fileToCheck.*
+
 echo ' ' >> testing.log
 
 # Chech program : sumgrid.a

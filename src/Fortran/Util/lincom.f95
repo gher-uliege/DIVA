@@ -14,7 +14,7 @@ PROGRAM lincom
    REAL(KIND=4) :: coeffA1, coeffA2, coeffA3, coeffA4
    REAL(KIND=4) :: coeffB1, coeffB2, coeffB3, coeffB4
 
-   Type(file) :: outputFile1, outputFile2 , inputFile1, inputFile2, inputFile3
+   TYPE(file) :: outputFile1, outputFile2 , inputFile1, inputFile2, inputFile3
    TYPE(arrayReal4) :: fieldU, fieldV
 
 ! ==================

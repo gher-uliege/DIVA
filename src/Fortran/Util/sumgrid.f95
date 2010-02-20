@@ -16,7 +16,7 @@ PROGRAM sumgrid
    INTEGER :: inputFileUnit1, inputFileUnit2, outputFileUnit1, nbOfRow, nbOfColumn 
    REAL(KIND=4) :: exclusionValue
 
-   Type(file) :: outputFile1, inputFile1, inputFile2
+   TYPE(file) :: outputFile1, inputFile1, inputFile2
    TYPE(matrixReal4) :: fieldA, fieldB, fieldC
 
 ! ==================
