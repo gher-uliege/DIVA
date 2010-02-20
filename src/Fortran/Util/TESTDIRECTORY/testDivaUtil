@@ -589,8 +589,8 @@ echo Test : $fileToCheck >> testing.log
 echo ------ >> testing.log
 
 cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
-nbOfRow=3
-nbOfColumn=3
+nbOfRow=4
+nbOfColumn=4
 exclusionValue=999.
 echo $nbOfRow $nbOfColumn $exclusionValue | ./$fileToCheck.a >> testing.log
 echo fort.84 2 | ./convertGHERFile.a
