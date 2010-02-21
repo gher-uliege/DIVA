@@ -17,6 +17,7 @@ _WITH_MATH_=1 ; export _WITH_MATH_
 _WITH_DIVA_=1 ; export _WITH_DIVA_ 
 _WITH_MESH_=1 ; export _WITH_MESH_
 _WITH_STABIL_=1 ; export _WITH_STABIL_
+_WITH_UTIL_=1 ; export _WITH_UTIL_
 _WITH_CALC_=1 ; export _WITH_CALC_
 
 
@@ -70,6 +71,15 @@ if [ $_WITH_STABIL_ == 1 ]
 then
 cd $baseDir/Stabil
 ./divaCompileModuleStabil
+fi
+
+# Compilation of Util module
+# ============================
+
+if [ $_WITH_UTIL_ == 1 ]
+then
+cd $baseDir/Util
+./divaCompileModuleUtil
 fi
 
 # Compilation of Calc module

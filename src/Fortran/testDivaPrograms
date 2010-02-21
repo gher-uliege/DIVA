@@ -4,6 +4,7 @@ rm -f $divaDir/error.log
 rm -f $divaDir/testing.log
 
 _WITH_UTIL_=1 ; export _WITH_UTIL_
+_WITH_MESH_=1 ; export _WITH_MESH_
 
 # Testing Util
 # ------------
@@ -14,6 +15,14 @@ cd $divaDir/Util/TESTDIRECTORY
 cat $divaDir/Util/TESTDIRECTORY/testing.log >> $divaDir/testing.log
 fi
 
+# Testing Mesh
+# ------------
+if [ $_WITH_MESH_ == 1 ]
+then
+cd $divaDir/Mesh/TESTDIRECTORY
+./testDivaMesh
+cat $divaDir/Mesh/TESTDIRECTORY/testing.log >> $divaDir/testing.log
+fi
 
 
 

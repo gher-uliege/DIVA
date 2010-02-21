@@ -1,0 +1,39 @@
+#!/bin/bash
+
+echo ==========================================
+echo ==========================================
+echo ==                                      ==
+echo ==   Compilation of DIVA Util Module  ==
+echo ==                                      ==
+echo ==========================================
+echo ==========================================
+echo ' '
+
+baseDir=$PWD
+
+echo ===========================
+echo ===========================
+echo = Compiling Util Module =
+echo ===========================
+echo ===========================
+echo ' '
+
+preproFlag=''
+associateDir='-I'$divaDir'/Module/General -I'$divaDir'/Module/IOModule '
+export preproFlag
+export associateDir
+
+libName=libUtil$compiler.a
+export libName
+rm -f $divaModuleLib/$libName
+
+# Compilation of : moduleSort
+# =============================
+$divaDir/compileFile moduleSort.f95 moduleSort
+
+echo ' '
+
+mv *.mod $divaModuleLib
+
+cd $baseDir
+

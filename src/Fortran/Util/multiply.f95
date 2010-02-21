@@ -2,7 +2,7 @@ PROGRAM multiply
 
 ! Include file
 ! ============
-   include 'ioParameter.h'
+   INCLUDE 'ioParameter.h'
 
 ! Declaration
 ! ===========
