@@ -1,37 +1,3 @@
-PROGRAM datalengthscale
-
-! Template for calculating relative length scale based on data coverage
-
-! Module
-! ======
-  USE moduleDIVA
-  USE moduleFile
-
-! Include file
-! ============
-   INCLUDE 'constantParameter.h'
-   INCLUDE 'ioParameter.h'
-
-! Declaration
-! ===========
-   INTEGER :: inputFileUnit1, inputFileUnit2, outputFileUnit, nbOfColumn
-   REALType    :: exclusionValue
-
-   Type(file) :: outputFile, inputFile1, inputFile2
-
-! ==================
-! ==================
-! == Main program ==
-! ==================
-! ==================
-
-!  Always start the DIVA context
-!  =============================
-   CALL createDIVAContext()
-
-!  Body
-!  ====
-
 !C
              INTEGER, PARAMETER :: IW = 5000000
              REAL(KIND=4) ::  C(IW),RL(IW),RN(IW)

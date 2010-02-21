@@ -20,6 +20,7 @@ MODULE moduleCoordinateInformation
   REALType, PRIVATE, SAVE :: pi
   REALType, PRIVATE, SAVE :: meanXCoordinate, meanYCoordinate
   REALType, PRIVATE, SAVE :: dimensionLessLength
+  REALType, PARAMETER :: un = 1.
 
   INTEGERType, PRIVATE, SAVE :: iChangeCoordinate, iSpheric
   LOGICAL, PRIVATE, SAVE :: gmshWithCoastRefinement
@@ -595,7 +596,7 @@ SUBROUTINE computeDimensionLessLength()
 !     Body
 !     - - -
 
-      dimensionLessLength = 1.0D+0 * max(maxLongitude-minLongitude, maxLatitude-minLatitude)
+      dimensionLessLength = un * max(maxLongitude-minLongitude, maxLatitude-minLatitude)
 
 END SUBROUTINE
 

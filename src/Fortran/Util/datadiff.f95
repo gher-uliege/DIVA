@@ -15,7 +15,7 @@ PROGRAM datadiff
    INTEGER :: inputFileUnit1, inputFileUnit2, outputFileUnit, nbOfColumn
    REALType    :: exclusionValue
 
-   Type(file) :: outputFile, inputFile1, inputFile2
+   TYPE(file) :: outputFile, inputFile1, inputFile2
 
 ! ==================
 ! ==================

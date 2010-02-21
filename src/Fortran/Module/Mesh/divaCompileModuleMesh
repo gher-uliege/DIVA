@@ -223,6 +223,23 @@ preproFlag=$preproFlag' '$flag1
 export preproFlag
 $divaDir/compileFile moduleCoordinateInformation.f95 moduleCoordinateInformation
 
+# Compilation of : moduleCoordinateInformation
+# ============================================
+REALType='REAL(KIND=4)'
+INTEGERType='INTEGER'
+
+moduleCoordinateInformation=moduleCoordinateInformationReal4
+
+flag0='-DREALType='$REALType
+flag1='-DINTEGERType='$INTEGERType
+flag2='-DmoduleCoordinateInformation='$moduleCoordinateInformation
+
+preproFlag=$flag0
+preproFlag=$preproFlag' '$flag1
+preproFlag=$preproFlag' '$flag2
+
+export preproFlag
+$divaDir/compileFile moduleCoordinateInformation.f95 $moduleCoordinateInformation
 
 mv *.mod $divaModuleLib
 

@@ -1,166 +1,313 @@
-      integer, parameter :: nm=5000000
-      REAL(KIND=4) ::  topo(nm),u(nm),v(nm)
-      REAL(KIND=4) ::  unn(nm),vnn(nm)
-      REAL(KIND=8) ::  c8
-      
-      character*4 uname,vname
-      character*10 un,vn
-      character*5 depth
-      read(10,*) x1
-      read(10,*) y1
-      read(10,*) dx
-      read(10,*) dy
-      read(10,*) M
-      read(10,*) N
-      uname='Uvel'
-      vname='Vvel'
-      
-      
-      
-      if ((M+0)*(N+0).GT.NM) stop 'increase NM'
-      write(6,*) 'into ureadc',M,N
-      call ureadc(12,c8,topo,valex,iprecr,imax,jmax,kmax,nbmotr)
-      write(6,*) 'out of reading',imax,jmax
-      read (5,*) icoordchange
-!C NEED TO READ IN ICOORDCHANGE if ONE, change DX and DY, otherwise leave as is
-      if (icoordchange.eq.1) then
-      rlonmin=X1
-      rlonmax=X1+(M-1)*DX
-      rlatmin=Y1
-      rlatmax=Y1+(N-1)*DY
-      rlonmean=(rlonmin+rlonmax)/2.
-      rlatmean=(rlatmin+rlatmax)/2.
-      dykm=(4*asin(1.)*6360.)/360.
-      dxkm=asin(1.)*rlatmean/90.
-      dxkm=6360.*cos(dxkm)
-      dxkm=(4*asin(1.)*dxkm)/360.
-      dx=dx*dxkm
-      dy=dy*dykm
-      endif
+PROGRAM UVtopogen
 
-      if ((M.NE.IMAX).OR.(N.NE.JMAX)) stop 'incoherent files'
-      z=0
-      nl=0
- 1    continue
-      read(13,*,err=99,end=99) z
-      nl=nl+1
-      write(depth,88) 10000+nl
- 88   format(I5)
-      un=uname//"."//depth
-      vn=vname//"."//depth
-      open(file=un,unit=98,form="unformatted")
-      open(file=vn,unit=99,form="unformatted")
-!C call the velocity generation hre
-      call uvg(topo,U,V,UNN,VNN,M,N,z,dx,dy,valex)
-      close(99)
-      close(98)
-      goto 1
- 99   continue
-!C output info file: no, just copy the topoinfo file !
-      stop
-      end
-      
-      subroutine uvg(topo,U,V,UN,VN,M,N,z,dx,dy,valex)
-      REAL(KIND=4) ::  TOPO(M,N),U(M,N),V(M,N),UN(M,N),VN(M,N)
-      REAL(KIND=8) ::  c8,DMEAN
-      REAL(KIND=4) ::  valex
-      
-!C Calculate mean depth
-      DMEAN=0
-      IMEAN=0
-      DMIN=0
-      imin=0
-      do j=1,N
-      do i=1,M
-      if(topo(i,j).gt.0) then
-      DMEAN=DMEAN+topo(i,j)
-      imean=imean+1
-                         else
-      DMIN=DMIN-topo(i,j)
-      imin=imin+1
-      endif
-      enddo
-      enddo
-!C Take D to be a fraction of this mean depth
-!C
-      if(imean.gt.0) then
-      D=DMEAN/imean/5.
-      else
-      D=DMIN/imin/5.
-      endif
+! Module
+! ======
+  USE moduleDIVA
+  USE moduleFile
+  USE ioInterface
+  USE array3DInterface
+  USE moduleCoordinateInformationReal4, initialiseCoordinateInformation => initialise
 
-!C Calculate centered gradients, reduced by distance to level
-      do j=2,N-1
-      do i=2,M-1
-      xi=(z-topo(i,j))/D
-      FACTEUR=0
-      if(abs(xi).lt.5) then
-      FACTEUR=exp(-xi*xi)
-      endif
-      
-      
-      u(i,j)=(topo(i,j+1)-topo(i,j-1))*FACTEUR/DY
-      v(i,j)=-(topo(i+1,j)-topo(i-1,j))*FACTEUR/DX
-      enddo
-      enddo
-!C fill boundaries
-       do i=1,M
-       U(i,1)=U(i,2)
-       U(i,N)=U(i,N-1)
-       V(i,1)=V(i,2)
-       V(i,N)=V(i,N-1)
-       enddo
-       do j=1,N
-       U(1,j)=U(2,j)
-       U(M,j)=U(M-1,j)
-       V(1,j)=V(2,j)
-       V(M,j)=V(M-1,j)
-       enddo
-       
-!C now filter
-                    NTIMES=sqrt(sqrt(M*N*1.)+1.)/2.+1.
-!C             NTIMES=0
-             do nn=1,NTIMES
-             
-             
-              do i=2,M-1
-               do j=2,N-1
-               UN(i,j)=(U(I+1,j)+U(I-1,j)+U(i,j+1)+U(i,j-1))/4.
-               VN(i,j)=(V(I+1,j)+V(I-1,j)+V(i,j+1)+V(i,j-1))/4.
-               enddo
-              enddo
-              do i=2,M-1
-               do j=2,N-1
-               U(i,j)=UN(i,j)
-               V(i,j)=VN(i,j)
-               enddo
-              enddo
-       do i=1,M
-       U(i,1)=U(i,2)
-       U(i,N)=U(i,N-1)
-       V(i,1)=V(i,2)
-       V(i,N)=V(i,N-1)
-       enddo
-       do j=1,N
-       U(1,j)=U(2,j)
-       U(M,j)=U(M-1,j)
-       V(1,j)=V(2,j)
-       V(M,j)=V(M-1,j)
-       enddo
-       
-       
-             enddo
-       
-       
-!C save in fort.98 and .99
-       MN=M*N
-       KM=1
-       IPRE=4
-       VALEX8=valex
-       call UWRITC(98,c8,U,valex8,ipre,M,N,KM,MN)
-       call UWRITC(99,c8,V,valex8,ipre,M,N,KM,MN)
+  INCLUDE 'ioParameter.h'
 
+! Declaration
+! ===========
+   TYPE(file) :: inputFile1, inputFile2, inputFile3
+   TYPE(file) :: outputFile1, outputFile2
+   TYPE(arrayReal4) :: topology
+   INTEGER :: nbOfGridPointX, nbOfGridPointY, inputFileUnit, iMax1, jMax1, changeCoordinate, layerNumber
+   REAL(KIND=4) :: gridOriginX, gridOriginY, gridStepX, gridStepY, exclusionValueTopology, deltaXInKm, deltaYInKm, &
+                   depthValue
+   REAL(KIND=4), DIMENSION(:,:,:), POINTER :: ptrTopology
+   CHARACTER(LEN=4) :: nameFieldUBase, nameFieldVBase
+   CHARACTER(LEN=10) :: nameFieldU, nameFieldV
+   CHARACTER(LEN=5) :: depth
+
+! ==================
+! ==================
+! == Main program ==
+! ==================
+! ==================
+
+!  Always start the DIVA context
+!  =============================
+   CALL createDIVAContext()
+   CALL initialiseCoordinateInformation()
+
+   nameFieldUBase = 'Uvel'
+   nameFieldVBase = 'Vvel'
+
+!  Body
+!  ====
+#ifdef _BATCH_MODE_
+#undef _INTERACTIVE_MODE_
+#endif
+
+!     1) Creation of array
+!     --------------------
+   CALL arrayCreate(topology)
+
+!     2) Creation of needed files
+!     ---------------------------
+   CALL createFile(inputFile1,'fort.10',formType=STD_FORMATTED)
+   CALL createFile(inputFile2,'fort.12',formType=GHER_UNFORMATTED)
+   CALL createFile(inputFile3,'fort.13',formType=STD_FORMATTED)
+   CALL createFile(outputFile1,'notUse',formType=GHER_UNFORMATTED)
+   CALL createFile(outputFile2,'notUse',formType=GHER_UNFORMATTED)
+
+!     3) Reading Grid
+!     ---------------
+   CALL openFile(inputFile1)
+   inputFileUnit = getFileUnit(inputFile1)
+
+   READ(inputFileUnit,*) gridOriginX
+   READ(inputFileUnit,*) gridOriginY
+   READ(inputFileUnit,*) gridStepX
+   READ(inputFileUnit,*) gridStepY
+   READ(inputFileUnit,*) nbOfGridPointX
+   READ(inputFileUnit,*) nbOfGridPointY
+
+   CALL closeFile(inputFile1)
+
+!     4) Reading topology
+!     -------------------
+   PRINT*,'into ureadc', nbOfGridPointX, nbOfGridPointY
+   CALL arrayRead(topology,inputFile2,exclusionValueTopology)
+   ptrTopology => arrayGetValues(topology)
+
+   iMax1 = arrayGetSizeX(topology)
+   jMax1 = arrayGetSizeY(topology)
+
+   PRINT*,'out of reading',iMax1,jMax1
+
+   IF ( ( iMax1 /= nbOfGridPointX ).OR.( jMax1 /= nbOfGridPointY )) THEN
+      STOP 'incoherent files'
+   ENDIF
+
+!     5) Change coordinate if needed
+!     ------------------------------
+!       5.1) In interactive mode
+!       - - - - - - - - - - - -
+#ifdef _INTERACTIVE_MODE_
+   WRITE(stdOutput,*) 'Change coordinate (1) or not (0)'
+   READ(stdInput,*) changeCoordinate
+
+!       5.2) In batch mode
+!       - - - - - - - - -
+#else
+   READ(stdInput,*,END=30) changeCoordinate
+30 CONTINUE
+
+#endif
+
+!       5.3) Computing change
+!       - - - - - - - - - - -
+    CALL setIChangeCoordinate(changeCoordinate)
+
+    IF ( getIChangeCoordinate() == 1 ) THEN
+
+      CALL setMinimumLongitude(gridOriginX)
+      CALL setMaximumLongitude(gridOriginX+(nbOfGridPointX-1)*gridStepX)
+      CALL setMinimumLatitude(gridOriginY)
+      CALL setMaximumLatitude(gridOriginY+(nbOfGridPointY-1)*gridStepY)
+
+      CALL computeMeanLongitude()
+      CALL computeMeanLatitude()
+
+      deltaYInKm = ( 4. * asin(1.) * 6360. ) / 360.
+      deltaXInKm = asin(1.) * getMeanLatitude() / 90.
+      deltaXInKm = 6360. * cos( deltaXInKm )
+      deltaXInKm = ( 4. * asin(1.) * deltaXInKm ) / 360.
+
+      CALL setDeltaXInKm(deltaXInKm)
+      CALL setDeltaYInKm(deltaYInKm)
+
+      gridStepX = gridStepX * deltaXInKm
+      gridStepY = gridStepY * deltaYInKm
+
+    ENDIF
+
+!     6) Computing field U and V
+!     --------------------------
+
+   CALL openFile(inputFile3)
+   inputFileUnit = getFileUnit(inputFile3)
+
+   depthValue = 0.
+   layerNumber = 0
+
+1  CONTINUE
+   READ(inputFileUnit,*,END=99,ERR=99) depthValue
+   layerNumber = layerNumber + 1
+   WRITE(depth,88) 10000 + layerNumber
+
+   nameFieldU = nameFieldUBase//'.'//depth
+   nameFieldV = nameFieldVBase//'.'//depth
+
+   CALL defineFileName(outputFile1,nameFieldU)
+   CALL defineFileName(outputFile2,nameFieldV)
+
+   CALL uvg(ptrTopology(1:iMax1,1:jMax1,1),depthValue,nbOfGridPointX,nbOfGridPointY,gridStepX,gridStepY, &
+            exclusionValueTopology,outputFile1,outputFile2)
+
+   GOTO 1
+99 CONTINUE
+   CALL closeFile(inputFile3)
+
+88 FORMAT(I5)
+
+!  Always finalise the DIVA context
+!  ================================
+   CALL arrayDestroy(topology)
+   CALL finaliseDIVAContext()
+
+! ============================================================
+! ============================================================
+! ============================================================
+! ===                                                      ===
+! ===                                                      ===
+! ===                  Program procedures                  ===
+! ===                                                      ===
+! ===                                                      ===
+! ============================================================
+! ============================================================
+! ============================================================
+ CONTAINS
+
+! Procedure 1 : uvg
+! -----------------
+SUBROUTINE uvg(topology,depthValue,nbOfGridPointX,nbOfGridPointY,gridStepX,gridStepY, &
+               exclusionValue,outputFile1,outputFile2)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: nbOfGridPointX,nbOfGridPointY
+      REAL(KIND=4), INTENT(IN) :: exclusionValue, depthValue, gridStepX,gridStepY
+      REAL(KIND=4), DIMENSION(:,:), TARGET :: topology
+      TYPE(file) :: outputFile1, outputFile2
+
+      TYPE(arrayReal4) :: fieldU, fieldV
+      REAL(KIND=4) :: meanDepth, minDepth, depth, xi, factor
+      REAL(KIND=4), POINTER :: ptrTopologyValue
+      INTEGER :: i1, i2, iMean, iMin, nbOfSmoothLoop
+      REAL(KIND=4), DIMENSION(:,:,:), POINTER :: ptrFieldU, ptrFieldV
+
+!     Body
+!     - - -
+
+!       1) Create matrices
+!       + + + + + + + + + +
+      CALL arrayCreate(fieldU,nbOfGridPointX,nbOfGridPointY,1)
+      CALL arrayCreate(fieldV,nbOfGridPointX,nbOfGridPointY,1)
+
+!       2) Compute mean depth
+!       + + + + + + + + + + +
+      meanDepth = 0.
+      iMean = 0
+      minDepth = 0.
+      iMin = 0
+
+      DO i2 = 1, nbOfGridPointY
+       DO i1 = 1, nbOfGridPointX
+        ptrTopologyValue => topology(i1,i2)
+        IF ( ptrTopologyValue > 0. ) THEN
+          meanDepth = meanDepth + ptrTopologyValue
+          iMean = iMean + 1
+        ELSE
+          minDepth = minDepth - ptrTopologyValue
+          iMin = iMin + 1
+        ENDIF
+       ENDDO
+      ENDDO
+
+      IF ( iMean > 0 ) THEN
+         depth = 0.2 * meanDepth / iMean
+      ELSE
+         depth = 0.2 * minDepth / iMin
+      ENDIF
+
+!       3) Evaluate centered gradients
+!       + + + + + + + + + + + + + + + +
+
+      ptrFieldU => arrayGetValues(fieldU)
+      ptrFieldV => arrayGetValues(fieldV)
+
+!$OMP PARALLEL DEFAULT(NONE) SHARED(nbOfGridPointX,nbOfGridPointY,depthValue,topology,depth, &
+!$OMP                               gridStepX,gridStepY,ptrFieldU, ptrFieldV) &
+!$OMP                        PRIVATE(i1,i2,xi,factor)
+!$OMP DO
+
+      DO i2 = 2, nbOfGridPointY - 1
+       DO i1 = 2, nbOfGridPointX - 1
+          xi = ( depthValue - topology(i1,i2) ) / depth
+          factor = 0.
+
+          IF ( abs(xi) < 5. ) THEN
+             factor = exp((-1.)*xi*xi)
+          ENDIF
+
+          ptrFieldU(i1,i2,1) = ( topology(i1,i2+1) - topology(i1,i2-1) ) * factor / gridStepY
+          ptrFieldV(i1,i2,1) = ( topology(i1-1,i2) - topology(i1+1,i2) ) * factor / gridStepX
+
+       ENDDO
+      ENDDO
+
+!$OMP END DO
+!$OMP END PARALLEL
+      
+!       4) Fill boundaries
+!       + + + + + + + + + +
+     ptrFieldU(1:nbOfGridPointX,1,1) = ptrFieldU(1:nbOfGridPointX,2,1)
+     ptrFieldU(1:nbOfGridPointX,nbOfGridPointY,1) = ptrFieldU(1:nbOfGridPointX,nbOfGridPointY-1,1)
+     ptrFieldU(1,1:nbOfGridPointY,1) = ptrFieldU(2,1:nbOfGridPointY,1)
+     ptrFieldU(nbOfGridPointX,1:nbOfGridPointY,1) = ptrFieldU(nbOfGridPointX-1,1:nbOfGridPointY,1)
+      
+     ptrFieldV(1:nbOfGridPointX,1,1) = ptrFieldV(1:nbOfGridPointX,2,1)
+     ptrFieldV(1:nbOfGridPointX,nbOfGridPointY,1) = ptrFieldV(1:nbOfGridPointX,nbOfGridPointY-1,1)
+     ptrFieldV(1,1:nbOfGridPointY,1) = ptrFieldV(2,1:nbOfGridPointY,1)
+     ptrFieldV(nbOfGridPointX,1:nbOfGridPointY,1) = ptrFieldV(nbOfGridPointX-1,1:nbOfGridPointY,1)
+
+       
+!       5) Smooth field
+!       + + + + + + + +
+
+     nbOfSmoothLoop = (sqrt(sqrt((nbOfGridPointX*nbOfGridPointY*1.)+1.)/2.)) + 1
+
+     DO i1 = 1, nbOfSmoothLoop
+
+        ptrFieldU(2:nbOfGridPointX-1,2:nbOfGridPointY-1,1) = 0.25 * ( ptrFieldU(3:nbOfGridPointX,2:nbOfGridPointY-1,1) + &
+                                                                      ptrFieldU(1:nbOfGridPointX-2,2:nbOfGridPointY-1,1) + &
+                                                                      ptrFieldU(2:nbOfGridPointX-1,3:nbOfGridPointY,1) + &
+                                                                      ptrFieldU(2:nbOfGridPointX-1,1:nbOfGridPointY-2,1) )
+        ptrFieldV(2:nbOfGridPointX-1,2:nbOfGridPointY-1,1) = 0.25 * ( ptrFieldV(3:nbOfGridPointX,2:nbOfGridPointY-1,1) + &
+                                                                      ptrFieldV(1:nbOfGridPointX-2,2:nbOfGridPointY-1,1) + &
+                                                                      ptrFieldV(2:nbOfGridPointX-1,3:nbOfGridPointY,1) + &
+                                                                      ptrFieldV(2:nbOfGridPointX-1,1:nbOfGridPointY-2,1) )
+
+        ptrFieldU(1:nbOfGridPointX,1,1) = ptrFieldU(1:nbOfGridPointX,2,1)
+        ptrFieldU(1:nbOfGridPointX,nbOfGridPointY,1) = ptrFieldU(1:nbOfGridPointX,nbOfGridPointY-1,1)
+        ptrFieldU(1,1:nbOfGridPointY,1) = ptrFieldU(2,1:nbOfGridPointY,1)
+        ptrFieldU(nbOfGridPointX,1:nbOfGridPointY,1) = ptrFieldU(nbOfGridPointX-1,1:nbOfGridPointY,1)
+
+        ptrFieldV(1:nbOfGridPointX,1,1) = ptrFieldV(1:nbOfGridPointX,2,1)
+        ptrFieldV(1:nbOfGridPointX,nbOfGridPointY,1) = ptrFieldV(1:nbOfGridPointX,nbOfGridPointY-1,1)
+        ptrFieldV(1,1:nbOfGridPointY,1) = ptrFieldV(2,1:nbOfGridPointY,1)
+        ptrFieldV(nbOfGridPointX,1:nbOfGridPointY,1) = ptrFieldV(nbOfGridPointX-1,1:nbOfGridPointY,1)
+
+     ENDDO
+
+!       6) Write result
+!       + + + + + + + +
+     CALL arrayWrite(fieldU,outputFile1,exclusionValue)
+     CALL arrayWrite(fieldV,outputFile2,exclusionValue)
+
+
+!       7) Destroy matrices
+!       + + + + + + + + + +
+      CALL arrayDestroy(fieldU)
+      CALL arrayDestroy(fieldV)
       
       
-       return
-       end
+END SUBROUTINE
+
+END PROGRAM UVtopogen

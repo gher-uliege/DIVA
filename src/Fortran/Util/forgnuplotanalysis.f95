@@ -12,8 +12,8 @@ PROGRAM forGnuPlotAnalysis
    REAL(KIND=4) :: exclusionValueGridField1, exclusionValueGridField2
    INTEGER :: i1, i2, i3, iMax1, jMax1, kMax1, iMax2, jMax2, kMax2
 
-   Type(file) :: inputFile1, inputFile2, inputFile3
-   Type(file) :: outputFile40, outputFile41, outputFile47, outputFile68
+   TYPE(file) :: inputFile1, inputFile2, inputFile3
+   TYPE(file) :: outputFile40, outputFile41, outputFile47, outputFile68
    TYPE(arrayReal4) :: gridField1, gridField2
    REAL(KIND=4), DIMENSION(:,:,:), POINTER :: ptrGridField1, ptrGridField2
    REAL(KIND=4), POINTER :: ptrValueGridField2

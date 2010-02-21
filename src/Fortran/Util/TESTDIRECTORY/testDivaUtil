@@ -989,6 +989,89 @@ rm ./fort.30
 rm ./$fileToCheck.*
 echo ' ' >> testing.log
 
+# Chech program : UVtopogen.a
+# ---------------------------
+fileToCheck=UVtopogen
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+cp ./INPUTS/fort.10.$fileToCheck.$compiler ./fort.10
+cp ./INPUTS/fort.12.$fileToCheck.$compiler ./fort.12
+cp ./INPUTS/fort.13.$fileToCheck.$compiler ./fort.13
+echo fort.12 1 | ./convertGHERFile.a
+echo 0 | ./$fileToCheck.a >> testing.log
+echo Uvel.10001 2 | ./convertGHERFile.a
+echo Uvel.10002 2 | ./convertGHERFile.a
+echo Uvel.10003 2 | ./convertGHERFile.a
+echo Vvel.10001 2 | ./convertGHERFile.a
+echo Vvel.10002 2 | ./convertGHERFile.a
+echo Vvel.10003 2 | ./convertGHERFile.a
+
+if [ $makeRef == 1 ]
+then
+cp ./Uvel.10001 ./OUTPUTS/Uvel.10001a.$fileToCheck.$compiler
+cp ./Uvel.10002 ./OUTPUTS/Uvel.10002a.$fileToCheck.$compiler
+cp ./Uvel.10003 ./OUTPUTS/Uvel.10003a.$fileToCheck.$compiler
+cp ./Vvel.10001 ./OUTPUTS/Vvel.10001a.$fileToCheck.$compiler
+cp ./Vvel.10002 ./OUTPUTS/Vvel.10002a.$fileToCheck.$compiler
+cp ./Vvel.10003 ./OUTPUTS/Vvel.10003a.$fileToCheck.$compiler
+fi
+
+diff -s ./Uvel.10001 ./OUTPUTS/Uvel.10001a.$fileToCheck.$compiler >> testing.log
+diff -s ./Uvel.10002 ./OUTPUTS/Uvel.10002a.$fileToCheck.$compiler >> testing.log
+diff -s ./Uvel.10003 ./OUTPUTS/Uvel.10003a.$fileToCheck.$compiler >> testing.log
+diff -s ./Vvel.10001 ./OUTPUTS/Vvel.10001a.$fileToCheck.$compiler >> testing.log
+diff -s ./Vvel.10002 ./OUTPUTS/Vvel.10002a.$fileToCheck.$compiler >> testing.log
+diff -s ./Vvel.10003 ./OUTPUTS/Vvel.10003a.$fileToCheck.$compiler >> testing.log
+
+rm ./Uvel.10001
+rm ./Uvel.10002
+rm ./Uvel.10003
+rm ./Vvel.10001
+rm ./Vvel.10002
+rm ./Vvel.10003
+
+echo 1 | ./$fileToCheck.a >> testing.log
+echo Uvel.10001 2 | ./convertGHERFile.a
+echo Uvel.10002 2 | ./convertGHERFile.a
+echo Uvel.10003 2 | ./convertGHERFile.a
+echo Vvel.10001 2 | ./convertGHERFile.a
+echo Vvel.10002 2 | ./convertGHERFile.a
+echo Vvel.10003 2 | ./convertGHERFile.a
+
+if [ $makeRef == 1 ]
+then
+cp ./Uvel.10001 ./OUTPUTS/Uvel.10001b.$fileToCheck.$compiler
+cp ./Uvel.10002 ./OUTPUTS/Uvel.10002b.$fileToCheck.$compiler
+cp ./Uvel.10003 ./OUTPUTS/Uvel.10003b.$fileToCheck.$compiler
+cp ./Vvel.10001 ./OUTPUTS/Vvel.10001b.$fileToCheck.$compiler
+cp ./Vvel.10002 ./OUTPUTS/Vvel.10002b.$fileToCheck.$compiler
+cp ./Vvel.10003 ./OUTPUTS/Vvel.10003b.$fileToCheck.$compiler
+fi
+
+diff -s ./Uvel.10001 ./OUTPUTS/Uvel.10001b.$fileToCheck.$compiler >> testing.log
+diff -s ./Uvel.10002 ./OUTPUTS/Uvel.10002b.$fileToCheck.$compiler >> testing.log
+diff -s ./Uvel.10003 ./OUTPUTS/Uvel.10003b.$fileToCheck.$compiler >> testing.log
+diff -s ./Vvel.10001 ./OUTPUTS/Vvel.10001b.$fileToCheck.$compiler >> testing.log
+diff -s ./Vvel.10002 ./OUTPUTS/Vvel.10002b.$fileToCheck.$compiler >> testing.log
+diff -s ./Vvel.10003 ./OUTPUTS/Vvel.10003b.$fileToCheck.$compiler >> testing.log
+
+rm ./Uvel.10001
+rm ./Uvel.10002
+rm ./Uvel.10003
+rm ./Vvel.10001
+rm ./Vvel.10002
+rm ./Vvel.10003
+rm ./fort.10
+rm ./fort.12
+rm ./fort.13
+
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
 echo Testing procedure finished
 echo ==========================
 echo Check 'testing.log'
