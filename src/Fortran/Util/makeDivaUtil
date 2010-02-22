@@ -10,7 +10,7 @@ $divaDir/compileAndLinkFile $k
 mv $k.a $divaDir/Bin
 done
 
-#$divaDir/compileAndLinkFile UVtopogen
+#$divaDir/compileAndLinkFile lookforoutliers
 #$divaDir/compileAndLinkFile createWorkingFile
 
 if [ $compiler == ifort ]

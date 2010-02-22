@@ -1,0 +1,5 @@
+ 0.1002E+03        2 0.2500E+01 0.6500E+01 0.7908E+03 0.7880E+01 0.7810E+01
+ There are more outliers than usual : 1  out of 4
+ Points with value of first column larger than 3 are suspect, if there are more than  0.012  of them
+ relative biais in misfits is -0.009194233316735415
+ normalized variance should be one but is 0.018132051197051052

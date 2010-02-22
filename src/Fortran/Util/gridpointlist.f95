@@ -12,8 +12,8 @@ PROGRAM gridPointList
    REAL(KIND=4) :: exclusionValueGridField
    INTEGER :: iMax, jMax, kMax
 
-   Type(file) :: inputFile1, inputFile2
-   Type(file) :: outputFile
+   TYPE(file) :: inputFile1, inputFile2
+   TYPE(file) :: outputFile
    TYPE(arrayReal4) :: gridField
    REAL(KIND=4), DIMENSION(:,:,:), POINTER :: ptrGridField
 

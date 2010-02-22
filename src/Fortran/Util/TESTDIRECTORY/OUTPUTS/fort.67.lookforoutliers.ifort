@@ -1,0 +1,5 @@
+ 0.5529E+04        2 0.2500E+01 0.6500E+01 0.7908E+03 0.7880E+01 0.7810E+01
+ Points with value of first column larger than 3 are suspect, if there are more 
+ than   1.2000000E-02  of them
+ relative biais in misfits is -9.194233316735415E-003
+ normalized variance should be one but is  1.813205119705105E-002

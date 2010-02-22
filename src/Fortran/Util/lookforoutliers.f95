@@ -1,313 +1,362 @@
-       integer imax
-       parameter(imax=1000000)
-       REAL(KIND=8) ::  s(imax),sa(imax)
-       REAL(KIND=4) ::  dd(imax),dad(imax),ed(imax)
-       REAL(KIND=4) ::  xd(imax),yd(imax)
-       INTEGER(KIND=4) ::  iw(imax)
-       REAL(KIND=8) ::  smean,svar,mad,med
-       n=0
-       no=0
-       eps=0.00001
-       valex=-9999.
-!c      read(13,*,end=123)xori,yori
-!c         read(13,*)dx,dy
-!c         read(13,*)nx,ny
-!c         read(13,*)valex
-       read(5,*) valex      
-       nnn=0
- 1     continue
-       read(44,*,end=9999) x,y,d
-       read(71,*,end=9999) xa,ya,da
-       read(76,*,end=9999) xe,ye,e
-       
-       nnn=nnn+1
-       
-       
-       if( (abs(x-xe).gt.eps*abs(x)).or.(abs(x-xa).gt.eps*abs(x)).or.(abs(y-ye).gt.eps*abs(y)).or.(abs(y-ya).gt.eps*abs(y)) ) then
-       write(6,*) 'Incoherent files'
-       write(6,*) 'difference found in record',nnn
-       stop
-       endif
-!c       if (abs(da-valex).le.eps*abs(valex)) goto 1
-!c       if (abs(e-valex).le.eps*abs(valex)) goto 1
-       
-       n=n+1
-       if(n.gt.imax) stop 'increase imax'
-       s(n)=(d-da)/e
-       sa(n)=abs(s(n))
-       iw(n)=n
-       dd(n)=d
-       dad(n)=da
-       ed(n)=e
-       xd(n)=x
-       yd(n)=y
-       if (abs(da-valex).le.eps*abs(valex)) then
-       s(n)=0
-       sa(n)=abs(s(n))
-       dd(n)=d
-       dad(n)=d
-       ed(n)=10000+dd(n)
-       endif
-!C sort the outliers?
-       goto 1
- 9999  continue
-       if (n.eq.0) stop 'Problem in input?'
-       call QS2I1R(sa,iw,n)
-       do i=n,1,-1
-       if (abs(dd(iw(i))-dad(iw(i))).gt.2*ed(iw(i))) then
-       if (abs(dd(iw(i))-dad(iw(i))).gt.3*ed(iw(i))) then
-!c        write(66,*) xd(i),yd(i),dd(i),dad(i),
-!c     & ed(i),abs(dd(i)-dad(i))/ed(i),iw(i)
-        
-        write(66,1234) sa(i),iw(i),xd(iw(i)),yd(iw(i)),dd(iw(i)), dad(iw(i)),ed(iw(i))
+PROGRAM lookForOutliers
 
-     
-            endif
-        no=no+1
-       endif
-!C       write(6,*) 'Test passed',x,y,d,da,e
-!C       goto 1
-!C 123   continue
-       enddo
-  123  continue 
-       do i=1,n
-       iw(i)=i
-       enddo
- 
- 
-       if(no.gt.(0.05*n)) then
-       write(6,*) 'There are more outliers than usual :',no,' out of',n
-       write(66,*) 'There are more outliers than usual :',no,' out of',n
-       endif
-       if (no.eq.0) then
-       write(66,*) 'There are no outliers'
-       write(6,*) 'There are no outliers'
-       endif
-       if(no.le.(0.05*n)) then
-       write(6,*) 'There are a usual number of outliers',no,' out of',n
-       write(66,*) 'There are a usual number of outliers at 2 s:',no,' out of',n
-       
-       endif
-       write(66,*) 'Points with value of first column larger than 3 are suspect, if there are more than ', n*0.003, ' of them'
-!c normalized test, rather then mean and variance, med and mad
-       call madmed(s,mad,med,n,iw)
-       
-       
-       do i=n,1,-1
-       if (s(i).gt.3*mad) then
-!c       write(6,*) s(i)/mad,iw(i),xd(iw(i)),yd(iw(i)),dd(iw(i))
-        write(67,1234) s(i)/mad,iw(i),xd(iw(i)),yd(iw(i)),dd(iw(i)) , dad(iw(i)),ed(iw(i))
-       endif
-       enddo
-       write(67,*) 'Points with value of first column larger than 3 are suspect, if there are more than ', n*0.003, ' of them'
-       
-       write(6,*) 'relative biais in misfits is',med
-       write(66,*) 'relative biais in misfits is',med
-       write(67,*) 'relative biais in misfits is',med
-       write(6,*) 'normalized variance should be one but is ',mad
-       write(66,*) 'normalized variance should be one but is',mad
-       write(67,*) 'normalized variance should be one but is',mad
- 1234  format(1X,1E10.4,1X,1I8,5(1X,1E10.4))
-       stop
-       end
-       
-       subroutine median(s,med,n,iw)
-       REAL(KIND=8) ::  s(n),med
-       INTEGER(KIND=4) ::  iw(n)
-       call QS2I1R(s,iw,n)
-       if (mod(n,2).eq.0) then
-       med=(s(n/2)+s(n/2+1))/2.
-       else
-       med=s((n+1)/2)
-       endif
-       return
-       end
-       
-       subroutine madmed(s,mad,med,n,iw)
-       
-       REAL(KIND=8) ::  s(n),med,mad
-       INTEGER(KIND=4) ::  iw(n)
-       
-       call median(s,med,n,iw)
-       
-       do i=1,n
-       s(i)=abs(s(i)-med)
-       enddo
-       
-       call median(s,mad,n,iw)
-       mad=mad*1.4826
-       
-       return
-       end
-       
-       
-       
-       
-       
-        
-      subroutine QS2I1R (IA,JA,N)
-!C=============================================================================
-!C *** DESCRIPTION (from www.netlib.org)
-!C     Written by Rondall E Jones
-!C     Modified by John A. Wisniewski to use the Singleton QUICKSORT
-!C     algorithm. date 18 November 1976.
-!C
-!C     Further modified by David K. Kahaner
-!C     National Bureau of Standards
-!C     August, 1981
-!C
-!C     Even further modification made to bring the code up to the
-!C     Fortran 77 level and make it more readable and to carry
-!C     along one integer array and one real array during the sort by
-!C     Mark K. Seager
-!C     Lawrence Livermore National Laboratory
-!C     November, 1987
-!C     This routine was adapted from the ISORT routine.
-!C
-!C     ABSTRACT
-!C         This routine sorts an  array IA and makes the same
-!C         interchanges in the integer array JA
-!C         The array IA may be sorted in increasing order
-!C         A slightly modified quicksort algorithm is used.
-!C
-!C     DESCRIPTION OF PARAMETERS
-!C        IA -  array of values to be sorted.
-!C        JA - Integer array to be carried along.
-!C
-!C         N - Number of values in integer array IA to be sorted.
+! Module
+! ======
+  USE moduleDIVA
+  USE moduleFile
+  USE moduleSort
+  USE vectorInterface
 
-!C     .. Scalar Arguments ..
-      implicit none
-      INTEGER N
-!C     .. Array Arguments ..
-      REAL(KIND=8) ::   IA(N) 
-      INTEGER(KIND=4) ::  JA(N)
-!C     .. Local Scalars ..
-      REAL*4 R 
-      INTEGER(KIND=4) ::  I,  IJ,  J, JJT, JT, K, L, M,NN
-      REAL*8   IIT,  IT
-!C     .. Local Arrays ..
-      INTEGER(KIND=4) ::  IL(21), IU(21)
+  INCLUDE 'ioParameter.h'
 
-!C --- FIRST EXECUTABLE STATEMENT  QS2I1R ---
-      NN=N
-      if (N.EQ.1) then
-      write(6,*) 'No need to sort a single data point'
-      return
-      endif
+! Declaration
+! ===========
+   REALType :: exclusionValue
+   REALType, PARAMETER :: tolerance = 1.D-10, eps = 0.00001
 
-!C     Sort IA and carry JA and A along.
-!C     And now...Just a little black magic...
-      M = 1
-      I = 1
-      J = NN
-      R = .375E0
- 210  IF( R.LE.0.5898437E0 ) THEN
-         R = R + 3.90625E-2
+   TYPE(file) :: inputFile1, inputFile2, inputFile3
+   TYPE(file) :: outputFile66, outputFile67
+
+   INTEGER :: nbOfData, nbOfOutliers, i1
+
+   TYPE(vectorReal8) :: sValue, saValue
+   TYPE(vectorReal4) :: ddValue, dadValue, edValue, xdValue, ydValue
+   TYPE(vectorInteger4) :: iwValue
+   REALType ::  mad, med
+   INTEGER :: inputFileUnit1, inputFileUnit2, inputFileUnit3, outputFileUnit66, outputFileUnit67
+   REALType :: xValue, yValue, dValue, xaValue, yaValue, daValue, xeValue, yeValue, eValue, intermValue
+   REAL(KIND=8), DIMENSION(:), POINTER :: ptrSaValue, ptrSValue
+   INTEGER(KIND=4), DIMENSION(:), POINTER :: ptrIwValue
+   INTEGER(KIND=4) :: ptrIW
+
+! ==================
+! ==================
+! == Main program ==
+! ==================
+! ==================
+
+!  Always start the DIVA context
+!  =============================
+   CALL createDIVAContext()
+
+!  Body
+!  ====
+
+#ifdef _BATCH_MODE_
+#undef _INTERACTIVE_MODE_
+#endif
+
+!     1) Read information about the exclusion value
+!     ------------------------------------------
+!       1.1) In interactive mode
+!       - - - - - - - - - - - -
+#ifdef _INTERACTIVE_MODE_
+   WRITE(stdOutput,*) 'Please enter the exclusion value'
+   READ(stdInput,*) exclusionValue
+
+!       1.2) In batch mode
+!       - - - - - - - - -
+#else
+   READ(stdInput,*,END=30) exclusionValue
+30 CONTINUE
+
+#endif
+
+!     2) Create files
+!     ---------------
+   CALL createFile(inputFile1,'fort.44',formType=STD_FORMATTED)
+   CALL createFile(inputFile2,'fort.71',formType=STD_FORMATTED)
+   CALL createFile(inputFile3,'fort.76',formType=STD_FORMATTED)
+   CALL createFile(outputFile66,'fort.66',formType=STD_FORMATTED)
+   CALL createFile(outputFile67,'fort.67',formType=STD_FORMATTED)
+
+   CALL openFile(inputFile1)
+   CALL openFile(inputFile2)
+   CALL openFile(inputFile3)
+
+   inputFileUnit1 = getFileUnit(inputFile1)
+   inputFileUnit2 = getFileUnit(inputFile2)
+   inputFileUnit3 = getFileUnit(inputFile3)
+
+!     3) Compute nbOfData
+!     -------------------
+   nbOfData = computeNumberOfData(inputFileUnit1,inputFileUnit2,inputFileUnit3)
+
+   IF ( nbOfData == 0 ) THEN
+      STOP 'Problem in input?'
+   ENDIF
+
+   CALL vectorCreate(sValue,nbOfData)
+   CALL vectorCreate(saValue,nbOfData)
+   CALL vectorCreate(ddValue,nbOfData)
+   CALL vectorCreate(dadValue,nbOfData)
+   CALL vectorCreate(edValue,nbOfData)
+   CALL vectorCreate(xdValue,nbOfData)
+   CALL vectorCreate(ydValue,nbOfData)
+   CALL vectorCreate(iwValue,nbOfData)
+
+   ptrSValue => vectorGetValues(sValue)
+   ptrSaValue => vectorGetValues(saValue)
+   ptrIwValue => vectorGetValues(iwValue)
+
+!     4) Getting data
+!     ---------------
+   REWIND(inputFileUnit1)
+   REWIND(inputFileUnit2)
+   REWIND(inputFileUnit3)
+
+   DO i1 = 1, nbOfData
+      READ(inputFileUnit1,*) xValue, yValue, dValue
+      READ(inputFileUnit2,*) xaValue, yaValue, daValue
+      READ(inputFileUnit3,*) xeValue, yeValue, eValue
+
+      CALL checkCoherence(xvalue,xeValue,i1)
+      CALL checkCoherence(xvalue,xaValue,i1)
+      CALL checkCoherence(yvalue,yaValue,i1)
+      CALL checkCoherence(yvalue,yeValue,i1)
+
+      IF ( abs(eValue) <= tolerance ) THEN
+         eValue = tolerance
+      ENDIF
+
+      intermValue = ( dValue - daValue ) / eValue
+      ptrSValue(i1) = intermValue
+      ptrSaValue(i1) = abs(intermValue)
+      ptrIwValue(i1) = i1
+      ddValue%values(i1) = dValue
+      dadValue%values(i1) = daValue
+      edValue%values(i1) = eValue
+      xdValue%values(i1) = xValue
+      ydValue%values(i1) = yValue
+
+      IF ( abs(daValue-exclusionValue) <= eps * abs(exclusionValue) ) THEN
+         intermValue = 0.
+         ptrSValue(i1) = intermValue
+         ptrSaValue(i1) = abs(intermValue)
+         dadValue%values(i1) = dValue
+         edValue%values(i1) = 10000. + dValue
+      ENDIF
+
+   ENDDO
+
+   CALL closeFile(inputFile1)
+   CALL closeFile(inputFile2)
+   CALL closeFile(inputFile3)
+
+!     5) Sorting data
+!     ---------------
+   CALL QS2I1R(ptrSaValue,ptrIwValue,nbOfData)
+
+!     6) Writing output
+!     -----------------
+   CALL openFile(outputFile66)
+
+   outputFileUnit66 = getFileUnit(outputFile66)
+
+   nbOfOutliers = 0
+
+   DO i1 = nbOfData, 1, -1
+      ptrIW = ptrIwValue(i1)
+      dValue = ddValue%values(ptrIW)
+      daValue = dadValue%values(ptrIW)
+      eValue = edValue%values(ptrIW)
+
+      IF ( abs(dValue-daValue) > 2.*eValue ) THEN
+
+       IF ( abs(dValue-daValue) > 3.*eValue ) THEN
+           WRITE(outputFileUnit66,1234) ptrSaValue(i1),ptrIW,xdValue%values(ptrIW),ydValue%values(ptrIW),dValue,daValue,eValue
+       ENDIF
+
+       nbOfOutliers = nbOfOutliers + 1
+
+      ENDIF
+
+   ENDDO
+
+1234  FORMAT(1X,1E10.4,1X,1I8,5(1X,1E10.4))
+
+   DO i1 = 1, nbOfData
+      ptrIwValue(i1) = i1
+   ENDDO
+
+!     7) Writing information about outliers
+!     -------------------------------------
+   IF ( nbOfOutliers > ( 0.05 * nbOfData ) ) THEN
+       PRINT*,'There are more outliers than usual :',nbOfOutliers,' out of',nbOfData
+       WRITE(outputFileUnit66,*) 'There are more outliers than usual :',nbOfOutliers,' out of',nbOfData
+   ENDIF
+
+   IF ( nbOfOutliers == 0 ) THEN
+       WRITE(outputFileUnit66,*) 'There are no outliers'
+       PRINT*,'There are no outliers'
+   ENDIF
+
+   IF ( nbOfOutliers <= ( 0.05 * nbOfData ) ) THEN
+       PRINT*, 'There are a usual number of outliers',nbOfOutliers,' out of',nbOfData
+       WRITE(outputFileUnit66,*) 'There are a usual number of outliers at 2 s:',nbOfOutliers,' out of',nbOfData
+   ENDIF
+
+   WRITE(outputFileUnit66,*) 'Points with value of first column larger than 3 are suspect, if there are more than ', &
+                              nbOfData * 0.003 , ' of them'
+
+!     8) Writing second output
+!     ------------------------
+   CALL openFile(outputFile67)
+
+   outputFileUnit67 = getFileUnit(outputFile67)
+
+   CALL madmed(ptrSValue,ptrIwValue,nbOfData,med,mad)
+
+   DO i1 = nbOfData, 1, -1
+      IF ( ptrSValue(i1) >  (3. * mad) ) THEN
+        ptrIW = ptrIwValue(i1)
+        WRITE(outputFileUnit67,1234) ptrSValue(i1)/mad,ptrIW,xdValue%values(ptrIW),ydValue%values(ptrIW), &
+                                     ddValue%values(ptrIW),dadValue%values(ptrIW),edValue%values(ptrIW)
+      ENDIF
+   ENDDO
+
+   WRITE(outputFileUnit67,*) 'Points with value of first column larger than 3 are suspect, if there are more than ', &
+                              nbOfData * 0.003, ' of them'
+
+   PRINT*, 'relative biais in misfits is',med
+   WRITE(outputFileUnit66,*) 'relative biais in misfits is',med
+   WRITE(outputFileUnit67,*) 'relative biais in misfits is',med
+   PRINT*, 'normalized variance should be one but is ',mad
+   WRITE(outputFileUnit66,*) 'normalized variance should be one but is',mad
+   WRITE(outputFileUnit67,*) 'normalized variance should be one but is',mad
+
+   CALL closeFile(outputFile66)
+   CALL closeFile(outputFile67)
+
+!  Always finalise the DIVA context
+!  ================================
+   CALL vectorDestroy(sValue)
+   CALL vectorDestroy(saValue)
+   CALL vectorDestroy(ddValue)
+   CALL vectorDestroy(dadValue)
+   CALL vectorDestroy(edValue)
+   CALL vectorDestroy(xdValue)
+   CALL vectorDestroy(ydValue)
+   CALL vectorDestroy(iwValue)
+
+   CALL finaliseDIVAContext()
+
+! ============================================================
+! ============================================================
+! ============================================================
+! ===                                                      ===
+! ===                                                      ===
+! ===                  Program procedures                  ===
+! ===                                                      ===
+! ===                                                      ===
+! ============================================================
+! ============================================================
+! ============================================================
+ CONTAINS
+
+! Procedure 1 : median
+! --------------------
+SUBROUTINE median(realValue,integerValue,nbOfData,medianValue)
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: nbOfData
+      REALType, DIMENSION(:), POINTER :: realValue
+      INTEGER(KIND=4), DIMENSION(:), POINTER :: integerValue
+      REALType, INTENT(OUT) :: medianValue
+
+      INTEGER :: i1, i2
+
+!     Body
+!     - - -
+
+      CALL QS2I1R(realValue,integerValue,nbOfData)
+
+      IF ( mod(nbOfData,2) == 0 ) THEN
+         i1 = nbOfData / 2
+         i2 = i1 + 1
+         medianValue = 0.5 * ( realValue(i1) + realValue(i2) )
       ELSE
-         R = R-.21875E0
-      ENDIF
- 225  K = I
-
-!C     Select a central element of the array and save it in location
-!C     it, jt, at.
-      IJ = I + INT ((J-I)*R)
-      IT = IA(IJ)
-      JT = JA(IJ)
-
-!C     If first element of array is greater than it, interchange with it.
-      IF( IA(I).GT.IT ) THEN
-         IA(IJ) = IA(I)
-         IA(I)  = IT
-         IT     = IA(IJ)
-         JA(IJ) = JA(I)
-         JA(I)  = JT
-         JT     = JA(IJ)
-      ENDIF
-      L=J
-
-!C     If last element of array is less than it, swap with it.
-      IF( IA(J).LT.IT ) THEN
-         IA(IJ) = IA(J)
-         IA(J)  = IT
-         IT     = IA(IJ)
-         JA(IJ) = JA(J)
-         JA(J)  = JT
-         JT     = JA(IJ)
-
-!C     If first element of array is greater than it, swap with it.
-         IF ( IA(I).GT.IT ) THEN
-            IA(IJ) = IA(I)
-            IA(I)  = IT
-            IT     = IA(IJ)
-            JA(IJ) = JA(I)
-            JA(I)  = JT
-            JT     = JA(IJ)
-         ENDIF
+         i1 = ( nbOfData + 1 ) / 2
+         medianValue = realValue(i1)
       ENDIF
 
-!C     Find an element in the second half of the array which is
-!C     smaller than it.
-  240 L=L-1
-      IF( IA(L).GT.IT ) GO TO 240
+END SUBROUTINE
 
-!C     Find an element in the first half of the array which is
-!C     greater than it.
-  245 K=K+1
-      IF( IA(K).LT.IT ) GO TO 245
+! Procedure 2 : madMed
+! --------------------
+SUBROUTINE madmed(realValue,integerValue,nbOfData,medianValue,madValue)
 
-!C     Interchange these elements.
-      IF( K.LE.L ) THEN
-         IIT   = IA(L)
-         IA(L) = IA(K)
-         IA(K) = IIT
-         JJT   = JA(L)
-         JA(L) = JA(K)
-         JA(K) = JJT
-         GOTO 240
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: nbOfData
+      REALType, DIMENSION(:), POINTER :: realValue
+      INTEGER(KIND=4), DIMENSION(:), POINTER :: integerValue
+      REALType, INTENT(INOUT) :: medianValue
+      REALType, INTENT(OUT) :: madValue
+
+!     Body
+!     - - -
+      CALL median(realValue,integerValue,nbOfData,medianValue)
+
+      realValue(1:nbOfData) = abs(realValue(1:nbOfData)-medianValue)
+
+      CALL median(realValue,integerValue,nbOfData,madValue)
+
+      madValue = 1.4826 * madValue
+
+END SUBROUTINE
+
+! Procedure 3 : compute the number of data
+! ----------------------------------------
+FUNCTION computeNumberOfData(inputFileUnit1,inputFileUnit2,inputFileUnit3) RESULT(nbOfData)
+
+
+!     Declaration
+!     - - - - - -
+      INTEGER, INTENT(IN) :: inputFileUnit1, inputFileUnit2, inputFileUnit3
+
+      INTEGER :: nbOfData
+
+!     Body
+!     - - -
+
+      nbOfData = 0
+
+1     CONTINUE
+      READ(inputFileUnit1,*,END=999)
+      READ(inputFileUnit2,*,END=999)
+      READ(inputFileUnit3,*,END=999)
+
+      nbOfData = nbOfData + 1
+
+      GOTO 1
+
+999   CONTINUE
+
+END FUNCTION
+
+! Procedure 4 : check if data are valid
+! --------------------------------------
+SUBROUTINE checkCoherence(aValue,bValue,num)
+
+!     Declaration
+!     - - - - - -
+      REALType, INTENT(IN) :: aValue, bValue
+      INTEGER, INTENT(IN) :: num
+      REALType, PARAMETER :: eps = 0.00001
+
+!     Body
+!     - - -
+
+      IF ( abs(aValue-bValue) > eps * abs(aValue) ) THEN
+         PRINT*,'Incoherent files'
+         PRINT*,'difference found in record',num
+         STOP
       ENDIF
 
-!C     Save upper and lower subscripts of the array yet to be sorted.
-      IF( L-I.GT.J-K ) THEN
-         IL(M) = I
-         IU(M) = L
-         I = K
-         M = M+1
-      ELSE
-         IL(M) = K
-         IU(M) = J
-         J = L
-         M = M+1
-      ENDIF
-      GO TO 260
 
-!C     Begin again on another portion of the unsorted array.
-  255 M = M-1
-      IF( M.EQ.0 ) GO TO 300
-      I = IL(M)
-      J = IU(M)
-  260 IF( J-I.GE.1 ) GO TO 225
-      IF( I.EQ.J ) GO TO 255
-      IF( I.EQ.1 ) GO TO 210
-      I = I-1
-  265 I = I+1
-      IF( I.EQ.J ) GO TO 255
-      IT = IA(I+1)
-      JT = JA(I+1)
-      IF( IA(I).LE.IT ) GO TO 265
-      K=I
-  270 IA(K+1) = IA(K)
-      JA(K+1) = JA(K)
-      K = K-1
-      IF( IT.LT.IA(K) ) GO TO 270
-      IA(K+1) = IT
-      JA(K+1) = JT
-      GO TO 265
+END SUBROUTINE
 
- 300  CONTINUE
-      RETURN
-!C=============================================================================
-      END
-
-
+END PROGRAM lookForOutliers
 
