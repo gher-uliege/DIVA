@@ -357,13 +357,13 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att0_2 lgname'
       ENDIF
-      string256=' '
-      status=nf_put_att_text(ncid,id0_2,'units',
-     &                 LEN_TRIM(string256),TRIM(string256))
-      IF (status .NE.nf_noerr) THEN
-         print *,nf_strerror(status)
-         STOP 'Stopped in NC_4DCLIMATO att0_2 units'
-      ENDIF
+!x      string256=' '
+!x      status=nf_put_att_text(ncid,id0_2,'units',
+!x     &                 LEN_TRIM(string256),TRIM(string256))
+!x      IF (status .NE.nf_noerr) THEN
+!x         print *,nf_strerror(status)
+!x         STOP 'Stopped in NC_4DCLIMATO att0_2 units'
+!x      ENDIF
 !
       status=nf_def_var(ncid,'VARBAK',nf_float,two,cbdim,id0_3)
       IF (status .NE.nf_noerr) THEN
@@ -607,10 +607,10 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att errlgname'
       ENDIF
-      string256=' '
-      status=nf_put_att_text(ncid,id2_1,'units',
-     &                 LEN_TRIM(string256),TRIM(string256))
-
+!x      string256=' '
+!x      status=nf_put_att_text(ncid,id2_1,'units',
+!x     &                 LEN_TRIM(string256),TRIM(string256))
+!
       status=nf_put_att_real(ncid,id2_1,'valid_min',
      &                                   nf_float,one,verel_min)
       IF (status .NE.nf_noerr) THEN
