@@ -10,7 +10,7 @@ $divaDir/compileAndLinkFile $k
 mv $k.a $divaDir/Bin
 done
 
-#$divaDir/compileAndLinkFile lookforoutliers
+#$divaDir/compileAndLinkFile gebco2diva
 #$divaDir/compileAndLinkFile createWorkingFile
 
 if [ $compiler == ifort ]

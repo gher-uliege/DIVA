@@ -667,6 +667,38 @@ rm ./fort.99
 rm ./$fileToCheck.*
 echo ' ' >> testing.log
 
+# Chech program : gebco2diva.a
+# ---------------------------
+fileToCheck=gebco2diva
+echo Test : $fileToCheck
+echo ------
+echo Test : $fileToCheck >> testing.log
+echo ------ >> testing.log
+
+cp $divaDir/Bin/$fileToCheck.a ./$fileToCheck.a
+cp ./INPUTS/fort.10.$fileToCheck.$compiler ./fort.10
+nbOfData=120
+xred=2
+yred=3
+echo $nbOfData $xred $yred | ./$fileToCheck.a >> testing.log
+echo fort.12 2 | ./convertGHERFile.a
+
+if [ $makeRef == 1 ]
+then
+cp ./fort.12 ./OUTPUTS/fort.12.$fileToCheck.$compiler
+cp ./fort.20 ./OUTPUTS/fort.20.$fileToCheck.$compiler
+fi
+
+diff -s ./fort.12 ./OUTPUTS/fort.12.$fileToCheck.$compiler >> testing.log
+diff -s ./fort.20 ./OUTPUTS/fort.20.$fileToCheck.$compiler >> testing.log
+
+rm ./fort.10
+rm ./fort.12
+rm ./fort.20
+rm ./$fileToCheck.*
+echo ' ' >> testing.log
+
+
 # Chech program : ghervalex.a
 # ---------------------------
 fileToCheck=ghervalex
