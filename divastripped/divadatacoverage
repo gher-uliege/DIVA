@@ -64,7 +64,22 @@ cd ..
 
 echo 'creating a mesh'
 
+#echo Gridding
+if [ -f  ./output/meshvisu/fort.22 ]; then
+  f22=1
+ if [ -f  ./output/meshvisu/fort.22 ]; then
+   f23=1
+   echo "divadatacoverage: using mesh found in ./output/meshvisu"
+  if [ -f  ./output/meshvisu/fort.10 ]; then
+    f10=1
+  fi
+ fi
+else
+ echo "divadatacoverage: generating mesh"
 divamesh
+fi
+
+##divamesh
 
 echo 'going to analyse'
 

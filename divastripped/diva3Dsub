@@ -61,9 +61,12 @@ fi
 if [ -d ./input/divamesh ]; then
  fmeshe=1
 else
- mkdir ./input/divamesh
+ mkdir -p ./input/divamesh
+ mkdir -p ./output/3Danalysis/Meshes
  fmeshe=0
 fi
+#
+echo ' level  data_nbr' > './output/3Danalysis/'$var'.nbrdata'
 #
 dep=$bottm
 while [ $dep -le $surf ]

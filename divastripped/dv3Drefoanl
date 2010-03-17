@@ -47,6 +47,7 @@ if [ "$action" == "1" ];then
 if [ -f ./input/divadata/$var.$lev ];then
  cp -f ./input/divadata/$var.$lev  ./input/data.dat
  nbdat=`cat './input/data.dat' |wc -l` 
+ echo $lev $nbdat >> './output/3Danalysis/'$var'.nbrdata'
  if [ "$nbdat" == "0" ] ; then
   echo 'WARNING: data file ' $var.$lev 'is empty '
   dataflag=1
@@ -218,11 +219,12 @@ if [ -f ./input/divamesh/meshtopo.$lev ]; then
  cp -v ./input/divamesh/meshtopo.$lev ./output/meshvisu/fort.22
  cp -v ./input/divamesh/mesh.dat.$lev ./output/meshvisu/fort.23
  cp -v ./input/divaparam/coast.cont.$lev ./output/meshvisu/fort.10
- fmesh=1
 else
- echo '>>>>>>>>>>>>  regenerating a mesh for '$var'.'$lev
+ echo 'dv3Drefoanl:  generating a mesh for '$var'.'$lev
 divamesh
- fmesh=0
+ cp -v ./output/meshvisu/fort.22 ./input/divamesh/meshtopo.$lev
+ cp -v ./output/meshvisu/fort.23 ./input/divamesh/mesh.dat.$lev
+ cp -v ./output/meshvisu/fort.10 ./input/divaparam/coast.cont.$lev
 fi
 #
 if [ "$detrd" -eq "1" ];then
@@ -260,11 +262,12 @@ if [ -f ./input/divamesh/meshtopo.$lev ]; then
  cp -v ./input/divamesh/meshtopo.$lev ./output/meshvisu/fort.22
  cp -v ./input/divamesh/mesh.dat.$lev ./output/meshvisu/fort.23
  cp -v ./input/divaparam/coast.cont.$lev ./output/meshvisu/fort.10
- fmesh=1
 else
  echo '>>>>>>>>>>>>  regenerating a mesh for '$var'.'$lev
  ./divamesh
- fmesh=0
+ cp -v ./output/meshvisu/fort.22 ./input/divamesh/meshtopo.$lev
+ cp -v ./output/meshvisu/fort.23 ./input/divamesh/mesh.dat.$lev
+ cp -v ./output/meshvisu/fort.10 ./input/divaparam/coast.cont.$lev
 fi
  echo '>>>>>>>>>>>>  analysing anomalies for '$var'.'$lev
 #
@@ -286,7 +289,6 @@ fi
 echo '>>>>>>>>>>>>  sum up anomalies and reference field for '$var'.'$lev' '
 ./divasumup
 #
-#####./dvoutlierclean
 fi
 #
 if [ -f ./input/divadata/$var'.'$lev'.DATABINS' ];then
@@ -297,11 +299,6 @@ cp -v ./output/DATABINS.dat ./input/divadata/$var'.'$lev'.DATABINS'
 cp -v ./output/DATABINSinfo.dat ./input/divadata/$var'.'$lev'.DATABINSinfo'
 fi
 #
-#
-###if [ "$fmesh" == "0" ]; then
-### cp -v ./output/meshvisu/fort.22 ./input/divamesh/meshtopo.$lev
-### cp -v ./output/meshvisu/fort.23 ./input/divamesh/mesh.dat.$lev
-###fi
 #
 if [ "$detrd" -eq "1" ];then
 cp -v ./input/data.detrend.dat ./output/3Danalysis/DATADETREND/data.detrend.$var'.'$lev

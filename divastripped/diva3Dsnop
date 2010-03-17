@@ -68,6 +68,7 @@ dep=$lay1
 #
 if [ -f './output/'$var'.SN.dat' ];then
 rm -f './output/'$var'.SN.dat'
+rm -f './output/'$var'.Lay.dat'
 fi
 if [ -f './output/'$var'.VAR.dat' ];then
 rm -f './output/'$var'.VAR.dat'
@@ -381,7 +382,8 @@ echo 'ooooooooooooooooooooooooooooooooo VARBAK = ' $param13
 ############################################################
 #
 echo $param12 >> './output/'$var'.SN.dat' 
-echo $param13 >> './output/'$var'.VAR.dat' 
+echo $param13 >> './output/'$var'.VAR.dat'
+echo $dep >> './output/'$var'.Lay.dat' 
 #
 else
 echo '??????????????????????????????????????????????????????????'
@@ -422,7 +424,8 @@ dep=`expr $dep + 1`
 done
 #
 #
-if [ "$errflag" == "0" ];then
+if [ -f './output/'$var'.SN.dat' ];then
+##if [ "$errflag" == "0" ];then
 #
 cp -v './output/'$var'.SN.dat' './input/divaparam/'$var'.SN.dat.notfiltered'
 cp -v './output/'$var'.VAR.dat' './input/divaparam/'$var'.VAR.dat.notfiltered'
@@ -432,7 +435,11 @@ cp -v './output/'$var'.VAR.dat' './input/divaparam/'$var'.VAR.dat.notfiltered'
 #
 if [ "$parop" -le "-1" ];then
 #
+if [ "$errflag" -ge "1" ];then
+jmi=$errflag
+else
 jmi=$lay1
+fi
 jmnlevel=$lay2
 while [ "$jmi" -le "$jmnlevel" ]
 do
@@ -441,8 +448,9 @@ let lev=10000+$jmi
 cp -v './input/divaparam/'$var'.gcv.dat.'$lev ./output/gcv.dat.${lev}
 let jmi=$jmi+1
 done
-
-let llll=${lay2}-${lay1}
+lay0=`head -1 './output/'$var'.Lay.dat' ` 
+let llll=${lay2}-${lay0}
+##let llll=${lay2}-${lay1}
 if [ "$llll" -gt "0" ]
 then
 dvfilter $lay1 $lay2
@@ -464,12 +472,16 @@ fi
 #
 #
 if [ -f './output/'$var'.SN.dat' ];then
-dep=$lay1
-while [ $dep -le $lay2 ]
+lay0=`head -1 './output/'$var'.Lay.dat' ` 
+for dep in `cat './output/'$var'.Lay.dat'`
 do
+##dep=$lay1
+##while [ $dep -le $lay2 ]
+##do
  let lev=10000+$dep
  let lev1=$dep+1
-let nlen=$lev1-$lay1
+let nlen=$lev1-$lay0
+##let nlen=$lev1-$lay1
 dd=1
 #
 Fileinf='./output/'$var'.SN.dat'

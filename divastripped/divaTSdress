@@ -43,6 +43,25 @@ echo 'DIVAERRS2 divadoTS Missing file 3Dinfo file salinity'
 echo 'Please provide information file 3Dinfosalinity in ./input'
 exit
 fi
+#
+  Fileinf=./input/3Dinfo
+{
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read acts
+} < $Fileinf
+#
 diva3Ddress
 #
 #
@@ -58,20 +77,81 @@ echo 'DIVAERRS2 divadoTS Missing file 3Dinfo file temperature'
 echo 'Please provide information file 3Dinfotemper in ./input'
 exit
 fi
+#
+  Fileinf=./input/3Dinfo
+{
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read actp
+} < $Fileinf
+#
 diva3Ddress
 #
 if [ $maxit -ge 1 ];then
 #
 ./dvstbdat $lay1 $lay2 $temp $psal
 #
-./dv3d2stb $lay1 $lay2 $temp $psal
+echo '  '
+echo divaTS dress: before dv3d2stb:
+echo output:
+ls -ls ./output/3Danalysis
+echo output/Fields:
+ls -ls ./output/3Danalysis/Fields
+echo '  '
+
+./dv3d2stb $lay1 $lay2 $temp $psal $actp $acts
 #
-./dvstblize
+echo '  '
+echo divaTS dress: after dv3d2stb:
+echo output:
+ls -ls ./output/3Danalysis
+echo output/Fields:
+ls -ls ./output/3Danalysis/Fields
+echo '  '
+
+./dvstblize $acts $actp
 #
 cp ./input/3Dinfosalinity ./input/3Dinfo
+if [  $acts == "2" ];then
+if [ -d ./input/divarefe_all ] ;then
+dep=$lay1
+while [ $dep -le $lay2 ]
+do
+let lev=10000+$dep
+mv ./input/divarefe_all/$psal'.'$lev'.datapoint.ref' ./input/divarefe_all/$psal'.'$lev'.datapoint.ref.notstb'
+mv ./input/divarefe_all/$psal'.'$lev'.ascii.ref' ./input/divarefe_all/$psal'.'$lev'.ascii.ref.notstb'
+mv ./input/divarefe_all/$psal'.'$lev'.ref' ./input/divarefe_all/$psal'.'$lev'.ref.notstb'
+dep=`expr $dep + 1`
+done
+fi
+fi
 diva3Ddress
 #
 cp ./input/3Dinfotemper ./input/3Dinfo
+if [  $actp == "2" ];then
+if [ -d ./input/divarefe_all ] ;then
+dep=$lay1
+while [ $dep -le $lay2 ]
+do
+let lev=10000+$dep
+mv ./input/divarefe_all/$temp'.'$lev'.datapoint.ref' ./input/divarefe_all/$temp'.'$lev'.datapoint.ref.notstb'
+mv ./input/divarefe_all/$temp'.'$lev'.ascii.ref' ./input/divarefe_all/$temp'.'$lev'.ascii.ref.notstb'
+mv ./input/divarefe_all/$temp'.'$lev'.ref' ./input/divarefe_all/$temp'.'$lev'.ref.notstb'
+dep=`expr $dep + 1`
+done
+fi
+fi
 diva3Ddress
 #
 fi

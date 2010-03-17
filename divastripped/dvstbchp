@@ -1,0 +1,75 @@
+#!/bin/bash
+#
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+if [ $1 == "1" ];then
+
+cp -v ./input/param.par ./input/param.par.stb
+#
+Fileinf='./input/param.par'
+{
+read comment1
+read param1
+read comment2
+read param2
+read comment3
+read param3
+read comment4
+read param4
+read comment5
+read param5
+read comment6
+read param6
+read comment7
+read param7
+read comment8
+read param8
+read comment9
+read param9
+read comment10
+read param10
+read comment11
+read param11
+read comment12
+read param12
+read comment13
+read param13
+} < $Fileinf
+#
+if [ -f ./input/parap.par.temp ];then
+rm ./input/parap.par.temp
+fi
+#
+echo $comment1 >> ./input/parap.par.temp
+echo $param1 >> ./input/parap.par.temp
+echo $comment2 >> ./input/parap.par.temp
+echo $param2 >> ./input/parap.par.temp
+echo $comment3 >> ./input/parap.par.temp
+echo 0 >> ./input/parap.par.temp
+echo $comment4 >> ./input/parap.par.temp
+echo $param4 >> ./input/parap.par.temp
+echo $comment5 >> ./input/parap.par.temp
+echo $param5 >> ./input/parap.par.temp
+echo $comment6 >> ./input/parap.par.temp
+echo $param6 >> ./input/parap.par.temp
+echo $comment7 >> ./input/parap.par.temp
+echo $param7 >> ./input/parap.par.temp
+echo $comment8 >> ./input/parap.par.temp
+echo $param8 >> ./input/parap.par.temp
+echo $comment9 >> ./input/parap.par.temp
+echo $param9 >> ./input/parap.par.temp
+echo $comment10 >> ./input/parap.par.temp
+echo $param10 >> ./input/parap.par.temp
+echo $comment11 >> ./input/parap.par.temp
+echo $param11 >> ./input/parap.par.temp
+echo $comment12 >> ./input/parap.par.temp
+echo $param12 >> ./input/parap.par.temp
+echo $comment13 >> ./input/parap.par.temp
+echo 1 >> ./input/parap.par.temp
+#
+cp -v  ./input/parap.par.temp ./input/param.par
+#
+else
+cp -v ./input/param.par.stb ./input/param.par
+fi
+

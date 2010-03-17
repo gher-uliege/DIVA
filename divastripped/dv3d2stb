@@ -6,15 +6,50 @@ bottm=$1
 surf=$2
 temp=$3
 psal=$4
+actp=$5
+acts=$6
 ##########################################
 #
 #
 let lev1=10000+$bottm
 let lev2=10000+$surf
+if [ "$actp" == "1" ]; then
 mv ./output/3Danalysis/$temp'.'$lev1'.'$lev2'.anl.nc' ./output/3Danalysis/$temp'.'$lev1'.'$lev2'.beforstb.nc'
 mv ./output/3Danalysis/$temp'.'$lev1'.'$lev2'.fieldgher.anl' ./output/3Danalysis/$temp'.'$lev1'.'$lev2'.beforstb.anl'
+else
+mv ./output/3Danalysis/$temp'.'$lev1'.'$lev2'.ref.nc' ./output/3Danalysis/$temp'.'$lev1'.'$lev2'.beforstb.nc'
+mv ./output/3Danalysis/$temp'.'$lev1'.'$lev2'.fieldgher.ref' ./output/3Danalysis/$temp'.'$lev1'.'$lev2'.beforstb.anl'
+dep=$bottm
+while [ $dep -le $surf ]
+do
+let level=10000+$dep
+cp -v './output/3Danalysis/Fields/'$temp'.'$level'.ref' './output/3Danalysis/Fields/'$temp'.'$level'.anl'
+cp -v './output/3Danalysis/Fields/'$temp'.'$level'.ref.error'  './output/3Danalysis/Fields/'$temp'.'$level'.error'
+dep=`expr $dep + 1`
+done
+fi
+if [ "$acts" == "1" ]; then
 mv ./output/3Danalysis/$psal'.'$lev1'.'$lev2'.anl.nc' ./output/3Danalysis/$psal'.'$lev1'.'$lev2'.beforstb.nc'
 mv ./output/3Danalysis/$psal'.'$lev1'.'$lev2'.fieldgher.anl' ./output/3Danalysis/$psal'.'$lev1'.'$lev2'.beforstb.anl'
-#
-cp -r ./output/3Danalysis/Fields ./output/3Danalysis/Fields_beforstb
-cp -r ./output/3Danalysis/GnuPlots ./output/3Danalysis/GnuPlots_beforstb
+else
+mv ./output/3Danalysis/$psal'.'$lev1'.'$lev2'.ref.nc' ./output/3Danalysis/$psal'.'$lev1'.'$lev2'.beforstb.nc'
+mv ./output/3Danalysis/$psal'.'$lev1'.'$lev2'.fieldgher.ref' ./output/3Danalysis/$psal'.'$lev1'.'$lev2'.beforstb.anl'
+dep=$bottm
+while [ $dep -le $surf ]
+do
+let level=10000+$dep
+cp -v './output/3Danalysis/Fields/'$psal'.'$level'.ref' './output/3Danalysis/Fields/'$psal'.'$level'.anl'
+cp -v './output/3Danalysis/Fields/'$psal'.'$level'.ref.error'  './output/3Danalysis/Fields/'$psal'.'$level'.error'
+dep=`expr $dep + 1`
+done
+fi
+mkdir -p ./output/3Danalysis/Fields_beforstb
+mkdir -p ./output/3Danalysis/GnuPlots_beforstb
+cp ./output/3Danalysis/Fields/* ./output/3Danalysis/Fields_beforstb/.
+cp ./output/3Danalysis/GnuPlots/* ./output/3Danalysis/GnuPlots_beforstb/.
+
+
+##====================================================================
+##cp -v ./output/3Danalysis/Fields/$var'.'$lev'.ref' ./output/3Danalysis/Fields/$var'.'$lev'.anl'
+##cp -v ./output/3Danalysis/Fields/$var'.'$lev'.ref.error' ./output/3Danalysis/Fields/$var'.'$lev'.error'
+
