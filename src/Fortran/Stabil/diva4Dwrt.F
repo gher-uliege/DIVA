@@ -25,9 +25,9 @@
 !
       integer                   :: i,j,k,klev,ic,top_lev,kuw,time_len
      &                           , list_len
-      integer                   :: NX, NY, NK, ndata, nl, ivars,chlen
-      integer*4                 :: KMAX, ipr, nw, IMAX, JMAX
-      integer                   :: ICOOC, IREG, ISPEC
+      integer                   :: NX,NY,NK,ndata,nl,ivars,chlen,lev
+      integer*4                 :: KMAX,ipr,nw,IMAX,JMAX
+      integer                   :: ICOOC,IREG,ISPEC, ilev, nbdat
 !
       real*4                     :: VALEXC, zz,time_val,
      &              var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
@@ -43,7 +43,12 @@
      &              obin_min0,obin_max0,rl_min0,rl_max0
 !
       real*4                     :: xorig, yorig, dx, dy, xend, yend
+     &                            , WestBL,SouthBL,EastBL,NorthBL
 !
+      character (len=12)         :: Real_clock
+      integer                    :: xy1,xy2
+!
+      character (len=4)          :: yy1,yy2
       CHARACTER (len=255)        :: divafile,comments
       CHARACTER (len=20)         :: EXECIN
       CHARACTER (len=22)         :: DEPTHS
@@ -54,9 +59,11 @@
      &                            , SOURCE, COMMENT
       character (len=30)         :: Ref_time
       CHARACTER (len=99)         :: var_shname, var_cfname, var_name
+     &                            , dat_name, var1_name, prmliste
       character (len=99)         :: var_lgname
       character (len=5)          :: chname
       character (len=20)         :: var_units,vrb_units
+      character (len=20)                          :: s_units
       character (len=20) , DIMENSION(2)           :: l_units
       character (len=255), DIMENSION(:),ALLOCATABLE :: all_vars
      &                                               , all_files
@@ -118,7 +125,6 @@
 !
       top_lev = MAXLEV - MINLEV + 1
       ALLOCATE(dep(top_lev))
-!
       ALLOCATE(CORLEN(top_lev))
       ALLOCATE(SN(top_lev))
       ALLOCATE(VARBAK(top_lev))
@@ -186,7 +192,70 @@
           ENDDO
       endif
 !
+! Writing an info text file for matadata files:
+      WRITE(file_name2,'("../output/3Danalysis/",
+     &a,".4DNCMetainfo")')TRIM(var_shname)
+      close(12)
+      OPEN(UNIT=12,FILE=file_name2)
+!
+      chlen = 1
+      DO while(l_units(1)(chlen:chlen) .ne. ' ')
+         chlen = chlen + 1
+      ENDDO
+      chlen = chlen - 1
+      if (chlen == 2) then
+         s_units = l_units(1)
+      else
+         s_units = l_units(1)(1:chlen-5)
+      endif
+!
+      write(12,*) s_units
+!
+      WestBL = xorig
+      SouthBL = yorig
+      EastBL = xorig + dx*xend
+      NorthBL =yorig + dy*yend
+!
+      write(12,1111)SouthBL
+      write(12,1111)NorthBL
+      write(12,1111)WestBL
+      write(12,1111)EastBL
+      write(12,1112)dx
+      write(12,1112)dy
+      CALL DATE_AND_TIME(Real_clock) 
+      write(12,*)TRIM(Real_clock)
+
+        chlen = 1
+        DO while(var_shname(chlen:chlen) .ne. ' ') 
+           chlen = chlen + 1
+        ENDDO
+        chlen = chlen - 1
+        yy1 = var_shname(chlen-7:chlen-4)
+        yy2 = var_shname(chlen-3:chlen)
+        read (yy1,'(I4.4)') xy1
+        read (yy2,'(I4.4)') xy2
+      write(12,1113)xy1
+      write(12,1113)xy2
+!
+ 1111 FORMAT(1X,F7.3)
+ 1112 FORMAT(1X,F5.3)
+ 1113 FORMAT(1X,I4.4)
 !--------------------------------------------------------------
+!
+!
+! Writing an info text file for matadata files:
+      WRITE(file_name2,'("../output/3Danalysis/",
+     &a,".Metainfo.txt")')TRIM(var_shname)
+      close(12)
+      OPEN(UNIT=12,FILE=file_name2)
+!
+      write(12,1201)
+      write(12,1202)NorthBL
+      write(12,1204)WestBL
+      write(12,1203)EastBL
+      write(12,1205)SouthBL
+      write(12,1206)dx,dy,s_units
+
 !
       WRITE(file_name2,'("../output/3Danalysis/",
      &a,".4Danl.nc")')TRIM(var_shname)
@@ -217,6 +286,25 @@
 !
 !!        var_shname = var_shname_l(ivars)
 !
+      var1_name = all_files(ivars)
+      chlen = 1
+      DO while(var1_name(chlen:chlen) .ne. ' ')
+         chlen = chlen + 1
+      ENDDO
+      chlen = chlen - 1
+      dat_name = var1_name(1:chlen-18)
+
+      WRITE(var1_name,'("../output/3Danalysis/",
+     &a,"nbrdata")')TRIM(dat_name)
+      close(2)
+      OPEN(UNIT=2,FILE=TRIM(var1_name))
+      read(2,*) comments
+
+      WRITE(prmliste,'("../output/3Danalysis/",
+     &a,"3Dparam")')TRIM(dat_name)
+        close(3)
+        OPEN(UNIT=3,FILE=prmliste)
+!
       CALL NC_RD3DCL(imax,jmax,nk,ipar,time_val,clbnds(1:2,ivars),
      &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
      &  xlon,ylat,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
@@ -228,6 +316,25 @@
 !     &  var_lgname,cellmeth,var_units,vrb_units,l_units,Ref_time,
 !     &  title_string,INSTITUT,PRODUCTION,SOURCE,COMMENT)
 !
+      write(12,2001)TRIM(var_shname_l(ivars)),time_val
+      write(12,2002)
+      do lev=1,NK
+      read(2,*) ilev, nbdat
+      read(3,*)CORLEN(lev),SN(lev),VARBAK(lev)
+      write(12,2003)dep(lev),nbdat,CORLEN(lev),SN(lev),VARBAK(lev)
+      enddo
+      write(12,2015)
+      write(12,2004)var_min,var_max
+      write(12,2008)var1_min,var1_max
+      write(12,2009)var2_min,var2_max
+      write(12,2005)vbt_min,vbt_max
+      write(12,2011)vbt1_min,vbt1_max
+      write(12,2012)vbt2_min,vbt2_max
+      write(12,2006)ver_min,ver_max
+      write(12,2010)verel_min,verel_max
+      write(12,2007)dbin_min,dbin_max
+      write(12,2013)obin_min,obin_max
+      write(12,2014)rl_min,rl_max
 
       IF(ivars == 1) THEN
         var_min0 = var_min
@@ -303,5 +410,33 @@
 !
       ENDDO  !ivars
 !
+
+ 1201 FORMAT(//,10X,'Geographical coordinates:',/,
+     &          10X,'*************************')
+ 1202 FORMAT(4X,'Northen boundary ..........:',F10.5)
+ 1203 FORMAT(4X,'Eastern boundary ..........:',F10.5)
+ 1204 FORMAT(4X,'Western boundary ..........:',F10.5)
+ 1205 FORMAT(4X,'Southern boundary .........:',F10.5)
+ 1206 FORMAT(4X,'Grid resolution  ..........:',F6.4,' by ',F6.4,1X,a)
+
+ 2001 FORMAT(//,4X,'VARIABLE: ',a,' at month ',F10.5,/,4X,'********')
+ 2002 FORMAT(4X,'DEPTH',4X,'LAYER DATA NUMBER',2X,'CORELATION LENGTH'
+     &,4X,'S/N RATIO',4X,'VARBAK')
+ 2003 FORMAT(4X,F8.2,6X,I6.4,14X,F6.4,10X,F6.3,4X,F6.3)
+ 2015 FORMAT(/,4X,'%%NetCDF FILE FIELDS%%',12X,'MIN VALUE',
+     &4X,'MAX VALUE')
+                   
+ 2004 FORMAT(4X,'VARIABLE                  ',6X,F10.5,4X,F10.5)
+ 2005 FORMAT(4X,'BOTTOM VARIABLE Val       ',6X,F10.5,4X,F10.5)
+ 2006 FORMAT(4X,'VARIABLE ERROR            ',6X,F10.5,4X,F10.5)
+ 2007 FORMAT(4X,'DATA/BINS                 ',6X,F10.5,4X,F10.5)
+ 2008 FORMAT(4X,'MASKED VARIABLE treshold 1',6X,F10.5,4X,F10.5)
+ 2009 FORMAT(4X,'MASKED VARIABLE treshold 2',6X,F10.5,4X,F10.5)
+ 2010 FORMAT(4X,'VARIABLE RELATIVE ERROR   ',6X,F10.5,4X,F10.5)
+ 2011 FORMAT(4X,'MASKED BOTTOM treshold 1  ',6X,F10.5,4X,F10.5)
+ 2012 FORMAT(4X,'MASKED BOTTOM treshold 2  ',6X,F10.5,4X,F10.5)
+ 2013 FORMAT(4X,'OUTLIERS BINS             ',6X,F10.5,4X,F10.5)
+ 2014 FORMAT(4X,'RELATIVE CORELATION LENGTH',6X,F10.5,4X,F10.5)
+
       stop
       end

@@ -54,7 +54,6 @@
      &                         , vbt_shname,vbt_lgname
      &                         , string256
 !
-      integer  ,dimension(2)              :: cbdim, pardim
       integer  ,dimension(2)              :: stpar, prcnt
       integer  ,dimension(3)              :: dim2
       integer  ,dimension(3)              :: star2, coun2
@@ -205,8 +204,6 @@
 !
       IF(ipar == 1) then
 
-      cbdim(1)=nvid
-      cbdim(2)=timeid
       status=nf_inq_varid(ncid,'climatology_bounds',idcb)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
@@ -248,22 +245,19 @@
       ! Inquire data variables
       !-----------------------
 !
-      cbdim(1)=depthid
-      cbdim(2)=timeid
-
-      status=nf_inq_varid(ncid,'CORLEN',id0_1)
+      status=nf_inq_varid(ncid,'CORRLEN',id0_1)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_READ3DCL def var0_1'
       ENDIF
 
-      status=nf_inq_varid(ncid,'SN',id0_2)
+      status=nf_inq_varid(ncid,'SNR',id0_2)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_READ3DCL def var0_2'
       ENDIF
 !
-      status=nf_inq_varid(ncid,'VARBAK',id0_3)
+      status=nf_inq_varid(ncid,'VARBACK',id0_3)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_READ3DCL def var0_3'
@@ -590,29 +584,6 @@
       status = nf_get_var1_real(ncid, idtime, icdf, hrss)
       time_val = hrss
 !
-      stpar(1)=1
-      stpar(2)=icdf
-      prcnt(1)=KM
-      prcnt(2)=1
-
-      status = nf_get_vara_real(ncid,id0_1, stpar, prcnt,CORLEN)
-      IF (status .NE.nf_noerr) THEN
-         print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ3DCL get CORLEN'
-      ENDIF
-!
-      status = nf_get_vara_real(ncid,id0_2, stpar, prcnt,SN)
-      IF (status .NE.nf_noerr) THEN
-         print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ3DCL get SN'
-      ENDIF
-!
-      status = nf_get_vara_real(ncid,id0_3, stpar, prcnt,VARBAK)
-      IF (status .NE.nf_noerr) THEN
-         print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ3DCL get VARBAK'
-      ENDIF
-!
       start(1)=1
       start(2)=1
       start(3)=1
@@ -626,31 +597,6 @@
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_READ3DCL get var'
-      ENDIF
-!
-      star2(1)=1
-      star2(2)=1
-      star2(3)=icdf
-      coun2(1)=IM
-      coun2(2)=JM
-      coun2(3)=1
-! 
-      status=nf_get_vara_real(ncid,id2d1, star2, coun2,varbot)
-      IF (status .NE.nf_noerr) THEN
-         print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ3DCL get varbot'
-      ENDIF
-!
-      status=nf_get_vara_real(ncid,id2d2, star2, coun2,varb1)
-      IF (status .NE.nf_noerr) THEN
-         print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ3DCL get varbot'
-      ENDIF
-!
-      status=nf_get_vara_real(ncid,id2d3, star2, coun2,varb2)
-      IF (status .NE.nf_noerr) THEN
-         print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ3DCL get varbot'
       ENDIF
 !
       status=nf_get_vara_real(ncid,id1_1, start, count,var1)
@@ -693,6 +639,56 @@
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_READ3DCL get rlfield'
+      ENDIF
+!
+      star2(1)=1
+      star2(2)=1
+      star2(3)=icdf
+      coun2(1)=IM
+      coun2(2)=JM
+      coun2(3)=1
+! 
+      status=nf_get_vara_real(ncid,id2d1, star2, coun2,varbot)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_READ3DCL get varbot'
+      ENDIF
+!
+      status=nf_get_vara_real(ncid,id2d2, star2, coun2,varb1)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_READ3DCL get varbot'
+      ENDIF
+!
+      status=nf_get_vara_real(ncid,id2d3, star2, coun2,varb2)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_READ3DCL get varbot'
+      ENDIF
+!
+      stpar(1)=1
+      stpar(2)=icdf
+      prcnt(1)=KM
+      prcnt(2)=1
+
+      status = nf_get_var1_real(ncid,id0_1, stpar, prcnt,CORLEN)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_READ3DCL get CORLEN'
+      ENDIF
+      write(*,*)' dvncread CORLEN ',CORLEN
+      write(*,*)' dvncread sterror ',nf_strerror(status)
+!
+      status = nf_get_var1_real(ncid,id0_2, stpar, prcnt,SN)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_READ3DCL get SN'
+      ENDIF
+!
+      status = nf_get_var1_real(ncid,id0_3, stpar, prcnt,VARBAK)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_READ3DCL get VARBAK'
       ENDIF
 !
       status=nf_close(ncid)

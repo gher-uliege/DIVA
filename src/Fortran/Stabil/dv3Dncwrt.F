@@ -326,7 +326,7 @@
       cbdim(1)=depthid
       cbdim(2)=timeid
 !
-      status=nf_def_var(ncid,'CORLEN',nf_float,two,cbdim,id0_1)
+      status=nf_def_var(ncid,'CORRLEN',nf_float,two,cbdim,id0_1)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def var0_1'
@@ -345,7 +345,7 @@
          STOP 'Stopped in NC_4DCLIMATO att0_1 units'
       ENDIF
 !
-      status=nf_def_var(ncid,'SN',nf_float,two,cbdim,id0_2)
+      status=nf_def_var(ncid,'SNR',nf_float,two,cbdim,id0_2)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def var0_2'
@@ -365,7 +365,7 @@
 !x         STOP 'Stopped in NC_4DCLIMATO att0_2 units'
 !x      ENDIF
 !
-      status=nf_def_var(ncid,'VARBAK',nf_float,two,cbdim,id0_3)
+      status=nf_def_var(ncid,'VARBACK',nf_float,two,cbdim,id0_3)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def var0_3'
@@ -610,7 +610,7 @@
 !x      string256=' '
 !x      status=nf_put_att_text(ncid,id2_1,'units',
 !x     &                 LEN_TRIM(string256),TRIM(string256))
-!
+!x
       status=nf_put_att_real(ncid,id2_1,'valid_min',
      &                                   nf_float,one,verel_min)
       IF (status .NE.nf_noerr) THEN
@@ -1298,19 +1298,26 @@
       prcnt(1)=KM
       prcnt(2)=1
 
-      status = nf_put_vara_real(ncid,id0_1, stpar, prcnt,CORLEN)
+      write(*,*)' dvncwrite CORLEN ',CORLEN
+      write(*,*)' dvncwrite st pr  ',stpar,prcnt
+     
+
+
+      status = nf_put_var1_real(ncid,id0_1, stpar, prcnt,CORLEN)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put CORLEN'
       ENDIF
+      write(*,*)' dvncwrite sterror CORLEN ',nf_strerror(status)
 !
-      status = nf_put_vara_real(ncid,id0_2, stpar, prcnt,SN)
+
+      status = nf_put_var1_real(ncid,id0_2, stpar, prcnt,SN)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put SN'
       ENDIF
 !
-      status = nf_put_vara_real(ncid,id0_3, stpar, prcnt,VARBAK)
+      status = nf_put_var1_real(ncid,id0_3, stpar, prcnt,VARBAK)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put VARBAK'

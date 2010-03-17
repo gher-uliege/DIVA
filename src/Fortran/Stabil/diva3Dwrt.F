@@ -30,7 +30,7 @@
 !
       integer            :: i,j,k,klev,ic,top_lev,kuw,kwu,ipar,iparpar
       integer                   :: NX, NY, NK, ndata, nl,chlen,iun
-      integer*4                 :: KMAX, ipr, nw, IMAX, JMAX
+      integer*4                 :: KMAX, ipr, nw, IMAX, JMAX, flag
 !!      integer                 :: KMAX, ipr, nw, IMAX, JMAX
       integer                   :: ICOOC, IREG, ISPEC
       integer                   :: nm,xm1,xm2,xy1,xy2
@@ -48,7 +48,7 @@
       CHARACTER (len=16)         :: EXECIN
       CHARACTER (len=22)         :: DEPTHS
       CHARACTER (len=99)         :: VARFILEIN
-      CHARACTER (len=255)        :: file_name,Ref_time, ncliste
+      CHARACTER (len=255)        :: file_name,Ref_time, ncliste,prmliste
       character (len=255)        :: title_string, cellmeth
      &                            , INSTITUT,PRODUCTION,SOURCE,COMMENT
       CHARACTER (len=99)         :: var_shname,var_name,var_cfname
@@ -214,6 +214,17 @@
 !
 ! Reading param.par
 !
+      flag=0
+      WRITE(prmliste,'("../output/3Danalysis/",
+     &a,".3Dparam")')TRIM(var_shname)
+      INQUIRE(FILE=TRIM(ncliste),EXIST=exist)
+      if(exist) then
+        flag=1
+      else
+        close(12)
+        OPEN(UNIT=12,FILE=prmliste)
+      endif
+!
          klev = 0
          DO istep = MINLEV,MAXLEV
             klev = klev + 1
@@ -266,6 +277,7 @@
             READ(2,*) SN(klev)
             READ(2,*)! comments
             READ(2,*) VARBAK(klev)
+            if(flag.eq.0) write(12,*)CORLEN(klev),SN(klev),VARBAK(klev)
             CLOSE(2)
          ENDDO
 !
