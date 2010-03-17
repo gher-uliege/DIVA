@@ -1,6 +1,9 @@
 #!/bin/bash
 
 
+echo "divadoall starts at:"
+date
+
 DIVADIR="../../DIVA3D"
 
 dos2unix datasource
@@ -89,8 +92,6 @@ declare -i depthm
 
 
 echo Making sure files are in unix format
-
-dos2unix -q ./input/param.par
 dos2unix ./input/contour.depth
 dos2unix varlist
 dos2unix yearlist
@@ -226,7 +227,7 @@ if [ "$isUVcst" == "1" ];then
  rm -r ./input/divaUVcons
  rm -f ./input/constraint.dat
  fi
- mkdir -p ./input/divaUVcons
+ mkdir ./input/divaUVcons
  let lev=0+$minlevel
  let maxlevel=0+$maxlevel
  while [ "$lev" -le "$maxlevel" ]
@@ -266,7 +267,7 @@ if [ "$isref" == "1" ];then
  if [ -d ./input/divarefe ]; then
  rm -r ./input/divarefe
  fi
- mkdir -p ./input/divarefe
+ mkdir ./input/divarefe
  let lev=0+$minlevel
  let maxlevel=0+$maxlevel
  while [ "$lev" -le "$maxlevel" ]
@@ -382,26 +383,62 @@ then
 
 
 
-# Need to optimise the copy operation, too much movements
-# Also clean up destination directories
-# Also contour generation not needed each loop, though fast operation.
+# Need to optimise the copy operation, too much movements: done
+# Also clean up destination directories: done
+# Also contour generation not needed each loop, though fast operation: done.
 
-rm  ${DIVADIR}/divastripped/input/*
-rm  ${DIVADIR}/divastripped/input/*/*
-rm  ${DIVADIR}/divastripped/output/*
-rm  ${DIVADIR}/divastripped/output/*/*
-rm  ${DIVADIR}/divastripped/output/*/*/*
-rm  ${DIVADIR}/divastripped/divawork/*
+rm -rf ${DIVADIR}/divastripped/input/*
+rm -f ${DIVADIR}/divastripped/output/*
+rm -f ${DIVADIR}/divastripped/output/*/*
+rm -f ${DIVADIR}/divastripped/output/*/*/*
+rm -f ${DIVADIR}/divastripped/divawork/*
 
 if [ "$isanalysis" -eq "2" ] ;then
 if [ -d ./input/divarefe_all ];then
 echo '>>>WARNING: ./input/divarefe_all exists, files may be rewritten'
 else
-mkdir -p ./input/divarefe_all
+mkdir ./input/divarefe_all
 fi
 fi
 
-cp -r ./input/* ${DIVADIR}/divastripped/input
+####  cp -r ./input/* ${DIVADIR}/divastripped/input
+
+mkdir -p ${DIVADIR}/divastripped/input/divadata
+mkdir -p ${DIVADIR}/divastripped/input/divaparam
+mkdir -p ${DIVADIR}/divastripped/output/3Danalysis
+
+cp -v ./input/contour.depth ${DIVADIR}/divastripped/input/.
+cp -v ./input/param.par ${DIVADIR}/divastripped/input/.
+if [ "$iscontour" -ne "0" ]
+then
+cp -v ./input/topo.dat ${DIVADIR}/divastripped/input/.
+cp -v ./input/topo.grd ${DIVADIR}/divastripped/input/.
+cp -v ./input/TopoInfo.dat ${DIVADIR}/divastripped/input/.
+fi
+cp -v ./input/divaparam/param.par ${DIVADIR}/divastripped/input/divaparam/.
+
+let lev=0+$minlevel
+let maxlevel=0+$maxlevel
+while [ "$lev" -le "$maxlevel" ]
+do 
+ let level=10000+$lev
+ cp -v ./input/divaparam/coast.cont.$level ${DIVADIR}/divastripped/input/divaparam/.
+ cp -v ./input/divaparam/param.par.$var.$year.$month.$level ${DIVADIR}/divastripped/input/divaparam/.
+ cp -v ./input/divaparam/RLinfo.dat ${DIVADIR}/divastripped/input/divaparam/.
+ cp -v ./input/divaparam/RL.$var.$year.$month.$level ${DIVADIR}/divastripped/input/divaparam/.
+ cp -v ./input/divadata/$var.$year.$month.$level ${DIVADIR}/divastripped/input/divadata/.
+ let lev=$lev+1
+done
+
+if [ "$isUVcst" == "1" ];then
+mkdir -p ${DIVADIR}/divastripped/input/divaUVcons
+cp -v ./input/divaUVcons/* ${DIVADIR}/divastripped/input/divaUVcons/.
+fi
+if [ "$isref" == "1" ];then
+mkdir -p ${DIVADIR}/divastripped/input/divarefe
+cp -v ./input/divarefe/* ${DIVADIR}/divastripped/input/divarefe/.
+fi
+
 
 if [ -f ${var}.pal ]
 then
@@ -412,14 +449,7 @@ echo using default palette for plotting
 cp -v ${DIVADIR}/divastripped/gnuwork/analysis.pal.default ${DIVADIR}/divastripped/gnuwork/analysis.pal
 fi
 
-
 cd ${DIVADIR}/divastripped/
-
-mkdir -p ./input/divadata
-mkdir -p ./input/divaparam
-mkdir -p ./input/divaUVcons
-mkdir -p ./output/3Danalysis
-
 
 if [ -f $WDIR'/output/3Danalysis/'$var'.'$year'.3DNCliste' ]; then
  cp -v $WDIR'/output/3Danalysis/'$var'.'$year'.3DNCliste' ${DIVADIR}/divastripped/output/3Danalysis/.
@@ -534,6 +564,11 @@ fi
 
 cd $WDIR
 
+# Contour generation not needed each loop:
+if [ "$iscontour" -ne "0" ];then
+let iscontour=0
+fi
+
 done
 
 echo ==================
@@ -563,3 +598,5 @@ fi
 echo ==================
 echo Finished
 echo ==================
+
+date

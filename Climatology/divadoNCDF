@@ -3,7 +3,14 @@
 WDIR=$(pwd)
 DIVADIR="../../DIVA3D"
 
-mkdir ${DIVADIR}/divastripped/output/3Danalysis
+mkdir ${DIVADIR}/divastripped
+
+mkdir -p ./output/3Danalysis/MetaDataXMLs
+
+
+./dvtxtmetainfo > ./output/3Danalysis/DriverMetainfo
+
+
 
 ##################################################
 # loop on years defined in yearlist
@@ -46,6 +53,17 @@ for ncfile in `ls $var.*.anl.nc` ;do
 echo $ncfile
 cp -v $ncfile ../../${DIVADIR}/divastripped/output/3Danalysis/.
 done
+
+for dtfile in `ls $var'.'$year'.'*'.nbrdata'` ;do
+echo $dtfile
+cp -v $dtfile ../../${DIVADIR}/divastripped/output/3Danalysis/.
+done
+
+for dtfile in `ls $var'.'$year'.'*'.3Dparam'` ;do
+echo $dtfile
+cp -v $dtfile ../../${DIVADIR}/divastripped/output/3Danalysis/.
+done
+
 cd ../../
 cd ${DIVADIR}/divastripped
 
@@ -53,6 +71,14 @@ diva4Dncwrite
 
 echo now saving needs to be done
 cp -v ./output/3Danalysis/$var.$year.4Danl.nc ${WDIR}/output/3Danalysis/.
+cp -v ./output/3Danalysis/$var'.'$year'.4DNCMetainfo' ${WDIR}/output/3Danalysis/.
+cp -v ./output/3Danalysis/$var'.'$year'.Metainfo.txt' ${WDIR}/output/3Danalysis/.
+
+cd $WDIR
+
+cat  ./output/3Danalysis/DriverMetainfo ./output/3Danalysis/$var'.'$year'.Metainfo.txt' > ./output/3Danalysis/MetaDataXMLs/$var'.'$year'.Textinfo.txt'
+
+dvgenxml
 
 else
 
