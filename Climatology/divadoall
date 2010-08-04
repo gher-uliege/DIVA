@@ -393,6 +393,45 @@ rm -f ${DIVADIR}/divastripped/output/*/*
 rm -f ${DIVADIR}/divastripped/output/*/*/*
 rm -f ${DIVADIR}/divastripped/divawork/*
 
+
+if [ "$iscontour" -ne "0" ]
+then
+
+if [ -f ./input/topo.dat ];then
+cp -v ./input/topo.dat ${DIVADIR}/divastripped/input/.
+fi
+if [ -f ./input/topo.gebco ];then
+cp -v ./input/topo.gebco ${DIVADIR}/divastripped/input/.
+fi
+if [ -f ./input/topo.grd ];then
+cp -v ./input/topo.grd ${DIVADIR}/divastripped/input/.
+cp -v ./input/TopoInfo.dat ${DIVADIR}/divastripped/input/.
+fi
+if [ -f ./input/param.par ];then
+cp -v ./input/param.par ${DIVADIR}/divastripped/input/.
+else
+if [ -f ./input/divaparam/param.par ];then
+cp -v ./input/divaparam/param.par ${DIVADIR}/divastripped/input/.
+else
+echo "============================================"
+echo "Please provide a param.par file in input/."
+echo "divadoall exits"
+echo "============================================"
+exit
+fi
+
+if [ -f ./input/contour.depth ];then
+cp -v ./input/contour.depth ${DIVADIR}/input/.
+else
+echo "=============================================="
+echo "Please provide a contour.depth file in input/."
+echo "divadoall exits"
+echo "=============================================="
+exit
+fi
+fi
+fi
+
 if [ "$isanalysis" -eq "2" ] ;then
 if [ -d ./input/divarefe_all ];then
 echo '>>>WARNING: ./input/divarefe_all exists, files may be rewritten'
@@ -548,7 +587,7 @@ diva3Ddress
 echo now saving needs to be done
 mkdir -p ${WDIR}/output
 mkdir -p ${WDIR}/newinput
-cp -r ${DIVADIR}/divastripped/output/* ${WDIR}/output
+cp -r ${DIVADIR}/divastripped/output/3Danalysis ${WDIR}/output/.
 cp -r ${DIVADIR}/divastripped/input/* ${WDIR}/newinput
 
 if [ $iscontour -ge 2 ]; then
@@ -589,7 +628,7 @@ done
 if [ "$isanalysis" -eq "1" ]
 then
 
-echo Producing 4D netcdf files
+echo Producing 4D yearly netcdf files
 
 divadoNCDF
 

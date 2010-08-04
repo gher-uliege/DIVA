@@ -37,7 +37,7 @@ read Refscomm
 read Refsstr
 } < $FILENAME
 else
-echo Please provide $FILENAME  file
+echo Please provide information file $FILENAME
 exit
 fi
 

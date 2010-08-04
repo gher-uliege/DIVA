@@ -1,0 +1,20 @@
+#!/bin/bash
+
+WDIR=$(pwd)
+DIVADIR="../../DIVA3D/divastripped"
+
+cp ./input/topo.gebco ${DIVADIR}/input/.
+cp ./input/takeout.coord ${DIVADIR}/input/.
+cd ${DIVADIR}
+##################################################
+# loop on coordinates in takeout.coord
+
+./dvgebcomodif
+mv  $WDIR/input/topo.gebco   $WDIR/input/topo.gebco.ori
+mv ${DIVADIR}/input/topo.gebco  $WDIR/input/topo.gebco
+
+echo ============================================
+echo Finished modifying topo.gebco, 
+echo Original topo.gebco is in input/topo.gebco.ori
+echo Modified topo is in input/topo.gebco
+echo ============================================

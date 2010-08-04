@@ -570,17 +570,8 @@ echo divadoTS: runing divaTSdress
 echo divadoTS: now saving needs to be done for $year $month
 mkdir -p ${WDIR}/output
 mkdir -p ${WDIR}/newinput
-cp -r ${DIVADIR}/divastripped/output/* ${WDIR}/output
-cp -r ${DIVADIR}/divastripped/input/* ${WDIR}/newinput
-
-echo divadoTS: After saving:
-echo ${DIVADIR}/divastripped/output:
-ls -l  ${DIVADIR}/divastripped/output/3Danalysis
-ls -l  ${DIVADIR}/divastripped/output/3Danalysis/Fields
-echo '  '
-echo ${WDIR}/output:
-ls -ls ${WDIR}/output/3Danalysis
-ls -ls ${WDIR}/output/3Danalysis/Fields
+cp -r ${DIVADIR}/divastripped/output/3Danalysis ${WDIR}/output/.
+cp -r ${DIVADIR}/divastripped/input/divadata ${WDIR}/newinput/Stb_divadata
 
 cd $WDIR
 
