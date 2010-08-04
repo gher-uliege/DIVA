@@ -73,10 +73,10 @@
       im = im4
       jm = jm4
 !!
-      write(*,*)'file_name2 ',LEN_TRIM(file_name),TRIM(file_name)
-      write(*,*)'**************************************************'
-      write(*,*)'var_shname ',LEN_TRIM(var_shname),TRIM(var_shname)
-      write(*,*)'**************************************************'
+!      write(*,*)'file_name2 ',LEN_TRIM(file_name),TRIM(file_name)
+!      write(*,*)'**************************************************'
+!      write(*,*)'var_shname ',LEN_TRIM(var_shname),TRIM(var_shname)
+!      write(*,*)'**************************************************'
 !!
       !-----------------------
       ! Open the data file       
@@ -202,7 +202,7 @@
          STOP 'Stopped in NC_READ3DCL def var time'
       ENDIF
 !
-      IF(ipar == 1) then
+!!      IF(ipar == 1) then
 
       status=nf_inq_varid(ncid,'climatology_bounds',idcb)
       IF (status .NE.nf_noerr) THEN
@@ -217,7 +217,7 @@
          STOP 'Stopped in NC_READ3DCL put clbnds'
       ENDIF
 
-      ENDIF
+!!      ENDIF
 !
       !-----------------------------------------     
       ! Get coordinate variables attributes
@@ -676,8 +676,8 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_READ3DCL get CORLEN'
       ENDIF
-      write(*,*)' dvncread CORLEN ',CORLEN
-      write(*,*)' dvncread sterror ',nf_strerror(status)
+!      write(*,*)' dvncread CORLEN ',CORLEN
+!      write(*,*)' dvncread sterror ',nf_strerror(status)
 !
       status = nf_get_var1_real(ncid,id0_2, stpar, prcnt,SN)
       IF (status .NE.nf_noerr) THEN

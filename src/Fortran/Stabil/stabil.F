@@ -109,6 +109,10 @@
       READ(2,*) maxit
       CLOSE(2)
 !
+      WRITE(VARFILEIN,
+     &'(a,".1",i4.4,".analysis")')TRIM(var_name(1)),MINLEV
+      WRITE(DATAFILE,
+     &'(a,".1",i4.4)')TRIM(var_name(1)),MINLEV
       REPORT    = 'stbinfo.1xxxx.1xxxx'
 !
 ! reading grid data
@@ -198,29 +202,15 @@
 !
       INQUIRE(FILE=file_name,EXIST=exist)
       IF(exist) THEN
-         open(unit=2,file=file_name,STATUS='OLD')
+         open(unit=2,file=file_name)
       ELSE
          divafile = '../input/divaparam/param.par.1'//lnum
          INQUIRE(FILE=divafile,EXIST=exist)
          IF(exist) THEN
-           open(unit=2,file=divafile,STATUS='OLD')
+           open(unit=2,file=divafile)
          ELSE
            divafile = '../input/divaparam/param.par'
-           INQUIRE(FILE=divafile,EXIST=exist)
-           IF(exist) THEN
-              open(unit=2,file=divafile,STATUS='OLD')
-           ELSE
-              divafile = '../input/param.par'
-              INQUIRE(FILE=divafile,EXIST=exist)
-              IF(exist) THEN
-                open(unit=2,file=divafile,STATUS='OLD')
-              ELSE
-                write(*,*) 'Stabil: SEVERE ERROR'
-                write(*,*) 'Stabil: no param.par for temp variable'
-                write(*,*) 'Stabil: execution STOPPED'
-                STOP
-             ENDIF
-           ENDIF
+           open(unit=2,file=divafile)
          ENDIF
       ENDIF
       READ(2,*)! comments
@@ -243,21 +233,7 @@
            open(unit=2,file=divafile)
          ELSE
            divafile = '../input/divaparam/param.par'
-           INQUIRE(FILE=divafile,EXIST=exist)
-           IF(exist) THEN
-             open(unit=2,file=divafile)
-           ELSE
-             divafile = '../input/param.par'
-             INQUIRE(FILE=divafile,EXIST=exist)
-             IF(exist) THEN
-               open(unit=2,file=divafile,STATUS='OLD')
-             ELSE
-              write(*,*) 'Stabil: SEVERE ERROR'
-              write(*,*) 'Stabil: no param.par for sali variable'
-              write(*,*) 'Stabil: execution STOPPED'
-              STOP
-             ENDIF
-           ENDIF
+           open(unit=2,file=divafile)
          ENDIF
       ENDIF
       READ(2,*)! comments
@@ -441,13 +417,6 @@
 !
       IF(iter > maxit .OR. iflag >= 2) THEN
 !
-!cc       if(itrack == 1) then
-!cc          CALL NC_OUTLEV1(layer,iter,itrack,temp(:,:,1),psal(:,:,1)
-!cc     &                 ,N2(:,:,1),dsigma,xlon,ylat,IMAX,JMAX,valexu)
-!cc       endif
-!cc          CALL NC_OUTLEV2(layer+1,iter,itrack,temp(:,:,2),psal(:,:,2)
-!cc     &                 ,N2(:,:,1),dsigma,xlon,ylat,IMAX,JMAX,valexu)
-!
           write(12,*)' adddata finished performing for processing ',
      &itrack
           write(12,*)'positive N2 rms = ',rmsp
@@ -538,13 +507,6 @@
       IF(rmsn <= relerr1*N2R .AND. ABS(NN2_max) <= relerr2*N2R
      &                      .OR. iflag >= 2) THEN
 !
-!cc       if(itrack == 1) then
-!cc          CALL NC_OUTLEV1(layer,iter,itrack,temp(:,:,1),psal(:,:,1)
-!cc     &                 ,N2(:,:,1),dsigma,xlon,ylat,IMAX,JMAX,valexu)
-!cc       endif
-!cc          CALL NC_OUTLEV2(layer+1,iter,itrack,temp(:,:,2),psal(:,:,2)
-!cc     &                 ,N2(:,:,1),dsigma,xlon,ylat,IMAX,JMAX,valexu)
-!
 
 !
           write(12,*)'positive N2 rms = ',rmsp
@@ -615,13 +577,6 @@
         ENDDO
       ENDDO
       ik_instabl = ij_instabl
-!
-!cc       if(itrack == 1) then
-!cc          CALL NC_OUTLEV1(layer,iter,itrack,temp(:,:,1),psal(:,:,1)
-!cc     &                 ,N2(:,:,1),dsigma,xlon,ylat,IMAX,JMAX,valexu)
-!cc       endif
-!cc          CALL NC_OUTLEV2(layer+1,iter,itrack,temp(:,:,2),psal(:,:,2)
-!cc     &                 ,N2(:,:,1),dsigma,xlon,ylat,IMAX,JMAX,valexu)
 !
       epsilon4 = relerr1
 !
@@ -825,8 +780,8 @@
 !
       ivar = 1
 !
-!x      WRITE(DATAFILE,
-!x     &'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
+      WRITE(DATAFILE,
+     &'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
       WRITE(file_name,'("../input/divadata/"
      &,a,".1",i4.4)')TRIM(var_name(ivar)),istep
 !
@@ -846,8 +801,8 @@
 !
       ivar = 2
 !
-!x      WRITE(DATAFILE,
-!x     &'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
+      WRITE(DATAFILE,
+     &'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
       WRITE(file_name,'("../input/divadata/"
      &,a,".1",i4.4)')TRIM(var_name(ivar)),istep
 !
@@ -914,8 +869,8 @@
 !
       ivar = 1
 !
-!x      WRITE(DATAFILE,
-!x     &'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
+      WRITE(DATAFILE,
+     &'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
       WRITE(file_name,'("../input/divadata/"
      &,a,".1",i4.4)')TRIM(var_name(ivar)),istep
 !
@@ -934,8 +889,8 @@
 !
       ivar = 2
 !
-!x      WRITE(DATAFILE,
-!x     &'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
+      WRITE(DATAFILE,
+     &'(a,".1",i4.4)')TRIM(var_name(ivar)),istep
       WRITE(file_name,'("../input/divadata/"
      &,a,".1",i4.4)')TRIM(var_name(ivar)),istep
 !
