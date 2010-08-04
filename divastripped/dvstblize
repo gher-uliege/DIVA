@@ -34,9 +34,9 @@ echo $iflag >> ./fort.19
   Fileinf=./STBinfo
 {
 read comment
-read temp
-read comment
 read psal
+read comment
+read temp
 read comments
 read klev
 read comments
@@ -135,7 +135,7 @@ ipassg1=`expr $ipassg1 + 1`
 done
 ##
 #
-cp -v stbinfo.* ../output/3Danalysis/.
+cp -v stbinfo.* infores.* ../output/3Danalysis/.
 if [ -d  ../output/3Danalysis/NCstab ]; then
 mv *.nc ../output/3Danalysis/NCstab/.
 else

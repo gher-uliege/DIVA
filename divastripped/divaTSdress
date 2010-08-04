@@ -62,6 +62,7 @@ read comment
 read acts
 } < $Fileinf
 #
+echo ' divaTSdress: Going to 3Danalyse salinity'
 diva3Ddress
 #
 #
@@ -96,30 +97,20 @@ read comment
 read actp
 } < $Fileinf
 #
+echo ' divaTSdress: Going to 3Danalyse temperature'
 diva3Ddress
+#
+if [ "$actp" == "1" ];then
+echo ' divaTSdress: Going to write TEMP_PSAL.nc'
+./dvtsdwrt
+fi
 #
 if [ $maxit -ge 1 ];then
 #
 ./dvstbdat $lay1 $lay2 $temp $psal
 #
-echo '  '
-echo divaTS dress: before dv3d2stb:
-echo output:
-ls -ls ./output/3Danalysis
-echo output/Fields:
-ls -ls ./output/3Danalysis/Fields
-echo '  '
-
 ./dv3d2stb $lay1 $lay2 $temp $psal $actp $acts
 #
-echo '  '
-echo divaTS dress: after dv3d2stb:
-echo output:
-ls -ls ./output/3Danalysis
-echo output/Fields:
-ls -ls ./output/3Danalysis/Fields
-echo '  '
-
 ./dvstblize $acts $actp
 #
 cp ./input/3Dinfosalinity ./input/3Dinfo
@@ -153,5 +144,9 @@ done
 fi
 fi
 diva3Ddress
+#
+if [ "$actp" == "1" ];then
+./dvtsdwrt
+fi
 #
 fi

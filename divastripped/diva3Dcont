@@ -18,30 +18,51 @@ read cont
 if [ "$cont" -eq "1" ]; then
 
 if [ -d ./input/divaparam ];then
-echo '>>>WARNING: ./input/divaparam exists, files may be rewritten'
+echo '>>>WARNING: ./input/divaparam exists.'
 else
 mkdir ./input/divaparam
 fi
 
-if [ -f ./input/topo.dat ]; then
-if [ -f ./input/param.par ]; then
- ./divatopo
- mv ./output/TopoInfo.dat ./input/.
- mv ./output/topo.grd ./input/.
-echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-echo 'TopoInfo.dat and topo.grd where created and put in '
-echo ./input/.
-echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+if [ -f ./input/topo.grd ]; then
+echo " topo.grd found, will proceed to generate coast.cont files"
 else
-echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'
-echo 'Missing param.par file, could not perform !!'
-echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-fi
+ if [ -f ./input/topo.dat ]; then
+  if [ -f ./input/param.par ]; then
+    echo "runing divatopo ........."
+    ./divatopo
+    mv ./output/TopoInfo.dat ./input/.
+    mv ./output/topo.grd ./input/.
+    echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+    echo 'TopoInfo.dat and topo.grd where created and put in '
+    echo ./input/.
+    echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+  else
+    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'
+    echo 'Missing param.par file, could not perform !!'
+    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+  fi
+ else
+  if [ -f ./input/topo.gebco ]; then
+    if [ -f ./input/param.par ]; then
+      echo "runing gebco2diva ........."
+      ./gebco2diva 15 15
+      mv ./output/TopoInfo.dat ./input/.
+      mv ./output/topo.grd ./input/.
+      echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+      echo 'TopoInfo.dat and topo.grd where created and put in '
+      echo ./input/.
+      echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+    else
+      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+      echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'
+      echo 'Missing param.par file, could not perform !!'
+      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    fi
+  fi
+ fi
 fi
 #
-
-
 if [ -f ./input/topo.grd ]; then
  ./divacont
 mv ./output/coast.cont* ./input/divaparam/.
