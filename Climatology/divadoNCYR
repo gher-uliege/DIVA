@@ -4,12 +4,15 @@
 # divado netcdf file for multi year climatologies
 ###
 
+isxmlgenerat=$1
+
 WDIR=$(pwd)
 DIVADIR="../../DIVA3D"
 
-##################################################
-# loop on years defined in yearlist
-# loop on variables defined in varlist
+mkdir -p ./output/3Danalysis/MetaDataXMLs
+#
+./dvtxtmetainfo > ./output/3Danalysis/DriverMetainfo
+#
 
 #########################################################
 for var in `cat varlist`
@@ -41,6 +44,10 @@ mkdir ${DIVADIR}/divastripped/output/3Danalysis
 mkdir ${DIVADIR}/divastripped/output/3Danalysis/Fields
 cp $WDIR/output/3Danalysis/Fields/GridInfo.dat ${DIVADIR}/divastripped/output/3Danalysis/Fields/.
 
+if [ -f './output/3Danalysis/'$var'.Metainfo.txt' ]; then
+cp -v './output/3Danalysis/'$var'.Metainfo.txt'  ${DIVADIR}/divastripped/output/3Danalysis/.
+fi
+
 if [ -f './output/3Danalysis/'$var'.'$year'.3DNCliste' ]; then
 
 cp -v './output/3Danalysis/'$var'.'$year'.3DNCliste' ${DIVADIR}/divastripped/output/3Danalysis/.
@@ -50,18 +57,15 @@ if [ -f './output/3Danalysis/'$var'.'$year'.3DNCinfo' ]; then
 cp -v './output/3Danalysis/'$var'.'$year'.3DNCinfo' ${DIVADIR}/divastripped/output/3Danalysis/.
 
 cd ./output/3Danalysis/
-for ncfile in `ls $var.*.anl.nc` ;do
-echo $ncfile
+for ncfile in `ls $var.$year.*.anl.nc` ;do
 cp -v $ncfile ../../${DIVADIR}/divastripped/output/3Danalysis/.
 done
 
 for dtfile in `ls $var'.'$year'.'*'.nbrdata'` ;do
-echo $dtfile
 cp -v $dtfile ../../${DIVADIR}/divastripped/output/3Danalysis/.
 done
 
 for dtfile in `ls $var'.'$year'.'*'.3Dparam'` ;do
-echo $dtfile
 cp -v $dtfile ../../${DIVADIR}/divastripped/output/3Danalysis/.
 done
 cd  $WDIR
@@ -86,19 +90,33 @@ cd $WDIR
 
 done
 
-echo ==================
-echo first loop
-echo ==================
-
 cd ${DIVADIR}/divastripped
 
 dv4DncYRwrt $var
 
 echo now saving needs to be done
 cp -v ./output/3Danalysis/$var.4Danl.nc ${WDIR}/output/3Danalysis/.
+cp -v ./output/3Danalysis/$var'.4DNCMetainfo' ${WDIR}/output/3Danalysis/.
+cp -v ./output/3Danalysis/$var'.Metainfo.txt' ${WDIR}/output/3Danalysis/.
+
 cd $WDIR
+cat  ./output/3Danalysis/DriverMetainfo ./output/3Danalysis/$var'.Metainfo.txt' > ./output/3Danalysis/MetaDataXMLs/$var'.Textinfo.txt'
 
 done
+
+if [ $isxmlgenerat == "11" ]; then
+
+echo 'generation of SDN xml metadata file'
+
+divadoxml XMLtempl_sdn
+fi
+
+if [ $isxmlgenerat == "12" ]; then
+
+echo 'generation of EDMONET xml metadata file'
+
+divadoxml XMLtempl_emodn
+fi
 
 echo ==================
 echo second loop

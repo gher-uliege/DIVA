@@ -3,11 +3,25 @@
 WDIR=$(pwd)
 DIVADIR="../../DIVA3D/divastripped"
 
+if [ -f ./input/topogebco.asc ];then
+
+# eliminates header, changes sign of column 3 and replaces commas by dots
+
+awk -F " " \
+'{if($1 !~ /^[a-zA-Z]/) print $1,$2,-$3}' ./input/topogebco.asc | sed s/,/./g > ./input/topo.gebco
+
+echo Modified topo is in input/topo.gebco
+
+fi
+if [ -f ./input/topo.gebco ];then
 cp ./input/topo.gebco ${DIVADIR}/input/.
+
+if [ -f ./input/takeout.coord ];then
 cp ./input/takeout.coord ${DIVADIR}/input/.
+fi
 cd ${DIVADIR}
 ##################################################
-# loop on coordinates in takeout.coord
+# loop on coordinates in takeout.coord if any
 
 ./dvgebcomodif
 mv  $WDIR/input/topo.gebco   $WDIR/input/topo.gebco.ori
@@ -18,3 +32,4 @@ echo Finished modifying topo.gebco,
 echo Original topo.gebco is in input/topo.gebco.ori
 echo Modified topo is in input/topo.gebco
 echo ============================================
+fi

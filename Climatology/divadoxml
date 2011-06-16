@@ -1,0 +1,246 @@
+#!/bin/bash
+
+#########################################################
+#########################################################
+#########################################################
+XMLFile=$1
+
+FILENAME=./input/general_info
+if [ -f "$FILENAME" ]
+then
+{
+read comment
+read organisation_name
+read comment
+read org_prodinfo_email
+read comment
+read organisation_web
+read comment
+read org_logo_adress
+read comment
+read accconstr
+read comment
+read delinfostr
+read comment
+read geninfostr
+read comment
+read processstr
+read comment
+read descripstr
+read comment
+read Shortdesc
+read comment
+read Detaildesc
+read comment
+read Refs
+read comment
+read QAC
+read comment
+read SETU
+read comment
+read custodian_name
+read comment
+read cust_prodinfo_email
+read comment
+read custodian_web
+read comment
+read url_compliment
+read comment
+read doc_title
+read comment
+read doc_online
+read comment
+read doc_date
+} < $FILENAME
+else
+echo Could not find $FILENAME
+echo Please generate information file $FILENAME first
+exit
+fi
+#
+organisation_name=${organisation_name//\//\\\/}
+org_prodinfo_email=${org_prodinfo_email//\//\\\/}
+organisation_web=${organisation_web//\//\\\/}
+org_logo_adress=${org_logo_adress//\//\\\/}
+accconstr=${accconstr//\//\\\/}
+delinfostr=${delinfostr//\//\\\/}
+url_compliment=${url_compliment//\//\\\/}
+JRAxxstr=${JRAxxstr//\//\\\/}
+geninfostr=${geninfostr//\//\\\/}
+processstr=${processstr//\//\\\/}
+descripstr=${descripstr//\//\\\/}
+Detaildesc=${Detaildesc//\//\\\/}
+Shortdesc=${Shortdesc//\//\\\/}
+Refs=${Refs//\//\\\/}
+custodian_name=${custodian_name//\//\\\/}
+cust_prodinfo_email=${cust_prodinfo_email//\//\\\/}
+custodian_web=${custodian_web//\//\\\/}
+doc_title=${doc_title//\//\\\/}
+doc_online=${doc_online//\//\\\/}
+doc_date=${doc_date//\//\\\/}
+##########################################################
+
+mindep=$(tail -1 ./input/contour.depth)
+echo mindep $mindep
+maxdep=$(head -1 ./input/contour.depth)
+echo maxdep $maxdep
+
+#########################################################
+for var in `cat varlist`
+#########################################################
+do
+echo variable $var
+
+FILENAME=./output/3Danalysis/$var'.4DNCMetainfo'
+
+if [ -f "$FILENAME" ]
+then
+{
+read Sunit
+read SouthBL
+read NorthBL
+read WestBL
+read EastBL
+read deltaX
+read deltaY
+read vertlevs
+} < $FILENAME
+else
+echo Could not find $FILENAME
+echo Please generate information file $FILENAME first
+exit
+fi
+
+longvarname=$(grep -i $var ODVcolumns | awk -F "\t" '{print $1}' | awk -F " " '{print $1}')
+longvarunit=$(grep -i $var ODVcolumns | awk -F "\t" '{print $1}' | awk -F " " '{print $2}')
+if [ -f "${var}.units" ]
+then
+{
+read longvarunit
+} < $var.units
+fi
+
+if [ -f "${var}.longname" ]
+then
+{
+read longvarname
+} < $var.longname
+fi
+echo longvarname $longvarname
+echo longvarunit $longvarunit
+#
+today=`date --rfc-3339='date'`
+#
+nblns=`cat ./yearlist |wc -l`
+Fileinf=./yearlist
+{
+read year
+year1=${year:0:4}
+year2=${year:4:4}
+ll=2
+while [ $ll -le $nblns ]
+do
+read year
+year2=${year:4:4}
+let ll=$ll+1
+done
+} < $Fileinf
+
+
+nblns=`cat ./monthlist |wc -l`
+Fileinf=./monthlist
+{
+read month
+month1=${month:0:2}
+month2=${month:2:2}
+ll=2
+while [ $ll -le $nblns ]
+do
+read month
+month2=${month:2:2}
+let ll=$ll+1
+done
+} < $Fileinf
+
+
+#
+resolt=$deltaX'X'$deltaY
+
+############################################################
+FILENAME=./$longvarname'.SDNconv'
+
+if [ -f "$FILENAME" ]
+then
+{
+read prodlabel
+read prodid
+read paramgroup
+read paramvar
+} < $FILENAME
+else
+echo Could not find $FILENAME
+echo Please provide variable SDN coventions file $FILENAME 
+exit
+fi
+
+echo prodlabel $prodlabel
+echo prodid $prodid
+echo paramgroup $paramgroup
+echo paramvar $paramvar
+
+prodlabel=${prodlabel//\//\\\/}
+paramgroup=${paramgroup//\//\\\/}
+paramvar=${paramvar//\//\\\/}
+prodid=${prodid//\//\\\/}
+
+##File=XMLtempl
+File=$XMLFile
+NewFile='./output/3Danalysis/MetaDataXMLs/'$prodlabel'_'$var'.xml'
+
+sed \
+-e s/"2011-02-22"/"${today}"/ \
+-e s/"TBCs: access condition TBCe."/"${accconstr}"/ \
+-e s/"TBCs: delivery information TBCe."/"${delinfostr}"/ \
+-e s/"TBCS: estimated volume TBCe."/"Not estimated "/ \
+-e s/"<linkage>http:\/\/gher-diva.phys.ulg.ac.be:8080\/SeaDataNetTBCs: url compliment TBCe.<\/linkage>"/"<linkage>http:\/\/gher-diva.phys.ulg.ac.be:8080\/${url_compliment}<\/linkage>"/ \
+-e s/"<gmd:URL>http:\/\/gher-diva.phys.ulg.ac.be:8080\/SeaDataNetTBCs: url compliment TBCe.<\/gmd:URL>"/"<gmd:URL>http:\/\/gher-diva.phys.ulg.ac.be:8080\/${url_compliment}<\/gmd:URL>"/ \
+-e s/"TBCs: PRODUCT LABEL TBCe."/"${prodlabel}"/ \
+-e s/"TBCs: PRODUCT -ID TBCe."/"${prodid}"/ \
+-e s/"TBCs: MIS Product Name TBCe."/"${prodid}"/ \
+-e s/"TBCs: General information TBCe."/"${geninfostr}"/g \
+-e s/"TBCs: Processing information TBCe."/"${processstr}"/ \
+-e s/"TBCs: Description of observation methods\/instruments TBC"/"${descripstr}"/ \
+-e s/"TBCs: Short description TBCe."/"${Shortdesc}"/ \
+-e s/"TBCs: Detailed description TBCe."/"${Detaildesc}"/ \
+-e s/"TBCs: Quality Accuracy Calibration information TBCe."/"${QAC}"/ \
+-e s/"TBCs: Suitability Expexted type of users Uses TBCe."/"${SETU}"/ \
+-e s/"TBCs: Customer Product Name TBCe."/"${SETU}"/ \
+-e s/"TBCs: References TBCe."/"${Refs}"/ \
+-e s/"<rpOrgName>Instituto Nazionale di Geofisica e Vulcanologia, INGV, Sede di Bologna<\/rpOrgName>"/"<rpOrgName>${organisation_name}<\/rpOrgName>"/ \
+-e s/"Instituto Nazionale di Geofisica e Vulcanologia, INGV, Sede di Bologna"/"${organisation_name}"/ \
+-e s/"<rpOrgName>Mediterranean Sea WP<\/rpOrgName>"/"<rpOrgName>${custodian_name}<\/rpOrgName>"/ \
+-e s/">info.products@bo.ingv.it<"/">${org_prodinfo_email}<"/ \
+-e s/"http:\/\/gnoo.bo.ingv.it"/"${organisation_web}"/ \
+-e s/"http:\/\/www.mersea.eu.org\/images\/logos\/partne15.gif"/"${org_logo_adress}"/ \
+-e s/"<eMailAdd>toani@bo.ingv.it<\/eMailAdd>"/"<eMailAdd>${cust_prodinfo_email}<\/eMailAdd>"/ \
+-e s/"<linkage>http:\/\/www.moon-oceanforecasting.eu\/index.php<\/linkage>"/"<linkage>${custodian_web}<\/linkage>"/ \
+-e s/"TEMP: Temperature of the water column"/"${paramgroup}"/ \
+-e s/"sea_water_temperature,K,CF"/"${paramvar}"/ \
+-e s/"TBCs: SR"/"${resolt}"/ \
+-e s/"TBCs: unit"/"${Sunit}"/ \
+-e s/">10<"/">${WestBL}<"/ \
+-e s/">40<"/">${EastBL}<"/ \
+-e s/">30<"/">${SouthBL}<"/ \
+-e s/">50<"/">${NorthBL}<"/ \
+-e s/"<vertMinVal>-3500<\/vertMinVal>"/"<vertMinVal>-${maxdep}<\/vertMinVal>"/ \
+-e s/"<vertMaxVal>0.<\/vertMaxVal>"/"<vertMaxVal>${mindep}<\/vertMaxVal>"/ \
+-e s/">-3500<"/">-${maxdep}<"/ \
+-e s/">0.<"/">-${mindep}<"/ \
+-e s/"TBCs vertical levels TBCe."/"${vertlevs}"/ \
+-e s/"TBCs: TmpS"/"${year1}-${month1}-01"/ \
+-e s/"TBCs: TmpE"/"${year2}-${month2}-30"/ \
+-e s/"TBC Delbef"/"${Delbef}"/ \
+-e s/"TBC Delaft"/"${Delaft}"/ \
+-e s/"TBCs: Temporal resolution TBCe"/"Monthly"/  <$File>$NewFile
+done
+## 

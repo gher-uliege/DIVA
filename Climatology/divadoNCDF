@@ -1,17 +1,16 @@
 #!/bin/bash
 
+isxmlgenerat=$1
+
 WDIR=$(pwd)
 DIVADIR="../../DIVA3D"
 
 mkdir ${DIVADIR}/divastripped
 
 mkdir -p ./output/3Danalysis/MetaDataXMLs
-
-
+#
 ./dvtxtmetainfo > ./output/3Danalysis/DriverMetainfo
-
-
-
+#
 ##################################################
 # loop on years defined in yearlist
 # loop on variables defined in varlist
@@ -39,6 +38,10 @@ echo working on variable $var
 
 rm -f ${DIVADIR}/divastripped/3DWORK/*
 rm -f ${DIVADIR}/divastripped/output/3Danalysis/* 
+
+if [ -f './output/3Danalysis/'$var'.Metainfo.txt' ]; then
+cp -v './output/3Danalysis/'$var'.Metainfo.txt'  ${DIVADIR}/divastripped/output/3Danalysis/.
+fi
 
 if [ -f './output/3Danalysis/'$var'.'$year'.3DNCliste' ]; then
 
@@ -71,14 +74,11 @@ diva4Dncwrite
 
 echo now saving needs to be done
 cp -v ./output/3Danalysis/$var.$year.4Danl.nc ${WDIR}/output/3Danalysis/.
-cp -v ./output/3Danalysis/$var'.'$year'.4DNCMetainfo' ${WDIR}/output/3Danalysis/.
-cp -v ./output/3Danalysis/$var'.'$year'.Metainfo.txt' ${WDIR}/output/3Danalysis/.
+cp -v ./output/3Danalysis/$var.4Danl.nc ${WDIR}/output/3Danalysis/.
+cp -v ./output/3Danalysis/$var'.4DNCMetainfo' ${WDIR}/output/3Danalysis/.
+cp -v ./output/3Danalysis/$var'.Metainfo.txt' ${WDIR}/output/3Danalysis/.
 
 cd $WDIR
-
-cat  ./output/3Danalysis/DriverMetainfo ./output/3Danalysis/$var'.'$year'.Metainfo.txt' > ./output/3Danalysis/MetaDataXMLs/$var'.'$year'.Textinfo.txt'
-
-dvgenxml
 
 else
 
@@ -98,12 +98,23 @@ cd $WDIR
 
 done
 
-echo ==================
-echo first loop
-echo ==================
+cat  ./output/3Danalysis/DriverMetainfo ./output/3Danalysis/$var'.Metainfo.txt' > ./output/3Danalysis/MetaDataXMLs/$var'.Textinfo.txt'
 
+if [ "$isxmlgenerat" == "1" ]; then
+
+echo 'generation of SDN xml metadata file'
+
+divadoxml XMLtempl_sdn
+fi
+
+if [ "$isxmlgenerat" == "2" ]; then
+
+echo 'generation of EDMONET xml metadata file'
+
+divadoxml XMLtempl_emodn
+fi
 done
 
-echo ==================
-echo second loop
-echo ==================
+echo =================================
+echo Finished writing NC and Xml files 
+echo =================================
