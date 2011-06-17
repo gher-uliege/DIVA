@@ -1,5 +1,5 @@
 !
-      PROGRAM DV4DNCWT
+      PROGRAM DV4DREAD
 !
       implicit none
 !
@@ -53,7 +53,7 @@
       CHARACTER (len=20)         :: EXECIN
       CHARACTER (len=22)         :: DEPTHS
       CHARACTER (len=99)         :: VARFILEIN
-      CHARACTER (len=255)        :: file_name, file_name2, file_4Dnc
+      CHARACTER (len=255)        :: file_name, file_name2, ncliste
       character (len=255)        :: title_string,cellmeth
      &                            , INSTITUT, PRODUCTION
      &                            , SOURCE, COMMENT
@@ -93,13 +93,11 @@
       READ(2,*) les_files(I),flags(I)
       ENDDO
 !
-      write(*,*)' WRITE 4D NetCdf file gathering:'      
       J = 0
       DO I = 1, time_len
         IF(flags(I) == 1) then
            J = J + 1
            all_files(J) = les_files(I)
-           write(*,*)TRIM(all_files(J))
         ENDIF
       ENDDO
       time_len = J
@@ -164,41 +162,41 @@
       ALLOCATE(varb1(1:NX,1:NY))
       ALLOCATE(varb2(1:NX,1:NY))
 !
-      EXECIN='../3DWORK/3DNCinfo'
-      INQUIRE(FILE=EXECIN,EXIST=exist)
-      if(exist) then
-          close(12)
-          OPEN(UNIT=12,FILE=EXECIN)
-          read(12,*) INSTITUT
-          read(12,*) PRODUCTION
-          read(12,*) SOURCE
-          read(12,*) COMMENT
-          read(12,*) var_lgname
-          read(12,*) var_units
-          read(12,*) vrb_units
-          read(12,*) title_string
-          read(12,*) l_units(1)
-          read(12,*) l_units(2)
-          J = 0
-          DO  I = 1, list_len
-            IF(flags(I) == 1) then
-              J = J+1
-              read(12,*) var_shname_l(J)
-              read(12,*) cellmeth_l(J)
-              read(12,*) Ref_time_l(J)
-            ELSE
-              read(12,*) comments
-              read(12,*) comments
-              read(12,*) comments
-            ENDIF
-          ENDDO
-      endif
+!xxx      EXECIN='../3DWORK/3DNCinfo'
+!xxx      INQUIRE(FILE=EXECIN,EXIST=exist)
+!xxx      if(exist) then
+!xxx          close(12)
+!xxx          OPEN(UNIT=12,FILE=EXECIN)
+!xxx          read(12,*) INSTITUT
+!xxx          read(12,*) PRODUCTION
+!xxx          read(12,*) SOURCE
+!xxx          read(12,*) COMMENT
+!xxx          read(12,*) var_lgname
+!xxx          read(12,*) var_units
+!xxx          read(12,*) vrb_units
+!xxx          read(12,*) title_string
+!xxx          read(12,*) l_units(1)
+!xxx          read(12,*) l_units(2)
+!xxx          J = 0
+!xxx          DO  I = 1, list_len
+!xxx            IF(flags(I) == 1) then
+!xxx              J = J+1
+!xxx              read(12,*) var_shname_l(J)
+!xxx              read(12,*) cellmeth_l(J)
+!xxx              read(12,*) Ref_time_l(J)
+!xxx            ELSE
+!xxx              read(12,*) comments
+!xxx              read(12,*) comments
+!xxx              read(12,*) comments
+!xxx            ENDIF
+!xxx          ENDDO
+!xxx      endif
 !
 ! Writing an info text file for matadata files:
-      WRITE(file_name2,'("../output/3Danalysis/",
-     &a,".4DNCMetainfo")')TRIM(var_shname_l(1))
-      close(12)
-      OPEN(UNIT=12,FILE=file_name2)
+!xxx      WRITE(file_name2,'("../output/3Danalysis/",
+!xxx     &a,".4DNCMetainfo")')TRIM(var_shname)
+!xxx      close(12)
+!xxx      OPEN(UNIT=12,FILE=file_name2)
 !
       chlen = 1
       DO while(l_units(1)(chlen:chlen) .ne. ' ')
@@ -218,38 +216,36 @@
       EastBL = xorig + dx*xend
       NorthBL =yorig + dy*yend
 !
-      write(12,1111)SouthBL
-      write(12,1111)NorthBL
-      write(12,1111)WestBL
-      write(12,1111)EastBL
-      write(12,1112)dx
-      write(12,1112)dy
+!xxx      write(12,1111)SouthBL
+!xxx      write(12,1111)NorthBL
+!xxx      write(12,1111)WestBL
+!xxx      write(12,1111)EastBL
+!xxx      write(12,1112)dx
+!xxx      write(12,1112)dy
+      CALL DATE_AND_TIME(Real_clock) 
+      write(12,*)TRIM(Real_clock)
+
+        chlen = 1
+        DO while(var_shname(chlen:chlen) .ne. ' ') 
+           chlen = chlen + 1
+        ENDDO
+        chlen = chlen - 1
+        yy1 = var_shname(chlen-7:chlen-4)
+        yy2 = var_shname(chlen-3:chlen)
+        read (yy1,'(I4.4)') xy1
+        read (yy2,'(I4.4)') xy2
+!xxx      write(12,1113)xy1
+!xxx      write(12,1113)xy2
 !
- 1111 FORMAT(1X,F7.3)
- 1112 FORMAT(1X,F5.3)
+!xxx 1111 FORMAT(1X,F7.3)
+!xxx 1112 FORMAT(1X,F5.3)
+!xxx 1113 FORMAT(1X,I4.4)
 !--------------------------------------------------------------
 !
 !
-      WRITE(title_string,'("DIVA 4D analysis of ",a)')TRIM(var_shname)
-!
-!!!!      var_name = var_shname
-      chlen = 1
-      DO while(var_shname(chlen:chlen) .ne. ' ')
-!         IF(var_shname(chlen:chlen) .eq. '.') 
-!     &             WRITE(var_name(chlen:chlen),'("_")')
-         chlen = chlen + 1
-      ENDDO
-      chlen = chlen - 1
-      var_name = var_shname(1:chlen-9)
-!
 ! Writing an info text file for matadata files:
-
       WRITE(file_name2,'("../output/3Danalysis/",
-     &a,".Metainfo.txt")')TRIM(var_name)
-      INQUIRE(FILE=file_name2,EXIST=exist)
-      if(exist) then
-      write(*,*)TRIM(file_name2),'present'
-      else
+     &a,".Metainfo.txt")')TRIM(var_shname)
       close(12)
       OPEN(UNIT=12,FILE=file_name2)
 !
@@ -259,13 +255,25 @@
       write(12,1203)EastBL
       write(12,1205)SouthBL
       write(12,1206)dx,dy,s_units
-      endif
+
 !
-      WRITE(file_4Dnc,'("../output/3Danalysis/",
+      WRITE(file_name2,'("../output/3Danalysis/",
      &a,".4Danl.nc")')TRIM(var_shname)
 !
       clbnds = 0.
       ipar = 1
+!
+      WRITE(title_string,'("DIVA 4D analysis of ",a)')TRIM(var_shname)
+!
+      var_name = var_shname
+      chlen = 1
+      DO while(var_shname(chlen:chlen) .ne. ' ')
+!         IF(var_shname(chlen:chlen) .eq. '.') 
+!     &             WRITE(var_name(chlen:chlen),'("_")')
+         chlen = chlen + 1
+      ENDDO
+      chlen = chlen - 1
+      var_name = var_shname(1:chlen-9)
 !
       DO ivars = 1,time_len
 
@@ -297,92 +305,8 @@
         close(3)
         OPEN(UNIT=3,FILE=prmliste)
 !
-      CALL NC_RD3DCL(imax,jmax,nk,ipar,time_val,clbnds(1:2,ivars),
-     &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
-     &  xlon,ylat,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
-     &  var_min,var_max,vbt_min,vbt_max,ver_min,ver_max,dbin_min,
-     &  dbin_max,var1_min,var1_max,var2_min,var2_max,verel_min,
-     &  verel_max,vbt1_min,vbt1_max,vbt2_min,vbt2_max,
-     &  obin_min,obin_max,rl_min,rl_max,VALEXC,
-     &  file_name,var_shname_l(ivars))
-!     &  var_lgname,cellmeth,var_units,vrb_units,l_units,Ref_time,
-!     &  title_string,INSTITUT,PRODUCTION,SOURCE,COMMENT)
 !
-      close(12)
-      OPEN(UNIT=12,FILE=file_name2,STATUS='OLD',POSITION='APPEND')
-      write(12,2001)TRIM(var_shname_l(ivars)),time_val
-      write(12,2002)
-      do lev=1,NK
-      read(2,*) ilev, nbdat
-      read(3,*)CORLEN(lev),SN(lev),VARBAK(lev)
-      write(12,2003)dep(lev),nbdat,CORLEN(lev),SN(lev),VARBAK(lev)
-      enddo
-      write(12,2015)
-      write(12,2004)var_min,var_max
-      write(12,2008)var1_min,var1_max
-      write(12,2009)var2_min,var2_max
-      write(12,2005)vbt_min,vbt_max
-      write(12,2011)vbt1_min,vbt1_max
-      write(12,2012)vbt2_min,vbt2_max
-      write(12,2006)ver_min,ver_max
-      write(12,2010)verel_min,verel_max
-      write(12,2007)dbin_min,dbin_max
-      write(12,2013)obin_min,obin_max
-      write(12,2014)rl_min,rl_max
-      close(12)
-
-      IF(ivars == 1) THEN
-        var_min0 = var_min
-        var_max0 = var_max
-        ver_min0 = ver_min
-        ver_max0 = ver_max
-        dbin_min0 = dbin_min
-        var1_min0 = var1_min
-        var1_max0 = var1_max
-        dbin_max0 = dbin_max
-        var2_min0 = var2_min
-        var2_max0 = var2_max
-        verel_min0 = verel_min
-        verel_max0 = verel_max
-        obin_min0 = obin_min
-        obin_max0 = obin_max
-        rl_min0 = rl_min
-        rl_max0 = rl_max
-        vbt_min0 = vbt_min
-        vbt_max0 = vbt_max
-        vbt1_min0 = vbt1_min
-        vbt1_max0 = vbt1_max
-        vbt2_min0 = vbt2_min
-        vbt2_max0 = vbt2_max
-      ENDIF
-!
-        IF(var_min0 >= var_min) var_min0 = var_min
-        IF(var_max0 <= var_max) var_max0 = var_max
-        IF(ver_min0 >= ver_min) ver_min0 = ver_min
-        IF(ver_max0 <= ver_max) ver_max0 = ver_max
-        IF(dbin_min0 >= dbin_min) dbin_min0 = dbin_min
-        IF(dbin_max0 <= dbin_max) dbin_max0 = dbin_max
-        IF(var1_min0 >= var1_min) var1_min0 = var1_min
-        IF(var1_max0 <= var1_max) var1_max0 = var1_max
-        IF(var2_min0 >= var2_min) var2_min0 = var2_min
-        IF(var2_max0 <= var2_max) var2_max0 = var2_max
-        IF(verel_min0 >= verel_min) verel_min0 = verel_min
-        IF(verel_max0 <= verel_max) verel_max0 = verel_max
-        IF(obin_min0 >= obin_min) obin_min0 = obin_min
-        IF(obin_max0 <= obin_max) obin_max0 = obin_max
-        IF(rl_min0 >= rl_min) rl_min0 = rl_min
-        IF(rl_max0 <= rl_max) rl_max0 = rl_max
-        IF(vbt_min0 >= vbt_min) vbt_min0 = vbt_min
-        IF(vbt_max0 <= vbt_max) vbt_max0 = vbt_max
-        IF(vbt1_min0 >= vbt1_min) vbt1_min0 = vbt1_min
-        IF(vbt1_max0 <= vbt1_max) vbt1_max0 = vbt1_max
-        IF(vbt2_min0 >= vbt2_min) vbt2_min0 = vbt2_min
-        IF(vbt2_max0 <= vbt2_max) vbt2_max0 = vbt2_max
-!
-        cellmeth =  cellmeth_l(ivars)
-        Ref_time = Ref_time_l(ivars)
-!
-      CALL NC_4DCLIM(imax,jmax,nk,ipar,time_len,time_val,clbnds,
+      CALL NC_NC_RD4DCL(imax,jmax,nk,ipar,time_len,time_val,clbnds,
      &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
      &  xlon,ylat,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
      &  var_min0,var_max0,vbt_min0,vbt_max0,ver_min0,ver_max0,
@@ -390,7 +314,7 @@
      &  verel_min0,verel_max0,vbt1_min0,vbt1_max0,vbt2_min0,vbt2_max0,
      &  obin_min0,obin_max0,rl_min,rl_max,
      &  VALEXC,l_units,
-     &  LEN_TRIM(file_4Dnc),TRIM(file_4Dnc),
+     &  LEN_TRIM(file_name2),TRIM(file_name2),
      &  LEN_TRIM(var_shname_l(ivars)),TRIM(var_shname_l(ivars)),
      &  LEN_TRIM(var_lgname),TRIM(var_lgname),
      &  LEN_TRIM(var_units),TRIM(var_units),
@@ -405,13 +329,6 @@
 !
       ENDDO  !ivars
 !
-      WRITE(file_name2,'("../output/3Danalysis/",
-     &a,".4DNCMetainfo")')TRIM(var_shname_l(1))
-      close(12)
-      OPEN(UNIT=12,FILE=file_name2,STATUS='OLD',POSITION='APPEND')
-      write(12,*)(dep(lev),lev=1,NK)
-      close(12)
-!
  1201 FORMAT(//,10X,'Geographical coordinates:',/,
      &          10X,'*************************')
  1202 FORMAT(4X,'Northen boundary ..........:',F10.5)
@@ -424,7 +341,8 @@
  2002 FORMAT(4X,'DEPTH',4X,'LAYER DATA NUMBER',2X,'CORELATION LENGTH'
      &,4X,'S/N RATIO',4X,'VARBAK')
  2003 FORMAT(4X,F8.2,6X,I6.4,14X,F6.4,10X,F6.3,4X,F6.3)
- 2015 FORMAT(/,4X,'%%NetCDF FILE FIELDS%%',12X,'MIN VALUE',
+ 2015 FORMAT(/,4X,'%%NetCDF FILE FIELDS%%',/,
+     &         4X,'*************************',12X,'MIN VALUE',
      &4X,'MAX VALUE')
                    
  2004 FORMAT(4X,'VARIABLE                  ',6X,F10.5,4X,F10.5)

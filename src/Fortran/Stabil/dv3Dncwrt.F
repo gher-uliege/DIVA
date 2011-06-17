@@ -21,7 +21,7 @@
 !
         integer*4   :: im4,jm4 
 !!        integer   :: im4,jm4 
-        integer     :: one,two,foor,ttime_len,km ,time_len,ipar,im,jm
+        integer     :: one,two,four,ttime_len,km ,time_len,ipar,im,jm
      &              , three
         integer     :: L_file_name,L_var_shname,L_var_lgname,
      &  L_var_units,L_vrb_units,L_title_string,L_cellmeth,L_Ref_time,
@@ -69,7 +69,7 @@
      &                         , vbt_shname,vbt_lgname
      &                         , string256
 !
-	character (len=12)   :: Real_clock
+	character (len=8)   :: Real_clock
 !
       integer  ,dimension(2)              :: cbdim, pardim
       integer  ,dimension(2)              :: stpar, prcnt
@@ -102,7 +102,7 @@
       one = 1
       two = 2
       three= 3
-      foor= 4
+      four= 4
       im   = im4
       jm   = jm4
 !
@@ -303,7 +303,7 @@
          STOP 'Stopped in NC_4DCLIMATO att depth positive'
       ENDIF
 
-      status = nf_put_att_text(ncid, timeid, 'units',
+      status = nf_put_att_text(ncid,idtime, 'units',
      &              LEN_TRIM(Ref_time),TRIM(Ref_time))
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
@@ -311,7 +311,7 @@
       ENDIF
 
       string256='climatology_bounds'
-      status = nf_put_att_text(ncid, timeid, 'climatology',
+      status = nf_put_att_text(ncid,idtime, 'climatology',
      &                 LEN_TRIM(string256),TRIM(string256))
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
@@ -392,8 +392,8 @@
       dim(3)=depthid
       dim(4)=timeid
 !
-      foor = 4
-      status=nf_def_var(ncid,TRIM(var_shname),nf_float,foor,dim,id1)
+      four = 4
+      status=nf_def_var(ncid,TRIM(var_shname),nf_float,four,dim,id1)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def var'
@@ -451,7 +451,7 @@
 !
 !===================================================
 
-      status=nf_def_var(ncid,TRIM(err_shname),nf_float,foor,dim,id2)
+      status=nf_def_var(ncid,TRIM(err_shname),nf_float,four,dim,id2)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def err3'
@@ -499,7 +499,7 @@
       ENDIF
 !-----------------------
 !
-      status=nf_def_var(ncid,TRIM(var1_shname),nf_float,foor,dim,id1_1)
+      status=nf_def_var(ncid,TRIM(var1_shname),nf_float,four,dim,id1_1)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def var1'
@@ -547,7 +547,7 @@
       ENDIF
 
 
-      status=nf_def_var(ncid,TRIM(var2_shname),nf_float,foor,dim,id1_2)
+      status=nf_def_var(ncid,TRIM(var2_shname),nf_float,four,dim,id1_2)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def err2'
@@ -595,7 +595,7 @@
       ENDIF
 !--------------------
 
-      status=nf_def_var(ncid,TRIM(rer_shname),nf_float,foor,dim,id2_1)
+      status=nf_def_var(ncid,TRIM(rer_shname),nf_float,four,dim,id2_1)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def relerr'
@@ -641,7 +641,7 @@
 !----------------------------------------------------------------
 !
 
-      status=nf_def_var(ncid,'databins',nf_float,foor,dim,id3)
+      status=nf_def_var(ncid,'databins',nf_float,four,dim,id3)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def dbins'
@@ -683,7 +683,7 @@
          STOP 'Stopped in NC_4DCLIMATO att valexdb'
       ENDIF
 !
-      status=nf_def_var(ncid,'outlbins',nf_float,foor,dim,id3_1)
+      status=nf_def_var(ncid,'outlbins',nf_float,four,dim,id3_1)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def obins'
@@ -724,7 +724,7 @@
          STOP 'Stopped in NC_4DCLIMATO att valexob'
       ENDIF
 !
-      status=nf_def_var(ncid,'CLfield',nf_float,foor,dim,id4)
+      status=nf_def_var(ncid,'CLfield',nf_float,four,dim,id4)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def rlfield'

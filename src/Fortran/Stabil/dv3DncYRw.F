@@ -321,7 +321,7 @@
       cbdim(1)=depthid
       cbdim(2)=timeid
 !
-      status=nf_def_var(ncid,'CORRLEN',nf_float,one,cbdim,id0_1)
+      status=nf_def_var(ncid,'CORRLEN',nf_float,two,cbdim,id0_1)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def var0_1'
@@ -340,7 +340,7 @@
          STOP 'Stopped in NC_4DCLIMATO att0_1 units'
       ENDIF
 !
-      status=nf_def_var(ncid,'SNR',nf_float,one,cbdim,id0_2)
+      status=nf_def_var(ncid,'SNR',nf_float,two,cbdim,id0_2)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def var0_2'
@@ -353,7 +353,7 @@
          STOP 'Stopped in NC_4DCLIMATO att0_2 lgname'
       ENDIF
 !
-      status=nf_def_var(ncid,'VARBACK',nf_float,one,cbdim,id0_3)
+      status=nf_def_var(ncid,'VARBACK',nf_float,two,cbdim,id0_3)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def var0_3'
@@ -381,7 +381,7 @@
       dim(4)=timeid
 !
       four = 4
-      status=nf_def_var(ncid,TRIM(var_shname),nf_float,three,dim,id1)
+      status=nf_def_var(ncid,TRIM(var_shname),nf_float,four,dim,id1)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def var'
@@ -439,7 +439,7 @@
 !
 !===================================================
 
-      status=nf_def_var(ncid,TRIM(err_shname),nf_float,three,dim,id2)
+      status=nf_def_var(ncid,TRIM(err_shname),nf_float,four,dim,id2)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def err3'
@@ -487,7 +487,7 @@
       ENDIF
 !-----------------------
 !
-      status=nf_def_var(ncid,TRIM(var1_shname),nf_float,three,dim,id1_1)
+      status=nf_def_var(ncid,TRIM(var1_shname),nf_float,four,dim,id1_1)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def var1'
@@ -535,7 +535,7 @@
       ENDIF
 
 
-      status=nf_def_var(ncid,TRIM(var2_shname),nf_float,three,dim,id1_2)
+      status=nf_def_var(ncid,TRIM(var2_shname),nf_float,four,dim,id1_2)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def err2'
@@ -583,7 +583,7 @@
       ENDIF
 !--------------------
 
-      status=nf_def_var(ncid,TRIM(rer_shname),nf_float,three,dim,id2_1)
+      status=nf_def_var(ncid,TRIM(rer_shname),nf_float,four,dim,id2_1)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def relerr'
@@ -626,7 +626,7 @@
 !----------------------------------------------------------------
 !
 
-      status=nf_def_var(ncid,'databins',nf_float,three,dim,id3)
+      status=nf_def_var(ncid,'databins',nf_float,four,dim,id3)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def dbins'
@@ -668,7 +668,7 @@
          STOP 'Stopped in NC_4DCLIMATO att valexdb'
       ENDIF
 !
-      status=nf_def_var(ncid,'outlbins',nf_float,three,dim,id3_1)
+      status=nf_def_var(ncid,'outlbins',nf_float,four,dim,id3_1)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def obins'
@@ -709,7 +709,7 @@
          STOP 'Stopped in NC_4DCLIMATO att valexob'
       ENDIF
 !
-      status=nf_def_var(ncid,'CLfield',nf_float,three,dim,id4)
+      status=nf_def_var(ncid,'CLfield',nf_float,four,dim,id4)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def rlfield'
@@ -756,7 +756,7 @@
       dim2(3)=timeid
 !
       status=nf_def_var(ncid,TRIM(vbt_shname),nf_float,
-     &                                             two,dim2,id2d1)
+     &                                             three,dim2,id2d1)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def vbt'
@@ -812,7 +812,7 @@
 !x      ENDIF
 !==================================================================
       status=nf_def_var(ncid,TRIM(varb1_shname),nf_float,
-     &                                             two,dim2,id2d2)
+     &                                             three,dim2,id2d2)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def varb1'
@@ -863,7 +863,7 @@
 !
 !
       status=nf_def_var(ncid,TRIM(varb2_shname),nf_float,
-     &                                             two,dim2,id2d3)
+     &                                             three,dim2,id2d3)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def varb2'

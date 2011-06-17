@@ -31,7 +31,6 @@
       integer            :: i,j,k,klev,ic,top_lev,kuw,kwu,ipar,iparpar
       integer                   :: NX, NY, NK, ndata, nl,chlen,iun
       integer*4                 :: KMAX, ipr, nw, IMAX, JMAX, flag
-!!      integer                 :: KMAX, ipr, nw, IMAX, JMAX
       integer                   :: ICOOC, IREG, ISPEC
       integer                   :: nm,xm1,xm2,xy1,xy2
 !
@@ -332,6 +331,8 @@
          YLAT(j) = yorig+(j-1)*dy
       ENDDO
 !
+      IMAX=NX
+      JMAX=NY
 !
 ! Reading analysis
       klev = 0
@@ -341,69 +342,30 @@
         klev = klev + 1
         valexu(klev) = valexc
         WRITE(VARFILEIN,
-     &'(a,".1",i4.4,".anl")')TRIM(var_shname),istep
+     &'(a,".1",i4.4,".anl.nc")')TRIM(var_shname),istep
         divafile = '../output/3Danalysis/Fields/'//TRIM(VARFILEIN)
         INQUIRE(FILE=TRIM(divafile),EXIST=exist)
         IF(exist) THEN
-        close(84)
-        open (unit=84,file=TRIM(divafile),form='unformatted')
-        CALL UREADC(84,W8,U,VALEXU(klev),IPR,IMAX,JMAX,KMAX,NW)
 !
-        if (KMAX.ne.1) stop "Not a 2D Field analysis"
+          CALL NC_RD2DCL(imax,jmax,var(:,:,klev),verr(:,:,klev),
+     &TRIM(divafile))
+
+!xx        close(84)
+!xx        open (unit=84,file=TRIM(divafile),form='unformatted')
+!xx        CALL UREADC(84,W8,U,VALEXU(klev),IPR,IMAX,JMAX,KMAX,NW)
 !
-        ic = 0
-        DO j = 1,jmax
-          DO i = 1,imax
-             ic = ic + 1
-             var(i,j,klev) = U(ic)
-             kuw = kuw + 1
-             U3(kuw) = var(i,j,klev)
-          ENDDO
-        ENDDO
-       ELSE
-        ic = 0
-        DO j = 1,jmax
-          DO i = 1,imax
-             ic = ic + 1
-             var(i,j,klev) = valexu(klev)
-             kuw = kuw + 1
-             U3(kuw) = valexu(klev)
-          ENDDO
-        ENDDO
-       ENDIF          
-      if(valexu(klev) /= valexc ) ichge = 1
-      ENDDO
+!xx        if (KMAX.ne.1) stop "Not a 2D Field analysis"
 !
-      if(ichge == 1) 
-     & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,VAR)
+!xx        ic = 0
+!xx        DO j = 1,jmax
+!xx          DO i = 1,imax
+!xx             ic = ic + 1
+!xx             var(i,j,klev) = U(ic)
+!xx             kuw = kuw + 1
+!xx             U3(kuw) = var(i,j,klev)
+!xx          ENDDO
+!xx        ENDDO
 !
-!
-! Reading error field
-      klev = 0
-      kwu = 0
-      ichge = 0
-      DO istep = MINLEV,MAXLEV
-        klev = klev + 1
-        valexu(klev) = valexc
-        WRITE(VARFILEIN,
-     &'(a,".1",i4.4,".error")')TRIM(var_shname),istep
-        divafile = '../output/3Danalysis/Fields/'//TRIM(VARFILEIN)
-!
-        INQUIRE(FILE=TRIM(divafile),EXIST=exist)
-        IF(exist) then
-          close(84)        
-          open (unit=84,file=TRIM(divafile),form='unformatted')
-          CALL UREADC(84,W8,U,VALEXU(klev),IPR,IMAX,JMAX,KMAX,NW)
-          if (KMAX.ne.1) stop "Not a 2D Field analysis"
-          ic = 0
-          DO j = 1,jmax
-            DO i = 1,imax
-               ic = ic + 1
-               verr(i,j,klev) = U(ic)
-               kwu = kwu + 1
-               W3(kwu) = verr(i,j,klev)
-            ENDDO
-          ENDDO
           IF(VARBAK(klev) > 0.) THEN
             DO j = 1,jmax
               DO i = 1,imax
@@ -415,21 +377,83 @@
               ENDDO
             ENDDO
           ENDIF
-        ELSE
-          DO j = 1,jmax
-            DO i = 1,imax
+!
+       ELSE
+!xx        ic = 0
+        DO j = 1,jmax
+          DO i = 1,imax
+!xx             ic = ic + 1
+             var(i,j,klev) = valexu(klev)
                reler(i,j,klev) = VALEXU(klev)
                verr(i,j,klev) = VALEXU(klev)
-            ENDDO
+!xx             kuw = kuw + 1
+!xx             U3(kuw) = valexu(klev)
           ENDDO
-        ENDIF
+        ENDDO
+       ENDIF          
       if(valexu(klev) /= valexc ) ichge = 1
       ENDDO
-      if(ichge == 1) 
-     & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,verr)
 !
       if(ichge == 1) 
+     & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,VAR)
+      if(ichge == 1) 
+     & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,verr)
+      if(ichge == 1) 
      & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,reler)
+!
+!
+! Reading error field
+!xx      klev = 0
+!xx      kwu = 0
+!xx      ichge = 0
+!xx      DO istep = MINLEV,MAXLEV
+!xx        klev = klev + 1
+!xx        valexu(klev) = valexc
+!xx        WRITE(VARFILEIN,
+!xx     &'(a,".1",i4.4,".error")')TRIM(var_shname),istep
+!xx        divafile = '../output/3Danalysis/Fields/'//TRIM(VARFILEIN)
+!
+!xx        INQUIRE(FILE=TRIM(divafile),EXIST=exist)
+!xx        IF(exist) then
+!xx          close(84)        
+!xx          open (unit=84,file=TRIM(divafile),form='unformatted')
+!xx          CALL UREADC(84,W8,U,VALEXU(klev),IPR,IMAX,JMAX,KMAX,NW)
+!xx          if (KMAX.ne.1) stop "Not a 2D Field analysis"
+!xx          ic = 0
+!xx          DO j = 1,jmax
+!xx            DO i = 1,imax
+!xx               ic = ic + 1
+!xx               verr(i,j,klev) = U(ic)
+!xx               kwu = kwu + 1
+!xx               W3(kwu) = verr(i,j,klev)
+!xx            ENDDO
+!xx          ENDDO
+!xx          IF(VARBAK(klev) > 0.) THEN
+!xx            DO j = 1,jmax
+!xx              DO i = 1,imax
+!xx               if (verr(i,j,klev) .ne. VALEXU(klev)) then
+!xx               reler(i,j,klev) = verr(i,j,klev)/SQRT(VARBAK(klev))
+!xx               else
+!xx               reler(i,j,klev) = VALEXU(klev)
+!xx               endif
+!xx              ENDDO
+!xx            ENDDO
+!xx          ENDIF
+!xx        ELSE
+!xx          DO j = 1,jmax
+!xx            DO i = 1,imax
+!xx               reler(i,j,klev) = VALEXU(klev)
+!xx               verr(i,j,klev) = VALEXU(klev)
+!xx            ENDDO
+!xx          ENDDO
+!xx        ENDIF
+!xx      if(valexu(klev) /= valexc ) ichge = 1
+!xx      ENDDO
+!xx      if(ichge == 1) 
+!xx     & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,verr)
+!
+!xx      if(ichge == 1) 
+!xx     & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,reler)
 !
 !
 ! Reading databins file
@@ -829,11 +853,6 @@
       WRITE(file_name,'("../output/3Danalysis/",
      &a,".1",i4.4,".1",i4.4,".anl.nc")')TRIM(var_shname),MINLEV,MAXLEV
 !
-
-
-      write(*,*)'TRIM(var_cfname)',TRIM(var_cfname)
-
-
       iun=1
       CALL NC_4DCLIM(IMAX, JMAX,nk,ipar,iun,time_val,clbnds,
      &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
