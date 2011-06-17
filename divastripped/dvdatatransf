@@ -1,0 +1,126 @@
+#! /bin/bash
+################
+#
+bottm=$1
+surf=$2
+var=$3
+itrans=$4
+#
+if [ -d ./3DWORK ];then
+echo 'starting data transformation'
+else
+mkdir ./3DWORK
+echo 'making a backup of  ./input/divadata'
+fi
+cp -r ./input/divadata ./input/divadata_BKP
+#
+if [ "$itrans" == "13" -o "$itrans" == "23" ];then 
+# Start anamorphose transformation
+#################################
+dep=$bottm
+rm -f ./3DWORK/fort.44
+while [ $dep -le $surf ]
+do
+let level=10000+$dep
+#
+cd ./input/divadata
+  file=$var.$level
+  nbcl=$(head -n 1 $file | wc -w)
+  nbln=$(cat $file |wc -l)
+  echo $var > ../../3DWORK/fort.44
+  echo $itrans >> ../../3DWORK/fort.44
+  echo $bottm >> ../../3DWORK/fort.44
+  echo $surf >> ../../3DWORK/fort.44
+  echo $nbln >> ../../3DWORK/fort.44
+  echo $nbcl >> ../../3DWORK/fort.44
+  echo $dep >> ../../3DWORK/fort.44
+cd ../../3DWORK/
+../../bin/addnoise.a
+cd ../
+dep=`expr $dep + 1`
+done
+cd input/divadata
+##echo $PWD
+##ls -l
+dep=$bottm
+while [ $dep -le $surf ]
+do
+let level=10000+$dep
+file=$var.$level
+nbcl=$(head -n 1 $file | wc -w)
+nbln=$(cat $file |wc -l)
+echo $file $nbln $nbcl >> ../../3DWORK/lsdivadata
+echo 'bruit_'$var.$level >> ../../3DWORK/bruitls
+dep=`expr $dep + 1`
+done
+cat 'bruit_'$var.1* >../../3DWORK/$var'_noise'
+cd ../../3DWORK/
+  file=$var'_noise'
+  nbln=$(cat $file |wc -l)
+  file='lsdivadata'
+  nbfl=$(cat $file |wc -l)
+  echo $var > fort.44
+  echo $itrans >> fort.44
+  echo $bottm >> fort.44
+  echo $surf >> fort.44
+  echo $nbln >> fort.44
+../../bin/sortall.a
+
+  file='../input/divadata/'$var'_inverf'
+  nbln=$(cat $file |wc -l)
+  file='lsdivadata'
+  nbfl=$(cat $file |wc -l)
+  echo $var > fort.44
+  echo $itrans >> fort.44
+  echo $bottm >> fort.44
+  echo $surf >> fort.44
+  echo $nbln >> fort.44
+  echo $nbfl >> fort.44
+
+../../bin/datadispach.a
+cd ../input/divadata
+
+##echo $PWD
+##ls -l
+####rm bruit_* bruitls
+echo 'finished anamorphose data transformation'
+cd ../../
+else
+
+# Start data transformation
+#################################
+#
+dep=$bottm
+rm -f ./3DWORK/fort.44
+while [ $dep -le $surf ]
+do
+let level=10000+$dep
+#
+cd ./input/divadata
+  file=$var.$level
+  nbcl=$(head -n 1 $file | wc -w)
+  nbln=$(cat $file |wc -l)
+
+  echo $var > ../../3DWORK/fort.44
+  echo $itrans >> ../../3DWORK/fort.44
+  echo $bottm >> ../../3DWORK/fort.44
+  echo $surf >> ../../3DWORK/fort.44
+  echo $nbln >> ../../3DWORK/fort.44
+  echo $nbcl >> ../../3DWORK/fort.44
+  echo $dep >> ../../3DWORK/fort.44
+
+  cd ../../3DWORK/
+  ../../bin/datatrans.a
+  if [ -f fort.55 ];then
+  mv fort.55 ERR.$var.$level
+  fi
+cd ../
+#
+ dep=`expr $dep + 1`
+done
+echo 'finished transforming data'
+#
+fi
+# End transformations
+#################################
+#

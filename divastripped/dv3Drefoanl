@@ -6,6 +6,7 @@
 # $4 = variable gnuplot plots min.
 # $5 = variable gnuplot plots max.
 # $6 = reference or and analyses.
+# $7 = detrending param.
 #================================
 lev=$1
 var=$2
@@ -32,9 +33,70 @@ else
 fi
 if [ -f ./input/param.par ];then
  runflag=0
+if [ "$action" == "2" ];then
+cp ./input/param.par ./input/param.par.svori
+#
+Fileinf='./input/param.par'
+{
+read comment1
+read param1
+read comment2
+read param2
+read comment3
+read param3
+read comment4
+read param4
+read comment5
+read param5
+read comment6
+read param6
+read comment7
+read param7
+read comment8
+read param8
+read comment9
+read param9
+read comment10
+read param10
+read comment11
+read param11
+read comment12
+read param12
+read comment13
+read param13
+} < $Fileinf
+#
+echo $comment1 > ./input/param.par
+echo $param1 >> ./input/param.par
+echo $comment2 >> ./input/param.par
+echo $param2 >> ./input/param.par
+echo $comment3 >> ./input/param.par
+echo $param3 >> ./input/param.par
+echo $comment4 >> ./input/param.par
+echo 0 >> ./input/param.par
+echo $comment5 >> ./input/param.par
+echo $param5 >> ./input/param.par
+echo $comment6 >> ./input/param.par
+echo $param6 >> ./input/param.par
+echo $comment7 >> ./input/param.par
+echo $param7 >> ./input/param.par
+echo $comment8 >> ./input/param.par
+echo $param8 >> ./input/param.par
+echo $comment9 >> ./input/param.par
+echo $param9 >> ./input/param.par
+echo $comment10 >> ./input/param.par
+echo $param10 >> ./input/param.par
+echo $comment11 >> ./input/param.par
+echo $param11 >> ./input/param.par
+echo $comment12 >> ./input/param.par
+echo $param12 >> ./input/param.par
+echo $comment13 >> ./input/param.par
+echo $param13 >> ./input/param.par
+#
+fi
+
 if [ "$#" == "8" ];then
-echo dv3Drefoanl: dvstbchp 1
-ls ./input/
+echo dv3Drefoanl stabilisation: dvstbchp 1
 ./dvstbchp 1
 fi
 else
@@ -59,7 +121,6 @@ fi
 #
 if [ -f ./input/divarefe/$var'.'$lev'.datapoint.ref' ];then
  cp -v ./input/divarefe/$var'.'$lev'.datapoint.ref' ./output/fieldatdatapoint.anl.ref
-
    cp -v ./input/divarefe/$var'.'$lev'.ref' ./output/fieldgher.anl.ref
    cp -v ./input/divarefe/$var'.'$lev'.ascii.ref' ./output/fieldascii.anl.ref
    cp -v ./input/divarefe/GridInfo.dat  ./output/ghertonetcdf/GridInfo.dat
@@ -91,14 +152,12 @@ fi
 fi
 #
 if [ "$action" == "2" ];then
-
 if [ -f './input/divadata/'$var'.'$lev ];then
  cp -f './input/divadata/'$var'.'$lev  ./input/data.dat
 else
  echo '!!!!! diva3Dsub did not find '$var'.'$lev' in divadata/ !!!!!'
  runflag=2
 fi
-
 fi
 #
 if [ -f ./input/divaparam/coast.cont.$lev ];then
@@ -110,13 +169,13 @@ fi
 #
 ##########################################################
 if [ -f ./input/divaparam/valatxy.coord.$var'.'$lev ];then
- cp -f ./input/divaparam/valatxy.coord.$var'.'$lev ./input/valatxy.coord
+ cp -v ./input/divaparam/valatxy.coord.$var'.'$lev ./input/valatxy.coord
 else
  if [ -f ./input/divaparam/valatxy.coord.$lev ];then
- cp -f ./input/divaparam/valatxy.coord.$lev ./input/valatxy.coord
+ cp -v ./input/divaparam/valatxy.coord.$lev ./input/valatxy.coord
  else
   if [ -f ./input/divaparam/valatxy.coord ];then
-   cp -f ./input/divaparam/valatxy.coord ./input/.
+   cp -v ./input/divaparam/valatxy.coord ./input/.
   else
    if [ -f ./input/valatxy.coord ];then
        echo '>>> dvrefoanl using valatxy.coord found in ./input '
@@ -207,11 +266,8 @@ fi
 #------------------------------------------------------------
 #
 if [ "$action" == "1" ];then
-
 echo '%%%%%%%%%%%%  analysis for '$var'.'$lev' %%%%%%%%%%'
-
 if [ "$refanl" == "1" ];then
-
 #echo Cleaning up the mess
 divaclean
 #echo Gridding
@@ -243,18 +299,9 @@ else
 #echo Analysing
 divacalc
 fi
-
-###if [ "$#" == "7" ];then
-####echo Looking for outliers
-###divaqcbis
-####echo Preparing cleaned up data
-###dvoutlierclean
-###fi
-
 echo oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 echo Diva finished the performance
 echo oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-
 else
  echo '>>>>>>>>>>>>  making anomalies for '$var'.'$lev
 ./divaanom
@@ -331,6 +378,17 @@ cp -v ./output/errorfieldgher.anl ./output/3Danalysis/Fields/$var'.'$lev'.error'
 cp -v ./output/fieldascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.ascii.anl'
 cp -v ./output/errorfieldascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.errorascii'
 cp -v ./output/valatxyascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.valatxyasc.anl'
+#
+if [ -f ./input/divaparam/RL.$var.$lev ];then
+ cp -v ./input/divaparam/RLinfo.$var.$lev ./output/3Danalysis/Fields/.
+ cp -v ./input/divaparam/RL.$var.$lev ./output/3Danalysis/Fields/$var'.'$lev'.RL'
+else
+ if [ -f ./input/divaparam/RL.$lev ];then
+ cp -v ./input/divaparam/RLinfo.$lev ./output/3Danalysis/Fields/.
+  cp -v ./input/divaparam/RL.$lev  ./output/3Danalysis/Fields/$var'.'$lev'.RL'
+ fi
+fi
+#
 fi
 if [ -f ./output/erroratxyascii.anl ];then
 cp -v ./output/erroratxyascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.erroratxyascii.anl'
@@ -381,11 +439,8 @@ fi
 fi
 #
 if [ "$action" == "2" ];then
-
 echo '%%%%%%%%%%%%  reference for '$var'.'$lev' %%%%%%%%%%'
-
 ./divaclean
-
 if [ "$detrd" -eq "1" ];then
 #
   Fileinf=./input/detrendinfo
@@ -401,17 +456,13 @@ echo '>>>>>>>>>>>>>>>>  using ./divadetrend' $ngrp $nbit
 else
 ./divarefe
 fi
-
+mv ./input/param.par.svori ./input/param.par
 if [ -f ./input/divadata/$var'.'$lev'.DATABINS' ];then
  echo $var'.'$lev'.DATABINS exists'
 else
 ./divadatacoverage -n
 cp -v ./output/DATABINS.dat ./input/divadata/$var'.'$lev'.DATABINS'
 cp -v ./output/DATABINSinfo.dat ./input/divadata/$var'.'$lev'.DATABINSinfo'
-# if [ -f ./input/divaparam/RL.$var.$lev ];then
-# echo RL.$var.$lev exists
-# else
-# fi
 fi
 #
 if [ "$detrd" -eq "1" ];then
@@ -429,7 +480,6 @@ done
 cd ..
 fi
 #
-
 if [ "$#" == "8" ];then
 cp -v ./output/fieldgher.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.anl'
 else
@@ -439,7 +489,6 @@ cp -v ./output/fieldatdatapoint.anl.ref ./input/divarefe_all/$var'.'$lev'.datapo
 cp -v ./output/fieldascii.anl.ref ./input/divarefe_all/$var'.'$lev'.ascii.ref'
 cp -v ./output/fieldgher.anl.ref ./input/divarefe_all/$var'.'$lev'.ref'
 fi
-
 cp -v ./output/ghertonetcdf/GridInfo.dat ./input/divarefe/GridInfo.dat
 cp -v ./output/fieldatdatapoint.anl.ref ./input/divarefe/$var'.'$lev'.datapoint.ref'
 cp -v ./output/fieldascii.anl.ref ./input/divarefe/$var'.'$lev'.ascii.ref'
@@ -451,10 +500,8 @@ cp -v ./output/fieldascii.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.ascii.
 cp -v ./output/fieldatdatapoint.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.datapoint.ref'
 cp -v ./output/fieldgher.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.ref'
 cp -v ./output/valatxyascii.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.valatxyasc.ref'
-
 cp -v ./output/errorfieldgher.anl ./output/3Danalysis/Fields/$var'.'$lev'.ref.error'
 cp -v ./output/errorfieldascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.ref.errorascii'
-
 if [ -f ./output/erroratxyascii.anl ];then
 cp -v ./output/erroratxyascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.erroratxyascii.anl'
 fi
@@ -464,7 +511,6 @@ fi
 if [ -f ./output/fieldatdatapoint.anl ];then
 cp -v ./output/fieldatdatapoint.anl ./output/3Danalysis/Fields/$var'.'$lev'.fieldatdatapoint.anl'
 fi
-
 #
 if [ "$gnpl" == "1" ]
 then
@@ -492,13 +538,11 @@ fi
 fi
 #------------------------------------------------------------
 fi
-
 if [ "$#" == "8" ];then
 echo dv3Drefoanl: dvstbchp 0
 ls ./input/
 ./dvstbchp 0
 fi
-
 ##################################################################
 else
 if [ "$runflag" -eq "1" ];then

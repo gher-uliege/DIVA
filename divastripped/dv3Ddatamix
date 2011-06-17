@@ -1,0 +1,102 @@
+#! /bin/bash
+################
+#
+bottm=$1
+surf=$2
+var=$3
+itrans=$4
+#
+if [ -d ./3DWORK ];then
+echo 'starting data layers merging'
+else
+mkdir ./3DWORK
+echo 'starting data layers merging'
+fi
+# Start layers combination
+#################################
+#
+let nblay=$surf-$bottm
+if [ $nblay -gt 2 ]; then
+ let ic=0
+else
+ let ic=1
+fi
+#
+dep=$bottm
+rm -f ./3DWORK/fort.44
+while [ $dep -le $surf ]
+do
+let level=10000+$dep
+let depm=0
+let depp=0
+if [ $ic -eq "0" ]; then
+ if [ $dep == $bottm ];then 
+  let depm=$dep+1
+  let depp=$dep+2
+ else
+  if [ $dep == $surf ];then 
+   let depm=$dep-2
+   let depp=$dep-1
+  else
+   let depm=$dep-1
+   let depp=$dep+1
+  fi
+ fi
+fi
+if [ $ic -eq "1" ]; then
+ if [ $dep == $bottm ];then 
+  let depp=$dep+1
+ else
+  if [ $dep == $surf ];then 
+   let depp=$dep-1
+  fi
+ fi
+fi
+#
+if [ "$depm" -ne "0" ]; then
+ let levelm=10000+$depm
+fi
+if [ "$depp" -ne "0" ]; then
+let levelp=10000+$depp
+fi
+#===============================================================
+#
+#
+cd ./input/divadata
+
+  file=$var.$level
+  nbcl=$(head -n 1 $file | wc -w)
+  nbln=$(cat $file |wc -l)
+
+  filep=$var.$levelp
+  nbclp=$(head -n 1 $filep | wc -w)
+  nblnp=$(cat $filep |wc -l)
+
+if [ $depp -ne "0" ]; then
+  filem=$var.$levelm
+  nbclm=$(head -n 1 $filem | wc -w)
+  nblnm=$(cat $filem |wc -l)
+else
+  nbclm=$nbclp
+  nblnm=$nblnp
+fi
+
+  echo $var > ../../3DWORK/fort.44
+  echo $itrans >> ../../3DWORK/fort.44
+  echo $bottm >> ../../3DWORK/fort.44
+  echo $surf >> ../../3DWORK/fort.44
+  echo $nbln' '$nblnp' '$nblnm >> ../../3DWORK/fort.44
+  echo $nbcl' '$nbclp' '$nbclm >> ../../3DWORK/fort.44
+  echo $dep >> ../../3DWORK/fort.44
+
+  cd ../../3DWORK/
+  ../../bin/datamix.a
+cd ../
+#
+ dep=`expr $dep + 1`
+done
+echo 'finished transforming data'
+#
+# End transformations
+#################################
+#

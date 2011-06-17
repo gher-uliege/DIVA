@@ -46,17 +46,37 @@ fi
 #
 if [ "$act" == "2" ];then
 if [ -d ./input/divarefe ];then
-echo '>>>WARNING: ./input/divarefe exists, ref files may be rewritten'
+echo '>>>WARNING: ./input/divarefe exists.'
 else
 mkdir ./input/divarefe
 fi
 fi
 #
-if [ -d './output/3Danalysis/Fields' ];then
-# mv './output/3Danalysis/Fields' './output/3Danalysis/Fields.save'
-echo './output/3Danalysis/Fields exists'
+#
+if [ -f ./input/dvtransinfo ];then
+echo 'transforming input data:' $bottm $surf $var
+  Fileinf=./input/dvtransinfo
+{
+read ntrans
+} < $Fileinf
+ ./dvdatatransf $bottm $surf $var $ntrans
 fi
+#
+if [ -f ./input/dvlaymixinfo ];then
+echo 'mixing layers input data:' $bottm $surf $var
+cp -r ./input/divadata ./input/divadata_ORI
+  Fileinf=./input/dvlaymixinfo
+{
+read ntrans
+} < $Fileinf
+ ./dv3Ddatamix $bottm $surf $var $ntrans
+fi
+#
+if [ -d './output/3Danalysis/Fields' ];then
+echo './output/3Danalysis/Fields exists'
+else
  mkdir -p ./output/3Danalysis/Fields
+fi
 #
 if [ -d ./input/divamesh ]; then
  fmeshe=1
@@ -73,11 +93,9 @@ while [ $dep -le $surf ]
 do
 let level=10000+$dep
 #
-echo 'oooooooooooooooooooooooooooooo'
+echo 'ooooooooooooooooooooooooooooooooooo'
 echo 'diva3Dsub: performing analysis for '$var'.'$level
-echo 'oooooooooooooooooooooooooooooo'
-#
-echo '%%%%%%%%%%%%  analysing '$var'.'$level' %%%%%%%%%%'
+echo 'ooooooooooooooooooooooooooooooooooo'
 #
 if [ -f ./input/detrendinfo ]; then
  echo  ./input/detrendinfo found
@@ -89,11 +107,44 @@ fi
 #
 if [ "$act" == "1" -o  "$act" == "2" ];then
  ./dv3Drefoanl $level $var $gnup $gmin $gmax $act $trd
+#
+if [ -f ./input/dvtransinfo ];then
+ echo  'runing ./dv3Dinvtrsh on '$var'.'$level 
+  Fileinf=./input/dvtransinfo
+{
+read ntrans
+} < $Fileinf
+if [ "$ntrans" == "13" -o "$itrans" == "23" ];then 
+if [ -f './input/divadata/'$var'_inverf' ];then
+  file='./input/divadata/'$var'_inverf'
+  nbln=$(cat $file |wc -l)
+  echo $nbln > ./3DWORK/nblinv
+  echo 'Start inverse anamorphose transformation' $ntrans
+else
+echo SEVER ERROR: $var.$level inv_anamorph $ntrans
+echo did not find $var'_inverf'
+exit
+fi
+fi
+ ./dv3Dinvtrsh $level $var $ntrans
+fi
+#
 fi
 #
  dep=`expr $dep + 1`
 done
 #
+
+if [ -f ./input/dvlaymixinfo ];then
+if [ -d ./input/divadata_mixed ];then
+rm -rf divadata_mixed
+mv ./input/divadata ./input/divadata_mixed
+else
+mv ./input/divadata ./input/divadata_mixed
+fi
+mv ./input/divadata_ORI ./input/divadata
+fi
+
 if [ "$fmeshe" == "0" ]; then
 cp -r ./input/divamesh  ./output/3Danalysis/Meshes
 fi
@@ -103,6 +154,18 @@ if [ -d ./3DWORK ]; then
 else
  mkdir -p ./3DWORK
 fi
+#
+if [ -f ./input/dvtransinfo ];then
+mv ./input/divadata ./input/divadata_tmp
+mv ./input/divadata_BKP ./input/divadata 
+if [ -d ./input/divadata_trans ];then
+rm -rf divadata_trans
+mv ./input/divadata_tmp ./input/divadata_trans
+else
+mv ./input/divadata_tmp ./input/divadata_trans
+fi
+fi
+#
 cd ./3DWORK/
 #
 #
@@ -116,7 +179,7 @@ echo $nbfls >> ./fort.44
 if [ "$act" == "1" ];then
 ../../bin/diva3Dstr.a
 fi
-if [ "$act" == "2" ];then
-../../bin/diva3Dref.a
-fi
+##if [ "$act" == "2" ];then
+##../../bin/diva3Dref.a
+##fi
 cd ..

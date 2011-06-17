@@ -6,6 +6,7 @@
 #
 #
 var=$1
+echo  Writing 4D NETCDF multi-year climatology file for $var
 nbmon=`cat ./input/monthlist |wc -l`
 #
 if [ -f ./3DWORK/fort.44 ];then
@@ -20,19 +21,17 @@ for year in `cat ./input/yearlist`
 do
 #
 nblns=`cat ./output/3Danalysis/$var.$year.3DNCliste |wc -l`
-
- Fileinf=./output/3Danalysis/$var.$year.3DNCliste
-
+Fileinf=./output/3Danalysis/$var.$year.3DNCliste
+{
 ll=1
 while [ $ll -le $nblns ]
 do
-{
 read filename
 echo $filename >> ./3DWORK/3Dncliste
 let ll=$ll+1
+done
 } < $Fileinf
 #
-done
 let nbfls=$nbfls+$nblns
 done
 #
@@ -53,21 +52,15 @@ read dummy
 read dummy
 read dummy
 read dummy
-
 ll=1
 while [ $ll -le $nbmon ]
 do
-
 read comm1
-echo '>>>>>>>>>>>>>>>>>> comm1: '$comm1 
 echo $comm1 >> ./3DWORK/3DNCinfo
 read comm2
-echo '>>>>>>>>>>>>>>>>>> comm2: '$comm2
 echo $comm2 >> ./3DWORK/3DNCinfo
 read comm3
-echo '>>>>>>>>>>>>>>>>>> comm3: '$comm3 
 echo $comm3 >> ./3DWORK/3DNCinfo
-
 let ll=$ll+1
 done
 #
@@ -79,6 +72,20 @@ done
 echo $nbfls > ./3DWORK/fort.44
 #
 cd ./3DWORK/
+
+ls -l
+echo 3DNCinfo:
+echo =========
+cat 3DNCinfo
+echo 3Dncliste:
+echo ==========
+cat 3Dncliste
+echo fort.44:
+echo ==========
+cat fort.44
+echo ncfile:
+echo ==========
+ls -l ../output/3Danalysis/*.nc
 #
 ../../bin/dv4DYRstr.a
 cd ..

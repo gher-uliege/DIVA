@@ -96,7 +96,6 @@ else
   else
     if [ -f ./input/divaparam/param.par.$var ];then
      echo '!! diva3Dclop using param.par.$var from ./input/divaparam '
-
      cp -f ./input/divaparam/param.par.$var ./input/.
      echo JMB B
      cp -f ./input/divaparam/param.par.$var ./input/divaparam/param.par.$var'.'$lev
@@ -130,7 +129,6 @@ else
  runflag=3
 fi
 #
-
 #
 if [ -f ./input/divadata/$var.$lev ];then
  cp -f ./input/divadata/$var.$lev  ./input/data.dat
@@ -146,25 +144,20 @@ fi
 #
 if [ "$runflag" -eq "0" ];then
 #--------------------------
-
 echo '>>>> looking for reference field for '$var'.'$lev' <<<<< '
-
 #
 refdat=0
 if [ -f ./input/divarefe/$var'.'$lev'.datapoint.ref' ];then
 refdat=1
  cp -v ./input/divarefe/$var'.'$lev'.datapoint.ref' ./output/fieldatdatapoint.anl.ref
  cp -v ./input/divarefe/GridInfo.dat  ./output/ghertonetcdf/GridInfo.dat
-
   ./divaanom
   echo '!!!!! using  reference field for '$var'.'$lev'!!'
-
 else
   if [ -f ./input/divarefe/$var'.'$lev'.ref' ];then
    refdat=1
    cp -v ./input/divarefe/$var'.'$lev'.ref' ./output/fieldgher.anl.ref
    cp -v ./input/divarefe/GridInfo.dat  ./output/ghertonetcdf/GridInfo.dat
-
    ./divaanom
    echo '!!!!! using  reference field for '$var'.'$lev' !!'
   fi
@@ -324,7 +317,6 @@ if [ -f ./input/gcvsampling.dat ];then
 small="100"
 medium="2000"
 ndata=$(cat ./input/data.dat| wc -l)
-
 ./divamesh
 if [ "$ndata" -le "$small" ]
 then
@@ -456,7 +448,7 @@ then
 dvfilter $lay1 $lay2
 #
 echo now saving new SN.dat file and VAR.dat file
-ls -l ./output/*SN.dat*
+##ls -l ./output/*SN.dat*
 mv './output/'$var'.SN.dat' './output/'$var'.SN.dat.ori'
 cp './output/SN.dat' './output/'$var'.SN.dat'
 #

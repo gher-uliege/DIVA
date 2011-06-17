@@ -4,16 +4,12 @@
 #
 #####################################################
 #
-
 mkdir -p ./3DWORK
-
+rm -f ./3DWORK/fort.44
 FILENAME=./input/takeout.coord
-
 if [ -f "$FILENAME" ]
 then
-
 echo Going  to modify gebco.topo
-
 nblines=`cat './input/takeout.coord' |wc -l` 
 ln=1
 #
@@ -25,21 +21,19 @@ do
 read location
 echo location nbr $ln : $location
 echo $location > ./3DWORK/fort.44
-
 cd ./3DWORK
 ../../bin/gebprep.a
 cd ..
-
 mv ./input/modif_topo.gebco  ./input/topo.gebco
-
 let ln=$ln+1
 done
 } < $Fileinf
 #
 else
-echo Missing file $FILENAME
-echo Please provide file $FILENAME
-exit
+echo Did not find any $FILENAME  file
+cd ./3DWORK
+../../bin/gebprep.a
+cd ..
+mv ./input/modif_topo.gebco  ./input/topo.gebco
 fi
-
 #
