@@ -42,7 +42,7 @@
       ! Open the data file       
       !-----------------------
 !
-      WRITE(*,*)' RWD2DNC fila_name: ',TRIM(file_name)
+      WRITE(*,*)' RWD2DNC filename: ',TRIM(file_name)
 !
       status = nf_open(TRIM(file_name), nf_write,ncid)
       IF (status .NE.nf_noerr) THEN

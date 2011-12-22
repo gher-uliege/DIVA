@@ -7,6 +7,7 @@
       INTEGER :: n,m,i,LEVELS,nblines,ndsort
       INTEGER :: fnum,lev,first_level,last_level,itrans
 !
+      INTEGER, DIMENSION(:),    ALLOCATABLE :: loc
       REAL, DIMENSION(:),    ALLOCATABLE  :: LONVAL,LATVAL,VARVAL,y,
      &                                       dinvnorm,ys
       CHARACTER(len=256), DIMENSION(:,:),ALLOCATABLE :: COLLINE,FINLINE
@@ -36,7 +37,7 @@
       ALLOCATE(y(nblines+2))
       ALLOCATE(ys(nblines+2))
       ALLOCATE(dinvnorm(nblines+2))
-
+      ALLOCATE(loc(nblines+2))
 !
         WRITE(VARFILEIN,
      &'(a,"_noise")')TRIM(var_name)
@@ -49,10 +50,8 @@
 !
        DO n = 1,nblines
          i=n
-         x=MINVAL(y(n:nblines))
-         DO WHILE(y(i) .gt. x)
-          i=i+1
-         ENDDO
+         loc(n:n) = MINLOC(y(n:nblines))
+         i=n+loc(n)-1
          temp=y(n)
          y(n)=y(i)
          y(i)=temp
@@ -86,7 +85,7 @@
        ys(ndsort+1)=ys(ndsort)+(ys(ndsort)-ys(ndsort-1))
        ndsort = ndsort+ 1
 !
-       write(*,*)'% ndsort nblines ',ndsort,nblines
+!       write(*,*)'% ndsort nblines ',ndsort,nblines
 !
        WRITE(VARFILEOU,
      &'(a,"_sorted")')TRIM(var_name)

@@ -49,10 +49,6 @@
       im = im4
       jm = jm4
 !
-      write(*,*)'file_name2 ',LEN_TRIM(file_name),TRIM(file_name)
-      write(*,*)'**************************************************'
-      write(*,*)'var_shname ',LEN_TRIM(var_shname),TRIM(var_shname)
-      write(*,*)'**************************************************'
 !
       !-----------------------
       ! Open the data file       

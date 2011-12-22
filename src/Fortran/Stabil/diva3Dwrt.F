@@ -673,19 +673,43 @@
      &                        MASK= (mask(:,:,nk) .eq. 1))
       x=MINVAL(varbot(1:imax,1:jmax),
      &                        MASK= (mask(:,:,nk) .eq. 1))
-      call jmbround(x,y,xr,yr)
+
+      if(x.gt.y) then
+        write(*,*)' Problem in range for bottom var '
+        xr = abs(VALEXC)
+        yr = -1.*abs(VALEXC)
+      else
+       call jmbround(x,y,xr,yr)
+      endif
+
       vbt_max = yr
       vbt_min = xr
 !
       y=MAXVAL(varb1(1:imax,1:jmax),MASK= (mskb1(:,:) .eq. 1))
       x=MINVAL(varb1(1:imax,1:jmax),MASK= (mskb1(:,:) .eq. 1))
-      call jmbround(x,y,xr,yr)
+
+      if(x.gt.y) then
+        write(*,*)' Problem in range for bottom var '
+        xr = abs(VALEXC)
+        yr = -1.*abs(VALEXC)
+      else
+       call jmbround(x,y,xr,yr)
+      endif
+
       vbt1_max = yr
       vbt1_min = xr
 !
       y=MAXVAL(varb2(1:imax,1:jmax),MASK= (mskb2(:,:) .eq. 1))
       x=MINVAL(varb2(1:imax,1:jmax),MASK= (mskb2(:,:) .eq. 1))
-      call jmbround(x,y,xr,yr)
+
+      if(x.gt.y) then
+        write(*,*)' Problem in range for bottom var '
+        xr = abs(VALEXC)
+        yr = -1.*abs(VALEXC)
+      else
+       call jmbround(x,y,xr,yr)
+      endif
+
       vbt2_max = yr
       vbt2_min = xr
 !
@@ -697,7 +721,14 @@
       ENDDO
       y = MAXVAL(resmax1)
       x = MINVAL(resmin1)
-      call jmbround(x,y,xr,yr)
+
+      if(x.gt.y) then
+        write(*,*)' Problem in range for var '
+        xr = abs(VALEXC)
+        yr = -1.*abs(VALEXC)
+      else
+       call jmbround(x,y,xr,yr)
+      endif
       var_max = yr
       var_min = xr
 !
@@ -709,7 +740,15 @@
       ENDDO
       y = MAXVAL(resmax1)
       x = MINVAL(resmin1)
-      call jmbround(x,y,xr,yr)
+
+      if(x.gt.y) then
+        write(*,*)' Problem in range for err '
+        xr = abs(VALEXC)
+        yr = -1.*abs(VALEXC)
+      else
+       call jmbround(x,y,xr,yr)
+      endif
+
       ver_max = yr
       ver_min = xr
 !
@@ -719,7 +758,15 @@
       ENDDO
       y = MAXVAL(resmax1)
       x = 0.
-      call jmbround(x,y,xr,yr)
+
+      if(x.gt.y) then
+        write(*,*)' Problem in range for dbins '
+        xr = abs(VALEXC)
+        yr = -1.*abs(VALEXC)
+      else
+       call jmbround(x,y,xr,yr)
+      endif
+
       dbin_max = yr
       dbin_min = 0.
 !
@@ -731,7 +778,15 @@
       ENDDO
       y = MAXVAL(resmax1)
       x = MINVAL(resmin1)
-      call jmbround(x,y,xr,yr)
+
+      if(x.gt.y) then
+        write(*,*)' Problem in range for var '
+        xr = abs(VALEXC)
+        yr = -1.*abs(VALEXC)
+      else
+       call jmbround(x,y,xr,yr)
+      endif
+
       var1_min = xr
       var1_max = yr
 !
@@ -743,7 +798,15 @@
       ENDDO
       y = MAXVAL(resmax1)
       x = MINVAL(resmin1)
-      call jmbround(x,y,xr,yr)
+
+      if(x.gt.y) then
+        write(*,*)' Problem in range for var '
+        xr = abs(VALEXC)
+        yr = -1.*abs(VALEXC)
+      else
+       call jmbround(x,y,xr,yr)
+      endif
+
       var2_min = xr
       var2_max = yr
 !
@@ -755,7 +818,15 @@
       ENDDO
       y = MAXVAL(resmax1)
       x = MINVAL(resmin1)
-      call jmbround(x,y,xr,yr)
+
+      if(x.gt.y) then
+        write(*,*)' Problem in range for reler '
+        xr = abs(VALEXC)
+        yr = -1.*abs(VALEXC)
+      else
+       call jmbround(x,y,xr,yr)
+      endif
+ 
       verel_min = xr
       verel_max = yr
 !
@@ -765,8 +836,17 @@
        resmax1(1:jmax,k)=MAXVAL(obins(1:imax,1:jmax,k),dim=1,
      & MASK= (obins(:,:,k) .eq. valexc))
       ENDDO
+      y = MAXVAL(resmax1)
       x = 0.
-      call jmbround(x,y,xr,yr)
+
+      if(x.gt.y) then
+        write(*,*)' Problem in range for obins '
+        xr = abs(VALEXC)
+        yr = -1.*abs(VALEXC)
+      else
+       call jmbround(x,y,xr,yr)
+      endif
+
       obin_max = yr
       obin_min = 0.
 !
@@ -776,7 +856,15 @@
       ENDDO
       y = MAXVAL(resmax1)
       x = 0.
-      call jmbround(x,y,xr,yr)
+
+      if(x.gt.y) then
+        write(*,*)' Problem in range for rlfield '
+        xr = abs(VALEXC)
+        yr = -1.*abs(VALEXC)
+      else
+       call jmbround(x,y,xr,yr)
+      endif
+
       rl_min = xr
       rl_max = yr
 !

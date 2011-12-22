@@ -1298,17 +1298,11 @@
       prcnt(1)=KM
       prcnt(2)=1
 
-      write(*,*)' dvncwrite CORLEN ',CORLEN
-      write(*,*)' dvncwrite st pr  ',stpar,prcnt
-     
-
-
       status = nf_put_var1_real(ncid,id0_1, stpar, prcnt,CORLEN)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put CORLEN'
       ENDIF
-      write(*,*)' dvncwrite sterror CORLEN ',nf_strerror(status)
 !
 
       status = nf_put_var1_real(ncid,id0_2, stpar, prcnt,SN)

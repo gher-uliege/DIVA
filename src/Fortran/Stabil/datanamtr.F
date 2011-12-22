@@ -107,13 +107,15 @@
         y(n)=VARVAL(n)+ran2(idum)*0.0000001
        ENDDO
 !
-      INQUIRE(FILE=file_name,EXIST=exist)
+      INQUIRE(FILE=ALLDATA,EXIST=exist)
       IF(exist) THEN
-         OPEN(UNIT=11,FILE=ALLDATA,STATUS='NEW')
+
+      OPEN(UNIT=11,FILE=ALLDATA,STATUS='OLD',POSITION='APPEND')
       ELSE
-         OPEN(UNIT=11,FILE=ALLDATA,STATUS='OLD',POSITION='APPEND')
+
+      OPEN(UNIT=11,FILE=ALLDATA,STATUS='NEW')
       ENDIF
-!!!         OPEN(11, FILE=datafile)
+
        IF(nbccol == 10) THEN
          DO n = 1,nblines
            write(11,*) LONVAL(n),LATVAL(n),VARVAL(n),y(n)

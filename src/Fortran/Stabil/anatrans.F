@@ -8,12 +8,13 @@
       REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: XLON,YLAT, VECFLD
 !
       REAL*4 , DIMENSION(:,:),  ALLOCATABLE :: var, verr
+      integer, DIMENSION(:,:),  ALLOCATABLE :: mask
 !
-      integer                   :: i,j,ii,jj,nbval,nbval2,nblninv
+      integer                   :: i,j,ii,jj,nbval,nbval2,nblninv,n
       integer                   :: NX, NY, NK, istep, itrans
       integer*4                 :: IMAX, JMAX
       real*4                    :: VALEXC,val
-      real*4                    :: xorig, yorig, dx, dy, xend, yend
+      real*4                    :: xorig, yorig, dx, dy, xend, yend,y,x
 !
       CHARACTER (len=255)        :: file_name,divafile,comments
       CHARACTER (len=99)         :: EXECIN,INVERFILE
@@ -26,7 +27,6 @@
       EXECIN='./ncname'
       OPEN(2,FILE=EXECIN,STATUS='OLD')
       READ(2,*)VARFILEIN
-!!!      READ(2,*)VARFILEOU
       READ(2,*)var_name
       READ(2,*)istep
       READ(2,*)itrans
@@ -91,6 +91,7 @@
       ALLOCATE(VECFLD(NX*NY))
       ALLOCATE(var(NX,NY))
       ALLOCATE(verr(NX,NY))
+      ALLOCATE(mask(NX,NY))
 !
 !retreiving grid points longitude and latitude
       DO i = 1, NX
@@ -107,7 +108,7 @@
       IF(exist) THEN
         CALL NC_RD2DCL(imax,jmax,var(:,:),verr(:,:),TRIM(divafile))
       ELSE
-        WRITE(*,*) 'did not find ',TRIM(divafile)
+        WRITE(*,*)'Anamorphose transform: did not find ',TRIM(divafile)
         STOP
       ENDIF
 !            
@@ -135,15 +136,18 @@
         CALL TRANSINV(itrans,nbval,VECFLD)
       ENDIF
 
+      mask = 0
       nbval2 = 0
       DO j=1,NY
         DO i=1,NX
-          IF(var(i,j) .ne. VALEXC) THEN
+         IF(var(i,j) .ne. VALEXC) THEN
            nbval2 = nbval2+1
-           var(i,j) =  VECFLD(nbval2)
+           var(i,j) = VECFLD(nbval2)
+           mask(i,j) = 1
           ENDIF
         ENDDO
       ENDDO
+
       divafile = '../output/3Danalysis/Fields/'//TRIM(VARFILEIN)
       WRITE(*,*) 'found ',TRIM(divafile)
       INQUIRE(FILE=TRIM(divafile),EXIST=exist)

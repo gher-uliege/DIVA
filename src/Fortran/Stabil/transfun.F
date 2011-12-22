@@ -13,10 +13,13 @@
          RETURN
       ENDIF
       IF(itrans .eq. 12 .or. itrans .eq. 22) then
-         DO n = 1,nblines
-          VAL = (VARVAL(n))**2
-          VARVAL(n) = VAL
-         ENDDO
+!xx         DO n = 1,nblines
+!xx          VAL = (VARVAL(n))**2
+!xx          VARVAL(n) = VAL
+!xx         ENDDO
+
+           WRITE(*,*) 'No transformation for flag ',itrans
+
          RETURN
       ENDIF
       IF(itrans .eq. 11 .or. itrans .eq. 21) then
@@ -28,16 +31,20 @@
            STOP
          ENDIF
          DO n = 1,nblines
-          VAL = log(VARVAL(n)+1.e-4)
+            IF(VARVAL(n) == 0.) VARVAL(n) = 1.e-14
+          VAL = log(VARVAL(n))
           VARVAL(n) = VAL
          ENDDO
          RETURN
       ENDIF
       IF(itrans .eq. 10 .or. itrans .eq. 20) then
-         DO n = 1,nblines
-          VAL = exp(VARVAL(n))
-          VARVAL(n) = VAL
-         ENDDO
+!xx         DO n = 1,nblines
+!xx          VAL = exp(VARVAL(n))
+!xx          VARVAL(n) = VAL
+!xx         ENDDO
+
+           WRITE(*,*) 'No transformation for flag ',itrans
+
       ENDIF
 !
       RETURN
@@ -49,10 +56,12 @@
 !
       IMPLICIT NONE
 !
-      INTEGER :: n,i,nblines,itrans,nblninv
+      INTEGER :: n,i,nblines,itrans,nblninv,l
       REAL    :: VAL
 !      REAL, DIMENSION(:),    ALLOCATABLE  :: VARVAL
       REAL, DIMENSION(nblines) :: VARVAL
+      INTEGER, DIMENSION(2)   :: loc
+
 !      ALLOCATE(VARVAL(nblines)
 !
       IF(itrans .eq. 14 .or. itrans .eq. 24) then
@@ -60,24 +69,30 @@
          RETURN
       ENDIF
       IF(itrans .eq. 12 .or. itrans .eq. 22) then
-         DO n = 1,nblines
-          VAL = sqrt(VARVAL(n))
-          VARVAL(n) = VAL
-         ENDDO
+!xx         DO n = 1,nblines
+!xx          VAL = sqrt(VARVAL(n))
+!xx          VARVAL(n) = VAL
+!xx         ENDDO
+
+           WRITE(*,*) 'No transformation for flag ',itrans
+
          RETURN
       ENDIF
       IF(itrans .eq. 11 .or. itrans .eq. 21) then
          DO n = 1,nblines
-          VAL = exp(VARVAL(n))-1.e-4
+          VAL = exp(VARVAL(n))
           VARVAL(n) = VAL
          ENDDO
          RETURN
       ENDIF
       IF(itrans .eq. 10 .or. itrans .eq. 20) then
-         DO n = 1,nblines
-          VAL = log(VARVAL(n))
-          VARVAL(n) = VAL
-         ENDDO
+!xx         DO n = 1,nblines
+!xx          VAL = log(VARVAL(n))
+!xx          VARVAL(n) = VAL
+!xx         ENDDO
+
+           WRITE(*,*) 'No transformation for flag ',itrans
+
       ENDIF
 !
       RETURN
