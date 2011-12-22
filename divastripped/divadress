@@ -1,7 +1,4 @@
 #!/bin/bash
-
-
-
 #echo Cleaning up the mess
 divaclean
 #echo Gridding

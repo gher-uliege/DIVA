@@ -1,12 +1,8 @@
 #!/bin/bash
-
-
-
 echo //////////////////////////////////////////////////
 echo Copying input files into the input directory
 echo //////////////////////////////////////////////////
 echo ' '
-
 if [ "$#" -lt "1" ]
 then
 echo ==================================================================
@@ -23,10 +19,6 @@ echo saving name in casename
 echo ===================================================================
 echo ===================================================================
 fi
-
-
-
-
 if [ -d $1 ]
 then	
 echo Directory $1 exists
@@ -34,7 +26,6 @@ else
 echo Directory $1 does not exist
 exit 0
 fi
-
 echo Removing potentially conflicting files 
 echo ' '
 rm -f  ./input/casename
@@ -48,94 +39,73 @@ rm -f  ./input/RL.dat
 rm -f  ./input/RLinfo.dat
 rm -f  ./input/constraint.dat
 rm -f  ./input/contour.depth
-
 echo Copying from $1/input to the input directory 
 echo ' '
-
 if [ -f $1/input/data.dat ] 
 then
 cp -v $1/input/data.dat ./input
 fi
-
 if [ -f $1/input/topo.dat ] 
 then
 cp -v $1/input/topo.dat ./input
 fi
-
 if [ -f $1/input/param.par ] 
 then
 cp -v $1/input/param.par ./input
 fi
-
 if [ -f $1/input/coast.cont ] 
 then
 cp -v $1/input/coast.cont ./input
 fi
-
 if [ -f $1/input/coast.cont.dens ] 
 then
 cp -v $1/input/coast.cont.dens ./input
 fi
-
 if [ -f $1/input/valatxy.coord ] 
 then
 cp -v $1/input/valatxy.coord ./input
 fi
-
-
 if [ -f $1/input/gcvsampling.dat ] 
 then
 cp -v $1/input/gcvsampling.dat ./input 
 fi
-
 if [ -f $1/input/TopoInfo.dat ] 
 then
 cp -v $1/input/TopoInfo.dat ./input
 fi
-
 if [ -f $1/input/contour.depth ] 
 then
 cp -v $1/input/contour.depth ./input
 fi
-
 if [ -f $1/input/topo.grd ] 
 then
 cp -v $1/input/topo.grd ./input
 fi
-
 if [ -f $1/input/constraint.dat ] 
 then
 cp -v $1/input/constraint.dat ./input
 fi
-
 if [ -f $1/input/Uvel.dat ] 
 then
 cp -v $1/input/Uvel.dat ./input
 fi
-
 if [ -f $1/input/Vvel.dat ] 
 then
 cp -v $1/input/Vvel.dat ./input
 fi
-
 if [ -f $1/input/UVinfo.dat ] 
 then
 cp -v $1/input/UVinfo.dat ./input
 fi
-
-
 if [ -f $1/input/RL.dat ] 
 then
 cp -v $1/input/RL.dat ./input
 fi
-
 if [ -f $1/input/RLinfo.dat ] 
 then
 cp -v $1/input/RLinfo.dat ./input
 fi
-
 echo $1 > ./input/casename
-
 echo ' '
 echo ----------------------
 echo Input files are copied

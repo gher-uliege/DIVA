@@ -3,23 +3,15 @@ export LC_ALL=C
 # Flat colors, ie boxes with uniform filling
 smooth=1
 # smooth=1 will interpolate color filling
-
-
 cd gnuwork
-
 rm fort.*
-
-
-
 if [ -f ../output/diva.log ] ; then
  cp -f ../output/diva.log .
 fi
-
 echo preparing files for mesh plot
 cp ../meshgenwork/fort.22 .
 cp ../meshgenwork/fort.23 .
 ../../bin/forgnuplotmesh.a >> diva.log
-
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -27,7 +19,6 @@ echo A problem was encountered during execution !
 echo          divagnu      forgnuplotmesh.a
 echo Check execution track
 echo --------------------------------------------
-
 echo ' ' >> diva.log
 echo -------------------------------------------- >> diva.log
 echo A problem was encountered during execution ! >> diva.log
@@ -35,10 +26,8 @@ echo          divagnu      forgnuplotmesh.a  >> diva.log
 echo Check execution track >> diva.log
 echo -------------------------------------------- >> diva.log
 fi
-
 # output if fort.69
 ../../bin/forgnuplotmeshl.a >> diva.log
-
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -46,7 +35,6 @@ echo A problem was encountered during execution !
 echo          divagnu      forgnuplotmeshl.a
 echo Check execution track
 echo --------------------------------------------
-
 echo ' ' >> diva.log
 echo -------------------------------------------- >> diva.log
 echo A problem was encountered during execution ! >> diva.log
@@ -54,13 +42,10 @@ echo          divagnu      forgnuplotmeshl.a  >> diva.log
 echo Check execution track >> diva.log
 echo -------------------------------------------- >> diva.log
 fi
-
 # output if fort.71
-
 echo preparing files for coast plot
 cp ../input/coast.cont fort.66
 ../../bin/forgnuplotcoastfilled.a >> diva.log
-
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -68,7 +53,6 @@ echo A problem was encountered during execution !
 echo          divagnu      forgnuplotcoastfilled.a
 echo Check execution track
 echo --------------------------------------------
-
 echo ' ' >> diva.log
 echo -------------------------------------------- >> diva.log
 echo A problem was encountered during execution ! >> diva.log
@@ -76,14 +60,9 @@ echo          divagnu      forgnuplotcoastfilled.a  >> diva.log
 echo Check execution track >> diva.log
 echo -------------------------------------------- >> diva.log
 fi
-
 # output is fort.67
 #cat dvcoastlineheader > diva_coastlinefilled
 #cat dvcoastlinetailer>> diva_coastlinefilled
-
-
-
-
 rm -f fort.19
 if [ -f ../input/RL.dat ] 
 then
@@ -93,7 +72,6 @@ cp ../input/RLinfo.dat fort.21
 if [ "$smooth" == "1" ]
 then
 ../../bin/forgnuplotanalysissmooth.a >> diva.log
-
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -101,7 +79,6 @@ echo A problem was encountered during execution !
 echo          divagnu      forgnuplotanalysissmooth.a
 echo Check execution track
 echo --------------------------------------------
-
 echo ' ' >> diva.log
 echo -------------------------------------------- >> diva.log
 echo A problem was encountered during execution ! >> diva.log
@@ -109,10 +86,8 @@ echo          divagnu      forgnuplotanalysissmooth.a  >> diva.log
 echo Check execution track >> diva.log
 echo -------------------------------------------- >> diva.log
 fi
-
 else
 ../../bin/forgnuplotanalysis.a >> diva.log
-
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -120,7 +95,6 @@ echo A problem was encountered during execution !
 echo          divagnu      forgnuplotanalysis.a
 echo Check execution track
 echo --------------------------------------------
-
 echo ' ' >> diva.log
 echo -------------------------------------------- >> diva.log
 echo A problem was encountered during execution ! >> diva.log
@@ -128,22 +102,17 @@ echo          divagnu      forgnuplotanalysis.a  >> diva.log
 echo Check execution track >> diva.log
 echo -------------------------------------------- >> diva.log
 fi
-
 fi
 # output is fort.68
 mv fort.68 fort.72
 fi
-
-
 rm -f fort.19
 if [ -f ../output/DATABINS.dat ] 
 then
 echo preparing DATABINS field
 cp ../output/DATABINS.dat fort.20
 cp ../output/DATABINSinfo.dat fort.21
-
 ../../bin/forgnuplotanalysis.a >> diva.log
-
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -151,7 +120,6 @@ echo A problem was encountered during execution !
 echo          divagnu      forgnuplotanalysis.a
 echo Check execution track
 echo --------------------------------------------
-
 echo ' ' >> diva.log
 echo -------------------------------------------- >> diva.log
 echo A problem was encountered during execution ! >> diva.log
@@ -159,21 +127,16 @@ echo          divagnu      forgnuplotanalysis.a  >> diva.log
 echo Check execution track >> diva.log
 echo -------------------------------------------- >> diva.log
 fi
-
 # output is fort.68
 mv fort.68 fort.73
 fi
-
-
 rm -f fort.19
 if [ -f ../output/varfieldgher.anl ] 
 then
 echo preparing standard deviation field
 cp ../output/varfieldgher.anl fort.20
 cp ../output/ghertonetcdf/GridInfo.dat fort.21
-
 ../../bin/forgnuplotanalysis.a >> diva.log
-
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -181,7 +144,6 @@ echo A problem was encountered during execution !
 echo          divagnu      forgnuplotanalysis.a
 echo Check execution track
 echo --------------------------------------------
-
 echo ' ' >> diva.log
 echo -------------------------------------------- >> diva.log
 echo A problem was encountered during execution ! >> diva.log
@@ -189,12 +151,9 @@ echo          divagnu      forgnuplotanalysis.a  >> diva.log
 echo Check execution track >> diva.log
 echo -------------------------------------------- >> diva.log
 fi
-
 # output is fort.68
 mv fort.68 fort.79
 fi
-
-
 if [ -f ../input/Uvel.dat ] 
 then
 echo preparing velocity field
@@ -202,7 +161,6 @@ cp ../input/Uvel.dat fort.30
 cp ../input/Vvel.dat fort.31
 cp ../input/UVinfo.dat fort.32
 ../../bin/forgnuplotuv.a >> diva.log
-
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -210,7 +168,6 @@ echo A problem was encountered during execution !
 echo          divagnu      forgnuplotuv.a
 echo Check execution track
 echo --------------------------------------------
-
 echo ' ' >> diva.log
 echo -------------------------------------------- >> diva.log
 echo A problem was encountered during execution ! >> diva.log
@@ -218,16 +175,11 @@ echo          divagnu      forgnuplotuv.a  >> diva.log
 echo Check execution track >> diva.log
 echo -------------------------------------------- >> diva.log
 fi
-
 # output is fort.55
 fi
-
 echo ' ' > fort.99
 cat ../input/data.dat >> fort.99
-
 awk 'NF<2{printf"\n"}{print}' < fort.71 > fort.11
-
-
 echo preparing files for analysis and error plot
 rm -f fort.19
 if [ -f ../output/errorfieldgher.anl ] 
@@ -241,7 +193,6 @@ cp ../output/ghertonetcdf/GridInfo.dat fort.21
 if [ "$smooth" == "1" ]
 then
 ../../bin/forgnuplotanalysissmooth.a >> diva.log
-
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -249,7 +200,6 @@ echo A problem was encountered during execution !
 echo          divagnu      forgnuplotanalysissmooth.a
 echo Check execution track
 echo --------------------------------------------
-
 echo ' ' >> diva.log
 echo -------------------------------------------- >> diva.log
 echo A problem was encountered during execution ! >> diva.log
@@ -257,10 +207,8 @@ echo          divagnu      forgnuplotanalysissmooth.a  >> diva.log
 echo Check execution track >> diva.log
 echo -------------------------------------------- >> diva.log
 fi
-
 else
 ../../bin/forgnuplotanalysis.a >> diva.log
-
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -268,7 +216,6 @@ echo A problem was encountered during execution !
 echo          divagnu      forgnuplotanalysis.a
 echo Check execution track
 echo --------------------------------------------
-
 echo ' ' >> diva.log
 echo -------------------------------------------- >> diva.log
 echo A problem was encountered during execution ! >> diva.log
@@ -276,27 +223,21 @@ echo          divagnu      forgnuplotanalysis.a  >> diva.log
 echo Check execution track >> diva.log
 echo -------------------------------------------- >> diva.log
 fi
-
 fi
 # output is fort.68
 mv fort.41 dvanalysisrange
 mv fort.40 longref.dat.default
-
-
 jj=$(cat ../output/outliersbis.normalized.dat | wc -l)
 let jj=$jj-4
 if [ "$jj" -ge "0" ]
 then
 head -$jj ../output/outliersbis.normalized.dat | tac > fort.43
 fi
-
 if [ "$#" == "2" ]
 then 
 . divaplotall $1 $2
 else
 . divaplotall
 fi
-
  cp -f diva.log ../output/.
-
 cd ..

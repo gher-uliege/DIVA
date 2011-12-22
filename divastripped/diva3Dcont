@@ -18,7 +18,7 @@ if [ "$cont" -eq "1" ]; then
 if [ -d ./input/divaparam ];then
 echo '>>>WARNING: ./input/divaparam exists.'
 else
-mkdir ./input/divaparam
+mkdir -p ./input/divaparam
 fi
 if [ -f ./input/topo.grd ]; then
 echo " topo.grd found, will proceed to generate coast.cont files"
@@ -115,7 +115,7 @@ if [ "$cont" -eq "3" ]; then
 if [ -d ./input/divaparam ];then
 echo '>>>WARNING: ./input/divaparam exists, files may be rewritten'
 else
-mkdir ./input/divaparam
+mkdir -p ./input/divaparam
 fi
 if [ -f ./input/topo.grd ]; then
  ./divacont
@@ -125,7 +125,7 @@ fi
 if [ -d ./input/divaUVcons ];then
 echo '>>>WARNING: ./input/divaUVcons exists, files may be rewritten'
 else
-mkdir ./input/divaUVcons
+mkdir -p ./input/divaUVcons
 fi
 if [ -f ./input/topo.grd ]; then
 if [ -f ./input/param.par ]; then

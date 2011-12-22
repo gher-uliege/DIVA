@@ -6,12 +6,12 @@ surf=$2
 var=$3
 itrans=$4
 #
-if [ -d ./3DWORK ];then
+if [ -d "./3DWORK" ];then
 echo 'starting data transformation'
 else
-mkdir ./3DWORK
-echo 'making a backup of  ./input/divadata'
+mkdir -p ./3DWORK
 fi
+echo 'making a backup of  ./input/divadata'
 cp -r ./input/divadata ./input/divadata_BKP
 #
 if [ "$itrans" == "13" -o "$itrans" == "23" ];then 
@@ -85,6 +85,7 @@ cd ../input/divadata
 ####rm bruit_* bruitls
 echo 'finished anamorphose data transformation'
 cd ../../
+
 else
 
 # Start data transformation

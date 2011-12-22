@@ -250,7 +250,6 @@ fi
 #echo Looking for outliers
  ./divaqcbis
  ./dvoutlierclean -r
-
   echo " saving cleaned data and writing data with no outlers"
   cp -v ./input/divadata/$var.$lev ./input/divadata/$var.$lev.clean
   cp -v ./input/data.dat ./input/divadata/$var.$lev
@@ -262,9 +261,7 @@ cp -v ./output/RLinfo.dat ./input/divaparam/RLinfo.dat
 fi
 cp -v ./output/DATABINS.dat ./input/divadata/$var'.'$lev'.DATABINS'
 cp -v ./output/DATABINSinfo.dat ./input/divadata/$var'.'$lev'.DATABINSinfo'
-
 ######## saving analysis and co
-
 if [ "$fmeshe" == "0" ]; then
 cp -r ./input/divamesh/*  ./output/3Danalysis/Meshes/.
 fi
@@ -304,7 +301,6 @@ done
 cd ../..
 fi
 ####################
-
 fi
 #
 else

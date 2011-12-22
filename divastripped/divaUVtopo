@@ -1,5 +1,4 @@
 #!/bin/bash
-
 ifull=0
 if [ "$#" == "1" ]
 then
@@ -9,12 +8,10 @@ echo //// Full topographic advection
 ifull=1
 fi
 fi
-
 echo //////////////////////////////////////////////
 echo     Anisotropic correlation along topography
 echo /////////////////////////////////////////////
 echo ' '
-
 echo Cleaning up old files
 echo ' '
 rm -f ./divawork/fort.10
@@ -22,8 +19,6 @@ rm -f ./divawork/fort.11
 rm -f ./divawork/fort.12
 rm -f ./divawork/fort.13
 echo Cleaning finished  
-
-
 if [ -f ./input/TopoInfo.dat ] 
 then
 cat ./input/TopoInfo.dat 
@@ -33,7 +28,6 @@ else
 echo Need to provide TopoInfo.dat in ./input !
 exit
 fi
-
 if [ -f ./input/topo.grd ] 
 then
 cp ./input/topo.grd ./divawork/fort.12
@@ -41,7 +35,6 @@ else
 echo Need to provide topo.grd in ./input !
 exit
 fi 
-
 if [ -f ./input/contour.depth ] 
 then
 cp ./input/contour.depth ./divawork/fort.13
@@ -50,21 +43,15 @@ echo Need to provide contour.depth in ./input !
 echo Assuming zero depth contour is asked
 exit
 fi
-
-
 icoord=$(head -4 ./input/param.par | tail -1)
 echo coordinate change value $icoord
 echo UV creation
 echo ' '
 cd ./divawork
-
-
 if [ -f ../output/diva.log ] ; then
  cp -f ../output/diva.log .
 fi
-
 echo $icoord $ifull | ../../bin/UVtopogen.a >> diva.log
-
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -72,7 +59,6 @@ echo A problem was encountered during execution !
 echo          divaUVtopo      UVtopogen.a
 echo Check execution track
 echo --------------------------------------------
-
 echo ' ' >> diva.log
 echo -------------------------------------------- >> diva.log
 echo A problem was encountered during execution ! >> diva.log
@@ -80,12 +66,8 @@ echo          divaUVtopo      UVtopogen.a  >> diva.log
 echo Check execution track >> diva.log
 echo -------------------------------------------- >> diva.log
 fi
-
-
  cp -f diva.log ../output/.
-
 cd ..
-
 if [ -f ./divawork/Uvel.10001 ]
 then 
 echo Copying UV files in output
@@ -97,21 +79,16 @@ cp -v ./divawork/V*  ./output
 echo 10 0 > ./output/constraint.dat
 rm -f ./divawork/fort.10
 rm -f ./divawork/fort.11
-
 echo ----------------
 echo Files created 
 echo ----------------
-
 if [ "$1" == "-r" ]
 then
 echo 'Moving files into ./input directory'
 cp -v ./output/U* ./input
 cp -v ./output/V* ./input
 cp -v ./output/constraint.dat ./input
-
-
 fi
-
 else
 echo ' '
 echo --------------------------------------------

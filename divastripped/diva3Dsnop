@@ -35,8 +35,8 @@ read maxsn
 } < $Fileinf
 #
 if [ -f ./input/divaparam/SNminmax ];then
- echo 'diva3Dsnop: Using  SLminmax file'
- echo 'oooooooooo'
+# echo 'diva3Dsnop: Using  SLminmax file'
+# echo 'oooooooooo'
  if [ -d ./3DWORK ]; then
 :
  else
@@ -46,8 +46,8 @@ if [ -f ./input/divaparam/SNminmax ];then
  ../../bin/wsnfile.a
  cd ../
 else
- echo 'diva3Dsnop: Using SN minmax from 3Dinfo file'
- echo 'oooooooooo'
+# echo 'diva3Dsnop: Using SN minmax from 3Dinfo file'
+# echo 'oooooooooo'
  if [ -d ./3DWORK ]; then
 :
  else
@@ -77,37 +77,40 @@ while [ $dep -le $lay2 ]
 do
 let lev=10000+$dep
 #
-echo 'oooooooooooooooooooooooo'
+
+echo ' '
+echo ' '
+echo 'ooooooooooooooooooooooooooooooooooooooooooooooooooo'
 echo 'diva3Dsnop: determination of SN for level: '$lev
-echo 'oooooooooooooooooooooooo'
+echo 'ooooooooooooooooooooooooooooooooooooooooooooooooooo'
 #
 nblines=`cat './input/divadata/'$var'.'$lev |wc -l` 
 #
 if [ -f ./input/divaparam/param.par.$var'.'$lev ];then
- echo '!! diva3Dsnop param.par.'$var'.'$lev' found '
+# echo '!! diva3Dsnop param.par.'$var'.'$lev' found '
  cp -f ./input/divaparam/param.par.$var'.'$lev ./input/divaparam/param.par.$var'.'$lev'.ori'
  cp -f ./input/divaparam/param.par.$var'.'$lev ./input/param.par
 else
   if [ -f ./input/divaparam/param.par.$lev ];then
-   echo '!! diva3Dclop using param.par.$lev from ./input/divaparam '
+#   echo '!! diva3Dclop using param.par.$lev from ./input/divaparam '
    cp -f ./input/divaparam/param.par.$lev ./input/.
-   echo JMB B
+#   echo JMB B
    cp -f ./input/divaparam/param.par.$lev ./input/divaparam/param.par.$var'.'$lev
   else
     if [ -f ./input/divaparam/param.par.$var ];then
-     echo '!! diva3Dclop using param.par.$var from ./input/divaparam '
+#     echo '!! diva3Dclop using param.par.$var from ./input/divaparam '
      cp -f ./input/divaparam/param.par.$var ./input/.
-     echo JMB B
+#     echo JMB B
      cp -f ./input/divaparam/param.par.$var ./input/divaparam/param.par.$var'.'$lev
     else
      if [ -f ./input/divaparam/param.par ];then
-       echo '!! diva3Dsnop using param.par from ./input/divaparam '
+#       echo '!! diva3Dsnop using param.par from ./input/divaparam '
        cp -f ./input/divaparam/param.par ./input/.
-       echo JMB B
+#       echo JMB B
        cp -f ./input/divaparam/param.par ./input/divaparam/param.par.$var'.'$lev
      else
       if [ -f ./input/param.par ];then
-         echo '!! diva3Dsnop using param.par found in ./input '
+#         echo '!! diva3Dsnop using param.par found in ./input '
          cp -f ./input/param.par ./input/divaparam/param.par.$var'.'$lev
       fi
      fi
@@ -144,7 +147,7 @@ fi
 #
 if [ "$runflag" -eq "0" ];then
 #--------------------------
-echo '>>>> looking for reference field for '$var'.'$lev' <<<<< '
+#echo '>>>> looking for reference field for '$var'.'$lev' <<<<< '
 #
 refdat=0
 if [ -f ./input/divarefe/$var'.'$lev'.datapoint.ref' ];then
@@ -349,6 +352,7 @@ Fileinf=./3DWORK/sn.$lev
 read minsn
 read maxsn
 } < $Fileinf
+echo 'ooooooooooo SN optimal val : ' $param12
  echo $minsn > ./3DWORK/MinMaxVa
  echo $maxsn >> ./3DWORK/MinMaxVa
  echo $param12 >> ./3DWORK/MinMaxVa
@@ -356,6 +360,7 @@ read maxsn
  ../../bin/boundval.a
  cd ../ 
 else
+echo 'ooooooooooo SN optimal val : ' $param12
  echo $minsn > ./3DWORK/MinMaxVa
  echo $maxsn >> ./3DWORK/MinMaxVa
  echo $param12 >> ./3DWORK/MinMaxVa
@@ -367,10 +372,8 @@ Fileinf=./3DWORK/ParamVal
 {
 read param12
 } < $Fileinf
-echo 'ooooooooooo SN max min val : ' $maxsn $minsn $param12
-echo 'ooooooooooooooooooooooooooooooooo SNval = ' $param12
-############################################################
-echo 'ooooooooooooooooooooooooooooooooo VARBAK = ' $param13
+#echo 'ooooooooooo SN max min val : ' $maxsn $minsn $param12
+echo 'ooooooooooo considered SN val = ' $param12' and VARBAK = ' $param13
 ############################################################
 #
 echo $param12 >> './output/'$var'.SN.dat' 
@@ -435,7 +438,7 @@ fi
 jmnlevel=$lay2
 while [ "$jmi" -le "$jmnlevel" ]
 do
-echo level $jmi
+#echo level $jmi
 let lev=10000+$jmi
 cp -v './input/divaparam/'$var'.gcv.dat.'$lev ./output/gcv.dat.${lev}
 let jmi=$jmi+1
@@ -447,7 +450,7 @@ if [ "$llll" -gt "0" ]
 then
 dvfilter $lay1 $lay2
 #
-echo now saving new SN.dat file and VAR.dat file
+#echo now saving new SN.dat file and VAR.dat file
 ##ls -l ./output/*SN.dat*
 mv './output/'$var'.SN.dat' './output/'$var'.SN.dat.ori'
 cp './output/SN.dat' './output/'$var'.SN.dat'
@@ -497,8 +500,7 @@ done
 } < $Fileinf
 #
 echo 'oooooooooooooooooooooooo'
-echo 'diva3Dsnop: rewriting param.par.'$var'.'$lev
-echo 'diva3Dsnop: SN = '$snparam
+echo 'diva3Dsnop: rewriting param.par.'$var'.'$lev': SN = '$snparam
 echo 'oooooooooooooooooooooooo'
 #
 Fileinf='./input/divaparam/param.par.'$var'.'$lev

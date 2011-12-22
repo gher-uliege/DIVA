@@ -1,12 +1,8 @@
 #!/bin/bash
-
-
-
 echo //////////////////////////////////////////////////
 echo Cleaning up the mess
 echo //////////////////////////////////////////////////
 echo ' ' 
-
 echo Making directories
 echo ' ' 
 mkdir -p ./divawork
@@ -16,7 +12,6 @@ mkdir -p ./input
 mkdir -p ./output/ghertonetcdf
 mkdir -p ./output/meshvisu
 mkdir -p ./gnuwork
-
 echo Cleaning divawork and gnuwork directory
 echo ' ' 
 rm -f ./divawork/diva.log
@@ -29,21 +24,20 @@ rm -f ./gnuwork/*.stackdump
 rm -f ./gnuwork/fort.*
 rm -f ./gnuwork/plots/*
 rm -f ./divawork/sub/*
-
 echo Cleaning meshgenwork directory
 echo ' ' 
 rm -f ./meshgenwork/fort.*
-
+rm -f ./meshgenwork/diva.log
 echo Cleaning output directory
 echo ' ' 
 rm -f ./output/meshvisu/fort.*
 rm -f ./output/*.anl
 rm -f ./output/ghertonetcdf/GridInfo.dat
 rm -f ./output/ghertonetcdf/fort.*
+rm -f ./output/ghertonetcdf/diva.log
 rm -f ./output/*.dat
 rm -f ./output/*.nc
 rm -f ./output/*.ref
-
 echo Looking for density file...
 echo ' ' 
 if [ -f ./input/coast.cont.dens ] 
@@ -59,7 +53,6 @@ echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 else 
 echo ... there is no density file	
 fi
-
 echo ' ' 
 echo --------------------
 echo Cleaning is finished

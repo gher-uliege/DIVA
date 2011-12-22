@@ -7,45 +7,74 @@
 lev=$1
 var=$2
 ntrans=$3
+act=$4
+
+flag=1
+
+if [ "$act" == "1" ];then
+
 if [ -f ./output/3Danalysis/Fields/$var.$lev.anl.nc ];then
-  cp ./output/3Danalysis/Fields/$var.$lev.anl.nc ./output/3Danalysis/Fields/$var.$lev.anl.tr.nc
-  gherfile=$var.$lev.anl.nc
-  ascfile=$var.$lev.anl.asc
-  echo $gherfile
-else
+
+ cp ./output/3Danalysis/Fields/$var.$lev.anl.nc ./output/3Danalysis/Fields/$var.$lev.anl.tr.nc
+ cp ./output/3Danalysis/Fields/$var.$lev.anl ./output/3Danalysis/Fields/$var.$lev.anl.tr
+
+gherfile=$var.$lev.anl.nc
+binfile=$var.$lev.anl
+echo 'dv3Dinvtrsh '$gherfile' '$binfile
+
+flag=0
+
+fi
+fi
+
+if [ "$act" == "2" ];then
+
 if [ -f ./output/3Danalysis/Fields/$var.$lev.ref.nc ];then
-  cp ./output/3Danalysis/Fields/$var.$lev.ref.nc ./output/3Danalysis/Fields/$var.$lev.ref.tr.nc
-  gherfile=$var.$lev.ref.nc
-  ascfile=$var.$lev.ref.asc
-  echo $gherfile
-else
-  echo dv3Dinvtrsh: did not find $var.$lev 2D ncfile
-  exit
+
+ cp ./output/3Danalysis/Fields/$var.$lev.ref.nc ./output/3Danalysis/Fields/$var.$lev.ref.tr.nc
+ cp ./output/3Danalysis/Fields/$var.$lev.ref ./output/3Danalysis/Fields/$var.$lev.ref.tr
+
+gherfile=$var.$lev.ref.nc
+binfile=$var.$lev.ref
+echo 'dv3Dinvtrsh '$gherfile' '$binfile
+
+flag=0
+
 fi
 fi
-#
-if [ -d ./3DWORK ];then
+
+
+if [ "$flag" == "1" ];then
+
+echo ' did not find '$var'.'$lev' 2D ncfile (analysis of transformed data)'
+
+exit
+
+fi
+
+##if [ -d ./3DWORK ];then
+##echo 'starting transformation of '$var'.'$lev'.anl.nc'
+##else
+mkdir -p ./3DWORK
 echo 'starting transformation of '$var'.'$lev'.anl.nc'
-else
-mkdir ./3DWORK
-echo 'starting transformation of '$var'.'$lev'.anl.nc'
-fi
+##fi
 #
-  echo $gherfile > ./3DWORK/ncname
-##  echo $ascfile >> ./3DWORK/ncname
-  echo $var >> ./3DWORK/ncname
-  echo $lev >> ./3DWORK/ncname
-  echo $ntrans >> ./3DWORK/ncname
+
+echo $gherfile > ./3DWORK/ncname
+echo $var >> ./3DWORK/ncname
+echo $lev >> ./3DWORK/ncname
+echo $ntrans >> ./3DWORK/ncname
 
 # Start analyses inverse transformation
 #######################################
 #
-echo 'Start analyses inverse transformation'
+echo 'Start analyses inverse transformation ',$ntrans
 
   cd ./3DWORK
   if [ -f ERR.$var.$lev ];then
   echo 'No inverse transformation for '$var.$lev
   else
+  echo ' Inverse transformation for '$var.$lev
   ../../bin/anatrans.a
   fi
   cd ../

@@ -17,4 +17,3 @@ echo $nbfls >> ./fort.44
 ../../bin/diva4Dstr.a
 #
 cd ../
-

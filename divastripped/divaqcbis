@@ -1,20 +1,14 @@
 #!/bin/bash
-
-
-
 echo //////////////////////////////////////////////////
 echo             Looking for outliers
 echo //////////////////////////////////////////////////
 echo ' '
-
 if [ -f ./input/data.dat ]
 then 
 cp ./input/data.dat ./divawork/fort.44
 else
 echo Need to provide data.dat in ./input
 fi
-
-
 Filepar=./input/param.par
 {
 read linecomment
@@ -44,24 +38,17 @@ read snr
 read linecomment
 read varbak
 } < $Filepar
-
 cd divawork
-
 nbccol=$(head -n 1 ./fort.44 | wc -w)
 GGGGG=../output/gcvval.dat
-
 {
 read GCVVAL BBBBBB TRACEA tutu
 }<$GGGGG
-
-
 if [ -f ../output/diva.log ] ; then
  cp -f ../output/diva.log .
 fi
-
 echo $TRACEA 
 echo $lc $snr $nbccol $GCVVAL $TRACEA $varbak | ../../bin/calcestbis.a >> diva.log
-
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -69,7 +56,6 @@ echo A problem was encountered during execution !
 echo          divaqcbis      calcestbis.a
 echo Check execution track
 echo --------------------------------------------
-
 echo ' ' >> diva.log
 echo -------------------------------------------- >> diva.log
 echo A problem was encountered during execution ! >> diva.log
@@ -77,10 +63,8 @@ echo          divaqcbis      calcestbis.a  >> diva.log
 echo Check execution track >> diva.log
 echo -------------------------------------------- >> diva.log
 fi
-
 #output of results to user
 cp -v fort.76 ../output/expectederroratdatapointbis.anl
-
 echo ' '
 echo Looking for outliers
 echo ' '
@@ -97,7 +81,6 @@ echo Need to execute divacalc before
 fi
 fi
 echo $valex | ../../bin/lookforoutliers.a >> diva.log
-
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -105,7 +88,6 @@ echo A problem was encountered during execution !
 echo          divaqcbis      lookforoutliers.a
 echo Check execution track
 echo --------------------------------------------
-
 echo ' ' >> diva.log
 echo -------------------------------------------- >> diva.log
 echo A problem was encountered during execution ! >> diva.log
@@ -113,11 +95,9 @@ echo          divaqcbis      lookforoutliers.a  >> diva.log
 echo Check execution track >> diva.log
 echo -------------------------------------------- >> diva.log
 fi
-
 echo ' '
 echo Copying outlier lists
 echo ' '
-
 if [ -f fort.66 ]
 then
 mv -v fort.66 ../output/outliersbis.dat
@@ -129,13 +109,9 @@ echo A problem was encountered during execution !
 echo Check execution track
 echo --------------------------------------------
 fi
-
  cp -f diva.log ../output/.
-
 cd ..
-
 dvvariance 2
-
 echo ' '
 echo --------------------------
 echo Outlier detection finished

@@ -1,6 +1,6 @@
 #!/bin/bash
 export LC_ALL=C
-ipipe=1
+ipipe=0
 echo //////////////////////////////////////////////////
 echo           Going to analyse a field
 echo //////////////////////////////////////////////////
@@ -297,7 +297,7 @@ nbccol=$(head -n 1 ./fort.44 | wc -w)
 multconst=$(echo $lc $snr $xi | ../../bin/calcmuc.a)
 multvar=$(echo $multconst | awk '{print 1*$1}')
 #echo multiply weight $multvar $multconst so what
-awk -v multconst=$multvar '{ if ($4 > "") {$4=$4*multconst} else {$4=multconst}; print $1,$2,$3,$4}' fort.44 > fort.20
+awk -v multconst=$multvar '{ if (NF>2) {if ($4 > "") {$4=$4*multconst} else {$4=multconst}}; {print $1,$2,$3,$4}}' fort.44 > fort.20
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------

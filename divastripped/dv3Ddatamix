@@ -9,7 +9,7 @@ itrans=$4
 if [ -d ./3DWORK ];then
 echo 'starting data layers merging'
 else
-mkdir ./3DWORK
+mkdir -p ./3DWORK
 echo 'starting data layers merging'
 fi
 # Start layers combination

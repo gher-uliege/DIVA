@@ -1,12 +1,9 @@
 #!/bin/bash
 export LC_ALL=C
 echo Variance calculation
-
 #need to add case with column 4
 valex=$(head -22 ./input/param.par | tail -1)
 echo Using valex $valex
-
-
 if [ "$#" -le "0" ]
 then
 echo Need to know which quality control script is calling
@@ -16,15 +13,13 @@ echo Called from quality control $1
 echo 'But we do not need the calculation anymore'
 exit
 fi
-
 if [ -d "output2" ]
 then
 rm -r ./output2/*
 rmdir output2
 fi
 mkdir -p ./output2
-
-ls -l ./output
+##ls -l ./output
 mv -f ./output/*  ./output2
 errcode=$?
 if [ $errcode -ne 0 ]; then
@@ -39,16 +34,10 @@ if [ $errcode -ne 0 ]; then
     echo Now error code is $errcode
     fi
 fi
-
-
-
 mkdir -p ./output/ghertonetcdf
 mkdir -p ./output/meshvisu
-
 # make analysis without error field and increased S/N
-
 cp -v ./input/param.par ./input/param.var.par
-
 Filepar=./input/param.par
 {
 read linecomment
@@ -78,7 +67,6 @@ read snr
 read linecomment
 read varbak
 } < $Filepar
-
 cd input
 head -1 param.var.par > param.par
 echo $lc  5 | ../../bin/multiply.a >> param.par
@@ -88,13 +76,7 @@ head -23 param.var.par   | tail -15 >> param.par
 echo $snr 0.1 | ../../bin/multiply.a >> param.par
 echo varba >> param.par
 echo 0 >> param.par
-
-
 cd ../
-
-
-
-
 #head -5 ./input/param.par | tail -3 >> bidon
 #echo 0 >> bidon
 #echo ireg >> bidon
@@ -104,46 +86,37 @@ cd ../
 #echo var >> bidon
 #echo 0 >> bidon
 #mv bidon ./input/param.par
-
 cd divawork
 if [ "$1" -eq "1" ]
 then
 echo From divaqc
 cp ../output2/expectederroratdatapoint.anl bidon
 fi
-
 if [ "$1" -eq "2" ]
 then
 echo From divaqcbis
 cp ../output2/expectederroratdatapointbis.anl bidon
 fi
-
 if [ "$1" -eq "3" ]
 then
 echo From divaqcter
 cp ../output2/expectederroratdatapointter.anl bidon
 fi
-
 cp ../input/data.dat ../input/data.var.dat
 #awk '{if ($3>0) {print $1, $2, $3, 1} else {print $1, $2, 0, 1}}' bidon > ../input/data.dat
 awk -v valex=$valex 'NR==FNR {s[i++]=$3; next; j=0} {j=j+1; if ( (s[j-1]-valex)*(s[j-1]-valex) > 0.0000000001*(valex*valex) ) print $1,$2,log(($3-s[j-1])*($3-s[j-1])+1E-30),1,j}'  ../output2/fieldatdatapoint.anl ../input/data.dat> ../input/data.dat.log10variance
-
 ##cp ./input/data.dat ./input/data.dat.novariance
 cp ../input/data.dat.log10variance ../input/data.dat
-
 cd ..
 echo =========================================
 echo Now trying analysis of standard deviation
 pwd
 divamesh
 divacalc
-
 cp ./input/param.par ./input/testp.dat
 cp ./input/data.dat ./input/testd.dat
-
 mv ./input/param.var.par ./input/param.par
 mv ./input/data.var.dat ./input/data.dat
-
 cp -v ./output/fieldgher.anl ./output2/varfieldgher.anl
 cp -v ./output/ghertonetcdf/results.nc ./output2/ghertonetcdf/var.nc
 rm -r ./output/*

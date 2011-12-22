@@ -1,13 +1,8 @@
 #!/bin/bash
-
-
-
 echo //////////////////////////////////////////////////
 echo           Going to compute covariances
 echo //////////////////////////////////////////////////
 echo ' ' 
-
-
 if [ -f ./input/data.dat ] 
 then 
 cp ./input/data.dat ./divawork/fort.45
@@ -20,7 +15,6 @@ echo $xxx $yyy 1 1.E-10 > ./divawork/fort.44
 else
 echo Need to provide data.dat in ./input !
 fi
-
 cd ./divawork
 rm -f fort.59
 rm -f fort.61
@@ -44,10 +38,8 @@ echo  Module constraint activated
 echo $itcs
 echo constr 1 >> ./fort.10
 echo $itcs >> ./fort.10
-
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 fi
-
 echo solver 1 >> ./fort.10
 echo 0 >> ./fort.10
 echo stores 1 >> ./fort.10
@@ -62,17 +54,11 @@ echo covar 1 >> ./fort.10
 echo $ispec >> ./fort.10
 fi
 fi
-
-
 echo stopex >> ./fort.10
-
-
 if [ -f ../output/diva.log ] ; then
  cp -f ../output/diva.log .
 fi
-
 echo $lc 1 4 $xi | ../../bin/calcmu.a >> diva.log
-
 if [ $? -ne "0" ];then
 echo ' '
 echo --------------------------------------------
@@ -80,7 +66,6 @@ echo A problem was encountered during execution !
 echo                calmu.a
 echo Check execution track
 echo --------------------------------------------
-
 echo ' ' >> diva.log
 echo -------------------------------------------- >> diva.log
 echo A problem was encountered during execution ! >> diva.log
@@ -88,26 +73,17 @@ echo                calmu.a  >> diva.log
 echo Check execution track >> diva.log
 echo -------------------------------------------- >> diva.log
 fi
-
  cp -f diva.log ../output/.
-
 #execute diva
-
-
 let NREA=$NREA+3*$NDATA
 let NREA=$NREA+$NDDLT
 let NINT=$NINT+$NDATA
-
-
-
-
 mkdir -p sub
 rm -f fort.61
 echo $ipipe > fort.59
 cd sub
 rm -f fort.*
 cp ../fort.* .
-
 cd ..
 rm -f divapipe
 if [ "$ipipe" == "1" ] 
@@ -117,18 +93,13 @@ rm -f dvping
 mknod dvping p
 rm -f dvpong
 mknod dvpong p
-
 sleep 1
 cd sub
-
-
 if [ -f ../../output/diva.log ] ; then
  cp -f ../../output/diva.log .
 fi
-
 echo Launching a detached diva.a
 echo $NINT $NREA | ../../../bin/diva.a >> diva.log &
-
 if [ $? -ne "0" ];then
 echo ' '
 echo --------------------------------------------
@@ -136,7 +107,6 @@ echo A problem was encountered during execution !
 echo                diva.a
 echo Check execution track
 echo --------------------------------------------
-
 echo ' ' >> diva.log
 echo -------------------------------------------- >> diva.log
 echo A problem was encountered during execution ! >> diva.log
@@ -144,21 +114,14 @@ echo                diva.a  >> diva.log
 echo Check execution track >> diva.log
 echo -------------------------------------------- >> diva.log
 fi
-
  cp -f diva.log ../../output/.
-
 else
-
 cd sub
-
-
 if [ -f ../../output/diva.log ] ; then
  cp -f ../../output/diva.log .
 fi
-
 echo Launching a sequential diva.a
 echo $NINT $NREA | ../../../bin/diva.a >> diva.log
-
 if [ $? -ne "0" ];then
 echo ' '
 echo --------------------------------------------
@@ -166,7 +129,6 @@ echo A problem was encountered during execution !
 echo                diva.a
 echo Check execution track
 echo --------------------------------------------
-
 echo ' ' >> diva.log
 echo -------------------------------------------- >> diva.log
 echo A problem was encountered during execution ! >> diva.log
@@ -174,15 +136,11 @@ echo                diva.a  >> diva.log
 echo Check execution track >> diva.log
 echo -------------------------------------------- >> diva.log
 fi
-
  cp -f diva.log ../../output/.
-
 fi
-
 let NREA=$NREA-3*$NDATA
 let NREA=$NREA-$NDDLT
 let NINT=$NINT-$NDATA
-
 cd ..
 cd ..
 echo ==============================================

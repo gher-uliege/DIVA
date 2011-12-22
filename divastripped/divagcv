@@ -1,14 +1,9 @@
 #!/bin/bash
-
-
-
 echo ///////////////////////////////////////////
 echo        Generalized Cross Validation
 echo ///////////////////////////////////////////
 echo ' '
-
 cp ./input/param.par  ./input/param.par.ori
-
 if [ -f ./input/valatxy.coord.ori ]
 then
 rm -f ./input/valatxy.coord.ori
@@ -18,7 +13,6 @@ then
 mv ./input/valatxy.coord ./input/valatxy.coord.ori
 fi
 rm -f ./output/gcv.dat
-
 if [ -f ./input/gcvsampling.dat ]
 then
 #Create mesh once if no mesh present
@@ -33,8 +27,6 @@ fi
 else
 echo Need to provide gcvsampling.dat in ./input !
 fi
-
-
 ijm=0
 for gcv in `cat ./input/gcvsampling.dat`
 do
@@ -43,7 +35,6 @@ echo =============================================
 echo =============================================
 echo Generalized Cross Validation  with value $gcv
 echo =============================================
-
 let ijm=$ijm+1
 head -17 ./input/param.par.ori > bidon
 echo 1 >> bidon
@@ -93,11 +84,7 @@ echo =============================================
 echo Finished working with value $gcv
 echo =============================================
 echo ' '
-
 done
-
-
-
 mv ./input/param.par.ori ./input/param.par
 if [ -f ./input/valatxy.coord.ori ]
 then
@@ -105,20 +92,14 @@ mv ./input/valatxy.coord.ori ./input/valatxy.coord
 fi
 cp ./output/gcv.dat ./divawork/fort.11
 cd divawork
-
 echo Looking for the minimum of GCV
 echo ' '
-
 if [ -f ../input/gcvsampling.dat ] 
 then 
-
-
 if [ -f ../output/diva.log ] ; then
  cp -f ../output/diva.log .
 fi
-
 ../../bin/findmin.a >> diva.log
-
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -126,7 +107,6 @@ echo A problem was encountered during execution !
 echo          divagcv      findmin.a
 echo Check execution track
 echo --------------------------------------------
-
 echo ' ' >> diva.log
 echo -------------------------------------------- >> diva.log
 echo A problem was encountered during execution ! >> diva.log
@@ -134,9 +114,7 @@ echo          divagcv      findmin.a  >> diva.log
 echo Check execution track >> diva.log
 echo -------------------------------------------- >> diva.log
 fi
-
  cp -f diva.log ../output/.
-
 echo ' '
 echo ----------------------------------------
 echo GCV finished
@@ -149,9 +127,7 @@ echo A problem was encountered during execution !
 echo Check execution track
 echo --------------------------------------------
 fi
-
 mv fort.12 ../output/gcvsnvar.dat
-
 echo -----------------------------------------------------
 echo 'Creating adapted param.par in ./output/param.par.gcv'
 echo -----------------------------------------------------
@@ -159,8 +135,6 @@ head -23 ../input/param.par  > ../output/param.par.gcv
 head -2 ../output/gcvsnvar.dat | tail -1 >> ../output/param.par.gcv
 head -25 ../input/param.par | tail -1 >> ../output/param.par.gcv
 head -4 ../output/gcvsnvar.dat  | tail -1 >> ../output/param.par.gcv
-
-
 if [ "$1" == "-r" ]
 then
 echo =======================================================

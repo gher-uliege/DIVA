@@ -1,7 +1,6 @@
 #!/bin/bash
 export LC_ALL=C
 echo here you can select only a subset of grid points for integretion
-
 if [ -f ./input/integrationpoints.dat ]
 then
 echo will try to make subselectio

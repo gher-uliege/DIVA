@@ -48,7 +48,7 @@ if [ "$act" == "2" ];then
 if [ -d ./input/divarefe ];then
 echo '>>>WARNING: ./input/divarefe exists.'
 else
-mkdir ./input/divarefe
+mkdir -p ./input/divarefe
 fi
 fi
 #
@@ -59,7 +59,13 @@ echo 'transforming input data:' $bottm $surf $var
 {
 read ntrans
 } < $Fileinf
+
+echo 'going to trans data files, ntrans = '$ntrans
+
  ./dvdatatransf $bottm $surf $var $ntrans
+let gnup=100+$gnup
+echo 'dvdatatransf finished '
+
 fi
 #
 if [ -f ./input/dvlaymixinfo ];then
@@ -72,13 +78,13 @@ read ntrans
  ./dv3Ddatamix $bottm $surf $var $ntrans
 fi
 #
-if [ -d './output/3Danalysis/Fields' ];then
+if [ -d "./output/3Danalysis/Fields" ];then
 echo './output/3Danalysis/Fields exists'
 else
  mkdir -p ./output/3Danalysis/Fields
 fi
 #
-if [ -d ./input/divamesh ]; then
+if [ -d "./input/divamesh" ]; then
  fmeshe=1
 else
  mkdir -p ./input/divamesh
@@ -97,7 +103,7 @@ echo 'ooooooooooooooooooooooooooooooooooo'
 echo 'diva3Dsub: performing analysis for '$var'.'$level
 echo 'ooooooooooooooooooooooooooooooooooo'
 #
-if [ -f ./input/detrendinfo ]; then
+if [ -f "./input/detrendinfo" ]; then
  echo  ./input/detrendinfo found
  mkdir -p ./output/3Danalysis/DATADETREND
  trd=1
@@ -106,9 +112,12 @@ else
 fi
 #
 if [ "$act" == "1" -o  "$act" == "2" ];then
+
+echo './dv3Drefoanl '$level $var $gnup $gmin $gmax $act $trd
+
  ./dv3Drefoanl $level $var $gnup $gmin $gmax $act $trd
 #
-if [ -f ./input/dvtransinfo ];then
+if [ -f "./input/dvtransinfo" ];then
  echo  'runing ./dv3Dinvtrsh on '$var'.'$level 
   Fileinf=./input/dvtransinfo
 {
@@ -126,7 +135,7 @@ echo did not find $var'_inverf'
 exit
 fi
 fi
- ./dv3Dinvtrsh $level $var $ntrans
+ ./dv3Dinvtrsh $level $var $ntrans $act
 fi
 #
 fi
@@ -134,9 +143,10 @@ fi
  dep=`expr $dep + 1`
 done
 #
+echo ' dv3Dinvtrsh finished '
 
-if [ -f ./input/dvlaymixinfo ];then
-if [ -d ./input/divadata_mixed ];then
+if [ -f "./input/dvlaymixinfo" ];then
+if [ -d "./input/divadata_mixed" ];then
 rm -rf divadata_mixed
 mv ./input/divadata ./input/divadata_mixed
 else
@@ -149,16 +159,16 @@ if [ "$fmeshe" == "0" ]; then
 cp -r ./input/divamesh  ./output/3Danalysis/Meshes
 fi
 #
-if [ -d ./3DWORK ]; then
+if [ -d "./3DWORK" ]; then
 :
 else
  mkdir -p ./3DWORK
 fi
 #
-if [ -f ./input/dvtransinfo ];then
+if [ -f "./input/dvtransinfo" ];then
 mv ./input/divadata ./input/divadata_tmp
 mv ./input/divadata_BKP ./input/divadata 
-if [ -d ./input/divadata_trans ];then
+if [ -d "./input/divadata_trans" ];then
 rm -rf divadata_trans
 mv ./input/divadata_tmp ./input/divadata_trans
 else
@@ -169,7 +179,7 @@ fi
 cd ./3DWORK/
 #
 #
-if [ -f fort.44 ];then
+if [ -f "fort.44" ];then
 rm fort.44
 fi
 #

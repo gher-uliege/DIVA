@@ -1,12 +1,8 @@
 #!/bin/bash
-
-
-
 echo //////////////////////////////////////////////////
 echo                 Generating topography
 echo //////////////////////////////////////////////////
 echo ' '
-
 echo Cleaning up old files
 echo ' '
 rm -f ./divawork/fort.10
@@ -14,7 +10,6 @@ rm -f ./divawork/fort.11
 rm -f ./divawork/fort.12
 rm -f ./divawork/fort.20
 echo Finished cleaning 
-
 FILENAME=./input/topo.asc
 head -1 $FILENAME > bidon
 FNAME=bidon
@@ -28,7 +23,6 @@ FNAME=bidon
 read AAB BBB CCB DDB EEB
 } < $FNAME
 echo $AAB $BBB $CCB $DDB $EEB
-
 echo Making TopoInfo.dat
 echo ${AA#*:} > ./output/TopoInfo.dat
 echo ${CC#*:} >> ./output/TopoInfo.dat
@@ -38,18 +32,13 @@ echo ${AAB#*:} >> ./output/TopoInfo.dat
 echo ${BBB#*:} >> ./output/TopoInfo.dat
 echo   >> ./output/TopoInfo.dat
 cat ./output/TopoInfo.dat
-
 mv ./output/TopoInfo.dat  ./divawork/fort.10
 cat ./input/topo.asc > ./divawork/fort.11
-
 cd ./divawork
-
 if [ -f ../output/diva.log ] ; then
  cp  -f ../output/diva.log .
 fi
-
 ../../bin/dbdb2diva.a >> diva.log
-
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -57,7 +46,6 @@ echo A problem was encountered during execution !
 echo                dbdb2diva.a
 echo Check execution track
 echo --------------------------------------------
-
 echo ' ' >> diva.log
 echo -------------------------------------------- >> diva.log
 echo A problem was encountered during execution ! >> diva.log
@@ -65,19 +53,15 @@ echo                dbdb2diva.a  >> diva.log
 echo Check execution track >> diva.log
 echo -------------------------------------------- >> diva.log
 fi
-
  cp -f diva.log  ../output/.
-
 cd ..
 mv ./divawork/fort.12 ./output/topo.grd
 mv ./divawork/fort.20 ./output/TopoInfo.dat
 rm ./divawork/fort.10
 rm ./divawork/fort.11
-
 echo -----------------------
 echo Topography is generated 
 echo -----------------------
-
 if [ "$1" == "-r" ]
 then
 echo 'Moving topography files into ./input directory'

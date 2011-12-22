@@ -1,11 +1,9 @@
 #!/bin/bash
 DIVAWORK=./divawork
 export LC_ALL=C
-
 echo //////////////////////////////////////////////////
 echo           No data on grid: creating nil solution
 echo //////////////////////////////////////////////////
-
 Filepar=./input/param.par
 {
 read linecomment
@@ -35,14 +33,12 @@ read snr
 read linecomment
 read varbak
 } < $Filepar
-
 if [ -f ./input/valatxy.coord  ]; then 
 awk -v valex=$valex '{print $1,$2,valex}' ./input/valatxy.coord > $DIVAWORK/fort.82
 fi
 awk -v valex=$valex '{print $1,$2,valex}' ./input/data.dat > $DIVAWORK/fort.71
 cp $DIVAWORK/fort.71 $DIVAWORK/fort.72
 cp $DIVAWORK/fort.82 $DIVAWORK/fort.73
-
 cd $DIVAWORK
 echo $nx $ny $valex | ../../bin/dvnil.a
 cd ..

@@ -60,10 +60,8 @@ while [ $klev -lt $flev ]
 do
 ##
 lay=`expr $klev + 1`
-
 echo '       STABILISATION: LEVEL '$lay ' TRACK '$ipassg1
 echo '     ================================================'
-
 #
 count=1
 ifmax=2

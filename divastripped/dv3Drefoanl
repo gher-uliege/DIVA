@@ -19,15 +19,13 @@ PARAMDir=./input/divaparam
 DATADir=./input/divadata/
 #
 if [ -f ./input/divaparam/param.par.$var'.'$lev ];then
- echo '>>>>>> dvrefoanl: param.par.'$var'.'$lev' found '
  cp -f ./input/divaparam/param.par.$var'.'$lev ./input/param.par
 else
  if [ -f ./input/divaparam/param.par ];then
-   echo '>>>>>> dvrefoanl: using param.par from ./input/divaparam '
    cp -f ./input/divaparam/param.par ./input/.
  else
    if [ -f ./input/param.par ];then
-       echo '>>>>>> dvrefoanl: using param.par found in ./input '
+   echo ' WARNING: Using default param.par found in input for '$var'.'$lev
    fi
  fi
 fi
@@ -266,7 +264,13 @@ fi
 #------------------------------------------------------------
 #
 if [ "$action" == "1" ];then
-echo '%%%%%%%%%%%%  analysis for '$var'.'$lev' %%%%%%%%%%'
+
+echo ' '
+echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+echo '%%%%%%%%%%%% running  analysis for '$var'.'$lev
+echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+echo ' '
+
 if [ "$refanl" == "1" ];then
 #echo Cleaning up the mess
 divaclean
@@ -299,9 +303,10 @@ else
 #echo Analysing
 divacalc
 fi
-echo oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-echo Diva finished the performance
-echo oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+echo ' '
+echo '%%%%%%%%%%%% Finished  analysis for '$var'.'$lev
+echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+echo ' '
 else
  echo '>>>>>>>>>>>>  making anomalies for '$var'.'$lev
 ./divaanom
@@ -336,10 +341,15 @@ fi
 echo '>>>>>>>>>>>>  sum up anomalies and reference field for '$var'.'$lev' '
 ./divasumup
 #
+echo ' '
+echo '%%%%%%%%%%%% Finished  analysis for '$var'.'$lev
+echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+echo ' '
 fi
 #
 if [ -f ./input/divadata/$var'.'$lev'.DATABINS' ];then
- echo $var'.'$lev'.DATABINS exists'
+ echo ' '
+# $var'.'$lev'.DATABINS exists'
 else
 ./divadatacoverage
 cp -v ./output/DATABINS.dat ./input/divadata/$var'.'$lev'.DATABINS'
@@ -439,7 +449,11 @@ fi
 fi
 #
 if [ "$action" == "2" ];then
-echo '%%%%%%%%%%%%  reference for '$var'.'$lev' %%%%%%%%%%'
+echo ' '
+echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+echo '%%%%%%%%%%%% Making reference for '$var'.'$lev
+echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+echo ' '
 ./divaclean
 if [ "$detrd" -eq "1" ];then
 #
@@ -540,7 +554,7 @@ fi
 fi
 if [ "$#" == "8" ];then
 echo dv3Drefoanl: dvstbchp 0
-ls ./input/
+#ls ./input/
 ./dvstbchp 0
 fi
 ##################################################################

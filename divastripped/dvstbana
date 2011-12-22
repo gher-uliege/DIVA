@@ -28,7 +28,6 @@ else
  runflag=1
 fi
 #
-
 #####################################################################
 #
 if [ -f ./input/divadata/$var.$lev ];then
@@ -44,7 +43,6 @@ fi
 #
 if [ -f ./input/divarefe/$var'.'$lev'.datapoint.ref' ];then
  cp -v ./input/divarefe/$var'.'$lev'.datapoint.ref' ./output/fieldatdatapoint.anl.ref
-
    cp -v ./input/divarefe/$var'.'$lev'.ref' ./output/fieldgher.anl.ref
    cp -v ./input/divarefe/$var'.'$lev'.ascii.ref' ./output/fieldascii.anl.ref
    cp -v ./input/divarefe/GridInfo.dat  ./output/ghertonetcdf/GridInfo.dat
@@ -88,7 +86,6 @@ cp -f $PARAMDir/valatxy.coord ./input/valatxy.coord
 #
 if [ "$runflag" -eq "0" ];then
 #
-
 if [ -f ./input/divaparam/3Dconstraint ]
 then
 dep=10001
@@ -102,7 +99,6 @@ done
 } < $Fileinf
 echo $constvals > ./input/constraint.dat
 fi
-
 if [ -f ./input/constraint.dat ]
 then
  if [ -f ./input/divaUVcons/UVinfo.$var.$lev ];then
@@ -140,11 +136,8 @@ then
    fi
   fi
  fi
-
 fi
-
 #
-
 if [ -f ./input/divaparam/RLinfo.$var.$lev ];then
  cp -f ./input/divaparam/RLinfo.$var..$lev ./input/RLinfo.dat
 else
@@ -169,15 +162,11 @@ if [ -f ./input/RLinfo.dat ];then
   fi
  fi
 fi
-
 #------------------------------------------------------------
 #
 if [ "$action" == "1" ];then
-
 echo '%%%%%%%%%%%%  analysis for '$var'.'$lev' %%%%%%%%%%'
-
 if [ "$refanl" == "1" ];then
-
 #echo Cleaning up the mess
 divaclean
 #echo Gridding
@@ -197,7 +186,6 @@ fi
 divacalc
 ########
 #
-
 else
  echo '>>>>>>>>>>>>  making anomalies for '$var'.'$lev
 ./divaanom
@@ -220,13 +208,10 @@ echo '>>>>>>>>>>>>  sum up anomalies and reference field for '$var'.'$lev' '
 ./divasumup
 ###########
 #
-
 fi
 #
 #
-
 fi
-
 if [ "$fmesh" == "0" ]; then
 ## cp -v ./output/meshvisu/fort.22 ./input/divamesh/meshtopo.$lev
 ## cp -v ./output/meshvisu/fort.23 ./input/divamesh/mesh.dat.$lev
@@ -243,9 +228,7 @@ fi
 #
 cp -v ./output/ghertonetcdf/fort.84 ./output/3Danalysis/STABOUT/analysis/$var'.'$lev'.anl'
 ##################################################################
-
 else
-
 if [ "$runflag" -eq "1" ];then
 echo '!!!!!!!!!!!!!diva3Dsub WARNING: !!!!!!!!!!!!!!!!!!'
 echo '!!!!!!!!DID NOT FIND param.par FILE FOR '$var $lev'!' 

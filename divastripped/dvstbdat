@@ -37,8 +37,6 @@ echo $surf >> ./fort.44
 echo $nbccol >> ./fort.44
 ../../bin/datapre.a
 #
-echo $PWD
-ls -ls
 while [ $dep -le $surf ]
 do
 #
