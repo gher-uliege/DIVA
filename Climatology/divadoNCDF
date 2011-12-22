@@ -5,11 +5,12 @@ isxmlgenerat=$1
 WDIR=$(pwd)
 DIVADIR="../../DIVA3D"
 
-mkdir ${DIVADIR}/divastripped
+mkdir -p ${DIVADIR}/divastripped 
 
 mkdir -p ./output/3Danalysis/MetaDataXMLs
-#
+
 ./dvtxtmetainfo > ./output/3Danalysis/DriverMetainfo
+
 #
 ##################################################
 # loop on years defined in yearlist
@@ -37,7 +38,7 @@ echo working on variable $var
 # Prepare run diva4Dncwrite
 
 rm -f ${DIVADIR}/divastripped/3DWORK/*
-rm -f ${DIVADIR}/divastripped/output/3Danalysis/* 
+rm -rf ${DIVADIR}/divastripped/output/3Danalysis/* 
 
 if [ -f './output/3Danalysis/'$var'.Metainfo.txt' ]; then
 cp -v './output/3Danalysis/'$var'.Metainfo.txt'  ${DIVADIR}/divastripped/output/3Danalysis/.
@@ -109,12 +110,13 @@ fi
 
 if [ "$isxmlgenerat" == "2" ]; then
 
-echo 'generation of EDMONET xml metadata file'
+echo 'generation of EMODNET xml metadata file'
 
 divadoxml XMLtempl_emodn
 fi
 done
 
-echo =================================
-echo Finished writing NC and Xml files 
-echo =================================
+echo '  '
+echo '============ Finished producing 4D  netcdf and XML files =============='
+echo '======================================================================='
+echo ' '

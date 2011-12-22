@@ -21,9 +21,9 @@ do
 echo working on variable $var 
 
 rm -rf ${DIVADIR}/divastripped/input/*
-rm -f ${DIVADIR}/divastripped/output/*
-rm -f ${DIVADIR}/divastripped/output/*/*
-rm -rf ${DIVADIR}/divastripped/output/3Danalysis/* 
+rm -rf ${DIVADIR}/divastripped/output/*
+#rm -f ${DIVADIR}/divastripped/output/*/*
+#rm -rf ${DIVADIR}/divastripped/output/3Danalysis/* 
 rm -f ${DIVADIR}/divastripped/divawork/*
 rm -f ${DIVADIR}/divastripped/3DWORK/*
 
