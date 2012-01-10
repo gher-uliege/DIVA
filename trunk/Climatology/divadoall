@@ -1,0 +1,771 @@
+#!/bin/bash
+
+echo "divadoall starts at:";date
+
+DIVADIR="../../DIVA3D"
+
+dos2unix datasource
+
+
+FILENAME=driver
+{
+read isextractcomm
+read isextractf
+read iscontourcomm
+read iscontour
+read isdatacleancomm
+read isdataclean
+read minimumdatanumbercomm
+read mindata
+read isoptimisecomm
+read isoptimise
+read CLMINcomm
+read CLMIN
+read CLMAXcomm
+read CLMAX
+read SNMINcomm
+read SNMIN
+read SNMAXcomm
+read SNMAX
+read isanalysiscomm
+read isanalysis
+read lowerlevelcomm
+read minlevel
+read upperlevelcomm
+read upperlevel
+read isxmlgeneratcom
+read isxmlgenerat
+read isplotcomm
+read isplot
+} < $FILENAME
+
+isanalysisdrv=$isanalysis
+
+idorefe=0
+idoanal=0
+if [ "$isanalysis" -ne "0" ] ;then
+if [ "$isanalysis" -eq "2" -o "$isanalysis" -ge "200" ] ;then
+idorefe=1
+else
+if [ "$isanalysis" -ge "20" -a "$isanalysis" -lt "30" ] ;then
+idorefe=1
+else
+idoanal=1
+fi
+fi
+fi
+
+
+jmtrend=$(cat driver | wc -l)
+
+FILENAME=./input/NCDFinfo
+
+if [ -f "$FILENAME" ]
+then
+
+{
+read titlecomm
+read titlestr
+read reftimecomm
+read reftimestr
+read valtimecomm
+read valtimestr
+read cellmethcomm
+read cellmethstr
+read institcomm
+read institstr
+read produccomm
+read producstr
+read sourcecomm
+read sourcestr
+read commentcomm
+read commentstr
+} < $FILENAME
+else
+echo DIVAERRS2 divadoall  Missing file $FILENAME
+echo Please provide information file $FILENAME
+exit
+fi
+#
+##################################################
+# loop on depth layers defined in contour.depth
+# loop on seasons defined in monthlist
+# loop on years defined in yearlist
+# loop on variables defined in varlist
+
+
+# innermost loop on depth to use diva3D
+
+WDIR=$(pwd)
+
+echo Working in $WDIR
+
+declare -i mlevel
+declare -i depth
+declare -i depthp
+declare -i depthm
+
+
+echo Making sure files are in unix format
+dos2unix ./input/contour.depth
+dos2unix varlist
+dos2unix yearlist
+dos2unix monthlist
+dos2unix qflist
+
+maxlevel=$(cat ./input/contour.depth | wc -l)
+
+if [ "$isextractf" -ne "0" ];then
+
+echo '======================================================================='
+echo '======================= Starting data extraction ======================'
+echo '======================================================================='
+echo ' '
+isextract=0
+if [ "$isextractf" == "1" ]
+then
+isextract=1
+rm -f pressure.coordinates
+fi
+
+if [ "$isextractf" == "-1" ]
+then
+echo $isextractf > pressure.coordinates
+isextract=1
+fi
+if [ "$isextractf" == "-10" ]
+then
+echo $isextractf > pressure.coordinates
+isextract=1
+fi
+
+
+if [ "$isextract" == "1" ]
+then
+echo Cleaning up the old data files
+
+#########################################################
+for var in `cat varlist`
+#########################################################
+do
+echo variable $var
+
+#########################################################
+for year in `cat yearlist`
+#########################################################
+do
+echo year $year
+
+if [ -f output/3Danalysis/${var}.${year}.3DNCliste ]
+then
+echo Erasing 3DNCD list
+rm -f output/3Danalysis/${var}.${year}.3DNCliste
+fi
+
+if [ -f output/3Danalysis/${var}.${year}.3DNCinfo ]
+then
+echo Erasing 3DNCD info
+rm -f output/3Danalysis/${var}.${year}.3DNCinfo
+fi
+
+#########################################################
+for month in `cat monthlist`
+#########################################################
+do
+echo month $month
+#########################################################
+lev="0"
+for layer in `cat input/contour.depth`
+do
+let lev=$lev+1
+let lnum=10000+$lev
+##
+if [ -f input/divadata/${var}.${year}.${month}.$lnum ];then
+rm -f input/divadata/${var}.${year}.${month}.$lnum
+fi
+
+done
+
+done
+
+done
+
+done
+
+for ODVDATA in `cat datasource`
+do
+
+echo Data source file is $ODVDATA
+echo Trying to guess ODV format on $ODVDATA
+
+divaguessformsODV4 $ODVDATA
+echo Now extracting
+divaselectorODV4 $ODVDATA
+
+echo finished with $ODVDATA
+done
+
+echo ' '
+echo '======================= Finished with data extraction ================='
+echo '======================================================================='
+fi
+fi
+
+#########################################################
+for var in `cat varlist`
+#########################################################
+do
+echo variable $var
+#########################################################
+for year in `cat yearlist`
+#########################################################
+do
+echo year $year
+#########################################################
+for month in `cat monthlist`
+#########################################################
+do
+echo month $month
+#########################################################
+##
+isanalysis=$isanalysisdrv
+##
+
+GMIN="1"
+GMAX="0"
+
+FILENAME=${var}.bounds
+
+if [ -f "$FILENAME" ] 
+then
+{
+read GMINcomm
+read GMIN
+read GMAXcomm
+read GMAX
+} < $FILENAME
+fi
+
+yearb=${year:0:4}
+yeare=${year:4:4}
+monthb=${month:0:2}
+monthe=${month:2:2}
+
+if [ -f "ODVcolumns" ];then
+ncolvar=$(grep -i $var ODVcolumns | awk -F "\t" '{print $3}')
+longvarname=$(grep -i $var ODVcolumns | awk -F "\t" '{print $1}' | awk -F " " '{print $1}')
+longvarunit=$(grep -i $var ODVcolumns | awk -F "\t" '{print $1}' | awk -F " " '{print $2}')
+fi
+
+if [ -f "${var}.units" ]
+then
+{
+read longvarunit
+} < $var.units
+fi
+
+if [ -f "${var}.longname" ]
+then
+{
+read longvarname
+} < $var.longname
+fi
+
+echo working on variable $var 
+if [ -f "ODVcolumns" ];then
+echo 'ODV column number: ' $ncolvar
+fi
+#########################################################
+mlevel="0"
+echo Checking data coverage
+while [ "$mlevel" -lt "$maxlevel" ]
+#########################################################
+do
+
+let levell=$mlevel+0
+let mlevel=$mlevel+1
+let levelp=$mlevel+1
+let jmlevel=$mlevel+10000
+
+if [ -f  ./input/divadata/$var.$year.$month.$jmlevel ];then
+
+ndatajm=$(cat ./input/divadata/$var.$year.$month.$jmlevel | wc -l)
+echo level $mlevel with data points $ndatajm
+if [ "$ndatajm" -le "$mindata" ]
+then
+echo Too few data $ndatajm , will try to use all month values 
+cp -v ./input/divadata/$var.$year.$month.$jmlevel ./input/divadata/$var.$year.$month.$jmlevel.ori
+cat ./input/divadata/$var.$year.*.$jmlevel > bidon
+mv bidon ./input/divadata/$var.$year.$month.$jmlevel 
+ndatajm=$(cat ./input/divadata/$var.$year.$month.$jmlevel | wc -l)
+echo now using data points $ndatajm 
+fi
+
+fi
+done
+#
+#iceedge treatment
+if [ -f input/iceedge.dat ]
+then
+rm -f input/iceedge.dat
+fi
+if [ -f ./input/iceedge$month.dat ]
+then
+cp ./input/iceedge$month.dat ./input/iceedge.dat
+fi
+
+#
+# Prepare info3D and run diva3D
+#echo strange test $iscontour $isdataclean $isoptimise $isanalysis
+
+if [ "$iscontour" -ne "0" ] || [ "$isdataclean" -ne "0" ] || [ "$isoptimise" -ne "0" ] || [ "$isanalysis" -ne "0" ] 
+then
+
+
+echo '======================================================================='
+echo '================ copying input files to DIVA workind directory ========'
+echo '======================================================================='
+echo ' '
+
+rm -rf ${DIVADIR}/divastripped/input/*
+rm -rf ${DIVADIR}/divastripped/output/*
+#rm -f ${DIVADIR}/divastripped/output/*/*
+#rm -f ${DIVADIR}/divastripped/output/*/*/*
+rm -rf ${DIVADIR}/divastripped/divawork/*
+
+
+if [ "$iscontour" -ne "0" ]
+then
+
+if [ -f ./input/topo.dat ];then
+cp -v ./input/topo.dat ${DIVADIR}/divastripped/input/.
+fi
+if [ -f ./input/topo.gebco ];then
+cp -v ./input/topo.gebco ${DIVADIR}/divastripped/input/.
+fi
+if [ -f ./input/topo.grd ];then
+cp -v ./input/topo.grd ${DIVADIR}/divastripped/input/.
+cp -v ./input/TopoInfo.dat ${DIVADIR}/divastripped/input/.
+fi
+if [ -f ./input/param.par ];then
+cp -v ./input/param.par ${DIVADIR}/divastripped/input/.
+else
+if [ -f ./input/divaparam/param.par ];then
+cp -v ./input/divaparam/param.par ${DIVADIR}/divastripped/input/.
+else
+echo "============================================"
+echo "Please provide a param.par file in input/."
+echo "divadoall exits"
+echo "============================================"
+exit
+fi
+
+if [ -f ./input/contour.depth ];then
+cp -v ./input/contour.depth ${DIVADIR}/input/.
+else
+echo "=============================================="
+echo "Please provide a contour.depth file in input/."
+echo "divadoall exits"
+echo "=============================================="
+exit
+fi
+fi
+fi
+
+if [ "$idorefe" -eq "1" ] ;then
+if [ -d ./input/divarefe_all ];then
+echo '>>>WARNING: ./input/divarefe_all exists'
+else
+mkdir -p ./input/divarefe_all
+fi
+fi
+
+####  cp -r ./input/* ${DIVADIR}/divastripped/input
+
+mkdir -p ${DIVADIR}/divastripped/input/divadata
+mkdir -p ${DIVADIR}/divastripped/input/divaparam
+if [ -d ./input/divatrans ];then 
+mkdir -p ${DIVADIR}/divastripped/input/divatrans
+fi
+mkdir -p ${DIVADIR}/divastripped/output/3Danalysis
+
+cp -v ./input/contour.depth ${DIVADIR}/divastripped/input/.
+cp -v ./input/param.par ${DIVADIR}/divastripped/input/.
+
+cp -v ./input/divaparam/param.par ${DIVADIR}/divastripped/input/divaparam/.
+
+if [ -d ./input/divamesh ]
+then
+cp -r ./input/divamesh ${DIVADIR}/divastripped/input/.
+fi
+
+let lev=0+$minlevel
+let upperlevel=0+$upperlevel
+while [ "$lev" -le "$upperlevel" ]
+do 
+ let level=10000+$lev
+ cp -v ./input/divaparam/coast.cont.$level ${DIVADIR}/divastripped/input/divaparam/.
+ cp -v ./input/divaparam/param.par.$var.$year.$month.$level ${DIVADIR}/divastripped/input/divaparam/.
+ cp -v ./input/divadata/$var.$year.$month.$level ${DIVADIR}/divastripped/input/divadata/.
+if [ -f ./input/divaparam/RLinfo.dat ];then 
+ cp -v ./input/divaparam/RLinfo.dat ${DIVADIR}/divastripped/input/divaparam/.
+ cp -v ./input/divaparam/RL.$var.$year.$month.$level ${DIVADIR}/divastripped/input/divaparam/.
+fi
+
+if [ -f ./input/divaparam/valatxy.coord.$var'.'$lev ];then
+ cp -v ./input/divaparam/valatxy.coord.$var'.'$lev ${DIVADIR}/divastripped/input/divaparam/.
+else
+ if [ -f ./input/divaparam/valatxy.coord.$lev ];then
+ cp -v ./input/divaparam/valatxy.coord.$lev ${DIVADIR}/divastripped/input/divaparam/.
+ else
+  if [ -f ./input/divaparam/valatxy.coord ];then
+   cp -v ./input/divaparam/valatxy.coord  ${DIVADIR}/divastripped/input/divaparam/.
+  else
+   if [ -f ./input/valatxy.coord ];then
+    cp -v  ./input/valatxy.coord ${DIVADIR}/divastripped/input/.
+   fi
+  fi
+ fi
+fi
+
+if [ -d ./input/divatrans ];then 
+ cp -v ./input/divatrans/$var.$year.$month.$level.anl.mat ${DIVADIR}/divastripped/input/divatrans/.
+fi
+let lev=$lev+1
+done
+
+#
+#############
+isanalysissave=$isanalysis
+if [ "$isanalysissave" -ge "100" ];then
+./divadoref $var $year $month
+iscontoursave=$iscontour
+iscontour=0
+isdatacleansave=$isdataclean
+isdataclean=0
+isoptimisesave=$isoptimise
+isoptimise=0
+isanalysissave=$isanalysis
+if [ "$isanalysis" -ge "200" ];then
+isanalysis=0
+else
+let isanalysis=$isanalysis-100
+if [ "$isanalysis" -eq "0" ];then
+isanalysis=1
+fi
+fi
+echo 'Finished preparing reference fields with mixed data'
+fi
+#############
+#
+if [ -f constandrefe ];then
+FILENAME=constandrefe
+{
+read isUVcstcomm
+read isUVcst
+read isrefcomm
+read isref
+if [ "$isref" == "1" ];then
+read yrrefcomm
+read yrref
+read mnrefcomm
+read mnref
+fi
+} < $FILENAME
+
+if [ "$isUVcst" == "1" ];then
+ if [ -d ./input/divaUVcons ]; then
+ rm -r ./input/divaUVcons
+ rm -f ./input/constraint.dat
+ fi
+ mkdir ./input/divaUVcons
+ let lev=0+$minlevel
+ let upperlevel=0+$upperlevel
+ while [ "$lev" -le "$upperlevel" ]
+ do 
+ let level=10000+$lev
+
+ cp -v './input/divaUVcons_all/constraint.dat' './input/constraint.dat'
+ cp -v './input/divaUVcons_all/UVinfo.dat' './input/divaUVcons/UVinfo.'$level
+
+if [ -f './input/divaUVcons_all/Uvel.'$year'.'$month'.'$level ]; then
+ cp -v './input/divaUVcons_all/Uvel.'$year'.'$month'.'$level './input/divaUVcons/Uvel.'$level
+ cp -v './input/divaUVcons_all/Vvel.'$year'.'$month'.'$level './input/divaUVcons/Vvel.'$level
+ cp -v './input/divaUVcons_all/UVinfo.'$year'.'$month'.'$level './input/divaUVcons/UVinfo.'$level
+else
+ if [ -f './input/divaUVcons_all/Uvel.'$month'.'$level ]; then
+  cp -v './input/divaUVcons_all/Uvel.'$month'.'$level './input/divaUVcons/Uvel.'$level
+  cp -v './input/divaUVcons_all/Vvel.'$month'.'$level './input/divaUVcons/Vvel.'$level
+  cp -v './input/divaUVcons_all/UVinfo.'$month'.'$level './input/divaUVcons/UVinfo.'$level
+ else
+  if [ -f './input/divaUVcons_all/Uvel.'$level ]; then
+   cp -v './input/divaUVcons_all/Uvel.'$level './input/divaUVcons/Uvel.'$level
+   cp -v './input/divaUVcons_all/Vvel.'$level './input/divaUVcons/Vvel.'$level
+   cp -v './input/divaUVcons_all/UVinfo.'$level './input/divaUVcons/UVinfo.'$level
+##  else
+##  echo ' EXIT: could not find advection constraint fiels'
+##  exit
+  fi
+ fi
+fi
+
+ let lev=$lev+1
+ done
+
+else
+ if [ -f ./input/constraint.dat ]; then
+ rm -f ./input/constraint.dat
+ fi
+fi
+#
+if [ "$isref" == "1" ];then
+ if [ -d ./input/divarefe ]; then
+ rm -r ./input/divarefe
+ fi
+ mkdir ./input/divarefe
+ let lev=0+$minlevel
+ let upperlevel=0+$upperlevel
+ while [ "$lev" -le "$upperlevel" ]
+ do 
+ let level=10000+$lev
+ cp -v './input/divarefe_all/'$var'.'$yrref.$mnref.$level'.ref' './input/divarefe/'$var'.'$year'.'$month'.'$level'.ref'
+ cp -v './input/divarefe_all/'$var'.'$yrref.$mnref.$level'.ascii.ref' './input/divarefe/'$var'.'$year'.'$month'.'$level'.ascii.ref'
+ cp -v './input/divarefe_all/'$var'.'$yrref.$mnref.$level'.datapoint.ref' './input/divarefe/'$var'.'$year'.'$month'.'$level'.datapoint.ref'
+ cp -v ./input/divarefe_all/GridInfo.dat  ./input/divarefe/GridInfo.dat
+ let lev=$lev+1
+ done
+else
+ if [ -d ./input/divarefe ]; then
+ rm -rf ./input/divarefe
+ fi
+ if [ -f ./input/RLinfo.dat ]; then
+ rm -f ./input/RLinfo.dat 
+ rm -f ./input/RL.dat 
+ fi
+fi
+fi
+
+#######################################
+#######################################
+
+if [ "$isUVcst" == "1" ];then
+mkdir -p ${DIVADIR}/divastripped/input/divaUVcons
+cp -v ./input/constraint.dat ${DIVADIR}/divastripped/input/.
+cp -v ./input/divaUVcons/* ${DIVADIR}/divastripped/input/divaUVcons/.
+fi
+if [ "$isref" == "1" ];then
+mkdir -p ${DIVADIR}/divastripped/input/divarefe
+cp -v ./input/divarefe/* ${DIVADIR}/divastripped/input/divarefe/.
+fi
+#
+#isanalysis=$isanalysisdrv
+if [ "$isanalysis" -eq "10" -o  "$isanalysis" -eq "11" -o "$isanalysis" -eq "12" -o "$isanalysis" -eq "13" -o "$isanalysis" -eq "14" -o  "$isanalysis" -eq "20" -o  "$isanalysis" -eq "21" -o "$isanalysis" -eq "22" -o "$isanalysis" -eq "23" -o "$isanalysis" -eq "24" ] ;then
+echo "$isanalysis" > ${DIVADIR}/divastripped/input/dvtransinfo
+if [ "$isanalysis" -eq "10" -o "$isanalysis" -eq "11" -o "$isanalysis" -eq "12" -o "$isanalysis" -eq "13" -o "$isanalysis" -eq "14" ];then
+isanalysisval=1 
+fi
+if [ "$isanalysis" -eq "20" -o "$isanalysis" -eq "21" -o "$isanalysis" -eq "22" -o "$isanalysis" -eq "23" -o "$isanalysis" -eq "24" ];then
+isanalysisval=2
+fi
+isanalysis=$isanalysisval
+fi
+#
+if [ -f ${var}.pal ]
+then
+echo using local palette for plotting
+cp -v ${var}.pal ${DIVADIR}/divastripped/gnuwork/analysis.pal
+else
+echo using default palette for plotting
+cp -v ${DIVADIR}/divastripped/gnuwork/analysis.pal.default ${DIVADIR}/divastripped/gnuwork/analysis.pal
+fi
+
+cd ${DIVADIR}/divastripped/
+
+if [ -f $WDIR'/output/3Danalysis/'$var'.'$year'.3DNCliste' ]; then
+ cp -v $WDIR'/output/3Danalysis/'$var'.'$year'.3DNCliste' ${DIVADIR}/divastripped/output/3Danalysis/.
+fi
+if [ -f $WDIR'/output/3Danalysis/'$var'.'$year'.3DNCinfo' ]; then
+ cp -v $WDIR'/output/3Danalysis/'$var'.'$year'.3DNCinfo' ${DIVADIR}/divastripped/output/3Danalysis/.
+fi
+
+
+echo ' '
+echo '======================= Finished with inputs copiyng ================='
+echo '======================================================================='
+echo ' '
+
+
+echo '======================================================================='
+echo '=========================== preparing 3D runs ========================='
+echo '======================================================================='
+echo ' '
+
+
+# preparing 3Dinfo to run
+
+echo ! Variable  > ./input/3Dinfo
+echo $var.$year.$month >> ./input/3Dinfo
+echo ! Number of the first level to be processed  >> ./input/3Dinfo
+echo $minlevel >> ./input/3Dinfo
+echo ! Number of the last level to be processed  >> ./input/3Dinfo
+echo $upperlevel >> ./input/3Dinfo
+echo ! coast contour generation  >>  ./input/3Dinfo
+echo $iscontour >> ./input/3Dinfo
+echo ! data cleaning >>  ./input/3Dinfo
+echo $isdataclean >>  ./input/3Dinfo
+echo ! parameters optimisation >>  ./input/3Dinfo
+echo $isoptimise >>  ./input/3Dinfo
+echo ! perform 3D analysis >>  ./input/3Dinfo
+echo $isanalysis >>  ./input/3Dinfo
+echo ! Min value for correlation lenght >> ./input/3Dinfo
+echo $CLMIN  >> ./input/3Dinfo
+echo ! Max value for correlation lenght >> ./input/3Dinfo
+echo $CLMAX >> ./input/3Dinfo
+echo ! Min value for S/N >> ./input/3Dinfo
+echo $SNMIN >> ./input/3Dinfo
+echo ! Max value for S/N >> ./input/3Dinfo
+echo $SNMAX >> ./input/3Dinfo
+echo !gp >>  ./input/3Dinfo
+echo $isplot >>  ./input/3Dinfo
+echo !gp >>  ./input/3Dinfo
+echo $GMIN >>  ./input/3Dinfo
+echo !gp >>  ./input/3Dinfo
+echo $GMAX >>  ./input/3Dinfo
+echo $titlecomm >> ./input/3Dinfo
+echo $titlestr >> ./input/3Dinfo
+echo ! Variable long name string >> ./input/3Dinfo
+echo "'"${longvarname}"'" >> ./input/3Dinfo
+echo ! variable units string >> ./input/3Dinfo
+echo "'"${longvarunit}"'" >> ./input/3Dinfo
+echo !pararam clim >> ./input/3Dinfo
+echo 1 >> ./input/3Dinfo
+echo $reftimecomm >> ./input/3Dinfo
+echo $reftimestr >> ./input/3Dinfo
+echo $valtimecomm >> ./input/3Dinfo
+echo $valtimestr >> ./input/3Dinfo
+echo $cellmethcomm >> ./input/3Dinfo
+echo $cellmethstr >> ./input/3Dinfo
+echo $institcomm >> ./input/3Dinfo
+echo $institstr >> ./input/3Dinfo
+echo $produccomm >> ./input/3Dinfo
+echo $producstr >> ./input/3Dinfo
+echo $sourcecomm >> ./input/3Dinfo
+echo $sourcestr >> ./input/3Dinfo
+echo $commentcomm >> ./input/3Dinfo
+echo $commentstr >> ./input/3Dinfo
+
+dos2unix  ./input/3Dinfo
+
+###cat ./input/3Dinfo
+###ls -l ./input
+
+#For trended data
+rm -f ./input/dodetrend.dat
+rm -f ./input/detrendinfo
+if [ "$jmtrend" -ge "29" ]
+then
+head -30 ${WDIR}/driver  |  tail -1 > ./input/dodetrend.dat
+#
+  Fileinf=./input/dodetrend.dat
+{
+read ngrp
+} < $Fileinf
+#
+if [ "$ngrp" -gt "0" ]
+then
+echo comment >  ./input/detrendinfo
+echo $ngrp   >> ./input/detrendinfo
+echo comment >> ./input/detrendinfo
+echo 10      >> ./input/detrendinfo
+fi
+fi
+
+echo '                  Ready to run diva3Ddress on '$var'.'$year'.'$month
+echo '                  ##################################################'
+echo '  '
+##########################
+diva3Ddress
+##########################
+
+
+
+echo ' '
+echo '======================= Finished with  3D run ========================='
+echo '======================================================================='
+echo ' '
+
+
+
+## Restor driver's values of flags for next loop
+##########################################
+if [ "$isanalysissave" -ge "100" ];then
+iscontour=$iscontoursave
+isdataclean=$isdatacleansave
+isoptimise=$isoptimisesave
+isanalysis=$isanalysissave
+fi
+
+echo now saving needs to be done
+echo ################################
+mkdir -p ${WDIR}/output
+mkdir -p ${WDIR}/newinput
+cp -r ${DIVADIR}/divastripped/output/3Danalysis ${WDIR}/output/.
+cp -r ${DIVADIR}/divastripped/input/* ${WDIR}/newinput
+
+if [ $iscontour -ge 2 ]; then
+if [ -d ${WDIR}/newinput/divaUVcons_all ]; then
+ cp ${WDIR}/newinput/divaUVcons/* ${WDIR}/newinput/divaUVcons_all/.
+else
+ mv ${WDIR}/newinput/divaUVcons ${WDIR}/newinput/divaUVcons_all
+fi
+fi
+
+fi
+
+cd $WDIR
+
+# Contour generation not needed each loop:
+if [ "$iscontour" -ne "0" ];then
+let iscontour=0
+fi
+
+done
+
+echo ==================
+echo first loop
+echo ==================
+
+done
+
+echo ==================
+echo second loop
+echo ==================
+
+done
+
+if [ "$idoanal" -eq "1" ]
+then
+
+echo '======================================================================='
+echo '===============  Producing 4D  netcdf and XML files ==================='
+echo '======================================================================='
+echo ' '
+
+
+if [ "$isxmlgenerat" -le "2" ]
+then
+divadoNCDF $isxmlgenerat
+fi
+
+if [ "$isxmlgenerat" -ge "10" ]
+then
+divadoNCYR $isxmlgenerat
+fi
+
+fi
+
+echo ==================
+echo Finished
+echo ==================
+
+date

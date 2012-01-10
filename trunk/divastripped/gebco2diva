@@ -1,0 +1,70 @@
+#!/bin/bash
+nx=1
+ny=1
+echo //////////////////////////////////////////////////
+echo     Generating topography from GEBCO data
+echo //////////////////////////////////////////////////
+echo ' '
+echo Cleaning up old files
+echo ' '
+rm -f ./divawork/fort.10
+rm -f ./divawork/fort.12
+rm -f ./divawork/fort.20
+echo Finished cleaning 
+cp ./input/topo.gebco  ./divawork/fort.10
+cd ./divawork
+ndd=$(cat fort.10 | wc -l)
+if [ "$1" != "-r" ] 
+then
+ if [ "$1" != "" ]
+ then
+ nx=$1
+ fi
+ if [ "$2" != "" ]
+ then
+ ny=$2
+ fi
+else
+ if [ "$2" != "" ]
+ then
+ nx=$2
+ fi
+ if [ "$3" != "" ]
+ then
+ ny=$3
+ fi
+ 
+fi
+if [ -f ../../output/diva.log ] ; then
+ cp -f ../../output/diva.log .
+fi
+echo $ndd $nx $ny | ../../bin/gebco2diva.a >> diva.log
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo                gebco2diva.a
+echo Check execution track
+echo --------------------------------------------
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo                gebco2diva.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+ cp -f diva.log ../output/.
+cd ..
+mv ./divawork/fort.12 ./output/topo.grd
+mv ./divawork/fort.20 ./output/TopoInfo.dat
+rm ./divawork/fort.10
+echo -----------------------
+echo Topography is generated 
+echo -----------------------
+ls -l ./output/topo.grd
+if [ "$1" == "-r" ]
+then
+echo 'Moving topography files into ./input directory'
+cp -v ./output/topo.grd ./input
+cp -v ./output/TopoInfo.dat ./input
+fi

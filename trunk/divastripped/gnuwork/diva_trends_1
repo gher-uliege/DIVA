@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ -f ../output/trends.all.1.dat ] 
+then
+
+echo gnuplot is $gplot
+awk '{print $0 >> "bidon"}' << EOF
+#the gnuplot commands
+plot '../output/trends.all.1.dat' using 1:2 with steps t 'Group 1 trends'
+#end gnuplot commands
+exit
+EOF
+
+$gplot bidon
+
+else
+echo No plot produced
+
+fi

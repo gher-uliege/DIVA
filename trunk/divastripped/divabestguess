@@ -1,0 +1,69 @@
+small="100"
+medium="2000"
+ndata=$(cat ./input/data.dat| wc -l)
+echo ========================================
+echo    Full parameter estimation
+echo ========================================
+if [ "$ndata" -le "$small" ]
+then
+echo ===============
+echo Small data set
+echo ===============
+divafit -r 
+else
+  if [ "$ndata" -le "$medium" ]
+  then
+  echo ===============
+  echo Medium data set
+  echo ===============
+  divafit -r
+    else
+  echo ==============
+  echo Large data set
+  echo ==============
+  divafit $medium -r
+  fi
+fi
+# OK, so now we have a first guess on L
+# Make the mesh accordingly (option -r already made the param.par)
+divamesh
+FIRSTL=$(head -2 ./input/param.par | tail -1)
+echo ==========
+echo L: $FIRSTL
+echo will try
+rm ./input/gcvsamplingL.dat
+echo 0.3 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 0.5 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 1 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 2 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo 5 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo ==========
+if [ -f ./output/gcvL.dat ]
+then
+echo Erasing old gcvL.dat
+rm ./output/gcvL.dat
+fi
+for Lgcv in `cat ./input/gcvsamplingL.dat`
+do
+echo Working with length scale $Lgcv
+# Prepare adapted param.par
+cp -v ./input/param.par ./input/param.par.oriL
+head -1 ./input/param.par.oriL > ./input/param.par
+echo $Lgcv >> ./input/param.par
+head -26 ./input/param.par.oriL | tail -24 >> ./input/param.par
+if [ "$ndata" -le "$small" ]
+then
+divacv -r
+else
+  if [ "$ndata" -le "$medium" ]
+  then
+  divagcv -r
+  else
+  let nsamp=$ndata/20
+  divacvrand $nsamp 2 -r
+  fi
+fi
+# restore param.par
+cp -v ./input/param.par.oriL ./input/param.par
+cat ./output/gcv.dat >> ./output/gcvL.dat
+done

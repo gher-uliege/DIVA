@@ -1,0 +1,88 @@
+#!/bin/bash
+
+echo ///////////////////////////
+echo      DIVA_HC compilation
+echo ///////////////////////////
+echo ' ' 
+
+
+#
+# Linux
+
+compiler=gfortran
+flags='-O'
+
+#noglobals=
+#nocyg=
+nclib='-L/etc/local/lib -lnetcdf'
+
+##########################
+# end of user parameters #
+##########################
+
+echo ' '
+echo Compiling STABILIZE programs
+echo ----------------------------
+echo ' '
+
+cd ./Stabil
+
+$compiler $flags diva3Dwrt.F ureadc.F uwritc.F dv2Dreadnc.F dv3Dncwrt.F -o diva3Dstr.a $nclib $ncinc
+mv diva3Dstr.a ../../../bin/
+#
+$compiler $flags diva4Dwrt.F dv3Dreadnc.F dv3Dncwrt.F -o diva4Dstr.a $nclib $ncinc
+mv diva4Dstr.a ../../../bin/
+#
+$compiler $flags dv4DYRwrt.F dv3Dreadnc.F dv3DncYRw.F -o dv4DYRstr.a $nclib $ncinc
+mv dv4DYRstr.a ../../../bin/
+#
+$compiler $flags diva3Dref.F ureadc.F uwritc.F diva3Dnc.F -o diva3Dref.a $nclib $ncinc
+mv diva3Dref.a ../../../bin/
+#
+$compiler $flags stabil.F N2brunt.F albe2d.F potmp.F pzcon.F ureadc.F -o stabil.a $nclib $ncinc
+mv stabil.a ../../../bin/
+#
+$compiler $flags dv3Dtswrt.F dvvarerr.F brunt.F AlpBetSig.F potmp.F pzcon.F dv3Dtsdnc.F -o dv3Dtswrt.a $nclib $ncinc
+mv dv3Dtswrt.a ../../../bin/
+#
+###$compiler $flags dv2Dnctoasc.F dv2Dreadnc.F -o dv2Dnc2asc.a $nclib $ncinc
+###mv dv2Dnc2asc.a ../../../bin/
+#
+$compiler $flags datatrans.F transfun.F userfunc.F -o datatrans.a
+mv datatrans.a ../../../bin/
+#
+$compiler $flags dv2Dasctonc.F dv2Drewtnc.F -o dv2Dasc2nc.a $nclib $ncinc
+mv dv2Dasc2nc.a ../../../bin/
+#
+$compiler $flags anatrans.F dv2Dreadnc.F transfun.F userfunc.F dv2Drewtnc.F -o anatrans.a $nclib $ncinc
+mv anatrans.a ../../../bin/
+#
+$compiler $flags datapre.F -o datapre.a
+mv datapre.a ../../../bin/
+#
+$compiler $flags wclfile.F -o wclfile.a
+mv wclfile.a ../../../bin/
+#
+$compiler $flags wsnfile.F -o wsnfile.a
+mv wsnfile.a ../../../bin/
+#
+$compiler $flags wgcvfile.F -o wgcvfile.a
+mv wgcvfile.a ../../../bin/
+#
+$compiler $flags boundval.F -o boundval.a
+mv boundval.a ../../../bin/
+#
+$compiler $flags gebprep.F -o gebprep.a
+mv gebprep.a ../../../bin/
+#
+$compiler $flags datamix.F -o datamix.a
+mv datamix.a ../../../bin/
+#
+$compiler $flags datagrpnoise.F -o addnoise.a
+mv addnoise.a ../../../bin/
+#
+$compiler $flags datasorts.F -o sortall.a
+mv sortall.a ../../../bin/
+#
+$compiler $flags datadispach.F -o datadispach.a
+mv datadispach.a ../../../bin/

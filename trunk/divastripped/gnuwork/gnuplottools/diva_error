@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ -f fort.68 -a -f fort.67 ] 
+then
+
+echo gnuplot is $gplot
+awk '{print $0 >> "bidon"}' << EOF
+#the gnuplot commands
+set pm3d  interpolate ii,ii map
+set style data pm3d
+set style line 9 linetype 1 lw 1 linecolor rgb "black"
+splot 'fort.68' using 1:2:4:4 t 'Error field', 'fort.67' using 1:2:(0.0) with lines ls 9  notitle
+#end gnuplot commands
+exit
+EOF
+
+$gplot bidon
+
+else
+echo No plot produced
+
+fi
