@@ -63,17 +63,32 @@ echo ==========
 echo L: $FIRSTL
 echo will try
 rm ./input/gcvsamplingL.dat
-echo 0.1 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
-echo 0.3 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
-echo 0.5 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
-echo 0.7 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
-echo 0.8 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
-echo 0.9 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
-echo 1 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
-echo 1.5 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
-echo 2 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
-echo 3 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
-echo 5 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+
+#echo 0.1 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+#echo 0.3 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+#echo 0.5 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+#echo 0.7 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+#echo 0.8 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+#echo 0.9 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+#echo 1 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+#echo 1.5 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+#echo 2 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+#echo 3 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+#echo 5 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+
+echo $(echo $FIRSTL | awk '{print ($1*0.1)}') >>  ./input/gcvsamplingL.dat
+echo $(echo $FIRSTL | awk '{print ($1*0.3)}') >>  ./input/gcvsamplingL.dat
+echo $(echo $FIRSTL | awk '{print ($1*0.5)}') >>  ./input/gcvsamplingL.dat
+echo $(echo $FIRSTL | awk '{print ($1*0.7)}') >>  ./input/gcvsamplingL.dat
+echo $(echo $FIRSTL | awk '{print ($1*0.8)}') >>  ./input/gcvsamplingL.dat
+echo $(echo $FIRSTL | awk '{print ($1*0.9)}') >>  ./input/gcvsamplingL.dat
+echo $(echo $FIRSTL | awk '{print ($1*1.0)}') >>  ./input/gcvsamplingL.dat
+echo $(echo $FIRSTL | awk '{print ($1*1.5)}') >>  ./input/gcvsamplingL.dat
+echo $(echo $FIRSTL | awk '{print ($1*2.0)}') >>  ./input/gcvsamplingL.dat
+echo $(echo $FIRSTL | awk '{print ($1*3.0)}') >>  ./input/gcvsamplingL.dat
+echo $(echo $FIRSTL | awk '{print ($1*5.0)}') >>  ./input/gcvsamplingL.da
+
+
 echo ==========
 echo Values to be sampled
 cat ./input/gcvsamplingL.dat

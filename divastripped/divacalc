@@ -181,7 +181,11 @@ echo       divacalc:    griddef.a  >> diva.log
 echo Check execution track >> diva.log
 echo -------------------------------------------- >> diva.log
 fi
-echo $lc $xi | ../../bin/alpha.a >> diva.log
+##echo $lc $xi | ../../bin/alpha.a >> diva.log
+echo $(echo $lc | awk '{print (1/($1**4))}') > fort.12
+echo $(echo $lc $xi | awk '{print (2*$2($1**2))}') >> fort.12
+
+
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -201,7 +205,10 @@ then
 aaaref=$(head -1 fort.12)
 echo 0 > newalpha
 # Test, not really zero, but small
-echo  1.E-6 $aaaref | ../../bin/multiply.a > newalpha
+
+##echo  1.E-6 $aaaref | ../../bin/multiply.a > newalpha
+echo $(echo $aaaref | awk '{print ($1*1.E-6)}') >  newalpha
+
 tail -1 fort.12 >> newalpha
 mv newalpha fort.12
 let ireg=1
@@ -353,7 +360,7 @@ cd ./divawork
 else
 if [ -f ./fort.43 ] 
 then
-echo No data, will produce emty files
+echo No data, will produce empty files
 echo $nx $ny $valex | ../../bin/ghervalex.a
 cp fort.84 fort.87
 fi

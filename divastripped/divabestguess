@@ -1,3 +1,5 @@
+#!/bin/bash
+
 small="100"
 medium="2000"
 ndata=$(cat ./input/data.dat| wc -l)
@@ -32,11 +34,11 @@ echo ==========
 echo L: $FIRSTL
 echo will try
 rm ./input/gcvsamplingL.dat
-echo 0.3 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
-echo 0.5 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
-echo 1 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
-echo 2 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
-echo 5 $FIRSTL | ../bin/multiply.a >> ./input/gcvsamplingL.dat
+echo $(echo $FIRSTL | awk '{print ($1*0.3)}') >>  ./input/gcvsamplingL.dat
+echo $(echo $FIRSTL | awk '{print ($1*0.5)}') >>  ./input/gcvsamplingL.dat
+echo $(echo $FIRSTL | awk '{print ($1*1.0)}') >>  ./input/gcvsamplingL.dat
+echo $(echo $FIRSTL | awk '{print ($1*2.0)}') >>  ./input/gcvsamplingL.dat
+echo $(echo $FIRSTL | awk '{print ($1*5.0)}') >>  ./input/gcvsamplingL.dat
 echo ==========
 if [ -f ./output/gcvL.dat ]
 then
