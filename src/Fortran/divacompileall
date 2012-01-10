@@ -5,43 +5,16 @@ echo      DIVA compilation
 echo ///////////////////////////
 echo ' ' 
 
-# -------------------------------------------------------
-# uncomment the lines corresponding to your configuration
-# -------------------------------------------------------
-
-#---------- Linux + ifort
-
-compiler=gfortran
-flags='-O'
-nclib='-L/etc/local/lib -lnetcdf'
-
-#---------- Linux + gfortran
-#compiler=gfortran
-#flags='-O3'
-
-#---------- Cygwin
-#compiler=gfortran
-#noglobals=
-#nocyg=
-
-
-#nclib='-L/home/mohamed/lib -lnetcdf'
-
-
-Plplot=Plplot
-Plplot=NoPlplot
-
-# gui = 1 for GUI programs to be compiled
-# netcdf = 1 for GUI programs to be compiled
-
-gui=1
-netcdf=1
-
+source ./divacompile_options
 
 ##########################
 # end of user parameters #
 ##########################
 
+mkdir -pv ../../bin/
+bindir=$(cd ../../bin; pwd)
+
+echo ' '
 
 echo Compiling CALC programs
 echo -----------------------
@@ -247,7 +220,7 @@ $compiler $flags datasorts.F -o sortall.a
 $compiler $flags datadispach.F -o datadispach.a
 
 n8=`ls -1p *.a | grep -vc "/$"`
-n8max=16
+n8max=19
 
 echo You have compiled $n8 programs
 echo out of $n8max
@@ -275,26 +248,30 @@ echo '  '
 echo Writing log file...
 echo '  '
 
-echo ' ' >> ./compilation.log
+echo ' ' > ./compilation.log
 echo 'Compilation time: ' $(date)      >> ./compilation.log
 echo 'compiler:          '$compiler >> ./compilation.log
 echo 'compilation flags: '$flags    >> ./compilation.log
-echo 'Calc directory:       '$n1/$n1max programs compiled >> ./compilation.log
-echo 'Extensions directory: '$n2/$n2max programs compiled >> ./compilation.log
-echo 'Mesh directory:       '$n3/$n3max programs compiled >> ./compilation.log
-echo 'NC directory:         '$n4/$n4max programs compiled >> ./compilation.log
-echo 'PlPlot directory:     '$n5/$n5max programs compiled >> ./compilation.log
-echo 'Util directory:       '$n6/$n6max programs compiled >> ./compilation.log
-echo 'Pipetest directory:   '$n7/$n7max programs compiled >> ./compilation.log
-echo 'Stabil directory:     '$n8/$n8max programs compiled >> ./compilation.log
+echo 'Calc directory:       '$n1/$n1max'   program compiled' >> ./compilation.log
+echo 'Extensions directory: '$n2/$n2max' programs compiled' >> ./compilation.log
+echo 'Mesh directory:       '$n3/$n3max'   programs compiled' >> ./compilation.log
+echo 'NC directory:         '$n4/$n4max'   programs compiled' >> ./compilation.log
+echo 'PlPlot directory:     '$n5/$n5max'   programs compiled' >> ./compilation.log
+echo 'Util directory:       '$n6/$n6max' programs compiled' >> ./compilation.log
+echo 'Pipetest directory:   '$n7/$n7max'   program compiled' >> ./compilation.log
+echo 'Stabil directory:     '$n8/$n8max' programs compiled' >> ./compilation.log
 echo '----------------------------------------------------------' >> ./compilation.log
 echo 'TOTAL:                '$ntotal/$ntotalmax programs compiled >> ./compilation.log
 echo '----------------------------------------------------------' >> ./compilation.log
-echo ' '
+echo 'Binaries are located in directory:' >> ./compilation.log
+echo ${bindir} >> ./compilation.log
 
+echo '--> written in compilation.log'
 echo '  '
-echo ... written in compilation.log
-echo '  '
+
+echo 'Binaries are located in directory:'
+echo ${bindir}
+
 
 
 cd ../../divastripped
