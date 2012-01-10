@@ -1,3 +1,0 @@
-f77 -O *.f -o diva.a
-cp diva.a ../../../bin/SGI
-rm *.o
