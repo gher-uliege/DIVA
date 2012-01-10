@@ -67,5 +67,5 @@ divamesh
 divacalc
 
 echo 'Analysis finished,'
-echo 'check the ouput in ./ouput/ghertonetcdf/results.nc (netcdf)'
+echo 'check the output in ./ouput/ghertonetcdf/results.nc (netcdf)'
 
