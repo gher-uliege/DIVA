@@ -1,1 +1,0 @@
-plot '../output/trends.all.5.dat' using 1:2 with steps t 'Class 5 trends'

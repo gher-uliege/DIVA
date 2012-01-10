@@ -1,5 +1,0 @@
-unset pm3d
-set style line 10 linetype 1 lw 2 linecolor rgb "black"
-set style line 9 linetype 1 lw 1 linecolor rgb "light-gray"
-
-plot 'fort.71' using 1:2 with lines ls 9 t 'DIVA mesh', 'fort.67' using 1:2 with lines ls 10  notitle

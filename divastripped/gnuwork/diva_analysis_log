@@ -1,5 +1,0 @@
-set pm3d interpolate ii,ii map 
-set style data pm3d
-set logscale zcb
-#set palette defined ( 0 "dark-blue", 1 "blue", 1.7 "green", 2.5 "yellow", 2.6 "yellow", 4 "red", 5 "dark-red" )
-splot 'fort.68' using 1:2:3:3 t 'Analysis'

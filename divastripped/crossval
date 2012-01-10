@@ -1,8 +1,0 @@
-cd divawork
-cp ../input/valatxy.coord fort.20
-cp ../output/valatxyascii.anl fort.21
-VALEX=$(head -22 ../input/param.par | tail -1)
-echo $VALEX | ../../bin/cverror.a
-echo Exclusion value used $VALEX
-cat fort.22 >> crossval.dat
-cd ..

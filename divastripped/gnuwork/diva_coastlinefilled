@@ -1,8 +1,0 @@
-unset pm3d
-set style line 2 linetype 1 lw 2 linecolor rgb "dark-gray"
-set style line 1 linetype 1 lw 2 linecolor rgb "dark-blue"
-
-set title 'DIVA contours'
-
-plot 'fort.67' index  0 using 1:2 with filledcurves ls  2 t ''  \
-,'fort.67' index    1 using 1:2 with filledcurves ls  1 title '' 
