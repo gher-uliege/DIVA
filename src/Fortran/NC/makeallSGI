@@ -1,6 +1,0 @@
-for jj in `ls *.f`
-do
-echo $jj
-f77 -O $jj   -o `basename $jj .f`.a -L/u/mc/Diva/lib -lnetcdf -I/u/mc/Diva/include
-done
-mv *.a ../../../bin/SGI
