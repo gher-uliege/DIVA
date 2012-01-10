@@ -1,0 +1,135 @@
+#!/bin/bash
+echo ///////////////////////////////////////////
+echo        Cross Validation
+echo ///////////////////////////////////////////
+echo ' '
+cp ./input/param.par  ./input/param.par.ori
+rm -f ./input/valatxy.coord.ori
+mv -f ./input/valatxy.coord ./input/valatxy.coord.ori
+rm -f ./output/gcv.dat
+if [ -f ./input/gcvsampling.dat ]
+then
+#Create mesh once
+if [ -f ./meshgenwork/fort.22 ]
+then 
+echo ===========================================================================
+echo Mesh files aready exist, hope they are correct: otherwise exectute divamesh
+echo ===========================================================================
+else
+divamesh
+fi
+else
+echo Need to provide gcvsampling.dat in ./input !
+fi
+ijm=0
+for gcv in `cat ./input/gcvsampling.dat`
+do
+echo ' '
+echo =============================================
+echo =============================================
+echo Cross validation working with value $gcv
+echo =============================================
+let ijm=$ijm+1
+head -17 ./input/param.par.ori > bidon
+echo 1 >> bidon
+echo   >> bidon
+echo 1 >> bidon
+echo   >> bidon
+echo -99 >> bidon
+echo >> bidon
+echo $gcv >> bidon
+#tail -2 ./input/param.par.ori >> bidon
+# no error field but qc needs a value
+echo >> bidon
+echo 1 >> bidon
+mv bidon ./input/param.par
+divacalc qc
+# Now get misfit from adequate files: data, analysis at data and
+# A_ii
+cd divawork
+cp ../input/data.dat fort.20
+cp ../output/fieldatdatapoint.anl fort.21
+cp ../output/expectederroratdatapoint.anl fort.22
+if [ -f ../output/diva.log ] ; then
+ cp -f ../output/diva.log .
+fi
+echo -99 $gcv | ../../bin/cverroraii.a >> diva.log
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo        divacv:     cverroraii.a
+echo Check execution track
+echo --------------------------------------------
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo       divacv:      cverroraii.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+ cp -f diva.log ../output/.
+cat fort.23 >> ../output/gcv.dat
+cd ..
+echo ' '
+echo =============================================
+echo Finished working with value $gcv
+echo =============================================
+echo ' '
+done
+mv -f ./input/param.par.ori ./input/param.par
+mv -f ./input/valatxy.coord.ori ./input/valatxy.coord
+cp ./output/gcv.dat ./divawork/fort.11
+cd divawork
+echo Looking for the minimum of CV
+echo ' '
+if [ -f ../input/gcvsampling.dat ] 
+then 
+if [ -f ../output/diva.log ] ; then
+ cp -f ../output/diva.log .
+fi
+../../bin/findmin.a >> diva.log
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo       divacv:    findmin.a
+echo Check execution track
+echo --------------------------------------------
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo       divacv:     findmin.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+ cp -f diva.log ../output/.
+echo ' '
+echo ----------------------------------------
+echo CV finished
+echo Results written in ./output/gcvsnvar.dat
+echo ----------------------------------------
+else
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo Check execution track
+echo --------------------------------------------
+fi
+mv fort.12 ../output/gcvsnvar.dat
+echo -----------------------------------------------------
+echo 'Creating adapted param.par in ./output/param.par.gcv'
+echo -----------------------------------------------------
+head -23 ../input/param.par  > ../output/param.par.gcv
+head -2 ../output/gcvsnvar.dat | tail -1 >> ../output/param.par.gcv
+head -25 ../input/param.par | tail -1 >> ../output/param.par.gcv
+head -4 ../output/gcvsnvar.dat  | tail -1 >> ../output/param.par.gcv
+if [ "$1" == "-r" ]
+then
+echo =======================================================
+echo Replacing  param file with fit
+cd ..
+cp -v ./input/param.par ./input/param.par.old
+cp -v ./output/param.par.gcv ./input/param.par
+echo =======================================================
+fi

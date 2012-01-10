@@ -1,0 +1,589 @@
+#!/bin/bash
+#
+# $1 = level number
+# $2 = variable name.
+# $3 = gnuplot plots (0/1).
+# $4 = variable gnuplot plots min.
+# $5 = variable gnuplot plots max.
+# $6 = reference or and analyses.
+# $7 = detrending param.
+#================================
+lev=$1
+var=$2
+gnpl=$3
+gmin=$4
+gmax=$5
+action=$6
+detrd=$7
+PARAMDir=./input/divaparam
+DATADir=./input/divadata/
+#
+if [ -f ./input/divaparam/param.par.$var'.'$lev ];then
+ cp -f ./input/divaparam/param.par.$var'.'$lev ./input/param.par
+else
+ if [ -f ./input/divaparam/param.par ];then
+   cp -f ./input/divaparam/param.par ./input/.
+ else
+   if [ -f ./input/param.par ];then
+   echo ' WARNING: Using default param.par found in input for '$var'.'$lev
+   fi
+ fi
+fi
+if [ -f ./input/param.par ];then
+ runflag=0
+if [ "$action" == "2" ];then
+cp ./input/param.par ./input/param.par.svori
+#
+Fileinf='./input/param.par'
+{
+read comment1
+read param1
+read comment2
+read param2
+read comment3
+read param3
+read comment4
+read param4
+read comment5
+read param5
+read comment6
+read param6
+read comment7
+read param7
+read comment8
+read param8
+read comment9
+read param9
+read comment10
+read param10
+read comment11
+read param11
+read comment12
+read param12
+read comment13
+read param13
+} < $Fileinf
+#
+echo $comment1 > ./input/param.par
+echo $param1 >> ./input/param.par
+echo $comment2 >> ./input/param.par
+echo $param2 >> ./input/param.par
+echo $comment3 >> ./input/param.par
+echo $param3 >> ./input/param.par
+echo $comment4 >> ./input/param.par
+echo 0 >> ./input/param.par
+echo $comment5 >> ./input/param.par
+echo $param5 >> ./input/param.par
+echo $comment6 >> ./input/param.par
+echo $param6 >> ./input/param.par
+echo $comment7 >> ./input/param.par
+echo $param7 >> ./input/param.par
+echo $comment8 >> ./input/param.par
+echo $param8 >> ./input/param.par
+echo $comment9 >> ./input/param.par
+echo $param9 >> ./input/param.par
+echo $comment10 >> ./input/param.par
+echo $param10 >> ./input/param.par
+echo $comment11 >> ./input/param.par
+echo $param11 >> ./input/param.par
+echo $comment12 >> ./input/param.par
+echo $param12 >> ./input/param.par
+echo $comment13 >> ./input/param.par
+echo $param13 >> ./input/param.par
+#
+fi
+
+if [ "$#" == "8" ];then
+echo dv3Drefoanl stabilisation: dvstbchp 1
+./dvstbchp 1
+fi
+else
+ runflag=1
+fi
+#
+dataflag=0
+if [ "$action" == "1" ];then
+#
+if [ -f ./input/divadata/$var.$lev ];then
+ cp -f ./input/divadata/$var.$lev  ./input/data.dat
+ nbdat=`cat './input/data.dat' |wc -l` 
+ echo $lev $nbdat >> './output/3Danalysis/'$var'.nbrdata'
+ if [ "$nbdat" == "0" ] ; then
+  echo 'WARNING: data file ' $var.$lev 'is empty '
+  dataflag=1
+ fi
+else
+ echo '!!!!! dvrefoanl: did not find data file '$var'.'$lev' in divadata/ !!!!!'
+ runflag=2
+fi
+#
+if [ -f ./input/divarefe/$var'.'$lev'.datapoint.ref' ];then
+ cp -v ./input/divarefe/$var'.'$lev'.datapoint.ref' ./output/fieldatdatapoint.anl.ref
+   cp -v ./input/divarefe/$var'.'$lev'.ref' ./output/fieldgher.anl.ref
+   cp -v ./input/divarefe/$var'.'$lev'.ascii.ref' ./output/fieldascii.anl.ref
+   cp -v ./input/divarefe/GridInfo.dat  ./output/ghertonetcdf/GridInfo.dat
+   refanl=0
+else
+  if [ -f ./input/divarefe/$var'.'$lev'.ref' ];then
+   cp -v ./input/divarefe/$var'.'$lev'.ref' ./output/fieldgher.anl.ref
+   cp -v ./input/divarefe/$var'.'$lev'.ascii.ref' ./output/fieldascii.anl.ref
+   cp -v ./input/divarefe/GridInfo.dat  ./output/ghertonetcdf/GridInfo.dat
+   refanl=0
+  else
+   refanl=1
+  fi
+fi
+#
+if [ -f ./input/divadata/$var.$lev.anom ];then
+ datanom=1
+ cp -f ./input/divadata/$var.$lev.anom  ./input/data.dat
+else
+ datanom=0
+ if [ -f './input/divadata/'$var'.'$lev ];then
+  cp -f './input/divadata/'$var'.'$lev  ./input/data.dat
+ else
+  echo '!!!!! diva3Dsub did not find '$var'.'$lev' in divadata/ !!!!!'
+  runflag=2
+ fi
+fi
+#
+fi
+#
+if [ "$action" == "2" ];then
+if [ -f './input/divadata/'$var'.'$lev ];then
+ cp -f './input/divadata/'$var'.'$lev  ./input/data.dat
+else
+ echo '!!!!! diva3Dsub did not find '$var'.'$lev' in divadata/ !!!!!'
+ runflag=2
+fi
+fi
+#
+if [ -f ./input/divaparam/coast.cont.$lev ];then
+ cp -f ./input/divaparam/coast.cont.$lev  ./input/coast.cont
+else
+ echo '!!!!! diva3Dsub did not find coast.cont.'$lev' in divaparam/ !!!!!'
+ runflag=3
+fi
+#
+##########################################################
+if [ -f ./input/divaparam/valatxy.coord.$var'.'$lev ];then
+ cp -v ./input/divaparam/valatxy.coord.$var'.'$lev ./input/valatxy.coord
+else
+ if [ -f ./input/divaparam/valatxy.coord.$lev ];then
+ cp -v ./input/divaparam/valatxy.coord.$lev ./input/valatxy.coord
+ else
+  if [ -f ./input/divaparam/valatxy.coord ];then
+   cp -v ./input/divaparam/valatxy.coord ./input/.
+  else
+   if [ -f ./input/valatxy.coord ];then
+       echo '>>> dvrefoanl using valatxy.coord found in ./input '
+   fi
+  fi
+ fi
+fi
+###########################################################
+#
+if [ "$runflag" -eq "0" ];then
+#
+if [ -f ./input/divaparam/3Dconstraint ]
+then
+dep=10001
+  Fileinf=./input/divaparam/3Dconstraint
+{
+while [ $dep -le $lev ]
+do
+read constvals
+dep=`expr $dep + 1`
+done
+} < $Fileinf
+echo $constvals > ./input/constraint.dat
+fi
+if [ -f ./input/constraint.dat ]
+then
+ if [ -f ./input/divaUVcons/UVinfo.$var.$lev ];then
+  cp -f ./input/divaUVcons/UVinfo.$var.$lev ./input/UVinfo.dat
+ else
+  if [ -f ./input/divaUVcons/UVinfo.$lev ];then
+   cp -f ./input/divaUVcons/UVinfo.$lev ./input/UVinfo.dat
+  else
+   if [ -f ./input/divaUVcons/UVinfo.dat ];then
+    cp -f ./input/divaUVcons/UVinfo.dat ./input/UVinfo.dat
+   fi
+  fi
+ fi
+#
+ if [ -f ./input/divaUVcons/Uvel.$var.$lev ];then
+  cp -f ./input/divaUVcons/Uvel.$var.$lev ./input/Uvel.dat
+ else
+  if [ -f ./input/divaUVcons/Uvel.$lev ];then
+   cp -f ./input/divaUVcons/Uvel.$lev ./input/Uvel.dat
+  else
+   if [ -f ./input/divaUVcons/Uvel.dat ];then
+    cp -f ./input/divaUVcons/Uvel.dat ./input/Uvel.dat
+   fi
+  fi
+ fi
+#
+ if [ -f ./input/divaUVcons/Vvel.$var.$lev ];then
+  cp -f ./input/divaUVcons/Vvel.$var.$lev ./input/Vvel.dat
+ else
+  if [ -f ./input/divaUVcons/Vvel.$lev ];then
+   cp -f ./input/divaUVcons/Vvel.$lev ./input/Vvel.dat
+  else
+   if [ -f ./input/divaUVcons/Vvel.dat ];then
+    cp -f ./input/divaUVcons/Vvel.dat ./input/Vvel.dat
+   fi
+  fi
+ fi
+fi
+#
+if [ -f ./input/divaparam/RLinfo.$var.$lev ];then
+ cp -f ./input/divaparam/RLinfo.$var..$lev ./input/RLinfo.dat
+else
+ if [ -f ./input/divaparam/RLinfo.$lev ];then
+  cp -f ./input/divaparam/RLinfo.$lev ./input/RLinfo.dat
+ else
+  if [ -f ./input/divaparam/RLinfo.dat ];then
+   cp -f ./input/divaparam/RLinfo.dat ./input/RLinfo.dat
+  fi
+ fi
+fi
+if [ -f ./input/RLinfo.dat ];then
+ if [ -f ./input/divaparam/RL.$var.$lev ];then
+  cp -f ./input/divaparam/RL.$var.$lev ./input/RL.dat 
+ else
+  if [ -f ./input/divaparam/RL.$lev ];then
+   cp -f ./input/divaparam/RL.$lev ./input/RL.dat 
+  else
+   if [ -f ./input/divaparam/RL.dat ];then
+    cp -f ./input/divaparam/RL.dat ./input/RL.dat
+   fi
+  fi
+ fi
+fi
+#------------------------------------------------------------
+#
+if [ "$action" == "1" ];then
+
+echo ' '
+echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+echo '%%%%%%%%%%%% running  analysis for '$var'.'$lev
+echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+echo ' '
+
+if [ "$refanl" == "1" ];then
+#echo Cleaning up the mess
+divaclean
+#echo Gridding
+if [ -f ./input/divamesh/meshtopo.$lev ]; then
+ cp -v ./input/divamesh/meshtopo.$lev ./output/meshvisu/fort.22
+ cp -v ./input/divamesh/mesh.dat.$lev ./output/meshvisu/fort.23
+ cp -v ./input/divaparam/coast.cont.$lev ./output/meshvisu/fort.10
+else
+ echo 'dv3Drefoanl:  generating a mesh for '$var'.'$lev
+divamesh
+ cp -v ./output/meshvisu/fort.22 ./input/divamesh/meshtopo.$lev
+ cp -v ./output/meshvisu/fort.23 ./input/divamesh/mesh.dat.$lev
+ cp -v ./output/meshvisu/fort.10 ./input/divaparam/coast.cont.$lev
+fi
+#
+if [ "$detrd" -eq "1" ];then
+#
+  Fileinf=./input/detrendinfo
+{
+read comment
+read ngrp
+read comment
+read nbit
+} < $Fileinf
+#
+echo '>>>>>>>>>>>>>>>>  using ./divadetrend' $ngrp $nbit
+./divadetrend $ngrp $nbit
+else
+#echo Analysing
+divacalc
+fi
+echo ' '
+echo '%%%%%%%%%%%% Finished  analysis for '$var'.'$lev
+echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+echo ' '
+else
+ echo '>>>>>>>>>>>>  making anomalies for '$var'.'$lev
+./divaanom
+if [ -f ./input/divamesh/meshtopo.$lev ]; then
+ cp -v ./input/divamesh/meshtopo.$lev ./output/meshvisu/fort.22
+ cp -v ./input/divamesh/mesh.dat.$lev ./output/meshvisu/fort.23
+ cp -v ./input/divaparam/coast.cont.$lev ./output/meshvisu/fort.10
+else
+ echo '>>>>>>>>>>>>  regenerating a mesh for '$var'.'$lev
+ ./divamesh
+ cp -v ./output/meshvisu/fort.22 ./input/divamesh/meshtopo.$lev
+ cp -v ./output/meshvisu/fort.23 ./input/divamesh/mesh.dat.$lev
+ cp -v ./output/meshvisu/fort.10 ./input/divaparam/coast.cont.$lev
+fi
+ echo '>>>>>>>>>>>>  analysing anomalies for '$var'.'$lev
+#
+if [ "$detrd" -eq "1" ];then
+#
+  Fileinf=./input/detrendinfo
+{
+read comment
+read ngrp
+read comment
+read nbit
+} < $Fileinf
+#
+echo '>>>>>>>>>>>>>>>>  using ./divadetrend' $ngrp $nbit
+./divadetrend $ngrp $nbit
+else
+./divacalc
+fi
+echo '>>>>>>>>>>>>  sum up anomalies and reference field for '$var'.'$lev' '
+./divasumup
+#
+echo ' '
+echo '%%%%%%%%%%%% Finished  analysis for '$var'.'$lev
+echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+echo ' '
+fi
+#
+if [ -f ./input/divadata/$var'.'$lev'.DATABINS' ];then
+ echo ' '
+# $var'.'$lev'.DATABINS exists'
+else
+./divadatacoverage
+cp -v ./output/DATABINS.dat ./input/divadata/$var'.'$lev'.DATABINS'
+cp -v ./output/DATABINSinfo.dat ./input/divadata/$var'.'$lev'.DATABINSinfo'
+fi
+#
+#
+if [ "$detrd" -eq "1" ];then
+cp -v ./input/data.detrend.dat ./output/3Danalysis/DATADETREND/data.detrend.$var'.'$lev
+i="0"
+while [ "$i" -lt "$ngrp" ];do
+let i=$i+1
+cp -v ./output/trends.$i.dat ./output/3Danalysis/DATADETREND/trends.$i.dat.$var'.'$lev
+done
+cd ./output
+for i in `ls trends.*.dat`
+do
+cp -v $i ./3Danalysis/DATADETREND/$i'.'$var'.'$lev
+done
+cd ..
+fi
+#
+if [ "$#" == "8" ];then
+cp -v ./output/ghertonetcdf/fort.84 ./output/3Danalysis/Fields/$var'.'$lev'.anl'
+else
+if [ "$dataflag" == "1" ]; then
+cp -v ./output/ghertonetcdf/GridInfo.dat ./output/3Danalysis/Fields/GridInfo.dat
+cp -v ./output/ghertonetcdf/fort.84 ./output/3Danalysis/Fields/$var'.'$lev'.anl'
+cp -v ./output/ghertonetcdf/fort.84 ./output/3Danalysis/Fields/$var'.'$lev'.error'
+cp -v ./output/ghertonetcdf/results.nc ./output/3Danalysis/Fields/$var'.'$lev'.anl.nc'
+else
+cp -v ./output/ghertonetcdf/results.nc ./output/3Danalysis/Fields/$var'.'$lev'.anl.nc'
+cp -v ./output/ghertonetcdf/fort.84 ./output/3Danalysis/Fields/$var'.'$lev'.anl'
+cp -v ./output/ghertonetcdf/GridInfo.dat ./output/3Danalysis/Fields/GridInfo.dat
+cp -v ./output/errorfieldgher.anl ./output/3Danalysis/Fields/$var'.'$lev'.error'
+cp -v ./output/fieldascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.ascii.anl'
+cp -v ./output/errorfieldascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.errorascii'
+cp -v ./output/valatxyascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.valatxyasc.anl'
+#
+if [ -f ./input/divaparam/RL.$var.$lev ];then
+ cp -v ./input/divaparam/RLinfo.$var.$lev ./output/3Danalysis/Fields/.
+ cp -v ./input/divaparam/RL.$var.$lev ./output/3Danalysis/Fields/$var'.'$lev'.RL'
+else
+ if [ -f ./input/divaparam/RL.$lev ];then
+ cp -v ./input/divaparam/RLinfo.$lev ./output/3Danalysis/Fields/.
+  cp -v ./input/divaparam/RL.$lev  ./output/3Danalysis/Fields/$var'.'$lev'.RL'
+ fi
+fi
+#
+fi
+if [ -f ./output/erroratxyascii.anl ];then
+cp -v ./output/erroratxyascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.erroratxyascii.anl'
+fi
+if [ -f ./output/expectederroratdatapointbis.anl ];then
+cp -v ./output/expectederroratdatapointbis.anl ./output/3Danalysis/Fields/$var'.'$lev'.erroratdatapoint'
+fi
+if [ -f ./output/fieldatdatapoint.anl ];then
+cp -v ./output/fieldatdatapoint.anl ./output/3Danalysis/Fields/$var'.'$lev'.fieldatdatapoint.anl'
+fi
+#
+if [ -f ./output/outliersbis.normalized.dat ];then
+cp -v ./output/outliersbis.normalized.dat ./output/3Danalysis/Fields/$var'.'$lev'.outliersbis.norm'
+fi
+if [ -f ./output/outliersbis.dat ];then
+cp -v ./output/outliersbis.dat ./output/3Danalysis/Fields/$var'.'$lev'.outliersbis'
+fi
+if [ -f ./input/data.dat.nooutliers ];then
+cp -v ./input/data.dat.nooutliers ./input/divadata/$var'.'$lev'.nooutliers'
+fi
+#------------------------------------------------------------
+#
+if [ "$gnpl" == "1" ]
+then
+#
+if [ -f './output/covariancefit.'${var}.${lev} ];then
+cp -v './output/covariancefit.'${var}.${lev} ./output/covariancefit.dat
+fi
+if [ -f './output/covariance.'${var}.${lev} ];then
+cp -v './output/covariance.'${var}.${lev} ./output/covariance.dat
+fi
+if [ "$gmin" -le "$gmax" ]
+then
+./divagnu $gmin $gmax
+else
+./divagnu
+fi
+#
+cd ./gnuwork/plots
+for i in `ls *.png`
+do
+cp -v $i ../../output/3Danalysis/GnuPlots/$var'.'$lev'.'$i
+done
+cd ../..
+fi
+#
+fi
+fi
+#
+if [ "$action" == "2" ];then
+echo ' '
+echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+echo '%%%%%%%%%%%% Making reference for '$var'.'$lev
+echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+echo ' '
+./divaclean
+if [ "$detrd" -eq "1" ];then
+#
+  Fileinf=./input/detrendinfo
+{
+read comment
+read ngrp
+read comment
+read nbit
+} < $Fileinf
+#
+echo '>>>>>>>>>>>>>>>>  using ./divadetrend' $ngrp $nbit
+./dvdetreref $ngrp $nbit
+else
+./divarefe
+fi
+mv ./input/param.par.svori ./input/param.par
+if [ -f ./input/divadata/$var'.'$lev'.DATABINS' ];then
+ echo $var'.'$lev'.DATABINS exists'
+else
+./divadatacoverage -n
+cp -v ./output/DATABINS.dat ./input/divadata/$var'.'$lev'.DATABINS'
+cp -v ./output/DATABINSinfo.dat ./input/divadata/$var'.'$lev'.DATABINSinfo'
+fi
+#
+if [ "$detrd" -eq "1" ];then
+cp -v ./input/data.detrend.dat ./output/3Danalysis/DATADETREND/data.detrend.$var'.'$lev
+i="0"
+while [ "$i" -lt "$ngrp" ];do
+let i=$i+1
+cp -v ./output/trends.$i.dat ./output/3Danalysis/DATADETREND/trends.$i.dat.$var'.'$lev
+done
+cd ./output
+for i in `ls trends.*.dat`
+do
+cp -v $i ./3Danalysis/DATADETREND/$i'.'$var'.'$lev
+done
+cd ..
+fi
+#
+if [ "$#" == "8" ];then
+cp -v ./output/fieldgher.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.anl'
+else
+if [ -d ./input/divarefe_all ] ;then
+cp -v ./output/ghertonetcdf/GridInfo.dat ./input/divarefe_all/GridInfo.dat
+cp -v ./output/fieldatdatapoint.anl.ref ./input/divarefe_all/$var'.'$lev'.datapoint.ref'
+cp -v ./output/fieldascii.anl.ref ./input/divarefe_all/$var'.'$lev'.ascii.ref'
+cp -v ./output/fieldgher.anl.ref ./input/divarefe_all/$var'.'$lev'.ref'
+fi
+cp -v ./output/ghertonetcdf/GridInfo.dat ./input/divarefe/GridInfo.dat
+cp -v ./output/fieldatdatapoint.anl.ref ./input/divarefe/$var'.'$lev'.datapoint.ref'
+cp -v ./output/fieldascii.anl.ref ./input/divarefe/$var'.'$lev'.ascii.ref'
+cp -v ./output/fieldgher.anl.ref ./input/divarefe/$var'.'$lev'.ref'
+#
+cp -v ./output/ghertonetcdf/GridInfo.dat ./output/3Danalysis/Fields/GridInfo.dat
+cp -v ./output/ghertonetcdf/results.nc ./output/3Danalysis/Fields/$var'.'$lev'.ref.nc'
+cp -v ./output/fieldascii.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.ascii.ref'
+cp -v ./output/fieldatdatapoint.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.datapoint.ref'
+cp -v ./output/fieldgher.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.ref'
+cp -v ./output/valatxyascii.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.valatxyasc.ref'
+cp -v ./output/errorfieldgher.anl ./output/3Danalysis/Fields/$var'.'$lev'.ref.error'
+cp -v ./output/errorfieldascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.ref.errorascii'
+if [ -f ./output/erroratxyascii.anl ];then
+cp -v ./output/erroratxyascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.erroratxyascii.anl'
+fi
+if [ -f ./output/expectederroratdatapointbis.anl ];then
+cp -v ./output/expectederroratdatapointbis.anl ./output/3Danalysis/Fields/$var'.'$lev'.erroratdatapoint'
+fi
+if [ -f ./output/fieldatdatapoint.anl ];then
+cp -v ./output/fieldatdatapoint.anl ./output/3Danalysis/Fields/$var'.'$lev'.fieldatdatapoint.anl'
+fi
+#
+if [ "$gnpl" == "1" ]
+then
+#
+if [ -f './output/covariancefit.'${var}.${lev} ];then
+cp -v './output/covariancefit.'${var}.${lev} ./output/covariancefit.dat
+fi
+if [ -f './output/covariance.'${var}.${lev} ];then
+cp -v './output/covariance.'${var}.${lev} ./output/covariance.dat
+fi
+if [ "$gmin" -le "$gmax" ]
+then
+./divagnu $gmin $gmax
+else
+./divagnu
+fi
+#
+cd ./gnuwork/plots
+for i in `ls *.png`
+do
+cp -v $i ../../output/3Danalysis/GnuPlots/$var'.'$lev'.'$i
+done
+cd ../../
+fi
+fi
+#------------------------------------------------------------
+fi
+if [ "$#" == "8" ];then
+echo dv3Drefoanl: dvstbchp 0
+#ls ./input/
+./dvstbchp 0
+fi
+##################################################################
+else
+if [ "$runflag" -eq "1" ];then
+echo '!!!!!!!!!!!!!diva3Dsub WARNING: !!!!!!!!!!!!!!!!!!'
+echo '!!!!!!!!DID NOT FIND param.par FILE FOR '$var $lev'!' 
+echo '!!!!!!!!!!!!!THE ANALYSIS WAS NOT PERFORMED !'
+echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+else
+if [ "$runflag" -eq "2" ];then
+echo '!!!!!!!!!!!!!diva3Dsub WARNING: !!!!!!!!!!!!!!!!!!'
+echo '!!!!!!!!!!!!!DID NOT FIND DATA FILE FOR '$var $lev'!' 
+echo '!!!!!!!!!!!!!THE ANALYSIS WAS NOT PERFORMED !'
+echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+else
+if [ "$runflag" -eq "3" ];then
+echo '!!!!!!!!!!!!!diva3Dsub WARNING: !!!!!!!!!!!!!!!!!!'
+echo '!!!!!!!!!!!!!DID NOT FIND CONTOUR FILE FOR '$var $lev'!' 
+echo '!!!!!!!!!!!!!THE ANALYSIS WAS NOT PERFORMED !'
+echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+else
+if [ "$runflag" -eq "4" ];then
+echo '!!!!!!!!!!!!!diva3Dsub WARNING: !!!!!!!!!!!!!!!!!!'
+echo '!!!!!!!!!!!!!DATA FILE '$var $lev' IS EMPTY!' 
+echo '!!!!!!!!!!!!!THE ANALYSIS WAS NOT PERFORMED !'
+echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+fi
+fi
+fi
+fi
+fi

@@ -1,0 +1,89 @@
+#!/bin/bash
+echo //////////////////////////////////////////////////
+echo Going to check contour
+echo //////////////////////////////////////////////////
+echo ' '
+if [ -f ./input/coast.cont ] 
+then
+cp -v ./input/coast.cont ./meshgenwork/fort.10
+else
+echo Need to provide coast.cont in ./input !
+fi
+isdens=0
+if [ -f ./input/coast.cont.dens ] 
+then
+echo There is a density file for the mesh
+cp -v ./input/coast.cont.dens ./meshgenwork/fort.12
+isdens=1
+fi
+Filepar=./input/param.par
+{
+read linecomment
+read lc
+read linecomment
+read icoordchange
+read linecomment
+read ispec
+read linecomment
+read ireg
+read linecomment
+read xori
+read linecomment
+read yori
+read linecomment
+read dx
+read linecomment
+read dy
+read linecomment
+read nx
+read linecomment
+read ny
+read linecomment
+read valex
+read linecomment
+read snr
+read linecomment
+read varbak
+} < $Filepar
+rm -f fort.11
+echo $isdens $lc | ../bin/lcelem.a
+mv fort.11 ./meshgenwork/fort.11
+echo 1.5 >> ./meshgenwork/fort.11
+echo 5 >> ./meshgenwork/fort.11
+cd ./meshgenwork
+if [ -f ../output/diva.log ] ; then
+ cp  -f ../output/diva.log .
+fi
+if [ \( "$1" == "-v"  -o "$2" == "-v" \) ]
+then
+../../bin/contourcheck.a >> diva.log
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo       divacck:   contourcheck.a
+echo Check execution track
+echo --------------------------------------------
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo       divacck:   contourcheck.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+else
+../../bin/contourcheck.a > /dev/null
+fi
+mv fort.30 ../output/coast.cont.checked
+ cp -f diva.log ../output/.
+cd ..
+echo ' '
+echo ------------------
+echo Contour is checked
+echo ------------------
+if [ \( "$1" == "-r"  -o "$2" == "-r" \) ]
+then
+echo 'Replacing original contour file'
+cp -v ./input/coast.cont ./input/coast.cont.ori
+cp -v ./output/coast.cont.checked ./input/coast.cont 
+fi
