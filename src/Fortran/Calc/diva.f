@@ -1,6 +1,6 @@
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 C                                                                      C
-C           Data Interpolating Variational Analysis  (4.1)             C
+C           Data Interpolating Variational Analysis  (4.4)             C
 C           ========================================                   C
 C                                                                      C
 C                     GHER - UNIVERSITY OF LIEGE                       C
@@ -8,6 +8,8 @@ C                                                                      C
 C                        ver 4.1     March 2007                        C
 C                        ver 4.1.2   November 2007                     C
 C                        ver 4.2     Januaray 2008                     C
+C                        ver 4.3     2009-2011                         C
+C                        ver 4.4     January 2012                      C
 C     Jean-Marie Beckers, Damien Sirjacobs, Mohamed Ouberdous          C
 C     Charles Troupin                                                  C
 C                                                                      C
