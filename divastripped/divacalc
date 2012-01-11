@@ -349,22 +349,35 @@ rm -f fort.35
 #execute diva
 echo $NINT $NREA | ../../bin/diva.a >> diva.log
 dataonmesh=0
+
+#if [ -f ./fort.35  ]; then
+#dataonmesh=$(cat ./fort.35 | awk '{print $1-$2}')
+#echo Data are outside the mesh, will produce empty files
+#fi
+#if [ "$dataonmesh" -lt "1" ]; then
+#cd ..
+#dvnil
+#cd ./divawork
+#else
+#if [ -f ./fort.43 ] 
+#then
+#echo No data, will produce empty files
+#echo $nx $ny $valex | ../../bin/ghervalex.a
+#cp fort.84 fort.87
+#fi
+#fi
+
 if [ -f ./fort.35  ]; then
-dataonmesh=$(cat ./fort.35 | awk '{print $1-$2}')
-echo Data are outside the mesh, will produce empty files
+	dataonmesh=$(cat ./fort.35 | awk '{print $1-$2}')
 fi
 if [ "$dataonmesh" -lt "1" ]; then
-cd ..
-dvnil
-cd ./divawork
-else
-if [ -f ./fort.43 ] 
-then
-echo No data, will produce empty files
-echo $nx $ny $valex | ../../bin/ghervalex.a
-cp fort.84 fort.87
+	cd ..
+	echo Data are outside the mesh, will produce empty files
+	dvnil
+	cd ./divawork
 fi
-fi
+
+
 if [ $? -ne 0 ] ;then
 echo ' '
 echo 
