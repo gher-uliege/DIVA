@@ -39,11 +39,17 @@ read varbak
 } < $Filepar
 cd input
 head -1 param.par.ori > param.par
-echo $lc  5 | ../../bin/multiply.a >> param.par
+##echo $lc  5 | ../../bin/multiply.a >> param.par
+echo $(echo $lc | awk '{print ($1*5.0)}') >>  param.par
+
+
 head -7 param.par.ori  | tail -5 >> param.par
 echo 3 >> param.par
 head -23 param.par.ori   | tail -15 >> param.par
-echo $snr 0.1 | ../../bin/multiply.a >> param.par
+
+##echo $snr 0.1 | ../../bin/multiply.a >> param.par
+echo $(echo $snr | awk '{print ($1*0.1)}') >>  param.par
+
 echo varba >> param.par
 echo 0 >> param.par
 cd ..

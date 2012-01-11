@@ -44,11 +44,17 @@ read varbak
 cd input
 head -1 param.par.orirl > param.par
 #echo $lc 10 | ../../bin/multiply.a >> param.par
-echo $lc 1 | ../../bin/multiply.a >> param.par
+##echo $lc 1 | ../../bin/multiply.a >> param.par
+echo $(echo $lc | awk '{print ($1*1.)}') >> param.par
+
+
 head -5 param.par.orirl  | tail -3 >> param.par
 echo 0 >> param.par
 head -23 param.par.orirl   | tail -17 >> param.par
-echo $snr 0.1 | ../../bin/multiply.a >> param.par
+##echo $snr 0.1 | ../../bin/multiply.a >> param.par
+echo $(echo $snr | awk '{print ($1*0.1)}') >> param.par
+
+
 echo varba >> param.par
 echo 0 >> param.par
 ##echo sowhat sowhat
