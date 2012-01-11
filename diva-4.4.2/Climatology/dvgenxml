@@ -1,0 +1,195 @@
+#!/bin/bash
+
+#########################################################
+#########################################################
+#########################################################
+
+##mkdir -p ./output/3Danalysis/MetaDataXMLs
+
+./dvmetadata
+
+FILENAME=./input/general_info
+if [ -f "$FILENAME" ]
+then
+{
+read comment
+read organisation_name
+read comment
+read org_prodinfo_email
+read comment
+read organisation_web
+read comment
+read org_logo_adress
+read comment
+read accconstr
+read comment
+read delinfostr
+read comment
+read JRAxxstr
+read comment
+read geninfostr
+read comment
+read processstr
+read comment
+read descripstr
+read comment
+read QAC
+read comment
+read SETU
+read comment
+read Refs
+read comment
+read custodian_name
+read comment
+read cust_prodinfo_email
+read comment
+read custodian_web
+read comment
+read cust_logo_adress
+read comment
+read prodacces_name
+read comment
+read acces_prodinfo_email
+read comment
+read prodacces_web
+read comment
+read url_compliment
+read comment
+read acces_logo_adress
+read comment
+read doc_title
+read comment
+read doc_online
+read comment
+read doc_date
+} < $FILENAME
+else
+echo Could not find $FILENAME
+echo Please generate information file $FILENAME first
+exit
+fi
+#
+organisation_name=${organisation_name//\//\\\/}
+org_prodinfo_email=${org_prodinfo_email//\//\\\/}
+organisation_web=${organisation_web//\//\\\/}
+org_logo_adress=${org_logo_adress//\//\\\/}
+accconstr=${accconstr//\//\\\/}
+delinfostr=${delinfostr//\//\\\/}
+url_compliment=${url_compliment//\//\\\/}
+JRAxxstr=${JRAxxstr//\//\\\/}
+geninfostr=${geninfostr//\//\\\/}
+processstr=${processstr//\//\\\/}
+descripstr=${descripstr//\//\\\/}
+QAC=${QAC//\//\\\/}
+SETU=${SETU//\//\\\/}
+Refs=${Refs//\//\\\/}
+custodian_name=${custodian_name//\//\\\/}
+cust_prodinfo_email=${cust_prodinfo_email//\//\\\/}
+custodian_web=${custodian_web//\//\\\/}
+cust_logo_adress=${cust_logo_adress//\//\\\/}
+prodacces_name=${prodacces_name//\//\\\/}
+acces_prodinfo_email=${acces_prodinfo_email//\//\\\/}
+prodacces_web=${prodacces_web//\//\\\/}
+acces_logo_adress=${acces_logo_adress//\//\\\/}
+doc_title=${doc_title//\//\\\/}
+doc_online=${doc_online//\//\\\/}
+doc_date=${doc_date//\//\\\/}
+##########################################################
+##########################################################
+for var in `cat varlist`
+do
+echo variable $var
+
+for year in `cat yearlist`
+do
+echo year $year
+
+FILENAME=./input/Mdata'_'$var'_'$year
+
+if [ -f "$FILENAME" ]
+then
+{
+read longvarname
+read longvarunit
+read QAC
+read SETU
+read Refs
+read Sunit
+read SouthBL
+read NorthBL
+read WestBL
+read EastBL
+read resolt
+read mindep
+read maxdep
+read year1
+read year2
+} < $FILENAME
+else
+echo Could not find $FILENAME
+echo Please generate information file $FILENAME first
+exit
+fi
+############################################################
+FILENAME=./$longvarname'.SDNconv'
+
+if [ -f "$FILENAME" ]
+then
+{
+read prodlabel
+read prodid
+read paramgroup
+read paramvar
+} < $FILENAME
+else
+echo Could not find $FILENAME
+echo Please provide varible SDN coventions file $FILENAME 
+exit
+fi
+
+prodlabel=${prodlabel//\//\\\/}
+paramgroup=${paramgroup//\//\\\/}
+paramvar=${paramvar//\//\\\/}
+prodid=${prodid//\//\\\/}
+
+File=XMLtempl
+NewFile='./output/3Danalysis/MetaDataXMLs/'$prodlabel'_'$var'_'$year'.xml'
+
+sed \
+-e s/"TBCs: access condition TBCe."/"${accconstr}"/ \
+-e s/"TBCs: delivery information TBCe."/"${delinfostr}"/ \
+-e s/"TBCS: estimated volume TBCe."/"Not estimated "/ \
+-e s/"TBCs: url compliment TBCe."/"\/${url_compliment}"/ \
+-e s/"TBCs: PRODUCT LABEL TBCe."/"${prodlabel}"/ \
+-e s/"TBCs: PRODUCT -ID TBCe."/"${prodid}"/ \
+-e s/"TBCs: General information TBCe."/"${geninfostr}"/g \
+-e s/"TBCs: Processing information TBCe."/"${processstr}"/ \
+-e s/"TBCs: Description of observation methods\/instruments TBC"/"${descripstr}"/ \
+-e s/"TBCs: Quality Accuracy Calibration information TBCe."/"${QAC}"/ \
+-e s/"TBCs: Suitability Expexted type of users Uses TBCe."/"${SETU}"/ \
+-e s/"TBCs: References TBCe."/"${Refs}"/ \
+-e s/"<rpOrgName>Instituto Nazionale di Geofisica e Vulcanologia, INGV, Sede di Bologna<\/rpOrgName>"/"<rpOrgName>${organisation_name}<\/rpOrgName>"/ \
+-e s/"<eMailAdd>info.products@bo.ingv.it<\/eMailAdd>"/"<eMailAdd>${org_prodinfo_email}<\/eMailAdd>"/ \
+-e s/"<linkage>http:\/\/gnoo.bo.ingv.it<\/linkage>"/"<linkage>${organisation_web}<\/linkage>"/ \
+-e s/"<orDesc>http:\/\/www.mersea.eu.org\/images\/logos\/partne15.gif<\/orDesc>"/"<orDesc>\/\/${org_logo_adress}<\/orDesc>"/ \
+-e s/"<rpOrgName>Instituto Nazionale di Geofisica e Vulcanologia, INGV, Sede di Bologna<\/rpOrgName>"/"<rpOrgName>${prodacces_name}<\/rpOrgName>"/ \
+-e s/"<eMailAdd>info.products@bo.ingv.it<\/eMailAdd>"/"<eMailAdd>${acces_prodinfo_email}<\/eMailAdd>"/ \
+-e s/"<linkage>http:\/\/gnoo.bo.ingv.it<\/linkage>"/"<linkage>${prodacces_web}<\/linkage>"/ \
+-e s/"<orDesc>http:\/\/www.mersea.eu.org\/images\/logos\/partne15.gif<\/orDesc>"/"<orDesc>${acces_logo_adress}<\/orDesc>"/ \
+-e s/"TEMP: Temperature of the water column"/"${paramgroup}"/ \
+-e s/"sea_water_temperature,K,CF"/"${paramvar}"/ \
+-e s/"TBCs: SR"/"${resolt}"/ \
+-e s/"TBCs: unit"/"${Sunit}"/ \
+-e s/"<westBL>10<\/westBL>"/"<westBL>${WestBL}<\/westBL>"/ \
+-e s/"<eastBL>40<\/eastBL>"/"<eastBL>${EastBL}<\/eastBL>"/ \
+-e s/"<southBL>30<\/southBL>"/"<southBL>${SouthBL}<\/southBL>"/ \
+-e s/"<northBL>50<\/northBL>"/"<northBL>${NorthBL}<\/northBL>"/ \
+-e s/"<vertMinVal>-3500<\/vertMinVal>"/"<vertMinVal>-${maxdep}<\/vertMinVal>"/ \
+-e s/"<vertMaxVal>0.<\/vertMaxVal>"/"<vertMaxVal>${mindep}<\/vertMaxVal>"/ \
+-e s/"TBCs: TmpS"/"${year1}-00-01"/ \
+-e s/"TBCs: TmpE"/"${year2}-00-01"/ \
+-e s/"TBCs: Temporal resolution TBCe"/"Monthly"/  <$File>$NewFile
+done
+done
+## 
+## 

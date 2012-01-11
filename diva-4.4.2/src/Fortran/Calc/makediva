@@ -1,0 +1,3 @@
+g77 -O0 *.f -o diva.a
+mv diva.a ../../../bin/
+rm *.o

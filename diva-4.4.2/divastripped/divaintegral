@@ -1,0 +1,257 @@
+#!/bin/bash
+export LC_ALL=C
+echo //////////////////////////////////////////////////
+echo        integral and error on integrals
+echo  works with no coordinate change or -xscale
+echo For icoordchange: to do
+echo ASSUMES integrationpoints.dat are ALL in water ///
+echo ASSUMES Bessel correlation function when ispec positive
+echo //////////////////////////////////////////////////
+echo ' '
+Filepar=./input/param.par
+{
+read linecomment
+read lc
+read linecomment
+read icoordchange
+read linecomment
+read ispec
+read linecomment
+read ireg
+read linecomment
+read xori
+read linecomment
+read yori
+read linecomment
+read dx
+read linecomment
+read dy
+read linecomment
+read nx
+read linecomment
+read ny
+read linecomment
+read valex
+read linecomment
+read snr
+read linecomment
+read varbak
+} < $Filepar
+if [ -f ./input/integrationpoints.dat ] 
+then
+echo Found a list of integration points :hope they are all wet
+else
+echo Did not find a list of integration points. 
+echo Will create a list based on the gridded output field
+if [ -f ./output/fieldgher.anl ]
+then
+cp ./output/fieldgher.anl ./divawork/fort.20
+cp ./output/ghertonetcdf/GridInfo.dat ./divawork/fort.21
+cd divawork
+##../../bin/gridpointlist.a
+if [ -f ../output/diva.log ] ; then
+ cp -f ../output/diva.log .
+fi
+../../bin/gridpointlist.a >> diva.log
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divaintegral      gridpointlist.a
+echo Check execution track
+echo --------------------------------------------
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo          divaintegral      gridpointlist.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+ cp -f diva.log ../output/.
+cd ..
+mv ./divawork/fort.22 ./input/integrationpoints.dat
+echo Now select only special points for the integral
+dvintegral
+else
+echo Please run first an analysis or use an existing integrationpoints.dat
+exit
+fi
+fi
+inflation=$(echo $lc $dx $dy | awk '{print $1*sqrt(4*3.141593)/sqrt($2*$3)}')
+scale=$icoordchange
+if [ "$icoordchange" == "1" -o "$icoordchange" == "2" ]
+then
+echo will assume latitude of analysis grid center
+scale=$(echo $yori $dy $ny | awk '{print -cos(3.141593/180*($1+$2*$3/2))}')
+echo Scale $scale
+inflation=$(echo $lc $dx $dy $scale | awk '{print $1*sqrt(4*3.141593)/sqrt($2*$3*(-$4))}')
+dxm=$(echo $dx $scale | awk '{print -$1*$2*63700000*3.141593/180.}')
+echo dx in meters $dxm
+dym=$(echo $dy  | awk '{print $1*63700000*3.141593/180.}')
+echo dy in meters $dym
+dx=$dxm
+dy=$dym
+echo Integration will be done with surface units in meters
+fi
+echo Calculating integral
+INTEGRAL=$(awk -v val=$valex '{ if ($3!=val) {s=s+$3*$4}} END {print s}' ./input/integrationpoints.dat)
+SURFACE=$(awk -v val=$valex '{if ($3!=val) {s=s+$4}} END {print s}' ./input/integrationpoints.dat)
+echo $INTEGRAL $SURFACE $dx $dy | awk '{print $1*$4*$3,$2*$4*$3,$1/$2}' > ./output/integral.dat
+if [ "$varbak" == "0" -o "$ispec" == "0" ]
+then
+echo Sorry no error on integral will be calculated since error fields not requested
+else
+if [ "$ispec" -gt "0" ]
+then
+echo hybrid errors, also for the sum
+cp ./input/integrationpoints.dat ./divawork/fort.10
+cp ./input/data.dat ./divawork/fort.11
+rm ./divawork/fort.12
+datacol=$(head -n 1 ./input/data.dat | wc -w)
+cd divawork
+##echo $scale $lc $datacol | ../../bin/erroronintegrals.a
+if [ -f ../output/diva.log ] ; then
+ cp -f ../output/diva.log .
+fi
+echo $scale $lc $datacol | ../../bin/erroronintegrals.a >> diva.log
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divaintegral      erroronintegrals.a
+echo Check execution track
+echo --------------------------------------------
+echo ' ' >> diva.log
+echo -------------------------------------------- >> diva.log
+echo A problem was encountered during execution ! >> diva.log
+echo          divaintegral      erroronintegrals.a  >> diva.log
+echo Check execution track >> diva.log
+echo -------------------------------------------- >> diva.log
+fi
+ cp -f diva.log ../output/.
+cd ..
+cp -v ./input/data.dat ./input/data.dat.nointegral
+cp -v ./input/param.par ./input/param.par.nointegral
+cp -v ./input/valatxy.coord ./input/valatxy.coord.nointegral
+cp ./divawork/fort.12 ./input/data.dat
+#cat ./input/data.dat
+cp -v ./divawork/fort.14 ./output/Pfsum.dat
+cp -v ./input/integrationpoints.dat ./input/valatxy.coord
+head -5 ./input/param.par.nointegral > ./input/param.par
+if [ "$1" == "-naive" ] 
+then
+cp ./input/integrationpoints.dat ./input/valatxy.coord
+echo 4 >> ./input/param.par
+else
+echo 0 >> ./input/param.par
+fi
+echo 0 >> ./input/param.par
+echo 0 >> ./input/param.par
+head -26 ./input/param.par.nointegral | tail -18 >> ./input/param.par
+echo need to save original outputs...
+mkdir ./output3
+cp -r ./output/* ./output3
+cp -v ./input/data.dat ./output3/Csum.dat
+divamesh
+divacalc
+echo summing at discrete locations
+head ./output/valatxyascii.anl
+# need to add non-uniform grid here
+paste ./output/valatxyascii.anl ./input/integrationpoints.dat > bidon
+awk -v val=$valex '{if ($3!=val) {s=s+$3*$7}} END {print -s}' bidon >> ./output3/Pfsum.dat
+cat ./output3/Pfsum.dat
+PFSUM=$(awk '{s=s+$1} END {if (s>0) {print s} else {print 0}}' ./output3/Pfsum.dat)
+echo For errors $PFSUM $varbak $dx $dy
+echo $PFSUM $varbak $dx $dy > bidon
+awk '{ print sqrt($1*$2*$3*$4*$3*$4)}' bidon > ./output3/erroronintegral.dat
+#head ./input/valatxy.coord
+#ls -l ./output
+if [ "$1" == "-naive" ] 
+then
+echo summing error at discrete locations
+head ./output/erroratxyascii.anl
+# need to add non-uniform grid here
+paste ./output/erroratxyascii.anl ./input/integrationpoints.dat > bidon
+sumsquare=$(awk -v val=$valex '{if ($3!=val) {s=s+$3*$3*$7*$7}} END {print s}' bidon)
+echo $sumsquare $dx $dy $inflation> bidon
+awk '{ print sqrt($1*$2*$3*$2*$3),$4,$4*sqrt($1*$2*$3*$2*$3)}' bidon > ./output3/erroronintegralnaive.dat
+fi
+mv -f ./input/data.dat.nointegral ./input/data.dat
+mv -f ./input/valatxy.coord.nointegral ./input/valatxy.coord
+mv -f ./input/param.par.nointegral ./input/param.par
+mv -f ./input/integrationpoints.dat ./output3/integrationpoints.dat
+echo Pushing back original output
+rm -r ./output/*
+mv -f ./output3/* ./output
+rmdir ./output3
+else
+echo Full error calculation, also on sum
+echo To include here
+cp -v ./input/data.dat ./input/data.dat.nointegral
+cp -v ./input/param.par ./input/param.par.nointegral
+cp -v ./input/valatxy.coord ./input/valatxy.coord.nointegral
+head -5 ./input/param.par.nointegral > ./input/param.par
+echo -116 >> ./input/param.par
+echo 0 >> ./input/param.par
+echo 0 >> ./input/param.par
+head -26 ./input/param.par.nointegral | tail -18 >> ./input/param.par
+echo need to save original outputs...
+mkdir ./output3
+cp -r ./output/* ./output3
+divamesh
+divacalc -pfsum
+awk '{print $1,$2}' ./input/data.dat.nointegral > bidon
+paste bidon ./output/Csum.dat > ./input/data.dat
+NCOL=$(head -1 ./input/data.dat.nointegral | wc -w)
+if [ "$NCOL" -gt "3" ]
+then
+awk '{print $4}' ./input/data.dat.nointegral > bidon
+cp ./input/data.dat bidon2
+paste bidon2 bidon > ./input/data.dat
+fi
+cp -v ./input/data.dat ./output3/Csum.dat
+head -5 ./input/param.par.nointegral > ./input/param.par
+if [ "$1" == "-naive" ] 
+then
+cp ./input/integrationpoints.dat ./input/valatxy.coord
+echo -4 >> ./input/param.par
+else
+echo 0 >> ./input/param.par
+fi
+echo 0 >> ./input/param.par
+echo 0 >> ./input/param.par
+head -26 ./input/param.par.nointegral | tail -18 >> ./input/param.par
+divacalc
+cp ./output/Pfsumum.dat ./output3/Pfsum.dat
+echo summing at discrete locations
+head ./output/valatxyascii.anl
+# need to add non-uniform grid here
+paste ./output/valatxyascii.anl ./input/integrationpoints.dat > bidon
+awk -v val=$valex '{if ($3!=val) {s=s+$3*$7}} END {print -s}' bidon >> ./output3/Pfsum.dat
+PFSUM=$(awk '{s=s+$1} END {if (s>0) {print s} else {print 0}}' ./output3/Pfsum.dat)
+echo $PFSUM $varbak $dx $dy > bidon
+awk '{ print sqrt($1*$2*$3*$4*$3*$4)}' bidon > ./output3/erroronintegral.dat
+if [ "$1" == "-naive" ] 
+then
+echo summing error at discrete locations
+head ./output/erroratxyascii.anl
+# need to add non-uniform grid here
+paste ./output/erroratxyascii.anl ./input/integrationpoints.dat > bidon
+sumsquare=$(awk -v val=$valex '{if ($3!=val) {s=s+$3*$3*$7*$7}} END {print s}' bidon)
+echo $sumsquare $dx $dy $inflation> bidon
+awk '{ print sqrt($1*$2*$3*$2*$3),$4,$4*sqrt($1*$2*$3*$2*$3)}' bidon > ./output3/erroronintegralnaive.dat
+fi
+mv -f ./input/data.dat.nointegral ./input/data.dat
+mv -f ./input/valatxy.coord.nointegral ./input/valatxy.coord
+mv -f ./input/param.par.nointegral ./input/param.par
+mv -f ./input/integrationpoints.dat ./output3/integrationpoints.dat
+echo Pushing back original output
+rm -r ./output/*
+mv -f ./output3/* ./output
+rmdir ./output3
+fi
+fi
+echo ' '
+echo --------------------------
+echo 
+echo --------------------------

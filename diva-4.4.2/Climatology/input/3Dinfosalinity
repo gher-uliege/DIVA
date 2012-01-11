@@ -1,0 +1,50 @@
+! Variable
+psal.xxxxxxxx.0404
+! Number of the first level to be processed
+1
+! Number of the last level to be processed
+25
+! coast contour generation
+0
+! data cleaning
+4
+! parameters optimisation
+-30
+! perform 3D analysis
+1
+! Min value for correlation lenght
+0.1
+! Max value for correlation lenght
+3
+! Min value for S/N
+1
+! Max value for S/N
+20
+!gp
+0
+!gp
+0
+!gp
+42
+# Title string for salinity 3D NetCDF file:
+'Diva 3D analysis of salinity variable'
+! Variable long name string
+'Salinity'
+! variable units string
+'psu'
+!pararam clim
+1
+# Reference time for data (ie: days since since 1900-01-01), if not climatological data
+'months since since 1900-01-01'
+# Time value (that reprsents the data set), if not climatological data
+1200
+# Cell_methode string:
+'time: mean (month 02 data from all years)'
+# Institution name: where the dataset was produced.
+'ULg_GHER'
+# Production group and date
+'Diva group'
+# Source (observation, radiosonde, database, model-generated data,...)
+'Medar merged data'
+#Comment
+'No comment'

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if [ -f fort.68 -a -f fort.99 ] 
+then
+
+echo gnuplot is $gplot
+awk '{print $0 >> "bidon"}' << EOF
+#the gnuplot commands
+set pm3d  interpolate ii,ii map
+set style data pm3d
+#set palette defined ( 0 "dark-blue", 1 "blue", 1.7 "green", 2.5 "yellow", 2.6 "yellow", 4 "red", 5 "dark-red" )
+set style line 9 linecolor rgb "black" pt 7 ps 0.5 
+splot 'fort.68' using 1:2:3:3 t 'Analysis and data location','fort.99' using 1:2:3:3 with  points ls 9 notitle
+#set palette rgbformulae 33,13,10
+#end gnuplot commands
+exit
+EOF
+
+$gplot bidon
+
+else
+echo No plot produced
+
+fi
