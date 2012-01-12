@@ -12,7 +12,6 @@ echo ????????diva already running??????
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ps -eafl | grep -i 'diva\.a'
 fi
-echo ' ' 
 iqc=0
 if [ "$1" == "qc" ] 
 then
@@ -58,10 +57,10 @@ xi=1
 cd ./meshgenwork
 File23=./fort.23
 #output of info for mesh visualisation with meshvisu.m
-echo Copying output files for mesh visialisation
-cp  -v ../output/meshvisu/fort.10 .
-cp  -v ../output/meshvisu/fort.22 .
-cp  -v ../output/meshvisu/fort.23 .
+#echo Copying output files for mesh visualisation in ./output/meshvisu/
+cp  ../output/meshvisu/fort.10 .
+cp  ../output/meshvisu/fort.22 .
+cp  ../output/meshvisu/fort.23 .
 echo ' '
 {
 read nnt1
@@ -76,7 +75,8 @@ cd ../divawork
 NREA=0
 NINT=0
 NDATA=$(cat ../input/data.dat | wc -l)
-echo Data points $NDATA
+echo 'Number of data points:' ${NDATA}
+echo ' '
 let NREA=$NREA+4*$NDATA
 let NREA=$NREA+${nx}*${ny}
 let NINT=$NINT+8*$NDATA
@@ -158,15 +158,29 @@ fi
 if [ -f ../output/diva.log ] ; then
  cp  -f ../output/diva.log .
 fi
+
 #creation of file fort.13
-echo $xori > ./fort.13
-echo $yori >> ./fort.13
+#
+# 'gridded.a' replaced by awk command 
+#------------------------------------
+#echo $xori > ./fort.13
+#echo $yori >> ./fort.13
+#echo $dx >> ./fort.13
+#echo $dy >> ./fort.13
+#echo $nx >> ./fort.13
+#echo $ny >> ./fort.13
+#echo $valex >> ./fort.13
+#../../bin/griddef.a >> diva.log
+
+echo $(echo $xori $dx | awk '{print ($1-$2)}') >  ./fort.13
+echo $(echo $yori $dy | awk '{print ($1-$2)}') >> ./fort.13
 echo $dx >> ./fort.13
 echo $dy >> ./fort.13
 echo $nx >> ./fort.13
 echo $ny >> ./fort.13
 echo $valex >> ./fort.13
-../../bin/griddef.a >> diva.log
+
+
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -283,7 +297,8 @@ if [ "$varbak" != "0" ]
 then
 if [ "$ispec" != "0" ]
 then
-echo errors will be calculated
+	echo ' '
+echo Errors will be calculated
 echo esterr 1 >> ./fort.10
 echo $ispec >> ./fort.10
 fi
@@ -343,7 +358,7 @@ fi
 if [ -f ../output/diva.log ] ; then
  cp  -f ../output/diva.log .
 fi
-echo 'REMOVE FORT.35 and FORT.43'
+##echo 'REMOVE FORT.35 and FORT.43'
 rm -f fort.43
 rm -f fort.35
 #execute diva
@@ -366,6 +381,9 @@ dataonmesh=0
 #cp fort.84 fort.87
 #fi
 #fi
+
+# New version 11 Jan 2012
+#------------------------
 
 if [ -f ./fort.35  ]; then
 	dataonmesh=$(cat ./fort.35 | awk '{print $1-$2}')
@@ -400,8 +418,8 @@ if [ "$iqc" == "1" ]
 then
 #
 #output of results to user
-cp -v fort.76 ../output/expectederroratdatapoint.anl
-cp -v fort.71 ../output/fieldatdatapoint.anl
+cp fort.76 ../output/expectederroratdatapoint.anl
+cp fort.71 ../output/fieldatdatapoint.anl
 if [ -f ../output/diva.log ] ; then
  cp  -f ../output/diva.log .
 fi
@@ -441,38 +459,41 @@ echo --------------------------------------------
 fi
 else
 #output as netcdf not yet done
-echo Output of results for user
 echo ' '
-cp -v fort.84 ../output/fieldgher.anl
+echo Output of results copied in ./output/
+echo ' '
+cp fort.84 ../output/fieldgher.anl
 if [ -f fort.82 ]
 then
-cp -v fort.82 ../output/valatxyascii.anl
+cp fort.82 ../output/valatxyascii.anl
 fi
-cp -v fort.83 ../output/fieldascii.anl
+cp fort.83 ../output/fieldascii.anl
 if [ -f fort.87 ]
 then
-cp -v fort.87 ../output/errorfieldgher.anl
+cp fort.87 ../output/errorfieldgher.anl
 fi
 if [ -f fort.73 ]
 then
-cp -v fort.73 ../output/erroratxyascii.anl
+cp fort.73 ../output/erroratxyascii.anl
 fi
 if [ -f fort.86 ]
 then
-cp -v fort.86 ../output/errorfieldascii.anl
+cp fort.86 ../output/errorfieldascii.anl
 fi
-cp -v fort.71 ../output/fieldatdatapoint.anl
+cp fort.71 ../output/fieldatdatapoint.anl
 if [ -f fort.72 ] 
 then
-cp -v fort.72 ../output/erroratdatapoint.anl
+cp fort.72 ../output/erroratdatapoint.anl
 fi
 if [ -f fort.77 ]
 then
-cp -v fort.77 ../output/gcvval.dat
+cp fort.77 ../output/gcvval.dat
 fi
-echo ' '
-echo Creation of file GridInfo.dat
-echo ' '
+
+##echo ' '
+##echo Creation of file GridInfo.dat
+##echo ' '
+
 echo $xori > ../output/ghertonetcdf/GridInfo.dat
 echo $yori >> ../output/ghertonetcdf/GridInfo.dat
 echo $dx >> ../output/ghertonetcdf/GridInfo.dat
@@ -480,6 +501,8 @@ echo $dy >> ../output/ghertonetcdf/GridInfo.dat
 echo $nx >> ../output/ghertonetcdf/GridInfo.dat
 echo $ny >> ../output/ghertonetcdf/GridInfo.dat
 echo $valex >> ../output/ghertonetcdf/GridInfo.dat
+
+
 #Iceedge case
 if [ -f ../input/iceedge.dat ]
 then
@@ -493,7 +516,7 @@ fi
 cp fort.84 ../output/ghertonetcdf
 if [ -f fort.87 ]
 then 
-cp -v fort.87 ../output/ghertonetcdf
+cp  fort.87 ../output/ghertonetcdf
 fi
 iecal=0
 if [ "$ispec" == "1" ]
@@ -566,6 +589,7 @@ then
 if [ "$iecal" == "1" ] 
 then
 echo Creating netcdf file for field and associated error
+echo in directory ./output/ghertonetcdf/
 cd ../output/ghertonetcdf
 if [ -f ../diva.log ] ; then
  cp  -f ../diva.log .

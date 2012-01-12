@@ -5,18 +5,20 @@ contfile=${inputdir}'coast.cont'
 datafile=${inputdir}'data.dat'
 paramfile=${inputdir}'param.par'
 
-echo ${inputdir}
+##echo ${inputdir}
+echo //////////////////////////////////////////////////
 echo 'Running a simple test'
+echo //////////////////////////////////////////////////
 echo ' '
 
-echo 'creating data file'
+echo '1. creating data file'
 echo ' '
 
 echo '0.3 0.3 1' > ${datafile}
 echo '0.55 0.9 -1' >> ${datafile}
 echo '0.85 0.1 0.2' >> ${datafile}
 
-echo 'creating contour file'
+echo '2. creating contour file'
 echo ' '
 
 echo 2 > ${contfile}
@@ -32,7 +34,7 @@ echo 0.6 0.8 >> ${contfile}
 echo 0.6 0.2 >> ${contfile}
 
 
-echo 'creating parameter file'
+echo '3. creating parameter file'
 echo ' '
 
 echo '# Correlation Length lc' > ${paramfile}
@@ -66,6 +68,7 @@ divamesh
 
 divacalc
 
-echo 'Analysis finished,'
-echo 'check the output in ./ouput/ghertonetcdf/results.nc (netcdf)'
+echo ' '
+echo 'Check the results in'
+echo './ouput/ghertonetcdf/results.nc (netcdf)'
 

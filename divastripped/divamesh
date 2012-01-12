@@ -16,12 +16,12 @@ echo There is a density file for the mesh
 cp -v ./input/coast.cont.dens ./meshgenwork/fort.12
 isdens=1
 fi
-echo $isdens
+##echo $isdens
 if [ -f ./input/param.par ] 
 then
 echo Reading parameters
 else
-echo Need to provide param.par in ./input
+echo Need to provide param.par in ./input/
 fi
 Filepar=./input/param.par
 {
@@ -62,6 +62,7 @@ read varbak
 #echo 1.5 >> ./meshgenwork/fort.11
 #echo 5 >> ./meshgenwork/fort.11
 #exec 11>&-
+
 rm -f fort.11
 echo $isdens $lc | ../bin/lcelem.a
 mv fort.11 ./meshgenwork/fort.11
@@ -98,9 +99,10 @@ read nelt
 #output of info for mesh visualisation with meshvisu.m
 echo ' '
 echo Copying output files for visualisation 
-cp -v fort.10 ../output/meshvisu/
-cp -v fort.22 ../output/meshvisu/
-cp -v fort.23 ../output/meshvisu/
+echo in directory ./output/meshvisu/ 
+cp fort.10 ../output/meshvisu/
+cp fort.22 ../output/meshvisu/
+cp fort.23 ../output/meshvisu/
  
 #exec 23<>fort.23
 #read  nnt1 nnint nelt <&3
@@ -110,3 +112,4 @@ echo ' '
 echo ---------------
 echo Mesh is created
 echo ---------------
+echo ' '
