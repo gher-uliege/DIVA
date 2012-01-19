@@ -55,8 +55,8 @@ llimit=1
 echo Subsampling activated
 nsamp=$2
 fi
-echo Cleaning unuseful files
-echo ' '
+#echo Cleaning unuseful files
+#echo ' '
 rm -f fort.10 fort.11 fort.99 fort.98
  
 echo Going to fit covariance function
@@ -97,6 +97,7 @@ then
 echo ' '
 echo -------------------------------------------------------------
 echo Finished fitting
+echo 'Estimated correlation length L = ' $(awk 'FNR == 2 { print; exit }' ../output/paramfit.dat)
 echo Files created : covariancefit.dat covariance.dat paramfit.dat
 echo -------------------------------------------------------------
 mv fort.98 ../output/covariancefit.dat

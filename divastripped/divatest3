@@ -1,0 +1,111 @@
+#!/bin/bash
+
+if [ "$#" == "1" ]
+then
+	Ndata=$1
+else
+	Ndata=100
+fi
+
+inputdir=$(pwd)'/input/'
+contfile=${inputdir}'coast.cont'
+datafile=${inputdir}'data.dat'
+paramfile=${inputdir}'param.par'
+gcvsamplingfile=${inputdir}'gcvsampling.dat'
+
+##echo ${inputdir}
+echo //////////////////////////////////////////////////
+echo 'Running a test with divagcv'
+echo //////////////////////////////////////////////////
+echo ' '
+
+echo '1. creating data file'
+echo '   with points at random coordinates'
+echo ' '
+
+awk -v N=$Ndata 'BEGIN { for (i = 1; i <= N; i++)
+        {x=rand();y=rand();print x,y,3*x-2*y-1} }' > ${datafile}
+
+echo '2. creating contour file'
+echo ' '
+
+echo 2 > ${contfile}
+echo 4 >> ${contfile}
+echo 0 0 >> ${contfile}
+echo 1 0 >> ${contfile}
+echo 1 1 >> ${contfile}
+echo 0 1 >> ${contfile}
+echo 4 >> ${contfile}
+echo 0.4 0.2 >> ${contfile}
+echo 0.4 0.8 >> ${contfile}
+echo 0.6 0.8 >> ${contfile}
+echo 0.6 0.2 >> ${contfile}
+
+
+echo '3. creating parameter file'
+echo ' '
+
+echo '# Correlation Length lc' > ${paramfile}
+echo '1.0' >> ${paramfile}
+echo '# icoordchange' >> ${paramfile}
+echo '0' >> ${paramfile}
+echo '# ispec' >> ${paramfile}
+echo '0' >> ${paramfile}
+echo '# ireg' >> ${paramfile}
+echo '0' >> ${paramfile}
+echo '# xori' >> ${paramfile}
+echo '0' >> ${paramfile}
+echo '# yori' >> ${paramfile}
+echo '0' >> ${paramfile} 
+echo '# dx' >> ${paramfile}
+echo '0.02' >> ${paramfile}
+echo '# dy' >> ${paramfile}
+echo '0.02' >> ${paramfile}
+echo '# nx' >> ${paramfile}
+echo '51' >> ${paramfile}
+echo '#ny' >> ${paramfile}
+echo '51' >> ${paramfile}
+echo '# valex' >> ${paramfile}
+echo '-99' >> ${paramfile}
+echo '# snr' >> ${paramfile}
+echo '1.0' >> ${paramfile}
+echo '# varbak' >> ${paramfile}
+echo '1.0' >> ${paramfile}
+
+echo '4. creating list of SNR values to test in GCV'
+echo '   (file gcvsampling.dat)'
+echo ' '
+
+echo '0.01' > ${gcvsamplingfile}
+echo '0.03' >> ${gcvsamplingfile}
+echo '0.1' >> ${gcvsamplingfile}
+echo '0.3' >> ${gcvsamplingfile}
+echo '0.6' >> ${gcvsamplingfile}
+echo '1.0' >> ${gcvsamplingfile}
+echo '3.0' >> ${gcvsamplingfile}
+echo '6.0' >> ${gcvsamplingfile}
+echo '10.0' >> ${gcvsamplingfile}
+echo '30.0' >> ${gcvsamplingfile}
+echo '100.0' >> ${gcvsamplingfile}
+
+divamesh
+
+echo ' '
+
+divacalc
+
+cp ./output/ghertonetcdf/results.nc ./output/ghertonetcdf/results_nogcv.nc
+
+divagcv -r  
+
+divacalc 
+
+cp ./output/ghertonetcdf/results.nc ./output/ghertonetcdf/results_gcv.nc
+
+echo ' '
+echo 'Check the results in'
+echo './ouput/ghertonetcdf/results_notgcv.nc (before estimation of SNR)'
+echo './ouput/ghertonetcdf/results_gcv.nc    (after estimation of SNR)'
+
+
+

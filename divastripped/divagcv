@@ -117,7 +117,8 @@ fi
  cp -f diva.log ../output/.
 echo ' '
 echo ----------------------------------------
-echo GCV finished
+echo 'GCV finished'
+echo 'Estimated value of SNR = ' $(awk 'FNR == 2 { print; exit }' ../output/gcvsnvar.dat)
 echo Results written in ./output/gcvsnvar.dat
 echo ----------------------------------------
 else
@@ -138,7 +139,7 @@ head -4 ../output/gcvsnvar.dat  | tail -1 >> ../output/param.par.gcv
 if [ "$1" == "-r" ]
 then
 echo =======================================================
-echo Replacing  param file with fit
+echo Replacing SNR by new value from GCV in param.par 
 cd ..
 cp -v ./input/param.par ./input/param.par.old
 cp -v ./output/param.par.gcv ./input/param.par
