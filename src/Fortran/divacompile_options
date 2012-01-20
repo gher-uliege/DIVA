@@ -5,7 +5,7 @@ compiler=ifort
 
 # Compilation flags
 flags='-O3'
-flags='-O0' # no optimization
+#flags='-O0' # no optimization
 
 # Netcdf library
 nclib=/usr/local/lib/netcdf3ifort/libnetcdf.a
