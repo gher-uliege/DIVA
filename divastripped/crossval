@@ -1,3 +1,4 @@
+#!/bin/bash
 cd divawork
 if [ -f ../output/diva.log ] ; then
  cp -f ../output/diva.log .
