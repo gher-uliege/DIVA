@@ -46,7 +46,12 @@ if [ "$parop" == "30" -o  "$parop" == "-30" ]; then
 ./diva3Dsnop
 fi
 #
-if [ "$ana3d" -ge "1" ]; then
+if [ "$ana3d" -eq "1" -o  "$ana3d" -eq "2" ]; then
 ./diva3Dsub
+fi
+#
+#
+if [ "$ana3d" -ge "3" ]; then
+./diva3Drefiltr
 fi
 #

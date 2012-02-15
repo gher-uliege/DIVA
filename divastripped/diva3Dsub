@@ -45,15 +45,17 @@ mkdir -p ./output/3Danalysis/GnuPlots
 fi
 #
 if [ "$act" == "2" ];then
+###################
 if [ -d ./input/divarefe ];then
 echo '>>>WARNING: ./input/divarefe exists.'
 else
 mkdir -p ./input/divarefe
 fi
 fi
-#
+##                   fi "$act" == "2"
 #
 if [ -f ./input/dvtransinfo ];then
+############################
 echo 'transforming input data:' $bottm $surf $var
   Fileinf=./input/dvtransinfo
 {
@@ -61,14 +63,19 @@ read ntrans
 } < $Fileinf
 
 echo 'going to trans data files, ntrans = '$ntrans
-
  ./dvdatatransf $bottm $surf $var $ntrans
 let gnup=100+$gnup
-echo 'dvdatatransf finished '
-
+echo 'dvdatatransf finished transforming data '
+#
+if [ -f ./input/dorefeinfo ];then
+echo './input/divarefe found: going to transform reference fields'
+ ./dvrefetransf $bottm $surf $var $ntrans
 fi
+fi
+############################fi -f ./input/dvtransinfo
 #
 if [ -f ./input/dvlaymixinfo ];then
+#############################
 echo 'mixing layers input data:' $bottm $surf $var
 cp -r ./input/divadata ./input/divadata_ORI
   Fileinf=./input/dvlaymixinfo
@@ -77,23 +84,30 @@ read ntrans
 } < $Fileinf
  ./dv3Ddatamix $bottm $surf $var $ntrans
 fi
+############################fi -f ./input/dvlaymixinfo
 #
 if [ -d "./output/3Danalysis/Fields" ];then
+####################################
 echo './output/3Danalysis/Fields exists'
 else
  mkdir -p ./output/3Danalysis/Fields
 fi
+####################################fi -d "./output/3Danalysis/Fields"
 #
 if [ -d "./input/divamesh" ]; then
+###########################
  fmeshe=1
 else
  mkdir -p ./input/divamesh
  mkdir -p ./output/3Danalysis/Meshes
  fmeshe=0
 fi
+############################fi -d "./input/divamesh"
 #
 echo ' level  data_nbr' > './output/3Danalysis/'$var'.nbrdata'
 #
+#
+################################## loop on levels ########################
 dep=$bottm
 while [ $dep -le $surf ]
 do
@@ -104,26 +118,34 @@ echo 'diva3Dsub: performing analysis for '$var'.'$level
 echo 'ooooooooooooooooooooooooooooooooooo'
 #
 if [ -f "./input/detrendinfo" ]; then
+#############################
  echo  ./input/detrendinfo found
  mkdir -p ./output/3Danalysis/DATADETREND
  trd=1
 else
  trd=0
 fi
+#############################fi -f "./input/detrendinfo"
+#
 #
 if [ "$act" == "1" -o  "$act" == "2" ];then
-
-echo './dv3Drefoanl '$level $var $gnup $gmin $gmax $act $trd
+#####################################
+echo ' '
+echo '=================== running dv3Drefoanl =================== '
+echo ' level:'$level' var: '$var' isanalysis: '$act' trend: '$trd
+echo '=========================================================== '
 
  ./dv3Drefoanl $level $var $gnup $gmin $gmax $act $trd
 #
 if [ -f "./input/dvtransinfo" ];then
+#############################
  echo  'runing ./dv3Dinvtrsh on '$var'.'$level 
   Fileinf=./input/dvtransinfo
 {
 read ntrans
 } < $Fileinf
 if [ "$ntrans" == "13" -o "$itrans" == "23" ];then 
+###########################################
 if [ -f './input/divadata/'$var'_inverf' ];then
   file='./input/divadata/'$var'_inverf'
   nbln=$(cat $file |wc -l)
@@ -135,10 +157,13 @@ echo did not find $var'_inverf'
 exit
 fi
 fi
+#######################################fi "$ntrans" == "13" -o "$itrans" == "23"
  ./dv3Dinvtrsh $level $var $ntrans $act
 fi
+##################################### -f "./input/dvtransinfo"
 #
 fi
+#####################################fi "$act" == "1" -o  "$act" == "2"
 #
  dep=`expr $dep + 1`
 done

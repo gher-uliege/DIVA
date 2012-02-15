@@ -8,7 +8,7 @@ if [ -f ../output/fieldatdatapoint.anl.ref ]
 then
  LD=$(cat ../input/data.dat | wc -l)
  LR=$(cat ../output/fieldatdatapoint.anl.ref | wc -l)
- echo $LD $LR
+ echo ' data.dat & fieldatdatapoint.anl.ref ' $LD $LR
 fi
 if [ "$LD" -eq "$LR" ]
 then

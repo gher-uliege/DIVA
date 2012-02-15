@@ -1,0 +1,193 @@
+#!/bin/bash
+#####################################################
+#
+bottm=$1
+surf=$2
+var=$3
+itrans=$4
+#
+#
+##if [ -f "./input/dorefeinfo" ];then
+##FILENAME="./input/dorefeinfo"
+##{
+##read revar
+##read yrref
+##read mnref
+##} < $FILENAME
+##var=$revar.$yrref.$mnref
+##fi
+#
+if [ -d "./3DWORK" ];then
+echo 'starting data transformation'
+else
+mkdir -p ./3DWORK
+fi
+echo 'making a backup of  ./input/divarefe'
+cp -r ./input/divarefe ./input/divarefe_BKP
+#
+
+if [ "$itrans" == "13" ];then 
+# Start anamorphose transformation of reference fields
+######################################################
+
+
+dep=$bottm
+rm -f ./3DWORK/fort.33
+while [ $dep -le $surf ]
+do
+let level=10000+$dep
+#
+if [ -f ./input/divarefe/$var'.'$level'.datapoint.ref' ];then
+
+cd ./input/divarefe
+  file=$var'.'$level'.datapoint.ref'
+  nbcl=$(head -n 1 $file | wc -w)
+  nbln=$(cat $file |wc -l)
+  echo $var > ../../3DWORK/fort.33
+  echo $itrans >> ../../3DWORK/fort.33
+  echo $bottm >> ../../3DWORK/fort.33
+  echo $surf >> ../../3DWORK/fort.33
+  echo $nbln >> ../../3DWORK/fort.33
+  echo $nbcl >> ../../3DWORK/fort.33
+  echo $dep >> ../../3DWORK/fort.33
+cd ../../3DWORK/
+../../bin/refenoise.a
+cd ../
+
+fi
+
+dep=`expr $dep + 1`
+done
+#
+cd input/divarefe
+
+rm -f '../../3DWORK/lsdivarefe'
+rm -f '../../3DWORK/refbruitls'
+
+dep=$bottm
+while [ $dep -le $surf ]
+do
+let level=10000+$dep
+
+
+if [ -f ./input/divarefe/$var'.'$level'.datapoint.ref' ];then
+
+
+file=$var'.'$level'.datapoint.ref'
+nbcl=$(head -n 1 $file | wc -w)
+nbln=$(cat $file |wc -l)
+echo $file $nbln $nbcl >> ../../3DWORK/lsdivarefe
+echo 'refbruit_'$var'.'$level'.datapoint.ref' >> ../../3DWORK/refbruitls
+
+fi
+
+dep=`expr $dep + 1`
+done
+
+if [ -f '../../3DWORK/refbruitls' ];then
+
+cat 'refbruit_'$var'.1'*'.datapoint.ref' >../../3DWORK/$var'_noise.ref'
+
+cd ../../3DWORK/
+  file=$var'_noise.ref'
+  nbln=$(cat $file |wc -l)
+  file='lsdivadata'
+  nbfl=$(cat $file |wc -l)
+  echo $var > fort.33
+  echo $itrans >> fort.33
+  echo $bottm >> fort.33
+  echo $surf >> fort.33
+  echo $nbln >> fort.33
+../../bin/sortref.a
+#
+  file='../input/divarefe/'$var'_inverf'
+  nbln=$(cat $file |wc -l)
+  file='lsdivarefe'
+  nbfl=$(cat $file |wc -l)
+  echo $var > fort.33
+  echo $itrans >> fort.33
+  echo $bottm >> fort.33
+  echo $surf >> fort.33
+  echo $nbln >> fort.33
+  echo $nbfl >> fort.33
+../../bin/refdispach.a
+
+echo 'finished anamorphose refe transformation'
+cd ..
+
+fi
+
+else
+
+# Start data transformation
+#################################
+#
+dep=$bottm
+rm -f ./3DWORK/fort.44
+while [ $dep -le $surf ]
+do
+let level=10000+$dep
+
+if [ -f ./input/divarefe/$var'.'$level'.datapoint.ref' ];then
+#
+cd ./input/divarefe
+  file=$var.$level'.datapoint.ref'
+  nbcl=$(head -n 1 $file | wc -w)
+  nbln=$(cat $file |wc -l)
+
+  echo $var > ../../3DWORK/fort.44
+  echo $itrans >> ../../3DWORK/fort.44
+  echo $bottm >> ../../3DWORK/fort.44
+  echo $surf >> ../../3DWORK/fort.44
+  echo $nbln >> ../../3DWORK/fort.44
+  echo $nbcl >> ../../3DWORK/fort.44
+  echo $dep >> ../../3DWORK/fort.44
+
+
+
+  echo $var
+  echo $itrans
+  echo $bottm 
+  echo $surf 
+  echo $nbln
+  echo $nbcl
+  echo $dep 
+
+
+  cd ../../3DWORK/
+  ../../bin/refetrans.a
+  if [ -f fort.55 ];then
+  mv fort.55 'ERR.'$var'.'$level'.datapoint.ref'
+  fi
+cd ../
+#
+
+else
+
+ if [ -f ./input/divarefe/$var'.'$lev'.ref' ];then
+#
+cd ./input/divarefe
+  file=$var'.'$level'.ref'
+
+  echo $file > ../../3DWORK/fort.44
+  echo $itrans >> ../../3DWORK/fort.44
+
+  cd ../../3DWORK/
+  ../../bin/refebintrans.a
+  if [ -f fort.55 ];then
+  mv fort.55 'ERR.'$var'.'$level'.ref'
+  fi
+
+ fi
+fi
+
+cd ../
+dep=`expr $dep + 1`
+done
+
+echo 'finished non-13 transform'
+#
+
+fi
+
+echo 'finished transforming data'

@@ -4,9 +4,11 @@
 # 
 #####################################################
 #
+var=$1
+#
 cd ./3DWORK/
-cp ../output/3Danalysis/*.3DNCliste ./3Dncliste
-cp ../output/3Danalysis/*.3DNCinfo ./3DNCinfo
+cp -v '../output/3Danalysis/'$var'.3DNCliste' './3Dncliste'
+cp -v '../output/3Danalysis/'$var'.3DNCinfo' './3DNCinfo'
 #
 if [ -f fort.44 ];then
 rm fort.44
