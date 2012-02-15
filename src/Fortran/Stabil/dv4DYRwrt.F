@@ -140,7 +140,8 @@
 !     Read the grid data from GridInfo.dat
 !--------------------------------------------------------------
 !
-      divafile = '../output/3Danalysis/Fields/GridInfo.dat'
+!      divafile = '../output/3Danalysis/Fields/GridInfo.dat'
+      divafile = '../output/3Danalysis/GridInfo.dat'
       open(unit=90,file=divafile)
       read(90,*) xorig
       read(90,*) yorig

@@ -6,13 +6,14 @@
 !---------------------------------------------------------------------!
 !
       REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: XLON,YLAT
+      integer, DIMENSION(:,:),  ALLOCATABLE :: mask
 !
       REAL*4 , DIMENSION(:,:),  ALLOCATABLE :: var, verr
 !
       integer                   :: i,j,ii,jj
       integer                   :: NX, NY, NK, istep
       integer*4                 :: IMAX, JMAX
-      real*4                    :: VALEXC,val
+      real*4                    :: VALEXC,val,field_max,field_min,x,y
       real*4                    :: xorig, yorig, dx, dy, xend, yend
 !
       CHARACTER (len=255)        :: file_name,divafile,comments
@@ -91,6 +92,7 @@
       ALLOCATE(YLAT(NY))
       ALLOCATE(var(NX,NY))
       ALLOCATE(verr(NX,NY))
+      ALLOCATE(mask(NX,NY))
 !
 !retreiving grid points longitude and latitude
       DO i = 1, NX
@@ -115,16 +117,76 @@
 !
       imax = NX
       jmax = NY
+
+      mask = 0
+      DO j=1,NY
+        DO i=1,NX
+         IF(var(i,j) .ne. VALEXC) THEN
+           mask(i,j) = 1
+          ENDIF
+        ENDDO
+      ENDDO
+
+       x=MAXVAL(var(1:imax,1:jmax),dim=1,MASK= (mask(:,:) .eq. 1))
+       y=MINVAL(var(1:imax,1:jmax),dim=1,MASK= (mask(:,:) .eq. 1))
+       call jmbround(x,y,field_max,field_min)
+
+
       divafile = '../output/3Danalysis/Fields/'//TRIM(VARFILEIN)
       INQUIRE(FILE=TRIM(divafile),EXIST=exist)
       IF(exist) THEN
 !
-      WRITE(*,*)' nc file ',TRIM(VARFILEIN),imax,jmax
-      WRITE(*,*)' file name',TRIM(divafile)
+!x      WRITE(*,*)' nc file ',TRIM(VARFILEIN),imax,jmax
+!x      WRITE(*,*)' file name',TRIM(divafile)
 
-      CALL NC_RWD2DCL(imax,jmax,var(:,:),TRIM(divafile))
+      CALL NC_RWD2DCL(imax,jmax,var,field_max,field_min,TRIM(divafile))
 !
       ENDIF
 
       STOP
       END
+        subroutine jmbround(x1,x2,x1r,x2r)
+        if(x1.ge.x2) then
+!        write(6,*) 'Sorry only for range'
+        x1r=x1
+        x2r=x2
+        return
+        endif
+        ip=log10(x2-x1)-2
+        i1neg=0
+        if (x1.lt.0) then
+        i1neg=1
+        x1=-x1
+        x1=x1*0.99999
+                     else
+        x1=x1*1.00001
+        endif
+
+        i2neg=0
+        if (x2.lt.0) then
+        i2neg=1
+        x2=-x2
+        x2=x2*1.00001
+                     else
+        x2=x2*0.99999
+        endif
+
+        ip=-ip
+        if (i1neg.eq.1) then
+        i1s=INT(x1 * (10**(ip)) + 1)
+        else 
+        i1s=INT(x1 * (10**(ip)) + 0)
+        endif
+        x1r=i1s/10.**(ip)
+        if (i1neg.eq.1) x1r=-x1r
+        
+        
+        if (i2neg.eq.1) then
+        i2s=INT(x2 * (10**(ip)) + 0)
+        else 
+        i2s=INT(x2 * (10**(ip)) + 1)
+        endif
+        x2r=i2s/10.**(ip)
+        if (i2neg.eq.1) x2r=-x2r
+        return
+        end
