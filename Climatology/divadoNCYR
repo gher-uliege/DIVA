@@ -1,7 +1,6 @@
 #!/bin/bash
-
 ####
-# divado netcdf file for multi year climatologies
+# divado netcdf files for multi year periods climatologies #
 ###
 
 isxmlgenerat=$1
@@ -18,14 +17,21 @@ mkdir -p ./output/3Danalysis/MetaDataXMLs
 for var in `cat varlist`
 #########################################################
 do
-echo working on variable $var 
+
+echo ' '
+echo ' =================== Running divadoNCYR ======================== '
+echo ' =================== working on variable: ' $var
+echo ' '
 
 rm -rf ${DIVADIR}/divastripped/input/*
 rm -rf ${DIVADIR}/divastripped/output/*
-#rm -f ${DIVADIR}/divastripped/output/*/*
-#rm -rf ${DIVADIR}/divastripped/output/3Danalysis/* 
 rm -f ${DIVADIR}/divastripped/divawork/*
 rm -f ${DIVADIR}/divastripped/3DWORK/*
+
+
+mkdir -p ${DIVADIR}/divastripped/output
+mkdir -p ${DIVADIR}/divastripped/output/3Danalysis
+mkdir -p ${DIVADIR}/divastripped/output/3Danalysis/MetaDataXMLs
 
 cp -v './yearlist' ${DIVADIR}/divastripped/input/.
 cp -v './monthlist' ${DIVADIR}/divastripped/input/.
@@ -40,9 +46,10 @@ echo year $year
 
 # Prepare run diva_4Dnc_write
 
-mkdir ${DIVADIR}/divastripped/output/3Danalysis
-mkdir ${DIVADIR}/divastripped/output/3Danalysis/Fields
-cp $WDIR/output/3Danalysis/Fields/GridInfo.dat ${DIVADIR}/divastripped/output/3Danalysis/Fields/.
+##mkdir -p ${DIVADIR}/divastripped/output/3Danalysis
+mkdir -p ${DIVADIR}/divastripped/output/3Danalysis/Fields
+
+cp -v $WDIR/output/3Danalysis/Fields/GridInfo.dat ${DIVADIR}/divastripped/output/3Danalysis/Fields/.
 
 if [ -f './output/3Danalysis/'$var'.Metainfo.txt' ]; then
 cp -v './output/3Danalysis/'$var'.Metainfo.txt'  ${DIVADIR}/divastripped/output/3Danalysis/.
@@ -57,6 +64,9 @@ if [ -f './output/3Danalysis/'$var'.'$year'.3DNCinfo' ]; then
 cp -v './output/3Danalysis/'$var'.'$year'.3DNCinfo' ${DIVADIR}/divastripped/output/3Danalysis/.
 
 cd ./output/3Danalysis/
+
+cp -v ./Fields/GridInfo.dat ${DIVADIR}/divastripped/output/3Danalysis/.
+
 for ncfile in `ls $var.$year.*.anl.nc` ;do
 cp -v $ncfile ../../${DIVADIR}/divastripped/output/3Danalysis/.
 done
@@ -101,6 +111,8 @@ cp -v ./output/3Danalysis/$var'.Metainfo.txt' ${WDIR}/output/3Danalysis/.
 
 cd $WDIR
 cat  ./output/3Danalysis/DriverMetainfo ./output/3Danalysis/$var'.Metainfo.txt' > ./output/3Danalysis/MetaDataXMLs/$var'.Textinfo.txt'
+
+echo '============================= divadoNCDF: end var loop    '$var
 
 done
 

@@ -5,12 +5,11 @@ isxmlgenerat=$1
 WDIR=$(pwd)
 DIVADIR="../../DIVA3D"
 
-mkdir -p ${DIVADIR}/divastripped 
-
+mkdir -p ${DIVADIR}/divastripped/output
+mkdir -p ${DIVADIR}/divastripped/output/3Danalysis
 mkdir -p ./output/3Danalysis/MetaDataXMLs
-
+#
 ./dvtxtmetainfo > ./output/3Danalysis/DriverMetainfo
-
 #
 ##################################################
 # loop on years defined in yearlist
@@ -33,9 +32,10 @@ yeare=${year:4:4}
 monthb=${month:0:2}
 monthe=${month:2:2}
 
-echo working on variable $var 
-
-# Prepare run diva4Dncwrite
+echo ' '
+echo ' =================== Running divadoNCDF ======================== '
+echo ' =================== working on variable: ' $var ' and year: '$year 
+echo ' '
 
 rm -f ${DIVADIR}/divastripped/3DWORK/*
 rm -rf ${DIVADIR}/divastripped/output/3Danalysis/* 
@@ -52,6 +52,8 @@ if [ -f './output/3Danalysis/'$var'.'$year'.3DNCinfo' ]; then
 
 cp -v './output/3Danalysis/'$var'.'$year'.3DNCinfo' ${DIVADIR}/divastripped/output/3Danalysis/.
 
+cp -v ./output/3Danalysis/Fields/GridInfo.dat ${DIVADIR}/divastripped/output/3Danalysis/.
+
 cd ./output/3Danalysis/
 for ncfile in `ls $var.*.anl.nc` ;do
 echo $ncfile
@@ -67,13 +69,22 @@ for dtfile in `ls $var'.'$year'.'*'.3Dparam'` ;do
 echo $dtfile
 cp -v $dtfile ../../${DIVADIR}/divastripped/output/3Danalysis/.
 done
-
 cd ../../
+
 cd ${DIVADIR}/divastripped
 
-diva4Dncwrite
+echo ' '
+echo ' =================== Running diva4Dncwrite ======================== '
 
-echo now saving needs to be done
+varl=$var'.'$year
+
+diva4Dncwrite $varl
+
+echo ' '
+echo '========  Copying netcdf and metadata files to climatology output directory ======'
+echo ' '
+
+#echo now saving needs to be done
 cp -v ./output/3Danalysis/$var.$year.4Danl.nc ${WDIR}/output/3Danalysis/.
 cp -v ./output/3Danalysis/$var.4Danl.nc ${WDIR}/output/3Danalysis/.
 cp -v ./output/3Danalysis/$var'.4DNCMetainfo' ${WDIR}/output/3Danalysis/.
@@ -97,6 +108,8 @@ fi
 
 cd $WDIR
 
+echo '============================= divadoNCDF: end year loop    '$year
+
 done
 
 cat  ./output/3Danalysis/DriverMetainfo ./output/3Danalysis/$var'.Metainfo.txt' > ./output/3Danalysis/MetaDataXMLs/$var'.Textinfo.txt'
@@ -110,13 +123,15 @@ fi
 
 if [ "$isxmlgenerat" == "2" ]; then
 
-echo 'generation of EMODNET xml metadata file'
+echo 'generation of EDMONET xml metadata file'
 
 divadoxml XMLtempl_emodn
 fi
+
+echo '============================= divadoNCDF: end var loop    '$var
+
 done
 
-echo '  '
-echo '============ Finished producing 4D  netcdf and XML files =============='
-echo '======================================================================='
-echo ' '
+echo =================================
+echo Finished writing NC and Xml files 
+echo =================================
