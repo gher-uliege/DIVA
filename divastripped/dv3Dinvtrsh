@@ -10,7 +10,7 @@ ntrans=$3
 act=$4
 
 flag=1
-
+nblines=0
 if [ "$act" == "1" ];then
 
 if [ -f ./output/3Danalysis/Fields/$var.$lev.anl.nc ];then
@@ -18,8 +18,9 @@ if [ -f ./output/3Danalysis/Fields/$var.$lev.anl.nc ];then
  cp ./output/3Danalysis/Fields/$var.$lev.anl.nc ./output/3Danalysis/Fields/$var.$lev.anl.tr.nc
  cp ./output/3Danalysis/Fields/$var.$lev.anl ./output/3Danalysis/Fields/$var.$lev.anl.tr
 
-gherfile=$var.$lev.anl.nc
+ncdfile=$var.$lev.anl.nc
 binfile=$var.$lev.anl
+ascfile=$var.$lev.ascii.anl
 echo 'dv3Dinvtrsh '$gherfile' '$binfile
 
 flag=0
@@ -33,9 +34,12 @@ if [ -f ./output/3Danalysis/Fields/$var.$lev.ref.nc ];then
 
  cp ./output/3Danalysis/Fields/$var.$lev.ref.nc ./output/3Danalysis/Fields/$var.$lev.ref.tr.nc
  cp ./output/3Danalysis/Fields/$var.$lev.ref ./output/3Danalysis/Fields/$var.$lev.ref.tr
+ cp ./output/3Danalysis/Fields/$var.$lev.datapont.ref ./output/3Danalysis/Fields/$var.$lev.datapoint.ref.tr
 
-gherfile=$var.$lev.ref.nc
+ncdfile=$var.$lev.ref.nc
 binfile=$var.$lev.ref
+ascfile=$var.$lev.datapoint.ref
+nblines=`cat $ascfile |wc -l` 
 echo 'dv3Dinvtrsh '$gherfile' '$binfile
 
 flag=0
@@ -46,7 +50,7 @@ fi
 
 if [ "$flag" == "1" ];then
 
-echo ' did not find '$var'.'$lev' 2D ncfile (analysis of transformed data)'
+echo ' did not find '$var'.'$lev' 2D file (analysis of transformed data)'
 
 exit
 
@@ -59,12 +63,14 @@ mkdir -p ./3DWORK
 echo 'starting transformation of '$var'.'$lev'.anl.nc'
 ##fi
 #
-
-echo $gherfile > ./3DWORK/ncname
+echo $ncffile > ./3DWORK/ncname
+echo $binfile >> ./3DWORK/ncname
+echo $ascfile >> ./3DWORK/ncname
 echo $var >> ./3DWORK/ncname
 echo $lev >> ./3DWORK/ncname
+echo $act >> ./3DWORK/ncname
 echo $ntrans >> ./3DWORK/ncname
-
+echo $nblines >> ./3DWORK/ncname
 # Start analyses inverse transformation
 #######################################
 #
