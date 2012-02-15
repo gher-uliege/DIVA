@@ -47,7 +47,7 @@
         WRITE(ALLDATA,
      &'("../input/divadata/",a)')TRIM(VARFILEOU)
 !
-       OPEN(10, FILE=datafile, STATUS='OLD')
+       OPEN(10, FILE=TRIM(datafile), STATUS='OLD')
        IF(nbccol == 10) THEN
          DO n = 1,nblines
            read(10,*,end=999) LONVAL(n),LATVAL(n),VARVAL(n)
@@ -107,7 +107,7 @@
         y(n)=VARVAL(n)+ran2(idum)*0.000001
        ENDDO
 !
-       OPEN(UNIT=11,FILE=ALLDATA,STATUS='NEW')
+       OPEN(UNIT=11,FILE=TRIM(ALLDATA),STATUS='NEW')
        IF(nbccol == 10) THEN
          DO n = 1,nblines
            write(11,*) LONVAL(n),LATVAL(n),VARVAL(n),y(n)

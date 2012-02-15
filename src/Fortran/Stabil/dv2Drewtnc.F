@@ -1,5 +1,5 @@
 !
-      SUBROUTINE NC_RWD2DCL(im4,jm4,var,file_name)
+      SUBROUTINE NC_RWD2DCL(im4,jm4,var,field_max,field_min,file_name)
 !
        IMPLICIT NONE
 !
@@ -10,8 +10,9 @@
         integer                             :: im4,jm4
         integer                             :: im,jm,km,ipar
         real*4                              :: hrss,time_val
+     &                                       , field_max,field_min
 !
-        real*4  ,dimension(im4,jm4)        :: var
+        real*4  ,dimension(im4,jm4)         :: var
 !   
         real*4  ,dimension(im4)              :: X
         real*4  ,dimension(jm4)              :: Y
@@ -96,6 +97,18 @@
          ierr = 0
       ENDIF
 !
+      status=nf_put_att_real(ncid,id1,'valid_min',
+     &                                   nf_float,1,field_min)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_READ2D att min'
+      ENDIF
+      status=nf_put_att_real(ncid,id1,'valid_max',
+     &                                   nf_float,1,field_max)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_READ2D att max'
+      ENDIF
 !
       icdf=1
 !
