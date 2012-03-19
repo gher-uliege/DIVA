@@ -168,7 +168,17 @@ fi
  dep=`expr $dep + 1`
 done
 #
-echo ' dv3Dinvtrsh finished '
+echo ' finished with analysing! '
+
+##################
+
+if [ -f "./input/diva3Ddoqc" ];then
+mkdir -p ./output/3Danalysis/Divaqcfiles
+./dv3Ddoqcfiles $bottm $surf $var
+fi
+
+#############
+
 
 if [ -f "./input/dvlaymixinfo" ];then
 if [ -d "./input/divadata_mixed" ];then

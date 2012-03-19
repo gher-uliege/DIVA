@@ -388,6 +388,7 @@ cp -v ./output/errorfieldgher.anl ./output/3Danalysis/Fields/$var'.'$lev'.error'
 cp -v ./output/fieldascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.ascii.anl'
 cp -v ./output/errorfieldascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.errorascii'
 cp -v ./output/valatxyascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.valatxyasc.anl'
+cp -v ./output/fieldatdatapoint.anl ./output/3Danalysis/Fields/$var'.'$lev'.fieldatdatapoint.anl'
 #
 if [ -f ./input/divaparam/RL.$var.$lev ];then
  cp -v ./input/divaparam/RLinfo.$var.$lev ./output/3Danalysis/Fields/.
