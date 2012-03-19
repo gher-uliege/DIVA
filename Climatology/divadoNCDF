@@ -74,11 +74,15 @@ cd ../../
 cd ${DIVADIR}/divastripped
 
 echo ' '
-echo ' =================== Running diva4Dncwrite ======================== '
+echo '==================== Running diva4Dncwrite ========================'
 
 varl=$var'.'$year
+vld=0
+if [ "$isxmlgenerat" -lt "0" ];then
+vld=1
+fi
 
-diva4Dncwrite $varl
+diva4Dncwrite $varl $vld
 
 echo ' '
 echo '========  Copying netcdf and metadata files to climatology output directory ======'

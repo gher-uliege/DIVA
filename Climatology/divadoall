@@ -576,9 +576,6 @@ else
 fi
 fi
 
-#######################################
-#######################################
-
 if [ "$isUVcst" == "1" ];then
 mkdir -p ${DIVADIR}/divastripped/input/divaUVcons
 cp -v ./input/constraint.dat ${DIVADIR}/divastripped/input/.
@@ -611,6 +608,15 @@ else
 echo using default palette for plotting
 cp -v ${DIVADIR}/divastripped/gnuwork/analysis.pal.default ${DIVADIR}/divastripped/gnuwork/analysis.pal
 fi
+
+#######################################
+if [ "$isxmlgenerat" -lt "0" ];then
+
+echo 'isxmlgenerat = '$isxmlgenerat
+
+echo $isxmlgenerat > ${DIVADIR}/divastripped/input/diva3Ddoqc
+fi
+#######################################
 
 cd ${DIVADIR}/divastripped/
 
@@ -797,12 +803,12 @@ echo ' '
 
 echo Producing 4D yearly netcdf files
 #####################################
-if [ "$isxmlgenerat" -le "2" ]
+if [ "$isxmlgenerat" == "-2" -o  "$isxmlgenerat" == "2" -o "$isxmlgenerat" == "-1" -o "$isxmlgenerat" == "1" -o "$isxmlgenerat" == "0" ]
 then
 divadoNCDF $isxmlgenerat
 fi
 
-if [ "$isxmlgenerat" -ge "10" -o  "$isxmlgenerat" -eq "0" ]
+if [ "$isxmlgenerat" == "-12" -o "$isxmlgenerat" == "12" -o "$isxmlgenerat" == "-11" -o "$isxmlgenerat" == "11" -o "$isxmlgenerat" == "10" ]
 then
 divadoNCYR $isxmlgenerat
 fi

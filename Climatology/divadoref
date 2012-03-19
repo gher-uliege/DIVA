@@ -13,6 +13,10 @@ month=$3
 WDIR=$(pwd)
 DIVADIR="../../DIVA3D"
 
+echo '  '
+echo '================================================================'
+echo 'divadoref starting with '$var'.'$yrear'.'$month
+
 FILENAME=driver
 {
 read isextractcomm
@@ -52,7 +56,6 @@ FILENAME=./input/NCDFinfo
 
 if [ -f "$FILENAME" ]
 then
-
 {
 read titlecomm
 read titlestr
@@ -134,21 +137,23 @@ cp -v ./input/constraint.dat ${DIVADIR}/divastripped/input/.
 cp -v ./input/divaUVcons/* ${DIVADIR}/divastripped/input/divaUVcons/.
 fi
 #
+if [ "$isanalysis" -ge "100" ] ;then
+#######################################
 #
-if [ "$isanalysis" -ge "200" ] ;then
-let isanalysis=$isanalysis-200
-else
-let isanalysis=$isanalysis-100
+ let isanalysis=$isanalysis-100
+ echo "$weightfac" > ${DIVADIR}/divastripped/input/dvlaymixinfo
 fi
-if [ "$isanalysis" -eq "10" -o  "$isanalysis" -eq "11" -o "$isanalysis" -eq "12" -o "$isanalysis" -eq "13" -o "$isanalysis" -eq "14" -o  "$isanalysis" -eq "20" -o  "$isanalysis" -eq "21" -o "$isanalysis" -eq "22" -o "$isanalysis" -eq "23" -o "$isanalysis" -eq "24" ] ;then
-if [ "$isanalysis" -ge "10" ] ;then
-echo "$isanalysis" > ${DIVADIR}/divastripped/input/dvtransinfo
+
+if [ "$isanalysis" -ge "10" -a  "$isanalysis" -lt "30" ] ;then
+ echo "$isanalysis" > ${DIVADIR}/divastripped/input/dvtransinfo
+ isanalysis=2
 fi
-fi
-isanalysis=2
 #
-echo "$weightfac" > ${DIVADIR}/divastripped/input/dvlaymixinfo
-#
+if [ "$isanalysis" -eq "3" -o "$isanalysis" -eq "4" -o "$isanalysis" -ge "30" ] ;then
+ isanalysis=3
+fi
+
+################# "$isanalysis" -ge "100"
 if [ -f ${var}.pal ]
 then
 echo using local palette for plotting
@@ -213,7 +218,7 @@ echo $sourcestr >> ./input/3Dinfo
 echo $commentcomm >> ./input/3Dinfo
 echo $commentstr >> ./input/3Dinfo
 
-dos2unix  ./input/3Dinfo
+#######dos2unix  ./input/3Dinfo
 
 #For trended data
 rm ./input/dodetrend.dat
@@ -243,7 +248,7 @@ diva3Ddress
 echo now saving needs to be done
 mkdir -p ${WDIR}/output
 mkdir -p ${WDIR}/newinput
-cp -r ${DIVADIR}/divastripped/output/3Danalysis ${WDIR}/output/.
+#### cp -r ${DIVADIR}/divastripped/output/3Danalysis ${WDIR}/output/.
 cp -r ${DIVADIR}/divastripped/input/* ${WDIR}/newinput
 
 if [ "$iscontour" -ge "2" ]; then
@@ -334,7 +339,7 @@ isUVcstcomm='no advection constraint'
 isUVcst=0
 fi
 
-isrefcomm='use reference field with mixed data'
+isrefcomm='use reference field with mixed and/or averaged data'
 isref=1
 echo $isUVcstcomm > ./constandrefe
 echo $isUVcst     >>./constandrefe
@@ -347,3 +352,7 @@ echo $month       >>./constandrefe
 
 echo 'listing constandrefe:'
 cat ./constandrefe
+
+echo 'divadoref finished with '$var'.'$yrear'.'$month
+echo '================================================================'
+echo '  '
