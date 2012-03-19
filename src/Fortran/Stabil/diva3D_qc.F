@@ -1,5 +1,5 @@
 !
-      PROGRAM DIVASTORE
+      PROGRAM DIVA_QC_WRT
 !
       implicit none
 !
@@ -25,6 +25,7 @@
       REAL*4 , DIMENSION(:,:,:),  ALLOCATABLE :: var, var1, var2
      &                                         , verr,reler,dbins
      &                                         , obins,rlfield
+     &                                 , Nabla_var,Delta_var,Norm_var
 !
       integer,DIMENSION(:,:,:),  ALLOCATABLE :: mask,mask1,mask2,masker
 !
@@ -40,6 +41,11 @@
      &              vbt1_min,vbt1_max,vbt2_min,vbt2_max,
      &              var2_min,var2_max,verel_min,verel_max,
      &              obin_min,obin_max,rl_min,rl_max,x,y,xr,yr
+!
+      REAL*4 , DIMENSION(:)  ,  ALLOCATABLE ::
+     &              var_rms,ver_rms,var1_rms,var2_rms,verel_rms
+      real*4                     ::
+     &              vbt1_rms,vbt2_rms,vbt_rms
 !
       real*4                     :: xorig, yorig, dx, dy, xend, yend
 !
@@ -216,7 +222,7 @@
       flag=0
       WRITE(prmliste,'("../output/3Danalysis/",
      &a,".3Dparam")')TRIM(var_shname)
-      INQUIRE(FILE=TRIM(prmliste),EXIST=exist)
+      INQUIRE(FILE=TRIM(ncliste),EXIST=exist)
       if(exist) then
         flag=1
       else
@@ -308,6 +314,9 @@
       ALLOCATE(dbins(NX,NY,NK))
       ALLOCATE(obins(NX,NY,NK))
       ALLOCATE(rlfield(NX,NY,NK))
+      ALLOCATE(Nabla_var(NX,NY,NK))
+      ALLOCATE(Delta_var(NX,NY,NK))
+      ALLOCATE(Norm_var(NX,NY,NK))
 !
       ALLOCATE(U(NX*NY))
       ALLOCATE(U3(NX*NY*NK))
@@ -322,6 +331,13 @@
       ALLOCATE(mskb1(1:NX,1:NY))
       ALLOCATE(mskb2(1:NX,1:NY))
       ALLOCATE(mskber(1:NX,1:NY))
+!
+      ALLOCATE(var_rms(NK))
+      ALLOCATE(ver_rms(NK))
+      ALLOCATE(var1_rms(NK))
+      ALLOCATE(var2_rms(NK))
+      ALLOCATE(verel_rms(NK))
+!
 !
 !retreiving grid points longitude and latitude
       DO i = 1, NX
@@ -685,6 +701,22 @@
       vbt_max = yr
       vbt_min = xr
 !
+!nnow       ic = 0
+!nnow       vbt_rms = 0
+!nnow       do j=1,jmax
+!nnow        do i=1,imax
+!nnow           if (mask(i,j,nk) == 1 ) then
+!nnow              vbt_rms=vbt_rms+(varbot(i,j)*varbot(i,j))
+!nnow              ic=ic+1
+!nnow            end if
+!nnow        end do
+!nnow       end do
+!nnow      if (ic.gt.0) then
+!nnow         vbt_rms=sqrt(vbt_rms/ic)
+!nnow      else
+!nnow         vbt_rms = valexc
+!nnow      endif
+!
       y=MAXVAL(varb1(1:imax,1:jmax),MASK= (mskb1(:,:) .eq. 1))
       x=MINVAL(varb1(1:imax,1:jmax),MASK= (mskb1(:,:) .eq. 1))
 
@@ -699,6 +731,22 @@
       vbt1_max = yr
       vbt1_min = xr
 !
+!nnow       ic = 0
+!nnow       vbt1_rms = 0
+!nnow       do j=1,jmax
+!nnow        do i=1,imax
+!nnow           if (maskb1(i,j) == 1 ) then
+!nnow              vbt1_rms=vbt1_rms+(varb1(i,j)*varb1(i,j))
+!nnow              ic=ic+1
+!nnow            end if
+!nnow        end do
+!nnow       end do
+!nnow      if (ic.gt.0) then
+!nnow         vbt1_rms=sqrt(vbt_rms/ic)
+!nnow      else
+!nnow         vbt1_rms = valexc
+!nnow      endif
+!
       y=MAXVAL(varb2(1:imax,1:jmax),MASK= (mskb2(:,:) .eq. 1))
       x=MINVAL(varb2(1:imax,1:jmax),MASK= (mskb2(:,:) .eq. 1))
 
@@ -712,6 +760,22 @@
 
       vbt2_max = yr
       vbt2_min = xr
+!
+!nnow       ic = 0
+!nnow       vbt1_rms = 0
+!nnow       do j=1,jmax
+!nnow        do i=1,imax
+!nnow           if (maskb2(i,j) == 1 ) then
+!nnow              vbt2_rms=vbt2_rms+(varb2(i,j)*varb2(i,j))
+!nnow              ic=ic+1
+!nnow            end if
+!nnow        end do
+!nnow       end do
+!nnow      if (ic.gt.0) then
+!nnow         vbt2_rms=sqrt(vbt2_rms/ic)
+!nnow      else
+!nnow         vbt2_rms = valexc
+!nnow      endif
 !
       DO k = 1,NK
        resmax1(1:jmax,k)=MAXVAL(var(1:imax,1:jmax,k),dim=1,
@@ -733,6 +797,24 @@
       var_min = xr
 !
       DO k = 1,NK
+       ic = 0
+       var_rms = 0
+       do j = 1,jmax
+        do i = 1,imax
+           if (mask(i,j,k) == 1 ) then
+              var_rms(k) = var_rms(k) + (var(i,j,k)*var(i,j,k))
+              ic=ic+1
+            end if
+        end do
+       end do
+       if (ic.gt.0) then
+         var_rms(k) = sqrt(var_rms(k)/ic)
+      else
+         var_rms(k) = valexc
+      endif
+      ENDDO
+!
+      DO k = 1,NK
        resmax1(1:jmax,k)=MAXVAL(verr(1:imax,1:jmax,k),dim=1,
      &                        MASK= (masker(:,:,k) .eq. 1))
        resmin1(1:jmax,k)=MINVAL(verr(1:imax,1:jmax,k),dim=1,
@@ -748,9 +830,27 @@
       else
        call jmbround(x,y,xr,yr)
       endif
-
+!
       ver_max = yr
       ver_min = xr
+!
+      DO k = 1,NK
+       ic = 0
+       ver_rms = 0
+       do j = 1,jmax
+        do i = 1,imax
+           if (mask(i,j,k) == 1 ) then
+              ver_rms(k) = ver_rms(k) + (verr(i,j,k)*verr(i,j,k))
+              ic=ic+1
+            end if
+        end do
+       end do
+       if (ic.gt.0) then
+         ver_rms(k) = sqrt(ver_rms(k)/ic)
+      else
+         ver_rms(k) = valexc
+      endif
+      ENDDO
 !
       DO k = 1,NK
        resmax1(1:jmax,k)=MAXVAL(dbins(1:imax,1:jmax,k),dim=1,
@@ -791,6 +891,24 @@
       var1_max = yr
 !
       DO k = 1,NK
+       ic = 0
+       var1_rms = 0
+       do j = 1,jmax
+        do i = 1,imax
+           if (mask(i,j,k) == 1 ) then
+              var1_rms(k) = var1_rms(k) + (var1(i,j,k)*var1(i,j,k))
+              ic=ic+1
+            end if
+        end do
+       end do
+       if (ic.gt.0) then
+         var1_rms(k) = sqrt(var1_rms(k)/ic)
+      else
+         var1_rms(k) = valexc
+      endif
+      ENDDO
+!
+      DO k = 1,NK
        resmax1(1:jmax,k)=MAXVAL(var2(1:imax,1:jmax,k),dim=1,
      &                        MASK= (mask2(:,:,k) .eq. 1))
        resmin1(1:jmax,k)=MINVAL(var2(1:imax,1:jmax,k),dim=1,
@@ -809,6 +927,24 @@
 
       var2_min = xr
       var2_max = yr
+!
+      DO k = 1,NK
+       ic = 0
+       var2_rms = 0
+       do j = 1,jmax
+        do i = 1,imax
+           if (mask(i,j,k) == 1 ) then
+              var2_rms(k) = var2_rms(k) + (var2(i,j,k)*var2(i,j,k))
+              ic=ic+1
+            end if
+        end do
+       end do
+       if (ic.gt.0) then
+         var2_rms(k) = sqrt(var2_rms(k)/ic)
+      else
+         var2_rms(k) = valexc
+      endif
+      ENDDO
 !
       DO k = 1,NK
        resmax1(1:jmax,k)=MAXVAL(reler(1:imax,1:jmax,k),dim=1,
@@ -830,8 +966,24 @@
       verel_min = xr
       verel_max = yr
 !
-
-
+      DO k = 1,NK
+       ic = 0
+       verel_rms = 0
+       do j = 1,jmax
+        do i = 1,imax
+           if (mask(i,j,k) == 1 ) then
+              verel_rms(k) = verel_rms(k) + (reler(i,j,k)*reler(i,j,k))
+              ic=ic+1
+            end if
+        end do
+       end do
+       if (ic.gt.0) then
+         verel_rms(k) = sqrt(verel_rms(k)/ic)
+      else
+         verel_rms(k) = valexc
+      endif
+      ENDDO
+!
       DO k = 1,NK
        resmax1(1:jmax,k)=MAXVAL(obins(1:imax,1:jmax,k),dim=1,
      & MASK= (obins(:,:,k) .eq. valexc))
@@ -938,13 +1090,18 @@
           write(12,*) "'",TRIM(Ref_time),"'"
         endif
 !
+      CALL CALDIVANORM(IMAX,JMAX,nk,dx,dy,VALEXC,var
+     &                ,Nabla_var,Delta_var,Norm_var)
+!
       WRITE(file_name,'("../output/3Danalysis/",
      &a,".1",i4.4,".1",i4.4,".anl.nc")')TRIM(var_shname),MINLEV,MAXLEV
 !
       iun=1
-      CALL NC_4DCLIM(IMAX, JMAX,nk,ipar,iun,time_val,clbnds,
+      CALL NCDF_CLIM(IMAX, JMAX,nk,ipar,iun,time_val,clbnds,
      &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
+     &  Nabla_var,Delta_var,Norm_var,
      &  xlon,ylat,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
+     &  var_rms,ver_rms,var1_rms,var2_rms,verel_rms,
      &  var_min,var_max,vbt_min,vbt_max,ver_min,ver_max,dbin_min,
      &  dbin_max,var1_min,var1_max,var2_min,var2_max,verel_min,
      &  verel_max,vbt1_min,vbt1_max,vbt2_min,vbt2_max,
