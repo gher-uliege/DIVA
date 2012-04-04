@@ -66,7 +66,7 @@
 c make large enough grid
       write(30,*) 1
       write(30,*) 4
-      write(30,*) x1-dx,y1-dy
+      write(30,*) x1-dx,y1-dx
       write(30,*) x1+M*dx,y1-dy
       write(30,*) x1+M*dx,y1+N*dy
       write(30,*) x1-dx,y1+N*dy

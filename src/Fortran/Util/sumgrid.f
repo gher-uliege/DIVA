@@ -58,6 +58,7 @@ C     ==================================
       K=K+8
       IF (K.LE.M) goto 1
  5    RETURN
- 200  FORMAT('0',8(9X,I3,3X))
+c 200  FORMAT('0',8(9X,I3,3X))
+ 200  FORMAT(I3,3X,8(9X,I3,3X))
  201  FORMAT(1X,I3,8(E15.5))
       END

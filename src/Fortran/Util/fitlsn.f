@@ -320,7 +320,8 @@ c        w3(nn)=exp(-(nn-10)**2/100))
      &    sqrt((max(iw(nn),1.D0))),w3(nn)
  147    format(5(E14.6))
         if ((ifo.eq.0).and.(iw(nn).ne.0).and.(work(nn).lt.0)) then
-        write(6,*) 'First zero crossing',nn*ddist
+        write(6,*) 'First zero crossing',nn,ddist,nn*ddist
+
         rlz=ddist*nn
         ifo=1
         ncross=nn
@@ -359,6 +360,15 @@ C         VARTEST=Variance*jj/200.
         VAR=0.01*Variance
         SN=VAR/(Variance-VAR+1.E-10)
         iwr=1
+
+!! mo patch
+        if(np.eq.0) then
+        call forfit(x0,dx,work(nstart),w2(nstart),1,RL,VAR,err,iwr,
+     &    w3(nstart))
+        return
+        endif
+!! mo patch
+
         call forfit(x0,dx,work(nstart),w2(nstart),np,RL,VAR,err,iwr,
      &    w3(nstart))
         return
@@ -400,7 +410,9 @@ C        write(6,*) 'RL??',RLtest,VARtest,err,errmin
         real*8 c(n)
         real*8 w2(n),w3(n),ww3
         real*8 bessk1
-C        write(6,*) RL,dx,n,var
+
+        write(6,*) 'forfit .... ',RL,dx,n,var
+
         err=0
         errb=0
         do i=1,n
