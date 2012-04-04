@@ -391,7 +391,7 @@ cp -v ./output/valatxyascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.valatxya
 cp -v ./output/fieldatdatapoint.anl ./output/3Danalysis/Fields/$var'.'$lev'.fieldatdatapoint.anl'
 #
 if [ -f ./input/divaparam/RL.$var.$lev ];then
- cp -v ./input/divaparam/RLinfo.$var.$lev ./output/3Danalysis/Fields/.
+ cp -v './input/divaparam/RLinfo.'* ./output/3Danalysis/Fields/.
  cp -v ./input/divaparam/RL.$var.$lev ./output/3Danalysis/Fields/$var'.'$lev'.RL'
 else
  if [ -f ./input/divaparam/RL.$lev ];then
