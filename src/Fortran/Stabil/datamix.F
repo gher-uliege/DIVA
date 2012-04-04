@@ -318,13 +318,14 @@
          ENDDO
        ENDIF
 
-       ENDIF
-
       DEALLOCATE(LONVAL)
       DEALLOCATE(LATVAL)
       DEALLOCATE(VARVAL)
       DEALLOCATE(WVAL)
       DEALLOCATE(FINLINE)
+
+       ENDIF
+
 !=======================
       nbcolp=max(1,nbccolp-3)
       ALLOCATE(LONVAL(nblinep))

@@ -41,8 +41,6 @@
       ! Open the data file       
       !-----------------------
 !
-      WRITE(*,*)' READ2DNC fila_name: ',TRIM(file_name)
-!
       status = nf_open(TRIM(file_name), nf_nowrite,ncid)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
@@ -89,9 +87,9 @@
       ierr = 1
       status=nf_inq_varid(ncid,"error_field",id2)
       IF (status .NE.nf_noerr) THEN
-         print *,nf_strerror(status)
-         print *,'NC_READ2D no error field present in'
-         print *,TRIM(file_name)
+!x         print *,nf_strerror(status)
+!x         print *,'NC_READ2D no error field present in'
+!x         print *,TRIM(file_name)
          ierr = 0
       ENDIF
 !

@@ -64,6 +64,7 @@
       ALLOCATE(var(NX,NY))
       ALLOCATE(verr(NX,NY))
       ALLOCATE(mask(NX,NY))
+      ALLOCATE(U(NX*NY))
 !
 !retreiving grid points longitude and latitude
       DO i = 1, NX
@@ -77,7 +78,9 @@
 !
       IMAX = NX
       JMAX = NY
-      divafile = '../output/3Danalysis/Fields/'//TRIM(VARFILEBIN)
+
+       WRITE(divafile,
+     &'("../output/3Danalysis/Fields/",a)')TRIM(VARFILEBIN)
       close(84)
       open (unit=84,file=TRIM(divafile),form='unformatted')
       CALL UREADC(84,W8,U,VALEXC,IPR,IMAX,JMAX,KMAX,IMAX*JMAX)
@@ -122,7 +125,11 @@
 !
       imax = NX
       jmax = NY
-      divafile = '../output/3Danalysis/Fields/'//TRIM(VARFILENCD)
+!n      divafile = '../output/3Danalysis/Fields/'//TRIM(VARFILENCD)
+       WRITE(divafile,
+     &'("../output/3Danalysis/Fields/",a)')TRIM(VARFILENCD)
+
+
       INQUIRE(FILE=TRIM(divafile),EXIST=exist)
       IF(exist) THEN
         CALL NC_RD2DCL(imax,jmax,var(:,:),verr(:,:),TRIM(divafile))
@@ -149,6 +156,7 @@
      &'(a,"_inverf")')TRIM(var_name)
         WRITE(INVERFILE,
      &'("../input/divadata/",a)')TRIM(VARFILE)
+        close(12)
         open(unit=12,file=INVERFILE)
         CALL ANAMINV(nblninv,nbval,VECFLD)
       ELSE
@@ -171,7 +179,7 @@
        y=MINVAL(VECFLD(1:nbval2))
        call jmbround(x,y,field_max,field_min)
 
-      divafile = '../output/3Danalysis/Fields/'//TRIM(VARFILEIN)
+!x      divafile = '../output/3Danalysis/Fields/'//TRIM(VARFILEIN)
       WRITE(*,*) 'found ',TRIM(divafile)
       INQUIRE(FILE=TRIM(divafile),EXIST=exist)
       IF(exist) THEN
@@ -190,7 +198,6 @@
          DO n = 1,nblines
            read(10,*,end=999) LONVAL(n),LATVAL(n),VARVAL(n)
          ENDDO
-       ENDIF
        CLOSE(10)
 !
       IF(itrans .eq. 13 .or. itrans .eq. 23) then
@@ -201,6 +208,7 @@
      &'(a,"_inverf")')TRIM(var_name)
         WRITE(INVERFILE,
      &'("../input/divadata/",a)')TRIM(VARFILE)
+        close(12)
         open(unit=12,file=INVERFILE)
         CALL ANAMINV(nblninv,nbval,VECFLD)
       ELSE
@@ -212,9 +220,12 @@
            write(11,*) LONVAL(n),LATVAL(n),VARVAL(n)
          ENDDO
        CLOSE(11)
+
+       endif
 !
+      STOP
   999 continue
-      write(*,*)'total number of data does not match for '
+      write(*,*)'anatrans: total number of data does not match for '
       write(*,*)TRIM(datafile)
       STOP
       END

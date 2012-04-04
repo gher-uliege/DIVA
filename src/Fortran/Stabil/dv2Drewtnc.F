@@ -36,14 +36,10 @@
       jm = jm4
 !!
 !
-      WRITE(*,*)' nc dim ',im,jm
-      WRITE(*,*)' file name',TRIM(file_name)
 
       !-----------------------
       ! Open the data file       
       !-----------------------
-!
-      WRITE(*,*)' RWD2DNC filename: ',TRIM(file_name)
 !
       status = nf_open(TRIM(file_name), nf_write,ncid)
       IF (status .NE.nf_noerr) THEN
@@ -90,13 +86,6 @@
          STOP 'Stopped in NC_READ2D def var'
       ENDIF
 !
-      ierr = 1
-      status=nf_inq_varid(ncid,"error_field",id2)
-      IF (status .NE.nf_noerr) THEN
-         print *,nf_strerror(status)
-         ierr = 0
-      ENDIF
-!
       status=nf_put_att_real(ncid,id1,'valid_min',
      &                                   nf_float,1,field_min)
       IF (status .NE.nf_noerr) THEN
@@ -127,13 +116,13 @@
          STOP 'Stopped in NC_READ2D get var'
       ENDIF
 !
-      IF(ierr == 1) THEN
+!!      IF(ierr == 1) THEN
       status=nf_close(ncid)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped when closing' !,TRIM(file_name)
       ENDIF
-      ENDIF
+!!      ENDIF
 
       RETURN
       END

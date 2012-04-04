@@ -30,6 +30,7 @@
       READ(44,*) nbccol
       READ(44,*) istep
       CLOSE(44)
+
       nbcols=max(1,nbccol-3)
       ALLOCATE(LONVAL(nblines))
       ALLOCATE(LATVAL(nblines))
@@ -40,7 +41,7 @@
         WRITE(VARFILEIN,
      &'(a,".1",i4.4)')TRIM(var_name),istep
         WRITE(datafile,
-     &'("../input/divarefe/",a)')TRIM(VARFILEIN)
+     &'("../input/divarefe/",a,".datapoint.ref")')TRIM(VARFILEIN)
 !
         WRITE(VARFILEOU,
      &'("bruit_",a,".1",i4.4)')TRIM(var_name),istep
