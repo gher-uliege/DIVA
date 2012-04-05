@@ -381,7 +381,8 @@ C now compute the diagnostics for new value of lambda
       write(27,*) 'S/N'
       write(27,*) bestguess
       write(27,*) 'Varbak'
-      write(27,*) d0d/(1+bestguess)
+C      write(27,*) d0d/(1+bestguess)
+      write(27,*) d0d*bestguess/(1+bestguess)      
       write(27,*) 'Quality of guess'
       write(27,*) guessflag
       write(27,*) 'Old value'
