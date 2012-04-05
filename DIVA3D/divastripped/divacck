@@ -45,11 +45,18 @@ read snr
 read linecomment
 read varbak
 } < $Filepar
-rm -f fort.11
-echo $isdens $lc | ../bin/lcelem.a
-mv fort.11 ./meshgenwork/fort.11
+
+#rm -f fort.11
+#echo $isdens $lc | ../bin/lcelem.a
+#mv fort.11 ./meshgenwork/fort.11
+#echo 1.5 >> ./meshgenwork/fort.11
+#echo 5 >> ./meshgenwork/fort.11
+
+echo $isdens > ./meshgenwork/fort.11
+echo $(echo $lc | awk '{print ($1/5.)}') >> ./meshgenwork/fort.11
 echo 1.5 >> ./meshgenwork/fort.11
 echo 5 >> ./meshgenwork/fort.11
+
 cd ./meshgenwork
 if [ -f ../output/diva.log ] ; then
  cp  -f ../output/diva.log .
