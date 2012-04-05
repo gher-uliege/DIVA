@@ -1,16 +1,25 @@
 #!/bin/bash
 
-# Name of the fortran compiler (ex: ifort,gfortran,pgi,...)
-compiler=ifort
+# Name of the fortran compiler
+#-----------------------------
+
+compiler=ifort			#--charles
+#compiler=gfortran
 
 # Compilation flags
-flags='-O3'
-flags='-O0' # no optimization
+#-----------------
+
+flags='-O3'			#--charles
+#flags='-O0' 			# no optimization
 
 # Netcdf library
-nclib=/usr/local/lib/netcdf3ifort/libnetcdf.a
+#---------------
+
+nclib=/usr/local/lib/netcdf3ifort/libnetcdf.a	#--charles
 
 # Use of Plplot (creation of scientific plots)
+#--------------
+
 Plplot=Plplot
 Plplot=NoPlplot
 

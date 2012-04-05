@@ -64,10 +64,20 @@ read varbak
 #exec 11>&-
 
 rm -f fort.11
-echo $isdens $lc | ../bin/lcelem.a
-mv fort.11 ./meshgenwork/fort.11
+
+##replaced by Awk command
+#
+#echo $isdens $lc | ../bin/lcelem.a
+#mv fort.11 ./meshgenwork/fort.11
+#echo 1.5 >> ./meshgenwork/fort.11
+#echo 5 >> ./meshgenwork/fort.11
+
+echo $isdens > ./meshgenwork/fort.11
+echo $(echo $lc | awk '{print ($1/5.)}') >> ./meshgenwork/fort.11
 echo 1.5 >> ./meshgenwork/fort.11
 echo 5 >> ./meshgenwork/fort.11
+
+
 #exec 11>&-
 #generation of the mesh
 cd ./meshgenwork

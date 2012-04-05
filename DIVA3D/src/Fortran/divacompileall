@@ -207,7 +207,7 @@ $compiler $flags stabil.F N2brunt.F albe2d.F potmp.F pzcon.F ureadc.F -o stabil.
 $compiler $flags dv3Dtswrt.F dvvarerr.F brunt.F AlpBetSig.F potmp.F pzcon.F dv3Dtsdnc.F -o dv3Dtswrt.a $nclib $ncinc
 $compiler $flags datatrans.F transfun.F userfunc.F -o datatrans.a
 $compiler $flags dv2Dasctonc.F dv2Drewtnc.F -o dv2Dasc2nc.a $nclib $ncinc
-$compiler $flags anatrans.F dv2Dreadnc.F transfun.F userfunc.F dv2Drewtnc.F -o anatrans.a $nclib $ncinc
+$compiler $flags anatrans.F dv2Dreadnc.F transfun.F userfunc.F dv2Drewtnc.F ureadc.F uwritc.F -o anatrans.a $nclib $ncinc
 $compiler $flags datapre.F -o datapre.a
 $compiler $flags wclfile.F -o wclfile.a
 $compiler $flags wsnfile.F -o wsnfile.a
