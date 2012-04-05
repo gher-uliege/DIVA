@@ -161,7 +161,7 @@ fi
 
 #creation of file fort.13
 #
-# 'gridded.a' replaced by awk command 
+# 'griddef.a' replaced by awk command 
 #------------------------------------
 #echo $xori > ./fort.13
 #echo $yori >> ./fort.13
@@ -181,39 +181,42 @@ echo $ny >> ./fort.13
 echo $valex >> ./fort.13
 
 
-if [ $? -ne 0 ];then
-echo ' '
-echo --------------------------------------------
-echo A problem was encountered during execution !
-echo       divacalc:    griddef.a
-echo Check execution track
-echo --------------------------------------------
-echo ' ' >> diva.log
-echo -------------------------------------------- >> diva.log
-echo A problem was encountered during execution ! >> diva.log
-echo       divacalc:    griddef.a  >> diva.log
-echo Check execution track >> diva.log
-echo -------------------------------------------- >> diva.log
-fi
+#if [ $? -ne 0 ];then
+#echo ' '
+#echo --------------------------------------------
+#echo A problem was encountered during execution !
+#echo       divacalc:    griddef.a
+#echo Check execution track
+#echo --------------------------------------------
+#echo ' ' >> diva.log
+#echo -------------------------------------------- >> diva.log
+#echo A problem was encountered during execution ! >> diva.log
+#echo       divacalc:    griddef.a  >> diva.log
+#echo Check execution track >> diva.log
+#echo -------------------------------------------- >> diva.log
+#fi
 ##echo $lc $xi | ../../bin/alpha.a >> diva.log
+
+
 echo $(echo $lc | awk '{print (1/($1**4))}') > fort.12
 echo $(echo $lc $xi | awk '{print (2*$2($1**2))}') >> fort.12
 
 
-if [ $? -ne 0 ];then
-echo ' '
-echo --------------------------------------------
-echo A problem was encountered during execution !
-echo       divacalc:    alpha.a
-echo Check execution track
-echo --------------------------------------------
-echo ' ' >> diva.log
-echo -------------------------------------------- >> diva.log
-echo A problem was encountered during execution ! >> diva.log
-echo       divacalc:  alpha.a  >> diva.log
-echo Check execution track >> diva.log
-echo -------------------------------------------- >> diva.log
-fi
+#if [ $? -ne 0 ];then
+#echo ' '
+#echo --------------------------------------------
+#echo A problem was encountered during execution !
+#echo       divacalc:    alpha.a
+#echo Check execution track
+#echo --------------------------------------------
+#echo ' ' >> diva.log
+#echo -------------------------------------------- >> diva.log
+#echo A problem was encountered during execution ! >> diva.log
+#echo       divacalc:  alpha.a  >> diva.log
+#echo Check execution track >> diva.log
+#echo -------------------------------------------- >> diva.log
+#fi
+
 if [ "$ireg" == "3" ]
 then
 aaaref=$(head -1 fort.12)
@@ -315,11 +318,14 @@ fi
 #creation of file fort.20
 nbccol=$(head -n 1 ./fort.44 | wc -w)
 #echo $lc $snr $nbccol $xi | ../../bin/calcmu.a >> diva.log
+
 # New version
 multconst=$(echo $lc $snr $xi | ../../bin/calcmuc.a)
 multvar=$(echo $multconst | awk '{print 1*$1}')
+
 #echo multiply weight $multvar $multconst so what
 awk -v multconst=$multvar '{ if (NF>2) {if ($4 > "") {$4=$4*multconst} else {$4=multconst}}; {print $1,$2,$3,$4}}' fort.44 > fort.20
+
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
