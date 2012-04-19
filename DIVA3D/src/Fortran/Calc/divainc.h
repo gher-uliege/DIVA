@@ -129,11 +129,12 @@ C  - VARBAK : variance of the background field
 C  - OBSER  : obsevation error
 C  - UMEAN  : calculated umean from constraint data
 C  - INBU   : number of non-zero data constraints
+C  - DECAYRATE: sink term decay rate
 C JMB 
 C  - HMMU   : harmonic mean of mu
 C
       COMMON /PRB2/ALPHA0,ALPHA1,WC1,VISC,RL0,VARBAK,OBSER,
-     &     UMEAN,THETA,INBU
+     &     UMEAN,THETA,DECAYRATE,INBU
       COMMON /MUJMB/HMMU
 C
 C OUTPUT ON A REGULAR GRID (STORES)
@@ -197,5 +198,8 @@ C      integer*4 ikern,iskip,ilinel,itotll,JMRELERR
       integer*4 IPWSP,NSWSP
       COMMON/DIVAWSP/IPWSP,NSWSP
 C     COMMON/DIVAMEM/NREADIVA,NINTDIVA
+CJMB2012 for sources
+      COMMON/QSOURCES/NSOURCES,NSOURCESLOC,ltdataQ,lkelosQ,lkindtQ,
+     & lkdataQ,lkelos1Q
       
      

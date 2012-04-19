@@ -36,7 +36,16 @@ C
          stop
       endif
       if(itcs.eq.1.or.itcs.eq.3) then
+C JMB2012 added reading of third optional parameter decayrate
+         decayrate=0
+         visc=0
+         theta=0
+         read(49,*,END=6543,ERR=6543) theta,visc,decayrate
+         goto 6544
+ 6543   continue
+         rewind(49)
          read(49,*) theta,visc
+ 6544   continue
        if (theta.eq.0.) then
         write(6,*) ' Warning Constraint weight (theta)=',theta
         write(6,*) ' No advection constraint',theta
@@ -47,12 +56,15 @@ C
       
          if(ipr.gt.0) write(6,*) ' Constraint weight (theta) =',theta
          if(ipr.gt.0) write(6,*) ' Constraint viscosity =',visc
+         if(ipr.gt.0) write(6,*) ' Constraint decay rate =',decayrate
          if(ipr.gt.0) write(6,*) ' Number of nodal properties =',nnpr
-       if(icoord.eq.1) then
+       if(icoordchange.eq.1) then
         write(6,*) 'Coordinate change is active'
-        write(6,*) 'Viscosity and velocity adapted to km scales'
+        write(6,*) 'Visc, vel, decay rate adapted to km scales'
 C what counts is the reynolds number. 
         visc=visc/1000
+C JMB2012 DECAY
+        decayrate=decayrate*1000
        endif
        
        endif
@@ -64,10 +76,25 @@ C
 
        call allody(nnpr*nnt1,1,'tprop',ltprop,ipr)
        call rdprop(s(ltprop),s(ltcoog),ipr)
+C read sources (if any)
+C JMB2012 read source terms, if coordinate change multiply by 1000
+       call sourcepr(ipr)
+       if((icoordchange.eq.1).and.(NSOURCES.GT.0)) then
+         call sourcescale(s(ltdataQ),NSOURCES)
+       endif
        return
       
       end
-
+CJMB2012 scale for km
+      subroutine sourcescale(TTTT,NSOURCES)
+      include'divapre.h'
+      dimension TTTT(NSOURCES,4)
+      do iii=1,NSOURCES
+C      write(6,*) '???',TTTT(iii,3)
+      TTTT(iii,3)=TTTT(iii,3)*1000
+      enddo
+      return
+      end
 
       subroutine rdprop(tprop,tcoog,ipr)
 C

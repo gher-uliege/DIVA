@@ -69,7 +69,7 @@ C                       (see the 'sordtopti' routine in 'optimi.f')
       call allody(ll,0,'kelos',lkelos,ipr)
       call allody(nelt,0,'kindt',lkindt,ipr)
       call allody(ndata,0,'kdata',lkdata,ipr)
-      call rddata(s(ltdata),ipr)
+      call rddata(s(ltdata),ipr,20,ndata)
       if (icoordchange.ne.0) then
           call datallxy(s(ltdata),ipr)
       endif
@@ -125,7 +125,7 @@ c            write(6,*) 'Now found',ncamax
 	    write(6,*) ' *** You asked no optimisation ***'
          endif
          call findl2(l(lkelos),s(ltcoog),l(lkconn),s(ltdata),
-     &               l(lkntc),ipr)
+     &               l(lkntc),ipr,ndata)
       endif
 
       if(ityp.eq.3) then
@@ -137,7 +137,7 @@ c            write(6,*) 'Now found',ncamax
           endif
       
          call findl3(l(lkelos),s(ltcoog),l(lkconn),s(ltcele),
-     &               s(ltdata),ipr)
+     &               s(ltdata),ipr,ndata)
       endif
 c      write(6,*) 'Space for optimization?',ncamax,ncaz
       
@@ -149,10 +149,11 @@ c      if (IREG.GT.0.AND.IREG.LT.3) then
 c      endif
 C --- END OF ADDED CODE ---
 
+      ndatl=ndata-nonloc
 C SORT THE DATA
       if (opti.eq.1) then		!SvL
          call sortdtopti(l(lkindt),l(lkdata),l(lkelos),l(lkelos1)
-     &                   ,ipr)
+     &                   ,ipr,ndata,nonloc)
       endif
       if (opti.eq.0) then
          call sortdt(l(lkindt),l(lkdata),l(lkelos),ipr)
@@ -162,19 +163,19 @@ C SORT THE DATA
       end
 
 
-
-      subroutine findl2(kelos,tcoog,kconn,tdata,kntc,ipr)
+CJMB2012 added parametes to be able to use findl2 for data and sources
+      subroutine findl2(kelos,tcoog,kconn,tdata,kntc,ipr,ndatas)
 
 C  ASSOCIATE ONE ELEMENT TO EACH DATA TO BE FITTED (IF EXISTS)
 C  !!!!!!!!!!!!!!!!  WORKS ONLY FOR ELEMENT OF TYPE 2 !!!!!!!!!!!!!!!!!
 
       include'divapre.h'
       include'divainc.h'
-      dimension tdata(ndata,4),kconn(nelt,nnel),tcoog(nnt1,2),
-     &          kelos(ndata,2)
+      dimension tdata(ndatas,4),kconn(nelt,nnel),tcoog(nnt1,2),
+     &          kelos(ndatas,2)
       dimension kntc(ncax,ncay,*)
 
-      do 20 id=1,ndata
+      do 20 id=1,ndatas
 c mr
 c        write(6,*) 'Data ', id 
          x=tdata(id,1)
@@ -196,9 +197,10 @@ C ENDJMBTEST
          endif
          kelos(id,1)=iel
          kelos(id,2)=isub
+C         write(6,*) '??? find',id,iel,isub,x,y
  20   continue
       nonloc=0
-      do 30 id=1,ndata
+      do 30 id=1,ndatas
          if(kelos(id,1).lt.0) nonloc=nonloc+1
  30   continue
 C
@@ -212,7 +214,7 @@ C
       endif
       if(ipr.ge.4) then
          write(6,*)'   LOCALIZATION OF DATA IN ELEMENT AND SUB-ELT'
-         do 40 id=1,ndata
+         do 40 id=1,ndatas
             write(6,*) id,kelos(id,1),kelos(id,2)
  40      continue
       endif
@@ -221,16 +223,16 @@ C
 
 
 
-      subroutine findl3(kelos,tcoog,kconn,tcele,tdata,ipr)
+      subroutine findl3(kelos,tcoog,kconn,tcele,tdata,ipr,ndatas)
 C
 C  ASSOCIATE ONE ELEMENT TO EACH DATA TO BE FITTED (IF EXISTS)
 C  !!!!!!!!!!!!!!!!  WORKS ONLY FOR ELEMENT OF TYPE 3 !!!!!!!!!!!!!!!!!
 C
       include'divapre.h'
       include'divainc.h'
-      dimension tdata(ndata,4),kconn(nelt,nnel),tcoog(nnt1,2),
-     &          kelos(ndata,2),tcele(nelt,2)
-      do 20 id=1,ndata
+      dimension tdata(ndatas,4),kconn(nelt,nnel),tcoog(nnt1,2),
+     &          kelos(ndatas,2),tcele(nelt,2)
+      do 20 id=1,ndatas
          x=tdata(id,1)
          y=tdata(id,2)
          if (opti.eq.1) then 
@@ -247,7 +249,7 @@ C
 C  COUNT THE NUMBER OF NON LOCATED DATA
 C
       nonloc=0
-      do 30 id=1,ndata
+      do 30 id=1,ndatas
          if(kelos(id,1).lt.0) nonloc=nonloc+1
  30   continue
 C
@@ -261,7 +263,7 @@ C
       endif
       if(ipr.ge.4) then
          write(6,*)'   LOCALIZATION OF DATA IN ELEMENT AND SUB-ELT'
-         do 40 id=1,ndata
+         do 40 id=1,ndatas
             write(6,*) id,kelos(id,1),kelos(id,2)
  40      continue
       endif
@@ -271,21 +273,31 @@ C
 
 
 
-      subroutine rddata(tdata,ipr)
+      subroutine rddata(tdata,ipr,iofort,ndatas)
 C
 C  I/O DATA SET TO BE FITTED BY SPLINE SMOOTHONG
 C
       include'divapre.h'
       include'divainc.h'
-      dimension tdata(ndata,4)
+      dimension tdata(ndatas,4)
+C JMB2012 dirty hack; if iofort=24 then different reading for sources
+      if (iofort.eq.24) then
+      do 111 i=1,Ndatas
+         read(iofort,*) tdata(i,1),tdata(i,2),tdata(i,3)
+         tdata(i,4)=0
+ 111   continue
+      
+      return
+      endif
+
 C
 C  INPUT OF DATA SET DESCRIPTION
 C
 C JMB add calculation of harmonic mean of mu for misfit scaling in GCV
       jmbmud=0
       hmmu=0
-      do 10 i=1,ndata
-         read(20,*) tdata(i,1),tdata(i,2),tdata(i,3),tdata(i,4)
+      do 10 i=1,ndatas
+         read(iofort,*) tdata(i,1),tdata(i,2),tdata(i,3),tdata(i,4)
          if (tdata(i,4).gt.0) then
          jmbmud=jmbmud+1
          hmmu=hmmu+1./tdata(i,4)
@@ -298,7 +310,7 @@ C
       if(ipr.ge.3) then
          write(6,*)' List of X and Y position, value and weight of data'
          write(6,*)' --------------------------------------------------'
-         do 100 i=1,ndata
+         do 100 i=1,ndatas
            write(6,*) tdata(i,1),tdata(i,2),tdata(i,3),tdata(i,4)
  100     continue
       endif

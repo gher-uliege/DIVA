@@ -123,6 +123,15 @@ cat ../input/constraint.dat > ./fort.49
 cp ../input/UVinfo.dat ./fort.93
 cp ../input/Uvel.dat ./fort.91
 cp ../input/Vvel.dat ./fort.92
+
+#JMB2012 added support for source terms in advection constraint
+# as many sources as whished, format: x y Q
+if [ -f ../input/sources.dat ]
+then
+cp ../input/sources.dat ./fort.24
+fi
+
+
 let NREA=$NREA+2*$nnt1
 {
 read aaaaa

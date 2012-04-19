@@ -378,7 +378,8 @@ C
       endif
       call cksel2(1,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,l(lkindt),l(lkdata)
      &            ,l(lkelos),s(ltdata),s(ltshag),wg,ipr,derx1,dery1,
-     &             derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
+     &             derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2,
+     &            l(lkindtQ),l(lkdataQ),l(lkelosQ),s(ltdataQ)  )
       do 110 i=1,10
       tge(loces(1,i))=tge(loces(1,i))+tgse(i)
       tcond(1,loces(1,i))=tcond(1,loces(1,i))+rn1*derx1(i)+sn1*dery1(i)
@@ -406,7 +407,8 @@ C
       endif
       call cksel2(2,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,l(lkindt),l(lkdata)
      &            ,l(lkelos),s(ltdata),s(ltshag),wg,ipr,derx1,dery1,
-     &             derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
+     &             derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2,
+     &            l(lkindtQ),l(lkdataQ),l(lkelosQ),s(ltdataQ)  )
       do 120 i=1,10
       tge(loces(2,i))=tge(loces(2,i))+tgse(i)
       tcond(2,loces(2,i))=tcond(2,loces(2,i))+rn2*derx1(i)+sn2*dery1(i)
@@ -434,7 +436,8 @@ C
       endif
       call cksel2(3,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,l(lkindt),l(lkdata)
      &            ,l(lkelos),s(ltdata),s(ltshag),wg,ipr,derx1,dery1,
-     &             derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
+     &             derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2,
+     &            l(lkindtQ),l(lkdataQ),l(lkelosQ),s(ltdataQ)  )
       do 130 i=1,10
       tge(loces(3,i))=tge(loces(3,i))+tgse(i)
       tcond(3,loces(3,i))=tcond(3,loces(3,i))+rn3*derx1(i)+sn3*dery1(i)
@@ -695,7 +698,8 @@ C
       endif
       call cksel2(1,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,l(lkindt),l(lkdata)
      &            ,l(lkelos),s(ltdata),s(ltshag),wg,ipr,derx1,dery1,
-     &             derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
+     &             derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2,
+     &            l(lkindtQ),l(lkdataQ),l(lkelosQ),s(ltdataQ)  )
       do 110 i=1,10
       tge(loces(1,i))=tge(loces(1,i))+tgse(i)
       tcond(1,loces(1,i))=tcond(1,loces(1,i))+rn1*derx1(i)+sn1*dery1(i)
@@ -723,7 +727,8 @@ C
       endif
       call cksel2(2,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,l(lkindt),l(lkdata)
      &            ,l(lkelos),s(ltdata),s(ltshag),wg,ipr,derx1,dery1,
-     &             derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
+     &             derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2,
+     &            l(lkindtQ),l(lkdataQ),l(lkelosQ),s(ltdataQ)  )
       do 120 i=1,10
       tge(loces(2,i))=tge(loces(2,i))+tgse(i)
       tcond(2,loces(2,i))=tcond(2,loces(2,i))+rn2*derx1(i)+sn2*dery1(i)
@@ -751,7 +756,8 @@ C
       endif
       call cksel2(3,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,l(lkindt),l(lkdata)
      &            ,l(lkelos),s(ltdata),s(ltshag),wg,ipr,derx1,dery1,
-     &             derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
+     &             derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2,
+     &            l(lkindtQ),l(lkdataQ),l(lkelosQ),s(ltdataQ)  )
       do 130 i=1,10
       tge(loces(3,i))=tge(loces(3,i))+tgse(i)
       tcond(3,loces(3,i))=tcond(3,loces(3,i))+rn3*derx1(i)+sn3*dery1(i)
@@ -778,7 +784,8 @@ C
       endif
       call cksel2(4,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,l(lkindt),l(lkdata)
      &            ,l(lkelos),s(ltdata),s(ltshag),wg,ipr,derx1,dery1,
-     &             derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
+     &             derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2,
+     &            l(lkindtQ),l(lkdataQ),l(lkelosQ),s(ltdataQ)  )
       do 131 i=1,10
       tge(loces(4,i))=tge(loces(4,i))+tgse(i)
       tcond(1,loces(4,i))=tcond(1,loces(4,i))-rn1*derx2(i)-sn1*dery2(i)
@@ -924,10 +931,12 @@ C
 
 
 
-
+C JMB2012 added some arguments *Q for source terms
       subroutine cksel2(isub,iel,tkse,tgse,x0,y0,x1,y1,x2,y2,kindt,
      &                  kdata,kelos,tdata,tshag,wg,ipr,derx1,dery1,
-     &              derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2)
+     &              derx2,dery2,u0,v0,u1,v1,u2,v2,stiff,rll0,rll1,rll2,
+     &              kindtQ,kdataQ,kelosQ,tdataQ
+     &                  )
 C
 C  INTEGRATE SUB-ELEMENT MATRIX WHEN ITYP = 2 (FDV ELEMENT)
 C
@@ -938,6 +947,9 @@ C
      &          tjaci(2,2),t2j(3,3),tp(10),wg(ng),derx1(10),derx2(10),
      &          dery1(10),dery2(10),tshagn(10,8,4),tjac(2,2),
      &          tr(10,10),ttemp(10,10),gtemp(10),ep(10)
+C JMB2012 source term
+      dimension kindtQ(nelt),kdataQ(NSOURCES),
+     &          kelosQ(NSOURCES,2),tdataQ(NSOURCES,4)
       zero=0.D0
       un=1.D0
       deux=2.D0
@@ -1080,9 +1092,16 @@ C
      &                   /(RLREL*RLREL)*    
      &                   (
      &                     (u*tshagn(i,2,ig)+v*tshagn(i,3,ig)-
-     &                      visc*tshagn(i,4,ig)-visc*tshagn(i,5,ig))*
+     &                      visc*tshagn(i,4,ig)-visc*tshagn(i,5,ig)
+C Added linear sink JMB2012
+     &                     +decayrate*tshag(i,1,ig)
+     &                     )*
      &                     (u*tshagn(j,2,ig)+v*tshagn(j,3,ig)-
-     &                      visc*tshagn(j,4,ig)-visc*tshagn(j,5,ig)))
+     &                      visc*tshagn(j,4,ig)-visc*tshagn(j,5,ig)
+C Added linear sink JMB2012
+     &                     +decayrate*tshag(j,1,ig)
+     &                     )
+     &                    )
               endif
  120       continue
            tkse(i,j)=tkse(i,j)*detj*stiff
@@ -1100,7 +1119,7 @@ C
       do 150 id=ifirst,ilast
          idata=kdata(id)
          if(kelos(idata,1).ne.iel) then
-            write(6,*)' %%% ERROR - cksel2 : CHECK DATA SORTING %%% '
+            write(6,*)' %%% ERROR -cksel2a : CHECK DATA SORTING %%% '
             stop
          endif
          isel=kelos(idata,2)
@@ -1135,6 +1154,59 @@ c     &                       /(RLREL*RLREL)
  170        continue
  160     continue
  150  continue
+ 
+
+CJMB2012 now add all sources; sorting has been done as for date
+C Contribution from source terms here
+C  If advection constraint
+C
+              if(itcs.eq.1.or.itcs.eq.3) then 
+              if (NSOURCESLOC.GT.0) then
+C Copy loop on data but with sources and make sum over all gaussian points (so take part of construction of K
+C add parameters to call O
+
+      ifirstQ=kindtQ(iel)+1
+      if(iel.eq.nelt) then
+         ilastQ=NSOURCESLOC
+                      else
+         ilastQ=kindtQ(iel+1)
+      endif
+C     write(6,*), iel,ifirstQ,ilastQ
+      do 5150 id=ifirstQ,ilastQ
+         idataQ=kdataQ(id)
+C         write(6,*) idataQ,kelosQ(idataQ,1),kelosQ(idataQ,2)
+         if(kelosQ(idataQ,1).ne.iel) then
+            write(6,*)' %%% ERROR -cksel2b : CHECK SOURCE SORTING %%% '
+            write(6,*) idataQ,kelosQ(idataQ,1),kelosQ(idataQ,2)
+            stop
+         endif
+         iselQ=kelosQ(idataQ,2)
+C         write(6,*) '??',iselQ,iel,idataQ
+         if(iselQ.ne.isub) goto 5150
+         
+C       write(6,*) 'GE',tgse       
+       do 5100 i=1,10
+C sources are distributed as constant over the element 
+C so Q divided by surface 
+         do 5120 ig=1,ng
+         tgse(i)=tgse(i)+wg(ig)*wc1
+     &                   /(RLREL*RLREL)     
+     &                    * (u*tshagn(i,2,ig)+v*tshagn(i,3,ig)-
+     &                      visc*tshagn(i,4,ig)-visc*tshagn(i,5,ig)
+C Added linear sink JMB2012
+     &                     +decayrate*tshag(i,1,ig)
+     &                     )
+     &           *2/detj*2*tdataQ(idataQ,3)
+
+ 5120    continue           
+ 5100  continue
+              write(6,*) 'Adding sources',NSOURCESLOC,  iel,iselQ,
+     &    tdataQ(idataQ,3),detj,wg(ng)         
+C      write(6,*) 'GEa',tgse
+ 5150  continue
+              endif 
+              endif
+ 
       IF(IPR.GE.6) then
          WRITE (6,407) iel,isub
       endif

@@ -518,35 +518,36 @@ C============================================================================
       return
       end
 
-
-      subroutine sortdtopti(kindt,kdata,kelos,kelos1,ipr)
+CJMB2012 added parameters to be able to use it for data AND sources
+      subroutine 
+     & sortdtopti(kindt,kdata,kelos,kelos1,ipr,ndatas,nonlocs)
 C============================================================================
       include'divapre.h'
       include'divainc.h'
-      dimension kdata(ndata),kelos(ndata,2),kindt(nelt)
-      dimension kelos1(ndata)
+      dimension kdata(ndatas),kelos(ndatas,2),kindt(nelt)
+      dimension kelos1(ndatas)
    
 C INITIALISE THE ARRAYS
-      imaxd=ndata-nonloc
-      ndatl=imaxd
+      imaxd=ndatas-nonlocs
+C      ndatl=imaxd
       do 10 iel=1,nelt
          kindt(iel)=0
   10  continue
-      do 20 idata=1,ndata
+      do 20 idata=1,ndatas
          kelos1(idata)=kelos(idata,1)
 	 kdata(idata)=idata
   20  continue
 C       write(6,*) '?? QUICK',ndata
 C CALL THE QUICK SORT ROUTINE
-      call QS2I1R(kelos1,kdata,ndata)
+      call QS2I1R(kelos1,kdata,ndatas)
 c       write(6,*) 'ended'
 C REMOVE THE IGNORED DATAS     
-      do 30 idata=1,ndata-nonloc
-         kdata(idata)=kdata(idata+nonloc)
+      do 30 idata=1,ndatas-nonlocs
+         kdata(idata)=kdata(idata+nonlocs)
   30  continue
 
 C COMPUTE THE KINDT ARRAY
-      do 40 idata=1,ndata
+      do 40 idata=1,ndatas
          iel=kelos(idata,1)
          if(iel.lt.0) then
             goto 40
