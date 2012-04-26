@@ -385,11 +385,11 @@ fi
 fi
 
 if [ "$idorefe" -eq "1" ] ;then
-if [ -d ./input/divarefe_all ];then
-echo '>>>WARNING: ./input/divarefe_all exists'
-else
+#if [ -d ./input/divarefe_all ];then
+#echo '>>>WARNING: ./input/divarefe_all exists'
+#else
 mkdir -p ./input/divarefe_all
-fi
+#fi
 fi
 
 ####  cp -r ./input/* ${DIVADIR}/divastripped/input
@@ -587,19 +587,21 @@ cp -v ./input/divarefe/* ${DIVADIR}/divastripped/input/divarefe/.
 fi
 #
 #isanalysis=$isanalysisdrv
-
+isanalysisval=0
 if [ "$isanalysis" -eq "10" -o  "$isanalysis" -eq "11" -o "$isanalysis" -eq "12" -o "$isanalysis" -eq "13" -o "$isanalysis" -eq "14" -o  "$isanalysis" -eq "20" -o  "$isanalysis" -eq "21" -o "$isanalysis" -eq "22" -o "$isanalysis" -eq "23" -o "$isanalysis" -eq "24" ] ;then
 echo "$isanalysis" > ${DIVADIR}/divastripped/input/dvtransinfo
-if [ "$isanalysis" -eq "10" -o "$isanalysis" -eq "11" -o "$isanalysis" -eq "12" -o "$isanalysis" -eq "13" -o "$isanalysis" -eq "14" ];then
+fi
+if [ "$isanalysis" -eq "1" -o "$isanalysis" -eq "3" -o "$isanalysis" -eq "10" -o "$isanalysis" -eq "11" -o "$isanalysis" -eq "12" -o "$isanalysis" -eq "13" -o "$isanalysis" -eq "14" ];then
 isanalysisval=1 
 fi
 
-if [ "$isanalysis" -eq "20" -o "$isanalysis" -eq "21" -o "$isanalysis" -eq "22" -o "$isanalysis" -eq "23" -o "$isanalysis" -eq "24" ];then
+if [ "$isanalysis" -eq "2" -o "$isanalysis" -eq "20" -o "$isanalysis" -eq "21" -o "$isanalysis" -eq "22" -o "$isanalysis" -eq "23" -o "$isanalysis" -eq "24" ];then
 isanalysisval=2
 fi
 isanalysis=$isanalysisval
-fi
 #
+
+if [ "$isplot" -ne "0" ];then
 if [ -f ${var}.pal ]
 then
 echo using local palette for plotting
@@ -608,7 +610,7 @@ else
 echo using default palette for plotting
 cp -v ${DIVADIR}/divastripped/gnuwork/analysis.pal.default ${DIVADIR}/divastripped/gnuwork/analysis.pal
 fi
-
+fi
 #######################################
 if [ "$isxmlgenerat" -lt "0" ];then
 
@@ -630,7 +632,7 @@ fi
 #
 #
 echo ' '
-echo ' preparing 3Dinfo input file for 3D DIVA run to run '$var $year $month
+echo ' preparing 3Dinfo input file for 3D DIVA run for: '$var $year $month
 echo ' '
 
 echo ! Variable  > ./input/3Dinfo
@@ -686,7 +688,11 @@ echo $commentstr >> ./input/3Dinfo
 
 dos2unix  ./input/3Dinfo
 
-#cat ./input/3Dinfo
+echo ' input 3Dinfo file for diva3Ddress:' 
+
+cat ./input/3Dinfo
+
+
 #ls -l ./input
 #For trended data
 
