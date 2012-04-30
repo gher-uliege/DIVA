@@ -206,8 +206,12 @@ $compiler $flags diva3Dref.F ureadc.F uwritc.F diva3Dnc.F -o diva3Dref.a $nclib 
 $compiler $flags stabil.F N2brunt.F albe2d.F potmp.F pzcon.F ureadc.F -o stabil.a $nclib $ncinc
 $compiler $flags dv3Dtswrt.F dvvarerr.F brunt.F AlpBetSig.F potmp.F pzcon.F dv3Dtsdnc.F -o dv3Dtswrt.a $nclib $ncinc
 $compiler $flags datatrans.F transfun.F userfunc.F -o datatrans.a
-$compiler $flags dv2Dasctonc.F dv2Drewtnc.F -o dv2Dasc2nc.a $nclib $ncinc
+$compiler $flags refetrans.F transfun.F userfunc.F -o refetrans.a
+$compiler $flags refebintrans.F transfun.F userfunc.F ureadc.F uwritc.F -o refebintrans.a
 $compiler $flags anatrans.F dv2Dreadnc.F transfun.F userfunc.F dv2Drewtnc.F ureadc.F uwritc.F -o anatrans.a $nclib $ncinc
+$compiler $flags diva3D_qc.F ureadc.F uwritc.F dv2Dreadnc.F diva_ncclim.F caldivanorm.F -o diva3Dqcwrt.a $nclib $ncinc
+$compiler $flags diva4D_qc.F dv3Dreadnc.F diva_ncclim.F caldivanorm.F calrms.F -o diva4Dqcwrt.a $nclib $ncinc
+$compiler $flags fillfilavref.F ureadc.F uwritc.F -o fillfilavref.a
 $compiler $flags datapre.F -o datapre.a
 $compiler $flags wclfile.F -o wclfile.a
 $compiler $flags wsnfile.F -o wsnfile.a
@@ -218,9 +222,14 @@ $compiler $flags datamix.F -o datamix.a
 $compiler $flags datagrpnoise.F -o addnoise.a
 $compiler $flags datasorts.F -o sortall.a
 $compiler $flags datadispach.F -o datadispach.a
+$compiler $flags refegrnoise.F -o refenoise.a
+$compiler $flags refesorts.F -o sortref.a
+$compiler $flags refedispach.F -o refdispach.a
+$compiler $flags datacalmoy.F -o datacalmoy.a
+$compiler $flags dvqcfiles.F -o dvqcfiles.a
 
 n8=`ls -1p *.a | grep -vc "/$"`
-n8max=19
+n8max=28
 
 echo You have compiled $n8 programs
 echo out of $n8max
