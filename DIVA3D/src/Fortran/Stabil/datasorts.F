@@ -186,7 +186,8 @@ c    ------------------------------
       z=(((((a1*r+a2)*r+a3)*r+a4)*r+a5)*r+a6)*q/
      &(((((b1*r+b2)*r+b3)*r+b4)*r+b5)*r+1)
       goto 204
-302   if((p.gt.p_high).and.(p.lt.1)) goto 203
+302   if((p.gt.p_high).and.(p.lt.1.)) goto 203
+      goto 204
 203   q=dsqrt(-2*dlog(1.d0-p))
       z=-(((((c1*q+c2)*q+c3)*q+c4)*q+c5)*q+c6)/
      &((((d1*q+d2)*q+d3)*q+d4)*q+1)
