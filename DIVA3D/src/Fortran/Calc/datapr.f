@@ -284,6 +284,7 @@ C JMB2012 dirty hack; if iofort=24 then different reading for sources
       if (iofort.eq.24) then
       do 111 i=1,Ndatas
          read(iofort,*) tdata(i,1),tdata(i,2),tdata(i,3)
+         if(icoordchange.eq.1) tdata(i,3)=tdata(i,3)*1E-6
          tdata(i,4)=0
  111   continue
       

@@ -1195,7 +1195,7 @@ C so Q divided by surface
      &                      visc*tshagn(i,4,ig)-visc*tshagn(i,5,ig)
 C Added linear sink JMB2012
      &                     +decayrate*tshag(i,1,ig)
-     &                     )
+     &                     )*detj*stiff
      &           *2/detj*2*tdataQ(idataQ,3)
 
  5120    continue           
