@@ -26,7 +26,7 @@ else
  if [ -f ./input/topo.dat ]; then
   if [ -f ./input/param.par ]; then
    if [ -f ./input/contour.depth ];then
-    echo "runing divatopo ........."
+    echo "running divatopo ........."
     ./divatopo
     mv ./output/TopoInfo.dat ./input/.
     mv ./output/topo.grd ./input/.
@@ -50,7 +50,7 @@ else
   if [ -f ./input/topo.gebco ]; then
     if [ -f ./input/param.par ]; then
      if [ -f ./input/contour.depth ];then
-      echo "runing gebco2diva ........."
+      echo "running gebco2diva ........."
       ./gebco2diva 10 10
       mv ./output/TopoInfo.dat ./input/.
       mv ./output/topo.grd ./input/.
@@ -88,7 +88,7 @@ fi
 if [ "$cont" -ge "2" ]; then
 if [ -f ./input/topo.dat ]; then
    if [ -f ./input/param.par ]; then
-      echo "runing divatopo ........."$cont
+      echo "running divatopo ........."$cont
     ./divatopo
    else
      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
@@ -99,7 +99,7 @@ if [ -f ./input/topo.dat ]; then
 else
   if [ -f ./input/topo.gebco ]; then
     if [ -f ./input/param.par ]; then
-      echo "runing gebco2diva ........."$cont
+      echo "running gebco2diva ........."$cont
       ./gebco2diva 15 15
     else
       echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'

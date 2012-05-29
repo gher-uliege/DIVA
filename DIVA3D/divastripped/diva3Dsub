@@ -139,7 +139,7 @@ echo '=========================================================== '
 #
 if [ -f "./input/dvtransinfo" ];then
 #############################
- echo  'runing ./dv3Dinvtrsh on '$var'.'$level 
+ echo  'running ./dv3Dinvtrsh on '$var'.'$level 
   Fileinf=./input/dvtransinfo
 {
 read ntrans
@@ -152,7 +152,7 @@ if [ -f './input/divadata/'$var'_inverf' ];then
   echo $nbln > ./3DWORK/nblinv
   echo 'Start inverse anamorphose transformation' $ntrans
 else
-echo SEVER ERROR: $var.$level inv_anamorph $ntrans
+echo SEVERE ERROR: $var.$level inv_anamorph $ntrans
 echo did not find $var'_inverf'
 exit
 fi

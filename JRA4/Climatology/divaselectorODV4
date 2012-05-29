@@ -105,7 +105,7 @@ dcoordinate=Depth
 todepth=0
 else
 if [ "$zfound" -ge "2" ]; then
-echo 'WARNING: Divaselctor found several columns with pressure'
+echo 'WARNING: Divaselector found several columns with pressure'
 echo '         Please check ' $inputfile
 fi
 fi
