@@ -31,7 +31,7 @@ else
     mv ./output/TopoInfo.dat ./input/.
     mv ./output/topo.grd ./input/.
     echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-    echo 'TopoInfo.dat and topo.grd where created and put in '
+    echo 'TopoInfo.dat and topo.grd were created and put in '
     echo ./input/.
     echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
    else
@@ -55,7 +55,7 @@ else
       mv ./output/TopoInfo.dat ./input/.
       mv ./output/topo.grd ./input/.
       echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-      echo 'TopoInfo.dat and topo.grd where created and put in '
+      echo 'TopoInfo.dat and topo.grd were created and put in '
       echo ./input/.
       echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
      else
@@ -78,7 +78,7 @@ if [ -f ./input/topo.grd ]; then
  ./divacont
 mv ./output/coast.cont* ./input/divaparam/.
 echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-echo 'coast.cont files where created and put in '
+echo 'coast.cont files were created and put in '
 echo ./input/divaparam/.
 echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 fi

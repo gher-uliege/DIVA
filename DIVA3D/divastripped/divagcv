@@ -115,12 +115,6 @@ echo Check execution track >> diva.log
 echo -------------------------------------------- >> diva.log
 fi
  cp -f diva.log ../output/.
-echo ' '
-echo ----------------------------------------
-echo 'GCV finished'
-echo 'Estimated value of SNR = ' $(awk 'FNR == 2 { print; exit }' ../output/gcvsnvar.dat)
-echo Results written in ./output/gcvsnvar.dat
-echo ----------------------------------------
 else
 echo ' '
 echo --------------------------------------------
@@ -129,6 +123,13 @@ echo Check execution track
 echo --------------------------------------------
 fi
 mv fort.12 ../output/gcvsnvar.dat
+echo ' '
+echo ----------------------------------------
+echo 'GCV finished'
+echo 'Estimated value of SNR = ' $(awk 'FNR == 2 { print; exit }' ../output/gcvsnvar.dat)
+echo Results written in ./output/gcvsnvar.dat
+echo ----------------------------------------
+echo ' '
 echo -----------------------------------------------------
 echo 'Creating adapted param.par in ./output/param.par.gcv'
 echo -----------------------------------------------------

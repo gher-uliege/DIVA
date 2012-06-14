@@ -94,15 +94,15 @@ fi
   mv diva.log ../output/.
 if [ -f fort.98 ] 
 then 
-echo ' '
+mv fort.98 ../output/covariancefit.dat
+mv fort.99 ../output/covariance.dat
+mv fort.66 ../output/paramfit.dat
 echo -------------------------------------------------------------
 echo Finished fitting
 echo 'Estimated correlation length L = ' $(awk 'FNR == 2 { print; exit }' ../output/paramfit.dat)
 echo Files created : covariancefit.dat covariance.dat paramfit.dat
 echo -------------------------------------------------------------
-mv fort.98 ../output/covariancefit.dat
-mv fort.99 ../output/covariance.dat
-mv fort.66 ../output/paramfit.dat
+
 if [ -e ../gnuwork ]
 then
 mv fort.55 ../gnuwork/xrangecova
