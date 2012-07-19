@@ -56,11 +56,11 @@
       CHARACTER (len=255)        :: file_name, file_name2, file_4Dnc
       character (len=255)        :: title_string,cellmeth
      &                            , INSTITUT, PRODUCTION
-     &                            , SOURCE, COMMENT
+     &                            , SOURCE, COMMENT, Email
       character (len=30)         :: Ref_time
       CHARACTER (len=99)         :: var_shname, var_cfname, var_name
      &                            , dat_name, var1_name, prmliste
-      character (len=99)         :: var_lgname
+      character (len=99)         :: var_lgname,sdn_units
       character (len=5)          :: chname
       character (len=20)         :: var_units,vrb_units
       character (len=20)                          :: s_units
@@ -134,15 +134,14 @@
 !     Read the grid data from GridInfo.dat
 !--------------------------------------------------------------
 !
-!      divafile = '../output/3Danalysis/Fields/GridInfo.dat'
       divafile = '../output/3Danalysis/GridInfo.dat'
       open(unit=90,file=divafile)
-      read(90,*) xorig
-      read(90,*) yorig
-      read(90,*) dx
-      read(90,*) dy
-      read(90,*) xend
-      read(90,*) yend
+      read(90,*) xorig              !! XLON(1)
+      read(90,*) yorig              !! YLAT(1)
+      read(90,*) dx                 !! XLON(2) - XLON(1)
+      read(90,*) dy                 !! YLAT(2) - YLAT(1)
+      read(90,*) xend               !! NX
+      read(90,*) yend               !! NY
       CLOSE(90)
 !
       NX = INT(xend)
@@ -174,6 +173,7 @@
           read(12,*) PRODUCTION
           read(12,*) SOURCE
           read(12,*) COMMENT
+          read(12,*) Email
           read(12,*) var_lgname
           read(12,*) var_units
           read(12,*) vrb_units
@@ -208,11 +208,16 @@
       chlen = chlen - 1
       if (chlen == 2) then
          s_units = l_units(1)
+         WRITE(sdn_units,'("SDN:P061:38:ULKM = Kilometres (km)")')
       else
          s_units = l_units(1)(1:chlen-5)
+         WRITE(sdn_units,'("SDN:P061:38:UAAA = Degrees (deg)")')
       endif
 !
-      write(12,*) s_units
+      write(12,*) NX
+      write(12,*) NY
+      write(12,*) TRIM(sdn_units)
+      write(12,*) TRIM(var_units)
 !
       WestBL = xorig
       SouthBL = yorig
@@ -383,6 +388,7 @@
         cellmeth =  cellmeth_l(ivars)
         Ref_time = Ref_time_l(ivars)
 !
+!      CALL NC_4DSDNII(imax,jmax,nk,ipar,time_len,time_val,clbnds,
       CALL NC_4DCLIM(imax,jmax,nk,ipar,time_len,time_val,clbnds,
      &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
      &  xlon,ylat,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
@@ -402,6 +408,7 @@
      &  LEN_TRIM(INSTITUT),TRIM(INSTITUT),
      &  LEN_TRIM(PRODUCTION),TRIM(PRODUCTION),
      &  LEN_TRIM(SOURCE),TRIM(SOURCE),
+     &  LEN_TRIM(Email),TRIM(Email),
      &  LEN_TRIM(COMMENT),TRIM(COMMENT))
 !
       ENDDO  !ivars
@@ -411,6 +418,8 @@
       close(12)
       OPEN(UNIT=12,FILE=file_name2,STATUS='OLD',POSITION='APPEND')
       write(12,*)(dep(lev),lev=1,NK)
+      write(12,*)dep(1)
+      write(12,*)dep(NK)
       close(12)
 !
  1201 FORMAT(//,10X,'Geographical coordinates:',/,

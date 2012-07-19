@@ -49,7 +49,7 @@
       CHARACTER (len=99)         :: VARFILEIN
       CHARACTER (len=255)        :: file_name,Ref_time, ncliste,prmliste
       character (len=255)        :: title_string, cellmeth
-     &                            , INSTITUT,PRODUCTION,SOURCE,COMMENT
+     &                        , INSTITUT,PRODUCTION,SOURCE,COMMENT,Email
       CHARACTER (len=99)         :: var_shname,var_name,var_cfname
       character (len=99)         :: var_lgname
       character (len=20)         :: var_units,vrb_units
@@ -115,6 +115,7 @@
         PRODUCTION = 'Not specified'
         SOURCE = 'Not specified'
         COMMENT = 'Not specified'
+        Email = 'Not specified'
       ELSE
         READ(2,*)! comments
         READ(2,*) ipar
@@ -132,6 +133,8 @@
           READ(2,*) SOURCE
           READ(2,*)! comments
           READ(2,*) COMMENT
+          READ(2,*)! comments
+          READ(2,*) Email
           clbnds = 0.
           CLOSE(2)
       ENDIF
@@ -150,12 +153,10 @@
         if(yy2(1:4) .EQ. 'xxxx') yy2='2050'
         WRITE(Ref_time,
      &'("Months since ",a,"-01-01")'),yy1(1:4) ! ,yy2(1:4) 
-!x     &'("Months since ",a," until ",a)'),yy1(1:4) ,yy2(1:4) 
         read (mm1,'(I2.2)') xm1
         read (mm2,'(I2.2)') xm2
         read (yy1,'(I4.4)') xy1
         read (yy2,'(I4.4)') xy2
-!x        time_val = (xy2-xy1+1)*12.+float(xm1-1)+float((xm2-xm1+1))/2
         if(xm1 > xm2) then
            nm = xm2 + (12 - xm1) + 1
         else
@@ -167,9 +168,7 @@
         clbnds(2,1)= 1.*xm2 !float(xm2)
         WRITE(cellmeth,'(
      &"time: mean within month time: mean over years")')
-!     &" over years ",I4," to ",I4)')xy1,xy2
-!     &"time: mean data within months ",I2," to "
-!     &,I2," over years ",I4," to ",I4)'),xm1,xm2,xy1,xy2
+!
       ENDIF
 !
       WRITE(vrb_units,'(a,"^2")')TRIM(var_units)
@@ -349,22 +348,6 @@
 !
           CALL NC_RD2DCL(imax,jmax,var(:,:,klev),verr(:,:,klev),
      &TRIM(divafile))
-
-!xx        close(84)
-!xx        open (unit=84,file=TRIM(divafile),form='unformatted')
-!xx        CALL UREADC(84,W8,U,VALEXU(klev),IPR,IMAX,JMAX,KMAX,NW)
-!
-!xx        if (KMAX.ne.1) stop "Not a 2D Field analysis"
-!
-!xx        ic = 0
-!xx        DO j = 1,jmax
-!xx          DO i = 1,imax
-!xx             ic = ic + 1
-!xx             var(i,j,klev) = U(ic)
-!xx             kuw = kuw + 1
-!xx             U3(kuw) = var(i,j,klev)
-!xx          ENDDO
-!xx        ENDDO
 !
           IF(VARBAK(klev) > 0.) THEN
             DO j = 1,jmax
@@ -379,15 +362,11 @@
           ENDIF
 !
        ELSE
-!xx        ic = 0
         DO j = 1,jmax
           DO i = 1,imax
-!xx             ic = ic + 1
              var(i,j,klev) = valexu(klev)
                reler(i,j,klev) = VALEXU(klev)
                verr(i,j,klev) = VALEXU(klev)
-!xx             kuw = kuw + 1
-!xx             U3(kuw) = valexu(klev)
           ENDDO
         ENDDO
        ENDIF          
@@ -400,61 +379,6 @@
      & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,verr)
       if(ichge == 1) 
      & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,reler)
-!
-!
-! Reading error field
-!xx      klev = 0
-!xx      kwu = 0
-!xx      ichge = 0
-!xx      DO istep = MINLEV,MAXLEV
-!xx        klev = klev + 1
-!xx        valexu(klev) = valexc
-!xx        WRITE(VARFILEIN,
-!xx     &'(a,".1",i4.4,".error")')TRIM(var_shname),istep
-!xx        divafile = '../output/3Danalysis/Fields/'//TRIM(VARFILEIN)
-!
-!xx        INQUIRE(FILE=TRIM(divafile),EXIST=exist)
-!xx        IF(exist) then
-!xx          close(84)        
-!xx          open (unit=84,file=TRIM(divafile),form='unformatted')
-!xx          CALL UREADC(84,W8,U,VALEXU(klev),IPR,IMAX,JMAX,KMAX,NW)
-!xx          if (KMAX.ne.1) stop "Not a 2D Field analysis"
-!xx          ic = 0
-!xx          DO j = 1,jmax
-!xx            DO i = 1,imax
-!xx               ic = ic + 1
-!xx               verr(i,j,klev) = U(ic)
-!xx               kwu = kwu + 1
-!xx               W3(kwu) = verr(i,j,klev)
-!xx            ENDDO
-!xx          ENDDO
-!xx          IF(VARBAK(klev) > 0.) THEN
-!xx            DO j = 1,jmax
-!xx              DO i = 1,imax
-!xx               if (verr(i,j,klev) .ne. VALEXU(klev)) then
-!xx               reler(i,j,klev) = verr(i,j,klev)/SQRT(VARBAK(klev))
-!xx               else
-!xx               reler(i,j,klev) = VALEXU(klev)
-!xx               endif
-!xx              ENDDO
-!xx            ENDDO
-!xx          ENDIF
-!xx        ELSE
-!xx          DO j = 1,jmax
-!xx            DO i = 1,imax
-!xx               reler(i,j,klev) = VALEXU(klev)
-!xx               verr(i,j,klev) = VALEXU(klev)
-!xx            ENDDO
-!xx          ENDDO
-!xx        ENDIF
-!xx      if(valexu(klev) /= valexc ) ichge = 1
-!xx      ENDDO
-!xx      if(ichge == 1) 
-!xx     & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,verr)
-!
-!xx      if(ichge == 1) 
-!xx     & CALL CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,reler)
-!
 !
 ! Reading databins file
       klev = 0
@@ -830,8 +754,6 @@
       verel_min = xr
       verel_max = yr
 !
-
-
       DO k = 1,NK
        resmax1(1:jmax,k)=MAXVAL(obins(1:imax,1:jmax,k),dim=1,
      & MASK= (obins(:,:,k) .eq. valexc))
@@ -870,24 +792,9 @@
 !
       WRITE(file_name,'(
      &a,".1",i4.4,".1",i4.4,".anl.nc")')TRIM(var_shname),MINLEV,MAXLEV
-
-!xx      IF(ipar == 1) then
-!xx      chlen = 1
-!xx      DO while(var_shname(chlen:chlen) .ne. ' ') 
-!xx         chlen = chlen + 1
-!xx      ENDDO
-!xx      chlen = chlen - 1
-!xx      var_name = var_shname(1:chlen-5)
-!xx      ELSE
-!xx      var_name = TRIM(var_shname)
-!xx      ENDIF
-!
-!xx      var_cfname = var_shname
       IF(ipar == 1) then
       chlen = 1
       DO while(var_shname(chlen:chlen) .ne. ' ')
-!xx         IF(var_shname(chlen:chlen) .eq. '.') 
-!xx     &             WRITE(var_cfname(chlen:chlen),'("_")')
          chlen = chlen + 1
       ENDDO
       chlen = chlen - 1
@@ -927,6 +834,7 @@
           write(12,*) "'",TRIM(PRODUCTION),"'"
           write(12,*) "'",TRIM(SOURCE),"'"
           write(12,*) "'",TRIM(COMMENT),"'"
+          write(12,*) "'",TRIM(Email),"'"
           write(12,*) "'",TRIM(var_lgname),"'"
           write(12,*) "'",TRIM(var_units),"'"
           write(12,*) "'",TRIM(vrb_units),"'"
@@ -960,6 +868,7 @@
      &  LEN_TRIM(INSTITUT),TRIM(INSTITUT),
      &  LEN_TRIM(PRODUCTION),TRIM(PRODUCTION),
      &  LEN_TRIM(SOURCE),TRIM(SOURCE),
+     &  LEN_TRIM(Email),TRIM(Email),
      &  LEN_TRIM(COMMENT),TRIM(COMMENT))
 !
       WRITE(divafile,'("../output/3Danalysis/",
@@ -982,7 +891,6 @@
 !
       stop
       end
-
 !
        SUBROUTINE CHGVLX(IMAX,JMAX,NK,VALEXC,VALEXU,VAR)
        INTEGER                         :: IMAX,JMAX,NK

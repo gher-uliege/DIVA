@@ -47,10 +47,9 @@
      &                            , WestBL,SouthBL,EastBL,NorthBL
 !
       character (len=12)         :: Real_clock
-      integer                    :: nm,xm1,xm2,xy1,xy2
+      integer                    :: xy1,xy2
 !
       character (len=4)          :: yy1,yy2
-      character (len=2)          :: mm1,mm2
       CHARACTER (len=255)        :: divafile,comments
       CHARACTER (len=20)         :: EXECIN
       CHARACTER (len=22)         :: DEPTHS
@@ -58,11 +57,11 @@
       CHARACTER (len=255)        :: file_name, file_name2, file_4Dnc
       character (len=255)        :: title_string,cellmeth
      &                            , INSTITUT, PRODUCTION
-     &                            , SOURCE, COMMENT
+     &                            , SOURCE, COMMENT, Email
       character (len=30)         :: Ref_time
       CHARACTER (len=99)         :: var_cfname, var_name
      &                            , dat_name, var1_name, prmliste
-      character (len=99)         :: var_lgname
+      character (len=99)         :: var_lgname,sdn_units
       character (len=5)          :: chname
       character (len=20)         :: var_units,vrb_units
       character (len=20)                          :: s_units
@@ -180,6 +179,7 @@
           read(12,*) PRODUCTION
           read(12,*) SOURCE
           read(12,*) COMMENT
+          read(12,*) Email
           read(12,*) var_lgname
           read(12,*) var_units
           read(12,*) vrb_units
@@ -214,11 +214,17 @@
       chlen = chlen - 1
       if (chlen == 2) then
          s_units = l_units(1)
+         WRITE(sdn_units,'("SDN:P061:38:ULKM = Kilometres (km)")')
       else
          s_units = l_units(1)(1:chlen-5)
+         WRITE(sdn_units,'("SDN:P061:38:UAAA = Degrees (deg)")')
       endif
 !
-      write(12,*) s_units
+      write(12,*) NX
+      write(12,*) NY
+      write(12,*) TRIM(sdn_units)
+      write(12,*) TRIM(var_units)
+!s_units
 !
       WestBL = xorig
       SouthBL = yorig
@@ -396,6 +402,7 @@
      &  LEN_TRIM(INSTITUT),TRIM(INSTITUT),
      &  LEN_TRIM(PRODUCTION),TRIM(PRODUCTION),
      &  LEN_TRIM(SOURCE),TRIM(SOURCE),
+     &  LEN_TRIM(Email),TRIM(Email),
      &  LEN_TRIM(COMMENT),TRIM(COMMENT))
 !
       ENDDO  !ivars
@@ -406,6 +413,8 @@
       idep(:)=NINT(dep(:))
       OPEN(UNIT=12,FILE=file_name2,STATUS='OLD',POSITION='APPEND')
       write(12,*)(idep(lev),lev=1,NK)
+      write(12,*)dep(1)
+      write(12,*)dep(NK)
       close(12)
 !
  1201 FORMAT(//,10X,'Geographical coordinates:',/,

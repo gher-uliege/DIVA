@@ -73,8 +73,6 @@
      &'(a,".1",i4.4,".misfitatdatapoint.dat")')TRIM(var_name),istep
        WRITE(misffile,
      &'("../output/3Danalysis/Divaqcfiles/",a)')TRIM(VARFILEM)
-
-      write(*,*)' misffile: ',TRIM(misffile)
 !
       CLOSE(11)
       OPEN(11, FILE=misffile, STATUS='NEW')

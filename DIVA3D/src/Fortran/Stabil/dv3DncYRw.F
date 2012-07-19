@@ -12,7 +12,7 @@
      &  L_vrb_units,vrb_units,L_title_string,title_string,
      &  L_cellmeth,cellmeth,L_Ref_time,Ref_time,
      &  L_INSTITUT,INSTITUT,L_PRODUCTION,PRODUCTION,L_SOURCE,SOURCE,
-     &  L_COMMENT,COMMENT)
+     &  L_Email,Email,L_COMMENT,COMMENT)
 !
        IMPLICIT NONE
 !
@@ -25,7 +25,7 @@
      &              , three
         integer     :: L_file_name,L_var_shname,L_var_lgname,
      &  L_var_units,L_vrb_units,L_title_string,L_cellmeth,L_Ref_time,
-     &  L_INSTITUT,L_PRODUCTION,L_SOURCE,L_COMMENT
+     &  L_INSTITUT,L_PRODUCTION,L_SOURCE,L_Email,L_COMMENT
 !
         real*4                              :: 
      &            var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
@@ -56,6 +56,7 @@
 	character (len=L_INSTITUT)         :: INSTITUT
 	character (len=L_PRODUCTION)       :: PRODUCTION
 	character (len=L_SOURCE)           :: SOURCE
+	character (len=L_Email)            :: Email
 	character (len=L_COMMENT)          :: COMMENT
 	character (len=L_vrb_units)        :: vrb_units
 	character (len=L_cellmeth)         :: cellmeth
@@ -922,15 +923,15 @@
 !
         string256='CF-1.0'
         STATUS=NF_PUT_ATT_TEXT(NCID,NF_GLOBAL,'Conventions',
-     &	                    LEN_TRIM(string256),string256)
+     &	                    LEN_TRIM(string256),TRIM(string256))
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO conv'
       ENDIF
 !
-      string256='SeaDataNet'
+      string256='SeaDataNetII: http://www.seadatanet.org/ '
       status=nf_put_att_text(ncid,NF_GLOBAL,'project',
-     &                 LEN_TRIM(string256),string256)
+     &                 LEN_TRIM(string256),TRIM(string256))
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO sdn'
@@ -950,9 +951,33 @@
          STOP 'Stopped in NC_4DCLIMATO put att prod'
       ENDIF
 !
+      string256='GHER OPENDAB: http://gher-diva.phys.ulg.ac.be/data/'
+      status=nf_put_att_text(ncid,NF_GLOBAL,'data_access',
+     &                 LEN_TRIM(string256),TRIM(string256))
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO sdn'
+      ENDIF
+!
+      string256=
+     &'http://gher-diva.phys.ulg.ac.be/web-vis/clim.html '
+      status=nf_put_att_text(ncid,NF_GLOBAL,'WEB_visualisation',
+     &                 LEN_TRIM(string256),TRIM(string256))
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO sdn'
+      ENDIF
+!
+        STATUS=NF_PUT_ATT_TEXT(NCID,NF_GLOBAL,'Author_e-mail',
+     &	                 LEN_TRIM(Email),TRIM(Email))
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO put att email'
+      ENDIF
+!
       CALL DATE_AND_TIME(Real_clock) 
       STATUS=NF_PUT_ATT_TEXT(NCID,NF_GLOBAL,'date',
-     &	                 LEN_TRIM(Real_clock),Real_clock)
+     &	                 LEN_TRIM(Real_clock),TRIM(Real_clock))
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put att date'
@@ -1022,6 +1047,11 @@
 !
       if (icdf == time_len-1) then
 !
+      status = nf_redef(ncid)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO redef2'
+      ENDIF
 !
       status=nf_put_att_real(ncid,id2d1,'valid_min',
      &                                   nf_float,one,vbt_min)
@@ -1182,6 +1212,12 @@
          STOP 'Stopped in NC_4DCLIMATO put clbnds'
       ENDIF
 !
+      status = nf_enddef(ncid)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO enddef'
+      ENDIF
+!
       endif                  !   icdf=time_len-1
 !
       endif                  !   icdf=0
@@ -1192,6 +1228,11 @@
 !
       hrss = time_val
       status = nf_put_var1_real(ncid, idtime, icdf, hrss)
+!
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO hrss'
+      ENDIF
 !
       start(1)=1
       start(2)=1
