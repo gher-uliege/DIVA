@@ -31,6 +31,7 @@ rm -f ${DIVADIR}/divastripped/3DWORK/*
 
 mkdir -p ${DIVADIR}/divastripped/output
 mkdir -p ${DIVADIR}/divastripped/output/3Danalysis
+mkdir -p ${DIVADIR}/divastripped/output/3Danalysis/Fields
 mkdir -p ${DIVADIR}/divastripped/output/3Danalysis/MetaDataXMLs
 
 cp -v './yearlist' ${DIVADIR}/divastripped/input/.
@@ -45,9 +46,6 @@ echo year $year
 #########################################################
 
 # Prepare run diva_4Dnc_write
-
-##mkdir -p ${DIVADIR}/divastripped/output/3Danalysis
-mkdir -p ${DIVADIR}/divastripped/output/3Danalysis/Fields
 
 cp -v $WDIR/output/3Danalysis/Fields/GridInfo.dat ${DIVADIR}/divastripped/output/3Danalysis/Fields/.
 
@@ -65,7 +63,7 @@ cp -v './output/3Danalysis/'$var'.'$year'.3DNCinfo' ${DIVADIR}/divastripped/outp
 
 cd ./output/3Danalysis/
 
-cp -v ./Fields/GridInfo.dat ${DIVADIR}/divastripped/output/3Danalysis/.
+cp -v ./Fields/GridInfo.dat ../../${DIVADIR}/divastripped/output/3Danalysis/.
 
 for ncfile in `ls $var.$year.*.anl.nc` ;do
 cp -v $ncfile ../../${DIVADIR}/divastripped/output/3Danalysis/.
@@ -115,20 +113,6 @@ cat  ./output/3Danalysis/DriverMetainfo ./output/3Danalysis/$var'.Metainfo.txt' 
 echo '============================= divadoNCDF: end var loop    '$var
 
 done
-
-if [ $isxmlgenerat == "11" ]; then
-
-echo 'generation of SDN xml metadata file'
-
-divadoxml XMLtempl_sdn
-fi
-
-if [ $isxmlgenerat == "12" ]; then
-
-echo 'generation of EDMONET xml metadata file'
-
-divadoxml XMLtempl_emodn
-fi
 
 echo ==================
 echo second loop

@@ -1,4 +1,4 @@
- Title string for temperature 3D NetCDF file:
+ Title string for 3D NetCDF file:
 'Diva 3D analysis '
  Reference time for data (ie: days since since 1900-01-01), if not climatological data
 'months since since xxxx-01-01'
@@ -7,10 +7,12 @@
  Cell_methode string:
 'time: mean (this month data from all years)'
  Institution name: where the dataset was produced.
-'ULg_GHER'
- Production group and date
-'Diva group'
+'University of Liege, GeoHydrodynamics and Environment Research'
+ Production group and e-mail
+'Diva group. E-mails : a.barth@ulg.ac.be ; m.ouberdous@ulg.ac.be'
  Source (observation, radiosonde, database, model-generated data,...)
-' data'
+' data_from various sources for diva software testing work'
 Comment
 'No comment'
+Autor e-mail adress (or contact person to report problems)
+' m.ouberdous@ulg.ac.be'

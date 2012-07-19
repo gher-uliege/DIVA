@@ -91,6 +91,8 @@ read sourcecomm
 read sourcestr
 read commentcomm
 read commentstr
+read emailcomm
+read emailstr
 } < $FILENAME
 else
 echo DIVAERRS2 divadoall71 Missing file $FILENAME
@@ -685,6 +687,8 @@ echo $sourcecomm >> ./input/3Dinfo
 echo $sourcestr >> ./input/3Dinfo
 echo $commentcomm >> ./input/3Dinfo
 echo $commentstr >> ./input/3Dinfo
+echo $emailcomm >> ./input/3Dinfo
+echo $emailstr >> ./input/3Dinfo
 
 dos2unix  ./input/3Dinfo
 
@@ -809,12 +813,12 @@ echo ' '
 
 echo Producing 4D yearly netcdf files
 #####################################
-if [ "$isxmlgenerat" == "-2" -o  "$isxmlgenerat" == "2" -o "$isxmlgenerat" == "-1" -o "$isxmlgenerat" == "1" -o "$isxmlgenerat" == "0" ]
+if [ "$isxmlgenerat" == "-1" -o "$isxmlgenerat" == "1" -o "$isxmlgenerat" == "0" ]
 then
 divadoNCDF $isxmlgenerat
 fi
 
-if [ "$isxmlgenerat" == "-12" -o "$isxmlgenerat" == "12" -o "$isxmlgenerat" == "-11" -o "$isxmlgenerat" == "11" -o "$isxmlgenerat" == "10" ]
+if [ "$isxmlgenerat" == "-11" -o "$isxmlgenerat" == "11" ]
 then
 divadoNCYR $isxmlgenerat
 fi

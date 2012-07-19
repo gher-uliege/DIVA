@@ -82,6 +82,7 @@ if [ "$isxmlgenerat" -lt "0" ];then
 vld=1
 fi
 
+
 diva4Dncwrite $varl $vld
 
 echo ' '
@@ -122,24 +123,10 @@ done
 
 cat  ./output/3Danalysis/DriverMetainfo ./output/3Danalysis/$var'.Metainfo.txt' > ./output/3Danalysis/MetaDataXMLs/$var'.Textinfo.txt'
 
-if [ "$isxmlgenerat" == "1" ]; then
-
-echo 'generation of SDN xml metadata file'
-
-divadoxml XMLtempl_sdn
-fi
-
-if [ "$isxmlgenerat" == "2" ]; then
-
-echo 'generation of EDMONET xml metadata file'
-
-divadoxml XMLtempl_emodn
-fi
-
 echo '============================= divadoNCDF: end var loop    '$var
 
 done
 
 echo =================================
-echo Finished writing NC and Xml files 
+echo Finished writing 4D NetCDF  files 
 echo =================================

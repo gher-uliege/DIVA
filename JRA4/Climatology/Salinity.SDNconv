@@ -1,4 +1,12 @@
-PSAL-GHER-TST
-GHER_ULG-MED-TMP_TST-OBS
-PSAL: Salinity of the water column
-sea_water_salinity,le-3,CF
+##Short name of the dataset:
+EMODNET_Salinity_4DNetCDF
+##Parameters in dataset (see liste in ./input/SDN_P021.list):
+SDN:P021:68:PSAL = Salinity of the water column
+##Thumbnail file name
+Sal_image
+##Url compliment (to http://gher-diva.phys.ulg.ac.be/data/emodnet-domains/)
+Mediterranean Sea
+##Geographical area name (see ./input/Geographical_areas.list)
+SDN:C16:8:28Bg = Mediterranean Sea
+##Time units (month or season)
+month

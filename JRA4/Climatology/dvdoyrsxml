@@ -1,28 +1,19 @@
 #!/bin/bash
 #
-############################################################
-############################################################
+##################################################################
+##################################################################
 #
-# To generate XML metadata files.
+# To generate XML metadata files for multi-yrear periods 4Dncfiles.
+# run by "divadoxml" only
+###################################################################
+###################################################################
 #
-# You need to provide the following files:
-#                    ./input/general_info
-#                    ./varlist`
-#                    ./yearlist
-#                    ./monthlist
-# for each var in varlist:
-#                    ./$var'.SDNconv'
-# and for each var in varlist and year in yearlist:
-#                    ./output/3Danalysis/$var.$year.4Danl.nc
-#                                    or
-#                    ./output/3Danalysis/$var.4Danl.nc
-############################################################
-############################################################
+var=$1
 #
 WDIR=$(pwd)
 DIVADIR="../../DIVA3D"
 mkdir -p ./output/3Danalysis/MetaDataXMLs
-
+#
 FILENAME=./input/general_info
 if [ -f "$FILENAME" ]
 then
@@ -84,43 +75,28 @@ let ll=$ll+1
 done
 } < $Fileinf
 #
+
 #########################################################
 for var in `cat varlist`
 #########################################################
 do
 echo variable $var
 
-if [ -f './output/3Danalysis/'$var'.4Danl.nc' ];then
-
-if [ "$#" == "1" ];then
-./dvdoyrsxml $var rwt
-else
-./dvdoyrsxml $var
-fi
-
-else
-#########################################################
-for year in `cat yearlist`
-#########################################################
-do
-echo year $year
-
-if [ -f './output/3Danalysis/'$var'.'$year'.4Danl.nc' ];then
-cp ./output/3Danalysis/$var'.'$year'.4Danl.nc' ${DIVADIR}/divastripped/output/.
-fi
-
-year1=${year:0:4}
-year2=${year:4:4}
+year='-9999'
 
 rm -rf ${DIVADIR}/divastripped/output/*
 rm -rf ${DIVADIR}/divastripped/divawork/*
 rm -rf ${DIVADIR}/divastripped/3DWORK/*
 
+
+cp ./output/3Danalysis/$var'.4Danl.nc' ${DIVADIR}/divastripped/output/.
+
+
 echo  $var   > ${DIVADIR}/divastripped/3DWORK/md.info
 echo  $year >> ${DIVADIR}/divastripped/3DWORK/md.info
 
-if [ "$#" == "1" ];then
-cp './output/3Danalysis/'$var'.'$year'.4Danl.nc' './output/3Danalysis/OLD_'$var'.'$year'.4Danl.nc'
+if [ "$#" == "2" ];then
+cp './output/3Danalysis/'$var'.4Danl.nc' './output/3Danalysis/OLD_'$var'.4Danl.nc'
 echo  $INSTITUT_name  > ${DIVADIR}/divastripped/3DWORK/glatt.info
 echo  $INSTITUT_email >> ${DIVADIR}/divastripped/3DWORK/glatt.info
 echo  $PRODUCTION_name >> ${DIVADIR}/divastripped/3DWORK/glatt.info
@@ -133,8 +109,8 @@ cd ${DIVADIR}/divastripped/3DWORK/
 
 cd ../
 
-if [ "$#" == "1" ];then
-cp './output/'$var'.'$year'.4Danl.nc' ${WDIR}'/output/3Danalysis/'$var'.'$year'.4Danl.nc'
+if [ "$#" == "2" ];then
+cp './output/'$var'.4Danl.nc' ${WDIR}'/output/3Danalysis/'$var'.4Danl.nc'
 fi
 cp -v ./output/$var'.4DNCMetainfo' ${WDIR}/output/3Danalysis/.
 cp -v ./output/$var'.Metainfo.txt' ${WDIR}/output/3Danalysis/.
@@ -213,7 +189,7 @@ UseLim2='Distributed under SeaDataNet licence'
 File=sextan.tmplt
 ##XMLtempl
 ##File=$XMLFile
-NewFile='./output/3Danalysis/'$var'.'$year'.xml'
+NewFile='./output/3Danalysis/'$var'.xml'
 ###'./output/3Danalysis/MetaDataXMLs/'$prodLocShn.xml'
 
 sed \
@@ -264,10 +240,6 @@ sed \
 -e s/"MOstr_Description_of_data_processing_:_endMO"/" DIVA (Data Interpolating Variational Analyses) allows a spatial interpolation of data (analysis) in an optimal way, it takes into account coastlines, sub-basins, advection and detrending. Calculations are highly optimized and rely on a finite element resolution. Quality control of data can be performed and error fields can be calculated. 3D and 4D extensions are included with emphasis on direct computations of climatologies from ODV spreadsheet files.}"/ \
 -e s/"MOstr_Description_of_processed_data_sources :_endMO"/"refer to autors"/ \
   <$File>$NewFile
-
-done
-
-fi
 
 done
 ## 
