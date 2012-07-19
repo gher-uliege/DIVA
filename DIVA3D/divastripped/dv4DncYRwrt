@@ -35,13 +35,14 @@ done
 let nbfls=$nbfls+$nblns
 done
 #
-head -10 ./output/3Danalysis/$var.$year.3DNCinfo > ./3DWORK/3DNCinfo
+head -11 ./output/3Danalysis/$var.$year.3DNCinfo > ./3DWORK/3DNCinfo
 for year in `cat ./input/yearlist`
 #########################################################
 do
 #
  Fileinf=./output/3Danalysis/$var.$year.3DNCinfo
 {
+read dummy
 read dummy
 read dummy
 read dummy
@@ -72,20 +73,5 @@ done
 echo $nbfls > ./3DWORK/fort.44
 #
 cd ./3DWORK/
-
-ls -l
-echo 3DNCinfo:
-echo =========
-cat 3DNCinfo
-echo 3Dncliste:
-echo ==========
-cat 3Dncliste
-echo fort.44:
-echo ==========
-cat fort.44
-echo ncfile:
-echo ==========
-ls -l ../output/3Danalysis/*.nc
-#
 ../../bin/dv4DYRstr.a
 cd ..
