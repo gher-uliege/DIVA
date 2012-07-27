@@ -1,32 +1,46 @@
       parameter(nm=5000000)
+      include'iodv.h'
       real*4 topo(nm)
       real*8 c8
       integer*2 ic(nm*3)
       character*10 coastname
       character*16 cn
       character*5 depth
-      read(10,*) x1
-      read(10,*) y1
-      read(10,*) dx
-      read(10,*) dy
-      read(10,*) M
-      read(10,*) N
+      iua=10
+      iud=13
+      if (iodv.eq.1) iua=17
+      if (iodv.eq.1) iud=98
+      read(iua,*) x1
+      read(iua,*) y1
+      read(iua,*) dx
+      read(iua,*) dy
+      read(iua,*) M
+      read(iua,*) N
       coastname='coast.cont'
       
       
       
       if ((M+2)*(N+2).GT.NM) stop 'increase NM'
       write(6,*) 'into ureadc',M,N
+      if (iodv.eq.1) then
+      write(6,*) 'reading'
+      imax=M
+      jmax=N
+      DO 410 J=1,N
+      DO 410 I=1,M
+      READ(16,*) topo(i+(j-1)*M)
+ 410   continue 
+                     else
       call ureadc(12,c8,topo,valex,iprecr,imax,jmax,kmax,nbmotr)
       write(6,*) 'out of reading',imax,jmax
-      
+      endif
       
       
       if ((M.NE.IMAX).OR.(N.NE.JMAX)) stop 'incoherent files'
       z=0
       nl=0
  1    continue
-      read(13,*,err=99,end=99) z
+      read(iud,*,err=99,end=99) z
       nl=nl+1
       write(depth,88) 10000+nl
  88   format(I5)
