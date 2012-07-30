@@ -207,8 +207,8 @@ echo $valex >> ./fort.13
 ##echo $lc $xi | ../../bin/alpha.a >> diva.log
 
 
-echo $(echo $lc | awk '{print (1/($1**4))}') > fort.12
-echo $(echo $lc $xi | awk '{print (2*$2/($1**2))}') >> fort.12
+echo $(echo $lc | awk '{print (1/($1*$1*$1*$1))}') > fort.12
+echo $(echo $lc $xi | awk '{print (2*$2/($1*$1))}') >> fort.12
 
 
 #if [ $? -ne 0 ];then
