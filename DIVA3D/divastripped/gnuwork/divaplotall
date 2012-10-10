@@ -103,7 +103,7 @@ then
 echo set size 1,1 > bidon
 #echo set terminal png transparent size 1280,1024 crop xffffff >> bidon
 #echo set terminal png transparent giant size 2560,2048 crop xffffff >> bidon
-echo set terminal png transparent giant size 1920,1540 crop xffffff >> bidon
+echo set terminal png transparent giant size 1920,1540 crop \#ffffff >> bidon
 echo set output '"./plots/'$i'.png"' >> bidon
 else
 if [ "$DRIVER" == "ps" ]

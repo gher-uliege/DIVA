@@ -1,1 +1,9 @@
-set palette defined ( 0 "dark-blue", 1 "blue", 1.7 "green", 2.5 "yellow", 2.6 "yellow", 4 "red", 5 "dark-red" )
+set palette defined ( 0 '#000090',\
+                      1 '#000fff',\
+                      2 '#0090ff',\
+                      3 '#0fffee',\
+                      4 '#90ff70',\
+                      5 '#ffee00',\
+                      6 '#ff7000',\
+                      7 '#ee0000',\
+                      8 '#7f0000')
