@@ -1,5 +1,11 @@
 #!/bin/bash
 
+
+
+
+
+echo Now testing divacalc
+
 inputdir=$(pwd)'/input/'
 contfile=${inputdir}'coast.cont'
 datafile=${inputdir}'data.dat'
@@ -71,4 +77,29 @@ divacalc
 echo ' '
 echo 'Check the results in'
 echo './ouput/ghertonetcdf/results.nc (netcdf)'
+
+
+echo 'Now checking if you have gawk or nawk'
+whichawk=$(echo 0 | awk '{if (PROCINFO["version"])  print "1"; else print "0"; }')
+echo $whichawk
+if [ "$whichawk" != "1" ]
+then
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+echo !!! PLEASE INSTALL GAWK !!!!!!!!!!!!
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+else
+echo gawk is present
+fi
+
+echo 
+echo
+echo
+
+echo Finally testing pipes needed for exact error calculations
+echo If the program hangs it means pipes are not supported
+echo In this case you need to adapt parameter ipipe to ipepe=0 in divacalc
+cd ../src/Fortran/Pipetest
+pipetest
+
+cd ../../../divastripped
 
