@@ -20,7 +20,7 @@ echo ' '
 echo '1. creating huge data file, be patient'
 echo ' '
 
-echo 5000000 | awk '{NP=$1;{for (i = 1; i <= NP; i++) {x=-1+2*rand();y=-1+2*rand();z=sin(3.14*x)*cos(3.14*y)*exp(x+y);print x,y,z,1}}}' > ${datafile}
+echo 2000000 | awk '{NP=$1;{for (i = 1; i <= NP; i++) {x=-1+2*rand();y=-1+2*rand();z=sin(3.14*x)*cos(3.14*y)*exp(x+y);print x,y,z,1}}}' > ${datafile}
 
 echo '2. creating contour file'
 echo ' '
@@ -42,7 +42,7 @@ echo '3. creating parameter file'
 echo ' '
 
 echo '# Correlation Length lc' > ${paramfile}
-echo '0.05' >> ${paramfile}
+echo '0.07' >> ${paramfile}
 echo '# icoordchange' >> ${paramfile}
 echo '0' >> ${paramfile}
 echo '# ispec' >> ${paramfile}
