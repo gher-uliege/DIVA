@@ -11,6 +11,20 @@ rm -f ./ouput/rmsmisfit.dat
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 echo  Applying iterative detrending on classes
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+if [ -f ./input/detrend.order ]
+then
+echo =========================================
+echo  divadetrend will use order provided:
+cat ./input/detrend.order
+cp ./input/detrend.order ./divawork/fort.56
+else
+echo =========================================
+echo divadetrend will use default order 5 6 ...
+echo 5 6 7 8 9 10 11 12 13 > ./divawork/fort.56
+fi
+echo =========================================
+
 divadatacoverage -n
 divamesh
 dvdataclean
@@ -58,6 +72,8 @@ cp ../output/fieldatdatapoint.anl fort.89
 if [ -f ../output/diva.log ] ; then
  cp -f ../output/diva.log .
 fi
+echo SO WHAT
+echo $1
 echo $1 | ../../bin/detrend.a >> diva.log
 if [ $? -ne 0 ];then
 echo ' '
@@ -94,7 +110,12 @@ cp -v ./input/data.dat ./input/data.undetrend.dat
 cp -v ./input/data.detrend.dat ./input/data.dat
 fi
 jj="0"
-while [ "$jj" -lt "$1" ]
+
+# in fact try over all columns up to the maximum defined in detrend.order....
+# now in fort.56 which can be exploited
+jmloop=$(cat ./divawork/fort.56 | awk '{for(i=1;i<=NF;i++){if($i > max) max = $i;}}END{print max-4}')
+echo Maximum index of group used for detrending $jmloop
+while [ "$jj" -lt "$jmloop" ]
 do
 let jj=$jj+1
 if [ "$i" -gt "1" ]
