@@ -39,6 +39,8 @@ rm -f  ./input/RL.dat
 rm -f  ./input/RLinfo.dat
 rm -f  ./input/constraint.dat
 rm -f  ./input/contour.depth
+rm -f  ./input/detrend.order
+
 echo Copying from $1/input to the input directory 
 echo ' '
 if [ -f $1/input/data.dat ] 
