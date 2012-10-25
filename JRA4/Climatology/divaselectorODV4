@@ -32,7 +32,7 @@ fi
 if [ -f "pressure.coordinates" ]
 then
 echo PRESSURE coordinates
-dos2unix pressure.coordinates
+dos2unix -U pressure.coordinates
 dcoordinate=Pressure
 todepth=0
 
@@ -126,11 +126,11 @@ fi
 
 #First drop all bad points for a given variable and keep only metainformation, z and variable 
 echo Making sure files have correct line endings
-dos2unix varlist
-dos2unix yearlist
-dos2unix monthlist
-dos2unix qflist
-dos2unix input/contour.depth
+dos2unix -U varlist
+dos2unix -U yearlist
+dos2unix -U monthlist
+dos2unix -U qflist
+dos2unix -U input/contour.depth
 echo ----------------------------
 echo Now starting data extraction
 echo ----------------------------

@@ -6,7 +6,7 @@ date
 
 DIVADIR="../../DIVA3D"
 
-dos2unix datasource
+dos2unix -U datasource
 
 
 FILENAME=driver
@@ -121,11 +121,11 @@ declare -i depthm
 
 ###echo Making sure files are in unix format
 
-dos2unix ./input/contour.depth
-dos2unix varlist
-dos2unix yearlist
-dos2unix monthlist
-dos2unix qflist
+dos2unix -U ./input/contour.depth
+dos2unix -U varlist
+dos2unix -U yearlist
+dos2unix -U monthlist
+dos2unix -U qflist
 
 maxlevel=$(cat ./input/contour.depth | wc -l)
 
@@ -690,7 +690,7 @@ echo $commentstr >> ./input/3Dinfo
 echo $emailcomm >> ./input/3Dinfo
 echo $emailstr >> ./input/3Dinfo
 
-dos2unix  ./input/3Dinfo
+dos2unix -U  ./input/3Dinfo
 
 echo ' input 3Dinfo file for diva3Ddress:' 
 
