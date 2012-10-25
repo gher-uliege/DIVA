@@ -6,7 +6,7 @@ echo Working in $WDIR
 
 DIVADIR="../../DIVA3D"
 
-dos2unix -U datasource
+dos2unix datasource
 
 FILENAME=driver
 {
@@ -91,11 +91,11 @@ declare -i depthm
 
 
 echo Making sure files are in unix format
-dos2unix -U ./input/contour.depth
-dos2unix -U varlist
-dos2unix -U yearlist
-dos2unix -U monthlist
-dos2unix -U qflist
+dos2unix ./input/contour.depth
+dos2unix varlist
+dos2unix yearlist
+dos2unix monthlist
+dos2unix qflist
 
 maxlevel=$(cat ./input/contour.depth | wc -l)
 
