@@ -380,6 +380,22 @@ rm -f fort.35
 echo $NINT $NREA | ../../bin/diva.a >> diva.log
 dataonmesh=0
 
+##ctroupin Oct 2012
+# Check if fort.84 was generated AND if not empty...
+if [ ! -s ./fort.84 ];
+then
+        echo ' '
+        echo '//////////////////////////////////////////////////'
+        echo 'Problem in diva.a : analysis could not be finished'
+        echo ' '
+        echo 'Check diva.log'
+        echo '//////////////////////////////////////////////////'
+fi
+##---
+
+
+
+
 #if [ -f ./fort.35  ]; then
 #dataonmesh=$(cat ./fort.35 | awk '{print $1-$2}')
 #echo Data are outside the mesh, will produce empty files

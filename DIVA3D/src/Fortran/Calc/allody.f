@@ -34,7 +34,7 @@ C      goto 10
 C#endif
       WRITE(6,400) TAB,IRE1,NREA
  400  FORMAT(/'  ** ERROR - ALLODY - STORAGE OF ',A5,/,' REQUIRED SPACE'
-     *       ,I8,/'   AVAILABLE SPACE : ',I8)
+     *       ,I10,/'   AVAILABLE SPACE : ',I10)
       STOP
  10   IDEB=IRE+1
       IRE=IRE1
