@@ -11,6 +11,8 @@ contfile=${inputdir}'coast.cont'
 datafile=${inputdir}'data.dat'
 paramfile=${inputdir}'param.par'
 
+divaclean
+
 ##echo ${inputdir}
 echo //////////////////////////////////////////////////
 echo 'Running a simple test'

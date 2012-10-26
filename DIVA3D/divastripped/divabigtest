@@ -1,6 +1,18 @@
 #!/bin/bash
 
 
+if [ "$#" == "1" ]
+then
+        ndata=$1
+else
+        ndata='1500000'
+fi
+
+
+
+echo ' '
+echo 'Now testing divacalc with' ${ndata} data points and a fine me
+echo ' '
 
 
 
@@ -11,6 +23,9 @@ contfile=${inputdir}'coast.cont'
 datafile=${inputdir}'data.dat'
 paramfile=${inputdir}'param.par'
 
+# Add divaclean to avoid working on old files!
+divaclean
+
 ##echo ${inputdir}
 echo //////////////////////////////////////////////////
 echo 'Running a heavy test'
@@ -20,7 +35,7 @@ echo ' '
 echo '1. creating huge data file, be patient'
 echo ' '
 
-echo 2000000 | awk '{NP=$1;{for (i = 1; i <= NP; i++) {x=-1+2*rand();y=-1+2*rand();z=sin(3.14*x)*cos(3.14*y)*exp(x+y);print x,y,z,1}}}' > ${datafile}
+echo $ndata | awk '{NP=$1;{for (i = 1; i <= NP; i++) {x=-1+2*rand();y=-1+2*rand();z=sin(3.14*x)*cos(3.14*y)*exp(x+y);print x,y,z,1}}}' > ${datafile}
 
 echo '2. creating contour file'
 echo ' '
