@@ -208,7 +208,7 @@ C  PRINT LOCALIZATION OF DATA IN THE MESH
 C
       if(ipr.ge.1) then
          write(6,910) nonloc
- 910     format(/,t2,60('%'),/,' There are ',i7,
+ 910     format(/,t2,60('%'),/,' There are ',i9,
      &' data NON localized in the mesh (and ignored)'
      &,/,t2,60('%'))
       endif
@@ -257,7 +257,7 @@ C  PRINT LOCALIZATION OF DATA IN THE MESH
 C
       if(ipr.ge.1) then
          write(6,910) nonloc
- 910     format(/,t2,60('%'),/,' There are ',i7,
+ 910     format(/,t2,60('%'),/,' There are ',i9,
      &' data NON localized in the mesh (and ignored)',
      &/,t2,60('%'))
       endif
@@ -364,7 +364,7 @@ C
       endif
       if(ipr.ge.1) then
          write(6,910) imaxd
- 910     format(/,t2,60('%'),/,' There are ',i7,
+ 910     format(/,t2,60('%'),/,' There are ',i9,
      &' data localized in the mesh (and resorted)'
      &   ,/,t2,60('%'))
       endif
