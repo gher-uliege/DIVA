@@ -15,8 +15,14 @@ flags='-O3'			#--charles
 # Netcdf library
 #---------------
 
+ncconfigok=$(type -P nc-config | wc -l)
+echo $ncconfigok
+if [ "$ncconfigok" != "0" ]
+then
+nclib=`nc-config --flibs`
+else
 nclib=/usr/local/lib/netcdf3ifort/libnetcdf.a	#--charles
-
+fi
 # Use of Plplot (creation of scientific plots)
 #--------------
 
