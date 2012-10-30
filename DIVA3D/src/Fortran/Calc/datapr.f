@@ -364,7 +364,7 @@ C
       endif
       if(ipr.ge.1) then
          write(6,910) imaxd
- 910     format(/,t2,60('%'),/,' There are ',i9,
+ 910     format(/,t2,60('%'),/,' There are ',i11,
      &' data localized in the mesh (and resorted)'
      &   ,/,t2,60('%'))
       endif

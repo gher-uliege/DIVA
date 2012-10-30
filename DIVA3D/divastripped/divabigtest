@@ -11,7 +11,7 @@ fi
 
 
 echo ' '
-echo 'Now testing divacalc with' ${ndata} data points and a fine me
+echo 'Now testing divacalc with' ${ndata} ' data points and a fine mesh'
 echo ' '
 
 
