@@ -20,6 +20,7 @@ echo $ncconfigok
 if [ "$ncconfigok" != "0" ]
 then
 nclib=`nc-config --flibs`
+compiler=`nc-conig --fc`
 else
 nclib=/usr/local/lib/netcdf3ifort/libnetcdf.a	#--charles
 fi
