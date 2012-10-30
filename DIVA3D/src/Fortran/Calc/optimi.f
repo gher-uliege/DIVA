@@ -564,7 +564,7 @@ C storage of number of data located in the mesh
       endif
       if(ipr.ge.1) then
          write(6,910) imaxd
- 910     format(/,t2,60('%'),/,' There are ',i6,
+ 910     format(/,t2,60('%'),/,' There are ',i9,
      &' data localized in the mesh (and resorted)'
      &   ,/,t2,60('%'))
       endif
