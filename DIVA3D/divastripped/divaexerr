@@ -1,0 +1,194 @@
+#!/bin/bash
+
+# optional parameter
+finesse=2
+
+export LC_ALL=C
+
+
+
+# Read parameters
+datafile=./input/data.dat
+Filepar=./input/param.par
+{
+read linecomment
+read lc
+read linecomment2
+read icoordchange
+read linecomment3
+read ispec
+read linecomment4
+read ireg
+read linecomment5
+read xori
+read linecomment6
+read yori
+read linecomment7
+read dx
+read linecomment8
+read dy
+read linecomment9
+read nx
+read linecomment10
+read ny
+read linecomment11
+read valex
+read linecomment12
+read snr
+read linecomment13
+read varbak
+} < $Filepar
+
+
+
+
+
+# Create list of pseudo data where to calculate Kii (via cv) module!
+NXP=$(echo $nx $dx $lc $finesse | awk '{print $1*$2/($3/$4)}')
+NYP=$(echo $ny $dy $lc $finesse | awk '{print $1*$2/($3/$4)}')
+NP=$(echo $NXP $NYP  | awk '{print int($1*$2+1)}')
+
+NG=1
+let NG=$NG+$nx*$ny
+
+echo $NP compared to $NG with  grid $dx $dy $lc
+GAIN=$(echo $nx $ny $NP | awk '{print $1*$2/($3)}')
+echo Expected gain factor $GAIN , the larger the better
+
+if [ "$NP" -gt "$NG" ]
+then
+echo Better use full calculation
+# restore exact calculation
+else
+echo Trying gridding of error field
+
+
+# I think all real data points are needed, so remains costly for large amount of data ?
+
+#since calculation of cv is expense, add here eleimination of points not on the mesh divadatacoverage ???? CHECK
+
+# if no column 4 need to add ones ...
+ncol=$(head -1 ./input/data.dat | awk '{print NF}')
+if [ "$ncol" -lt "4" ]
+then
+cat ./input/data.dat | awk '{print $1,$2,$3,1}' > bidon
+mv bidon ./input/data.dat
+fi
+
+echo PLEASE ADD DATA ELIMINATION ON LAND HERE
+echo For the moment just on bounding box also should clean empty lines at file end
+divadataclean
+
+# Create this list by covering domain with points closer than L
+# Save original input data and output
+if [ -d ./workexerr ]
+then
+echo cleaning up workexerr
+rm -R -f ./workexerr/*
+else
+mkdir -v ./workexerr
+fi
+
+# For the moment full copy  could be  more selective 
+cp -R ./output ./workexerr
+cp -R ./input ./workexerr
+
+
+
+# If a RL field is present, need to use it
+
+# Add pseudo data at the end
+if [ -f ./input/RL.dat ]
+then
+echo NEED TO ADAPT NEED TO ADAPT CONTACT DIVA DEVELOPPERS
+#idea: sample the RL scale on lc scale and locally generate (1/RL*finesse) points over lc/finesse*relative length scale distance
+fi
+# For the moment uniform distribution of points
+echo $NP $xori $yori $dx $dy $nx $ny | awk '{NP=$1;{for (i = 1; i <= NP; i++) {x=$2+$4*$6*rand();y=$3+$5*$7*rand();print x,y,0,1E-10}}}' >> ${datafile}
+
+
+
+# Run divacv but with single GCV value, the real SN used ...
+#echo $snr > ./input/gcvsampling.dat
+# divacv Better replace by divacalc qc in the following
+divacalc qc
+
+# Retrieve K_ii in pseudo data location and calculate error
+# column 4 of expectederroratdata.anl (check carefully)
+
+# Now wherever no exclusion value, use error to provide new input
+# Global scaling by snr varbak etc can be done after it has been tested
+# to be done ...
+paste ./output/expectederroratdatapoint.anl ./input/data.dat | awk -v valex=$valex -v snr=$snr -v varbak=$varbak '{if ($4 != valex){print $5,$6,sqrt(varbak/snr*$4/$8),1}}' > ./input/data.dat.exerr
+# Create new pseudo data with this error as input
+mv ./input/data.dat.exerr ./input/data.dat
+
+
+# cat original data.dat and valatxy and to pseudo valatxy
+
+cp ./workexerr/input/data.dat ./input/valatxy.coord
+if [ -f ./workexerr/input/valatxy.coord ]
+then
+cat ./workexerr/input/valatxy.coord >> ./input/valatxy.coord
+fi
+
+
+# Run diva with ireg=0; very high SN and no error calculation
+# adapt param
+
+
+echo $linecomment > ./input/param.par
+echo $lc  >> ./input/param.par
+echo $linecomment2 >> ./input/param.par
+echo $icoordchange >> ./input/param.par
+echo $linecomment3 >> ./input/param.par
+echo 0 >> ./input/param.par
+echo $linecomment4 >> ./input/param.par
+echo 0 >> ./input/param.par
+echo $linecomment5 >> ./input/param.par
+echo $xori >> ./input/param.par
+echo $linecomment6 >> ./input/param.par
+echo $yori >> ./input/param.par
+echo $linecomment7 >> ./input/param.par
+echo $dx >> ./input/param.par
+echo $linecomment8 >> ./input/param.par
+echo $dy >> ./input/param.par
+echo $linecomment9 >> ./input/param.par
+echo $nx >> ./input/param.par
+echo $linecomment10 >> ./input/param.par
+echo $ny >> ./input/param.par
+echo $linecomment11 >> ./input/param.par
+echo $valex >> ./input/param.par
+echo $linecomment12 >> ./input/param.par
+echo 1E4 >> ./input/param.par
+echo $linecomment13 >> ./input/param.par
+echo $varbak >> ./input/param.par
+
+divacalc
+# Split valatxy into orginal valatxy and atdata 
+ndata=$(cat ./workexerr/input/data.dat | wc -l)
+valatxy=$(cat ./workexerr/input/valatxy.coord | wc -l)
+echo $ndata $valatxy
+head -$ndata ./output/fieldatdatapoint.anl > ./workexerr/output/erroratdatapoint.anl
+tail -$valatxy  ./output/fieldatdatapoint.anl > ./workexerr/output/erroratxy.anl
+# rename analysis related fields to error related fields and move them into the saved original ouput
+cp ./output/fieldgher.anl ./workexerr/output/errorfieldgher.anl
+cp ./output/fieldascii.anl ./workexerr/output/errorfieldascii.anl
+
+
+# Restore output and input and clean up the mess
+rm -R ./output/*
+cp -R ./workexerr/output/* ./output
+cp -R ./workexerr/input/* ./input
+
+rm -R ./workexerr/*
+
+
+echo need to add netcdf support of merging...
+cp ./output/fieldgher.anl ./output/ghertonetcdf/fort.84
+cp ./output/errorfieldgher.anl ./output/ghertonetcdf/fort.87
+cd ./output/ghertonetcdf
+../../../bin/netcdfoutput.a 
+cd ../..
+echo  ===== Finished divaexerr ======
+fi
