@@ -133,7 +133,7 @@ cat ./workexerr/input/valatxy.coord >> ./input/valatxy.coord
 fi
 
 
-# Run diva with ireg=0; very high SN and no error calculation
+# Run diva with ireg=1; very high SN and no error calculation
 # adapt param
 
 
@@ -144,7 +144,7 @@ echo $icoordchange >> ./input/param.par
 echo $linecomment3 >> ./input/param.par
 echo 0 >> ./input/param.par
 echo $linecomment4 >> ./input/param.par
-echo 0 >> ./input/param.par
+echo 1 >> ./input/param.par
 echo $linecomment5 >> ./input/param.par
 echo $xori >> ./input/param.par
 echo $linecomment6 >> ./input/param.par
