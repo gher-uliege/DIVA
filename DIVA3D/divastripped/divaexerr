@@ -121,6 +121,8 @@ divacalc qc
 # to be done ...
 paste ./output/expectederroratdatapoint.anl ./input/data.dat | awk -v valex=$valex -v snr=$snr -v varbak=$varbak '{if ($4 != valex){print $5,$6,sqrt(varbak/snr*$4/$8),1}}' > ./input/data.dat.exerr
 # Create new pseudo data with this error as input
+# IF TO DIVIDE BY BCKGROUND Bii need to adapt covariance calculation just to output Bii instead of full covariance by writing 
+# ALWAYS on disk!
 mv ./input/data.dat.exerr ./input/data.dat
 
 
