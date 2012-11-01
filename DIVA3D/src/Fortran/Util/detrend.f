@@ -112,7 +112,7 @@ C  no data in class
        rm(i,k)=0.
        ijmclass=ijmclass-1
                           else
-       rm(i,k)=rm(i,k)/wm(i,k)
+       rm(i,k)=rm(i,k)/wm(i,k)/(1+1/sqrt(0.001+ic(i,k)))
        endif
 
        enddo
