@@ -106,7 +106,14 @@ fi
 # For the moment uniform distribution of points
 echo $NP $xori $yori $dx $dy $nx $ny | awk '{NP=$1;{for (i = 1; i <= NP; i++) {x=$2+$4*$6*rand();y=$3+$5*$7*rand();print x,y,0,1E-10}}}' >> ${datafile}
 
+# Since new data erase fieldatdatapoint
 
+if [ -f ./output/fieldatdatapoint.anl ]
+then
+rm -f ./output/fieldatdatapoint.anl
+fi
+
+divadataclean
 
 # Run divacv but with single GCV value, the real SN used ...
 #echo $snr > ./input/gcvsampling.dat
@@ -118,11 +125,31 @@ divacalc qc
 
 # Now wherever no exclusion value, use error to provide new input
 # Global scaling by snr varbak etc can be done after it has been tested
-# to be done ...
-paste ./output/expectederroratdatapoint.anl ./input/data.dat | awk -v valex=$valex -v snr=$snr -v varbak=$varbak '{if ($4 != valex){print $5,$6,sqrt(varbak/snr*$4/$8),1}}' > ./input/data.dat.exerr
-# Create new pseudo data with this error as input
+# to be done ..
 # IF TO DIVIDE BY BCKGROUND Bii need to adapt covariance calculation just to output Bii instead of full covariance by writing 
 # ALWAYS on disk!
+# Rerun divacalc with ispec=-1000 and special stop ...to retrieve divapipe: divacalc bii
+
+cat ./input/data.dat | awk '{print $1,$2,1}' > ./output/Bii.dat
+
+# need to adapt to deal with data on land ...?
+divacalc Bii
+
+ls -l ./output
+cat ./output/Bii.dat
+
+echo ??? $varbak
+
+wc -l ./output/expectederroratdatapoint.anl 
+wc -l ./input/data.dat 
+wc -l ./output/Bii.dat
+
+paste ./output/expectederroratdatapoint.anl ./input/data.dat ./output/Bii.dat | awk -v valex=$valex -v snr=$snr -v varbak=$varbak '{if ($4 != valex){print $5,$6,sqrt(varbak/snr*$4/$8/$11),1}}' > ./input/data.dat.exerr
+# Create new pseudo data with this error as input
+
+
+
+
 mv ./input/data.dat.exerr ./input/data.dat
 
 
