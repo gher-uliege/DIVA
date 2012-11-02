@@ -197,8 +197,8 @@ C      print *, ' field_max= ',field_max
 
 C     Looking for min and max error values
 C-----------------------------------------
-      error_min = U2(i_1,j_1)
-      error_max = U2(i_1,j_1)
+      error_min = U2(i_2,j_2)
+      error_max = U2(i_2,j_2)
       do i = 1, IMAX
       do j = 1, JMAX
       if(U2(i,j) .ne. VALEXU) then
