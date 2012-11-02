@@ -12,6 +12,14 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       zero=0.
       read(10,*) ispec
       isumcovar=0
+      
+      ibii=0
+      if(ispec.eq.-1000) then
+      write(6,*) 'Just background variance at data locations'
+      ispec=-2
+      ibii=1
+      endif
+      
       if(ispec.lt.-100) then
       write(6,*) 'Summing on covariances'
       isumcovar=1
@@ -41,6 +49,7 @@ C data points and valatxy with locopt.
       
       if(ipipe.ne.1) then
       close(61)
+      
       open(61,file='../divapipe',form='unformatted')
       else
       
@@ -226,6 +235,8 @@ c               write(6,*) '?jmc0a',rjmc0,xob,yob
       STSA=SCAL(s(ltrhsg),s(ltrhsg),nddlt)
 c      write(6,*) 'val,SKTS,STS',valcv,SKTS/RJMMU
       
+
+
       do i=1,ncvdata
          xxx=s(lcvpoir+2*i-2)
          yyy=s(lcvpoir+2*i-1)
@@ -261,6 +272,7 @@ c       write(6,*) 'Now waiting covar'
        
        
       endif
+      
 C END if point in mesh
 
       
@@ -350,7 +362,7 @@ c                  write(6,*) '?jmc0b',rjmc0,val,xob,yob
       SKTS=SCAL(s(ltrhsg),s(lcvg),nddlt)
       STSA=SCAL(s(ltrhsg),s(ltrhsg),nddlt)
 c      write(6,*) 'val,SKTS,STS',valcv,SKTS/RJMMU
-      
+      if(ibii.ne.1) then
       do i=1,ncvdata
          xxx=s(lcvpoir+2*i-2)
          yyy=s(lcvpoir+2*i-1)
@@ -391,6 +403,7 @@ c         write(59,*) val/(1+valcv),xxx,yyy,iiel,iisub
       
       endif
       
+      endif
 C      goto 666
          
 
