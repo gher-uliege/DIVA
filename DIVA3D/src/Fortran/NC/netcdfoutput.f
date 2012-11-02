@@ -161,11 +161,11 @@ C------------------------------------------
       if(U1(i,j) .ne. VALEXU) then
       i_1 = i
       j_1 = j
-      goto 9988
+      goto 9977
       endif
       enddo
       enddo
-      
+ 9977 continue
       i_2=1
       j_2=1
       do i = 1, IMAX
@@ -192,13 +192,14 @@ C-----------------------------------------
       endif
       end do
       end do
-C      print *, ' field_min= ',field_min
-C      print *, ' field_max= ',field_max
-
+      print *, ' field_min= ',field_min
+      print *, ' field_max= ',field_max
+C      write(6,*) i_2,j_2
 C     Looking for min and max error values
 C-----------------------------------------
       error_min = U2(i_2,j_2)
       error_max = U2(i_2,j_2)
+C      write(6,*) i_2,j_2,valexu,error_min
       do i = 1, IMAX
       do j = 1, JMAX
       if(U2(i,j) .ne. VALEXU) then
