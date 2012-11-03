@@ -60,7 +60,29 @@ echo ////////////////////////////////////////////////////////
 echo Now eliminating points outside of the mesh
 if [ -f ./output/fieldatdatapoint.anl ]
 then
-echo Analysed field already exists: will use it
+echo Analysed field already exists: will try use it
+
+ndata=$(cat ./input/data.dat | wc -l)
+ndatafull=$(cat ./input/data.dat.full | wc -l)
+ndataanl=$(cat ./output/fieldatdatapoint.anl | wc -l)
+#echo $ndata $ndatafull $ndataanl
+if [ "$ndata" == "$ndatafull" ]
+then
+  if [ "$ndata" == "$ndataanl" ]
+  then
+  echo ok should be able to use fieldatdatapoint
+  else
+  echo fieldatdatapoint does not seem to be consistent
+  divadatacoverage -n
+  fi
+else
+echo fieldatdatapoint does not seem to be consistent
+divadatacoverage -n
+fi  
+
+
+
+
 else
 echo Analysed field does not exists: will create it
 divadatacoverage -n
