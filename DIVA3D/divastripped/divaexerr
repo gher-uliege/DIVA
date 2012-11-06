@@ -1,7 +1,18 @@
 #!/bin/bash
 
+
+imeth=0
+if [ "$1" == "full" ] 
+then
+echo ===============
+echo  A la ispec=-11
+echo ===============
+imeth=1
+fi
+
+
 # optional parameter
-finesse=5
+finesse=1
 
 export LC_ALL=C
 
@@ -55,10 +66,12 @@ echo $NP compared to $NG with  grid $dx $dy $lc
 GAIN=$(echo $nx $ny $NP | awk '{print $1*$2/($3)}')
 echo Expected gain factor $GAIN , the larger the better
 
+
+#---------------------------------------
 if [ "$NP" -gt "$NG" ]
 then
 echo Better use full calculation
-# restore exact calculation
+# restore exact calculation here ?
 else
 echo Trying gridding of error field
 
@@ -75,9 +88,7 @@ cat ./input/data.dat | awk '{print $1,$2,$3,1}' > bidon
 mv bidon ./input/data.dat
 fi
 
-echo PLEASE ADD DATA ELIMINATION ON LAND HERE
-echo For the moment just on bounding box also should clean empty lines at file end
-divadataclean
+#divadataclean
 
 # Create this list by covering domain with points closer than L
 # Save original input data and output
@@ -106,7 +117,7 @@ fi
 # For the moment uniform distribution of points
 echo $NP $xori $yori $dx $dy $nx $ny | awk '{NP=$1;{for (i = 1; i <= NP; i++) {x=$2+$4*$6*rand();y=$3+$5*$7*rand();print x,y,0,1E-8}}}' >> ${datafile}
 
-cp ./input/data.dat pseudo.dat
+#cp ./input/data.dat pseudo.dat
 
 # Since new data erase fieldatdatapoint
 
@@ -115,56 +126,63 @@ then
 rm -f ./output/fieldatdatapoint.anl
 fi
 
+# now take out pseudo data that are not on the mesh
 divadataclean
-divaclean
-divamesh
+#ls -l ./output/meshvisu
+#divaclean
+#ls -l ./output/meshvisu
+#divamesh
+#ls -l ./output/meshvisu
 
 # Run divacv but with single GCV value, the real SN used ...
 #echo $snr > ./input/gcvsampling.dat
 # divacv Better replace by divacalc qc in the following
 divacalc qc
 
-cat ./output/expectederroratdatapoint.anl
-cat ./input/param.par
+#cat ./output/expectederroratdatapoint.anl
+#cat ./input/param.par
 
 # Retrieve K_ii in pseudo data location and calculate error
 # column 4 of expectederroratdata.anl (check carefully)
 
 # Now wherever no exclusion value, use error to provide new input
-# Global scaling by snr varbak etc can be done after it has been tested
-# to be done ..
+# 
 # IF TO DIVIDE BY BCKGROUND Bii need to adapt covariance calculation just to output Bii instead of full covariance by writing 
 # ALWAYS on disk!
 # Rerun divacalc with ispec=-1000 and special stop ...to retrieve divapipe: divacalc bii
 
 cat ./input/data.dat | awk '{print $1,$2,1}' > ./output/Bii.dat
 
-# Check with exact error where errors here are not correct ???
-
 
 # need to adapt to deal with data on land ...?
-divacalc Bii
 
-ls -l ./output
+# If not real Bii is needed, need to adapt calculations...
+if [ "$imeth" == "0" ]
+then
+echo need to divide by real Bii
+divacalc Bii
+fi
+
+#ls -l ./output
 cat ./output/Bii.dat
 
-echo ??? $varbak
 
-wc -l ./output/expectederroratdatapoint.anl 
-wc -l ./input/data.dat 
-wc -l ./output/Bii.dat
+#wc -l ./output/expectederroratdatapoint.anl 
+#wc -l ./input/data.dat 
+#wc -l ./output/Bii.dat
 
-cp ./output/Bii.dat ./Bii.dat
-# Bii seems buggy ? try with ones:
-#cat ./input/data.dat | awk '{print $1,$2,1}' > bidon
-#mv bidon ./output/Bii.dat
-
-
+if [ "$imeth" == "0" ]
+then
+echo Working with error reduction instead of error
 paste ./output/expectederroratdatapoint.anl ./input/data.dat ./output/Bii.dat | awk -v valex=$valex -v snr=$snr -v varbak=$varbak '{if ($4 != valex){print $5,$6,1-(1/snr*$4/$8/$11),1}}' > ./input/data.dat.exerr
+else
+echo Working with error
+paste ./output/expectederroratdatapoint.anl ./input/data.dat ./output/Bii.dat | awk -v valex=$valex -v snr=$snr -v varbak=$varbak '{if ($4 != valex){print $5,$6,sqrt(varbak/snr*$4/$8/$11),1}}' > ./input/data.dat.exerr
+fi
 # Create new pseudo data correction with this error as input (so zero far away from point
 
-cp ./input/data.dat.exerr error.exerr
-cp ./output/expectederroratdatapoint.anl Kii.dat
+#cp ./input/data.dat.exerr error.exerr
+#cp ./output/expectederroratdatapoint.anl Kii.dat
 
 mv ./input/data.dat.exerr ./input/data.dat
 
@@ -195,7 +213,8 @@ echo $icoordchange >> ./input/param.par
 echo $linecomment3 >> ./input/param.par
 echo 0 >> ./input/param.par
 echo $linecomment4 >> ./input/param.par
-echo 0 >> ./input/param.par
+# ireg chancges depending on method
+echo $imeth >> ./input/param.par
 echo $linecomment5 >> ./input/param.par
 echo $xori >> ./input/param.par
 echo $linecomment6 >> ./input/param.par
@@ -216,22 +235,50 @@ echo $linecomment13 >> ./input/param.par
 echo $varbak >> ./input/param.par
 
 divacalc
-# now add up
+
+
+
+
+
+# now add up for 
+if [ "$imeth" == "0" ]
+then
+echo Summing up
+
 echo 0 | awk -v varb=$varbak '{print sqrt(varb),-sqrt(varb)}' > coucou
 echo ./output/fieldgher.anl >> coucou
 echo bidon >> coucou
-
 cat coucou | ../bin/sumc.a
-ls -l bidon
 rm coucou
 mv bidon ./output/fieldgher.anl
-#If this works, need to adapt the rest of the outputs too
+# Need to do the same for ascii file 
+
+cd divawork
+cp  ../output/fieldascii.anl fort.20
+echo $valex $nx $ny > coucou
+echo 0 | awk -v varb=$varbak '{print sqrt(varb),-sqrt(varb)}' >> coucou
+cat coucou | ../../bin/sumgridc.a
+mv fort.22 ../output/fieldascii.anl 
+rm coucou
+cd ..
+
+# and xy and data ...
+# do the job on fieldatdatapoint which includes also xy and split afterwards
+cat ./output/fieldatdatapoint.anl | awk -v valex=$valex -v varb=$varbak '{if ($3==valex){print $1,$2,$3} else {val=0; if ($3<1) val= sqrt(varb*(1-$3)); {print $1,$2,val}}}' > bidon
+mv bidon ./output/fieldatdatapoint.anl
+
+
+fi
+
+
 # Split valatxy into orginal valatxy and atdata 
 ndata=$(cat ./workexerr/input/data.dat | wc -l)
 valatxy=$(cat ./workexerr/input/valatxy.coord | wc -l)
 echo $ndata $valatxy
 head -$ndata ./output/fieldatdatapoint.anl > ./workexerr/output/erroratdatapoint.anl
-tail -$valatxy  ./output/fieldatdatapoint.anl > ./workexerr/output/erroratxy.anl
+tail -$valatxy  ./output/fieldatdatapoint.anl > ./workexerr/output/erroratxyascii.anl
+
+
 # rename analysis related fields to error related fields and move them into the saved original ouput
 cp ./output/fieldgher.anl ./workexerr/output/errorfieldgher.anl
 cp ./output/fieldascii.anl ./workexerr/output/errorfieldascii.anl
@@ -245,7 +292,7 @@ cp -R ./workexerr/input/* ./input
 rm -R ./workexerr/*
 
 
-echo need to add netcdf support of merging...
+echo Merging into netcdf file
 cp ./output/fieldgher.anl ./output/ghertonetcdf/fort.84
 cp ./output/errorfieldgher.anl ./output/ghertonetcdf/fort.87
 cd ./output/ghertonetcdf
@@ -253,3 +300,4 @@ cd ./output/ghertonetcdf
 cd ../..
 echo  ===== Finished divaexerr ======
 fi
+#--------------------------------------------------
