@@ -95,7 +95,21 @@
 		</gmd:MD_Georectified>
 	</gmd:spatialRepresentationInfo>
 	<gmd:referenceSystemInfo>
-		<gmd:MD_ReferenceSystem/>
+		<gmd:MD_ReferenceSystem>
+			<gmd:referenceSystemIdentifier>
+				<gmd:RS_Identifier>
+					<gmd:code>
+						<gco:CharacterString>MOstr_CRScode_endMO</gco:CharacterString>
+					</gmd:code>
+					<gmd:codeSpace>
+						<gco:CharacterString>EPSG</gco:CharacterString>
+					</gmd:codeSpace>
+					<gmd:version>
+						<gco:CharacterString>7.4</gco:CharacterString>
+					</gmd:version>
+				</gmd:RS_Identifier>
+			</gmd:referenceSystemIdentifier>
+		</gmd:MD_ReferenceSystem>
 	</gmd:referenceSystemInfo>
 	<gmd:identificationInfo>
 		<gmd:MD_DataIdentification>
@@ -224,6 +238,42 @@
 			<gmd:descriptiveKeywords>
 				<gmd:MD_Keywords>
 					<gmd:keyword>
+						<gco:CharacterString>SDN:L054:12:130 = CTD</gco:CharacterString>
+					</gmd:keyword>
+					<gmd:type>
+						<gmd:MD_KeywordTypeCode codeListValue="theme" codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_KeywordTypeCode"/>
+					</gmd:type>
+					<gmd:thesaurusName>
+						<gmd:CI_Citation>
+							<gmd:title>
+								<gco:CharacterString>http://vocab.ndg.nerc.ac.uk/</gco:CharacterString>
+							</gmd:title>
+							<gmd:date gco:nilReason="unknown"/>
+						</gmd:CI_Citation>
+					</gmd:thesaurusName>
+				</gmd:MD_Keywords>
+			</gmd:descriptiveKeywords>
+			<gmd:descriptiveKeywords>
+				<gmd:MD_Keywords>
+					<gmd:keyword>
+						<gco:CharacterString>SDN:L056:3:357 = acoustic tracking systems</gco:CharacterString>
+					</gmd:keyword>
+					<gmd:type>
+						<gmd:MD_KeywordTypeCode codeListValue="stratum" codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_KeywordTypeCode"/>
+					</gmd:type>
+					<gmd:thesaurusName>
+						<gmd:CI_Citation>
+							<gmd:title>
+								<gco:CharacterString>http://vocab.ndg.nerc.ac.uk/</gco:CharacterString>
+							</gmd:title>
+							<gmd:date gco:nilReason="unknown"/>
+						</gmd:CI_Citation>
+					</gmd:thesaurusName>
+				</gmd:MD_Keywords>
+			</gmd:descriptiveKeywords>
+			<gmd:descriptiveKeywords>
+				<gmd:MD_Keywords>
+					<gmd:keyword>
 						<gco:CharacterString>SDN:P021:68:NTRA = Nitrate concentration parameters in the water column</gco:CharacterString>
 					</gmd:keyword>
 					<gmd:type>
@@ -276,7 +326,7 @@
 			<gmd:resourceConstraints>
 				<gmd:MD_Constraints>
 					<gmd:useLimitation>
-						<gco:CharacterString>MOsrt_Not_to_be_used_for_what_endMO</gco:CharacterString>
+						<gco:CharacterString>MOstr_Not_to_be_used_for_what_endMO</gco:CharacterString>
 					</gmd:useLimitation>
 				</gmd:MD_Constraints>
 			</gmd:resourceConstraints>
@@ -350,6 +400,31 @@
 										<gco:CharacterString>SDN:C16:8:ZZ = Unknown</gco:CharacterString>
 									</gmd:code>
 								</gmd:MD_Identifier>
+							</gmd:geographicIdentifier>
+						</gmd:EX_GeographicDescription>
+					</gmd:geographicElement>
+				</gmd:EX_Extent>
+			</gmd:extent>
+			<gmd:extent>
+				<gmd:EX_Extent>
+					<gmd:description>
+						<gco:CharacterString>Map projection parameters, values and units :  MOstr_GeodeticsysDes1_endMO
+Axes units : MOstr_GeodeticsysDes2_endMO</gco:CharacterString>
+					</gmd:description>
+					<gmd:geographicElement>
+						<gmd:EX_GeographicDescription>
+							<gmd:geographicIdentifier>
+								<gmd:RS_Identifier>
+									<gmd:code>
+										<gco:CharacterString>MOstr_Geodeticsys_endMO</gco:CharacterString>
+									</gmd:code>
+									<gmd:codeSpace>
+										<gco:CharacterString>EPSG</gco:CharacterString>
+									</gmd:codeSpace>
+									<gmd:version>
+										<gco:CharacterString>7.4</gco:CharacterString>
+									</gmd:version>
+								</gmd:RS_Identifier>
 							</gmd:geographicIdentifier>
 						</gmd:EX_GeographicDescription>
 					</gmd:geographicElement>
@@ -503,6 +578,22 @@
 					<gmd:evaluationMethodDescription>
 						<gco:CharacterString>MOstr_Hor_accuracy_description_endMO</gco:CharacterString>
 					</gmd:evaluationMethodDescription>
+					<gmd:result>
+						<gmd:DQ_QuantitativeResult>
+							<gmd:valueType>
+								<gco:RecordType>horizontal accuracy</gco:RecordType>
+							</gmd:valueType>
+							<gmd:valueUnit>
+								<gml:BaseUnit gml:id="d61e521a1049886">
+									<gml:identifier codeSpace=""/>
+									<gml:unitsSystem/>
+								</gml:BaseUnit>
+							</gmd:valueUnit>
+							<gmd:value>
+								<gco:Record>MOstr_Hor_accuracy_quantitave_endMO</gco:Record>
+							</gmd:value>
+						</gmd:DQ_QuantitativeResult>
+					</gmd:result>
 				</gmd:DQ_GriddedDataPositionalAccuracy>
 			</gmd:report>
 			<gmd:report>

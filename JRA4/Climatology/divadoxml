@@ -92,6 +92,9 @@ echo variable $var
 
 if [ -f './output/3Danalysis/'$var'.4Danl.nc' ];then
 
+
+echo will run on '$var'.4Danl.nc
+
 if [ "$#" == "1" ];then
 ./dvdoyrsxml $var rwt
 else
@@ -107,6 +110,9 @@ echo year $year
 
 if [ -f './output/3Danalysis/'$var'.'$year'.4Danl.nc' ];then
 cp ./output/3Danalysis/$var'.'$year'.4Danl.nc' ${DIVADIR}/divastripped/output/.
+
+echo 'will run on '$var'.'$year'.4Danl.nc'
+
 fi
 
 year1=${year:0:4}
@@ -120,12 +126,13 @@ echo  $var   > ${DIVADIR}/divastripped/3DWORK/md.info
 echo  $year >> ${DIVADIR}/divastripped/3DWORK/md.info
 
 if [ "$#" == "1" ];then
+
 cp './output/3Danalysis/'$var'.'$year'.4Danl.nc' './output/3Danalysis/OLD_'$var'.'$year'.4Danl.nc'
 echo  $INSTITUT_name  > ${DIVADIR}/divastripped/3DWORK/glatt.info
 echo  $INSTITUT_email >> ${DIVADIR}/divastripped/3DWORK/glatt.info
 echo  $PRODUCTION_name >> ${DIVADIR}/divastripped/3DWORK/glatt.info
 echo  $PRODUCTION_email >> ${DIVADIR}/divastripped/3DWORK/glatt.info
-fi
+#fi
 
 cd ${DIVADIR}/divastripped/3DWORK/
 
@@ -133,11 +140,13 @@ cd ${DIVADIR}/divastripped/3DWORK/
 
 cd ../
 
-if [ "$#" == "1" ];then
+#if [ "$#" == "1" ];then
 cp './output/'$var'.'$year'.4Danl.nc' ${WDIR}'/output/3Danalysis/'$var'.'$year'.4Danl.nc'
-fi
+
 cp -v ./output/$var'.4DNCMetainfo' ${WDIR}/output/3Danalysis/.
 cp -v ./output/$var'.Metainfo.txt' ${WDIR}/output/3Danalysis/.
+
+fi
 
 cd ${WDIR}/
 
@@ -164,7 +173,7 @@ echo Could not find $FILENAME
 echo Please generate information file $FILENAME first
 exit
 fi
-
+var_units=${var_units//\//\\\/}
 #
 today=`date --rfc-3339='date'`
 #
@@ -181,6 +190,10 @@ read prodLocShn
 read comment
 read prodPar
 read comment
+read MesInst
+read comment
+read PosInst
+read comment
 read Thumbnailfilename
 read comment
 read url_compliment
@@ -188,6 +201,8 @@ read comment
 read Geo_area
 read comment
 read Time_units
+read comment
+read UseLim2
 } < $FILENAME
 else
 echo Could not find $FILENAME
@@ -199,16 +214,24 @@ prodLocShn=${prodLocShn//\//\\\/}
 prodPar=${prodPar//\//\\\/}
 Thumbnailfilename=${Thumbnailfilename//\//\\\/}
 url_compliment=${url_compliment//\//\\\/}
-
+UseLim2=${UseLim2//\//\\\/}
+MesInst=${MesInst//\//\\\/}
+PosInst=${PosInst//\//\\\/}
+Geo_area=${Geo_area//\//\\\/}
 ######
 #
 varlongname=${prodPar}
 sea_area=${Geo_area}
 NO='NO'
 UseLim1='SeaDataNet licence'
-UseLim2='Distributed under SeaDataNet licence'
+#UseLim2='Distributed under SeaDataNet licence'
 #
 #############
+
+ ll1=${#varlongname}
+sh_varlongname=${varlongname:18:$ll1}
+ ll2=${#sea_area}
+sh_sea_area=${sea_area:16:$ll2}
 
 File=sextan.tmplt
 ##XMLtempl
@@ -223,20 +246,23 @@ sed \
 -e s/"2012-06-00"/"${today}"/ \
 -e s/"9991"/"${NXcolumn}"/ \
 -e s/"9992"/"${NYlines}"/ \
+-e s/"MOstr_Time_unit_endMO"/"Time"/ \
 -e s/"MOstr_time_resolution_endMO"/"${Time_units}"/ \
 -e s/"2012-06-20"/"${today}"/ \
 -e s/"2012-06-21"/"${today}"/ \
 -e s/"MOstr_SDN_Local_Product_ID_endMO"/"${prodLocShn}"/ \
--e s/"MOstr_Short_description_endMO"/" Analyses of ${varlongname} data in ${sea_area} on bases of ${Time_units}s between ${year1} and ${year2}. Units=${var_units}. Time units: ${Time_units}. Depth range: ${vertlevs}"/ \
+-e s/"MOstr_Short_description_endMO"/"Analyses of ${sh_varlongname} data in ${sh_sea_area} on bases of ${Time_units} between ${year1} and ${year2}. Units=${var_units}. Time units: ${Time_units}. Depth range: ${vertlevs}"/ \
 -e s/"SDN:EDMO::EDMO id = SDN:EDMO name_org"/"${organisation_name}"/ \
 -e s/"MOstr_organisation@e-mail.adress_endMO"/"${org_email}"/ \
--e s/"SDN:EDMO::EDMO id = SDN:EDMO name_dhc"/"SDN:EDMO::EDMO xxx = SDN:EDMO University of Liege, GeoHydrodynamics and Environment Research"/ \
+-e s/"SDN:EDMO::EDMO id = SDN:EDMO name_dhc"/"SDN:EDMO::1579 = SDN:University of Liege, GeoHydrodynamics and Environment Research"/ \
 -e s/"MOstr_datacenter@e-mail.adress_endMO"/"a.barth@ulg.ac.be"/ \
 -e s/"MOstr_Thumbnail_name_endMO"/"${Thumbnailfilename}"/ \
 -e s/"SDN:P021:68:NTRA = Nitrate concentration parameters in the water column"/"${prodPar}"/ \
+-e s/"SDN:LO54:12:130 = CTD"/"${MesInst}"/ \
+-e s/"SDN:LO56:3:357 = acoustic traking systems"/"${PosInst}"/ \
 -e s/"MOstr_Use_Limitation_for_what2_endMO"/"${UseLim2}"/ \
 -e s/"Mostr_Other_restrictions_and_leagal_prerequisities_endMO"/"${NO}"/ \
--e s/"MOsrt_Not_to_be_used_for_what_endMO"/"${UseLim1}"/ \
+-e s/"MOstr_Not_to_be_used_for_what_endMO"/"${UseLim1}"/ \
 -e s/"9993"/"${deltaX}"/ \
 -e s/"MOstr_Sunit_endMO"/"${Sunit}"/ \
 -e s/"Mostr_deltaXxdeltaY_endMO"/"${deltaX}X${deltaY}"/ \
@@ -250,17 +276,22 @@ sed \
 -e s/"MOstr_distrib_transfer_format_endMO"/"Climate and Forecast NetCDF"/ \
 -e s/"Mostr_version_distrb_format_endMO"/"DIVA 4D-Climatology"/ \
 -e s/"MOstr_descript_specification_format_endMO"/"Diva 4D Climatology CF netcdf file contains the diva analysis of the variable and a set of variable related information fields: relative error and error standard deviation, variable masked relative error thresholds .3 and .5, and deepest values. It contains also fields of information about data distribution, outliers, correlation length and signal to noise ratio parameters."/ \
--e s/"SDN:EDMO::EDMO id = SDN:EDMO name_ddc"/"SDN:EDMO::EDMO xxx = SDN:EDMO University of Liege, GeoHydrodynamics and Environment Research"/ \
+-e s/"SDN:EDMO::EDMO id = SDN:EDMO name_ddc"/"SDN:EDMO::1579 = SDN:University of Liege, GeoHydrodynamics and Environment Research"/ \
 -e s/"MOstr_Dataset_size_endMO"/"${NO}"/ \
 -e s/"MOstr_URL_Accessing_website_endMO"/"http:\/\/gher-diva.phys.ulg.ac.be\/data\/emodnet-domains\/${url_compliment}"/ \
 -e s/"MOstr_name_resource_endMO"/"EMODNET Data Products Viewing and Downloading Service"/ \
 -e s/"Mostr_description_access_web_endMO"/"OPENDAP download"/ \
 -e s/"9998"/"${mindep}"/ \
 -e s/"9999"/"${maxdep}"/ \
+-e s/"MOstr_CRScode_endMO"/"WGS 84 (EPSG:4326)"/ \
+-e s/"MOstr_Geodeticsys_endMO"/" "/ \
+-e s/"MOstr_GeodeticsysDes1_endMO"/" "/ \
+-e s/"MOstr_GeodeticsysDes2_endMO"/" "/ \
 -e s/"MOstr_Hor_accuracy_description_endMO"/"${NO}"/ \
 -e s/"MOstr_Measure_description_endMO"/"refer to autors"/ \
 -e s/"MOstr_Evaluation_method_description_endMO"/"${NO}"/ \
 -e s/"DIVA software"/" DIVA (Data Interpolating Variational Analyses) software "/ \
+-e s/"MOstr_Hor_accuracy_quantitave_endMO"/" Not defined"/ \
 -e s/"MOstr_Description_of_data_processing_:_endMO"/" DIVA (Data Interpolating Variational Analyses) allows a spatial interpolation of data (analysis) in an optimal way, it takes into account coastlines, sub-basins, advection and detrending. Calculations are highly optimized and rely on a finite element resolution. Quality control of data can be performed and error fields can be calculated. 3D and 4D extensions are included with emphasis on direct computations of climatologies from ODV spreadsheet files.}"/ \
 -e s/"MOstr_Description_of_processed_data_sources :_endMO"/"refer to autors"/ \
   <$File>$NewFile
