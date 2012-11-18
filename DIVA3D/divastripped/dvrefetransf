@@ -1,11 +1,13 @@
 #!/bin/bash
 #####################################################
 #
+#
 bottm=$1
 surf=$2
 var=$3
 itrans=$4
 #
+dvrefetransflog='./output/3Danalysis/'$var'_dvrefetransf.log'
 #
 ##if [ -f "./input/dorefeinfo" ];then
 ##FILENAME="./input/dorefeinfo"
@@ -18,16 +20,17 @@ itrans=$4
 ##fi
 #
 if [ -d "./3DWORK" ];then
-echo 'starting data transformation'
+echo 'starting data transformation' > $dvrefetransflog
 else
 mkdir -p ./3DWORK
+echo 'starting data transformation' > $dvrefetransflog
 fi
-echo 'making a backup of  ./input/divarefe'
+echo 'making a backup of  ./input/divarefe' >> $dvrefetransflog
 cp -r ./input/divarefe ./input/divarefe_BKP
 #
 
 if [ "$itrans" == "13" ];then 
-# Start anamorphose transformation of reference fields
+echo Start anamorphose transformation of reference fields >> $dvrefetransflog
 ######################################################
 
 
@@ -51,7 +54,37 @@ cd ./input/divarefe
   echo $nbcl >> ../../3DWORK/fort.33
   echo $dep >> ../../3DWORK/fort.33
 cd ../../3DWORK/
-../../bin/refenoise.a
+
+
+echo dvrefetransf: ////////////////////////////////////////// >> ../output/diva.log
+echo 'dvrefetransf:       refenoise: '$var   >> ./output/diva.log
+echo dvrefetransf: ////////////////////////////////////////// >> ../output/diva.log
+echo ' '  >> ./output/diva.log
+
+../../bin/refenoise.a >> ../output/diva.log
+
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo       dvrefetransf:  refenoise.a
+echo Check execution track
+echo --------------------------------------------
+echo ' ' >> ../$dvrefetransflog
+echo -------------------------------------------- >> ../$dvrefetransflog
+echo A problem was encountered during execution ! >> ../$dvrefetransflog
+echo       dvrefetransf:  refenoise.a >> ../$dvrefetransflog
+echo Check execution track >> ../$dvrefetransflog
+echo -------------------------------------------- >> ../$dvrefetransflog
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo       dvrefetransf:   refenoise.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+fi
+
 cd ../
 
 fi
@@ -98,7 +131,36 @@ cd ../../3DWORK/
   echo $bottm >> fort.33
   echo $surf >> fort.33
   echo $nbln >> fort.33
-../../bin/sortref.a
+
+
+echo dvrefetransf: ////////////////////////////////////////// >> ../output/diva.log
+echo dvrefetransf:       refenoise   >> ./output/diva.log
+echo dvrefetransf: ////////////////////////////////////////// >> ../output/diva.log
+echo ' '  >> ./output/diva.log
+
+../../bin/sortref.a >> ../output/diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo       dvrefetransf:  sortref.a
+echo Check execution track
+echo --------------------------------------------
+echo ' ' >> ../$dvrefetransflog
+echo -------------------------------------------- >> ../$dvrefetransflog
+echo A problem was encountered during execution ! >> ../$dvrefetransflog
+echo       dvrefetransf:  sortref.a >> ../$dvrefetransflog
+echo Check execution track >> ../$dvrefetransflog
+echo -------------------------------------------- >> ../$dvrefetransflog
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo       dvrefetransf:   sortref.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+fi
+
 #
   file='../input/divarefe/'$var'_inverf'
   nbln=$(cat $file |wc -l)
@@ -110,7 +172,34 @@ cd ../../3DWORK/
   echo $surf >> fort.33
   echo $nbln >> fort.33
   echo $nbfl >> fort.33
-../../bin/refdispach.a
+
+echo dvrefetransf: ////////////////////////////////////////// >> ../output/diva.log
+echo 'dvrefetransf:       refenoise: '$var   >> ./output/diva.log
+echo dvrefetransf: ////////////////////////////////////////// >> ../output/diva.log
+echo ' '  >> ./output/diva.log
+
+../../bin/refdispach.a >> ../output/diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo       dvrefetransf:  refdispach.a
+echo Check execution track
+echo --------------------------------------------
+echo ' ' >> ../$dvrefetransflog
+echo -------------------------------------------- >> ../$dvrefetransflog
+echo A problem was encountered during execution ! >> ../$dvrefetransflog
+echo       dvrefetransf:  refdispach.a >> ../$dvrefetransflog
+echo Check execution track >> ../$dvrefetransflog
+echo -------------------------------------------- >> ../$dvrefetransflog
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo       dvrefetransf:   refdispach.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+fi
 
 echo 'finished anamorphose refe transformation'
 cd ..
@@ -119,7 +208,7 @@ fi
 
 else
 
-# Start data transformation
+echo Start data transformation >> $dvrefetransflog
 #################################
 #
 dep=$bottm
@@ -143,19 +232,44 @@ cd ./input/divarefe
   echo $nbcl >> ../../3DWORK/fort.44
   echo $dep >> ../../3DWORK/fort.44
 
-
-
-  echo $var
-  echo $itrans
-  echo $bottm 
-  echo $surf 
-  echo $nbln
-  echo $nbcl
-  echo $dep 
-
+  echo $var >> $dvrefetransflog
+  echo $itrans >> $dvrefetransflog
+  echo $bottm  >> $dvrefetransflog
+  echo $surf  >> $dvrefetransflog
+  echo $nbln >> $dvrefetransflog
+  echo $nbcl >> $dvrefetransflog
+  echo $dep  >> $dvrefetransflog
 
   cd ../../3DWORK/
-  ../../bin/refetrans.a
+
+echo dvrefetransf: ////////////////////////////////////////// >> ../output/diva.log
+'echo dvrefetransf:       refetrans: '$var'.'$level   >> ./output/diva.log
+echo dvrefetransf: ////////////////////////////////////////// >> ../output/diva.log
+echo ' '  >> ./output/diva.log
+
+  ../../bin/refetrans.a >> ../output/diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo       dvrefetransf:  refetrans.a
+echo Check execution track
+echo --------------------------------------------
+echo ' ' >> ../$dvrefetransflog
+echo -------------------------------------------- >> ../$dvrefetransflog
+echo A problem was encountered during execution ! >> ../$dvrefetransflog
+echo       dvrefetransf:  refetrans.a >> ../$dvrefetransflog
+echo Check execution track >> ../$dvrefetransflog
+echo -------------------------------------------- >> ../$dvrefetransflog
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo       dvrefetransf:   refetrans.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+fi
+
   if [ -f fort.55 ];then
   mv fort.55 'ERR.'$var'.'$level'.datapoint.ref'
   fi
@@ -185,9 +299,9 @@ cd ../
 dep=`expr $dep + 1`
 done
 
-echo 'finished non-13 transform'
+echo 'finished non-13 transform' >> $dvrefetransflog
 #
 
 fi
 
-echo 'finished transforming data'
+echo 'finished transforming data' >> $dvrefetransflog

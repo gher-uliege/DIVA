@@ -4,7 +4,7 @@
   Fileinf=./input/3Dinfo
 {
 read comment
-read comment
+read var
 read comment
 read bottm
 read comment
@@ -13,28 +13,51 @@ read comment
 read cont
 } < $Fileinf
 #
+diva3dlog='./output/3Danalysis/'$var'.diva3D.log'
+#
+echo 'diva3Dcont:' 
+echo 'diva3Dcont:' 'Start contour generation flag number: '$cont
+echo 'diva3Dcont:' 'on '$var
+echo 'diva3Dcont:' 'level '$bottm' to level '$surf
+echo 'diva3Dcont:'
+#
+echo 'diva3Dcont:' >> $diva3dlog
+echo 'diva3Dcont:' 'Start contour generation flag number: '$cont >> $diva3dlog
+echo 'diva3Dcont:' ' on '$var >> $diva3dlog
+echo 'diva3Dcont:' 'level '$bottm' to level '$surf >> $diva3dlog
+echo 'diva3Dcont:' >> $diva3dlog
+#
 #
 if [ "$cont" -eq "1" ]; then
 if [ -d ./input/divaparam ];then
-echo '>>>WARNING: ./input/divaparam exists.'
+echo ' ./input/divaparam exists.' >> $diva3dlog
 else
 mkdir -p ./input/divaparam
 fi
 if [ -f ./input/topo.grd ]; then
-echo " topo.grd found, will proceed to generate coast.cont files"
+echo " topo.grd found, will proceed to generate coast.cont files" >> $diva3dlog
 else
  if [ -f ./input/topo.dat ]; then
   if [ -f ./input/param.par ]; then
    if [ -f ./input/contour.depth ];then
-    echo "running divatopo ........."
+    echo "running divatopo ........." >> $diva3dlog
     ./divatopo
+    cat $diva3dlog ./output/divatopo.log > bidon
+    mv bidon $diva3dlog
+
     mv ./output/TopoInfo.dat ./input/.
     mv ./output/topo.grd ./input/.
-    echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-    echo 'TopoInfo.dat and topo.grd were created and put in '
-    echo ./input/.
-    echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+
+    echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo >> $diva3dlog
+    echo 'TopoInfo.dat and topo.grd were created and put in ' >> $diva3dlog
+    echo ./input/. >> $diva3dlog
+    echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo >> $diva3dlog
    else
+    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
+    echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!' >> $diva3dlog
+    echo 'Missing contour.depth file, could not perform !!' >> $diva3dlog
+    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
+#
     echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
     echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'
     echo 'Missing contour.depth file, could not perform !!'
@@ -45,26 +68,45 @@ else
     echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'
     echo 'Missing param.par file, could not perform !!'
     echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+#
+    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
+    echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!' >> $diva3dlog
+    echo 'Missing param.par file, could not perform !!' >> $diva3dlog
+    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
   fi
  else
   if [ -f ./input/topo.gebco ]; then
     if [ -f ./input/param.par ]; then
      if [ -f ./input/contour.depth ];then
-      echo "running gebco2diva ........."
+      echo "running gebco2diva 10 10 ........." >> $diva3dlog
       ./gebco2diva 10 10
+
+    cat $diva3dlog ./output/divagebco.log > bidon
+    mv bidon $diva3dlog
+
       mv ./output/TopoInfo.dat ./input/.
       mv ./output/topo.grd ./input/.
-      echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-      echo 'TopoInfo.dat and topo.grd were created and put in '
-      echo ./input/.
-      echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+      echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo >> $diva3dlog
+      echo 'TopoInfo.dat and topo.grd were created and put in ' >> $diva3dlog
+      echo ./input/. >> $diva3dlog
+      echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo >> $diva3dlog
      else
+      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
+      echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!' >> $diva3dlog
+      echo 'Missing contour.depth file, could not perform !!' >> $diva3dlog
+      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
+#
       echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
       echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'
       echo 'Missing contour.depth file, could not perform !!'
       echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
      fi
     else
+      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
+      echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!' >> $diva3dlog
+      echo 'Missing param.par file, could not perform !!' >> $diva3dlog
+      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
+#
       echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
       echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'
       echo 'Missing param.par file, could not perform !!'
@@ -77,10 +119,10 @@ fi
 if [ -f ./input/topo.grd ]; then
  ./divacont
 mv ./output/coast.cont* ./input/divaparam/.
-echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-echo 'coast.cont files were created and put in '
-echo ./input/divaparam/.
-echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo >> $diva3dlog
+echo 'coast.cont files were created and put in ' >> $diva3dlog
+echo ./input/divaparam/. >> $diva3dlog
+echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo >> $diva3dlog
 fi
 #
 fi
@@ -88,9 +130,18 @@ fi
 if [ "$cont" -ge "2" ]; then
 if [ -f ./input/topo.dat ]; then
    if [ -f ./input/param.par ]; then
-      echo "running divatopo ........."$cont
+      echo "running divatopo ........."$cont >> $diva3dlog
     ./divatopo
+
+    cat $diva3dlog ./output/divatopo.log > bidon
+    mv bidon $diva3dlog
+
    else
+     echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
+     echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!' >> $diva3dlog
+     echo 'Missing param.par file, could not perform !!' >> $diva3dlog
+     echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
+#
      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
      echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'
      echo 'Missing param.par file, could not perform !!'
@@ -99,9 +150,18 @@ if [ -f ./input/topo.dat ]; then
 else
   if [ -f ./input/topo.gebco ]; then
     if [ -f ./input/param.par ]; then
-      echo "running gebco2diva ........."$cont
-      ./gebco2diva 15 15
+      echo "running gebco2diva 10 10........."$cont >> $diva3dlog
+      ./gebco2diva 10 10
+
+    cat $diva3dlog ./output/divagebco.log > bidon
+    mv bidon $diva3dlog
+
     else
+      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
+      echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!' >> $diva3dlog
+      echo 'Missing param.par file, could not perform !!' >> $diva3dlog
+      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
+#
       echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
       echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'
       echo 'Missing param.par file, could not perform !!'
@@ -113,7 +173,7 @@ else
 fi
 if [ "$cont" -eq "3" ]; then
 if [ -d ./input/divaparam ];then
-echo '>>>WARNING: ./input/divaparam exists, files may be rewritten'
+echo '>>>WARNING: ./input/divaparam exists ' >> $diva3dlog
 else
 mkdir -p ./input/divaparam
 fi
@@ -123,7 +183,7 @@ mv ./output/coast.cont* ./input/divaparam/.
 fi
 fi
 if [ -d ./input/divaUVcons ];then
-echo '>>>WARNING: ./input/divaUVcons exists, files may be rewritten'
+echo '>>>WARNING: ./input/divaUVcons exists' >> $diva3dlog
 else
 mkdir -p ./input/divaUVcons
 fi
@@ -134,6 +194,11 @@ cp -v ./output/U* ./input/divaUVcons
 cp -v ./output/V* ./input/divaUVcons
 cp -v ./output/constraint.dat ./input/.
 else
+echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
+echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!' >> $diva3dlog
+echo 'Missing param.par file, could not perform !!' >> $diva3dlog
+echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
+#
 echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'
 echo 'Missing param.par file, could not perform !!'

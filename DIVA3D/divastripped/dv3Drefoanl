@@ -18,6 +18,23 @@ detrd=$7
 PARAMDir=./input/divaparam
 DATADir=./input/divadata/
 #
+dv3Drefoanllog='./output/dv3Drefoanl.log'
+
+echo 'dvrefoanl:  '$lev' '$var > $dv3Drefoanllog
+echo '***********' > $dv3Drefoanllog
+
+#
+echo 'dv3Drefoanl:' 
+echo 'dv3Drefoanl:' 'Start data analysis flag number: '$action
+echo 'dv3Drefoanl:' 'on '$var'.'$lev
+echo 'dv3Drefoanl:'
+#
+echo 'dv3Drefoanl:' >> $dv3Drefoanllog
+echo 'dv3Drefoanl:' 'Start data analysis flag number: '$action >> $dv3Drefoanllog
+echo 'dv3Drefoanl:' ' on '$var'.'$lev >> $dv3Drefoanllog
+echo 'dv3Drefoanl:' >> $dv3Drefoanllog
+#
+#
 if [ -f ./input/divaparam/param.par.$var'.'$lev ];then
  cp -f ./input/divaparam/param.par.$var'.'$lev ./input/param.par
 else
@@ -25,7 +42,7 @@ else
    cp -f ./input/divaparam/param.par ./input/.
  else
    if [ -f ./input/param.par ];then
-   echo ' WARNING: Using default param.par found in input for '$var'.'$lev
+   echo ' WARNING: Using default param.par found in input for '$var'.'$lev >> $dv3Drefoanllog
    fi
  fi
 fi
@@ -94,7 +111,7 @@ echo $param13 >> ./input/param.par
 fi
 
 if [ "$#" == "8" ];then
-echo dv3Drefoanl stabilisation: dvstbchp 1
+echo dv3Drefoanl stabilisation: dvstbchp 1 >> $dv3Drefoanllog
 ./dvstbchp 1
 fi
 else
@@ -109,11 +126,11 @@ if [ -f ./input/divadata/$var.$lev ];then
  nbdat=`cat './input/data.dat' |wc -l` 
  echo $lev $nbdat >> './output/3Danalysis/'$var'.nbrdata'
  if [ "$nbdat" == "0" ] ; then
-  echo 'WARNING: data file ' $var.$lev 'is empty '
+  echo 'WARNING: data file ' $var.$lev 'is empty ' >> $dv3Drefoanllog
   dataflag=1
  fi
 else
- echo '!!!!! dvrefoanl: did not find data file '$var'.'$lev' in divadata/ !!!!!'
+ echo '!!!!! dvrefoanl: did not find data file '$var'.'$lev' in divadata/ !!!!!' >> $dv3Drefoanllog
  runflag=2
 fi
 #
@@ -142,6 +159,7 @@ else
  if [ -f './input/divadata/'$var'.'$lev ];then
   cp -f './input/divadata/'$var'.'$lev  ./input/data.dat
  else
+  echo '!!!!! diva3Dsub did not find '$var'.'$lev' in divadata/ !!!!!' >> $dv3Drefoanllog
   echo '!!!!! diva3Dsub did not find '$var'.'$lev' in divadata/ !!!!!'
   runflag=2
  fi
@@ -153,6 +171,7 @@ if [ "$action" == "2" ];then
 if [ -f './input/divadata/'$var'.'$lev ];then
  cp -f './input/divadata/'$var'.'$lev  ./input/data.dat
 else
+ echo '!!!!! diva3Dsub did not find '$var'.'$lev' in divadata/ !!!!!' >> $dv3Drefoanllog
  echo '!!!!! diva3Dsub did not find '$var'.'$lev' in divadata/ !!!!!'
  runflag=2
 fi
@@ -161,9 +180,11 @@ fi
 if [ -f ./input/divaparam/coast.cont.$lev ];then
  cp -f ./input/divaparam/coast.cont.$lev  ./input/coast.cont
 else
+ echo '!!!!! diva3Dsub did not find coast.cont.'$lev' in divaparam/ !!!!!' >> $dv3Drefoanllog
  echo '!!!!! diva3Dsub did not find coast.cont.'$lev' in divaparam/ !!!!!'
  runflag=3
 fi
+
 #
 ##########################################################
 if [ -f ./input/divaparam/valatxy.coord.$var'.'$lev ];then
@@ -265,6 +286,11 @@ fi
 #
 if [ "$action" == "1" ];then
 
+echo ' ' >> $dv3Drefoanllog
+echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%' >> $dv3Drefoanllog
+echo '%%%%%%%%%%%% running  analysis for '$var'.'$lev >> $dv3Drefoanllog
+echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%' >> $dv3Drefoanllog
+echo ' ' >> $dv3Drefoanllog
 echo ' '
 echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 echo '%%%%%%%%%%%% running  analysis for '$var'.'$lev
@@ -280,8 +306,16 @@ if [ -f ./input/divamesh/meshtopo.$lev ]; then
  cp -v ./input/divamesh/mesh.dat.$lev ./output/meshvisu/fort.23
  cp -v ./input/divaparam/coast.cont.$lev ./output/meshvisu/fort.10
 else
- echo 'dv3Drefoanl:  generating a mesh for '$var'.'$lev
+ echo 'dv3Drefoanl:  generating a mesh for '$var'.'$lev >> $dv3Drefoanllog
+
+echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
+echo dv3Drefoanl:                 divamesh   >> ./output/diva.log
+echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
+echo ' '  >> ./output/diva.log
 divamesh
+    cat $dv3Drefoanllog ./output/divamesh.log > bidon
+    mv bidon $dv3Drefoanllog
+
  cp -v ./output/meshvisu/fort.22 ./input/divamesh/meshtopo.$lev
  cp -v ./output/meshvisu/fort.23 ./input/divamesh/mesh.dat.$lev
  cp -v ./output/meshvisu/fort.10 ./input/divaparam/coast.cont.$lev
@@ -297,31 +331,68 @@ read comment
 read nbit
 } < $Fileinf
 #
-echo '>>>>>>>>>>>>>>>>  using ./divadetrend' $ngrp $nbit
+echo '>>>>>>>>>>>>>>>>  using ./divadetrend' $ngrp $nbit >> $dv3Drefoanllog
+
+echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
+echo dv3Drefoanl:                 divadetrend   >> ./output/diva.log
+echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
+echo ' '  >> ./output/diva.log
 ./divadetrend $ngrp $nbit
+    cat $dv3Drefoanllog ./output/divadetrend.log > bidon
+    mv bidon $dv3Drefoanllog
+
 else
 #echo Analysing
+
+echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
+echo dv3Drefoanl:                 divacalc   >> ./output/diva.log
+echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
+echo ' '  >> ./output/diva.log
 divacalc
+    cat $dv3Drefoanllog ./output/divacalc.log > bidon
+    mv bidon $dv3Drefoanllog
+
 fi
+echo ' ' >> $dv3Drefoanllog
+echo '%%%%%%%%%%%% Finished  analysis for '$var'.'$lev >> $dv3Drefoanllog
+echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%' >> $dv3Drefoanllog
+echo ' ' >> $dv3Drefoanllog
 echo ' '
 echo '%%%%%%%%%%%% Finished  analysis for '$var'.'$lev
 echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 echo ' '
 else
- echo '>>>>>>>>>>>>  making anomalies for '$var'.'$lev
+ echo '>>>>>>>>>>>>  making anomalies for '$var'.'$lev >> $dv3Drefoanllog
+
+echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
+echo dv3Drefoanl:                 divaanom   >> ./output/diva.log
+echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
+echo ' '  >> ./output/diva.log
 ./divaanom
+    cat $dv3Drefoanllog ./output/divaanom.log > bidon
+    mv bidon $dv3Drefoanllog
+
 if [ -f ./input/divamesh/meshtopo.$lev ]; then
  cp -v ./input/divamesh/meshtopo.$lev ./output/meshvisu/fort.22
  cp -v ./input/divamesh/mesh.dat.$lev ./output/meshvisu/fort.23
  cp -v ./input/divaparam/coast.cont.$lev ./output/meshvisu/fort.10
 else
- echo '>>>>>>>>>>>>  regenerating a mesh for '$var'.'$lev
+ echo '>>>>>>>>>>>>  regenerating a mesh for '$var'.'$lev >> $dv3Drefoanllog
+
+
+echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
+echo dv3Drefoanl:                 divamesh   >> ./output/diva.log
+echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
+echo ' '  >> ./output/diva.log
  ./divamesh
+    cat $dv3Drefoanllog ./output/divamesh.log > bidon
+    mv bidon $dv3Drefoanllog
+
  cp -v ./output/meshvisu/fort.22 ./input/divamesh/meshtopo.$lev
  cp -v ./output/meshvisu/fort.23 ./input/divamesh/mesh.dat.$lev
  cp -v ./output/meshvisu/fort.10 ./input/divaparam/coast.cont.$lev
 fi
- echo '>>>>>>>>>>>>  analysing anomalies for '$var'.'$lev
+ echo '>>>>>>>>>>>>  analysing anomalies for '$var'.'$lev >> $dv3Drefoanllog
 #
 if [ "$detrd" -eq "1" ];then
 #
@@ -333,14 +404,42 @@ read comment
 read nbit
 } < $Fileinf
 #
-echo '>>>>>>>>>>>>>>>>  using ./divadetrend' $ngrp $nbit
+echo '>>>>>>>>>>>>>>>>  using ./divadetrend' $ngrp $nbit >> $dv3Drefoanllog
+
+echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
+echo dv3Drefoanl:                 divadetrend   >> ./output/diva.log
+echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
+echo ' '  >> ./output/diva.log
 ./divadetrend $ngrp $nbit
+    cat $dv3Drefoanllog ./output/divadetrend.log > bidon
+    mv bidon $dv3Drefoanllog
+
 else
-./divacalc
+
+echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
+echo dv3Drefoanl:                 divacalc   >> ./output/diva.log
+echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
+echo ' '  >> ./output/diva.log
+divacalc
+    cat $dv3Drefoanllog ./output/divacalc.log > bidon
+    mv bidon $dv3Drefoanllog
+
 fi
-echo '>>>>>>>>>>>>  sum up anomalies and reference field for '$var'.'$lev' '
+echo '>>>>>>>>>>>>  sum up anomalies and reference field for '$var'.'$lev' ' >> $dv3Drefoanllog
+
+
+echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
+echo dv3Drefoanl:                 divasumup   >> ./output/diva.log
+echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
+echo ' '  >> ./output/diva.log
 ./divasumup
+    cat $dv3Drefoanllog ./output/divasumup.log > bidon
+    mv bidon $dv3Drefoanllog
 #
+echo ' ' >> $dv3Drefoanllog
+echo '%%%%%%%%%%%% Finished  analysis for '$var'.'$lev >> $dv3Drefoanllog
+echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%' >> $dv3Drefoanllog
+echo ' ' >> $dv3Drefoanllog
 echo ' '
 echo '%%%%%%%%%%%% Finished  analysis for '$var'.'$lev
 echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
@@ -351,7 +450,15 @@ if [ -f ./input/divadata/$var'.'$lev'.DATABINS' ];then
  echo ' '
 # $var'.'$lev'.DATABINS exists'
 else
+
+echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
+echo dv3Drefoanl:                 divadatacoverage   >> ./output/diva.log
+echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
+echo ' '  >> ./output/diva.log
 ./divadatacoverage
+    cat $dv3Drefoanllog ./output/divadatacovr.log > bidon
+    mv bidon $dv3Drefoanllog
+
 cp -v ./output/DATABINS.dat ./input/divadata/$var'.'$lev'.DATABINS'
 cp -v ./output/DATABINSinfo.dat ./input/divadata/$var'.'$lev'.DATABINSinfo'
 fi
@@ -450,6 +557,11 @@ fi
 fi
 #
 if [ "$action" == "2" ];then
+echo ' ' >> $dv3Drefoanllog
+echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%' >> $dv3Drefoanllog
+echo '%%%%%%%%%%%% Making reference for '$var'.'$lev >> $dv3Drefoanllog
+echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%' >> $dv3Drefoanllog
+echo ' ' >> $dv3Drefoanllog
 echo ' '
 echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 echo '%%%%%%%%%%%% Making reference for '$var'.'$lev
@@ -466,9 +578,11 @@ read comment
 read nbit
 } < $Fileinf
 #
-echo '>>>>>>>>>>>>>>>>  using ./divadetrend' $ngrp $nbit
+echo '>>>>>>>>>>>>>>>>  running ./dvdetreref' $ngrp $nbit >> $dv3Drefoanllog
+
 ./dvdetreref $ngrp $nbit
 else
+echo '>>>>>>>>>>>>>>>>  running ./divarefe'  >> $dv3Drefoanllog
 ./divarefe
 fi
 mv ./input/param.par.svori ./input/param.par
@@ -561,24 +675,40 @@ fi
 ##################################################################
 else
 if [ "$runflag" -eq "1" ];then
+echo '!!!!!!!!!!!!!diva3Dsub WARNING: !!!!!!!!!!!!!!!!!!' >> $dv3Drefoanllog
+echo '!!!!!!!!DID NOT FIND param.par FILE FOR '$var $lev'!'  >> $dv3Drefoanllog
+echo '!!!!!!!!!!!!!THE ANALYSIS WAS NOT PERFORMED !' >> $dv3Drefoanllog
+echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $dv3Drefoanllog
 echo '!!!!!!!!!!!!!diva3Dsub WARNING: !!!!!!!!!!!!!!!!!!'
 echo '!!!!!!!!DID NOT FIND param.par FILE FOR '$var $lev'!' 
 echo '!!!!!!!!!!!!!THE ANALYSIS WAS NOT PERFORMED !'
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 else
 if [ "$runflag" -eq "2" ];then
+echo '!!!!!!!!!!!!!diva3Dsub WARNING: !!!!!!!!!!!!!!!!!!' >> $dv3Drefoanllog
+echo '!!!!!!!!!!!!!DID NOT FIND DATA FILE FOR '$var $lev'!'  >> $dv3Drefoanllog
+echo '!!!!!!!!!!!!!THE ANALYSIS WAS NOT PERFORMED !' >> $dv3Drefoanllog
+echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $dv3Drefoanllog
 echo '!!!!!!!!!!!!!diva3Dsub WARNING: !!!!!!!!!!!!!!!!!!'
 echo '!!!!!!!!!!!!!DID NOT FIND DATA FILE FOR '$var $lev'!' 
 echo '!!!!!!!!!!!!!THE ANALYSIS WAS NOT PERFORMED !'
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 else
 if [ "$runflag" -eq "3" ];then
+echo '!!!!!!!!!!!!!diva3Dsub WARNING: !!!!!!!!!!!!!!!!!!' >> $dv3Drefoanllog
+echo '!!!!!!!!!!!!!DID NOT FIND CONTOUR FILE FOR '$var $lev'!'  >> $dv3Drefoanllog
+echo '!!!!!!!!!!!!!THE ANALYSIS WAS NOT PERFORMED !' >> $dv3Drefoanllog
+echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $dv3Drefoanllog
 echo '!!!!!!!!!!!!!diva3Dsub WARNING: !!!!!!!!!!!!!!!!!!'
 echo '!!!!!!!!!!!!!DID NOT FIND CONTOUR FILE FOR '$var $lev'!' 
 echo '!!!!!!!!!!!!!THE ANALYSIS WAS NOT PERFORMED !'
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 else
 if [ "$runflag" -eq "4" ];then
+echo '!!!!!!!!!!!!!diva3Dsub WARNING: !!!!!!!!!!!!!!!!!!' >> $dv3Drefoanllog
+echo '!!!!!!!!!!!!!DATA FILE '$var $lev' IS EMPTY!'  >> $dv3Drefoanllog
+echo '!!!!!!!!!!!!!THE ANALYSIS WAS NOT PERFORMED !' >> $dv3Drefoanllog
+echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $dv3Drefoanllog
 echo '!!!!!!!!!!!!!diva3Dsub WARNING: !!!!!!!!!!!!!!!!!!'
 echo '!!!!!!!!!!!!!DATA FILE '$var $lev' IS EMPTY!' 
 echo '!!!!!!!!!!!!!THE ANALYSIS WAS NOT PERFORMED !'

@@ -39,12 +39,28 @@ read comment
 read gmax
 } < $Fileinf
 #
+
+#
+diva3dlog='./output/3Danalysis/'$var'.diva3D.log'
+#
+echo 'diva3Drefiltr:' 
+echo 'diva3Drefiltr:' 'Start a 3D analysis with background filtering '
+echo 'diva3Drefiltr:' 'on '$var
+echo 'diva3Drefiltr:' 'level '$bottm' to level '$surf
+echo 'diva3Drefiltr:'
+#
+echo 'diva3Drefiltr:' >> $diva3dlog
+echo 'diva3Drefiltr:' 'Start data cleaning flag number: '$datop >> $diva3dlog
+echo 'diva3Drefiltr:' ' on '$var >> $diva3dlog
+echo 'diva3Drefiltr:' 'level '$bottm' to level '$surf >> $diva3dlog
+echo 'diva3Drefiltr:' >> $diva3dlog
+#
 #
 ##if [ "$act" == "3" ];then
 #####################################
 #
 if [ -d ./input/divarefe ];then
-echo '>>>WARNING: ./input/divarefe exists.'
+echo '>>>WARNING: ./input/divarefe exists.' >> $diva3dlog
 else
 mkdir -p ./input/divarefe
 fi
@@ -53,7 +69,7 @@ fi
 #
 if [ -f ./input/dvtransinfo ];then
 #############################
-echo 'transforming input data:' $bottm $surf $var
+echo 'transforming input data:' $bottm $surf $var >> $diva3dlog
   Fileinf=./input/dvtransinfo
 {
 read ntrans
@@ -61,14 +77,21 @@ read ntrans
 
 echo 'going to trans data files, ntrans = '$ntrans
 
+echo diva3Drefiltr: ////////////////////////////////////////// >> ./output/diva.log
+echo diva3Drefiltr:                 dvdatatransf   >> ./output/diva.log
+echo diva3Drefiltr: ////////////////////////////////////////// >> ./output/diva.log
+echo ' '  >> ./output/diva.log
  ./dvdatatransf $bottm $surf $var $ntrans
-echo 'dvdatatransf finished '
+    cat $diva3log './output/3Danalysis/'$var'_dvdatatransf.log' > bidon
+    mv bidon $diva3dlog
+
+echo 'dvdatatransf finished ' >> $diva3dlog
 fi
 #############################fi -f ./input/dvtransinfo
 #
 if [ -f ./input/dvlaymixinfo ];then
 #############################
-echo 'mixing layers input data:' $bottm $surf $var
+echo 'mixing layers input data:' $bottm $surf $var >> $diva3dlog
 cp -r ./input/divadata ./input/divadata_ORI
   Fileinf=./input/dvlaymixinfo
 {
@@ -79,9 +102,9 @@ mv ./input/dvlaymixinfo  ./input/laymixbidon
 fi
 ##############################fi -f ./input/dvlaymixinfo
 #
-echo 'ooooooooooooooooooooooooooooooooooo'
-echo 'diva3Drefiltr: '$var
-echo 'ooooooooooooooooooooooooooooooooooo'
+#echo 'ooooooooooooooooooooooooooooooooooo'
+#echo 'diva3Drefiltr: '$var
+#echo 'ooooooooooooooooooooooooooooooooooo'
 #
 # Write averages data  file
 #################################
@@ -105,8 +128,8 @@ cd ../
 dep=`expr $dep + 1`
 done
 #
-# Write filtered averages data file
-####################################
+echo Write filtered averages data file >> $diva3dlog
+echo '####################################' >> $diva3dlog
 #
 if [ -f './input/divadata/MOY_'$var'.dat' ];then
 llll=`cat './input/divadata/MOY_'$var'.dat' |wc -l` 
@@ -115,7 +138,7 @@ then
 echo 'Filtering file MOY_'${var}'.dat'
 awkfilter './input/divadata/MOY_'${var}'.dat' > ./output/bidon
 mv ./output/bidon ./output/${var}.AVREF.dat
-echo Finished filtering
+echo Finished filtering >> $diva3dlog
 fi
 cp -v './output/'${var}'.AVREF.dat' './input/divadata/'${var}'.AVREF.dat'
 mv './input/divadata/MOY_'$var'.dat' './input/divadata/'$var'.AVREF.dat.notfiltered'
@@ -127,7 +150,7 @@ fi
 #ecrire le 3Difo avec isdoanalysis = 2
 
 if [ -d  ./output/3Danalysis/ ];then
-echo  ./output/3Danalysis exists
+echo  ./output/3Danalysis exists >> $diva3dlog
 else
 mkdir -p ./output/3Danalysis/
 fi
@@ -241,7 +264,7 @@ echo $commentstr >> ./input/3Dinfo
 ./diva3Dsub
 #
 #
-echo Write filtered mean data as reference field files
+echo Write filtered mean data as reference field files >> $diva3dlog
 ###################################################
 ls -l './input/divadata/'${var}'.AVREF.dat'
 #
@@ -257,7 +280,7 @@ let lev=10000+$dep
 read val
 ########
 
-echo '?????????????????? '$lev' === '$val
+echo '?????????????????? '$lev' === '$val >> $diva3dlog
 
 
 flag=1
@@ -270,6 +293,7 @@ cp -v './output/3Danalysis/Fields/'$var'.'$lev'.ref' './output/3Danalysis/Fields
 flag=0
 fi
 if [ "$flag" == "1" ];then
+echo ' did not find '$var'.'$lev' 2D ncfile (reference field file)' >> $diva3dlog
 echo ' did not find '$var'.'$lev' 2D ncfile (reference field file)'
 exit
 fi
@@ -279,7 +303,7 @@ dtplines=`cat $dtpfile |wc -l`
 ascfile=$var'.'$lev'.ascii.ref'
 dtpfile=$var'.'$lev'.datapoint.ref'
 mkdir -p ./3DWORK
-echo 'filling ref for  '$var'.'$lev
+echo 'filling ref for  '$var'.'$lev >> $diva3dlog
 #
 echo $binfile > ./3DWORK/refinfo
 echo $dtpfile >> ./3DWORK/refinfo
@@ -289,7 +313,7 @@ echo $val >> ./3DWORK/refinfo
 #######################################
 #
 cd ./3DWORK
-echo ' write filtered average background '$var.$lev
+echo ' write filtered average background '$var.$lev >> ../$diva3dlog
 ../../bin/fillfilavref.a
 cd ../
 #

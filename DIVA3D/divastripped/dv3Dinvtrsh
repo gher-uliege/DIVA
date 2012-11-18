@@ -9,6 +9,22 @@ var=$2
 ntrans=$3
 act=$4
 
+
+diva3dlog='./output/3Danalysis/'$var'.diva3D.log'
+#
+echo 'dv3Dinvtrsh:' 
+echo 'dv3Dinvtrsh:' 'Start field transform: '
+echo 'dv3Dinvtrsh:' 'on '$var', level '$lev', trans-flag '$ntrans
+echo 'dv3Dinvtrsh:'
+#
+echo 'dv3Dinvtrsh:'  >> $diva3dlog
+echo 'dv3Dinvtrsh:' 'Start field transform' >> $diva3dlog
+echo 'dv3Dinvtrsh:' 'on '$var', level '$lev', trans-flag '$ntrans >> $diva3dlog
+echo 'dv3Dinvtrsh:' >> $diva3dlog
+#
+
+
+
 flag=1
 nblines=0
 if [ "$act" == "1" ];then
@@ -21,6 +37,8 @@ if [ -f ./output/3Danalysis/Fields/$var.$lev.anl.nc ];then
 ncdfile=$var.$lev.anl.nc
 binfile=$var.$lev.anl
 ascfile=$var.$lev.ascii.anl
+
+echo 'dv3Dinvtrsh '$gherfile' '$binfile >> $diva3dlog
 echo 'dv3Dinvtrsh '$gherfile' '$binfile
 
 flag=0
@@ -36,13 +54,19 @@ if [ -f ./output/3Danalysis/Fields/$var.$lev.ref.nc ];then
  if [ -f ./output/3Danalysis/Fields/$var.$lev.ref ];then
   cp ./output/3Danalysis/Fields/$var.$lev.ref ./output/3Danalysis/Fields/$var.$lev.ref.tr
   binfile=$var.$lev.ref
+
+  echo 'dv3Dinvtrsh ncfile '$binfile >> $diva3dlog
   echo 'dv3Dinvtrsh ncfile '$binfile
+
  fi
  if [ -f ./output/3Danalysis/Fields/$var.$lev.datapoint.ref ];then
   cp ./output/3Danalysis/Fields/$var.$lev.datapoint.ref ./output/3Danalysis/Fields/$var.$lev.datapoint.ref.tr
   ascfile=$var.$lev.datapoint.ref
   nblines=`cat ./output/3Danalysis/Fields/$ascfile |wc -l` 
+
+  echo 'dv3Dinvtrsh ascfile '$ascfile >> $diva3dlog
   echo 'dv3Dinvtrsh ascfile '$ascfile
+
  fi
 
 ncdfile=$var.$lev.ref.nc
@@ -55,6 +79,7 @@ fi
 
 if [ "$flag" == "1" ];then
 
+echo ' did not find '$var'.'$lev' 2D file (analysis of transformed data)' >> $diva3dlog
 echo ' did not find '$var'.'$lev' 2D file (analysis of transformed data)'
 
 exit
@@ -65,6 +90,7 @@ fi
 ##echo 'starting transformation of '$var'.'$lev'.anl.nc'
 ##else
 mkdir -p ./3DWORK
+echo 'starting transformation of '$var'.'$lev'.anl.nc' >> $diva3dlog
 echo 'starting transformation of '$var'.'$lev'.anl.nc'
 ##fi
 #
@@ -81,15 +107,48 @@ echo $nblines >> ./3DWORK/ncname
 #######################################
 #
 echo 'Start analyses inverse transformation '$ntrans
+echo 'Start analyses inverse transformation '$ntrans >> $diva3dlog
 
-  cd ./3DWORK
-  if [ -f ERR.$var.$lev ];then
+cd ./3DWORK
+if [ -f ERR.$var.$lev ];then
+
+  echo 'No inverse transformation for '$var.$lev >> ../$diva3dlog
   echo 'No inverse transformation for '$var.$lev
   else
+  echo ' Inverse transformation for '$var.$lev >> ../$diva3dlog
   echo ' Inverse transformation for '$var.$lev
-  ../../bin/anatrans.a
+
+  echo dv3Dinvtrsh: ////////////////////////////////////////// >> ../output/diva.log
+  echo dv3Dinvtrsh:       anatrans   >> ../output/diva.log
+  echo dv3Dinvtrsh: ////////////////////////////////////////// >> ../output/diva.log
+  echo ' '  >> ../output/diva.log
+
+  ../../bin/anatrans.a >> ../$diva3dlog
+
+
+  if [ $? -ne 0 ];then
+  echo ' '
+  echo --------------------------------------------
+  echo A problem was encountered during execution !
+  echo       dv3Dinvtrsh:  anatrans.a
+  echo Check execution track
+  echo --------------------------------------------
+  echo ' ' >> ../$diva3dlog
+  echo -------------------------------------------- >> ../$diva3dlog
+  echo A problem was encountered during execution ! >> ../$diva3dlog
+  echo       dv3Dinvtrsh:  anatrans.a >> ../$diva3dlog
+  echo Check execution track >> ../$diva3dlog
+  echo -------------------------------------------- >> ../$diva3dlog
+  echo ' ' >> ../output/diva.log
+  echo -------------------------------------------- >> ../output/diva.log
+  echo A problem was encountered during execution ! >> ../output/diva.log
+  echo       dv3Dinvtrsh:   anatrans.a  >> ../output/diva.log
+  echo Check execution track >> ../output/diva.log
+  echo -------------------------------------------- >> ../output/diva.log
   fi
-  cd ../
+
+fi
+cd ../
 #
 # End analyses inverse transformations
 ######################################

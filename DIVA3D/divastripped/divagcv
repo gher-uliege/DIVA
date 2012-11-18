@@ -1,8 +1,16 @@
 #!/bin/bash
-echo ///////////////////////////////////////////
-echo        Generalized Cross Validation
-echo ///////////////////////////////////////////
+echo divagcv:///////////////////////////////////////////
+echo divagcv:       Generalized Cross Validation
+echo divagcv:///////////////////////////////////////////
 echo ' '
+
+divagcvlog='./output/divagcv.log'
+echo divagcv://///////////////////////////////////////// > $divagcvlog
+echo divagcv:       Generalized Cross Validation >> $divagcvlog
+echo divagcv://///////////////////////////////////////// >> $divagcvlog
+echo ' ' >> $divagcvlog
+
+
 cp ./input/param.par  ./input/param.par.ori
 if [ -f ./input/valatxy.coord.ori ]
 then
@@ -18,23 +26,24 @@ then
 #Create mesh once if no mesh present
 if [ -f ./meshgenwork/fort.22 ]
 then 
-echo ===========================================================================
-echo Mesh files aready exist, hope they are correct: otherwise exectute divamesh
-echo ===========================================================================
+echo divagcv:=========================================================================== >> $divagcvlog
+echo divagcv:Mesh files aready exist, hope they are correct: otherwise exectute divamesh >> $divagcvlog
+echo divagcv:=========================================================================== >> $divagcvlog
 else
 divamesh
 fi
 else
-echo Need to provide gcvsampling.dat in ./input !
+echo divagcv:Need to provide gcvsampling.dat in ./input ! >> $divagcvlog
+echo divagcv:Need to provide gcvsampling.dat in ./input !
 fi
 ijm=0
 for gcv in `cat ./input/gcvsampling.dat`
 do
-echo ' '
-echo =============================================
-echo =============================================
-echo Generalized Cross Validation  with value $gcv
-echo =============================================
+echo ' ' >> $divagcvlog
+echo ============================================= >> $divagcvlog
+echo divagcv:============================================= >> $divagcvlog
+echo divagcv:Generalized Cross Validation  with value $gcv >> $divagcvlog
+echo divagcv:============================================= >> $divagcvlog
 let ijm=$ijm+1
 head -17 ./input/param.par.ori > bidon
 echo 1 >> bidon
@@ -49,7 +58,11 @@ echo $gcv >> bidon
 echo >> bidon
 echo 0 >> bidon
 mv bidon ./input/param.par
+
 divacalc
+ cat  $divagcvlog ./output/divacalc.log > bidon
+ mv bidon $divagcvlog
+
 FILENAME=./divawork/fort.77
 { 
 read gcvval 
@@ -60,8 +73,9 @@ echo $gcv > bidon
 read gcv 
 } < $FILENAME
 rm bidon
-echo $gcvval
-echo $gcv $gcvval
+echo divagcv:$gcvval >> $divagcvlog
+echo divagcv:$gcv $gcvval >> $divagcvlog
+
 echo $gcv $gcvval >> ./output/gcv.dat
 ########for testing
 itestGCV=0
@@ -80,10 +94,10 @@ then
 cat ./output/fieldatdatapoint.anl >> ./input/GCVtest/localvalue.dat
 fi
 ########end testing
-echo =============================================
-echo Finished working with value $gcv
-echo =============================================
-echo ' '
+echo divagcv:============================================= >> $divagcvlog
+echo divagcv:Finished working with value $gcv >> $divagcvlog
+echo divagcv:============================================= >> $divagcvlog
+echo ' ' >> $divagcvlog
 done
 mv ./input/param.par.ori ./input/param.par
 if [ -f ./input/valatxy.coord.ori ]
@@ -92,14 +106,11 @@ mv ./input/valatxy.coord.ori ./input/valatxy.coord
 fi
 cp ./output/gcv.dat ./divawork/fort.11
 cd divawork
-echo Looking for the minimum of GCV
-echo ' '
+echo divagcv:Looking for the minimum of GCV  >> $divagcvlog
+echo ' ' >> $divagcvlog
 if [ -f ../input/gcvsampling.dat ] 
 then 
-if [ -f ../output/diva.log ] ; then
- cp -f ../output/diva.log .
-fi
-../../bin/findmin.a >> diva.log
+../../bin/findmin.a >> ../output/diva.log
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -107,15 +118,25 @@ echo A problem was encountered during execution !
 echo          divagcv      findmin.a
 echo Check execution track
 echo --------------------------------------------
-echo ' ' >> diva.log
-echo -------------------------------------------- >> diva.log
-echo A problem was encountered during execution ! >> diva.log
-echo          divagcv      findmin.a  >> diva.log
-echo Check execution track >> diva.log
-echo -------------------------------------------- >> diva.log
+echo ' ' >> ../$divagcvlog
+echo -------------------------------------------- >> ../$divagcvlog
+echo A problem was encountered during execution ! >> ../$divagcvlog
+echo          divagcv      findmin.a >> ../$divagcvlog
+echo Check execution track >> ../$divagcvlog
+echo -------------------------------------------- >> ../$divagcvlog
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo          divagcv      findmin.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
 fi
- cp -f diva.log ../output/.
 else
+echo ' ' >> ../$divagcvlog
+echo -------------------------------------------- >> ../$divagcvlog
+echo A problem was encountered during execution ! >> ../$divagcvlog
+echo Check execution track >> ../$divagcvlog
+echo -------------------------------------------- >> ../$divagcvlog
 echo ' '
 echo --------------------------------------------
 echo A problem was encountered during execution !
@@ -123,26 +144,30 @@ echo Check execution track
 echo --------------------------------------------
 fi
 mv fort.12 ../output/gcvsnvar.dat
-echo ' '
-echo ----------------------------------------
-echo 'GCV finished'
+echo ' ' >> ../$divagcvlog
+echo ---------------------------------------- >> ../$divagcvlog
+echo 'GCV finished' >> ../$divagcvlog
 echo 'Estimated value of SNR = ' $(awk 'FNR == 2 { print; exit }' ../output/gcvsnvar.dat)
-echo Results written in ./output/gcvsnvar.dat
-echo ----------------------------------------
-echo ' '
-echo -----------------------------------------------------
-echo 'Creating adapted param.par in ./output/param.par.gcv'
-echo -----------------------------------------------------
+echo Results written in ./output/gcvsnvar.dat >> ../$divagcvlog
+echo ---------------------------------------- >> ../$divagcvlog
+echo ' ' >> ../$divagcvlog
+echo ----------------------------------------------------- >> ../$divagcvlog
+echo 'Creating adapted param.par in ./output/param.par.gcv' >> ../$divagcvlog
+echo ----------------------------------------------------- >> ../$divagcvlog
 head -23 ../input/param.par  > ../output/param.par.gcv
 head -2 ../output/gcvsnvar.dat | tail -1 >> ../output/param.par.gcv
 head -25 ../input/param.par | tail -1 >> ../output/param.par.gcv
 head -4 ../output/gcvsnvar.dat  | tail -1 >> ../output/param.par.gcv
 if [ "$1" == "-r" ]
 then
-echo =======================================================
-echo Replacing SNR by new value from GCV in param.par 
+echo divagcv:======================================================= >> ../$divagcvlog
+echo divagcv:Replacing SNR by new value from GCV in param.par  >> ../$divagcvlog
+echo divagcv:=======================================================
+echo divagcv:Replacing SNR by new value from GCV in param.par 
 cd ..
 cp -v ./input/param.par ./input/param.par.old
 cp -v ./output/param.par.gcv ./input/param.par
 echo =======================================================
+else
+cd ..
 fi

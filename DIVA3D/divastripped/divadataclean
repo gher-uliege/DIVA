@@ -1,26 +1,40 @@
 #!/bin/bash
 export LC_ALL=C
-echo //////////////////////////////////////////////////
-echo Going to select data in bounding box
-echo //////////////////////////////////////////////////
+#  
+echo //////////////////////////////////////
+echo        CLeaning data out of the mesh
+echo //////////////////////////////////////
+echo ' '
+
+divadatalog='./output/divadata.log'
+
+echo ////////////////////////////////////// > $divadatalog
+echo        CLeaning data out of the mesh >> $divadatalog
+echo ////////////////////////////////////// >> $divadatalog
+echo ' ' >> $divadatalog
 fmin=-1E36
 fmax=1E36
 if [ "$#" == "2" ]
 then
-echo //////////////////////////////////////////////////
-echo Going to select data in range $1 $2
-echo //////////////////////////////////////////////////
 fmin=$1
 fmax=$2
 fi
+echo ////////////////////////////////////////////////// >> $divadatalog
+echo Going to select data in bounding box $fmin $fmax >> $divadatalog
+echo ////////////////////////////////////////////////// >> $divadatalog
+echo ' ' >> $divadatalog
+#
 cp ./input/data.dat ./divawork/fort.44
 cp ./input/coast.cont ./divawork/fort.10
 cd divawork
 nbccol=$(head -n 1 ./fort.44 | wc -w)
-if [ -f ../output/diva.log ] ; then
- cp -f ../output/diva.log .
-fi
-echo $nbccol | ../../bin/datacheck.a >> diva.log
+
+echo ////////////////////////////////////////// >> ../output/diva.log
+echo '           Data check (data clean)' >> ../output/diva.log
+echo ////////////////////////////////////////// >> ../output/diva.log
+echo ' '  >> ../output/diva.log
+
+echo $nbccol | ../../bin/datacheck.a >> ../output/diva.log
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -28,14 +42,19 @@ echo A problem was encountered during execution !
 echo          divadataclean      datacheck.a
 echo Check execution track
 echo --------------------------------------------
-echo ' ' >> diva.log
-echo -------------------------------------------- >> diva.log
-echo A problem was encountered during execution ! >> diva.log
-echo         divadataclean       datacheck.a  >> diva.log
-echo Check execution track >> diva.log
-echo -------------------------------------------- >> diva.log
+echo ' ' >> $divadatalog
+echo -------------------------------------------- >> ../$divadatalog
+echo A problem was encountered during execution ! >> ../$divadatalog
+echo          divadataclean      datacheck.a >> ../$divadatalog
+echo Check execution track >> ../$divadatalog
+echo -------------------------------------------- >> ../$divadatalog
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo         divadataclean       datacheck.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
 fi
- cp -f diva.log ../output/.
 # retrieve bounding box
 {
 read xmin
@@ -43,7 +62,7 @@ read xmax
 read ymin
 read ymax
 } < fort.61
-echo $xmin $xmax $ymin $ymax $fmin $fmax
+echo $xmin $xmax $ymin $ymax $fmin $fmax >> ../$divadatalog
 awk -v xmin=$xmin -v xmax=$xmax -v ymin=$ymin -v ymax=$ymax -v fmin=$fmin -v fmax=$fmax '{
 if ($1>= xmin && $1 <= xmax && $2 >= ymin && $2 <= ymax && $3 >= fmin && $3 <= fmax ) print $0
 }' ../input/data.dat > fort.20
@@ -51,16 +70,17 @@ cd ..
 rm -f ./divawork/fort.60
 mv ./input/data.dat ./input/data.dat.full
 cp ./divawork/fort.20 ./input/data.dat
-echo //////////////////////////////////////////////////
-echo Finished eliminating data out of the bounding box
-echo Data retained are in ./input/data.dat
-echo Original data are in ./input/data.dat.full
-echo //////////////////////////////////////////////////
-echo ////////////////////////////////////////////////////////
-echo Now eliminating points outside of the mesh
+echo ////////////////////////////////////////////////// >> $divadatalog
+echo Finished eliminating data out of the bounding box >> $divadatalog
+echo Data retained are in ./input/data.dat >> $divadatalog
+echo Original data are in ./input/data.dat.full >> $divadatalog
+echo ////////////////////////////////////////////////// >> $divadatalog
+echo //////////////////////////////////////////////////////// >> $divadatalog
+echo Now eliminating points outside of the mesh >> $divadatalog
 if [ -f ./output/fieldatdatapoint.anl ]
 then
-echo Analysed field already exists: will try use it
+echo Analysed field already exists: will try to use it >> $divadatalog
+
 
 ndata=$(cat ./input/data.dat | wc -l)
 ndatafull=$(cat ./input/data.dat.full | wc -l)
@@ -70,21 +90,18 @@ if [ "$ndata" == "$ndatafull" ]
 then
   if [ "$ndata" == "$ndataanl" ]
   then
-  echo ok should be able to use fieldatdatapoint
+  echo ok should be able to use fieldatdatapoint >> $divadatalog
   else
-  echo fieldatdatapoint does not seem to be consistent
+  echo fieldatdatapoint does not seem to be consistent >> $divadatalog
   divadatacoverage -n
   fi
 else
-echo fieldatdatapoint does not seem to be consistent
+echo fieldatdatapoint does not seem to be consistent >> $divadatalog
 divadatacoverage -n
 fi  
 
-
-
-
 else
-echo Analysed field does not exists: will create it
+echo Analysed field does not exists: will create it >> $divadatalog
 divadatacoverage -n
 fi
 dvdataclean

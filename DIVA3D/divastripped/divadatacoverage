@@ -2,15 +2,25 @@
 # Usage divadatacoverage [-n] [-r]
 # -n: only needed if no gridded solution in output
 # -r: creates RL.dat and RLinfo.dat in input
+
+divadatacvlog='./output/divadatacovr.log'
+
 echo ' '
 echo =============================================================
 echo Preparing RL field based on data coverage
 echo Preparing data density field DATABINS.dat
 echo =============================================================
+
+echo ' ' > $divadatacvlog
+echo ============================================================= >> $divadatacvlog
+echo Preparing RL field based on data coverage >> $divadatacvlog
+echo Preparing data density field DATABINS.dat >> $divadatacvlog
+echo ============================================================= >> $divadatacvlog
+
 if [ "$1" == "-n" -o "$2" == "-n" ]
 then
-echo Preparing a dummy gridded solution first
-echo ========================================
+echo Preparing a dummy gridded solution first >> $divadatacvlog
+echo ======================================== >> $divadatacvlog
 cp ./input/param.par ./input/param.par.orirl
 Filepar=./input/param.par
 {
@@ -72,27 +82,28 @@ if [ -f  ./output/meshvisu/fort.22 ]; then
   fi
  fi
 else
- echo "divadatacoverage: generating mesh"
+ echo "divadatacoverage: generating mesh" >> $divadatacvlog
 divamesh
 fi
 ##divamesh
-echo 'going to analyse'
+echo 'going to analyse' >> $divadatacvlog
 divacalc
-echo 'saving reference fields'
+echo ' ' >> $divadatacvlog
 mv ./input/param.par.orirl ./input/param.par
-echo '  '
-echo ==============================================================
-echo Finished preparing gridded field
-echo ==============================================================
+echo '  ' >> $divadatacvlog
+echo ============================================================== >> $divadatacvlog
+echo Finished preparing gridded field >> $divadatacvlog
+echo ============================================================== >> $divadatacvlog
 fi
 cp -v ./output/fieldgher.anl ./divawork/fort.10
 cp -v ./output/ghertonetcdf/GridInfo.dat ./divawork/fort.11
 cp -v ./input/data.dat ./divawork/fort.40
 cd divawork
-if [ -f ../output/diva.log ] ; then
- cp -f ../output/diva.log .
-fi
-echo 10 | ../../bin/datalengthscale.a >> diva.log
+echo ////////////////////////////////////////// >> ../output/diva.log
+echo            Data length scale  >> ../output/diva.log
+echo ////////////////////////////////////////// >> ../output/diva.log
+echo ' '  >> ../output/diva.log
+echo 10 | ../../bin/datalengthscale.a >> ../output/diva.log
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -100,14 +111,19 @@ echo A problem was encountered during execution !
 echo          divadataclean      datalengthscale.a
 echo Check execution track
 echo --------------------------------------------
-echo ' ' >> diva.log
-echo -------------------------------------------- >> diva.log
-echo A problem was encountered during execution ! >> diva.log
-echo          divadataclean      datalengthscale.a  >> diva.log
-echo Check execution track >> diva.log
-echo -------------------------------------------- >> diva.log
+echo ' ' >> ../$divadatacvlog
+echo -------------------------------------------- >> ../$divadatacvlog
+echo A problem was encountered during execution ! >> ../$divadatacvlog
+echo          divadataclean      datalengthscale.a >> ../$divadatacvlog
+echo Check execution track >> ../$divadatacvlog
+echo -------------------------------------------- >> ../$divadatacvlog
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo          divadataclean      datalengthscale.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
 fi
- cp -f diva.log ../output/.
 cd ..
 cp -v ./divawork/fort.11 ./output/RLinfo.dat
 cp -v ./divawork/fort.20 ./output/RL.dat
@@ -116,12 +132,12 @@ cp -v ./divawork/fort.11 ./output/DATABINSinfo.dat
 cp -v ./divawork/fort.33 ./output/meandistance.dat
 if [ "$1" == "-r" -o "$2" == "-r" ]
 then
-echo =======================================================
-echo Replacing  RL files
-cp -v ./output/RL*.dat ./input
-echo =======================================================
+echo ======================================================= >> $divadatacvlog
+echo Replacing  RL files >> $divadatacvlog
+cp -v ./output/RL*.dat ./input >> $divadatacvlog
+echo ======================================================= >> $divadatacvlog
 fi
-echo ' '
-echo ==============================================================
-echo Finished preparing binning field
-echo ==============================================================
+echo ' ' >> $divadatacvlog
+echo ============================================================== >> $divadatacvlog
+echo Finished preparing binning field >> $divadatacvlog
+echo ============================================================== >> $divadatacvlog

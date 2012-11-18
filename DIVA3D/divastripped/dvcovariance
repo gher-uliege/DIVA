@@ -2,7 +2,14 @@
 echo //////////////////////////////////////////////////
 echo           Going to compute covariances
 echo //////////////////////////////////////////////////
-echo ' ' 
+echo ' '
+
+dvcovariancelog='./output/dvcovariance.log'
+echo ////////////////////////////////////////////////// > $dvcovariancelog
+echo           Going to compute covariances >> $dvcovariancelog
+echo ////////////////////////////////////////////////// >> $dvcovariancelog
+echo ' ' >> $dvcovariancelog
+ 
 if [ -f ./input/data.dat ] 
 then 
 cp ./input/data.dat ./divawork/fort.45
@@ -13,6 +20,7 @@ read nnn xxx yyy
 rm ./divawork/bidon
 echo $xxx $yyy 1 1.E-10 > ./divawork/fort.44
 else
+echo Need to provide data.dat in ./input ! >> $dvcovariancelog
 echo Need to provide data.dat in ./input !
 fi
 cd ./divawork
@@ -33,47 +41,49 @@ echo datapr 1 >> ./fort.10
 echo 0 >> ./fort.10
 if [ "$itcs" != "0" ] 
 then 
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-echo  Module constraint activated
-echo $itcs
+echo dvcovariance: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> ../$dvcovariancelog
+echo dvcovariance:   Module constraint activated >> ../$dvcovariancelog
+echo dvcovariance:  $itcs
 echo constr 1 >> ./fort.10
 echo $itcs >> ./fort.10
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+echo dvcovariance:  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> ../$dvcovariancelog
 fi
 echo solver 1 >> ./fort.10
 echo 0 >> ./fort.10
 echo stores 1 >> ./fort.10
 echo 3 >> ./fort.10
-echo VARBAK: $varbak
+echo VARBAK: $varbak >> $dvcovariancelog
 if [ "$varbak" != "0" ]
 then
 if [ "$ispec" != "0" ]
 then
-echo errors will be calculated
+echo dvcovariance:  errors will be calculated >> ../$dvcovariancelog
 echo covar 1 >> ./fort.10
 echo $ispec >> ./fort.10
 fi
 fi
 echo stopex >> ./fort.10
-if [ -f ../output/diva.log ] ; then
- cp -f ../output/diva.log .
-fi
-echo $lc 1 4 $xi | ../../bin/calcmu.a >> diva.log
+echo $lc 1 4 $xi | ../../bin/calcmu.a >> ../output/diva.log
 if [ $? -ne "0" ];then
-echo ' '
-echo --------------------------------------------
-echo A problem was encountered during execution !
-echo                calmu.a
-echo Check execution track
-echo --------------------------------------------
-echo ' ' >> diva.log
-echo -------------------------------------------- >> diva.log
-echo A problem was encountered during execution ! >> diva.log
-echo                calmu.a  >> diva.log
-echo Check execution track >> diva.log
-echo -------------------------------------------- >> diva.log
+echo dvcovariance: ' ' >> ../$dvcovariancelog
+echo dvcovariance: -------------------------------------------- >> ../$dvcovariancelog
+echo dvcovariance: A problem was encountered during execution ! >> ../$dvcovariancelog
+echo dvcovariance:               calmu.a >> ../$dvcovariancelog
+echo dvcovariance: Check execution track >> ../$dvcovariancelog
+echo dvcovariance: -------------------------------------------- >> ../$dvcovariancelog
+echo dvcovariance: ' '
+echo dvcovariance: --------------------------------------------
+echo dvcovariance: A problem was encountered during execution !
+echo dvcovariance:               calmu.a
+echo dvcovariance: Check execution track
+echo dvcovariance: --------------------------------------------
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo                calmu.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
 fi
- cp -f diva.log ../output/.
 #execute diva
 let NREA=$NREA+3*$NDATA
 let NREA=$NREA+$NDDLT
@@ -95,57 +105,67 @@ rm -f dvpong
 mknod dvpong p
 sleep 1
 cd sub
-if [ -f ../../output/diva.log ] ; then
- cp -f ../../output/diva.log .
-fi
-echo Launching a detached diva.a
-echo $NINT $NREA | ../../../bin/diva.a >> diva.log &
+echo dvcovariance: Launching a detached diva.a >> ../../$dvcovariancelog
+echo $NINT $NREA | ../../../bin/diva.a >> ../../output/diva.log &
 if [ $? -ne "0" ];then
+echo ' ' >> ../../$dvcovariancelog
+echo dvcovariance: -------------------------------------------- >> ../../$dvcovariancelog
+echo dvcovariance: A problem was encountered during execution ! >> ../../$dvcovariancelog
+echo dvcovariance:                diva.a >> ../../$dvcovariancelog
+echo dvcovariance: Check execution track >> ../../$dvcovariancelog
+echo dvcovariance: -------------------------------------------- >> ../../$dvcovariancelog
 echo ' '
-echo --------------------------------------------
-echo A problem was encountered during execution !
-echo                diva.a
-echo Check execution track
-echo --------------------------------------------
-echo ' ' >> diva.log
-echo -------------------------------------------- >> diva.log
-echo A problem was encountered during execution ! >> diva.log
-echo                diva.a  >> diva.log
-echo Check execution track >> diva.log
-echo -------------------------------------------- >> diva.log
+echo dvcovariance: --------------------------------------------
+echo dvcovariance: A problem was encountered during execution !
+echo dvcovariance:                diva.a
+echo dvcovariance: Check execution track
+echo dvcovariance: --------------------------------------------
+echo ' ' >> ../../output/diva.log
+echo -------------------------------------------- >> ../../output/diva.log
+echo A problem was encountered during execution ! >> ../../output/diva.log
+echo                diva.a  >> ../../output/diva.log
+echo Check execution track >> ../../output/diva.log
+echo -------------------------------------------- >> ../../output/diva.log
 fi
- cp -f diva.log ../../output/.
 else
 cd sub
-if [ -f ../../output/diva.log ] ; then
- cp -f ../../output/diva.log .
-fi
 echo Launching a sequential diva.a
-echo $NINT $NREA | ../../../bin/diva.a >> diva.log
+echo $NINT $NREA | ../../../bin/diva.a >> ../../output/diva.log
 if [ $? -ne "0" ];then
+echo ' ' >> ../../$dvcovariancelog
+echo dvcovariance: -------------------------------------------- >> ../../$dvcovariancelog
+echo dvcovariance: A problem was encountered during execution ! >> ../../$dvcovariancelog
+echo dvcovariance:                diva.a >> ../../$dvcovariancelog
+echo dvcovariance: Check execution track >> ../../$dvcovariancelog
+echo dvcovariance: -------------------------------------------- >> ../../$dvcovariancelog
 echo ' '
-echo --------------------------------------------
-echo A problem was encountered during execution !
-echo                diva.a
-echo Check execution track
-echo --------------------------------------------
-echo ' ' >> diva.log
-echo -------------------------------------------- >> diva.log
-echo A problem was encountered during execution ! >> diva.log
-echo                diva.a  >> diva.log
-echo Check execution track >> diva.log
-echo -------------------------------------------- >> diva.log
+echo dvcovariance: --------------------------------------------
+echo dvcovariance: A problem was encountered during execution !
+echo dvcovariance:                diva.a
+echo dvcovariance: Check execution track
+echo dvcovariance: --------------------------------------------
+echo ' ' >> ../../output/diva.log
+echo -------------------------------------------- >> ../../output/diva.log
+echo A problem was encountered during execution ! >> ../../output/diva.log
+echo                diva.a  >> ../../output/diva.log
+echo Check execution track >> ../../output/diva.log
+echo -------------------------------------------- >> ../../output/diva.log
 fi
- cp -f diva.log ../../output/.
 fi
 let NREA=$NREA-3*$NDATA
 let NREA=$NREA-$NDDLT
 let NINT=$NINT-$NDATA
 cd ..
 cd ..
-echo ==============================================
-echo ----------------------------------------------
-echo Analysed for covariance is launched
-echo Now will start diva for fields and errors
-echo ----------------------------------------------
-echo ==============================================
+echo dvcovariance: ==============================================  >> $dvcovariancelog
+echo dvcovariance: ---------------------------------------------- >> $dvcovariancelog
+echo dvcovariance: Analysed for covariance is launched >> $dvcovariancelog
+echo dvcovariance: Now will start diva for fields and errors >> $dvcovariancelog
+echo dvcovariance: ---------------------------------------------- >> $dvcovariancelog
+echo dvcovariance:  ============================================== >> $dvcovariancelog
+echo dvcovariance: ============================================== 
+echo dvcovariance: ----------------------------------------------
+echo dvcovariance: Analysed for covariance is launched
+echo dvcovariance: Now will start diva for fields and errors
+echo dvcovariance: ----------------------------------------------
+echo dvcovariance:  ==============================================

@@ -3,7 +3,14 @@ echo //////////////////////////////////////////
 echo            Generating topography
 echo //////////////////////////////////////////
 echo ' ' 
-echo Saving original input files
+
+divatopolog='./output/divatopo.log'
+
+echo ////////////////////////////////////////// > $divatopolog
+echo            Generating topography >> $divatopolog
+echo ////////////////////////////////////////// >> $divatopolog
+echo ' '  >> $divatopolog
+echo Saving original input files >> $divatopolog
 echo ' ' 
 cp ./input/param.par ./input/param.par.ori
 cp ./input/coast.cont ./input/coast.cont.ori
@@ -13,15 +20,17 @@ if [ -f ./input/topo.dat ]
 then 
 cp ./input/topo.dat ./input/data.dat
 else
-echo Need to provide topo.dat in ./input !
+echo Need to provide topo.dat in ./input
 fi
 echo 0 0 > ./input/valatxyascii.anl
 cp ./input/param.par ./divawork/fort.10
 cd ./divawork
-if [ -f ../output/diva.log ] ; then
- cp -f ../output/diva.log .
-fi
-../../bin/topoprep.a >> diva.log
+#
+echo ////////////////////////////////////////// >> ../output/diva.log
+echo            Generating topography >> ../output/diva.log
+echo ////////////////////////////////////////// >> ../output/diva.log
+echo ' '  >> ../output/diva.log
+../../bin/topoprep.a >> ../output/diva.log
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -29,14 +38,19 @@ echo A problem was encountered during execution !
 echo          divatopo      topoprep.a
 echo Check execution track
 echo --------------------------------------------
-echo ' ' >> diva.log
-echo -------------------------------------------- >> diva.log
-echo A problem was encountered during execution ! >> diva.log
-echo          divatopo      topoprep.a  >> diva.log
-echo Check execution track >> diva.log
-echo -------------------------------------------- >> diva.log
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo          divatopo      topoprep.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo ' ' >> ../$divatopolog
+echo -------------------------------------------- >> ../$divatopolog
+echo A problem was encountered during execution ! >> ../$divatopolog
+echo          divatopo      topoprep.a  >> ../$divatopolog
+echo Check execution track >> ../$divatopolog
+echo -------------------------------------------- >> ../$divatopolog
 fi
- cp -f diva.log ../output/.
 cd ..
 mv ./divawork/fort.11 ./input/param.par
 mv ./divawork/fort.20 ./output/TopoInfo.dat
@@ -53,11 +67,17 @@ echo -----------------------
 echo ' '
 if [ "$1" == "-r" ]
 then
-echo 'Copying newly created topography into ./input'
+echo 'Copying newly created topography into ./input' >> $divatopolog
 cp -v ./output/topo.grd ./input
 cp -v ./output/TopoInfo.dat ./input
 fi
 else
+echo ' ' >> $divatopolog
+echo -------------------------------------------- >> $divatopolog
+echo A problem was encountered during execution ! >> $divatopolog
+echo Check execution track >> $divatopolog
+echo -------------------------------------------- >> $divatopolog
+echo ' ' >> $divatopolog
 echo ' '
 echo --------------------------------------------
 echo A problem was encountered during execution !

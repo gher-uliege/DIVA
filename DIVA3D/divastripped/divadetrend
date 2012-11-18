@@ -12,23 +12,50 @@ echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 echo  Applying iterative detrending on classes
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+divadetrendlog='./output/divadetrend.log'
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! > $divadetrendlog
+echo  Applying iterative detrending on classes >> $divadetrendlog
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> $divadetrendlog
+
 if [ -f ./input/detrend.order ]
 then
-echo =========================================
-echo  divadetrend will use order provided:
-cat ./input/detrend.order
+echo ========================================= >> $divadetrendlog
+echo  divadetrend will use order provided: >> $divadetrendlog
+cat ./input/detrend.order >> $divadetrendlog
 cp ./input/detrend.order ./divawork/fort.56
 else
-echo =========================================
-echo divadetrend will use default order 5 6 ...
+echo ========================================= >> $divadetrendlog
+echo divadetrend will use default order 5 6 ... >> $divadetrendlog
 echo 5 6 7 8 9 10 11 12 13 > ./divawork/fort.56
 fi
-echo =========================================
+echo ========================================= >> $divadetrendlog
 
+
+echo divadetrend: ////////////////////////////////////////// >> ./output/diva.log
+echo divadetrend:                 divadatacoverage   >> ./output/diva.log
+echo divadetrend: ////////////////////////////////////////// >> ./output/diva.log
+echo ' '  >> ./output/diva.log
 divadatacoverage -n
+    cat $diva3dlog ./output/divadatacovr.log > bidon
+    mv bidon $diva3dlog
+
+echo divadetrend: ////////////////////////////////////////// >> ./output/diva.log
+echo divadetrend:                 divamesh   >> ./output/diva.log
+echo divadetrend: ////////////////////////////////////////// >> ./output/diva.log
+echo ' '  >> ./output/diva.log
 divamesh
+    cat $diva3dlog ./output/divamesh.log > bidon
+    mv bidon $diva3dlog
+
+echo divadetrend: ////////////////////////////////////////// >> ./output/diva.log
+echo divadetrend:                 dvdataclean   >> ./output/diva.log
+echo divadetrend: ////////////////////////////////////////// >> ./output/diva.log
+echo ' '  >> ./output/diva.log
 dvdataclean
-echo need to modify param.par for iterations to desactivate error calculations
+    cat $diva3dlog ./output/dvdataclean.log > bidon
+    mv bidon $diva3dlog
+
+echo need to modify param.par for iterations to desactivate error calculations >> $divadetrendlog
 cp -v ./input/param.par ./input/param.detrend.par
 head -17 ./input/param.detrend.par > bidon
 echo 1 >> bidon
@@ -46,6 +73,9 @@ if [ "$#" -gt "1" ]
 then
 let nsteps=$2+0
 fi
+echo ============================================= >> $divadetrendlog
+echo Number of iterations to be performed: $nsteps >> $divadetrendlog
+echo ============================================= >> $divadetrendlog
 echo =============================================
 echo Number of iterations to be performed: $nsteps
 echo =============================================
@@ -53,15 +83,24 @@ i=0
 while [ "$i" -le "$nsteps" ]
 do
 let i=$i+1
-echo Iteration $i
+echo Iteration $i >> $divadetrendlog
 if [ "$i" -gt "$nsteps" ]
 then
-echo Last final analysis
+echo Last final analysis >> $divadetrendlog
 cp -v ./input/param.detrend.par ./input/param.par 
 rm -f ./input/param.detrend.par
 fi
+
+
+echo divadetrend: ////////////////////////////////////////// >> ./output/diva.log
+echo divadetrend:                 divacalc   >> ./output/diva.log
+echo divadetrend: ////////////////////////////////////////// >> ./output/diva.log
+echo ' '  >> ./output/diva.log
 divacalc
-echo Calculating misfit of classes and create new input data
+    cat $diva3dlog ./output/divacalc.log > bidon
+    mv bidon $diva3dlog
+
+echo Calculating misfit of classes and create new input data >> $divadetrendlog
 if [ -f ./input/data.undetrend.dat ]
 then
 cp -v ./input/data.undetrend.dat ./input/data.dat
@@ -69,12 +108,8 @@ fi
 cd divawork
 cp ../input/data.dat fort.88
 cp ../output/fieldatdatapoint.anl fort.89
-if [ -f ../output/diva.log ] ; then
- cp -f ../output/diva.log .
-fi
-echo SO WHAT
-echo $1
-echo $1 | ../../bin/detrend.a >> diva.log
+
+echo $1 | ../../bin/detrend.a >> ../output/diva.log
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -82,18 +117,23 @@ echo A problem was encountered during execution !
 echo          divadetrend      detrend.a
 echo Check execution track
 echo --------------------------------------------
-echo ' ' >> diva.log
-echo -------------------------------------------- >> diva.log
-echo A problem was encountered during execution ! >> diva.log
-echo          divadetrend      detrend.a  >> diva.log
-echo Check execution track >> diva.log
-echo -------------------------------------------- >> diva.log
+echo ' ' >> ../$divadetrendlog
+echo -------------------------------------------- >> ../$divadetrendlog
+echo A problem was encountered during execution ! >> ../$divadetrendlog
+echo          divadetrend      detrend.a >> ../$divadetrendlog
+echo Check execution track >> ../$divadetrendlog
+echo -------------------------------------------- >> ../$divadetrendlog
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo          divadetrend      detrend.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
 fi
- cp -f diva.log ../output/.
 cp fort.90 ../input/data.detrend.dat
 if [ "$i" -le "1" ]
 then
-echo $i
+#echo $i
 head -1 fort.90 > ../output/sowhat.dat
 cat fort.42 > ../output/rmsmisfit.dat
 else
@@ -114,7 +154,7 @@ jj="0"
 # in fact try over all columns up to the maximum defined in detrend.order....
 # now in fort.56 which can be exploited
 jmloop=$(cat ./divawork/fort.56 | awk '{for(i=1;i<=NF;i++){if($i > max) max = $i;}}END{print max-4}')
-echo Maximum index of group used for detrending $jmloop
+echo Maximum index of group used for detrending $jmloop >> $divadetrendlog
 while [ "$jj" -lt "$jmloop" ]
 do
 let jj=$jj+1
@@ -128,6 +168,10 @@ mv bidon ./output/trends.all.$jj.dat
 done
 done
 rm -f ./divawork/trend*.dat
+echo ' ' >> $divadetrendlog
+echo ---------------------- >> $divadetrendlog
+echo Detrending is finished >> $divadetrendlog
+echo ---------------------- >> $divadetrendlog
 echo ' '
 echo ----------------------
 echo Detrending is finished

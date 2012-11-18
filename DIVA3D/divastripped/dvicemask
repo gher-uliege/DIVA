@@ -1,16 +1,14 @@
 #!/bin/bash
 echo ' '
 echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+echo %% Try to translate contours into gridded  format %%% >> ./output/diva.log
 echo %% Try to translate contours into gridded  format %%%
 echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 cp ./output/ghertonetcdf/GridInfo.dat ./divawork/fort.13
 cp ./input/iceedge.dat ./divawork/fort.10
 cp ./output/fieldgher.anl ./divawork/fort.98
 cd ./divawork
-if [ -f ../output/diva.log ] ; then
- cp  -f ../output/diva.log .
-fi
-../../bin/cont2grid.a >> diva.log
+../../bin/cont2grid.a >> ../output/diva.log
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -18,14 +16,14 @@ echo A problem was encountered during execution !
 echo       dvicemask:   cont2grid.a
 echo Check execution track
 echo --------------------------------------------
-echo ' ' >> diva.log
-echo -------------------------------------------- >> diva.log
-echo A problem was encountered during execution ! >> diva.log
-echo       dvicemask:   cont2grid.a  >> diva.log
-echo Check execution track >> diva.log
-echo -------------------------------------------- >> diva.log
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo       dvicemask:   cont2grid.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
 fi
-../../bin/ghermask.a >> diva.log
+../../bin/ghermask.a >> ../output/diva.log
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -33,14 +31,13 @@ echo A problem was encountered during execution !
 echo       dvicemask:  ghermask.a
 echo Check execution track
 echo --------------------------------------------
-echo ' ' >> diva.log
-echo -------------------------------------------- >> diva.log
-echo A problem was encountered during execution ! >> diva.log
-echo       dvicemask:   ghermask.a  >> diva.log
-echo Check execution track >> diva.log
-echo -------------------------------------------- >> diva.log
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo       dvicemask:   ghermask.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
 fi
- cp -f diva.log ../output/.
 cd ..
 rm -f ./output/fieldgher.anl 
 cp -v ./divawork/fort.97 ./output/fieldgher.anl
