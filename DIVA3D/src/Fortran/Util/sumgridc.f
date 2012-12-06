@@ -17,7 +17,7 @@
       real*4 A(N,M),B(N,M),C(N,M)
       do i=1,M
       do j=1,N
-      vals=val*sqrt(max(0,1-C(i,j)))
+      vals=val*sqrt(amax1(0.,1.-C(i,j)))
       if(abs(A(i,j)-valex).lt.0.00001*abs(valex)) vals=valex
       C(i,j)=vals
       enddo

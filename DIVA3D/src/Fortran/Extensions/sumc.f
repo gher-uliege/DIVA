@@ -24,7 +24,7 @@ C READING U,V FIELDS ---------------------------------------
         if (v(i).ne.valexw) then
 C        w(i)=val+valm*V(i)
 C        w(i)=val*exp(v(i))
-        w(i)=val*sqrt(max(0,1-v(i)))
+        w(i)=val*sqrt(amax1(0.,1.-v(i)))
         endif
         enddo
         open (unit=12,file=out,form='unformatted')
