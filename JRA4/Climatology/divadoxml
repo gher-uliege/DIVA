@@ -150,6 +150,10 @@ fi
 
 cd ${WDIR}/
 
+
+ #datasetsize=`cat './output/3Danalysis/'$var'.'$year'.4Danl.nc' | stat -c %s ` 
+
+
 FILENAME=./output/3Danalysis/$var'.4DNCMetainfo'
 if [ -f "$FILENAME" ]
 then
@@ -180,8 +184,32 @@ today=`date --rfc-3339='date'`
 resolt=$deltaX'X'$deltaY
 
 ############################################################
-FILENAME=./$var'.SDNconv'
+FILENAME='./input/NCDFinfo'
+if [ -f "$FILENAME" ]
+then
+{
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read data_source_str
+} < $FILENAME
+else
+echo Could not find $FILENAME
+echo Please provide variable SDN coventions file $FILENAME 
+exit
+fi
 
+FILENAME=./$var'.SDNconv'
 if [ -f "$FILENAME" ]
 then
 {
@@ -243,15 +271,19 @@ sed \
 -e s/"SDN:PRODUCT:EDMO id:MOstr_SDN_Local_Product_ID_endMO"/"SDN:PRODUCT:EDMO id:${prodLocShn}"/ \
 -e s/"SDN:EDMO::EDMO id = SDN:EDMO name_ccmd"/"${author_org_name}"/ \
 -e s/"MOstr_ccmetadata@e-mail.adress_endMO"/"${author_email}"/ \
--e s/"2012-06-00"/"${today}"/ \
+-e s/"2013-01-10T00:00:00"/"${today}T00:00:00"/ \
 -e s/"9991"/"${NXcolumn}"/ \
 -e s/"9992"/"${NYlines}"/ \
 -e s/"MOstr_Time_unit_endMO"/"Time"/ \
 -e s/"MOstr_time_resolution_endMO"/"${Time_units}"/ \
--e s/"2012-06-20"/"${today}"/ \
--e s/"2012-06-21"/"${today}"/ \
+-e s/"2013-01-09"/"${today}"/ \
+-e s/"2012-01-10"/"${today}"/ \
+-e s/"MOstr_SDN_Local_Product_ID_endMO"/"${prodLocShn}"/ \
 -e s/"MOstr_SDN_Local_Product_ID_endMO"/"${prodLocShn}"/ \
 -e s/"MOstr_Short_description_endMO"/"Analyses of ${sh_varlongname} data in ${sh_sea_area} on bases of ${Time_units} between ${year1} and ${year2}. Units=${var_units}. Time units: ${Time_units}. Depth range: ${vertlevs}"/ \
+-e s/"SDN:LO56:12\/130 = CTD"/"Not relevant"/ \
+-e s/"SDN:LO56:3:POS24 = dead reckoning"/"Not relevant"/ \
+-e s/"MOstr_Description_of_data_sources_endMO"/"${data_source_str}"/ \
 -e s/"SDN:EDMO::EDMO id = SDN:EDMO name_org"/"${organisation_name}"/ \
 -e s/"MOstr_organisation@e-mail.adress_endMO"/"${org_email}"/ \
 -e s/"SDN:EDMO::EDMO id = SDN:EDMO name_dhc"/"SDN:EDMO::1579 = SDN:University of Liege, GeoHydrodynamics and Environment Research"/ \
@@ -260,24 +292,23 @@ sed \
 -e s/"SDN:P021:68:NTRA = Nitrate concentration parameters in the water column"/"${prodPar}"/ \
 -e s/"SDN:LO54:12:130 = CTD"/"${MesInst}"/ \
 -e s/"SDN:LO56:3:357 = acoustic traking systems"/"${PosInst}"/ \
--e s/"MOstr_Use_Limitation_for_what2_endMO"/"${UseLim2}"/ \
+-e s/"MOstr_Use_Limitation_for_what_endMO"/"${UseLim2}"/ \
 -e s/"Mostr_Other_restrictions_and_leagal_prerequisities_endMO"/"${NO}"/ \
 -e s/"MOstr_Not_to_be_used_for_what_endMO"/"${UseLim1}"/ \
--e s/"9993"/"${deltaX}"/ \
 -e s/"MOstr_Sunit_endMO"/"${Sunit}"/ \
 -e s/"Mostr_deltaXxdeltaY_endMO"/"${deltaX}X${deltaY}"/ \
--e s/"yyy1-m1"/"${year1}-${month1}"/ \
--e s/"yyy2-m2"/"${year2}-${month1}"/ \
--e s/"-180WB"/"${WestBL}"/ \
--e s/"180EB"/"${EastBL}"/ \
--e s/"-90SB"/"${SouthBL}"/ \
--e s/"90NB"/"${NorthBL}"/ \
+-e s/"2010-01"/"${year1}-${month1}"/ \
+-e s/"2012-12"/"${year2}-${month2}"/ \
+-e s/"-180.00000"/"${WestBL}"/ \
+-e s/"180.00000"/"${EastBL}"/ \
+-e s/"-90.00000"/"${SouthBL}"/ \
+-e s/"90.00000"/"${NorthBL}"/ \
 -e s/"SDN:C16:8:ZZ = Unknown"/"${Geo_area}"/ \
 -e s/"MOstr_distrib_transfer_format_endMO"/"Climate and Forecast NetCDF"/ \
 -e s/"Mostr_version_distrb_format_endMO"/"DIVA 4D-Climatology"/ \
 -e s/"MOstr_descript_specification_format_endMO"/"Diva 4D Climatology CF netcdf file contains the diva analysis of the variable and a set of variable related information fields: relative error and error standard deviation, variable masked relative error thresholds .3 and .5, and deepest values. It contains also fields of information about data distribution, outliers, correlation length and signal to noise ratio parameters."/ \
 -e s/"SDN:EDMO::EDMO id = SDN:EDMO name_ddc"/"SDN:EDMO::1579 = SDN:University of Liege, GeoHydrodynamics and Environment Research"/ \
--e s/"MOstr_Dataset_size_endMO"/"${NO}"/ \
+-e s/"MOstr_dataset_size_endMO"/"${NO}"/ \
 -e s/"MOstr_URL_Accessing_website_endMO"/"http:\/\/gher-diva.phys.ulg.ac.be\/data\/emodnet-domains\/${url_compliment}"/ \
 -e s/"MOstr_name_resource_endMO"/"EMODNET Data Products Viewing and Downloading Service"/ \
 -e s/"Mostr_description_access_web_endMO"/"OPENDAP download"/ \
@@ -290,9 +321,9 @@ sed \
 -e s/"MOstr_Hor_accuracy_description_endMO"/"${NO}"/ \
 -e s/"MOstr_Measure_description_endMO"/"refer to autors"/ \
 -e s/"MOstr_Evaluation_method_description_endMO"/"${NO}"/ \
--e s/"DIVA software"/" DIVA (Data Interpolating Variational Analyses) software "/ \
+-e s/"DIVA software"/" DIVA: Data Interpolating Variational Analyses software "/ \
 -e s/"MOstr_Hor_accuracy_quantitave_endMO"/" Not defined"/ \
--e s/"MOstr_Description_of_data_processing_:_endMO"/" DIVA (Data Interpolating Variational Analyses) allows a spatial interpolation of data (analysis) in an optimal way, it takes into account coastlines, sub-basins, advection and detrending. Calculations are highly optimized and rely on a finite element resolution. Quality control of data can be performed and error fields can be calculated. 3D and 4D extensions are included with emphasis on direct computations of climatologies from ODV spreadsheet files.}"/ \
+-e s/"MOstr_Description_of_data_processing_endMO"/" DIVA (Data Interpolating Variational Analyses) allows a spatial interpolation of data (analysis) in an optimal way, it takes into account coastlines, sub-basins, advection and detrending. Calculations are highly optimized and rely on a finite element resolution. Quality control of data can be performed and error fields can be calculated. 3D and 4D extensions are included with emphasis on direct computations of climatologies from ODV spreadsheet files.}"/ \
 -e s/"MOstr_Description_of_processed_data_sources :_endMO"/"refer to autors"/ \
   <$File>$NewFile
 
