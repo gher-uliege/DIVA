@@ -3,6 +3,8 @@ C     PROGRAM NCOUTPUT
 C---------------------
 C     December 2006: C. Troupin
 C     Update: M.Ouberdous, October 2007
+C             C.Troupin, March 2013: define missing_value as an
+C             attribute (and equal to valex read in GridInfo.dat)
 
 C     provides an output in NetCDF format for the analysed and error
 C     fields
@@ -35,7 +37,7 @@ C      include 'netcdf.inc'
       integer NX, NY, KMAX, ipr, nw, IMAX, JMAX
       real VALEXU
       real*8 W8
-      real xorig, yorig, dx, dy, xend, yend
+      real xorig, yorig, dx, dy, xend, yend, valex
 
 C     Reads the grid data from GridInfo.dat
 C----------------------------------------------
@@ -46,6 +48,7 @@ C----------------------------------------------
       read(90,*) dy
       read(90,*) xend
       read(90,*) yend
+      read(90,*) valex
 
       NX=int((xend-xorig)/dx)
       NY=int((yend-yorig)/dy)
@@ -74,7 +77,7 @@ C-----------------------------------------
       write(6,*) 'Severe error, increase iw netcdfoutput.f'
       stop 'Severe error, increase nmax netcdfoutput.f'
       endif
-      call netcdfout(U,V,IMAX,JMAX,VALEXU,xorig,yorig,dx,dy,X,Y)
+      call netcdfout(U,V,IMAX,JMAX,VALEXU,xorig,yorig,dx,dy,X,Y,valex)
 
 
       stop
@@ -82,7 +85,8 @@ C-----------------------------------------
 
 
 C ----------------------------------------------------------------------
-      subroutine netcdfout(U1,U2,IMAX,JMAX,VALEXU,xorig,yorig,dx,dy,X,Y)
+      subroutine netcdfout(U1,U2,IMAX,JMAX,VALEXU,xorig,yorig,dx,dy,X,Y,
+     +  valex)
 
       include 'netcdf.inc'
 
@@ -125,10 +129,11 @@ C     block of data values to written.
       parameter (VALID_MIN = 'valid_min')
       character*(*) VALID_MAX
       parameter (VALID_MAX = 'valid_max')
-      real field_min, field_max
-c      parameter(field_min=-10.0, field_max=50.0)
+      character*(*) MISSING_VALUE
+      parameter (MISSING_VALUE = 'missing_value')
+      
+      real field_min, field_max, valex
       real error_min, error_max
-c      parameter(error_min=0.0, error_max=1.0)
 
       NX = IMAX
       NY = JMAX
@@ -297,7 +302,11 @@ C     variable and the error
       retval = nf_put_att_real(ncid, varid1, VALID_MAX, NF_REAL, 1,
      +   field_max)
       if (retval .ne. nf_noerr) call handle_err(retval)
-      
+     
+C     Define the missing_value read in GridInfo.dat
+      retval = nf_put_att_real(ncid, varid1, MISSING_VALUE, NF_REAL,1,
+     +   valex)
+      if (retval .ne. nf_noerr) call handle_err(retval) 
       
       retval = nf_put_att_real(ncid, varid2, VALID_MIN, NF_REAL, 1,
      +   error_min)
@@ -305,6 +314,9 @@ C     variable and the error
 
       retval = nf_put_att_real(ncid, varid2, VALID_MAX, NF_REAL, 1,
      +   error_max)
+      if (retval .ne. nf_noerr) call handle_err(retval)
+      retval = nf_put_att_real(ncid, varid2, MISSING_VALUE, NF_REAL,1,
+     +   valex)
       if (retval .ne. nf_noerr) call handle_err(retval)
 
 
