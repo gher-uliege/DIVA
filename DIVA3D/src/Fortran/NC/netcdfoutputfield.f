@@ -31,7 +31,7 @@ C      include 'netcdf.inc'
       integer NX, NY, KMAX, ipr, nw, IMAX, JMAX
       real VALEXU
       real*8 W8
-      real xorig, yorig, dx, dy, xend, yend
+      real xorig, yorig, dx, dy, xend, yend, valex
 
       open (unit=84,form='unformatted')
       CALL UREADC(84,W8,U,VALEXU,IPR,IMAX,JMAX,KMAX,NW)
@@ -58,24 +58,26 @@ C----------------------------------------------
       read(90,*) dy
       read(90,*) xend
       read(90,*) yend
+      read(90,*) valex
 
       NX=int((xend-xorig)/dx)
       NY=int((yend-yorig)/dy)
 
       close(90)
-      
+      write(*,*) 'valex = ,', valex 
 C    Subroutine to write the NetCDF file
 C----------------------------------------
       
 
-      call netcdfout(U,IMAX,JMAX,VALEXU,xorig,yorig,dx,dy,X,Y)
+      call netcdfout(U,IMAX,JMAX,VALEXU,xorig,yorig,dx,dy,X,Y,valex)
 
       stop
       end
 
 C ----------------------------------------------------------------------
-      subroutine netcdfout(U,IMAX,JMAX,VALEXU,xorig,yorig,dx,dy,X,Y)
-
+      subroutine netcdfout(U,IMAX,JMAX,VALEXU,xorig,yorig,dx,dy,X,Y,
+     +  valex)
+    
       include 'netcdf.inc'
 
       character*(*) FILE_NAME ! name of the output file
@@ -84,7 +86,6 @@ C-------------------------
       real*4 U(IMAX,JMAX)
       real*4 X(IMAX)          ! X-ccordinate
       real*4 Y(JMAX)          ! Y-coordinate
-
       integer NDIMS          ! variable dimensions
       parameter (NDIMS=2)
       
@@ -116,8 +117,10 @@ C     block of data values to written.
       parameter (VALID_MIN = 'valid_min')
       character*(*) VALID_MAX
       parameter (VALID_MAX = 'valid_max')
-      real field_min, field_max
-C     parameter(field_min=-10.0, field_max=50.0)
+      character*(*) MISSING_VALUE
+      parameter (MISSING_VALUE = 'missing_value')
+      real field_min, field_max, valex
+
 
 
       NX = IMAX
@@ -256,6 +259,10 @@ C     variable
      +   field_max)
       if (retval .ne. nf_noerr) call handle_err(retval)
 
+C     Define the missing_value read in GridInfo.dat
+      retval = nf_put_att_real(ncid, varid, MISSING_VALUE, NF_REAL, 1,
+     +   valex)
+      if (retval .ne. nf_noerr) call handle_err(retval)      
 
 C     End define mode.
 C---------------------
