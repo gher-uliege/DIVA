@@ -9,7 +9,7 @@ compiler=gfortran
 
 # To use parall version, put value to 1
 #-------------------------------------
-DIVA_PARALLEL=1
+DIVA_PARALLEL=0
 #
 
 # Compilation flags
@@ -19,7 +19,7 @@ flags='-O3   '			#--charles
 #flags='-O0' 			# no optimization
 
 
-flagscalc=' '
+flagscalc=' -cpp '
 if [ "$DIVA_PARALLEL" = 1 ]
 then
 echo Going to use parallel version
