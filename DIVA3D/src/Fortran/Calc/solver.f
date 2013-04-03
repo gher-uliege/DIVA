@@ -40,13 +40,21 @@ C  ==> TKELE   : ELEMENTARY MATRIX (NDDLE*NDDLE)
 C  ==> TRHSE   : RIGHT HAND SIDE OF THE ELEMENTARY SYSTEM
 C
       call allody(nelt,1,'tstif',ltstif,ipr)
-      call allody(nterm,1,'tuppe',ltuppe,ipr)
+C      call allody(nterm,1,'tuppe',ltuppe,ipr)
+C      call allody(nddlt,1,'tdiag',ltdiag,ipr)
+C JMB2013 moved allocation so that upper and diagonal are one after the other
+C and can be exploited in new solver
+C      call allody(nterm,1,'tuppe',ltuppe,ipr)
+C      call allody(nddlt,1,'tdiag',ltdiag,ipr)
+       call allody(nterm+nddlt,1,'tuppe',ltuppe,ipr)
+       ltdiag=ltuppe+nterm
+C JMB2013
       if(isym.eq.0) then
          call allody(1,1,'tlowe',ltlowe,ipr)
                     else
          call allody(nterm,1,'tlowe',ltlowe,ipr)
       endif
-      call allody(nddlt,1,'tdiag',ltdiag,ipr)
+      
       call allody(nddlt,1,'trhsg',ltrhsg,ipr)
       call allody(nddle*nddle,1,'tkele',ltkele,ipr)
       call allody(nddle,1,'trhse',ltrhse,ipr)

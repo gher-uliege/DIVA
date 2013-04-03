@@ -645,8 +645,8 @@ c      write(6,*) 'Ending',ielold+1,nelt
 c      do iii=1,nelt
 c      write(90,*) iii,kindt(iii)
 c      enddo
-      write(6,*) '???',kindt(300),kindt(301),kindt(302),kindt(303)
-      write(6,*) '????',kelos(1),kelos(2),kelos(3)
+c      write(6,*) '???',kindt(300),kindt(301),kindt(302),kindt(303)
+c      write(6,*) '????',kelos(1),kelos(2),kelos(3)
       return
       end
 

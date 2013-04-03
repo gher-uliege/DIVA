@@ -15,7 +15,7 @@ C      include'divapre.h'
       ntotv=neq
       if (isfirsttime.eq.1) then
       nsk=neq+kld(neq+1)-1
-      write(6,*) 'total number of elements',nsk,neq
+c      write(6,*) 'total number of elements',nsk,neq
       ALLOCATE(skmatx(nsk))
       ALLOCATE(maxa(neq))
 
@@ -36,7 +36,7 @@ C         skmatx(maxa(i-1)+(KLD(i+1)-KLD(i)-kk) )=VKGS(KLD(i)+kk-1)
       skmatx(maxa(i))=VKGD(i)
       enddo
       isfirsttime=0
-      WRITE(6,*) 'last element',maxa(neq)
+c      WRITE(6,*) 'last element',maxa(neq)
       endif
 C skmatx(jd)  -> VKGD(j)
 C skmatx(jr)  -> VKGD(j-1)
@@ -166,7 +166,7 @@ C     &  -dot_product(skmatx(jr+1:jr+jh-1),VFG(is-1:is+jh-3))
 
 
 C Take out parts working on right hand side in all cases
-      write(6,*) 'factorizing'
+      write(6,*) 'Factorized'
       endif
 
 

@@ -11,6 +11,7 @@ C                        ver 4.2     Januaray 2008                     C
 C                        ver 4.3     2009-2011                         C
 C                        ver 4.4     January 2012                      C
 C                        ver 4.5     November 2012                     C
+C                        ver 4.6     April 2013                        C
 C     Jean-Marie Beckers, Damien Sirjacobs, Mohamed Ouberdous          C
 C     Charles Troupin                                                  C
 C                                                                      C
@@ -167,7 +168,7 @@ C  INPUT/OUTPUT FILES : OPEN statement
       open(unit=87,file='fort.87',form='unformatted')
 
       write(6,920)
- 920  format(72('&'),/,20x,'D.I.V.A. - 4.5.0 - Execution track ...',
+ 920  format(72('&'),/,20x,'D.I.V.A. - 4.6.0 - Execution track ...',
      &       /,72('&'),/)
 C
 C  INPUT OF MODULES (ipr is an indicator of the amount of data
@@ -289,7 +290,7 @@ C#endif
       write(6,*)' PRIOR ESTIMATE OF INTEGER USED: ',NINTDIVA
       write(6,*)' PRIOR ESTIMATE OF REAL    USED: ',NREADIVA
       write(6,910)
- 910  format(/,72('&'),/,20x,'D.I.V.A. - 4.2.2 - Execution Completed ! '
+ 910  format(/,72('&'),/,20x,'D.I.V.A. - 4.6.0 - Execution Completed ! '
      &       ,/,72('&'))
 
       close(10)
