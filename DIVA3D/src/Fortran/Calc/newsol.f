@@ -1,6 +1,13 @@
 
 
       subroutine newsol(VKGS,VKGD,VFG,KLD,NEQ,IFAC,ISOL)
+C
+C Interface with a code adapted from
+C
+C Nielsen, C. V., Zhang, W., Alves, L., Bay, N., & Martins, P. F. (2012).
+C   Modeling of Thermo-Electro-Mechanical Manufacturing Processes with 
+C   Applications in Metal Forming and Resistance Welding. Springer.
+C
 C      include'divapre.h'
       REAL*8 VKGS(*),VKGD(*),VFG(*)
       Integer*4 KLD(*)
