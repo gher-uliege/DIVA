@@ -78,7 +78,7 @@ cmr      write(6,*) tlcx,tlcy
 cmr      write(6,*) neltp
 C============================================================================
       return
-      end 
+      end
 
 
       subroutine sizes2 (tcoog,kconn)
@@ -168,7 +168,7 @@ C============================================================================
       dimension kntc(ncax,ncay,*)
       dimension ikntc(3),jkntc(3),xn(3),yn(3)
 
-C MAKING THE KNTC 3D TABLE 
+C MAKING THE KNTC 3D TABLE
 C (1) INITIALISE THE FIRST ELEMENTS OF KNTC
       ncamax=0
 c      write(6,*) 'into repel2'
@@ -202,7 +202,7 @@ c      jkntc(i)=((yn(i)-tmiy-mod(yn(i)-tmiy,tlcy))/tlcy)+1
       ikntc(i)=max(1,min(ikntc(i),ncax))
       jkntc(i)=max(1,min(jkntc(i),ncay))
  400  continue     
- 
+
 C (3) COMPUTE THE MAX AND MIN OF IKNTC, JKNTC
       imai=ikntc(1)
       imii=ikntc(1)
@@ -214,7 +214,7 @@ C (3) COMPUTE THE MAX AND MIN OF IKNTC, JKNTC
          if (ikntc(i).gt.imai) then 
             imai=ikntc(i)
          endif
-         if (ikntc(i).lt.imii) then 
+         if (ikntc(i).lt.imii) then
             imii=ikntc(i)
          endif
          if (jkntc(i).gt.imaj) then 
@@ -324,7 +324,7 @@ C (3) COMPUTE THE MAX AND MIN OF IKNTC, JKNTC
          if (ikntc(i).gt.imai) then 
             imai=ikntc(i)
          endif
-         if (ikntc(i).lt.imii) then 
+         if (ikntc(i).lt.imii) then
             imii=ikntc(i)
          endif
          if (jkntc(i).gt.imaj) then 
@@ -338,7 +338,7 @@ C (3) COMPUTE THE MAX AND MIN OF IKNTC, JKNTC
       endif
 
 C  (4) PUT THE NUMBER OF THE ELEMENT IN THE FIRST FREE PLACE CORRESPONDING 
-C      TO THE BIGGEST RECTANGLE THAT CONTAINS IT  
+C      TO THE BIGGEST RECTANGLE THAT CONTAINS IT
 
       do 800 i=imii,imai
          do 700 j=imij,imaj
@@ -519,14 +519,14 @@ C============================================================================
       end
 
 CJMB2012 added parameters to be able to use it for data AND sources
-      subroutine 
+      subroutine
      & sortdtopti(kindt,kdata,kelos,kelos1,ipr,ndatas,nonlocs)
 C============================================================================
       include'divapre.h'
       include'divainc.h'
       dimension kdata(ndatas),kelos(ndatas,2),kindt(nelt)
       dimension kelos1(ndatas)
-   
+
 C INITIALISE THE ARRAYS
       imaxd=ndatas-nonlocs
 C      ndatl=imaxd
@@ -541,21 +541,29 @@ C       write(6,*) '?? QUICK',ndata
 C CALL THE QUICK SORT ROUTINE
       call QS2I1R(kelos1,kdata,ndatas)
 c       write(6,*) 'ended'
-C REMOVE THE IGNORED DATAS     
+C REMOVE THE IGNORED DATAS
       do 30 idata=1,ndatas-nonlocs
          kdata(idata)=kdata(idata+nonlocs)
   30  continue
 
+C       call jmkelostest(ndatas,kelos,kindt,nelt)
+C      call jmkelostest(ndatas,nonlocs,kelos,kindt,nelt,kdata)
+      call jmkelostest(ndatas,nonlocs,kelos1,kindt,nelt,kdata)
+
+
+
 C COMPUTE THE KINDT ARRAY
-      do 40 idata=1,ndatas
-         iel=kelos(idata,1)
-         if(iel.lt.0) then
-            goto 40
-         endif
-         do 41 ie=iel+1,nelt
-            kindt(ie)=kindt(ie)+1
-  41     continue
-  40  continue
+c      do 40 idata=1,ndatas
+c         iel=kelos(idata,1)
+cc         if(iel.lt.0) then
+cc            goto 40
+cc         endif
+c         if(iel.ge.0) then
+c         do 41 ie=iel+1,nelt
+c            kindt(ie)=kindt(ie)+1
+c  41     continue
+c         endif
+c  40  continue
 
 C storage of number of data located in the mesh
       if (imaxd.le.0) then
@@ -581,7 +589,66 @@ C storage of number of data located in the mesh
       return
 C============================================================================
       end
+      subroutine jmkelostest(ndatas,nonlocs,kelos,kindt,nelt,kdata)
+CCCC NICE PLACE TO OPTIMIZE HERE
+CCCC Normally no need to make a full double loop !
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCccc
+      include'divapre.h'
+      dimension kelos(*),kindt(*),kdata(*)
+C KELOS(ID) : LOCALIZATON OF DATA ID IN THE ELEMENT MESH ;
+C KELOS(ID) = IEL where data is located
+C KINDT(IEL)  : INDEX OF THE LAST DATA BELONGING TO (IEL-1)
+C
+C real data: ndatas-nonlocs
+      iii=1+nonlocs
+      ielold=kelos(iii)
+      do ii=1,ielold
+      kindt(ii)=0
+      enddo
 
+c      write(6,*) 'starting',kelos(1),kelos(iii)
+      do 40 idata=iii+1,ndatas
+         iel=kelos(idata)
+         if(iel.ne.ielold) then
+C            write(6,*) 'Trying',iel,ielold,idata-nonlocs,iii
+            kindt(ielold+1)=idata-nonlocs-1
+            do kk=ielold+2,iel
+            kindt(kk)=kindt(ielold+1)
+            enddo
+
+
+c            write(6,*) iel,ielold,kindt(ielold),kindt(ielold+1)
+c            write(6,*) iel,idata,kindt(iel), kindt(iel+1)
+            ielold=iel
+c                           else
+c           indexold=index
+c           index=max(index,idata)
+         endif
+C        write(6,*) 'in element', iel, kdata(idata),idata,nelt
+c         write(6,*) 'sorted', kelos((idata)),kdata(idata),idata
+cc         if(iel.lt.0) then
+cc            goto 40
+cc         endif
+c         if(iel.ge.0) then
+c         do 41 ie=iel+1,nelt
+c            kindt(ie)=kindt(ie)+1
+c  41     continue
+c         endif
+   40  continue
+c      write(6,*) 'Ending',ielold+1,nelt
+      if ((ielold+1).le.nelt) then
+      kindt(ielold+1)=ndatas-nonlocs
+      do kk=ielold+2,nelt
+       kindt(kk)=kindt(ielold+1)
+      enddo
+      endif
+c      do iii=1,nelt
+c      write(90,*) iii,kindt(iii)
+c      enddo
+      write(6,*) '???',kindt(300),kindt(301),kindt(302),kindt(303)
+      write(6,*) '????',kelos(1),kelos(2),kelos(3)
+      return
+      end
 
       subroutine QS2I1R (IA,JA,N)
 C=============================================================================

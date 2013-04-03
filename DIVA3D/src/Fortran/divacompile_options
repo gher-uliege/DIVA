@@ -4,13 +4,29 @@
 #-----------------------------
 
 compiler=ifort			#--charles
-#compiler=gfortran
+compiler=gfortran
+
+
+# To use parall version, put value to 1
+#-------------------------------------
+DIVA_PARALLEL=1
+#
 
 # Compilation flags
 #-----------------
 
-flags='-O3'			#--charles
+flags='-O3   '			#--charles
 #flags='-O0' 			# no optimization
+
+
+flagscalc=' '
+if [ "$DIVA_PARALLEL" = 1 ]
+then
+echo Going to use parallel version
+flagscalc='-cpp -fopenmp -DDIVAPARALLEL '
+echo $flagscalc
+
+fi
 
 # Netcdf library
 #---------------
@@ -22,7 +38,7 @@ then
 nclib=`nc-config --flibs`
 compiler=`nc-config --fc`
 else
-nclib=/usr/local/lib/netcdf3ifort/libnetcdf.a	#--charles
+nclib=/usr/lib/libnetcdff.dll.a	#--charles
 fi
 # Use of Plplot (creation of scientific plots)
 #--------------

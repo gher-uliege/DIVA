@@ -81,7 +81,7 @@ c JMB added 20
          ncaz=int(100*real(nelt)/real(ncat))+20
 c         write(6,*) 'Ncaz',nelt,ncat,ncaz
          nelkntc=ncax*ncay*ncaz
-         call allody(ndata,0,'kelos1',lkelos1,ipr)
+         call allody(ndata,0,'kels1',lkelos1,ipr)
 C JMB TO DO
 C Dirty hack first allocate one point (since last allocated can be extended to 
 C the end; once repel2 or repel3 finished, allocate what was actually needed

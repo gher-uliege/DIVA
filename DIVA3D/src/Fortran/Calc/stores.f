@@ -117,19 +117,27 @@ C
          y_ll=y
          if (icoordchange.ne.0) call llxy(x,y)
          ireclu=ireclu+1
+C         ijdat=l(lkdata+ireclu-1)
+C JMB2013
+         iel=l(lkelos+ireclu-1)
+         isub=l(lkelos+ndata+ireclu-1)
+C         ijki=l(lkelos+ijdat-1)
+C         write(6,*) 'Why not use known element?',ireclu,iel,isub
+C
          if(ityp.eq.2) then
             if (opti.eq.1) then 		! (SvL)
-               call locpt2opti(x,y,s(ltcoog),l(lkconn),iel,isub,
-     &                         l(lkntc),ipr)
+c               call locpt2opti(x,y,s(ltcoog),l(lkconn),iel,isub,
+c     &                         l(lkntc),ipr)
+c            write(6,*) 'Since it is found in ',iel,isub
 c               if (iel.eq.-1) then
 c                write(6,*) 'sauve qui store',x_ll,y_ll
 c                call locpt2(x,y,s(ltcoog),l(lkconn),iel,isub,ipr)
 c               endif
             endif
-            if (opti.eq.0) then 
-               call locpt2(x,y,s(ltcoog),l(lkconn),iel,isub,ipr)
-            endif
-
+c            if (opti.eq.0) then
+c               call locpt2(x,y,s(ltcoog),l(lkconn),iel,isub,ipr)
+c            endif
+C JMB2013END
             if(iel.le.0.or.isub.le.0) then
 C               if (icoordchange.ne.0) call xyll(x,y)
 c              write(6,*) ' Donnee ',ireclu,x_ll,y_ll,' non localisee'

@@ -21,7 +21,7 @@ echo -----------------------
 echo ' ' 
 
 cd Calc
-$compiler $flags *.f -o diva.a
+$compiler $flags $flagscalc *.f -o diva.a
 n1=`ls -1p *.a | grep -vc "/$"`
 n1max=1
 

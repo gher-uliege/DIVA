@@ -1120,6 +1120,7 @@ C
          idata=kdata(id)
          if(kelos(idata,1).ne.iel) then
             write(6,*)' %%% ERROR -cksel2a : CHECK DATA SORTING %%% '
+         write(6,*) 'iel',iel,ifirst,ilast,kdata(id),id,kelos(idata,1)
             stop
          endif
          isel=kelos(idata,2)
