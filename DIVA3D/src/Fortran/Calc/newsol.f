@@ -1,47 +1,75 @@
 
 
-      subroutine newsol(VKGS,VKGD,VFG,KLD,NEQ,IFAC,ISOL)
+C      subroutine newsol(VKGS,VKGD,VFG,KLD,NEQ,IFAC,ISOL)
+       subroutine newsol(skmatx,VKGD,VFG,KLD,NEQ,IFAC,ISOL)
 C
 C Interface with a parallel skyline solver code adapted from
 C
 C Nielsen, C. V., Zhang, W., Alves, L., Bay, N., & Martins, P. F. (2012).
-C   Modeling of Thermo-Electro-Mechanical Manufacturing Processes with 
+C   Modeling of Thermo-Electro-Mechanical Manufacturing Processes with
 C   Applications in Metal Forming and Resistance Welding. Springer.
 C
 C      include'divapre.h'
-      REAL*8 VKGS(*),VKGD(*),VFG(*)
+C      REAL*8 VKGS(*),VKGD(*),VFG(*)
+      REAL*8 skmatx(*),VKGD(*),VFG(*)
       Integer*4 KLD(*)
 #ifdef DIVAPARALLEL
       integer, save:: isfirsttime=1
-      REAL*8, DIMENSION(:) , SAVE,   ALLOCATABLE :: skmatx
+C      REAL*8, DIMENSION(:) , SAVE,   ALLOCATABLE :: skmatx
+      REAL*8, DIMENSION(:) , SAVE,   ALLOCATABLE :: bidon
       integer, DIMENSION(:) , SAVE,   ALLOCATABLE :: maxa
       integer i,id,ie,ie0,ie0old,ihl,ih2,ihesitate,
      &      iloop,iquit,ir,is,ithread,iwait,j,jd,
      &       jh,jmax,jr,k,k0,k00,kmax,nthreads,ntotv
-      integer omp_get_max_threads,omp_get_thread_num
+      integer omp_get_max_threads
+      external omp_get_max_threads
+
+      integer omp_get_thread_num
+      external OMP_GET_THREAD_NUM
       ntotv=neq
       if (isfirsttime.eq.1) then
       nsk=neq+kld(neq+1)-1
-c      write(6,*) 'total number of elements',nsk,neq
-      ALLOCATE(skmatx(nsk))
+C      write(6,*) 'total number of elements',nsk,neq
+C      ALLOCATE(skmatx(nsk))
+      ALLOCATE(bidon(neq))
       ALLOCATE(maxa(neq))
 
-      ipoint=1
+
       maxa(1)=1
-      skmatx(1)=VKGD(1)
+      do i=1,NEQ
+      bidon(i)=VKGD(i)
+      enddo
+
+
       do i=2,NEQ
 
       maxa(i)=maxa(i-1)+KLD(i+1)-KLD(i)+1
-        do kk=1,KLD(i+1)-KLD(i)
-          skmatx(maxa(i-1)+kk)=VKGS(KLD(i+1)-kk)
-          skmatx(maxa(i-1)+kk)=VKGS(KLD(i)+kk-1)
-C          skmatx(maxa(i)-kk)=VKGS(KLD(i)+kk-1)
-C         skmatx(maxa(i-1)+(KLD(i+1)-KLD(i)-kk) )=VKGS(KLD(i)+kk-1)
-        enddo
-
-
-      skmatx(maxa(i))=VKGD(i)
+c        do kk=1,KLD(i+1)-KLD(i)
+c          skmatx(maxa(i-1)+kk)=VKGS(KLD(i)+kk-1)
+c        enddo
+c      skmatx(maxa(i))=VKGD(i)
       enddo
+C Check alternative way without allocating big matrix but only array so that reordering can be done
+C
+      do i=NEQ,1,-1
+          skmatx(maxa(i))=bidon(i)
+      do kk=KLD(i+1)-KLD(i),1,-1
+          skmatx(maxa(i-1)+kk)=skmatx(KLD(i)+kk-1)
+      enddo
+      enddo
+      DEALLOCATE(bidon)
+C Check
+c      total=0
+c      total2=0
+c      total3=0
+c      do ii=1,maxa(neq)
+c        total=total+abs(skmatx(ii)-VKGS(ii))
+c        total2=total2+abs(VKGS(ii))
+c        total3=total3+abs(skmatx(ii))
+c      enddo
+c      write(6,*) 'Test',total,total2,total3
+
+
       isfirsttime=0
 c      WRITE(6,*) 'last element',maxa(neq)
       endif
@@ -72,7 +100,9 @@ C$OMP& jr,k,k0,k00)
 C$OMP& SHARED (VFG,jmax,kmax,maxa,nthreads,ntotv,ifac,
 C$OMP& skmatx)
 ! Factorize skmatx and reduce fmatx
+       write(6,*) 'Next omp call'
        ithread=omp_get_thread_num()
+       write(6,*) 'In Parallel section thread',ithread
        iloop=0
        iquit=0
        do while (iquit.eq.0)
