@@ -212,7 +212,7 @@ C
       write(6,*) 'Reduction'
       
       
-            call omp_set_num_threads(4)
+            call omp_set_num_threads(1)
 ! Get (actual) number of threads
       nthreads=omp_get_max_threads()
       write(6,*) 'NTHREADS',nthreads

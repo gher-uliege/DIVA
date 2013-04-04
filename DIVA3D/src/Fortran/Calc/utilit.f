@@ -270,10 +270,10 @@ C      IF (K-M) 1,1,5
                      else
       DO 10 J=1,M
       DO 10 I=1,L
-      WRITE(IUCT,*) A(I,J)
- 10   continue 
+      WRITE(IUCT,1661) A(I,J)
+ 10   continue
       endif
-
+ 1661 format(1(E22.9))
 
  5    RETURN
  200  FORMAT('0',8(9X,I3,3X))

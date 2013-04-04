@@ -20,6 +20,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       subroutine esterr(ipr)
       include'divapre.h'
       include'divainc.h'
+ 1661 format(3(E22.9))
       zero=0.
       read(10,*) ispec
       write(6,*) 'Please be patient'
@@ -245,7 +246,7 @@ C               if (icoordchange.ne.0) call xyll(x,y)
 c               write(6,*) ' Donnee ',ireclu,x_ll,y_ll,' non localisee'
 C               write(82,*) x_ll,y_ll,-9999.0
                val=valex
-               write(72,*) x_ll,y_ll,valex
+               write(72,1661) x_ll,y_ll,valex
                goto 666
             endif
          endif
@@ -260,7 +261,7 @@ C               write(82,*) x_ll,y_ll,-9999.0
 
             if(iel.le.0.or.isub.le.0) then
             val=valex
-            write(72,*) x_ll,y_ll,valex
+            write(72,1661) x_ll,y_ll,valex
             goto 666
             endif
          endif
@@ -307,7 +308,7 @@ c ... extraction de la solution au point observe
      &            l(lklocs),s(ltrhsg),val,s(ltrhsg),ipr,s(lrkele))
 	    if(ipr.ge.2) then
                write(6,*) 'x,y,error RMS : ',xob,yob,val
-               write(85,*) xob,yob,val
+               write(85,1661) xob,yob,val
 	    endif 
          endif
          if(ityp.eq.3) then
@@ -315,12 +316,12 @@ c ... extraction de la solution au point observe
      &      l(lklocs),s(ltrhsg),s(ltcele),val,s(ltrhsg),ipr,s(lrkele))
 	    if(ipr.ge.2) then
 c               write(6,*) 'x,y,error RMS : ',xob,yob,val
-               write(85,*) xob,yob,val
+               write(85,1661) xob,yob,val
 	    endif 
          endif
 
       endif
-      write(72,*) x_ll,y_ll,val
+      write(72,1661) x_ll,y_ll,val
       goto 666
          
 
@@ -362,7 +363,7 @@ C               if (icoordchange.ne.0) call xyll(x,y)
 c               write(6,*) ' Donnee ',ireclu,x_ll,y_ll,' non localisee'
 C               write(82,*) x_ll,y_ll,-9999.0
                val=valex
-               write(73,*) x_ll,y_ll,valex
+               write(73,1661) x_ll,y_ll,valex
                goto 667
             endif
          endif
@@ -377,7 +378,7 @@ C               write(82,*) x_ll,y_ll,-9999.0
 
             if(iel.le.0.or.isub.le.0) then
             val=valex
-            write(73,*) x_ll,y_ll,valex
+            write(73,1661) x_ll,y_ll,valex
             goto 667
             endif
          endif
@@ -437,7 +438,7 @@ c               write(6,*) 'x,y,error RMS : ',xob,yob,val
          endif
 
       endif
-      write(73,*) x_ll,y_ll,val
+      write(73,1661) x_ll,y_ll,val
       goto 667
          
 

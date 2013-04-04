@@ -65,19 +65,22 @@ c ... extraction de la solution au point observe
          y_ll=y
          if (icoordchange.ne.0) call llxy(x,y)
          ireclu=ireclu+1
+C JMB2013
+         iel=l(lkelos+ireclu-1)
+         isub=l(lkelos+ndata+ireclu-1)
 c         write(6,*) 'gcval.?',ityp,opti
          if(ityp.eq.2) then
-            if (opti.eq.1) then 		! (SvL)
-               call locpt2opti(x,y,s(ltcoog),l(lkconn),iel,isub,
-     &                         l(lkntc),ipr)
+c            if (opti.eq.1) then 		! (SvL)
+c               call locpt2opti(x,y,s(ltcoog),l(lkconn),iel,isub,
+c     &                         l(lkntc),ipr)
 c               if (iel.eq.-1) then
 c                write(6,*) 'sauve qui store',x_ll,y_ll
 c                call locpt2(x,y,s(ltcoog),l(lkconn),iel,isub,ipr)
 c               endif
-            endif
-            if (opti.eq.0) then 
-               call locpt2(x,y,s(ltcoog),l(lkconn),iel,isub,ipr)
-            endif
+c           endif
+c           if (opti.eq.0) then
+c              call locpt2(x,y,s(ltcoog),l(lkconn),iel,isub,ipr)
+c           endif
 
             if(iel.le.0.or.isub.le.0) then
 C               if (icoordchange.ne.0) call xyll(x,y)

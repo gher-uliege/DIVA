@@ -31,6 +31,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       btr=0
       ctr=0
       ifirst=1
+ 1661 format(3(E22.9))
 C
 C  PROBLEM P2: OPEN THE FILE CONTAINING THE CONDENSATION VECTOR
 C
@@ -57,6 +58,7 @@ CJMBB Produce analysis at data points into fort.71
          rewind(13)
  1234 continue
       if(ispec0.eq.0.or.ispec0.eq.3.or.ispec0.eq.4) then
+C      write(6,*) 'valatxy'
          ireclu=0
  6       read(79,*,end=8) x,y
          x_ll=x
@@ -97,21 +99,23 @@ C            if (icoordchange.ne.0) call xyll(x,y)
             endif
 
             if(iel.le.0.or.isub.le.0) then
-            write(82,*) x_ll,y_ll,val
+            write(82,1661) x_ll,y_ll,val
             goto 6
             endif
             call extrt3(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
      &       l(lklocs),s(ltrhsg),s(ltcele),val,s(1),ipr,s(lrkele))
 C            if (icoordchange.ne.0) call xyll(x,y)
-            write(82,*) x_ll,y_ll,val
+            write(82,1661) x_ll,y_ll,val
          endif
          goto 6
  8       continue
 C
+C          write(6,*) 'data'
  123     continue
          ireclu=0
          ijmbval=0
          rewind(20)
+C         open(71,file='fort.71',form='formatted',buffered='yes')
  66      read(20,*,end=86) x,y,tttt,wwww
          x_ll=x
          y_ll=y
@@ -143,13 +147,15 @@ C               if (icoordchange.ne.0) call xyll(x,y)
 c              write(6,*) ' Donnee ',ireclu,x_ll,y_ll,' non localisee'
 C               write(82,*) x_ll,y_ll,-9999.0
                 val=valex
-                write(71,*) x_ll,y_ll,val
+CTESTSPEEDJMB               
+               write(71,1661) x_ll,y_ll,val
                goto 66
             endif
             call extrt2(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
      &       l(lklocs),s(ltrhsg),val,s(1),ipr,s(lrkele))
 C            if (icoordchange.ne.0) call xyll(x,y)
-            write(71,*) x_ll,y_ll,val
+CTESTSPEEDJMB
+               write(71,1661) x_ll,y_ll,val
          endif
          if(ityp.eq.3) then
             if (opti.eq.1) then 		! (SvL)
@@ -162,13 +168,13 @@ C            if (icoordchange.ne.0) call xyll(x,y)
 
             if(iel.le.0.or.isub.le.0) then
             val=valex
-            write(71,*) x_ll,y_ll,val
+            write(71,1661) x_ll,y_ll,val
             goto 66
             endif
             call extrt3(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
      &        l(lklocs),s(ltrhsg),s(ltcele),val,s(1),ipr,s(lrkele))
 C            if (icoordchange.ne.0) call xyll(x,y)
-            write(71,*) x_ll,y_ll,val
+            write(71,1661) x_ll,y_ll,val
          endif
          ijmbval=ijmbval+1
          jmboff=ndata*2+ireclu-1
@@ -263,6 +269,7 @@ C
       if(ispec.gt.0) then
       index=0
 C JMB (change for the problem in extre2 for regular grid...
+       write(6,*) 'grid'
  10    continue
        val=valex
        if(ityp.eq.2) then
