@@ -4,7 +4,9 @@ echo divagcv:       Generalized Cross Validation
 echo divagcv:///////////////////////////////////////////
 echo ' '
 
-divagcvlog='./output/divagcv.log'
+divarundir=$(pwd)
+divagcvlog=$divarundir'/output/divagcv.log'
+
 echo divagcv://///////////////////////////////////////// > $divagcvlog
 echo divagcv:       Generalized Cross Validation >> $divagcvlog
 echo divagcv://///////////////////////////////////////// >> $divagcvlog
@@ -118,25 +120,25 @@ echo A problem was encountered during execution !
 echo          divagcv      findmin.a
 echo Check execution track
 echo --------------------------------------------
-echo ' ' >> ../$divagcvlog
-echo -------------------------------------------- >> ../$divagcvlog
-echo A problem was encountered during execution ! >> ../$divagcvlog
-echo          divagcv      findmin.a >> ../$divagcvlog
-echo Check execution track >> ../$divagcvlog
-echo -------------------------------------------- >> ../$divagcvlog
-echo ' ' >> ../output/diva.log
-echo -------------------------------------------- >> ../output/diva.log
-echo A problem was encountered during execution ! >> ../output/diva.log
-echo          divagcv      findmin.a  >> ../output/diva.log
-echo Check execution track >> ../output/diva.log
-echo -------------------------------------------- >> ../output/diva.log
+echo ' ' >> $divagcvlog
+echo -------------------------------------------- >> $divagcvlog
+echo A problem was encountered during execution ! >> $divagcvlog
+echo          divagcv      findmin.a >> $divagcvlog
+echo Check execution track >> $divagcvlog
+echo -------------------------------------------- >> $divagcvlog
+echo ' ' >>  $divagcvlog
+echo -------------------------------------------- >> $divagcvlog
+echo A problem was encountered during execution ! >> $divagcvlog 
+echo          divagcv      findmin.a  >> $divagcvlog
+echo Check execution track >> $divagcvlog
+echo -------------------------------------------- >> $divagcvlog
 fi
 else
-echo ' ' >> ../$divagcvlog
-echo -------------------------------------------- >> ../$divagcvlog
-echo A problem was encountered during execution ! >> ../$divagcvlog
-echo Check execution track >> ../$divagcvlog
-echo -------------------------------------------- >> ../$divagcvlog
+echo ' ' >> $divagcvlog
+echo -------------------------------------------- >> $divagcvlog
+echo A problem was encountered during execution ! >> $divagcvlog
+echo Check execution track >> $divagcvlog
+echo -------------------------------------------- >> $divagcvlog
 echo ' '
 echo --------------------------------------------
 echo A problem was encountered during execution !
@@ -144,24 +146,24 @@ echo Check execution track
 echo --------------------------------------------
 fi
 mv fort.12 ../output/gcvsnvar.dat
-echo ' ' >> ../$divagcvlog
-echo ---------------------------------------- >> ../$divagcvlog
-echo 'GCV finished' >> ../$divagcvlog
+echo ' ' >> $divagcvlog
+echo ---------------------------------------- >> $divagcvlog
+echo 'GCV finished' >> $divagcvlog
 echo 'Estimated value of SNR = ' $(awk 'FNR == 2 { print; exit }' ../output/gcvsnvar.dat)
-echo Results written in ./output/gcvsnvar.dat >> ../$divagcvlog
-echo ---------------------------------------- >> ../$divagcvlog
-echo ' ' >> ../$divagcvlog
-echo ----------------------------------------------------- >> ../$divagcvlog
-echo 'Creating adapted param.par in ./output/param.par.gcv' >> ../$divagcvlog
-echo ----------------------------------------------------- >> ../$divagcvlog
+echo Results written in ./output/gcvsnvar.dat >> $divagcvlog
+echo ---------------------------------------- >> $divagcvlog
+echo ' ' >> $divagcvlog
+echo ----------------------------------------------------- >> $divagcvlog
+echo 'Creating adapted param.par in ./output/param.par.gcv' >> $divagcvlog
+echo ----------------------------------------------------- >> $divagcvlog
 head -23 ../input/param.par  > ../output/param.par.gcv
 head -2 ../output/gcvsnvar.dat | tail -1 >> ../output/param.par.gcv
 head -25 ../input/param.par | tail -1 >> ../output/param.par.gcv
 head -4 ../output/gcvsnvar.dat  | tail -1 >> ../output/param.par.gcv
 if [ "$1" == "-r" ]
 then
-echo divagcv:======================================================= >> ../$divagcvlog
-echo divagcv:Replacing SNR by new value from GCV in param.par  >> ../$divagcvlog
+echo divagcv:======================================================= >> $divagcvlog
+echo divagcv:Replacing SNR by new value from GCV in param.par  >> $divagcvlog
 echo divagcv:=======================================================
 echo divagcv:Replacing SNR by new value from GCV in param.par 
 cd ..
