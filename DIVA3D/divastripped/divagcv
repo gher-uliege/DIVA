@@ -27,7 +27,7 @@ then
 if [ -f ./meshgenwork/fort.22 ]
 then 
 echo divagcv:=========================================================================== >> $divagcvlog
-echo divagcv:Mesh files aready exist, hope they are correct: otherwise exectute divamesh >> $divagcvlog
+echo divagcv:Mesh files aready exist, hope they are correct: otherwise execute divamesh >> $divagcvlog
 echo divagcv:=========================================================================== >> $divagcvlog
 else
 divamesh
