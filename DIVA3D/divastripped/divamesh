@@ -4,7 +4,10 @@ echo                Mesh generation
 echo //////////////////////////////////////////////////
 echo ' '
 
-divameshlog='./output/divamesh.log'
+divarundir=$(pwd)
+divameshlog=$divarundir'/output/divamesh.log'
+divalog=$divarundir'/output/diva.log'
+
 echo ////////////////////////////////////////////////// > $divameshlog
 echo                Mesh generation >> $divameshlog
 echo ////////////////////////////////////////////////// >> $divameshlog
@@ -91,11 +94,11 @@ echo 5 >> ./meshgenwork/fort.11
 #generation of the mesh
 cd ./meshgenwork
 
-echo ////////////////////////////////////////// >> ../output/diva.log
-echo '           Mesh generation (generopt)' >> ../output/diva.log
-echo ////////////////////////////////////////// >> ../output/diva.log
-echo ' '  >> ../output/diva.log
-echo $icoordchange | ../../bin/generopt.a >> ../output/diva.log
+echo ////////////////////////////////////////// >> $divalog
+echo '           Mesh generation (generopt)' >> $divalog
+echo ////////////////////////////////////////// >> $divalog
+echo ' '  >> $divalog
+echo $icoordchange | ../../bin/generopt.a >> $divalog
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -109,12 +112,12 @@ echo A problem was encountered during execution ! >> $divameshlog
 echo          divamesh      generopt.a >> $divameshlog
 echo Check execution track >> $divameshlog
 echo -------------------------------------------- >> $divameshlog
-echo ' ' >> ../output/diva.log
-echo -------------------------------------------- >> ../output/diva.log
-echo A problem was encountered during execution ! >> ../output/diva.log
-echo          divamesh      generopt.a  >> ../output/diva.log
-echo Check execution track >> ../output/diva.log
-echo -------------------------------------------- >> ../output/diva.log
+echo ' ' >> $divalog
+echo -------------------------------------------- >> $divalog
+echo A problem was encountered during execution ! >> $divalog
+echo          divamesh      generopt.a  >> $divalog
+echo Check execution track >> $divalog
+echo -------------------------------------------- >>$divalog
 fi
 File23=./fort.23
 {
@@ -124,8 +127,8 @@ read nelt
 } < $File23
 #output of info for mesh visualisation with meshvisu.m
 echo ' '
-echo Copying output files for visualisation >> ../$divameshlog
-echo in directory ./output/meshvisu/  >> ../$divameshlog
+echo Copying output files for visualisation >> $divameshlog
+echo in directory ./output/meshvisu/  >> $divameshlog
 cp fort.10 ../output/meshvisu/
 cp fort.22 ../output/meshvisu/
 cp fort.23 ../output/meshvisu/

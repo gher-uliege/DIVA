@@ -4,7 +4,11 @@ echo divacv:       Cross Validation
 echo divacv:///////////////////////////////////////////
 echo ' '
 
-divacvlog='./output/divacv.log'
+divarundir=$(pwd)
+divacvlog=$divarundir'/output/divacv.log'
+divalog=$divarundir'/output/diva.log'
+
+
 echo divacv://///////////////////////////////////////// > $divacvlog
 echo divacv:       Cross Validation >> $divacvlog
 echo divacv://///////////////////////////////////////// >> $divacvlog
@@ -70,28 +74,28 @@ cd divawork
 cp ../input/data.dat fort.20
 cp ../output/fieldatdatapoint.anl fort.21
 cp ../output/expectederroratdatapoint.anl fort.22
-echo -99 $gcv | ../../bin/cverroraii.a >> ../output/diva.log
+echo -99 $gcv | ../../bin/cverroraii.a >> $divalog
 if [ $? -ne 0 ];then
-echo ' ' >> ../$divacvlog
-echo -------------------------------------------- >> ../$divacvlog
-echo A problem was encountered during execution ! >> ../$divacvlog
-echo        divacv:     cverroraii.a >> ../$divacvlog
-echo Check execution track >> ../$divacvlog
-echo -------------------------------------------- >> ../$divacvlog
+echo ' ' >> $divacvlog
+echo -------------------------------------------- >> $divacvlog
+echo A problem was encountered during execution ! >> $divacvlog
+echo        divacv:     cverroraii.a >> $divacvlog
+echo Check execution track >> $divacvlog
+echo -------------------------------------------- >> $divacvlog
 echo ' '
 echo --------------------------------------------
 echo A problem was encountered during execution !
 echo        divacv:     cverroraii.a
 echo Check execution track
 echo --------------------------------------------
-echo ' ' >> ../output/diva.log
-echo -------------------------------------------- >> ../output/diva.log
-echo A problem was encountered during execution ! >> ../output/diva.log
-echo       divacv:      cverroraii.a  >> ../output/diva.log
-echo Check execution track >> ../output/diva.log
-echo -------------------------------------------- >> ../output/diva.log
+echo ' ' >> $divalog
+echo -------------------------------------------- >> $divalog
+echo A problem was encountered during execution ! >> $divalog
+echo       divacv:      cverroraii.a  >> $divalog
+echo Check execution track >> $divalog
+echo -------------------------------------------- >> $divalog
 fi
- cp -f ../output/diva.log ../output/.
+# cp -f ../output/diva.log ../output/.
 cat fort.23 >> ../output/gcv.dat
 
 cd ..
@@ -108,48 +112,48 @@ cp ./output/gcv.dat ./divawork/fort.11
 
 cd divawork
 
-echo divacv:Looking for the minimum of CV >> ../$divacvlog
-echo ' ' >> ../$divacvlog
+echo divacv:Looking for the minimum of CV >> $divacvlog
+echo ' ' >> $divacvlog
 
 if [ -f ../input/gcvsampling.dat ] 
 then 
-../../bin/findmin.a >> ../output/diva.log
+../../bin/findmin.a >> $divalog
 if [ $? -ne 0 ];then
 echo ' ' >> ../$divacvlog
-echo -------------------------------------------- >> ../$divacvlog
-echo A problem was encountered during execution ! >> ../$divacvlog
-echo        divacv:     findmin.a >> ../$divacvlog
-echo Check execution track >> ../$divacvlog
-echo -------------------------------------------- >> ../$divacvlog
+echo -------------------------------------------- >> $divacvlog
+echo A problem was encountered during execution ! >> $divacvlog
+echo        divacv:     findmin.a >> $divacvlog
+echo Check execution track >> $divacvlog
+echo -------------------------------------------- >> $divacvlog
 echo ' '
 echo --------------------------------------------
 echo A problem was encountered during execution !
 echo       divacv:    findmin.a
 echo Check execution track
 echo --------------------------------------------
-echo ' ' >> ../output/diva.log
-echo -------------------------------------------- >> ../output/diva.log
-echo A problem was encountered during execution ! >> ../output/diva.log
-echo       divacv:     findmin.a  >> ../output/diva.log
-echo Check execution track >> ../output/diva.log
-echo -------------------------------------------- >> ../output/diva.log
+echo ' ' >> $divalog
+echo -------------------------------------------- >> $divalog
+echo A problem was encountered during execution ! >> $divalog
+echo       divacv:     findmin.a  >> $divalog
+echo Check execution track >> $divalog
+echo -------------------------------------------- >> $divalog
 fi
 echo ' '
-echo ' ' >> ../$divacvlog
-echo ---------------------------------------- >> ../$divacvlog
+echo ' ' >> $divacvlog
+echo ---------------------------------------- >> $divacvlog
 echo CV finished >> $divacvlog
-echo Results written in ./output/gcvsnvar.dat >> ../$divacvlog
-echo ---------------------------------------- >> ../$divacvlog
+echo Results written in ./output/gcvsnvar.dat >> $divacvlog
+echo ---------------------------------------- >> $divacvlog
 echo ----------------------------------------
 echo CV finished
 echo Results written in ./output/gcvsnvar.dat
 echo ----------------------------------------
 else
-echo ' ' >> ../$divacvlog
-echo -------------------------------------------- >> ../$divacvlog
-echo A problem was encountered during execution ! >> ../$divacvlog
+echo ' ' >> $divacvlog
+echo -------------------------------------------- >> $divacvlog
+echo A problem was encountered during execution ! >> $divacvlog
 echo Check execution track >> $divacvlog
-echo -------------------------------------------- >> ../$divacvlog
+echo -------------------------------------------- >> $divacvlog
 echo ' '
 echo --------------------------------------------
 echo A problem was encountered during execution !
@@ -158,19 +162,19 @@ echo --------------------------------------------
 fi
 
 mv fort.12 ../output/gcvsnvar.dat
-echo ----------------------------------------------------- >> ../$divacvlog
-echo divacv:'Creating adapted param.par in ./output/param.par.gcv' >> ../$divacvlog
-echo divacv:----------------------------------------------------- >> ../$divacvlog
+echo ----------------------------------------------------- >> $divacvlog
+echo divacv:'Creating adapted param.par in ./output/param.par.gcv' >> $divacvlog
+echo divacv:----------------------------------------------------- >> $divacvlog
 head -23 ../input/param.par  > ../output/param.par.gcv
 head -2 ../output/gcvsnvar.dat | tail -1 >> ../output/param.par.gcv
 head -25 ../input/param.par | tail -1 >> ../output/param.par.gcv
 head -4 ../output/gcvsnvar.dat  | tail -1 >> ../output/param.par.gcv
 if [ "$1" == "-r" ]
 then
-echo divacv:======================================================= >> ../$divacvlog
-echo divacv:Replacing  param file with fit >> ../$divacvlog
-echo divacv:======================================================= >> ../$divacvlog
-echo divacv:Replacing  param file with fit >> ../$divacvlog
+echo divacv:======================================================= >> $divacvlog
+echo divacv:Replacing  param file with fit >> $divacvlog
+echo divacv:======================================================= >> $divacvlog
+echo divacv:Replacing  param file with fit >> $divacvlog
 cd ..
 cp -v ./input/param.par ./input/param.par.old
 cp -v ./output/param.par.gcv ./input/param.par

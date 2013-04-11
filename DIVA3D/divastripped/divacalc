@@ -4,7 +4,11 @@ ipipe=0
 echo //////////////////////////////////////////////////
 echo           Going to analyse a field
 echo //////////////////////////////////////////////////
-divacalclog='./output/divacalc.log'
+
+divarundir=$(pwd)
+divacalclog=$divarundir'/output/divacalc.log'
+divalog=$divarundir'/output/diva.log'
+
 echo ////////////////////////////////////////////////// > $divacalclog
 echo           Going to analyse a field >> $divacalclog
 echo ////////////////////////////////////////////////// >> $divacalclog
@@ -103,7 +107,7 @@ cd ../divawork
 NREA=0
 NINT=0
 NDATA=$(cat ../input/data.dat | wc -l)
-echo 'Number of data points:' ${NDATA} >> ../$divacalclog
+echo 'Number of data points:' ${NDATA} >> $divacalclog
 echo ' '
 let NREA=$NREA+4*$NDATA
 let NREA=$NREA+${nx}*${ny}
@@ -147,7 +151,7 @@ if [ -f ../input/constraint.dat ]
 then
 let itcs=$itcs+1
 
-echo Advection requested >> ../$divacalclog
+echo Advection requested >> $divacalclog
 
 cat ../input/constraint.dat > ./fort.49
 cp ../input/UVinfo.dat ./fort.93
@@ -178,7 +182,7 @@ fi
 if [ -f ../input/RL.dat ]
 then
 let itcs=$itcs+2
-echo Variable L requested >> ../$divacalclog
+echo Variable L requested >> $divacalclog
 cp ../input/RL.dat ./fort.94
 cp ../input/RLinfo.dat ./fort.95
 let NREA=$NREA+$nnt1
@@ -249,10 +253,10 @@ echo %  Going to call another diva execution    % >> $divacalclog
 echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% >> $divacalclog
 
 
-echo divacalc: ////////////////////////////////////////// >> ./output/diva.log
-echo divacalc:         running dvcovariance >> ./output/diva.log
-echo divacalc: ////////////////////////////////////////// >> ./output/diva.log
-echo ' '  >> ./output/diva.log
+echo divacalc: ////////////////////////////////////////// >> $divalog
+echo divacalc:         running dvcovariance >> $divalog
+echo divacalc: ////////////////////////////////////////// >> $divalog
+echo ' '  >> $divalog
 
 . dvcovariance
     cat $divacalclog ./output/dvcovariance.log > bidon
@@ -306,8 +310,8 @@ echo $ireg >> ./fort.10
 #JMB
 if [ "$itcs" != "0" ] 
 then 
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> ../$divacalclog
-echo  Module constraint activated >> ../$divacalclog
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> $divacalclog
+echo  Module constraint activated >> $divacalclog
 echo $itcs
 echo constr 1 >> ./fort.10
 echo $itcs >> ./fort.10
@@ -316,15 +320,15 @@ echo solver 1 >> ./fort.10
 echo 0 >> ./fort.10
 echo stores 1 >> ./fort.10
 echo 3 >> ./fort.10
-echo VARBAK: $varbak >> ../$divacalclog
+echo VARBAK: $varbak >> $divacalclog
 if [ "$iqc" != "1" ]
 then
 if [ "$varbak" != "0" ]
 then
 if [ "$ispec" != "0" ]
 then
-	echo ' ' >> ../$divacalclog
-echo Errors will be calculated >> ../$divacalclog
+	echo ' ' >> $divacalclog
+echo Errors will be calculated >> $divacalclog
 echo esterr 1 >> ./fort.10
 echo $ispec >> ./fort.10
 fi
@@ -360,15 +364,15 @@ awk -v multconst=$multvar '{ if (NF>2) {if ($4 > "") {$4=$4*multconst} else {$4=
 NDATAB=$(cat ./fort.20 | wc -l)
 if [ "$NDATAB" -lt "$NDATA" ]
 then
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> ../$divacalclog
-echo ------------------------------------------- >> ../$divacalclog
-echo ??????????????????????????????????????????? >> ../$divacalclog
-echo ?????   Corrupted data file    ???????????? >> ../$divacalclog
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> $divacalclog
+echo ------------------------------------------- >> $divacalclog
+echo ??????????????????????????????????????????? >> $divacalclog
+echo ?????   Corrupted data file    ???????????? >> $divacalclog
 echo From $NDATA lines in data.dat >> $divacalclog
 echo Only $NDATAB have been feed into DIVA >> $divacalclog
-echo ??????????????????????????????????????????? >> ../$divacalclog
-echo ------------------------------------------- >> ../$divacalclog
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> ../$divacalclog
+echo ??????????????????????????????????????????? >> $divacalclog
+echo ------------------------------------------- >> $divacalclog
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> $divacalclog
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 echo -------------------------------------------
 echo ???????????????????????????????????????????
@@ -381,29 +385,29 @@ echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 fi
 if [ "$1" == "-pfsum" ]
 then
-echo Summing covariances >> ../$divacalclog
+echo Summing covariances >> $divacalclog
 cd ..
 
-echo divacalc: ////////////////////////////////////////// >> ./output/diva.log
-echo divacalc:         running dvcovariancesum >> ./output/diva.log
-echo divacalc: ////////////////////////////////////////// >> ./output/diva.log
-echo ' '  >> ./output/diva.log
+echo divacalc: ////////////////////////////////////////// >> $divalog
+echo divacalc:         running dvcovariancesum >> $divalog
+echo divacalc: ////////////////////////////////////////// >> $divalog
+echo ' '  >> $divalog
 . ./dvcovariancesum
     cat $divacalclog ./output/dvcovariancesum.log > bidon
     mv bidon $divacalclog
 exit
 fi
 
-echo divacalc: ////////////////////////////////////////// >> ../output/diva.log
-echo divacalc:'        Diva calculation (diva.a)'  >> ../output/diva.log
-echo divacalc: ////////////////////////////////////////// >> ../output/diva.log
-echo ' '  >> ../output/diva.log
+echo divacalc: ////////////////////////////////////////// >> $divacalclog
+echo divacalc:'        Diva calculation (diva.a)'  >> $divacalclog
+echo divacalc: ////////////////////////////////////////// >> $divacalclog
+echo ' '  >> $divacalclog
 
 ##echo 'REMOVE FORT.35 and FORT.43'
 rm -f fort.43
 rm -f fort.35
 #execute diva
-echo $NINT $NREA | ../../bin/diva.a >> ../output/diva.log
+echo $NINT $NREA | ../../bin/diva.a >> $divacalclog
 
 if [ $? -ne 0 ];then
 echo ' '
@@ -412,18 +416,18 @@ echo A problem was encountered during execution !
 echo       divacalc:  diva.a
 echo 'Check execution track in diva.log'
 echo --------------------------------------------
-echo ' ' >> ../$divacalclog
-echo -------------------------------------------- >> ../$divacalclog
-echo A problem was encountered during execution ! >> ../$divacalclog
-echo       divacalc:  diva.a >> ../$divacalclog
-echo 'Check execution track in diva.log' >> ../$divacalclog
-echo -------------------------------------------- >> ../$divacalclog
-echo ' ' >> ../output/diva.log
-echo -------------------------------------------- >> ../output/diva.log
-echo A problem was encountered during execution ! >> ../output/diva.log
-echo       divacalc:   diva.a  >> ../output/diva.log
-echo 'Check execution track in diva.log' >> ../output/diva.log
-echo -------------------------------------------- >> ../output/diva.log
+echo ' ' >> $divacalclog
+echo -------------------------------------------- >> $divacalclog
+echo A problem was encountered during execution ! >> $divacalclog
+echo       divacalc:  diva.a >> $divacalclog
+echo 'Check execution track in diva.log' >> $divacalclog
+echo -------------------------------------------- >> $divacalclog
+echo ' ' >> $divacalclog
+echo -------------------------------------------- >> $divalog
+echo A problem was encountered during execution ! >> $divalog
+echo       divacalc:   diva.a  >> $divalog
+echo 'Check execution track in diva.log' >> $ddivalog
+echo -------------------------------------------- >> $divalog
 fi
 
 dataonmesh=0
@@ -431,12 +435,12 @@ dataonmesh=0
 # Check if fort.84 was generated AND if not empty...
 if [ ! -s ./fort.84 ];
 then
-        echo ' ' >> ../$divacalclog
-        echo '//////////////////////////////////////////////////' >> ../$divacalclog
-        echo 'Problem in diva.a : analysis could not be finished' >> ../$divacalclog
-        echo ' ' >> ../$divacalclog
-        echo 'Check diva.log' >> ../$divacalclog
-        echo '//////////////////////////////////////////////////' >> ../$divacalclog
+        echo ' ' >> $divacalclog
+        echo '//////////////////////////////////////////////////' >> $divacalclog
+        echo 'Problem in diva.a : analysis could not be finished' >> $divacalclog
+        echo ' ' >> $divacalclog
+        echo 'Check diva.log' >> $divacalclog
+        echo '//////////////////////////////////////////////////' >> $divacalclog
 
         echo ' '
         echo '//////////////////////////////////////////////////'
@@ -489,16 +493,16 @@ then
 cp fort.76 ../output/expectederroratdatapoint.anl
 cp fort.71 ../output/fieldatdatapoint.anl
 echo ' '
-echo divacalc: Looking for outliers > ../$divacalclog
+echo divacalc: Looking for outliers > $divacalclog
 echo ' '
 
 
-echo divacalc: ////////////////////////////////////////// >> ../output/diva.log
-echo divacalc:       lookforoutliers   >> ../output/diva.log
-echo divacalc: ////////////////////////////////////////// >> ../output/diva.log
-echo ' '  >> ../output/diva.log
+echo divacalc: ////////////////////////////////////////// >> $divalog
+echo divacalc:       lookforoutliers   >> $divalog
+echo divacalc: ////////////////////////////////////////// >> $divalog
+echo ' '  >> $divalog
 
-echo $valex | ../../bin/lookforoutliers.a >> ../output/diva.log
+echo $valex | ../../bin/lookforoutliers.a >> $divalog
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -506,28 +510,28 @@ echo A problem was encountered during execution !
 echo       divacalc:   lookforoutliers.a
 echo 'Check execution track in diva.log'
 echo --------------------------------------------
-echo ' ' >> ../output/diva.log
-echo -------------------------------------------- >> ../output/diva.log
-echo A problem was encountered during execution ! >> ../output/diva.log
-echo       divacalc:    lookforoutliers.a  >> ../output/diva.log
-echo 'Check execution track in diva.log' >> ../output/diva.log
-echo -------------------------------------------- >> ../output/diva.log
+echo ' ' >> $divalog
+echo -------------------------------------------- >> $divalog
+echo A problem was encountered during execution ! >> $divalog
+echo       divacalc:    lookforoutliers.a  >> $divalog
+echo 'Check execution track in diva.log' >> $divalog
+echo -------------------------------------------- >> $divalog
 fi
 echo ' '
 
-echo ' ' >> ../$divacalclog
-echo Copying outlier lists >> ../$divacalclog
+echo ' ' >> $divacalclog
+echo Copying outlier lists >> $divacalclog
 echo ' '
 if [ -f fort.66 ]
 then
 mv -v fort.66 ../output/outliers.dat
 mv -v fort.67 ../output/outliers.normalized.dat
 else
-echo ' ' >> ../$divacalclog
-echo -------------------------------------------- >> ../$divacalclog
-echo A problem was encountered during execution ! >> ../$divacalclog
-echo 'Check execution track in diva.log' >> ../$divacalclog
-echo -------------------------------------------- >> ../$divacalclog
+echo ' ' >> $divacalclog
+echo -------------------------------------------- >> $divacalclog
+echo A problem was encountered during execution ! >> $divacalclog
+echo 'Check execution track in diva.log' >> $divacalclog
+echo -------------------------------------------- >> $divacalclog
 echo ' '
 echo --------------------------------------------
 echo A problem was encountered during execution !
@@ -536,9 +540,9 @@ echo --------------------------------------------
 fi
 else
 #output as netcdf not yet done
-echo ' ' >> ../$divacalclog
-echo Output of results copied in ./output/ >> ../$divacalclog
-echo ' ' >> ../$divacalclog
+echo ' ' >> $divacalclog
+echo Output of results copied in ./output/ >> $divacalclog
+echo ' ' >> $divacalclog
 cp fort.84 ../output/fieldgher.anl
 if [ -f fort.82 ]
 then
@@ -665,16 +669,16 @@ if [ "$varbak" != "0" ]
 then
 if [ "$iecal" == "1" ] 
 then
-echo Creating netcdf file for field and associated error >> ../$divacalclog
-echo in directory ./output/ghertonetcdf/ >> ../$divacalclog
+echo Creating netcdf file for field and associated error >> $divacalclog
+echo in directory ./output/ghertonetcdf/ >> $divacalclog
 cd ../output/ghertonetcdf
 
-echo divacalc: ////////////////////////////////////////// >> ../diva.log
-echo divacalc:       netcdfoutput   >> ../diva.log
-echo divacalc: ////////////////////////////////////////// >> ../diva.log
-echo ' '  >> ../diva.log
+echo divacalc: ////////////////////////////////////////// >> $divalog
+echo divacalc:       netcdfoutput   >> $divalog
+echo divacalc: ////////////////////////////////////////// >> $divalog
+echo ' '  >> $divalog
 
-../../../bin/netcdfoutput.a >> ../diva.log
+../../../bin/netcdfoutput.a >> $divalog
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
@@ -682,18 +686,18 @@ echo A problem was encountered during execution !
 echo       divacalc:   netcdfoutput.a
 echo 'Check execution track in diva.log'
 echo --------------------------------------------
-echo ' ' >> ../$divacalclog
-echo -------------------------------------------- >> ../$divacalclog
-echo A problem was encountered during execution ! >> ../$divacalclog
-echo       divacalc:   netcdfoutput.a >> ../$divacalclog
-echo 'Check execution track in diva.log' >> ../$divacalclog
-echo -------------------------------------------- >> ../$divacalclog
-echo ' ' >> ../diva.log
-echo -------------------------------------------- >> ../diva.log
-echo A problem was encountered during execution ! >> ../diva.log
-echo       divacalc:   netcdfoutput.a  >> ../diva.log
-echo 'Check execution track in diva.log' >> ../diva.log
-echo -------------------------------------------- >> ../diva.log
+echo ' ' >> $divacalclog
+echo -------------------------------------------- >> $divacalclog
+echo A problem was encountered during execution ! >> $divacalclog
+echo       divacalc:   netcdfoutput.a >> $divacalclog
+echo 'Check execution track in diva.log' >> $divacalclog
+echo -------------------------------------------- >> $divacalclog
+echo ' ' >> $divalog
+echo -------------------------------------------- >> $divalog
+echo A problem was encountered during execution ! >> $divalog
+echo       divacalc:   netcdfoutput.a  >> $divalog
+echo 'Check execution track in diva.log' >> $divalog
+echo -------------------------------------------- >> $divalog
 fi
 fi
 fi
@@ -711,18 +715,18 @@ echo A problem was encountered during execution !
 echo       divacalc:   netcdfoutputfield.a
 echo 'Check execution track in diva.log'
 echo --------------------------------------------
-echo ' ' >> ../$divacalclog
-echo -------------------------------------------- >> ../../$divacalclog
-echo A problem was encountered during execution ! >> ../../$divacalclog
-echo       divacalc:   netcdfoutputfield.a >> ../../$divacalclog
-echo 'Check execution track in diva.log' >> ../../$divacalclog
-echo -------------------------------------------- >> ../../$divacalclog
-echo ' ' >> ../diva.log
-echo -------------------------------------------- >> ../diva.log
-echo A problem was encountered during execution ! >> ../diva.log
-echo       divacalc:    netcdfoutputfield.a  >> ../diva.log
-echo 'Check execution track in diva.log' >> ../diva.log
-echo -------------------------------------------- >> ../diva.log
+echo ' ' >> $divacalclog
+echo -------------------------------------------- >> $divacalclog
+echo A problem was encountered during execution ! >> $divacalclog
+echo       divacalc:   netcdfoutputfield.a >> $divacalclog
+echo 'Check execution track in diva.log' >> $divacalclog
+echo -------------------------------------------- >> $divacalclog
+echo ' ' >> $divalog
+echo -------------------------------------------- >> $divalog
+echo A problem was encountered during execution ! >> $divalog
+echo       divacalc:    netcdfoutputfield.a  >> $divalog
+echo 'Check execution track in diva.log' >> $divalog
+echo -------------------------------------------- >> $divalog
 fi
 ###rm -f ../error*.anl
 fi
