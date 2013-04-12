@@ -7,6 +7,7 @@ echo ' '
 divarundir=$(pwd)
 divacvlog=$divarundir'/output/divacv.log'
 divalog=$divarundir'/output/diva.log'
+divacalclog=$divarundir'/output/divacalc.log'
 
 
 echo divacv://///////////////////////////////////////// > $divacvlog
@@ -24,7 +25,7 @@ then
 if [ -f ./meshgenwork/fort.22 ]
 then 
 echo divacv:=========================================================================== >> $divacvlog
-echo divacv:Mesh files aready exist, hope they are correct: otherwise exectute divamesh >> $divacvlog
+echo divacv:Mesh files already exist, hope they are correct: otherwise execute divamesh >> $divacvlog
 echo divacv:=========================================================================== >> $divacvlog
 else
 divamesh
@@ -63,7 +64,7 @@ echo >> bidon
 echo 1 >> bidon
 mv bidon ./input/param.par
 divacalc qc
- cat  $divacvlog ./output/divacalc.log > bidon
+ cat  $divacvlog $divacalclog > bidon
  mv bidon $divacvlog
 
 # Now get misfit from adequate files: data, analysis at data and

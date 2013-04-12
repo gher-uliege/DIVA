@@ -6,6 +6,7 @@ echo ' '
 
 divarundir=$(pwd)
 divagcvlog=$divarundir'/output/divagcv.log'
+divacalclog=$divarundir'/output/divagcv.log'
 
 echo divagcv://///////////////////////////////////////// > $divagcvlog
 echo divagcv:       Generalized Cross Validation >> $divagcvlog
@@ -29,7 +30,7 @@ then
 if [ -f ./meshgenwork/fort.22 ]
 then 
 echo divagcv:=========================================================================== >> $divagcvlog
-echo divagcv:Mesh files aready exist, hope they are correct: otherwise execute divamesh >> $divagcvlog
+echo divagcv:Mesh files already exist, hope they are correct: otherwise execute divamesh >> $divagcvlog
 echo divagcv:=========================================================================== >> $divagcvlog
 else
 divamesh
@@ -62,7 +63,7 @@ echo 0 >> bidon
 mv bidon ./input/param.par
 
 divacalc
- cat  $divagcvlog ./output/divacalc.log > bidon
+ cat  $divagcvlog $divacalclog > bidon
  mv bidon $divagcvlog
 
 FILENAME=./divawork/fort.77

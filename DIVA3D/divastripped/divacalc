@@ -5,6 +5,8 @@ echo //////////////////////////////////////////////////
 echo           Going to analyse a field
 echo //////////////////////////////////////////////////
 
+# Define log files
+#-----------------
 divarundir=$(pwd)
 divacalclog=$divarundir'/output/divacalc.log'
 divalog=$divarundir'/output/diva.log'
@@ -524,8 +526,8 @@ echo Copying outlier lists >> $divacalclog
 echo ' '
 if [ -f fort.66 ]
 then
-mv -v fort.66 ../output/outliers.dat
-mv -v fort.67 ../output/outliers.normalized.dat
+mv -f fort.66 ../output/outliers.dat
+mv -f fort.67 ../output/outliers.normalized.dat
 else
 echo ' ' >> $divacalclog
 echo -------------------------------------------- >> $divacalclog
@@ -703,11 +705,11 @@ fi
 fi
 if [ "$varbak" == "0"  -o  "$iecal" == "0" ] 
 then
-echo Creating netcdf file only for field  >> ../$divacalclog
-echo since Varbak and ispec are $varbak $ispec >> ../$divacalclog
+echo Creating netcdf file only for field  >> $divacalclog
+echo since Varbak and ispec are $varbak $ispec >> $divacalclog
 
 cd ../output/ghertonetcdf
-../../../bin/netcdfoutputfield.a >> ../diva.log
+../../../bin/netcdfoutputfield.a >> $divalog
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
