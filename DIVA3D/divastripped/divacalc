@@ -77,6 +77,37 @@ read linecomment
 read varbak
 } < $Filepar
 
+#######
+# Stuff for errors
+iflagcpme=0
+iflagexerr=0
+if [ "$ispec" -ge "100" ]
+then
+echo Clever poor mans error
+iflagcpme=1
+fi
+
+if [ "$ispec" -le "-100" ]
+then
+if  [ "$ispec" -le "-110" ]
+then
+echo exerr with boundary effect
+iflagexerr=2
+ispec=17
+else
+echo exerr
+iflagexerr=1
+ispec=17
+fi
+
+
+fi
+
+##################
+
+
+
+
 
 if [ "$ibii" == "1" ]
 then
@@ -742,6 +773,29 @@ echo ' '
 echo --------------------
 echo Analysis is finished
 echo --------------------
+
+
+if [ "$iflagcpme" == "1" ]
+then
+divacpme &
+fi
+
+if [ "$iflagexerr" == "1" ]
+then
+divaexerr &
+fi
+
+
+if [ "$iflagexerr" == "2" ]
+then
+divaexerr full &
+fi
+
+
+
+
+
+
 fi
 if [ "$ispec" -lt "0" ] 
 then
@@ -750,3 +804,5 @@ then
 rm -f ./divawork/sub/fort.*
 fi
 fi
+
+
