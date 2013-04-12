@@ -1,24 +1,20 @@
 #!/bin/bash
-echo //////////////////////////////////////////////////
-echo                Mesh generation
-echo //////////////////////////////////////////////////
-echo ' '
 
 divarundir=$(pwd)
 divameshlog=$divarundir'/output/divamesh.log'
 divalog=$divarundir'/output/diva.log'
 
-echo ////////////////////////////////////////////////// > $divameshlog
-echo                Mesh generation >> $divameshlog
-echo ////////////////////////////////////////////////// >> $divameshlog
-echo ' ' >> $divameshlog
+
+echo ////////////////////////////////////////////////// | tee $divameshlog
+echo                Mesh generation | tee -a $divameshlog
+echo ////////////////////////////////////////////////// | tee -a $divameshlog
+echo ' '
 
 if [ -f ./input/coast.cont ] 
 then
 cp ./input/coast.cont ./meshgenwork/fort.10
 else
-echo Need to provide coast.cont in ./input !
-echo Need to provide coast.cont in ./input ! >> $divameshlog
+echo Need to provide coast.cont in ./input ! tee -a $divameshlog
 fi
 isdens=0
 if [ -f ./input/coast.cont.dens ] 
