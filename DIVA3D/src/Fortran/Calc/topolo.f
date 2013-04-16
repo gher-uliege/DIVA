@@ -100,20 +100,36 @@ C
 C
 C  INPUT OF ID and COORDINATES of VERTEX NODES
 C
-      do 10 i=1,nnt1
-         read(11,*) ksort(i),tcoog(i,1),tcoog(i,2)
+
+      do 10 i=1,nnt1  
+#ifdef DIVABINARYFILESMESH
+       read(11) ksort(i),tcoog(i,1),tcoog(i,2)
+#else
+       read(11,*) ksort(i),tcoog(i,1),tcoog(i,2)
+#endif
+
  10   continue
 C
 C  INPUT OF ID of INTERFACE NODES
 C
       do 20 i=1+nnt1,nnt
-         read(11,*) ksort(i)
+#ifdef DIVABINARYFILESMESH
+       read(11) ksort(i)
+#else
+       read(11,*) ksort(i)
+#endif
+
  20   continue
 C
 C  INPUT OF CONNECTIVITY TABLE
 C
       do 30 i=1,nelt
-         read(11,*) (kconn(i,j),j=1,nnel)
+#ifdef DIVABINARYFILESMESH
+       read(11) (kconn(i,j),j=1,nnel)
+#else
+       read(11,*) (kconn(i,j),j=1,nnel)
+#endif
+         
  30   continue
 C
 C  RE-DEFINE KCONN IF ELEMENTS ARE NOT LEFT-AREA ORIENTED

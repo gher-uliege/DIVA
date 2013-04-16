@@ -132,6 +132,7 @@ C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       include'divapre.h'
       include'divainc.h'
       character*6 modul
+      common/forsolver/   nthreadsasked
 
       RPI=2*asin(1.D0)
 c      write(6,*) 'Pi',RPI
@@ -147,23 +148,61 @@ C  By DEFAULT : NO COORDINATE CHANGE REQUESTED
 C  INPUT/OUTPUT FILES : OPEN statement
 
       open(unit=10,file='fort.10')
+#ifdef DIVABINARYFILESMESH
+      open(unit=11,file='fort.11',form='unformatted')
+#else
       open(unit=11,file='fort.11')
+#endif
+
       open(unit=12,file='fort.12')
       open(unit=13,file='fort.13')
       open(unit=14,file='fort.14')
       open(unit=15,file='fort.15')
+#ifdef DIVABINARYFILES
+      open(unit=20,file='fort.20',form='unformatted')
+#else
       open(unit=20,file='fort.20')
+#endif
+      
       open(unit=22,file='fort.22')
       open(unit=30,file='fort.30')
       open(unit=50,file='fort.50')
       open(unit=60,file='fort.60')
+#ifdef DIVABINARYFILES
+      open(unit=71,file='fort.71',form='unformatted')
+#else
+      open(unit=71,file='fort.71')
+#endif
+#ifdef DIVABINARYFILES
+      open(unit=72,file='fort.72',form='unformatted')
+#else
+      open(unit=72,file='fort.72')
+#endif
+#ifdef DIVABINARYFILES
+      open(unit=79,file='fort.79',form='unformatted')
+#else
       open(unit=79,file='fort.79')
-      open(unit=80,file='fort.80')
+#endif
+      open(unit=80,form='unformatted',file='fort.80')
       open(unit=81,file='fort.81')
+#ifdef DIVABINARYFILES
+      open(unit=82,file='fort.82',form='unformatted')
+#else
       open(unit=82,file='fort.82')
+#endif
+#ifdef DIVABINARYFILES
+      open(unit=83,file='fort.83',form='unformatted')
+#else
       open(unit=83,file='fort.83')
+#endif
+
       open(unit=84,file='fort.84',form='unformatted')
       open(unit=85,file='fort.85')
+#ifdef DIVABINARYFILES
+      open(unit=86,file='fort.86',form='unformatted')
+#else
+      open(unit=86,file='fort.86')
+#endif
       open(unit=86,file='fort.86')
       open(unit=87,file='fort.87',form='unformatted')
 
@@ -174,8 +213,10 @@ C
 C  INPUT OF MODULES (ipr is an indicator of the amount of data
 C                    to be printed)
 
- 810  format(a6,i2)
+ 810  format(a6,i4)
  820  format(/,10x,31('$'),/,10x,'CALL TO MATHPR MODULE: IPR = '
+     &       ,I2,/,10x,31('$'),/)
+ 821  format(/,10x,31('$'),/,10x,'NTHREAD for parallel solver= '
      &       ,I2,/,10x,31('$'),/)
  830  format(/,10x,31('$'),/,10x,'CALL TO TOPOLO MODULE: IPR = '
      &       ,I2,/,10x,31('$'),/)
@@ -201,7 +242,7 @@ C                    to be printed)
      &       ,I2,/,10x,31('$'),/)
  907  format(/,10x,31('$'),/,10x,'CALL TO DATAQC MODULE: IPR = '
      &       ,I2,/,10x,31('$'),/)
-      
+
       NINTDIVA=nent
       NREADIVA=nrea
       read(5,*,END=1010,ERR=1010) II,JJ
@@ -216,6 +257,11 @@ C     allocate S(NREADIVA)
 C     allocate L(NINTDIVA)
 C#endif
  10   read(10,810) modul,ipr
+      if(modul.eq.'thread') then
+         write(6,821) ipr
+         nthreadsasked=ipr
+         goto 10
+      endif
       if(modul.eq.'mathpr') then
          write(6,820) ipr
          call mathpr(ipr)

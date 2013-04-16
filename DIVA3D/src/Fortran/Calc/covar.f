@@ -120,7 +120,12 @@ C
             jjjjco=0
             rewind(79)
             do i=1,npxy
-            read(79,*,END=8822,ERR=8822) xxxcov,yyycov
+#ifdef DIVABINARYFILES
+           read(79,END=8822,ERR=8822) xxxcov,yyycov
+#else
+           read(79,*,END=8822,ERR=8822) xxxcov,yyycov
+#endif
+
             jjjjco=jjjjco+1
             s(lxycova+2*i-2)=xxxcov
             s(lxycova+2*i-1)=yyycov
@@ -149,14 +154,16 @@ C if sum to be calculated, loop here over all "data" points; no not needed !
 c Boucle sur les points de grille ou l'erreur doit etre calculee
       close(80)
       rewind(80)
-      open(unit=80,file='fort.80')
+
+      open(unit=80,form='unformatted',file='fort.80')
+
       index=0
       jmcount=0
 C Only if ispec=1 3 5 or 7
       if((ispec.eq.2).or.(ispec.eq.4).or.(ispec.eq.6)) goto 100
 
       
- 10   read(80,*,end=100)xob,yob,iel,isub
+ 10   read(80,end=100)xob,yob,iel,isub
       val=0
 C      write(6,*) 'Errors in',xob,yob,iel,isub
       jmcount=jmcount+1
@@ -420,7 +427,12 @@ C only of ispec= 4 5 6 7
          ireclu=0
          rewind(79)
          jjiijj=0
- 667      read(79,*,end=867) x,y
+#ifdef DIVABINARYFILES
+ 667       read(79,end=867) x,y
+#else
+ 667       read(79,*,end=867) x,y
+#endif
+
          jjiijj=jjiijj+1
          x_ll=x
          y_ll=y
@@ -447,7 +459,14 @@ C               if (icoordchange.ne.0) call xyll(x,y)
 c               write(6,*) ' Donnee ',ireclu,x_ll,y_ll,' non localisee'
 C               write(82,*) x_ll,y_ll,-9999.0
                val=0
-               write(73,*) x_ll,y_ll,valex
+#ifdef DIVABINARYFILES
+C JMB2013????? NEED FOR FORT.73 IN COVAR ?????????
+           write(73) valex
+#else
+           write(73,*) x_ll,y_ll,valex
+#endif
+
+
                goto 667
             endif
          endif
@@ -462,7 +481,13 @@ C               write(82,*) x_ll,y_ll,-9999.0
 
             if(iel.le.0.or.isub.le.0) then
             val=0
-            write(73,*) x_ll,y_ll,valex
+#ifdef DIVABINARYFILES
+           write(73) valex
+#else
+           write(73,*) x_ll,y_ll,valex
+#endif
+
+
             goto 667
             endif
          endif

@@ -21,11 +21,14 @@ C      REAL*8, DIMENSION(:) , SAVE,   ALLOCATABLE :: skmatx
       integer i,id,ie,ie0,ie0old,ihl,ih2,ihesitate,
      &      iloop,iquit,ir,is,ithread,iwait,j,jd,
      &       jh,jmax,jr,k,k0,k00,kmax,nthreads,ntotv
+      common/forsolver/   nthreadsasked
       integer omp_get_max_threads
       external omp_get_max_threads
 
       integer omp_get_thread_num
-      external OMP_GET_THREAD_NUM
+      external OMP_GET_THREAD_NUM  
+      integer omp_get_num_procs
+      external omp_get_num_procs
       ntotv=neq
       if (isfirsttime.eq.1) then
       nsk=neq+kld(neq+1)-1
@@ -86,7 +89,14 @@ C
 
       if (ifac.eq.1) then
 C Factorize
-      call omp_set_num_threads(6)
+C guess on number of threads to be usefull
+
+      nthreads=omp_get_num_procs()
+C      write(6,*) 'NTHREADS',nthreads
+      nbest=4*neq/160000+2
+      if(nthreadsasked.gt.0) nbest=nthreadsasked
+      if(nbest.gt.nthreads) nbest=nthreads
+      call omp_set_num_threads(nbest)
 ! Get (actual) number of threads
       nthreads=omp_get_max_threads()
       write(6,*) 'NTHREADS',nthreads
@@ -100,9 +110,9 @@ C$OMP& jr,k,k0,k00)
 C$OMP& SHARED (VFG,jmax,kmax,maxa,nthreads,ntotv,ifac,
 C$OMP& skmatx)
 ! Factorize skmatx and reduce fmatx
-       write(6,*) 'Next omp call'
+C       write(6,*) 'Next omp call'
        ithread=omp_get_thread_num()
-       write(6,*) 'In Parallel section thread',ithread
+C       write(6,*) 'In Parallel section thread',ithread
        iloop=0
        iquit=0
        do while (iquit.eq.0)
@@ -203,19 +213,19 @@ C     &  -dot_product(skmatx(jr+1:jr+jh-1),VFG(is-1:is+jh-3))
 
 
 C Take out parts working on right hand side in all cases
-      write(6,*) 'Factorized'
+C      write(6,*) 'Factorized'
       endif
 
 
       if(isol.eq.1) then
 C
-      write(6,*) 'Reduction'
-      
-      
+C      write(6,*) 'Reduction'
+
+
             call omp_set_num_threads(1)
 ! Get (actual) number of threads
       nthreads=omp_get_max_threads()
-      write(6,*) 'NTHREADS',nthreads
+C      write(6,*) 'NTHREADS',nthreads
 ! Initializations
       jmax=l
       kmax=l
@@ -308,7 +318,7 @@ C$OMP& skmatx)
 
 
 
-      write(6,*) 'Backward'
+C      write(6,*) 'Backward'
       
       do i=1,ntotv
         id=maxa(i)

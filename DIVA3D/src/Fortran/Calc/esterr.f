@@ -102,7 +102,7 @@ C
 c Boucle sur les points de grille ou l'erreur doit etre calculee
       close(80)
       rewind(80)
-      open(unit=80,file='fort.80')
+      open(unit=80,form='unformatted',file='fort.80')
       index=0
       jmcount=0
 C Only if ispec=1 3 5 or 7
@@ -112,7 +112,7 @@ C Only if ispec=1 3 5 or 7
           s(ltgrde+i-1)=valex
  5     continue
 
- 10   read(80,*,end=100)xob,yob,iel,isub
+ 10   read(80,end=100)xob,yob,iel,isub
       val=valex
 C      write(6,*) 'Errors in',xob,yob,iel,isub
       jmcount=jmcount+1
@@ -215,8 +215,11 @@ C Only if ispec=2 3 6 or 7
 
          ireclu=0
          rewind(20)
-         
- 666      read(20,*,end=866) x,y
+#ifdef DIVABINARYFILES
+ 666   read(20,end=866) x,y
+#else
+ 666   read(20,*,end=866)  x,y
+#endif
          x_ll=x
          y_ll=y
          if(mod(ireclu,max(ndata,10)/10).eq.0) write(6,*) 'proceeded',
@@ -246,7 +249,12 @@ C               if (icoordchange.ne.0) call xyll(x,y)
 c               write(6,*) ' Donnee ',ireclu,x_ll,y_ll,' non localisee'
 C               write(82,*) x_ll,y_ll,-9999.0
                val=valex
-               write(72,1661) x_ll,y_ll,valex
+#ifdef DIVABINARYFILES
+           write(72) valex
+#else
+           write(72,1661) x_ll,y_ll,valex
+#endif
+              
                goto 666
             endif
          endif
@@ -261,7 +269,12 @@ C               write(82,*) x_ll,y_ll,-9999.0
 
             if(iel.le.0.or.isub.le.0) then
             val=valex
-            write(72,1661) x_ll,y_ll,valex
+#ifdef DIVABINARYFILES
+           write(72) valex
+#else
+           write(72,1661) x_ll,y_ll,valex
+#endif
+
             goto 666
             endif
          endif
@@ -321,7 +334,12 @@ c               write(6,*) 'x,y,error RMS : ',xob,yob,val
          endif
 
       endif
-      write(72,1661) x_ll,y_ll,val
+#ifdef DIVABINARYFILES
+           write(72) val
+#else
+           write(72,1661) x_ll,y_ll,val
+#endif
+
       goto 666
          
 
@@ -337,7 +355,12 @@ C only of ispec= 4 5 6 7
          write(6,*) 'Finally error at desired discrete locations'
          ireclu=0
          rewind(79)
- 667      read(79,*,end=867) x,y
+#ifdef DIVABINARYFILES
+ 667       read(79,end=867) x,y
+#else
+ 667       read(79,*,end=867) x,y
+#endif
+
          x_ll=x
          y_ll=y
          if (icoordchange.ne.0) call llxy(x,y)
@@ -363,7 +386,11 @@ C               if (icoordchange.ne.0) call xyll(x,y)
 c               write(6,*) ' Donnee ',ireclu,x_ll,y_ll,' non localisee'
 C               write(82,*) x_ll,y_ll,-9999.0
                val=valex
-               write(73,1661) x_ll,y_ll,valex
+#ifdef DIVABINARYFILES
+           write(73) valex
+#else
+           write(73,1661) x_ll,y_ll,valex
+#endif
                goto 667
             endif
          endif
@@ -378,7 +405,13 @@ C               write(82,*) x_ll,y_ll,-9999.0
 
             if(iel.le.0.or.isub.le.0) then
             val=valex
-            write(73,1661) x_ll,y_ll,valex
+#ifdef DIVABINARYFILES
+           write(73) valex
+#else
+           write(73,1661) x_ll,y_ll,valex
+#endif
+
+
             goto 667
             endif
          endif
@@ -438,7 +471,13 @@ c               write(6,*) 'x,y,error RMS : ',xob,yob,val
          endif
 
       endif
-      write(73,1661) x_ll,y_ll,val
+#ifdef DIVABINARYFILES
+           write(73) val
+#else
+           write(73,1661) x_ll,y_ll,val
+#endif
+
+
       goto 667
          
 

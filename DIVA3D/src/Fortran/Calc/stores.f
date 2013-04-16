@@ -60,7 +60,12 @@ CJMBB Produce analysis at data points into fort.71
       if(ispec0.eq.0.or.ispec0.eq.3.or.ispec0.eq.4) then
 C      write(6,*) 'valatxy'
          ireclu=0
+#ifdef DIVABINARYFILES
+ 6       read(79,end=8) x,y
+#else
  6       read(79,*,end=8) x,y
+#endif
+ 
          x_ll=x
          y_ll=y
          if (icoordchange.ne.0) call llxy(x,y)
@@ -81,13 +86,23 @@ c               endif
             if(iel.le.0.or.isub.le.0) then
 C               if (icoordchange.ne.0) call xyll(x,y)
 c               write(6,*) ' Donnee ',ireclu,x_ll,y_ll,' non localisee'
-               write(82,*) x_ll,y_ll,valex
+#ifdef DIVABINARYFILES
+        write(82) valex
+#else
+        write(82,*) x_ll,y_ll,valex
+#endif
+              
                goto 6
             endif
             call extrt2(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
      &                  l(lklocs),s(ltrhsg),val,s(1),ipr,s(lrkele))
 C            if (icoordchange.ne.0) call xyll(x,y)
-            write(82,*) x_ll,y_ll,val
+#ifdef DIVABINARYFILES
+        write(82) val
+#else
+        write(82,*) x_ll,y_ll,val
+#endif
+
          endif
          if(ityp.eq.3) then
             if (opti.eq.1) then 		! (SvL)
@@ -99,13 +114,23 @@ C            if (icoordchange.ne.0) call xyll(x,y)
             endif
 
             if(iel.le.0.or.isub.le.0) then
-            write(82,1661) x_ll,y_ll,val
+#ifdef DIVABINARYFILES
+        write(82) val
+#else
+        write(82,*) x_ll,y_ll,val
+#endif
+
             goto 6
             endif
             call extrt3(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
      &       l(lklocs),s(ltrhsg),s(ltcele),val,s(1),ipr,s(lrkele))
 C            if (icoordchange.ne.0) call xyll(x,y)
-            write(82,1661) x_ll,y_ll,val
+#ifdef DIVABINARYFILES
+        write(82) val
+#else
+        write(82,1661) x_ll,y_ll,val
+#endif
+            
          endif
          goto 6
  8       continue
@@ -115,8 +140,12 @@ C          write(6,*) 'data'
          ireclu=0
          ijmbval=0
          rewind(20)
-C         open(71,file='fort.71',form='formatted',buffered='yes')
- 66      read(20,*,end=86) x,y,tttt,wwww
+CCC         open(71,file='fort.71',form='formatted',buffered='yes')
+#ifdef DIVABINARYFILES
+ 66    read(20,end=86) x,y,tttt,wwww
+#else
+ 66    read(20,*,end=86)  x,y,tttt,wwww
+#endif
          x_ll=x
          y_ll=y
          if (icoordchange.ne.0) call llxy(x,y)
@@ -147,15 +176,25 @@ C               if (icoordchange.ne.0) call xyll(x,y)
 c              write(6,*) ' Donnee ',ireclu,x_ll,y_ll,' non localisee'
 C               write(82,*) x_ll,y_ll,-9999.0
                 val=valex
-CTESTSPEEDJMB               
-               write(71,1661) x_ll,y_ll,val
+CTESTSPEEDJMB   
+#ifdef DIVABINARYFILES
+           write(71) x_ll,y_ll,val
+#else
+           write(71,1661) x_ll,y_ll,val
+#endif
+              
                goto 66
             endif
             call extrt2(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
      &       l(lklocs),s(ltrhsg),val,s(1),ipr,s(lrkele))
 C            if (icoordchange.ne.0) call xyll(x,y)
 CTESTSPEEDJMB
-               write(71,1661) x_ll,y_ll,val
+#ifdef DIVABINARYFILES
+           write(71) x_ll,y_ll,val
+#else
+           write(71,1661) x_ll,y_ll,val
+#endif
+
          endif
          if(ityp.eq.3) then
             if (opti.eq.1) then 		! (SvL)
@@ -168,13 +207,23 @@ CTESTSPEEDJMB
 
             if(iel.le.0.or.isub.le.0) then
             val=valex
-            write(71,1661) x_ll,y_ll,val
+#ifdef DIVABINARYFILES
+           write(71) x_ll,y_ll,val
+#else
+           write(71,1661) x_ll,y_ll,val
+#endif
+
             goto 66
             endif
             call extrt3(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
      &        l(lklocs),s(ltrhsg),s(ltcele),val,s(1),ipr,s(lrkele))
 C            if (icoordchange.ne.0) call xyll(x,y)
-            write(71,1661) x_ll,y_ll,val
+#ifdef DIVABINARYFILES
+           write(71) x_ll,y_ll,val
+#else
+           write(71,1661) x_ll,y_ll,val
+#endif
+
          endif
          ijmbval=ijmbval+1
          jmboff=ndata*2+ireclu-1
@@ -264,7 +313,7 @@ C
          call genf80(s(ltcoog),l(lkconn),l(lkntc),s(ltcele),ipr)
       endif
          close(80)
-         open(unit=80,file='fort.80')
+         open(unit=80,form='unformatted',file='fort.80')
       endif
       if(ispec.gt.0) then
       index=0
@@ -274,7 +323,7 @@ C JMB (change for the problem in extre2 for regular grid...
        val=valex
        if(ityp.eq.2) then
     
-         read(80,*,end=100)x,y,iel,isub
+         read(80,end=100)x,y,iel,isub
 cmr         write(6,*)x,y,iel,isub
 C         if (icoordchange.ne.0) call llxy(x,y)
          if(iel.gt.0) then
@@ -283,7 +332,7 @@ C         if (icoordchange.ne.0) call llxy(x,y)
          endif
       endif
       if(ityp.eq.3) then
-         read(80,*,end=100)x,y,iel,isub
+         read(80,end=100)x,y,iel,isub
 C         if (icoordchange.ne.0) call llxy(x,y)
          if(iel.gt.0) then
             call extrt3(x,y,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
@@ -762,7 +811,7 @@ Cmr            if (icoordchange.ne.0) call llxy(x,y)
             if (opti.eq.0) then 
                call locpt2(x,y,tcoog,kconn,iel,isub,ipr)
             endif
-            write(80,*)x,y,iel,isub
+            write(80)x,y,iel,isub
 cmr            write(6,*)'create 80 ',x,y,iel,isub
  15      continue
  10   continue
@@ -789,7 +838,7 @@ Cmr            if (icoordchange.ne.0) call llxy(x,y)
             if (opti.eq.0) then 
                call locpt3(x,y,tcoog,kconn,tcele,iel,isub,ipr)
             endif
-            write(80,*)x,y,iel,isub
+            write(80)x,y,iel,isub
  115     continue
  110  continue
       endif

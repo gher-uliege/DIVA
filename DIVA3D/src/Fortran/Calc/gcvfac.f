@@ -60,7 +60,12 @@ c ... extraction de la solution au point observe
 
          ireclu=0
          rewind(20)
- 666      read(20,*,end=866) x,y,tttt,wwww
+#ifdef DIVABINARYFILES
+ 666   read(20,end=866) x,y,tttt,wwww
+#else
+ 666   read(20,*,end=866)  x,y,tttt,wwww
+#endif
+
          x_ll=x
          y_ll=y
          if (icoordchange.ne.0) call llxy(x,y)
@@ -210,7 +215,11 @@ c ... extraction de la solution au point observe
          ireclu=0
          ijmbval=0
          rewind(20)
- 466      read(20,*,end=566) x,y,tttt,wwww
+#ifdef DIVABINARYFILES
+ 466   read(20,end=566) x,y,tttt,wwww
+#else
+ 466   read(20,*,end=566)  x,y,tttt,wwww
+#endif
          x_ll=x
          y_ll=y
          if (icoordchange.ne.0) call llxy(x,y)
@@ -441,7 +450,7 @@ C RANDOM PSEUDO-DATA USED TO COMPUTE GCV ESTIMATION
       COMMON /CSEED/ ISEED
       iseed=1000000+iii
 C  INPUT OF DATA SET DESCRIPTION
-            
+
       do 10 i=1,ndata/2
           call GRNF(x,y)
           tdata(i,3)=x
@@ -467,15 +476,15 @@ C OUTPUT OF PSEUDO-DATA SET DESCRIPTION
       integer iseed
       COMMON /CSEED/ ISEED
         PI = 4.0*ATAN(1.0)
-        R1 = -LOG(1.0-RANF())
-        R2 = 2.0*PI*RANF()
+        R1 = -LOG(1.0-DIVARANF())
+        R2 = 2.0*PI*DIVARANF()
         R1 = SQRT(2.0*R1)
         X  = R1*COS(R2)
         Y  = R1*SIN(R2)
       RETURN
       END
 C
-      FUNCTION RANF()
+      FUNCTION DIVARANF()
       include'divapre.h'
       integer iseed,ia,ic,iq,ir
       COMMON /CSEED/ ISEED
@@ -489,7 +498,7 @@ C
         ELSE
           ISEED = IC+IT
         END IF
-        RANF = ISEED/FLOAT(IC)
+        DIVARANF = ISEED/FLOAT(IC)
       RETURN
       END
       
@@ -507,7 +516,11 @@ C  INPUT OF DATA SET DESCRIPTION
 
             
       do 10 i=1,ndata
+#ifdef DIVABINARYFILES
+          read(71) x,y,val
+#else
           read(71,*) x,y,val
+#endif
           if (icoordchange.ne.0) call llxy(x,y)
           valb=val
          IF (IREG.EQ.1) THEN

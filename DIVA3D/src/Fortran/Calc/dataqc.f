@@ -48,7 +48,11 @@ CJMBB now try to put out error field at data points....
 
          ireclu=0
          rewind(20)
- 666      read(20,*,end=866) x,y,tttttt,wwwwww
+#ifdef DIVABINARYFILES
+ 666   read(20,end=866) x,y,tttttt,wwwwww
+#else
+ 666   read(20,*,end=866)  x,y,tttttt,wwwwww
+#endif
          x_ll=x
          y_ll=y
          if(mod(ireclu,max(ndata,10)/10).eq.0) write(6,*) 'proceeded',

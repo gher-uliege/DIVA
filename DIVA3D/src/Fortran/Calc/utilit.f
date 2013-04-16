@@ -270,7 +270,13 @@ C      IF (K-M) 1,1,5
                      else
       DO 10 J=1,M
       DO 10 I=1,L
-      WRITE(IUCT,1661) A(I,J)
+#ifdef DIVABINARYFILES
+          WRITE(IUCT) A(I,J)
+#else
+          WRITE(IUCT,1661) A(I,J)
+#endif
+
+
  10   continue
       endif
  1661 format(1(E22.9))

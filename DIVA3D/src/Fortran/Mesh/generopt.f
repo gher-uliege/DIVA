@@ -1684,25 +1684,51 @@ C
 C --- SORTIE DES RESULTATS DANS LE FORMAT ...
 c**rs
       if(iodv.eq.1) then
+#ifdef DIVABINARYFILESMESH
+      open(22,file='fort.11',form='unformatted')
+#else
       open(22,file='fort.11')
+#endif
+      
 c**rs      OPEN(UNIT=22,file='fort.22')
       else
-      OPEN(UNIT=22,file='fort.22')
+#ifdef DIVABINARYFILESMESH
+      open(22,file='fort.22',form='unformatted')
+#else
+      open(22,file='fort.22')
+#endif
       endif
       DO 160 I=1,NO
          IF(I.LE.NS) THEN
             XXX=NOEUD(I,1)+XRMEAN
             YYY=NOEUD(I,2)+YRMEAN
             if (icoordchange.ne.0) call xyll(XXX,YYY)
-            WRITE(22,*) NTRI(I),XXX,YYY
+#ifdef DIVABINARYFILESMESH
+      WRITE(22) NTRI(I),XXX,YYY
+#else
+      WRITE(22,*) NTRI(I),XXX,YYY
+#endif
+
          ELSE
-            WRITE(22,*) NTRI(I)
+
+#ifdef DIVABINARYFILESMESH
+      WRITE(22) NTRI(I)
+#else
+      WRITE(22,*) NTRI(I)
+#endif
          ENDIF
 160   CONTINUE
 
       DO 170 I=1,MA
-         WRITE(22,*) MAILLE(I,1),MAILLE(I,4),MAILLE(I,2)
+#ifdef DIVABINARYFILESMESH
+       WRITE(22) MAILLE(I,1),MAILLE(I,4),MAILLE(I,2)
      &       ,MAILLE(I,5),MAILLE(I,3),MAILLE(I,6)
+#else
+       WRITE(22,*) MAILLE(I,1),MAILLE(I,4),MAILLE(I,2)
+     &       ,MAILLE(I,5),MAILLE(I,3),MAILLE(I,6)
+#endif
+
+
 170   CONTINUE
       CLOSE(22)
 

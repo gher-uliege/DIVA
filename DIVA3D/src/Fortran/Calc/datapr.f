@@ -37,7 +37,11 @@ C  './drv/diva.drv' : IREG+10 INSTEAD OF IREG (SvL)
 c     opti=0
 C  READ THE DATA SET TO COMPUTE THE NUMBER OF DATA CONSTRAINTS
       index=0
+#ifdef DIVABINARYFILES
+ 10   read(20,end=100,err=100) xxx
+#else
  10   read(20,*,end=100,err=100) xxx
+#endif
       index=index+1
       goto 10
  100  ndata=index
@@ -287,7 +291,7 @@ C JMB2012 dirty hack; if iofort=24 then different reading for sources
          if(icoordchange.eq.1) tdata(i,3)=tdata(i,3)*1E-6
          tdata(i,4)=0
  111   continue
-      
+
       return
       endif
 
@@ -298,7 +302,12 @@ C JMB add calculation of harmonic mean of mu for misfit scaling in GCV
       jmbmud=0
       hmmu=0
       do 10 i=1,ndatas
+#ifdef DIVABINARYFILES
+         read(iofort) tdata(i,1),tdata(i,2),tdata(i,3),tdata(i,4)
+#else
          read(iofort,*) tdata(i,1),tdata(i,2),tdata(i,3),tdata(i,4)
+#endif
+
          if (tdata(i,4).gt.0) then
          jmbmud=jmbmud+1
          hmmu=hmmu+1./tdata(i,4)
