@@ -9,13 +9,13 @@ compiler=gfortran
 
 # To use parall version, put value to 1
 #-------------------------------------
-DIVA_PARALLEL=0
+DIVA_PARALLEL=1
 #
 
 # Compilation flags
 #-----------------
 
-flags='-O3   '			#--charles
+flags='-O3 -pipe -cpp ' #  -DDIVABINARYFILESMESH '			#--charles
 #flags='-O0' 			# no optimization
 
 
@@ -23,7 +23,7 @@ flagscalc=' -cpp '
 if [ "$DIVA_PARALLEL" = 1 ]
 then
 echo Going to use parallel version
-flagscalc='-cpp -fopenmp -DDIVAPARALLEL '
+flagscalc='-cpp -fopenmp -DDIVAPARALLEL ' #-DDIVABINARYFILESMESH'
 echo $flagscalc
 
 fi
@@ -32,13 +32,26 @@ fi
 #---------------
 
 ncconfigok=$(type -P nc-config | wc -l)
-echo $ncconfigok
+nfconfigok=$(type -P nf-config | wc -l)
+echo nc-config $ncconfigok
+echo nf-config $nfconfigok
+
 if [ "$ncconfigok" != "0" ]
 then
 nclib=`nc-config --flibs`
 compiler=`nc-config --fc`
 else
-nclib=/usr/lib/libnetcdff.dll.a	#--charles
+   if [ "$nfconfigok" != "0" ]
+   then
+    nclib=`nf-config --flibs`
+# or by hand
+#    nclib=/usr/lib/libnetcdff.dll.a
+    echo $nclib
+    compiler=`nf-config --fc`
+   else
+# put netcdlibrary by hand
+   nclib=/usr/lib/libnetcdff.dll.a	#--charles
+   fi
 fi
 # Use of Plplot (creation of scientific plots)
 #--------------
