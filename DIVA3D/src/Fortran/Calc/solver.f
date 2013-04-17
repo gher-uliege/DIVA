@@ -968,7 +968,8 @@ C JMB2012 source term
          gtemp(i)=zero
          do 15 j=1,10
             tkse(i,j)=zero
-            ttemp(i,j)=zero
+CJMB2013
+C            ttemp(i,j)=zero
             tr(i,j)=zero
  15      continue
          do 18 j=1,8
@@ -1068,10 +1069,12 @@ C
  30      continue
  20   continue
 C
+C Why not just make half of the MATRIX, is is symmetric ....
 C  SUB-ELEMENTARY MATRIX FOR NORM SPLINE PROBLEM
 C
       do 100 i=1,10
-         do 110 j=1,10
+CJMB2013 ONLY TRIANLGE (from 5 instead of 1)
+         do 110 j=i,10
             do 120 ig=1,ng
 C
 C  Second derivative terms
@@ -1157,7 +1160,8 @@ C
          do 160 i=1,10
             tgse(i)=tgse(i)+wo*do*ep(i)*stiff*stiff
 c     &                       /(RLREL*RLREL)
-            do 170 j=1,10
+CJMB2013 ONLY TRIANLGE (from 5 instead of 1)
+            do 170 j=i,10
                tkse(i,j)=tkse(i,j)+wo*ep(i)*ep(j)*stiff*stiff
 c     &                       /(RLREL*RLREL)
  170        continue
@@ -1279,25 +1283,38 @@ C
  707  FORMAT(///,T10,'TRANSFORM. MATRIX FOR ELEMENT ',I5,', SUB',I5,
      &       ///)
       IF(IPR.GE.6) CALL IMPMAT(tr,10,10,10,6)
+
+CJMB2013 ONLY TRIANLGE (from 5 instead of 1)
+      do i=1,10
+        do j=i,10
+         tkse(j,i)=tkse(i,j)
+        enddo
+      enddo
 C
 C TRANSFORMATION OF TKSE
 C
-      do 450 i=1,10
-         do 460 j=1,10
-            do 470 k=1,10
-               ttemp(i,j)=ttemp(i,j)+tkse(i,k)*tr(k,j)
- 470        continue
- 460     continue
- 450  continue
-      do 550 i=1,10
-         do 560 j=1,10
-            tkse(i,j)=zero
-            do 570 k=1,10
-               tkse(i,j)=tkse(i,j)+tr(k,i)*ttemp(k,j)
- 570        continue
- 560     continue
- 550  continue
+C JMB2013
+C      do 450 i=1,10
+C         do 460 j=1,10
+C            do 470 k=1,10
+C               ttemp(i,j)=ttemp(i,j)+tkse(i,k)*tr(k,j)
+C 470        continue
+C 460     continue
+C 450  continue
+       ttemp=matmul(tkse,tr)
+C       write(6,*) 'is tr symm??',tr(1,10),tr(10,1),tr(2,3),tr(3,2)
+
+C      do 550 i=1,10
+C         do 560 j=1,10
+C            tkse(i,j)=zero
+C            do 570 k=1,10
+C               tkse(i,j)=tkse(i,j)+tr(k,i)*ttemp(k,j)
+C 570        continue
+C 560     continue
+C 550  continue
+        tkse=matmul(transpose(tr),ttemp)
 C
+C           tkse=matmul(tr',ttemp)
 C TRANSFORMATION OF TGSE
 C
       do 650 i=1,10

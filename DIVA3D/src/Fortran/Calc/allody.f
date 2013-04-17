@@ -45,10 +45,11 @@ C#endif
 C
 C  INITIALISATION TO ZERO OF THE NEWLY CREATED TABLE
 C  unless call with ipr=99
-C 
-
+C
+#ifdef ALLODYZERO
       DO 11 I=IDEB,IRE
  11   S(I)=ZERO
+#endif
       RETURN
  20   CONTINUE
 C
@@ -82,9 +83,10 @@ C#endif
 C
 C  INITIALISATION TO ZERO OF THE NEWLY CREATED TABLE
 C
-      
+#ifdef ALLODYZERO
       DO 31 I=IDEB,IEN
  31   L(I)=0
+#endif
       RETURN
       END
 
