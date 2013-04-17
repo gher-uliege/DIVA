@@ -1044,16 +1044,19 @@ C      FACTEUR C PRES. 'C' EST LU DANS UN FICHIER 11
 c      real*8 NOEUD(NMAX,2),XP,YP,XM,YM,X1,Y1,X2,Y2,X3,Y3
 c      real*8 A,B,C,D,E,F,AR,L,KN(NMAX,2),G(NRMAX),S
 CJMB
-      REAL*8 X1,X2,X3,Y1,Y2,Y3,B,D,E,F,A,XM,YM,AR
+      REAL*8 X1,X2,X3,Y1,Y2,Y3,B,D,E,F,A,XM,YM,AR,ES,FS
+      REAL*8 AS, ARS
       real*8 NOEUD(NMAX,2),XP,YP
-      real*8 C,L,KN(NMAX,2),G(NRMAX),S
+      real*8 C,L,KN(NMAX,2),G(NRMAX),S,CS,L4
 
       READ(11,*) C
-     
+      CS=C*C
+      L4=S*S*S*S  
+      ARS=L4*3/16*CS
        I=0
 10     I=I+1
 c       write(6,*) 'node ',i
-       IF(I.EQ.MA) GOTO 20 
+       IF(I.EQ.MA) GOTO 20
        X1=NOEUD(MAILLE(I,1),1)
        X2=NOEUD(MAILLE(I,2),1)
        X3=NOEUD(MAILLE(I,3),1)
@@ -1062,19 +1065,34 @@ c       write(6,*) 'node ',i
        Y3=NOEUD(MAILLE(I,3),2)
        B=(X1-X3)**2+(Y1-Y3)**2
        D=(X2-X3)**2+(Y2-Y3)**2
-       E=SQRT((X1-X2)**2+(Y1-Y2)**2)
-       F=SQRT(D-((B-D)/2/E-E/2)**2)
-       A=E*F/2
-       XM=(X2+X1)/2
-       YM=(Y1+Y2)/2
-       XP=(X3+2*XM)/3
-       YP=(Y3+2*YM)/3
+C       E=SQRT((X1-X2)**2+(Y1-Y2)**2)
+C       F=SQRT(D-((B-D)/2/E-E/2)**2)
+C       A=E*F/2
+        ES=((X1-X2)**2+(Y1-Y2)**2)
+        FS=(D-ES*((B-D)/2/ES-0.5)**2)
+C        A=0.5*sqrt(ES*FS)
+        AS=ES*FS/4
+C       XM=(X2+X1)/2
+C       YM=(Y1+Y2)/2
+C       XP=(X3+2*XM)/3
+C       YP=(Y3+2*YM)/3
+
        L=S
 c       write(6,*) '??L,A',L,A
-       IF (P.EQ.1) CALL RAFLOC(KN,NR,NRMAX,KNMAX,G,XP,YP,L,NMAX) 
+       IF (P.EQ.1) THEN
+         XP=(X3+X2+X1)/3
+         YP=(Y3+Y2+Y1)/3
+         CALL RAFLOC(KN,NR,NRMAX,KNMAX,G,XP,YP,L,NMAX)
+
+         L4=L*L*L*L
+         ARS=L4*3/16*CS
+       endif
 c       write(6,*) '??Lafter,A',L,A
-       AR=L*L*SQRT(3.D0)*C/4
-       IF(A.GE.AR) THEN
+C       AR=L*L*SQRT(3.D0)*C/4
+      
+       IF(AS.GE.ARS) THEN            
+        XP=(X3+X2+X1)/3
+        YP=(Y3+Y2+Y1)/3
 c          write(6,*) 'Adding node',AR,L,C,A
 c          write(6,*) 'Coord',X1,X2,X3,y1,y2,y3
           CALL NEWNO(MAILLE,NOEUD,NMAX,MMAX,NO,MA,XP,YP,I)
@@ -1256,7 +1274,7 @@ CJM got a triangle that has node I involved
                N2=NOEUD(B(2),2)-NOEUD(B(1),2)
                N3=NOEUD(B(3),1)-NOEUD(B(1),1)
                N4=NOEUD(B(3),2)-NOEUD(B(1),2)
-               
+
                V=N1*N4-N2*N3
                V0=abs(N2*N2)
                V0=max(V0,abs((N3)*(N3)))
@@ -1536,7 +1554,7 @@ C --- INTRODUCTION DES NOEUDS D'INTERFACE
       NS=NO
       DO 70 I=1,MA
          DO 60 J=1,3
-            IF(MAILLE(I,J+3).GE.0) THEN 
+            IF(MAILLE(I,J+3).GE.0) THEN
                 X1=NOEUD(MAILLE(I,J),1)
                 Y1=NOEUD(MAILLE(I,J),2)
 
