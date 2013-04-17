@@ -216,7 +216,7 @@ C Only if ispec=2 3 6 or 7
          ireclu=0
          rewind(20)
 #ifdef DIVABINARYFILES
- 666   read(20,end=866) x,y
+ 666   read(20,end=866) x,y,ttt,www
 #else
  666   read(20,*,end=866)  x,y
 #endif

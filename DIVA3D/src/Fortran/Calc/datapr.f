@@ -38,7 +38,7 @@ c     opti=0
 C  READ THE DATA SET TO COMPUTE THE NUMBER OF DATA CONSTRAINTS
       index=0
 #ifdef DIVABINARYFILES
- 10   read(20,end=100,err=100) xxx
+ 10   read(20,end=100,err=100) xxx,yyy,ttt,www
 #else
  10   read(20,*,end=100,err=100) xxx
 #endif
