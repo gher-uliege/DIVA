@@ -1034,10 +1034,10 @@ C --------------------------------------
 
 C     RAFFINAGE DU MAILLAGES PAR INTRODUCTION DE NOUVEAU
 C      NOEUD AU CENTRE DE GRAVITE DES MAILLES DE SURFACE
-C      SUPERIEURES A LA SURFACE CARACTERISTIQUE A UN 
+C      SUPERIEURES A LA SURFACE CARACTERISTIQUE A UN
 C      FACTEUR C PRES. 'C' EST LU DANS UN FICHIER 11
 
-      
+
       IMPLICIT NONE
       INTEGER*4 I,P,NRMAX,NR
       INTEGER*4 NMAX,MMAX,MA,NO,KNMAX(NRMAX),MAILLE(MMAX,6)
@@ -1047,12 +1047,12 @@ CJMB
       REAL*8 X1,X2,X3,Y1,Y2,Y3,B,D,E,F,A,XM,YM,AR,ES,FS
       REAL*8 AS, ARS
       real*8 NOEUD(NMAX,2),XP,YP
-      real*8 C,L,KN(NMAX,2),G(NRMAX),S,CS,L4
+      real*8 C,L,KN(NMAX,2),G(NRMAX),S,CS,L4,GS,ARSS
 
       READ(11,*) C
       CS=C*C
-      L4=S*S*S*S  
-      ARS=L4*3/16*CS
+      L4=S*S*S*S
+      ARS=L4*3/4*CS
        I=0
 10     I=I+1
 c       write(6,*) 'node ',i
@@ -1063,34 +1063,46 @@ c       write(6,*) 'node ',i
        Y1=NOEUD(MAILLE(I,1),2)
        Y2=NOEUD(MAILLE(I,2),2)
        Y3=NOEUD(MAILLE(I,3),2)
-       B=(X1-X3)**2+(Y1-Y3)**2
-       D=(X2-X3)**2+(Y2-Y3)**2
+C       B=(X1-X3)**2+(Y1-Y3)**2
+C       D=(X2-X3)**2+(Y2-Y3)**2
+       B=(X1-X3)*(X1-X3)+(Y1-Y3)*(Y1-Y3)
+       D=(X2-X3)*(X2-X3)+(Y2-Y3)*(Y2-Y3)
 C       E=SQRT((X1-X2)**2+(Y1-Y2)**2)
 C       F=SQRT(D-((B-D)/2/E-E/2)**2)
 C       A=E*F/2
-        ES=((X1-X2)**2+(Y1-Y2)**2)
-        FS=(D-ES*((B-D)/2/ES-0.5)**2)
+C        ES=((X1-X2)**2+(Y1-Y2)**2)
+C        FS=(D-ES*((B-D)/2/ES-0.5)**2)
+        ES=((X1-X2)*(X1-X2)+(Y1-Y2)*(Y1-Y2))
+        GS=(B-D)/2/ES-0.5
+        FS=(D-ES*GS*GS)
 C        A=0.5*sqrt(ES*FS)
-        AS=ES*FS/4
+        AS=ES*FS
 C       XM=(X2+X1)/2
 C       YM=(Y1+Y2)/2
 C       XP=(X3+2*XM)/3
 C       YP=(Y3+2*YM)/3
 
-       L=S
-c       write(6,*) '??L,A',L,A
+
+
        IF (P.EQ.1) THEN
+         L=S
          XP=(X3+X2+X1)/3
          YP=(Y3+Y2+Y1)/3
          CALL RAFLOC(KN,NR,NRMAX,KNMAX,G,XP,YP,L,NMAX)
 
          L4=L*L*L*L
-         ARS=L4*3/16*CS
+         ARSS=L4*3/4*CS
+         IF(AS.GE.ARSS) THEN
+         CALL NEWNO(MAILLE,NOEUD,NMAX,MMAX,NO,MA,XP,YP,I)
+          I=1
+       ENDIF
+      GOTO 10
+         
+
        endif
-c       write(6,*) '??Lafter,A',L,A
-C       AR=L*L*SQRT(3.D0)*C/4
-      
-       IF(AS.GE.ARS) THEN            
+
+
+       IF(AS.GE.ARS) THEN
         XP=(X3+X2+X1)/3
         YP=(Y3+Y2+Y1)/3
 c          write(6,*) 'Adding node',AR,L,C,A
