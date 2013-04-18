@@ -15,9 +15,6 @@ echo 'Now testing divacalc with' ${ndata} ' data points and a fine mesh'
 echo ' '
 
 
-
-echo Now testing divacalc with a lot of data and small mesh
-
 inputdir=$(pwd)'/input/'
 contfile=${inputdir}'coast.cont'
 datafile=${inputdir}'data.dat'
@@ -83,7 +80,11 @@ echo '1.0' >> ${paramfile}
 echo '# varbak' >> ${paramfile}
 echo '1.0' >> ${paramfile}
 
+timeinit=$(date +%s.%N)
+
 divamesh
+
+timeinterm=$(date +%s.%N)
 
 echo 'Now into the calculation itself'
 
@@ -92,6 +93,16 @@ divacalc
 echo ' '
 echo 'Check the results in'
 echo './ouput/ghertonetcdf/results.nc (netcdf)'
+
+timeend=$(date +%s.%N)
+
+timemesh=$(echo "${timeinterm} - ${timeinit}" | bc )
+timecalc=$(echo "${timeend} - ${timeinterm}" | bc )
+timerun=$(echo "${timeend} - ${timeinit}" | bc )
+
+echo 'Time for mesh creation:  ' $timemesh ' s'
+echo 'Time for calculation:    ' $timecalc ' s'
+echo 'Total time for analysis: ' $timerun ' s'
 
 
 
