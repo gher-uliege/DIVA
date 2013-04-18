@@ -8,7 +8,7 @@ divarundir=$(pwd)
 divacvlog=$divarundir'/output/divacv.log'
 divalog=$divarundir'/output/diva.log'
 divacalclog=$divarundir'/output/divacalc.log'
-
+divameshlog=$divarundir'/output/divamesh.log'
 
 echo divacv://///////////////////////////////////////// > $divacvlog
 echo divacv:       Cross Validation >> $divacvlog
@@ -29,7 +29,7 @@ echo divacv:Mesh files already exist, hope they are correct: otherwise execute d
 echo divacv:=========================================================================== >> $divacvlog
 else
 divamesh
- cat  $divacvlog ./output/divamesh.log > bidon
+ cat  $divacvlog $divameshlog > bidon
  mv bidon $divacvlog
 fi
 else
@@ -120,46 +120,24 @@ if [ -f ../input/gcvsampling.dat ]
 then 
 ../../bin/findmin.a >> $divalog
 if [ $? -ne 0 ];then
-echo ' ' >> ../$divacvlog
-echo -------------------------------------------- >> $divacvlog
-echo A problem was encountered during execution ! >> $divacvlog
-echo        divacv:     findmin.a >> $divacvlog
-echo Check execution track >> $divacvlog
-echo -------------------------------------------- >> $divacvlog
-echo ' '
-echo --------------------------------------------
-echo A problem was encountered during execution !
-echo       divacv:    findmin.a
-echo Check execution track
-echo --------------------------------------------
-echo ' ' >> $divalog
-echo -------------------------------------------- >> $divalog
-echo A problem was encountered during execution ! >> $divalog
-echo       divacv:     findmin.a  >> $divalog
-echo Check execution track >> $divalog
-echo -------------------------------------------- >> $divalog
+echo ' ' | tee -a $divacvlog $divalog
+echo -------------------------------------------- | tee -a $divacvlog $divalog
+echo A problem was encountered during execution ! | tee -a $divacvlog $divalog
+echo        divacv:     findmin.a 		  | tee -a $divacvlog $divalog
+echo Check execution track 		          | tee -a $divacvlog $divalog
+echo -------------------------------------------- | tee -a $divacvlog $divalog
 fi
-echo ' '
-echo ' ' >> $divacvlog
-echo ---------------------------------------- >> $divacvlog
-echo CV finished >> $divacvlog
-echo Results written in ./output/gcvsnvar.dat >> $divacvlog
-echo ---------------------------------------- >> $divacvlog
-echo ----------------------------------------
-echo CV finished
-echo Results written in ./output/gcvsnvar.dat
-echo ----------------------------------------
+echo ' ' | tee -a $divacvlog
+echo ---------------------------------------- | tee -a $divacvlog
+echo CV finished 			      | tee -a $divacvlog
+echo Results written in ./output/gcvsnvar.dat | tee -a $divacvlog
+echo ---------------------------------------- | tee -a $divacvlog
 else
-echo ' ' >> $divacvlog
-echo -------------------------------------------- >> $divacvlog
-echo A problem was encountered during execution ! >> $divacvlog
-echo Check execution track >> $divacvlog
-echo -------------------------------------------- >> $divacvlog
-echo ' '
-echo --------------------------------------------
-echo A problem was encountered during execution !
-echo Check execution track
-echo --------------------------------------------
+echo ' ' | tee -a $divacvlog
+echo -------------------------------------------- | tee -a $divacvlog
+echo A problem was encountered during execution ! | tee -a $divacvlog
+echo Check execution track 			  | tee -a $divacvlog
+echo -------------------------------------------- | tee -a $divacvlog
 fi
 
 mv fort.12 ../output/gcvsnvar.dat

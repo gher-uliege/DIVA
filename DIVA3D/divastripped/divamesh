@@ -14,22 +14,21 @@ if [ -f ./input/coast.cont ]
 then
 cp ./input/coast.cont ./meshgenwork/fort.10
 else
-echo Need to provide coast.cont in ./input ! tee -a $divameshlog
+echo Need to provide coast.cont in ./input | tee -a $divameshlog
 fi
 isdens=0
 if [ -f ./input/coast.cont.dens ] 
 then
-echo There is a density file for the mesh >> $divameshlog
+echo There is a density file for the mesh | tee -a $divameshlog
 cp -v ./input/coast.cont.dens ./meshgenwork/fort.12
 isdens=1
 fi
 ##echo $isdens
 if [ -f ./input/param.par ] 
 then
-echo Reading parameters >> $divameshlog
+echo Reading parameters | tee -a $divameshlog
 else
-echo Need to provide param.par in ./input/ >> $divameshlog
-echo Need to provide param.par in ./input/
+echo Need to provide param.par in ./input/ | tee -a $divameshlog
 fi
 Filepar=./input/param.par
 {
@@ -96,24 +95,12 @@ echo ////////////////////////////////////////// >> $divalog
 echo ' '  >> $divalog
 echo $icoordchange | ../../bin/generopt.a >> $divalog
 if [ $? -ne 0 ];then
-echo ' '
-echo --------------------------------------------
-echo A problem was encountered during execution !
-echo          divamesh      generopt.a
-echo Check execution track
-echo --------------------------------------------
-echo ' ' >> $divameshlog
-echo -------------------------------------------- >> $divameshlog
-echo A problem was encountered during execution ! >> $divameshlog
-echo          divamesh      generopt.a >> $divameshlog
-echo Check execution track >> $divameshlog
-echo -------------------------------------------- >> $divameshlog
-echo ' ' >> $divalog
-echo -------------------------------------------- >> $divalog
-echo A problem was encountered during execution ! >> $divalog
-echo          divamesh      generopt.a  >> $divalog
-echo Check execution track >> $divalog
-echo -------------------------------------------- >>$divalog
+echo ' ' | tee -a $divalog $divameshlog
+echo -------------------------------------------- | tee -a $divalog $divameshlog
+echo A problem was encountered during execution ! | tee -a $divalog $divameshlog
+echo          divamesh      generopt.a  | tee -a $divalog $divameshlog
+echo Check execution track | tee -a $divalog $divameshlog
+echo -------------------------------------------- | tee -a $divalog $divameshlog
 fi
 File23=./fort.23
 {
@@ -133,14 +120,9 @@ cp fort.23 ../output/meshvisu/
 #read  nnt1 nnint nelt <&3
 #exec 23>&-
 cd ..
-echo ' '
-echo ---------------
-echo Mesh is created
-echo ---------------
-echo ' '
-echo ' '  >> $divameshlog
-echo ---------------  >> $divameshlog
-echo Mesh is created  >> $divameshlog
-echo ---------------  >> $divameshlog
-echo ' '  >> $divameshlog
+echo ' '  | tee -a $divameshlog
+echo ---------------   | tee -a $divameshlog
+echo Mesh is created   | tee -a $divameshlog
+echo ---------------   | tee -a $divameshlog
+echo ' '   | tee -a $divameshlog
 

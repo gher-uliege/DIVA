@@ -397,24 +397,15 @@ awk -v multconst=$multvar '{ if (NF>2) {if ($4 > "") {$4=$4*multconst} else {$4=
 NDATAB=$(cat ./fort.20 | wc -l)
 if [ "$NDATAB" -lt "$NDATA" ]
 then
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> $divacalclog
-echo ------------------------------------------- >> $divacalclog
-echo ??????????????????????????????????????????? >> $divacalclog
-echo ?????   Corrupted data file    ???????????? >> $divacalclog
-echo From $NDATA lines in data.dat >> $divacalclog
-echo Only $NDATAB have been feed into DIVA >> $divacalclog
-echo ??????????????????????????????????????????? >> $divacalclog
-echo ------------------------------------------- >> $divacalclog
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> $divacalclog
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-echo -------------------------------------------
-echo ???????????????????????????????????????????
-echo ?????   Corrupted data file    ????????????
-echo From $NDATA lines in data.dat
-echo Only $NDATAB have been feed into DIVA
-echo ???????????????????????????????????????????
-echo -------------------------------------------
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! | tee -a $divacalclog
+echo ------------------------------------------- | tee -a $divacalclog
+echo ??????????????????????????????????????????? | tee -a $divacalclog
+echo ?????   Corrupted data file    ???????????? | tee -a $divacalclog
+echo From $NDATA lines in data.dat 		 | tee -a $divacalclog
+echo Only $NDATAB have been feed into DIVA 	 | tee -a $divacalclog
+echo ??????????????????????????????????????????? | tee -a $divacalclog
+echo ------------------------------------------- | tee -a $divacalclog
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! | tee -a $divacalclog
 fi
 if [ "$1" == "-pfsum" ]
 then
@@ -443,24 +434,12 @@ rm -f fort.35
 echo $NINT $NREA | ../../bin/diva.a >> $divacalclog
 
 if [ $? -ne 0 ];then
-echo ' '
-echo --------------------------------------------
-echo A problem was encountered during execution !
-echo       divacalc:  diva.a
-echo 'Check execution track in diva.log'
-echo --------------------------------------------
-echo ' ' >> $divacalclog
-echo -------------------------------------------- >> $divacalclog
-echo A problem was encountered during execution ! >> $divacalclog
-echo       divacalc:  diva.a >> $divacalclog
-echo 'Check execution track in diva.log' >> $divacalclog
-echo -------------------------------------------- >> $divacalclog
-echo ' ' >> $divacalclog
-echo -------------------------------------------- >> $divalog
-echo A problem was encountered during execution ! >> $divalog
-echo       divacalc:   diva.a  >> $divalog
-echo 'Check execution track in diva.log' >> $ddivalog
-echo -------------------------------------------- >> $divalog
+echo ' ' | tee -a $divacalclog $divalog
+echo ------------------------------------------- | tee -a $divacalclog $divalog
+echo A problem was encountered during execution !| tee -a $divacalclog $divalog
+echo       divacalc:  diva.a			 | tee -a $divacalclog $divalog
+echo 'Check execution track in diva.log'	 | tee -a $divacalclog $divalog
+echo --------------------------------------------| tee -a $divacalclog $divalog
 fi
 
 dataonmesh=0
@@ -713,24 +692,12 @@ echo ' '  >> $divalog
 
 ../../../bin/netcdfoutput.a >> $divalog
 if [ $? -ne 0 ];then
-echo ' '
-echo --------------------------------------------
-echo A problem was encountered during execution !
-echo       divacalc:   netcdfoutput.a
-echo 'Check execution track in diva.log'
-echo --------------------------------------------
-echo ' ' >> $divacalclog
-echo -------------------------------------------- >> $divacalclog
-echo A problem was encountered during execution ! >> $divacalclog
-echo       divacalc:   netcdfoutput.a >> $divacalclog
-echo 'Check execution track in diva.log' >> $divacalclog
-echo -------------------------------------------- >> $divacalclog
-echo ' ' >> $divalog
-echo -------------------------------------------- >> $divalog
-echo A problem was encountered during execution ! >> $divalog
-echo       divacalc:   netcdfoutput.a  >> $divalog
-echo 'Check execution track in diva.log' >> $divalog
-echo -------------------------------------------- >> $divalog
+echo ' ' | tee -a $divacalclog $divalog
+echo -------------------------------------------- | tee -a $divacalclog $divalog
+echo A problem was encountered during execution ! | tee -a $divacalclog $divalog
+echo       divacalc:   netcdfoutput.a		  | tee -a $divacalclog $divalog
+echo 'Check execution track in diva.log'	  | tee -a $divacalclog $divalog
+echo -------------------------------------------- | tee -a $divacalclog $divalog
 fi
 fi
 fi
@@ -742,37 +709,22 @@ echo since Varbak and ispec are $varbak $ispec >> $divacalclog
 cd ../output/ghertonetcdf
 ../../../bin/netcdfoutputfield.a >> $divalog
 if [ $? -ne 0 ];then
-echo ' '
-echo --------------------------------------------
-echo A problem was encountered during execution !
-echo       divacalc:   netcdfoutputfield.a
-echo 'Check execution track in diva.log'
-echo --------------------------------------------
-echo ' ' >> $divacalclog
-echo -------------------------------------------- >> $divacalclog
-echo A problem was encountered during execution ! >> $divacalclog
-echo       divacalc:   netcdfoutputfield.a >> $divacalclog
-echo 'Check execution track in diva.log' >> $divacalclog
-echo -------------------------------------------- >> $divacalclog
-echo ' ' >> $divalog
-echo -------------------------------------------- >> $divalog
-echo A problem was encountered during execution ! >> $divalog
-echo       divacalc:    netcdfoutputfield.a  >> $divalog
-echo 'Check execution track in diva.log' >> $divalog
-echo -------------------------------------------- >> $divalog
+echo ' ' | tee -a $divacalclog $divalog
+echo -------------------------------------------- | tee -a $divacalclog $divalog
+echo A problem was encountered during execution ! | tee -a $divacalclog $divalog
+echo       divacalc:   netcdfoutputfield.a        | tee -a $divacalclog $divalog
+echo 'Check execution track in diva.log'          | tee -a $divacalclog $divalog
+echo -------------------------------------------- | tee -a $divacalclog $divalog
+echo ' '                                          | tee -a $divacalclog $divalog
 fi
 ###rm -f ../error*.anl
 fi
 cd ../..
 
-echo ' ' >> $divacalclog
-echo -------------------- >> $divacalclog
-echo Analysis is finished >> $divacalclog
-echo -------------------- >> $divacalclog
-echo ' '
-echo --------------------
-echo Analysis is finished
-echo --------------------
+echo ' ' | tee -a $divacalclog
+echo -------------------- | tee -a $divacalclog
+echo Analysis is finished | tee -a $divacalclog
+echo -------------------- | tee -a $divacalclog
 
 
 if [ "$iflagcpme" == "1" ]
