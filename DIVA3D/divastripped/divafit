@@ -8,7 +8,8 @@ echo    Fitting of the covariance function
 echo ////////////////////////////////////////
 echo ' '
 
-divafitlog='./output/divafit.log'
+source ./dvmakelog
+
 echo divafit: > $divafitlog
 echo '********' >> $divafitlog
 
@@ -63,45 +64,30 @@ fi
 #echo Cleaning unuseful files
 #echo ' '
 rm -f fort.10 fort.11 fort.99 fort.98
- 
-echo Going to fit covariance function >> $divafitlog
-echo ' ' >> $divafitlog
-echo Going to fit covariance function
-echo ' '
+
+echo 'Going to fit covariance function' | tee -a $divafitlog
+echo ' ' 			        | tee -a $divafitlog
 head -4 ./input/param.par | tail -1   > fort.11
 head -8 ./input/param.par | tail -1   >> fort.11
 if [ -f ./input/data.dat ] 
 then
 cp ./input/data.dat ./divawork/fort.10
 else
-echo Need to provide data.dat in ./input ! >> $divafitlog
-echo Need to provide data.dat in ./input !
+echo 'Need to provide data.dat in ./input !' | tee -a $divafitlog
 fi
 mv fort.11 ./divawork
 
 cd ./divawork
 
-echo $nsamp | ../../bin/fitlsn.a >> ../output/diva.log
+echo $nsamp | ../../bin/fitlsn.a >> $divalog
 
 if [ $? -ne 0 ];then
-echo ' '
-echo --------------------------------------------
-echo A problem was encountered during execution !
-echo          divafit      fitlsn.a
-echo Check execution track
-echo --------------------------------------------
-echo ' ' >> ../$divafitlog
-echo -------------------------------------------- >> ../$divafitlog
-echo A problem was encountered during execution ! >> ../$divafitlog
-echo          divafit      fitlsn.a >> ../$divafitlog
-echo Check execution track >> ../$divafitlog
-echo -------------------------------------------- >> ../$divafitlog
-echo ' ' >> ../output/diva.log
-echo -------------------------------------------- >> ../output/diva.log
-echo A problem was encountered during execution ! >> ../output/diva.log
-echo          divafit      fitlsn.a  >> ../output/diva.log
-echo Check execution track >> ../output/diva.log
-echo -------------------------------------------- >> ../output/diva.log
+echo ' ' | tee -a $divalog $divafitlog
+echo -------------------------------------------- | tee -a $divalog $divafitlog
+echo A problem was encountered during execution ! | tee -a $divalog $divafitlog
+echo          divafit      fitlsn.a		  | tee -a $divalog $divafitlog
+echo Check execution track			  | tee -a $divalog $divafitlog
+echo -------------------------------------------- | tee -a $divalog $divafitlog
 fi
 
 if [ -f fort.98 ] 
@@ -109,28 +95,25 @@ then
 mv fort.98 ../output/covariancefit.dat
 mv fort.99 ../output/covariance.dat
 mv fort.66 ../output/paramfit.dat
-echo ------------------------------------------------------------- >> ../$divafitlog
-echo Finished fitting >> ../$divafitlog
-echo 'Estimated correlation length L = ' $(awk 'FNR == 2 { print; exit }' ../output/paramfit.dat) >> ../$divafitlog
-echo Files created : covariancefit.dat covariance.dat paramfit.dat >> ../$divafitlog
-echo ------------------------------------------------------------- >> ../$divafitlog
-echo -------------------------------------------------------------
-echo Finished fitting
-echo 'Estimated correlation length L = ' $(awk 'FNR == 2 { print; exit }' ../output/paramfit.dat)
-echo Files created : covariancefit.dat covariance.dat paramfit.dat
-echo -------------------------------------------------------------
+echo ------------------------------------------------------------- | tee -a $divafitlog
+echo Finished fitting 					           | tee -a $divafitlog
+echo 'Estimated correlation length L = ' $(awk 'FNR == 2 { print; exit }' ../output/paramfit.dat) | tee -a $divafitlog
+echo Files created : covariancefit.dat covariance.dat paramfit.dat | tee -a $divafitlog
+echo ------------------------------------------------------------- | tee -a $divafitlog
 
 if [ -e ../gnuwork ]
 then
 mv fort.55 ../gnuwork/xrangecova
 fi
+
 rm -f fort.10 fort.11
-echo 'Creating adapted param.par in ./output/param.par.fit' >> ../$divafitlog
+echo 'Creating adapted param.par in ./output/param.par.fit' >> $divafitlog
 head -1 ../input/param.par > ../output/param.par.fit
+
 if [ "$llimit" == "1" -a -f ../output/meandistance.dat ]
 then
-echo Found meandistance.dat and flag "-l" was used, so >> ../$divafitlog
-echo using meandistance.dat >> ../$divafitlog
+echo Found meandistance.dat and flag "-l" was used, so >> $divafitlog
+echo using meandistance.dat >> $divafitlog
 rm -f bidon1
 rm -f bidon2
 head -2 ../output/meandistance.dat | tail -1 > bidon1
@@ -143,33 +126,28 @@ rm -f bidon
 else
 head -2 ../output/paramfit.dat | tail -1 >> ../output/param.par.fit
 fi
+
 head -23 ../input/param.par | tail -21 >> ../output/param.par.fit
 head -4 ../output/paramfit.dat | tail -1 >> ../output/param.par.fit
 head -25 ../input/param.par | tail -1 >> ../output/param.par.fit
 head -6 ../output/paramfit.dat | tail -1  >> ../output/param.par.fit
+
 if [ "$iparsave" == "1" ]
 then
-echo ======================================================= >> ../$divafitlog
-echo Replacing  param file with fit >> ../$divafitlog
-echo =======================================================
-echo Replacing  param file with fit
+echo ======================================================= | tee -a $divafitlog
+echo Replacing  param file with fit  			     | tee -a $divafitlog
 cd ..
 cp -v ./input/param.par ./input/param.par.old
 cp -v ./output/param.par.fit ./input/param.par
 echo =======================================================
 fi
 else
-echo ' ' >> ../$divafitlog
-echo -------------------------------------------- >> ../$divafitlog
-echo A problem was encountered during execution ! >> ../$divafitlog
-echo covariancefit.dat was not generated ! >> ../$divafitlog
-echo Check execution track >> ../$divafitlog
-echo -------------------------------------------- >> ../$divafitlog
-echo ' '
-echo --------------------------------------------
-echo A problem was encountered during execution !
-echo covariancefit.dat was not generated !
-echo Check execution track
-echo --------------------------------------------
+echo ' ' | tee -a $divafitlog
+echo -------------------------------------------- | tee -a $divafitlog
+echo A problem was encountered during execution ! | tee -a $divafitlog
+echo covariancefit.dat was not generated !	  | tee -a $divafitlog
+echo Check execution track			  | tee -a $divafitlog
+echo -------------------------------------------- | tee -a $divafitlog
 cd ..
 fi
+

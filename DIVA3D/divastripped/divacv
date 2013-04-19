@@ -33,22 +33,16 @@ divamesh
  mv bidon $divacvlog
 fi
 else
-echo divacv:Need to provide gcvsampling.dat in ./input ! >> $divacvlog
-echo divacv:Need to provide gcvsampling.dat in ./input !
+echo divacv:Need to provide gcvsampling.dat in ./input ! | tee -q $divacvlog
 fi
 ijm=0
 for gcv in `cat ./input/gcvsampling.dat`
 do
-echo ' ' >> $divacvlog
-echo divacv:============================================= >> $divacvlog
-echo divacv:============================================= >> $divacvlog
-echo divacv:Cross validation working with value $gcv >> $divacvlog
-echo divacv:============================================= >> $divacvlog
-echo ' '
-echo =============================================
-echo divacv:=============================================
-echo divacv:Cross validation working with value $gcv
-echo divacv:=============================================
+echo ' ' | tee -a $divacvlog
+echo divacv:============================================= | tee -a $divacvlog
+echo divacv:============================================= | tee -a $divacvlog
+echo divacv:Cross validation working with value $gcv 	  | tee -a $divacvlog
+echo divacv:============================================= | tee -a $divacvlog
 let ijm=$ijm+1
 head -17 ./input/param.par.ori > bidon
 echo 1 >> bidon
@@ -77,24 +71,12 @@ cp ../output/fieldatdatapoint.anl fort.21
 cp ../output/expectederroratdatapoint.anl fort.22
 echo -99 $gcv | ../../bin/cverroraii.a >> $divalog
 if [ $? -ne 0 ];then
-echo ' ' >> $divacvlog
-echo -------------------------------------------- >> $divacvlog
-echo A problem was encountered during execution ! >> $divacvlog
-echo        divacv:     cverroraii.a >> $divacvlog
-echo Check execution track >> $divacvlog
-echo -------------------------------------------- >> $divacvlog
-echo ' '
-echo --------------------------------------------
-echo A problem was encountered during execution !
-echo        divacv:     cverroraii.a
-echo Check execution track
-echo --------------------------------------------
-echo ' ' >> $divalog
-echo -------------------------------------------- >> $divalog
-echo A problem was encountered during execution ! >> $divalog
-echo       divacv:      cverroraii.a  >> $divalog
-echo Check execution track >> $divalog
-echo -------------------------------------------- >> $divalog
+echo ' ' | tee -a $divacvlog $divalog
+echo -------------------------------------------- | tee -a $divacvlog $divalog
+echo A problem was encountered during execution ! | tee -a $divacvlog $divalog
+echo        divacv:     cverroraii.a		  | tee -a $divacvlog $divalog
+echo Check execution track			  | tee -a $divacvlog $divalog
+echo -------------------------------------------- | tee -a $divacvlog $divalog
 fi
 # cp -f ../output/diva.log ../output/.
 cat fort.23 >> ../output/gcv.dat
@@ -141,6 +123,13 @@ echo -------------------------------------------- | tee -a $divacvlog
 fi
 
 mv fort.12 ../output/gcvsnvar.dat
+echo ' ' | tee -a $divacvlog
+echo ---------------------------------------- | tee -a $divacvlog
+echo 'GCV finished' | tee -a $divacvlog
+echo 'Estimated value of SNR = ' $(awk 'FNR == 2 { print; exit }' ../output/gcvsnvar.dat) | tee -a $divacvlog
+echo Results written in ./output/gcvsnvar.dat | tee -a $divacvlog
+echo ---------------------------------------- | tee -a $divacvlog
+
 echo ----------------------------------------------------- >> $divacvlog
 echo divacv:'Creating adapted param.par in ./output/param.par.gcv' >> $divacvlog
 echo divacv:----------------------------------------------------- >> $divacvlog
@@ -150,10 +139,8 @@ head -25 ../input/param.par | tail -1 >> ../output/param.par.gcv
 head -4 ../output/gcvsnvar.dat  | tail -1 >> ../output/param.par.gcv
 if [ "$1" == "-r" ]
 then
-echo divacv:======================================================= >> $divacvlog
-echo divacv:Replacing  param file with fit >> $divacvlog
-echo divacv:======================================================= >> $divacvlog
-echo divacv:Replacing  param file with fit >> $divacvlog
+echo divacv:======================================================= | tee -a $divacvlog
+echo divacv:Replacing SNR with new value from GCV in param.par 	    | tee -a $divacvlog
 cd ..
 cp -v ./input/param.par ./input/param.par.old
 cp -v ./output/param.par.gcv ./input/param.par
