@@ -96,9 +96,9 @@ echo './ouput/ghertonetcdf/results.nc (netcdf)'
 
 timeend=$(date +%s.%N)
 
-timemesh=$(echo "${timeinterm} - ${timeinit}" | bc )
-timecalc=$(echo "${timeend} - ${timeinterm}" | bc )
-timerun=$(echo "${timeend} - ${timeinit}" | bc )
+timemesh=$(echo ${timeinterm} ${timeinit} | awk '{print ($1-$2)}')
+timecalc=$(echo ${timeend} ${timeinterm} | awk '{print ($1-$2)}')
+timerun=$(echo ${timeend} ${timeinit} | awk '{print ($1-$2)}')
 
 echo 'Time for mesh creation:  ' $timemesh ' s'
 echo 'Time for calculation:    ' $timecalc ' s'
