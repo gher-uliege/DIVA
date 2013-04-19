@@ -3,7 +3,7 @@
 # Name of the fortran compiler
 #-----------------------------
 
-compiler=ifort			#--charles
+compiler=ifort			
 compiler=gfortran
 
 
@@ -15,7 +15,7 @@ DIVA_PARALLEL=1
 # Compilation flags
 #-----------------
 
-flags='-O3 -pipe -cpp ' #  -DDIVABINARYFILESMESH '			#--charles
+flags='-O3 -pipe -cpp ' #  -DDIVABINARYFILESMESH '	
 #flags='-O0' 			# no optimization
 
 
@@ -50,7 +50,7 @@ else
     compiler=`nf-config --fc`
    else
 # put netcdlibrary by hand
-   nclib=/usr/lib/libnetcdff.dll.a	#--charles
+   nclib=/usr/lib/libnetcdff.dll.a	
    fi
 fi
 # Use of Plplot (creation of scientific plots)
