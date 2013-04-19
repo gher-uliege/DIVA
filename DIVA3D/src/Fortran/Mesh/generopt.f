@@ -264,7 +264,7 @@ C precusion on mesh-generation
       endif
 
       
-      
+
       
 C     RAJOUT DE POINT DANS LE CONTOUR SI LA DISTANCE ENTRE 
 C      DEUX POINTS DIFFERE BCP (+ DE 2*) DE LA LONGUEUR CARACT.
@@ -600,7 +600,7 @@ C     I : MAILLE QUI CONTIENT LE PT XP,YP : A DETERMINER
       B(4)=B(1)
       B(2)=MAILLE(I,2)
       B(3)=MAILLE(I,3)
- 
+
       DO 20 J=1,3
         N1=NOEUD(B(J),1)
         N2=NOEUD(B(J+1),1)
@@ -712,7 +712,7 @@ C      write(6,*) ' so what??',N
       YJ1=NOEUD(MAILLE(A(N),1),2)
       YJ2=NOEUD(MAILLE(A(N),2),2)
       YJ3=NOEUD(MAILLE(A(N),3),2)
-      
+
       VJ=(XJ2-XJ1)*(YJ3-YJ2)-(XJ3-XJ2)*(YJ2-YJ1)
       
       if((YJ2-YJ1)*(YJ2-YJ1).LT.1E-10*ABS(VJ)) then
@@ -726,7 +726,7 @@ C      write(6,*) ' so what??',N
       YJ3=NOEUD(MAILLE(A(N),1),2)
       
       VJ=(XJ2-XJ1)*(YJ3-YJ2)-(XJ3-XJ2)*(YJ2-YJ1)
-      
+
       if((YJ2-YJ1)*(YJ2-YJ1).LT.1E-10*ABS(VJ)) then
       
       XJ1=NOEUD(MAILLE(A(N),3),1)
@@ -1039,7 +1039,7 @@ C      FACTEUR C PRES. 'C' EST LU DANS UN FICHIER 11
 
 
       IMPLICIT NONE
-      INTEGER*4 I,P,NRMAX,NR
+      INTEGER*4 I,P,NRMAX,NR ,ISOK
       INTEGER*4 NMAX,MMAX,MA,NO,KNMAX(NRMAX),MAILLE(MMAX,6)
 c      real*8 NOEUD(NMAX,2),XP,YP,XM,YM,X1,Y1,X2,Y2,X3,Y3
 c      real*8 A,B,C,D,E,F,AR,L,KN(NMAX,2),G(NRMAX),S
@@ -1054,6 +1054,7 @@ CJMB
       L4=S*S*S*S
       ARS=L4*3/4*CS
        I=0
+       ISOK=1
 10     I=I+1
 c       write(6,*) 'node ',i
        IF(I.EQ.MA) GOTO 20
@@ -1094,10 +1095,12 @@ C       YP=(Y3+2*YM)/3
          ARSS=L4*3/4*CS
          IF(AS.GE.ARSS) THEN
          CALL NEWNO(MAILLE,NOEUD,NMAX,MMAX,NO,MA,XP,YP,I)
-          I=1
+C          I=1
+           I=I-1
+           ISOK=0
        ENDIF
       GOTO 10
-         
+
 
        endif
 
@@ -1105,13 +1108,26 @@ C       YP=(Y3+2*YM)/3
        IF(AS.GE.ARS) THEN
         XP=(X3+X2+X1)/3
         YP=(Y3+Y2+Y1)/3
-c          write(6,*) 'Adding node',AR,L,C,A
+c           write(6,*) 'Adding node b',I,MA
 c          write(6,*) 'Coord',X1,X2,X3,y1,y2,y3
           CALL NEWNO(MAILLE,NOEUD,NMAX,MMAX,NO,MA,XP,YP,I)
-          I=1
+c           write(6,*) 'Adding node after',I,MA
+C JMB2013 WHY DO WE NEED TO START AGAIN ON ALL NODES ?   Probably because
+C adding a node somewhere can modify behavior elsewhere, but on the other hand it could only go in the right direction??
+C Probably better to test first in recent nodes as they are more likely to have changed, so loop in other direction ??
+C
+C          I=1
+           I=I-1
+           ISOK=0
        ENDIF
       GOTO 10
-20      CONTINUE          
+20      CONTINUE    
+      IF(ISOK.EQ.0) THEN
+C Start again
+      ISOK=1
+      I=1
+      GOTO 10
+      ENDIF
       RETURN
       END
 
@@ -1214,29 +1230,61 @@ C     LISSAGE DU MAILLAGE
 C       ON LE 'LISSERA' NL FOIS, OU NL EST LU DANS UN FICHIER 11
 
       IMPLICIT NONE
-      integer*4 jm1
-      parameter(jm1=5000)
+      integer*4 jm1  ,JJ,KK
+      parameter(jm1=50)
       INTEGER*4 NMAX,MMAX,MA,NO,B(4),C,A,MAILLE(MMAX,6)
-      real*8 NOEUD(NMAX,2),AX,AY
+      real*8 NOEUD(NMAX,2),AX,AY,DD1,DD2
       INTEGER*4 I,J,K,M,N,MN(jm1,2),NN(jm1),S,T,NL,P
       REAL*8 NX,NY,V,N1,N2,N3,N4,D,V0,RR,NXOLD,NYOLD
 
+CJMB2013 Room for improvement here;
+C first make a table for each node, all surrounding nodes
+C (sweep across values of MAILLE)
+C The moving points is easy...
+C No need for rtable, make loop on elments rather then node
+C and if node outside of range defined fo loop 20 just skip
+C Should convergece much quicker since each node moved serveral times
+C
+
+
+C
       READ(11,*) NL
       CLOSE(11)
       WRITE(*,'(A)') 'MAXIMUM DISPLACEMENT DURING SMOOTHING'
       DO 10 P=1,NL
-       D=0
-       DO 20 I=N+1,NO
-           M=0
-           J=1
-30           K=1
-40           IF(MAILLE(J,K).EQ.I) GOTO 50
-           K=K+1
-           IF(K.GT.3) GOTO 60
-           GOTO 40
-60           J=J+1
-           GOTO 30    
+
+
+C2013 OLDER CODE
+C       D=0
+C       DO 20 I=N+1,NO
+C           M=0
+C           J=1
+C30           K=1
+C40           IF(MAILLE(J,K).EQ.I) GOTO 50
+C           K=K+1
+C           IF(K.GT.3) GOTO 60
+C           GOTO 40
+C60           J=J+1
+C           GOTO 30
+C SO loop on meshes and skip things above
 CJM got a triangle that has node I involved
+C JMB2013  
+         
+C           write(6,*) 'Mesh',MA
+           D=0
+            DO 20 KK=1,3
+
+            DO 20 JJ=1,MA
+            
+            M=0
+            
+            J=JJ
+            K=KK
+            I=MAILLE(J,K)
+            If(I.LT.N+1) GOTO 20
+            IF(I.GT.NO) GOTO 20
+
+C
 50           M=M+1
            if(M.GT.JM1) THEN
            write(6,*) 'increase JM1'
@@ -1288,10 +1336,10 @@ CJM got a triangle that has node I involved
                N4=NOEUD(B(3),2)-NOEUD(B(1),2)
 
                V=N1*N4-N2*N3
-               V0=abs(N2*N2)
-               V0=max(V0,abs((N3)*(N3)))
-               V0=max(V0,abs((N1)*(N1)))
-               V0=max(V0,abs((N3)*(N3)))
+               V0=(N2*N2)
+               V0=max(V0,((N3)*(N3)))
+               V0=max(V0,((N1)*(N1)))
+C               V0=max(V0,abs((N3)*(N3)))
                V0=V0*0.5E-1
                IF (V.LT.V0) THEN
 C               write(6,*) 'No change',I
@@ -1299,17 +1347,19 @@ C               write(6,*) 'No change',I
                goto 140
                ENDIF
                
-            
+
 130          CONTINUE
 140        continue
            IF (T.EQ.1) THEN
-            D=MAX(D,SQRT((NOEUD(I,1)-NXOLD)**2+(NOEUD(I,2)-NYOLD)**2))
+           DD1=(NOEUD(I,1)-NXOLD)
+           DD2=(NOEUD(I,2)-NYOLD)
+            D=MAX(D,(DD1*DD1+DD2*DD2))
                        ELSE
             NOEUD(I,1)=NXOLD
             NOEUD(I,2)=NYOLD
            ENDIF
 20       CONTINUE         
-       WRITE(*,*) P,D
+       WRITE(*,*) P,sqrt(D)
 10    CONTINUE
       RETURN
       END
