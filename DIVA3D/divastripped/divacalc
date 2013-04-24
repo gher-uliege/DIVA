@@ -729,18 +729,18 @@ echo -------------------- | tee -a $divacalclog
 
 if [ "$iflagcpme" == "1" ]
 then
-divacpme &
+divacpme 
 fi
 
 if [ "$iflagexerr" == "1" ]
 then
-divaexerr &
+divaexerr
 fi
 
 
 if [ "$iflagexerr" == "2" ]
 then
-divaexerr full &
+divaexerr full
 fi
 
 

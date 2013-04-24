@@ -100,7 +100,7 @@ else
 mkdir -v ./workexerr
 fi
 
-# For the moment full copy  could be  more selective 
+# For the moment full copy  could be  more selective
 cp -R ./output ./workexerr
 cp -R ./input ./workexerr
 
@@ -146,8 +146,8 @@ divacalc qc
 # column 4 of expectederroratdata.anl (check carefully)
 
 # Now wherever no exclusion value, use error to provide new input
-# 
-# IF TO DIVIDE BY BCKGROUND Bii need to adapt covariance calculation just to output Bii instead of full covariance by writing 
+#
+# IF TO DIVIDE BY BCKGROUND Bii need to adapt covariance calculation just to output Bii instead of full covariance by writing
 # ALWAYS on disk!
 # Rerun divacalc with ispec=-1000 and special stop ...to retrieve divapipe: divacalc bii
 
@@ -164,20 +164,22 @@ divacalc Bii
 fi
 
 #ls -l ./output
-cat ./output/Bii.dat
+#cat ./output/Bii.dat
 
 
-#wc -l ./output/expectederroratdatapoint.anl 
-#wc -l ./input/data.dat 
+#wc -l ./output/expectederroratdatapoint.anl
+#wc -l ./input/data.dat
 #wc -l ./output/Bii.dat
 
 if [ "$imeth" == "0" ]
 then
 echo Working with error reduction instead of error
-paste ./output/expectederroratdatapoint.anl ./input/data.dat ./output/Bii.dat | awk -v valex=$valex -v snr=$snr -v varbak=$varbak '{if ($4 != valex){print $5,$6,1-(1/snr*$4/$8/$11),1}}' > ./input/data.dat.exerr
+#paste ./output/expectederroratdatapoint.anl ./input/data.dat ./output/Bii.dat | awk -v valex=$valex -v snr=$snr -v varbak=$varbak '{if ($4 != valex){print $5,$6,1-(1/snr*$4/$8/$11),1}}' > ./input/data.dat.exerr
+paste ./output/expectederroratdatapoint.anl ./output/Bii.dat ./input/data.dat  | awk -v valex=$valex -v snr=$snr -v varbak=$varbak '{if ($4 != valex){print $8,$9,1-(1/snr*$4/$11/$7),1}}' > ./input/data.dat.exerr
 else
 echo Working with error
-paste ./output/expectederroratdatapoint.anl ./input/data.dat ./output/Bii.dat | awk -v valex=$valex -v snr=$snr -v varbak=$varbak '{if ($4 != valex){print $5,$6,sqrt(varbak/snr*$4/$8/$11),1}}' > ./input/data.dat.exerr
+#paste ./output/expectederroratdatapoint.anl ./input/data.dat ./output/Bii.dat | awk -v valex=$valex -v snr=$snr -v varbak=$varbak '{if ($4 != valex){print $5,$6,sqrt(varbak/snr*$4/$8/$11),1}}' > ./input/data.dat.exerr
+paste ./output/expectederroratdatapoint.anl  ./output/Bii.dat ./input/data.dat | awk -v valex=$valex -v snr=$snr -v varbak=$varbak '{if ($4 != valex){print $8,$9,sqrt(varbak/snr*$4/$11/$7),1}}' > ./input/data.dat.exerr
 fi
 # Create new pseudo data correction with this error as input (so zero far away from point
 
