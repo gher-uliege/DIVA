@@ -84,7 +84,7 @@ C   - COORD
 C   (coord change)            works on data read in 
 C                               *FORT.20: input data 
 C                               *FORT.11: topology 
-C                                              
+C
 C   --------------------------------------------------------------------
 C   - GCVFAC
 C   (Generalized Cross Validation
@@ -247,6 +247,12 @@ C                    to be printed)
      &       ,I2,/,10x,31('$'),/)
  907  format(/,10x,31('$'),/,10x,'CALL TO DATAQC MODULE: IPR = '
      &       ,I2,/,10x,31('$'),/)
+      ltdataQ=1
+      lkelosQ=1
+      lkindtQ=1
+      lkdataQ=1
+      NSOURCESLOC=0
+      lkelos1Q=1
 
       NINTDIVA=nent
       NREADIVA=nrea

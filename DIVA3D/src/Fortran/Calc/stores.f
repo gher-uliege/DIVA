@@ -794,9 +794,10 @@ C
       if(ityp.eq.2) then
       do 10 i=1,nx
          do 15 j=1,ny
-      
+
             x=xori+i*dx
             y=yori+j*dy
+c            write(6,*)'create 80 ',x,y,iel,isub,isspheric,opti
             if (isspheric.eq.1) then
             xori=xorio
             yyy=y
@@ -808,11 +809,11 @@ Cmr            if (icoordchange.ne.0) call llxy(x,y)
                call locpt2opti(x,y,tcoog,kconn,iel,isub,kntc,
      &                         ipr)
             endif
-            if (opti.eq.0) then 
+            if (opti.eq.0) then
                call locpt2(x,y,tcoog,kconn,iel,isub,ipr)
             endif
             write(80)x,y,iel,isub
-cmr            write(6,*)'create 80 ',x,y,iel,isub
+c            write(6,*)'create 80 ',x,y,iel,isub
  15      continue
  10   continue
       endif
@@ -835,7 +836,7 @@ Cmr            if (icoordchange.ne.0) call llxy(x,y)
                call locpt3opti(x,y,tcoog,kconn,tcele,iel,isub,
      &                         kntc,ipr)
             endif
-            if (opti.eq.0) then 
+            if (opti.eq.0) then
                call locpt3(x,y,tcoog,kconn,tcele,iel,isub,ipr)
             endif
             write(80)x,y,iel,isub

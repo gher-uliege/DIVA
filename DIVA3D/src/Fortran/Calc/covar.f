@@ -12,14 +12,14 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       zero=0.
       read(10,*) ispec
       isumcovar=0
-      
+
       ibii=0
       if(ispec.eq.-1000) then
       write(6,*) 'Just background variance at data locations'
       ispec=-2
       ibii=1
       endif
-      
+
       if(ispec.lt.-100) then
       write(6,*) 'Summing on covariances'
       isumcovar=1
@@ -28,7 +28,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       endif
       write(6,*) 'Please be patient'
 CJMB TO BE OPTIMIZED: calculate error only if point in mesh; use locopt
-C for regular grid should already be done?? Yes done; so just do it on 
+C for regular grid should already be done?? Yes done; so just do it on
 C data points and valatxy with locopt.
       ifkern=0
       JMRELERR=0
@@ -40,26 +40,26 @@ C data points and valatxy with locopt.
       JMRELERR=1
       endif
       write(6,*) 'Full covariance calculation, be patient'
-      
+
       ipipe=0
 
       if(isumcovar.ne.1) then
 
             read(59,*) ipipe
-      
+
       if(ipipe.ne.1) then
       close(61)
-      
+
       open(61,file='../divapipe',form='unformatted')
       else
-      
+
       call pingpong(1,0,1)
 c      call system('sleep 2')
       call pingpong(1,1,1)
       endif
 C only when no summing on covariances
       endif
-      
+
       endif
 
 C Check if the mathematical problem is analog to OA
@@ -72,7 +72,7 @@ C Check if the mathematical problem is analog to OA
 	 write(6,*) ' STOP - Covariance estimation not valid for
      &               alpha0 = 0 '
 	 stop
-      endif 
+      endif
 
       accur=1.e-2
       rl0=sqrt(sqrt(1./alpha0))
@@ -86,20 +86,20 @@ c      if(abs(atwo).gt.accur) then
 c	 write(6,*) ' STOP - Error estimation not valid for
 c     &               this choice of (alpha0,alpha1) '
 c	 stop
-c      endif 
+c      endif
 
 
 C  ALLOCATION OF SPACE FOR Covariance infos on location and elements,
-C  MEME HACK Qu'avant, dimensionner avec 1 puis après lecture augmenter     
-C  abandonne, plus simple de lire le nombre de données    
+C  MEME HACK Qu'avant, dimensionner avec 1 puis après lecture augmenter
+C  abandonne, plus simple de lire le nombre de données
        read(55,*) ncvdatar
 c      call allody(1,0,'cvpoii',lcvpoii,ipr)
 c      call allody(1,1,'cvpoir',lcvpoir,ipr)
        call allody(2*ncvdatar,0,'cvpoii',lcvpoii,ipr)
        call allody(2*ncvdatar,1,'cvpoir',lcvpoir,ipr)
-       
 
- 
+
+
       call cvread(l(lcvpoii),s(lcvpoir),ncvdata)
       write(6,*) 'ncvdata?',ncvdata,ncvdatar
 c      call allody(2*ncvdata-1,0,'cvpoii',jjjjj,99)
@@ -144,9 +144,9 @@ C read here weights
             enddo
             jjjjco=0
        endif
-       
-       
-       
+
+
+
 C if sum to be calculated, loop here over all "data" points; no not needed !
  3344  continue
       jjjjco=jjjjco+1
@@ -162,13 +162,13 @@ c Boucle sur les points de grille ou l'erreur doit etre calculee
 C Only if ispec=1 3 5 or 7
       if((ispec.eq.2).or.(ispec.eq.4).or.(ispec.eq.6)) goto 100
 
-      
+
  10   read(80,end=100)xob,yob,iel,isub
       val=0
-C      write(6,*) 'Errors in',xob,yob,iel,isub
+c      write(6,*) 'Errors in',xob,yob,iel,isub
       jmcount=jmcount+1
-      
-      if(mod(jmcount,max(nx*ny/10,1)).eq.0) 
+
+      if(mod(jmcount,max(nx*ny/10,1)).eq.0)
      &  write(6,*) 'proceeded gridded points:',
      & nint(jmcount*100./(nx*ny)), ' percent'
 
@@ -206,22 +206,29 @@ C  BASED ON THE ALREADY TRIANGULARIZED SYSTEM
 c ... extraction de la solution au point observe
 
          if(ityp.eq.2) then
+            if(ltgrde.eq.0) then
+            bidon=0
+            call extrt2(xob,yob,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
+     &              l(lklocs),s(ltrhsg),val,bidon,ipr,s(lrkele))
+
+                            else
             call extrt2(xob,yob,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
      &              l(lklocs),s(ltrhsg),val,s(ltgrde),ipr,s(lrkele))
+            endif
 	    if(ipr.ge.2) then
                write(6,*) 'x,y,error RMS : ',xob,yob,val
-	    endif 
+	    endif
          endif
          if(ityp.eq.3) then
             call extrt3(xob,yob,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
      &       l(lklocs),s(ltrhsg),s(ltcele),val,s(ltgrde),ipr,s(lrkele))
 	    if(ipr.ge.2) then
                write(6,*) 'x,y,error RMS : ',xob,yob,val
-	    endif 
+	    endif
          endif
 C Ici boucle sur le reste des points et decision sur fichier fortran de sortie
 C 72, points eux memes, 73 avec les points du fichier 45
-C 
+C
       valcv=val
 CJMB BUG??17/7/8 NO, OK
 c      valcv=0
@@ -231,8 +238,8 @@ C JMBBUGEND?
       open(61,file='../divapipe',form='unformatted')
       rewind(61)
       endif
-      
-       
+
+
       write(61) xob,yob,val/(1+valcv)
       endif
       rjmc0=val/(1+valcv)
@@ -241,7 +248,7 @@ c               write(6,*) '?jmc0a',rjmc0,xob,yob
       SKTS=SCAL(s(ltrhsg),s(lcvg),nddlt)
       STSA=SCAL(s(ltrhsg),s(ltrhsg),nddlt)
 c      write(6,*) 'val,SKTS,STS',valcv,SKTS/RJMMU
-      
+
 
 
       do i=1,ncvdata
@@ -253,13 +260,20 @@ c      write(6,*) 'val,SKTS,STS',valcv,SKTS/RJMMU
          val=0
          else
          if(ityp.eq.2) then
+         if(ltgrde.eq.0) then
+         bidon=0
+         call extrt2(xxx,yyy,iiel,iisub,s(ltcoog),l(lkconn),l(lkloce),
+     &              l(lklocs),s(ltrhsg),val,bidon,ipr,s(lrkele))
+
+         else
          call extrt2(xxx,yyy,iiel,iisub,s(ltcoog),l(lkconn),l(lkloce),
      &              l(lklocs),s(ltrhsg),val,s(ltgrde),ipr,s(lrkele))
+         endif
 	   endif
          if(ityp.eq.3) then
          call extrt3(xxx,yyy,iiel,iisub,s(ltcoog),l(lkconn),l(lkloce),
      &       l(lklocs),s(ltrhsg),s(ltcele),val,s(ltgrde),ipr,s(lrkele))
-	   endif  
+	   endif
          endif
 c         write(6,*) 'in data location', val, valcv,xob,yob,xxx,yyy
 c         write(59,*) val/(1+valcv),xxx,yyy,iiel,iisub
@@ -276,26 +290,26 @@ c       write(6,*) 'Now waiting covar'
                          else
       write(6,*) 'Why should I be here?'
       endif
-       
-       
+
+
       endif
-      
+
 C END if point in mesh
 
-      
+
       goto 10
 
  100  continue
 C
-CJMBB now try to put out error field at data points....: DO NOT USE FORT.20 
+CJMBB now try to put out error field at data points....: DO NOT USE FORT.20
 C USE FORT 45 or directly coordinates already stored... (take care of coordinate change?)
 C Maybe the problem with marina ? Check with and without coordinate change...
 C Only if ispec=2 3 6 or 7
          if((ispec.eq.1).or.(ispec.eq.4).or.(ispec.eq.5)) goto 866
          write(6,*) 'now covariance at data locations'
 
-         
-         
+
+
          do 1866 iiiii=1,ncvdata
          x=s(lcvpoir+2*iiiii-2)
          y=s(lcvpoir+2*iiiii-1)
@@ -304,13 +318,13 @@ C Only if ispec=2 3 6 or 7
          if(mod(iiiii,max(ncvdata,10)/10).eq.0) write(6,*) 'proceeded',
      & nint(iiiii*100./(ncvdata)), ' percent'
 
-       val=0         
-C now calculate the error in x,y         
+       val=0
+C now calculate the error in x,y
        xob=x
        yob=y
 C is in mesh?
       if(iel.gt.0) then
-	       
+
          do 156 i=ltrhsg,ltrhsg+nddlt
             s(i)=0.
  156        continue
@@ -341,7 +355,7 @@ c ... extraction de la solution au point observe
 	    if(ipr.ge.2) then
                write(6,*) 'x,y,error RMS : ',xob,yob,val
                write(85,*) xob,yob,val
-	    endif 
+	    endif
          endif
          if(ityp.eq.3) then
             call extrt3(xob,yob,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
@@ -349,12 +363,12 @@ c ... extraction de la solution au point observe
 	    if(ipr.ge.2) then
 c               write(6,*) 'x,y,error RMS : ',xob,yob,val
                write(85,*) xob,yob,val
-	    endif 
+	    endif
          endif
          valcv=val
 C JMBBUG: NO
 c         valcv=0
-C   
+C
          rjmc0=val/(1+valcv)
 c                  write(6,*) '?jmc0b',rjmc0,val,xob,yob
          if(isumcovar.ne.1) then
@@ -364,7 +378,7 @@ c                  write(6,*) '?jmc0b',rjmc0,val,xob,yob
          endif
       write(61) xob,yob,val/(1+valcv)
          endif
-      
+
       STS=SCAL(s(lcvg),s(lcvg),nddlt)
       SKTS=SCAL(s(ltrhsg),s(lcvg),nddlt)
       STSA=SCAL(s(ltrhsg),s(ltrhsg),nddlt)
@@ -379,13 +393,20 @@ c      write(6,*) 'val,SKTS,STS',valcv,SKTS/RJMMU
          val=0
          else
          if(ityp.eq.2) then
+         if(ltgrde.eq.0) then
+         bidon=0
+         call extrt2(xxx,yyy,iiel,iisub,s(ltcoog),l(lkconn),l(lkloce),
+     &              l(lklocs),s(ltrhsg),val,bidon,ipr,s(lrkele))
+
+         else
          call extrt2(xxx,yyy,iiel,iisub,s(ltcoog),l(lkconn),l(lkloce),
      &              l(lklocs),s(ltrhsg),val,s(ltgrde),ipr,s(lrkele))
+         endif
 	   endif
          if(ityp.eq.3) then
          call extrt3(xxx,yyy,iiel,iisub,s(ltcoog),l(lkconn),l(lkloce),
      &       l(lklocs),s(ltrhsg),s(ltcele),val,s(ltgrde),ipr,s(lrkele))
-	   endif  
+	   endif
          endif
 c         write(6,*) 'in data location', val, valcv,xob,yob,xxx,yyy
 c         write(59,*) val/(1+valcv),xxx,yyy,iiel,iisub
@@ -404,15 +425,15 @@ c         write(59,*) val/(1+valcv),xxx,yyy,iiel,iisub
        wwwico=s(lwcova+i-1)
        doublesum=doublesum+s(lcova+i-1)*wwwjco*wwwico*1./(1.-rjmc0)
        enddo
-      
+
       endif
-      
-      
+
+
       endif
-      
+
       endif
 C      goto 666
-         
+
 
  1866  continue
   866     continue
@@ -450,7 +471,7 @@ c                write(6,*) 'sauve qui store',x_ll,y_ll
 c                call locpt2(x,y,s(ltcoog),l(lkconn),iel,isub,ipr)
 c               endif
             endif
-            if (opti.eq.0) then 
+            if (opti.eq.0) then
                call locpt2(x,y,s(ltcoog),l(lkconn),iel,isub,ipr)
             endif
 
@@ -475,7 +496,7 @@ C JMB2013????? NEED FOR FORT.73 IN COVAR ?????????
             call locpt3opti(x,y,tcoog,kconn,tcele,iel,isub,kntc,
      &                      ipr)
             endif
-            if (opti.eq.0) then 
+            if (opti.eq.0) then
             call locpt3(x,y,tcoog,kconn,tcele,iel,isub,ipr)
             endif
 
@@ -491,13 +512,13 @@ C JMB2013????? NEED FOR FORT.73 IN COVAR ?????????
             goto 667
             endif
          endif
-         
-C now calculate the error in x,y         
+
+C now calculate the error in x,y
        xob=x
        yob=y
-C point in mesh 
+C point in mesh
       if(iel.gt.0) then
-	       
+
          do 157 i=ltrhsg,ltrhsg+nddlt
             s(i)=0.
 157        continue
@@ -528,7 +549,7 @@ c ... extraction de la solution au point observe
 	    if(ipr.ge.2) then
                write(6,*) 'x,y,error RMS : ',xob,yob,val
                write(85,*) xob,yob,val
-	    endif 
+	    endif
          endif
          if(ityp.eq.3) then
             call extrt3(xob,yob,iel,isub,s(ltcoog),l(lkconn),l(lkloce),
@@ -536,7 +557,7 @@ c ... extraction de la solution au point observe
 	    if(ipr.ge.2) then
 c               write(6,*) 'x,y,error RMS : ',xob,yob,val
                write(85,*) xob,yob,val
-	    endif 
+	    endif
          endif
          valcv=val
 C JMBBUG? NO see paper on efficient calculation
@@ -551,12 +572,12 @@ c         write(6,*) '?jmc0',rjmc0,xob,yob
        endif
       write(61) xob,yob,val/(1+valcv)
          endif
-      
+
       STS=SCAL(s(lcvg),s(lcvg),nddlt)
       SKTS=SCAL(s(ltrhsg),s(lcvg),nddlt)
       STSA=SCAL(s(ltrhsg),s(ltrhsg),nddlt)
 c      write(6,*) 'val,SKTS,STS',valcv,SKTS/RJMMU
-      
+
       do i=1,ncvdata
          xxx=s(lcvpoir+2*i-2)
          yyy=s(lcvpoir+2*i-1)
@@ -566,8 +587,15 @@ c      write(6,*) 'val,SKTS,STS',valcv,SKTS/RJMMU
          val=0
          else
          if(ityp.eq.2) then
+         if(ltgrde.eq.0) then
+         bidon=0
+         call extrt2(xxx,yyy,iiel,iisub,s(ltcoog),l(lkconn),l(lkloce),
+     &              l(lklocs),s(ltrhsg),val,bidon,ipr,s(lrkele))
+
+         else
          call extrt2(xxx,yyy,iiel,iisub,s(ltcoog),l(lkconn),l(lkloce),
      &              l(lklocs),s(ltrhsg),val,s(ltgrde),ipr,s(lrkele))
+         endif
 	   endif
          if(ityp.eq.3) then
          call extrt3(xxx,yyy,iiel,iisub,s(ltcoog),l(lkconn),l(lkloce),
@@ -663,7 +691,7 @@ c      write(6,*) 'in cvread',cvxy(1,ncvdata),cvxy(2,ncvdata)
             call locpt3opti(xxx,yyy,tcoog,kconn,tcele,iel,isub,kntc,
      &                      ipr)
             endif
-            if (opti.eq.0) then 
+            if (opti.eq.0) then
             call locpt3(xxx,yyy,tcoog,kconn,tcele,iel,isub,ipr)
             endif
 
@@ -713,7 +741,7 @@ c            if (opti.eq.1) then 		! (SvL)
 c               call locpt2opti(xxx,yyy,s(ltcoog),l(lkconn),iel,isub,
 c     &                         l(lkntc),ipr)
 c            endif
-c            if (opti.eq.0) then 
+c            if (opti.eq.0) then
 c               call locpt2(xxx,yyy,s(ltcoog),l(lkconn),iel,isub,ipr)
 c            endif
 c         endif
@@ -722,7 +750,7 @@ c            if (opti.eq.1) then 		! (SvL)
 c            call locpt3opti(xxx,yyy,tcoog,kconn,tcele,iel,isub,kntc,
 c     &                      ipr)
 c            endif
-c            if (opti.eq.0) then 
+c            if (opti.eq.0) then
 c            call locpt3(xxx,yyy,tcoog,kconn,tcele,iel,isub,ipr)
 c            endif
 cc
@@ -730,8 +758,16 @@ c
 c         endif
 cC
          if(ityp.eq.2) then
+           if(ltprop.eq.0) then
+           bidon=0
+
+           call cgelecv2 (iel,tcoog,kconn,trhse,l(lklocs),ipr,s(lrkele),
+     &  xob,yob,isub,bidon)
+           else
+
            call cgelecv2 (iel,tcoog,kconn,trhse,l(lklocs),ipr,s(lrkele),
      &  xob,yob,isub,s(ltprop))
+           endif
          endif
          if(ityp.eq.3) then
            call cgelecv3 (iel,tcoog,kconn,trhse,l(lklocs),s(ltcele),
@@ -1335,7 +1371,7 @@ c           write(6,*) 'w: waiting',istherea
            
            irwtd=irwtd+1
            
-           
+
            
            if(istherea.ne.irwtd) then
            write(6,*) '???pingpongw',irwtd,istherea,irwt

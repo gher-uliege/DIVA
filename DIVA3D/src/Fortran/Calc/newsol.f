@@ -101,8 +101,8 @@ C      write(6,*) 'NTHREADS',nthreads
       nthreads=omp_get_max_threads()
       write(6,*) 'NTHREADS',nthreads
 ! Initializations
-      jmax=l
-      kmax=l
+      jmax=1
+      kmax=1
 C$OMP PARALLEL DEFAULT (NONE)
 C$OMP& PRIVATE (d,i,id,ie,ie0,ie0old,ih1,ih2,ihesitate,
 C$OMP& iloop,iquit,ir,is,ithread,iwait,j,jd,jh,

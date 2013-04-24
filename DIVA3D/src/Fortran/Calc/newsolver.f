@@ -169,32 +169,32 @@ C.......................................................................
       SCAL=ZERO
       SUM=0
 c      write(6,*) 'Prod SCAL',N
-      if (N.GT.2000) then
-      write(6,*) 'worth trying omp',N
-C$OMP  PARALLEL DO
-C$OMP& REDUCTION(+:SUM)
+C      if (N.GT.2000) then
+C      write(6,*) 'worth trying omp',N
+CC$OMP  PARALLEL DO
+CC$OMP& REDUCTION(+:SUM)
       DO  I=1,N
        SUM=SUM+(X(I)*Y(I))
       ENDDO
-C$OMP  END PARALLEL DO
-                      else
-C Unrolled version
-         M = MOD(N,5)
-         IF (M.NE.0) THEN
-            DO I = 1,M
-               SUM = SUM + X(I)*Y(I)
-            END DO
-            IF (N.LT.5) THEN
-               SCAL=SUM
-            RETURN
-            END IF
-         END IF
-         MP1 = M + 1
-         DO I = MP1,N,5
-          SUM = SUM + X(I)*Y(I) + X(I+1)*Y(I+1) +
-     $            X(I+2)*Y(I+2) + X(I+3)*Y(I+3) + X(I+4)*Y(I+4)
-         END DO
-      endif
+CC$OMP  END PARALLEL DO
+C                      else
+CC Unrolled version
+C         M = MOD(N,5)
+C         IF (M.NE.0) THEN
+C            DO I = 1,M
+C               SUM = SUM + X(I)*Y(I)
+C            END DO
+C            IF (N.LT.5) THEN
+C               SCAL=SUM
+C            RETURN
+C            END IF
+C         END IF
+C         MP1 = M + 1
+C         DO I = MP1,N,5
+C          SUM = SUM + X(I)*Y(I) + X(I+1)*Y(I+1) +
+C     $            X(I+2)*Y(I+2) + X(I+3)*Y(I+3) + X(I+4)*Y(I+4)
+C         END DO
+C      endif
       SCAL=SUM
       RETURN
       END

@@ -171,6 +171,8 @@ C
 C
 C  RE-INITIATE THE TOPOLOGY MATRIX
 C
+
+      write(6,*) '???????????'
       do 10 i=1,nex
         do 15 j=1,ney
            if(ktpol(i,j).gt.0) ktpol(i,j)=0

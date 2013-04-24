@@ -85,7 +85,7 @@ C Check if the mathematical problem is analog to OA
      &               this choice of (alpha0,alpha1) '
 	 stop
 	endif
-      endif 
+      endif
 
 c      read(10,*)varbak
       read(15,*)varbak
@@ -117,7 +117,7 @@ C Only if ispec=1 3 5 or 7
 C      write(6,*) 'Errors in',xob,yob,iel,isub
       jmcount=jmcount+1
       
-      if(mod(jmcount,max(nx*ny/10,1)).eq.0) 
+      if(mod(jmcount,max(nx*ny/10,1)).eq.0)
      &  write(6,*) 'proceeded gridded points: ',
      & nint(jmcount*100./(nx*ny)), ' percent'
       if(iel.gt.0) then
@@ -170,7 +170,7 @@ c ... extraction de la solution au point observe
 	    if(ipr.ge.2) then
 c               write(6,*) 'x,y,error RMS : ',xob,yob,val
                write(85,*) xob,yob,val
-	    endif 
+	    endif
          endif
 
       endif
@@ -180,7 +180,7 @@ C JMB to replace the regular grid output
       iiy=1
       iix=iix+1
       endif
-      
+
 
 
 
@@ -198,8 +198,8 @@ C      if(iix.ne.ix.or.iiy.ne.iy) then
 C       write(6,*) '????',ix,iix,iy,iiy
 C      endif
       ix=iix
-      iy=iiy     
-      
+      iy=iiy
+
       jmboff=(iy-1)*nx+ix-1
 c      write(6,*) 'gridded',ix,iy,jmboff,val
       s(ltgrde+jmboff)=val
@@ -254,7 +254,7 @@ C               write(82,*) x_ll,y_ll,-9999.0
 #else
            write(72,1661) x_ll,y_ll,valex
 #endif
-              
+
                goto 666
             endif
          endif
@@ -263,7 +263,7 @@ C               write(82,*) x_ll,y_ll,-9999.0
             call locpt3opti(x,y,tcoog,kconn,tcele,iel,isub,kntc,
      &                      ipr)
             endif
-            if (opti.eq.0) then 
+            if (opti.eq.0) then
             call locpt3(x,y,tcoog,kconn,tcele,iel,isub,ipr)
             endif
 
@@ -278,8 +278,8 @@ C               write(82,*) x_ll,y_ll,-9999.0
             goto 666
             endif
          endif
-         
-C now calculate the error in x,y         
+
+C now calculate the error in x,y
        xob=x
        yob=y
 
@@ -291,7 +291,7 @@ C now calculate the error in x,y
          else
             call calpso(xob,yob,s(ltdata),ipr)
          endif
-	       
+
          do 156 i=ltrhsg,ltrhsg+nddlt
             s(i)=0.
 156        continue
@@ -341,7 +341,7 @@ c               write(6,*) 'x,y,error RMS : ',xob,yob,val
 #endif
 
       goto 666
-         
+
 
 
   866     continue
@@ -365,7 +365,7 @@ C only of ispec= 4 5 6 7
          y_ll=y
          if (icoordchange.ne.0) call llxy(x,y)
          ireclu=ireclu+1
-         if(mod(ireclu,100).eq.0) 
+         if(mod(ireclu,100).eq.0)
      & write(6,*) 'proceeded',ireclu, ' points'
 
          if(ityp.eq.2) then
@@ -427,7 +427,7 @@ C now calculate the error in x,y
          else
             call calpso(xob,yob,s(ltdata),ipr)
          endif
-	       
+
          do 157 i=ltrhsg,ltrhsg+nddlt
             s(i)=0.
 157        continue
@@ -875,7 +875,7 @@ C
          write(6,*) 'Will try to recover'
 c         detj=(x2-x1)*(y0-y1)-(x0-x1)*(y2-y1)
 c         write(6,*) 'Detj now',detj
-        
+
         detj=max(abs((x2-x1)*(y0-y1)),abs((x0-x1)*(y2-y1)))
         detj=max(detj,abs((x1-x0)*(y2-y0)),abs((x2-x0)*(y1-y0)))
         detj=max(detj,abs((x1-x2)*(y0-y2)),abs((x0-x2)*(y1-y2)))
@@ -985,7 +985,7 @@ C
       tr(10,9)=tr(10,6)
 C
 C TRANSFORMATION OF TGSE
-C JMB TRY TO SAVE TR as for condensation ?? Or is it already this matrix? CHECK if written only 
+C JMB TRY TO SAVE TR as for condensation ?? Or is it already this matrix? CHECK if written only
 C only once and used in the same way; if so, try to use it here and not calculate it. Should work
 C since data location invariant during whole process??, not really the same matrix.
 C
@@ -1042,8 +1042,8 @@ c=======================================================================
       subroutine fcorr(x1,x2,y1,y2,rm0,rl,corre)        
       
       include'divapre.h'
-      
-      external euclidist                                                
+
+      external euclidist
       external bessk1
 
       r=euclidist(x1,x2,y1,y2)                                        
@@ -1055,14 +1055,14 @@ c=======================================================================
          corre=rm0*eps*bessk1(eps)                           
       endif                                                             
       return                                                            
-      end                                                               
+      end
                                                                        
 c=======================================================================
       function euclidist(x1,x2,y1,y2)                                   
                                                                        
       include'divapre.h'
 
-      euclidist=sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2))             
+      euclidist=sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2))
       return                                                            
       end                                                               
 

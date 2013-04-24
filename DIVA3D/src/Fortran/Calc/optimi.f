@@ -142,7 +142,7 @@ C COMPUTE THE SIZE OF THE SPACE FOR ELEMENTS OF TYPE 3
             if (tcoog(kconn(iel,j),1).lt.tmix) then 
                tmix=tcoog(kconn(iel,j),1)
             endif
-            if (tcoog(kconn(iel,j),2).gt.tmay) then 
+            if (tcoog(kconn(iel,j),2).gt.tmay) then
                tmay=tcoog(kconn(iel,j),2)
             endif
             if (tcoog(kconn(iel,j),2).lt.tmiy) then 
@@ -268,7 +268,7 @@ cmr               if(kkntc.gt.ncaz) then ! otherwise crashes because kntc(i,j,kk
       endif
 C============================================================================
       return
-      end 
+      end
 
 
       subroutine repel3 (tcoog,kconn,kntc,ncamax)
@@ -334,17 +334,17 @@ C (3) COMPUTE THE MAX AND MIN OF IKNTC, JKNTC
             imij=jkntc(i)
          endif
       if (i.lt.4) then
-         goto 500 
+         goto 500
       endif
 
-C  (4) PUT THE NUMBER OF THE ELEMENT IN THE FIRST FREE PLACE CORRESPONDING 
+C  (4) PUT THE NUMBER OF THE ELEMENT IN THE FIRST FREE PLACE CORRESPONDING
 C      TO THE BIGGEST RECTANGLE THAT CONTAINS IT
 
       do 800 i=imii,imai
          do 700 j=imij,imaj
             kkntc=0
   600       kkntc=kkntc+1
-cmr               if(kkntc.gt.ncaz) then ! otherwise crashes because kntc(i,j,kkntc+1)=0 fails 
+cmr               if(kkntc.gt.ncaz) then ! otherwise crashes because kntc(i,j,kkntc+1)=0 fails
                if(kkntc.ge.ncamax) ncamax=kkntc
                if(kkntc.ge.ncaz) then
                write (6,*) 'NCAZ OF TABLE KNTC IS TO SMALL'
@@ -365,7 +365,7 @@ cmr               if(kkntc.gt.ncaz) then ! otherwise crashes because kntc(i,j,kk
       endif
 C============================================================================
       return
-      end 
+      end
 
 
 
@@ -381,14 +381,16 @@ C  LOCATE THE (X,Y) POINT IN THE F.E. STRUCTURE (for ITYP = 2)
       dimension kntc(ncax,ncay,*)
       ielem=-1
       isub=-1
-      
+
 
 C  IN WHICH AREA IS THE (X,Y) POINT ?
+c      write(6,*) 'strange',x,y
       call findca (x,y,ikn,jkn,tlcx,tlcy,tmix,tmiy,ncax,ncay)
+c            write(6,*) 'stranger',x,y
 c      write(6,*) 'bound ',ikn,jkn
 C  WHICH ELEMENTS ARE CAPABLE OF CONTAINING DATA ID ?
       kkn=0
-    
+
   100 kkn=kkn+1
       if (kntc(ikn,jkn,kkn).le.0) then
           goto 20
@@ -429,7 +431,7 @@ c      write(6,*) 'Locopti problem',x,y,ikn,jkn,tmix,tmiy,tlcx,tlcy
 c      write(6,*) 'kntc table'
 c      kkn=0
 c 9987 continue
-c      
+c
 c      write(6,*),kkn+1,kntc(ikn,jkn,kkn+1)
 c      kkn=kkn+1
 c      if (kntc(ikn,jkn,kkn).ne.0) goto 9987
@@ -818,7 +820,7 @@ C  PSEUDO-DATA USED TO COMPUTE ESTIMATION ERROR
       include'divapre.h'
       include'divainc.h'
       dimension tdata(ndata,4)
-      
+
 C JMB FOR FULL KERNEL CALCULATION
       if(ikfull.eq.1) then
       include'kernelbis.inc'
@@ -851,26 +853,26 @@ c=======================================================================
       end
 
 
-      subroutine fcorropti(x1,x2,y1,y2,corre)        
+      subroutine fcorropti(x1,x2,y1,y2,corre)
 C=============================================================================
       include'divapre.h'
       include'divainc.h'
-      
-      external euclidist                                                
+
+      external euclidist
       external bessk1
-                                                                        
-      r=euclidist(x1,x2,y1,y2)                                        
+
+      r=euclidist(x1,x2,y1,y2)
       eps=r/rl0
-                                                                        
-      if (eps.le.0.001) then                                                 
-         corre=varbak                                                    
+
+      if (eps.le.0.001) then
+         corre=varbak
       else
-         if(eps.lt.20.) then        
-            corre=tbess(nint((eps-mod(eps,0.0005D0))/0.0005D0)) 
-	 else 
+         if(eps.lt.20.) then
+            corre=tbess(nint((eps-mod(eps,0.0005D0))/0.0005D0))
+	 else
 	    corre=0
 	 endif
-      endif                                                             
+      endif
 C=============================================================================
       return                                                            
       end                                                               

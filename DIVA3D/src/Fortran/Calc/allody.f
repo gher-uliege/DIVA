@@ -8,7 +8,7 @@ C     -  ALLODY (dynamical allocation of storage area in S or L vector)
 C     ====================================
       include'divapre.h'
       INCLUDE'divainc.h'
-      CHARACTER*5 TAB
+      CHARACTER*(*) TAB
       DATA ZERO/0.0D0/
       IF(IR.EQ.0) GO TO 20
 C

@@ -8,20 +8,20 @@ C  - IEN    : maximum index of integer used during execution
 C  - IREMAX : total number of real required for execution
 C  - IENMAX : total number of integer required for execution
 C  - IPRC   : precision (real*4 or real*8)
-       
+
        COMMON /ALLO/ IPRC,IRE,IEN,IREMAX,IENMAX
 
 C#ifdef DIVADYNAMIC
-C      
-C      
-C      Declare S and L allocatable and in common 
+C
+C
+C      Declare S and L allocatable and in common
 C      COMMON /SDYN/ S
 C      COMMON /LDYN/ L
 C
 C#else
       PARAMETER(nrea=150000000)
       PARAMETER(nent=20000000)
-      
+
       COMMON /SDYN/ S(nrea)
       COMMON /LDYN/ L(nent)
 C
@@ -116,7 +116,7 @@ C  - DELTAX: Y-step of the regular f.e. mesh
 C
       COMMON /TOPO/ DELTAX,DELTAY,
      &  NNT,NNT1,NNINT,NDDLT,NELT,NTERM,NEX,NEY,IMATRX
-                   
+
 C
 C P2 PROBLEM PARAMETERS (Spline smooting without constraint: VIM)
 C  - ALPHA0 : coefficient of the function amplitude in the cost
@@ -124,13 +124,13 @@ C  - ALPHA1 : coefficient of the first derivatives in the cost
 C  - WC1    : constraint weight if ITCS=1
 C  - THETA  : non-dim constraint weight if ITCS=1
 C  - VISC   : viscosity parameter when ITCS=1
-C  - RL0    : equivalent correlation length    
+C  - RL0    : equivalent correlation length
 C  - VARBAK : variance of the background field
 C  - OBSER  : obsevation error
 C  - UMEAN  : calculated umean from constraint data
 C  - INBU   : number of non-zero data constraints
 C  - DECAYRATE: sink term decay rate
-C JMB 
+C JMB
 C  - HMMU   : harmonic mean of mu
 C
       COMMON /PRB2/ALPHA0,ALPHA1,WC1,VISC,RL0,VARBAK,OBSER,
@@ -152,7 +152,7 @@ C  - RLONMAX: MAX LONGITUDE OF TOPOLOGY (used in coordinate change)
 C  - RLATMEAN: MEAN LATITUDE OF TOPOLOGY (used in coordinate change)
 C  - RLONMEAN: MEAN LONGITUDE OF TOPOLOGY (used in coordinate change)
 C  - DXKM  : KM/DEGRE in LONGITUDE at LATMEAN
-C  - DYKM  : KM/DEGRE in LATITUDE 
+C  - DYKM  : KM/DEGRE in LATITUDE
 
       COMMON /GRID/ XORI,YORI,DX,DY,VALEX,NX,NY,
      &  RLATMIN,RLATMAX,RLATMEAN,RLONMIN,RLONMAX,RLONMEAN,
@@ -167,10 +167,10 @@ C	- TMAX : MAX X-COORD OF ELEMENTS
 C	- TMIX : MIN X-COORD OF ELEMENTS
 C	- TMAY : MAX Y-COORD OF ELEMENTS
 C	- TMIY : MIN Y-COORD OF ELEMENTS
-C	- LKNTC : 3D TABLE THAT CONTAINS THE NUMBER OF THE ELEMENTS THAT COULD 
+C	- LKNTC : 3D TABLE THAT CONTAINS THE NUMBER OF THE ELEMENTS THAT COULD
 C	          CONTAIN A POINT IN THE RELATIVE AREA
 C	- NCAT : NUMBER OF SUBDIVISIONS OF THE SPACE
-C	- NCAX : NUMBER OF SUBDIVISIONS OF THE SPACE IN THE X DIRECTION 
+C	- NCAX : NUMBER OF SUBDIVISIONS OF THE SPACE IN THE X DIRECTION
 C	         = NUMBER OF ELEMENTS OF THE LKNTC TABLE IN THE X DIRECTION
 C	- NCAY : NUMBER OF SUBDIVISIONS OF THE SPACE IN THE Y DIRECTION
 C	         = NUMBER OF ELEMENTS OF THE LKNTC TABLE IN THE Y DIRECTION
@@ -179,27 +179,28 @@ C	- TLEX : LENGTH OF SPACE IN THE X DIRECTION (CF TMAX,...)
 C	- TLEY : LENGTH OF SPACE IN THE Y DIRECTION
 C	- TLCX : LENGTH OF ONE SUBDIVISION OF SPACE IN THE X DIRECTION
 C	- TLCY : LENGTH OF ONE SUBDIVISION OF SPACE IN THE Y DIRECTION
-C	- NELKNTC : TOTAL NUMBER OF ELEMENTS OF THE LKNTC TABLE 
+C	- NELKNTC : TOTAL NUMBER OF ELEMENTS OF THE LKNTC TABLE
 C	            = NCAX*NCAY*NCAZ
-C	- NONLOC  : NUMBER OF DATAS THAT ARE NON LOCALIZED IN THE MESH AND 
+C	- NONLOC  : NUMBER OF DATAS THAT ARE NON LOCALIZED IN THE MESH AND
 C	            ARE IGNORED
 C  (2) SORTING THE DATA ACCORDING TO THE SEQUENCE OF ELEMENTS (datapr):
 C	- LKELOS1 : ARRAY THAT IS USED AND SORTED BY THE QUICK SORT ROUTINE
 C  (3) ESTIMATION OF ERROR (esterr):
-C	- TBESS : TABULATION OF THE BESSEL FUNCTION 
+C	- TBESS : TABULATION OF THE BESSEL FUNCTION
       dimension tbess(40000)
+      integer opti
       COMMON /CROC/ TMAX,TMAY,TMIX,TMIY,NCAT,NCAX,NCAY,
      &  NCAZ,TLEX,TLEY,TLCX,TLCY,NELKNTC,LKNTC,OPTI,
      &  NONLOC,LKELOS1,TBESS,RPI
 
 C      integer*4 ikern,iskip,ilinel,itotll,JMRELERR
       COMMON/DIVAKERN/IKERN,ISKIP,ilinel,itotll,C0C0C0,JMRELERR,ipipe
-      
+
       integer*4 IPWSP,NSWSP
       COMMON/DIVAWSP/IPWSP,NSWSP
 C     COMMON/DIVAMEM/NREADIVA,NINTDIVA
 CJMB2012 for sources
       COMMON/QSOURCES/NSOURCES,NSOURCESLOC,ltdataQ,lkelosQ,lkindtQ,
      & lkdataQ,lkelos1Q
-      
-     
+
+
