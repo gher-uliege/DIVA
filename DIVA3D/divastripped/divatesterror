@@ -89,7 +89,7 @@ divamesh
 
 filesuffix=( hybrid realcov poorman realcov_bnd cpme exerr exerr_bnd )
 let iii=0
-for ispec in {7,-7,17,-17,107,-107,117}
+for ispec in {7,-7,17,-17,107,-107,-117}
 do
 
 sed "6s/.*/${ispec}/" ${paramfile} > ${paramfile2}
@@ -106,7 +106,7 @@ echo 'time for ' ${filesuffix[$iii]} ' error computation:' ${timecalc} ' s' >> $
 echo ' '
 echo 'Copying output file'
 cp -v ./output/ghertonetcdf/results.nc './output/ghertonetcdf/error_'${filesuffix[$iii]}$$'.nc'
-
+cp -v ./output/errorfieldgher.anl './output/error_'${filesuffix[$iii]}$$'.anl'
 
 let iii=${iii}+1
 done
