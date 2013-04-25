@@ -11,6 +11,7 @@ C   Applications in Metal Forming and Resistance Welding. Springer.
 C
 C      include'divapre.h'
 C      REAL*8 VKGS(*),VKGD(*),VFG(*)
+      implicit none
       REAL*8 skmatx(*),VKGD(*),VFG(*)
       Integer*4 KLD(*)
 #ifdef DIVAPARALLEL
@@ -18,15 +19,19 @@ C      REAL*8 VKGS(*),VKGD(*),VFG(*)
 C      REAL*8, DIMENSION(:) , SAVE,   ALLOCATABLE :: skmatx
       REAL*8, DIMENSION(:) , SAVE,   ALLOCATABLE :: bidon
       integer, DIMENSION(:) , SAVE,   ALLOCATABLE :: maxa
-      integer i,id,ie,ie0,ie0old,ihl,ih2,ihesitate,
+      integer i,id,ie,ie0,ie0old,ih1,ih2,ihesitate,
      &      iloop,iquit,ir,is,ithread,iwait,j,jd,
      &       jh,jmax,jr,k,k0,k00,kmax,nthreads,ntotv
+      integer nthreadsasked
       common/forsolver/   nthreadsasked
+      integer neq,ifac,isol,nsk
       integer omp_get_max_threads
       external omp_get_max_threads
+      real*8 d
+      integer kk,nbest
 
       integer omp_get_thread_num
-      external OMP_GET_THREAD_NUM  
+      external OMP_GET_THREAD_NUM
       integer omp_get_num_procs
       external omp_get_num_procs
       ntotv=neq
@@ -94,6 +99,7 @@ C guess on number of threads to be usefull
       nthreads=omp_get_num_procs()
 C      write(6,*) 'NTHREADS',nthreads
       nbest=4*neq/160000+2
+C      nbest=1
       if(nthreadsasked.gt.0) nbest=nthreadsasked
       if(nbest.gt.nthreads) nbest=nthreads
       call omp_set_num_threads(nbest)
@@ -107,7 +113,7 @@ C$OMP PARALLEL DEFAULT (NONE)
 C$OMP& PRIVATE (d,i,id,ie,ie0,ie0old,ih1,ih2,ihesitate,
 C$OMP& iloop,iquit,ir,is,ithread,iwait,j,jd,jh,
 C$OMP& jr,k,k0,k00)
-C$OMP& SHARED (VFG,jmax,kmax,maxa,nthreads,ntotv,ifac,
+C$OMP& SHARED (VFG,jmax,kmax,maxa,nthreads,ntotv,
 C$OMP& skmatx)
 ! Factorize skmatx and reduce fmatx
 C       write(6,*) 'Next omp call'
@@ -227,13 +233,13 @@ C      write(6,*) 'Reduction'
       nthreads=omp_get_max_threads()
 C      write(6,*) 'NTHREADS',nthreads
 ! Initializations
-      jmax=l
-      kmax=l
+      jmax=1
+      kmax=1
 C$OMP PARALLEL DEFAULT (NONE)
 C$OMP& PRIVATE (d,i,id,ie,ie0,ie0old,ih1,ih2,ihesitate,
 C$OMP& iloop,iquit,ir,is,ithread,iwait,j,jd,jh,
 C$OMP& jr,k,k0,k00)
-C$OMP& SHARED (VFG,jmax,kmax,maxa,nthreads,ntotv,ifac,
+C$OMP& SHARED (VFG,jmax,kmax,maxa,nthreads,ntotv,
 C$OMP& skmatx)
 ! Factorize skmatx and reduce fmatx
        ithread=omp_get_thread_num()
@@ -267,7 +273,7 @@ C$OMP& skmatx)
              endif
              if (jh.eq.2) then
 ! Reduce diagonal term
-               iwait=1
+C               iwait=1
 
 !$OMP flush (kmax)
 
