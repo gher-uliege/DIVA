@@ -1,6 +1,6 @@
 #!/bin/bash
 
-
+finesse=1
 imeth=0
 if [ "$1" == "full" ] 
 then
@@ -8,11 +8,12 @@ echo ===============
 echo  A la ispec=-11
 echo ===============
 imeth=1
+finesse=$(echo $finesse | awk '{print $1*2}')
 fi
 
 
 # optional parameter
-finesse=1
+
 
 export LC_ALL=C
 
@@ -170,7 +171,9 @@ fi
 #wc -l ./output/expectederroratdatapoint.anl
 #wc -l ./input/data.dat
 #wc -l ./output/Bii.dat
-
+echo ======
+cat ./output/expectederroratdatapoint.anl
+echo ======
 if [ "$imeth" == "0" ]
 then
 echo Working with error reduction instead of error
@@ -178,6 +181,9 @@ echo Working with error reduction instead of error
 paste ./output/expectederroratdatapoint.anl ./output/Bii.dat ./input/data.dat  | awk -v valex=$valex -v snr=$snr -v varbak=$varbak '{if ($4 != valex){print $8,$9,1-(1/snr*$4/$11/$7),1}}' > ./input/data.dat.exerr
 else
 echo Working with error
+
+cp  ./output/expectederroratdatapoint.anl bidonexerr.dat
+cp  ./output/Bii.dat bidonexerrBii.dat
 #paste ./output/expectederroratdatapoint.anl ./input/data.dat ./output/Bii.dat | awk -v valex=$valex -v snr=$snr -v varbak=$varbak '{if ($4 != valex){print $5,$6,sqrt(varbak/snr*$4/$8/$11),1}}' > ./input/data.dat.exerr
 paste ./output/expectederroratdatapoint.anl  ./output/Bii.dat ./input/data.dat | awk -v valex=$valex -v snr=$snr -v varbak=$varbak '{if ($4 != valex){print $8,$9,sqrt(varbak/snr*$4/$11/$7),1}}' > ./input/data.dat.exerr
 fi
@@ -232,7 +238,7 @@ echo $ny >> ./input/param.par
 echo $linecomment11 >> ./input/param.par
 echo $valex >> ./input/param.par
 echo $linecomment12 >> ./input/param.par
-echo 50 >> ./input/param.par
+echo 500 >> ./input/param.par
 echo $linecomment13 >> ./input/param.par
 echo $varbak >> ./input/param.par
 
