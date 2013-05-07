@@ -13,7 +13,8 @@ C      include'divapre.h'
 C      REAL*8 VKGS(*),VKGD(*),VFG(*)
       implicit none
       REAL*8 skmatx(*),VKGD(*),VFG(*)
-      Integer*4 KLD(*)
+      Integer*4 KLD(*)      
+      integer neq,ifac,isol,nsk
 #ifdef DIVAPARALLEL
       integer, save:: isfirsttime=1
 C      REAL*8, DIMENSION(:) , SAVE,   ALLOCATABLE :: skmatx
@@ -24,10 +25,10 @@ C      REAL*8, DIMENSION(:) , SAVE,   ALLOCATABLE :: skmatx
      &       jh,jmax,jr,k,k0,k00,kmax,nthreads,ntotv
       integer nthreadsasked
       common/forsolver/   nthreadsasked
-      integer neq,ifac,isol,nsk
+      
       integer omp_get_max_threads
       external omp_get_max_threads
-      real*8 d
+      real*8 d    ,total
       integer kk,nbest
 
       integer omp_get_thread_num
@@ -76,7 +77,11 @@ c        total2=total2+abs(VKGS(ii))
 c        total3=total3+abs(skmatx(ii))
 c      enddo
 c      write(6,*) 'Test',total,total2,total3
-
+      total=0
+      do i=1,maxa(neq)
+        if(skmatx(i).eq.0) total=total+1
+      enddo
+      write(6,*) 'Zeros',total,maxa(neq),total/maxa(neq)*100
 
       isfirsttime=0
 c      WRITE(6,*) 'last element',maxa(neq)

@@ -36,7 +36,14 @@ C New code for symmetric case here
       endif
 C OK for non symmetric case use old code
 #endif
-
+#ifdef DIVAITERATIVE
+      if(NSYM.NE.1) then
+C New code for symmetric case here
+      call itersol(VKGS,VKGD,VFG,KLD,NEQ,IFAC,ISOL)
+      return
+      endif
+C OK for non symmetric case use old code
+#endif
 
 
 
