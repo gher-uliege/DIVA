@@ -48,8 +48,18 @@ else
 mkdir -v ./workexerr
 fi
 
-# For the moment full copy  could be  more selective 
-cp -R ./output ./workexerr
+# For the moment full copy  could be  more selective
+# cp -R ./output ./workexerr
+
+mv output workexerr
+mkdir output
+mkdir output/ghertonetcdf
+mkdir output/meshvisu
+ls -l ./workexerr
+cp  ./workexerr/output/meshvisu/fort.10 ./output/meshvisu/fort.10
+cp  ./workexerr/output/meshvisu/fort.22 ./output/meshvisu/fort.22
+cp  ./workexerr/output/meshvisu/fort.23 ./output/meshvisu/fort.23
+
 
 cp ./input/param.par ./input/param.par.nocpme
 
