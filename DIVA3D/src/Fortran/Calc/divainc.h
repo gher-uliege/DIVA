@@ -202,5 +202,6 @@ C     COMMON/DIVAMEM/NREADIVA,NINTDIVA
 CJMB2012 for sources
       COMMON/QSOURCES/NSOURCES,NSOURCESLOC,ltdataQ,lkelosQ,lkindtQ,
      & lkdataQ,lkelos1Q
+      COMMON/FORSOLVERS/isolver,isolverw,solverfill,solvertol
 
 

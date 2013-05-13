@@ -1,10 +1,11 @@
 
 
 
-       subroutine itersol(skmatx,VKGD,VFG,KLD,NEQ,IFAC,ISOL)
+       subroutine itersol(skmatx,VKGD,VFG,KLD,NEQ,IFACT,ISOLT)
 C
 C
 C      include'divapre.h'
+
 C      REAL*8 VKGS(*),VKGD(*),VFG(*)
       implicit none
       REAL*8 skmatx(*),VKGD(*),VFG(*)
@@ -24,7 +25,7 @@ C      REAL*8, DIMENSION(:) , SAVE,   ALLOCATABLE :: skmatx
       integer, DIMENSION(:), SAVE, ALLOCATABLE :: JR,JWU,JWL,JU,IWORK
       integer, DIMENSION(:), SAVE, ALLOCATABLE :: JLU
 
-      integer ntotal ,ierr,iwk
+      integer ntotal ,ierr,iwk ,IFACT,ISOLT
       real*8 residue,erress
 
       integer i,j,k,k0,k00,kmax,nthreads,ntotv
@@ -33,7 +34,7 @@ C      REAL*8, DIMENSION(:) , SAVE,   ALLOCATABLE :: skmatx
       integer nsk
       integer omp_get_max_threads
       external omp_get_max_threads
-      real*8 d    ,total,abstol,reltol,tol,eps
+      real*8, SAVE:: d    ,total,abstol,reltol,tol,eps
       integer kk,nbest,nitermax
 
       integer omp_get_thread_num
@@ -41,11 +42,40 @@ C      REAL*8, DIMENSION(:) , SAVE,   ALLOCATABLE :: skmatx
       integer omp_get_num_procs
       external omp_get_num_procs
       integer imod ,lfil ,im
+      integer isolver,isolverw
+      integer,SAVE :: ilutstart,ilutmore
+      real*8  solverfill,solvertol
+      COMMON/FORSOLVERS/isolver,isolverw,solverfill,solvertol
+
+      IFAC=IFACT
+      ISOL=ISOLT
 
       im=50
       ntotv=neq
       write(6,*) 'Into new iterative solver'
+C      write(6,*) '??iter',isolver,isolverw,solverfill,solvertol
       if (isfirsttime.eq.1) then
+
+      tol=0.00001
+      if(solverfill.gt.0) then
+        write(6,*) '== Filling tolerance set ===',solverfill
+        tol=solverfill
+      endif
+
+      eps=0.000001
+      if(solvertol.gt.0) then
+        write(6,*) '== Iteration tolerance set ===',solvertol
+        eps=solvertol
+      endif
+
+      ilutstart=15+nint(0.1*sqrt(neq*1.0))
+      ilutmore=0
+      if(isolverw.gt.0) then
+        write(6,*) '== Filling width set ===',isolverw
+        ilutstart=isolverw
+      endif
+
+
       nsk=neq+kld(neq+1)-1
 C      write(6,*) 'total number of elements',nsk,neq
 C      ALLOCATE(skmatx(nsk))
@@ -96,7 +126,7 @@ C From symmetric skyline to symmetric compressed row
 
       allocate(A(2*ntotal-neq+1))
       allocate(JA(2*ntotal-neq+1))
-      
+
       allocate(IA(neq+1))
       allocate(indu(neq+1))
 
@@ -112,8 +142,9 @@ C      allocate(iwork(4*ntotal-2*neq+3))
 C      call csort ( neq, a, ja, ia, iwork, .true. )
 C      deallocate(IWORK)
 
-      lfil=15+nint(0.1*sqrt(neq*1.0))
-C      lfil=30
+
+      lfil=ilutstart+ilutmore
+
       iwk=2*ntotal-neq+(2*lfil)*neq+1
       allocate(ALU(iwk))
       allocate(JLU(iwk))
@@ -134,7 +165,7 @@ C      lfil=30
 C Finished creation of matrices
 
 C If factorisation: now make preconditioning with large ilut
-      tol=0.00001
+
 
 
       if(IFAC.EQ.1) then
@@ -147,7 +178,9 @@ C2345
       if(ISOL.EQ.1) then
 C IF solution, now iterate with PGMRES
 C abstol=0.0001*sqrt(dot_product(VFG(1:NEQ),VFG(1:NEQ)))
-      eps=0.000001
+
+ 543  continue
+
       nitermax=nint(sqrt(neq*1.0))+1
       do i=1,NEQ
 C      write(6,*) skmatx(maxa(i))
@@ -162,6 +195,34 @@ C      sol(i)=0
 
        write(6,*) 'pmgres',ierr,
      & residue/erress,erress
+
+      if (ierr.eq.1) then
+        write(6,*) '=== WARNING==='
+        write(6,*) 'Solver did not converge'
+        write(6,*) 'Will try to recover using better preconditionning'
+
+        ilutmore=ilutmore+5
+        lfil=ilutstart+ilutmore
+        tol=tol/5
+        eps=eps*2
+        write(6,*) 'Parameters used',lfil,tol,eps
+        write(6,*) 'If no other warning, try those parameters'
+        write(6,*) '===END WARNING==='
+        deallocate(ALU)
+        deallocate(JLU)
+        iwk=2*ntotal-neq+(2*lfil)*neq+1
+        allocate(ALU(iwk))
+        allocate(JLU(iwk))
+      call ilut(neq,a,ja,ia,lfil,tol,alu,jlu,ju,iwk,wu,wl,jr,
+     &    jwl, jwu, ierr )
+        write(6,*) 'Ilut',ierr
+        goto 543
+
+
+      endif
+
+
+
        do i=1,NEQ
        VFG(i)=sol(i)
        enddo

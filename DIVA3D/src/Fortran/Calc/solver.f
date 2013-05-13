@@ -26,7 +26,25 @@ C
 C  INPUT OF GENERAL DATA
 C
       write(6,*) 'into solver',ipr
-      read(10,*) istf 
+CJMB2013
+C istf has been depreciated and is not used anymore as parameter
+C if stiffness is to be adapted via file fort.60 with pseudo-stiffness
+C you need to retrieve the parameter istf
+
+      istf=0
+
+C      read(10,*) istf
+      
+C instead read solver infos
+       read(10,*) isolver
+C 
+       if (isolver.eq.0) write(6,*) '=== Skyline direct   solver ==='
+       if (isolver.eq.1) write(6,*) '=== Skyline parallel solver ==='
+       if (isolver.eq.2) write(6,*) '=== Sparse iterative solver ==='
+       if (isolver.eq.2) then
+       read(10,*) isolverw,solverfill,solvertol
+C        write(6,*) '??read',isolver,isolverw,solverfill,solvertol
+       endif
       if (istf.ne.0) then
       write(6,*) 'Stiffness parameter ISTF',istf
       endif
@@ -113,11 +131,11 @@ C
       three=3.0D0
       five=5.0D0
 C
-C  READ ELEMENTARY STIFNESSES WHEN ISTF = 1 (PSEUDO-MODIF. OF TOPOLOGY) 
+C  READ ELEMENTARY STIFNESSES WHEN ISTF = 1 (PSEUDO-MODIF. OF TOPOLOGY)
 C  DEFAULT VALUE = 1
 C
       do 2 iel=1,nelt
-         tstif(iel)=one        
+         tstif(iel)=one
  2    continue
       if(istf.eq.1) then
          do 5 iel=1,nelt

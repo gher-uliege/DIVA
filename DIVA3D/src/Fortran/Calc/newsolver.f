@@ -26,24 +26,33 @@ C=======================================================================
       include'divapre.h'
       DIMENSION VKGS(*),VKGI(*),VKGD(*),VFG(*),KLD(*)
       DATA ZERO/0.0D0/
+      integer isolver,isolverw
+      real*8  solverfill,solvertol
+      COMMON/FORSOLVERS/isolver,isolverw,solverfill,solvertol
+
 C.......................................................................
 
 #ifdef DIVAPARALLEL
       if(NSYM.NE.1) then
 C New code for symmetric case here
+      if(isolver.eq.1) then
       call newsol(VKGS,VKGD,VFG,KLD,NEQ,IFAC,ISOL)
       return
+      endif
       endif
 C OK for non symmetric case use old code
 #endif
 #ifdef DIVAITERATIVE
       if(NSYM.NE.1) then
 C New code for symmetric case here
+      if(isolver.eq.2) then
       call itersol(VKGS,VKGD,VFG,KLD,NEQ,IFAC,ISOL)
       return
       endif
+      endif
 C OK for non symmetric case use old code
 #endif
+
 
 
 
