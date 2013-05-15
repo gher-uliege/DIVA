@@ -1,43 +1,62 @@
 #!/bin/bash
 export LC_ALL=C
 
+
+
+# ok for the moment R is characterised here but should be interfaced elsewehere
+LCR=0.01
+SNRR=0.7
+
+# Welcome into the code meant to mimic a non-diagonal R
+echo ==================================================
+echo   Trying to use non-diagonal R
+echo ==================================================
+
+
+
+# Get original parameters and save parameter file
 LC=$(head -2 ./input/param.par | tail -1 | awk '{print $1}')
 SNR=$(head -24 ./input/param.par | tail -1 | awk '{print $1}')
-
 echo SNR and LC originaly is $SNR  $LC
 cp ./input/param.par ./input/param.par.oriR
 
-# No need to overload calculations during iterations
+# No need to overload calculations during iterations so modify parameter file
 dvchpar NX 1
 dvchpar NY 1
 dvchpar ispec 0
 
 
 
-LCR=0.08
-SNRR=0.7
-
-
+# Mesh with a length that allows to marginally resolve the data correlation length
+# Normally a factor 10 to 20 is allowed
+# Add a test on $LCR with respect to $LC here and call dvchpar
+LCM=$(echo $LC $LCR | awk '{if (10*$2 < $1) {print 10*$2} else {print $1} }')
+echo Mesh to be generated using length scale $LCM
+dvchpar LC $LCM
+# Now make mesh and put back normal L
 divamesh
+dvchpar LC $LC
 
-#
+# Make sure original data are stored in a file and complemented with fourth column if necessary
+# Any column after column 4 is not used here
 cat ./input/data.dat | awk '{if ( NF<4 ) {$4=1}; print $1,$2,$3,$4} ' > ./input/data.dat.oriR
-
 cp ./input/data.dat.oriR ./input/data.dat
 
 # try without changing grid
 
-# HK1
+
+# First analysis to get HK1
 divacalc
 
-# I -HK1
+# I-HK1
 paste ./input/data.dat.oriR ./output/fieldatdatapoint.anl | awk '{print $1,$2,$3-$7,$4}' > ./input/data.dat
 
+# Save this vector called x in manuscript
 cp ./input/data.dat ./input/data.dat.x
 
 
 
-
+# Now iterate to invert I-HK1 HK2
 i=0
 while [ $i -lt 10 ]
 do
@@ -50,21 +69,29 @@ do
  dvchpar LC $LC
  dvchpar SNR $SNR
  divacalc
+# now fielatdatapoint contains HK1HK2 y so use it to update y stored in data.dat
 paste ./input/data.dat.x ./output/fieldatdatapoint.anl | awk '{print $1,$2,$3+$7,$4}' > ./input/data.dat
 echo Converging ?
 head -1 ./input/data.dat
 
 done
 
-# now data.dat contains y
+# now data.dat contains y  after ierations
 #
+# Apply HK2 to this vector
 dvchpar LC $LCR
 dvchpar SNR $SNRR
 divacalc
-# Now finally prepare data to be analysed
+
+
+# Now finally prepare data to be analysed : original data minus the last output
 paste ./input/data.dat.oriR ./output/fieldatdatapoint.anl | awk '{print $1,$2,$3-$7,$4}' > ./input/data.dat
 
 # Final calculation with original parameters
 mv ./input/param.par.oriR ./input/param.par
 
 divacalc
+
+echo ======================================
+echo    Finished divaR
+echo ======================================
