@@ -1,0 +1,112 @@
+#!/bin/bash
+export LC_ALL=C
+
+if [ "$#" != "2" ]
+then
+echo '=========================================='
+echo  Usage:
+echo '    ' dvchpar parameter value
+echo  Example: change signal/noise ratio to 0.1
+echo '    ' dvchpar SNR 0.1
+echo '=========================================='
+
+exit
+fi
+
+mv ./input/param.par ./input/param.par.dvchpar
+
+
+if [ "$1" == "LC" ]||[ "$1" == "lc" ]||[ "$1" == "length" ]
+then
+ echo Changing correlation length to $2
+ il=2
+fi
+
+if [ "$1" == "icoordchange" ]||[ "$1" == "icoord" ]||[ "$1" == "ICOORD" ]
+then
+ echo Changing correlation length to $2
+ il=4
+fi
+
+if [ "$1" == "ispec" ]||[ "$1" == "ISPEC" ]
+then
+ echo Changing error ispec to $2
+ il=6
+fi
+
+if [ "$1" == "ireg" ]||[ "$1" == "IREG" ]
+then
+ echo Changing ireg to $2
+ il=8
+fi
+
+if [ "$1" == "xori" ]||[ "$1" == "XORI" ]||[ "$1" == "x1" ]
+then
+ echo Changing grid x origin to $2
+ il=10
+fi
+
+if [ "$1" == "yori" ]||[ "$1" == "YORI" ]||[ "$1" == "y1" ]
+then
+ echo Changing grid y origin to $2
+ il=12
+fi
+
+if [ "$1" == "dx" ]||[ "$1" == "DX" ]
+then
+ echo Changing grid spacing x to $2
+ il=14
+fi
+
+if [ "$1" == "dy" ]||[ "$1" == "DY" ]
+then
+ echo Changing grid spacing y to $2
+ il=16
+fi
+
+
+if [ "$1" == "nx" ]||[ "$1" == "NX" ]
+then
+ echo Changing number of x grid points $2
+ il=18
+fi
+
+if [ "$1" == "ny" ]||[ "$1" == "NY" ]
+then
+ echo Changing number of y grid points $2
+ il=20
+fi
+
+
+if [ "$1" == "valex" ]||[ "$1" == "VALEX" ]
+then
+ echo Changing exclussion value to $2
+ il=22
+fi
+
+
+if [ "$1" == "SNR" ]
+then
+ echo Changing signal to noise ratio to $2
+ il=24
+fi
+
+
+if [ "$1" == "varbak" ]||[ "$1" == "VARBAK" ]||[ "$1" == "VARBACK" ]||[ "$1" == "varback" ]
+then
+ echo Changing variance of background to $2
+ il=26
+fi
+
+
+cat ./input/param.par.dvchpar | awk -v il=$il -v val=$2  '{ { if (FNR == il) { $1=val}  }; print $0}'  > ./input/param.par
+
+diff ./input/param.par.dvchpar ./input/param.par
+
+if [ -f ./input/param.par ]
+then
+ rm ./input/param.par.dvchpar
+else
+ echo Problem encountered
+ mv ./input/param.par.dvchpar ./input/param.par
+fi
