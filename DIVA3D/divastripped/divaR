@@ -1,0 +1,50 @@
+#!/bin/bash
+export LC_ALL=C
+
+LC=0.4
+LCR=0.04
+
+
+dvchpar LC $LC
+divamesh
+
+#
+cat ./input/data.dat | awk '{if ( NF<4 ) {$4=1}; print $1,$2,$3,$4} ' > ./input/data.dat.oriR
+
+cp ./input/data.dat.oriR ./input/data.dat
+
+# try without changing grid
+
+# HK1
+divacalc
+
+# I -HK1
+paste ./input/data.dat.oriR ./output/fieldatdatapoint.anl | awk '{print $1,$2,$3-$7,$4}' > ./input/data.dat
+
+cp ./input/data.dat ./input/data.dat.x
+
+
+
+
+i=0
+while [ $i -lt 10 ]
+do
+ let i=$i+1
+ echo $i
+ dvchpar LC $LCR
+ divacalc
+ dvouttoin
+ dvchpar LC $LC
+ divacalc
+paste ./input/data.dat.x ./output/fieldatdatapoint.anl | awk '{print $1,$2,$3+$7,$4}' > ./input/data.dat
+
+done
+
+# now data.dat contains y
+#
+dvchpar LC $LCR
+divacalc
+# Now finally prepare data to be analysed
+paste ./input/data.dat.oriR ./output/fieldatdatapoint.anl | awk '{print $1,$2,$3-$7,$4}' > ./input/data.dat
+dvchpar LC $LC
+divacalc

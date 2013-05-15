@@ -1,0 +1,4 @@
+#!/bin/bash
+export LC_ALL=C
+# assumes data.dat has four columns
+paste ./output/fieldatdatapoint.anl ./input/data.dat | awk '{print $4,$5,$3,$7}' > ./input/data.dat
