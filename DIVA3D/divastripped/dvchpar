@@ -16,7 +16,7 @@ fi
 mv ./input/param.par ./input/param.par.dvchpar
 
 
-if [ "$1" == "LC" ]||[ "$1" == "lc" ]||[ "$1" == "length" ]
+if [ "$1" == "LC" ]||[ "$1" == "lc" ]||[ "$1" == "length" ]||[ "$1" == "CL" ]||[ "$1" == "cl" ]
 then
  echo Changing correlation length to $2
  il=2

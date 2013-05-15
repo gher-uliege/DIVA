@@ -4,8 +4,8 @@ export LC_ALL=C
 
 
 # ok for the moment R is characterised here but should be interfaced elsewehere
-LCR=0.01
-SNRR=0.7
+LCR=0.05
+SNRR=0.1
 
 # Welcome into the code meant to mimic a non-diagonal R
 echo ==================================================
@@ -57,8 +57,18 @@ cp ./input/data.dat ./input/data.dat.x
 
 
 # Now iterate to invert I-HK1 HK2
+
+# Add code to calculate number if iterations based on the two SNR rations and the two LC
+# xi sim SNR/(1+SNR)*SNRR/(1+SNRR)*LCR/LC
+itermax=10
+niter=$(echo $SNR $SNRR $LC $LCR $itermax | awk '{ val=-3*log(10)/log($1/(1+$1)*$2/(1+$2)*$4/$3); if (val<$5) {print int(val)+1} else {print $5}  }')
+echo ============================
+echo Iterations to be done $niter
+echo ============================
+itermax=$niter
+
 i=0
-while [ $i -lt 10 ]
+while [ $i -lt $itermax ]
 do
  let i=$i+1
  echo $i
