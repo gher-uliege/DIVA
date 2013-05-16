@@ -21,7 +21,7 @@ echo -----------------------
 echo ' ' 
 
 cd Calc
-$compiler $flags $flagscalc *.f -o diva.a
+$compiler $flags $flagscalc *.f *.f90 -o diva.a
 n1=`ls -1p *.a | grep -vc "/$"`
 n1max=1
 
@@ -140,11 +140,11 @@ echo $jj
 $compiler $flags $jj -o `basename $jj .f`.a
 done
 
-n5=`ls -1p *.a | grep -vc "/$"` 
-n5max=`ls -1p *.f | grep -vc "/$"` 
+n5=`ls -1p *.a | grep -vc "/$"`
+n5max=`ls -1p *.f | grep -vc "/$"`
 
-echo You have compiled $n5 programs 
-echo out of $n5max 
+echo You have compiled $n5 programs
+echo out of $n5max
 
 mv *.a ../../../bin/
 
@@ -162,12 +162,18 @@ do
 echo $jj
 $compiler $flags $jj -o `basename $jj .f`.a
 done
+for jj in `ls *.f90`
+do
+echo $jj
+$compiler $flags $jj -o `basename $jj .f90`.a
+done
 
-n6=`ls -1p *.a | grep -vc "/$"` 
-n6max=`ls -1p *.f | grep -vc "/$"` 
 
-echo You have compiled $n6 programs 
-echo out of $n6max 
+n6=`ls -1p *.a | grep -vc "/$"`
+n6max=`ls -1p *.f *.f90 | grep -vc "/$"`
+
+echo You have compiled $n6 programs
+echo out of $n6max
 
 mv *.a ../../../bin/
 

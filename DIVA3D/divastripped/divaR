@@ -4,8 +4,8 @@ export LC_ALL=C
 
 
 # ok for the moment R is characterised here but should be interfaced elsewehere
-LCR=0.05
-SNRR=0.1
+LCR=0.01
+SNRR=1
 
 # Welcome into the code meant to mimic a non-diagonal R
 echo ==================================================
@@ -19,6 +19,47 @@ LC=$(head -2 ./input/param.par | tail -1 | awk '{print $1}')
 SNR=$(head -24 ./input/param.par | tail -1 | awk '{print $1}')
 echo SNR and LC originaly is $SNR  $LC
 cp ./input/param.par ./input/param.par.oriR
+
+
+
+# Make sure original data are stored in a file and complemented with fourth column if necessary
+# Any column after column 4 is not used here
+cat ./input/data.dat | awk '{if ( NF<4 ) {$4=1}; print $1,$2,$3,$4} ' > ./input/data.dat.oriR
+cp ./input/data.dat.oriR ./input/data.dat
+
+
+# Apply inflation approach to get error fields
+# Get coordinate change parameter
+ICOORD=$(head -4 ./input/param.par | tail -1 | awk '{print $1}')
+cat ./input/data.dat | awk '{print $1,$2,1}' > ./input/data.dat.x
+dvrtimesx $LCR $ICOORD
+
+# add result on diagonal
+head ./input/data.dat
+echo inflating
+paste ./output/data.dat.Rx ./input/data.dat.oriR | awk -v SN=$SNRR '{print $2,$3,$4, 1/(1/$5+$1*SN/(1+SN))  }' > ./input/data.dat
+head ./output/data.dat.Rx
+echo gives
+head ./input/data.dat
+
+
+
+# if only inflation was demanded exit now
+cp ./input/data.dat.oriR ./input/data.dat
+exit
+
+
+# If full calculation is demandedn save error fields for further use and proceed
+
+
+
+
+
+
+
+
+
+
 
 # No need to overload calculations during iterations so modify parameter file
 dvchpar NX 1
@@ -37,10 +78,6 @@ dvchpar LC $LCM
 divamesh
 dvchpar LC $LC
 
-# Make sure original data are stored in a file and complemented with fourth column if necessary
-# Any column after column 4 is not used here
-cat ./input/data.dat | awk '{if ( NF<4 ) {$4=1}; print $1,$2,$3,$4} ' > ./input/data.dat.oriR
-cp ./input/data.dat.oriR ./input/data.dat
 
 # try without changing grid
 
@@ -66,6 +103,9 @@ echo ============================
 echo Iterations to be done $niter
 echo ============================
 itermax=$niter
+
+echo Converging ?
+head -1 ./input/data.dat
 
 i=0
 while [ $i -lt $itermax ]
@@ -101,6 +141,8 @@ paste ./input/data.dat.oriR ./output/fieldatdatapoint.anl | awk '{print $1,$2,$3
 mv ./input/param.par.oriR ./input/param.par
 
 divacalc
+
+# For error calculattion probably better to use inflation approach and the apply with desired ispec
 
 echo ======================================
 echo    Finished divaR

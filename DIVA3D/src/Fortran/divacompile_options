@@ -3,7 +3,7 @@
 # Name of the fortran compiler
 #-----------------------------
 
-compiler=ifort			
+compiler=ifort			#--charles
 compiler=gfortran
 
 
@@ -15,15 +15,16 @@ DIVA_PARALLEL=1
 # Compilation flags
 #-----------------
 
-flags='-O3 -pipe -cpp ' #  -DDIVABINARYFILESMESH '	
+flags='-O3  -cpp   -DDIVAITERATIVE ' #  -DDIVABINARYFILESMESH '			#--charles
 #flags='-O0' 			# no optimization
 
 
-flagscalc=' -cpp '
+flagscalc=' -O3 -cpp   -DDIVAITERATIVE -Wall -fbounds-check'
+# -DALLODYZERO if ZEROS in ALLODY to be forced, time consuming...
 if [ "$DIVA_PARALLEL" = 1 ]
 then
 echo Going to use parallel version
-flagscalc='-cpp -fopenmp -DDIVAPARALLEL ' #-DDIVABINARYFILESMESH'
+flagscalc='-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL ' # -DDIVABINARYFILESMESH ' #'
 echo $flagscalc
 
 fi
@@ -45,12 +46,12 @@ else
    then
     nclib=`nf-config --flibs`
 # or by hand
-#    nclib=/usr/lib/libnetcdff.dll.a
+    nclib=/usr/lib/libnetcdff.dll.a
     echo $nclib
     compiler=`nf-config --fc`
    else
 # put netcdlibrary by hand
-   nclib=/usr/lib/libnetcdff.dll.a	
+   nclib=/usr/lib/libnetcdff.dll.a	#--charles
    fi
 fi
 # Use of Plplot (creation of scientific plots)
