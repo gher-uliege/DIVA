@@ -13439,7 +13439,7 @@ subroutine pgmres ( n, im, rhs, sol, vv, eps, maxits, iout, &
   real ( kind = 8 ) s(kmax)
   real ( kind = 8 ) sol(n)
   real ( kind = 8 ) t
-  real ( kind = 8 ) vv(n,*)
+  real ( kind = 8 ) vv(n,*),roax
 !
   real*8 residue
 !
@@ -13453,12 +13453,14 @@ subroutine pgmres ( n, im, rhs, sol, vv, eps, maxits, iout, &
 !  Compute initial residual vector.
 !
   call ope ( n, sol, vv, aa, ja, ia )
+  roax = sqrt ( ddot ( n, vv, 1, vv, 1 ) )
 
   vv(1:n,1) = rhs(1:n) - vv(1:n,1)
 
   do
 
     ro = sqrt ( ddot ( n, vv, 1, vv, 1 ) )
+!    write(6,*) its,ro,roax
     residue=ro
 
 
@@ -13475,7 +13477,7 @@ subroutine pgmres ( n, im, rhs, sol, vv, eps, maxits, iout, &
     vv(1:n,1) = vv(1:n,1) * t
 
     if ( its == 0 ) then
-      eps1 = eps * ro
+      eps1 = eps * roax
     end if
 !
 !  Initialize first term of RHS of Hessenberg system.
