@@ -37,16 +37,25 @@ dvrtimesx $LCR $ICOORD
 # add result on diagonal
 head ./input/data.dat
 echo inflating
-paste ./output/data.dat.Rx ./input/data.dat.oriR | awk -v SN=$SNRR '{print $2,$3,$4, 1/(1/$5+$1*SN/(1+SN))  }' > ./input/data.dat
+paste ./output/data.dat.Rx ./input/data.dat.oriR | awk -v SN=$SNRR '{print $2,$3,$4, 1/(1/$5+$1*SN)  }' > ./input/data.dat
 head ./output/data.dat.Rx
 echo gives
 head ./input/data.dat
+divacalc
+# save errorfields
+cp ./output/errorfieldgher.anl   ./output/errorfieldgher.anl.infl
+cp ./output/errorfieldascii.anl   ./output/errorfieldascii.anl.infl
+cp ./output/errorfieldatxyascii.anl   ./output/errorfieldatxyascii.anl.infl
+cp ./output/erroratdatapoint.anl   ./output/erroratdatapoint.anl.infl
 
 
 
-# if only inflation was demanded exit now
+
+
+
 cp ./input/data.dat.oriR ./input/data.dat
-exit
+# if only inflation was demanded exit now
+#exit
 
 
 # If full calculation is demandedn save error fields for further use and proceed
@@ -143,6 +152,21 @@ mv ./input/param.par.oriR ./input/param.par
 divacalc
 
 # For error calculattion probably better to use inflation approach and the apply with desired ispec
+
+cp ./output/errorfieldgher.anl.infl   ./output/errorfieldgher.anl
+cp ./output/errorfieldascii.anl.infl   ./output/errorfieldascii.anl
+cp ./output/errorfieldatxyascii.anl.infl   ./output/errorfieldatxyascii.anl
+cp ./output/erroratdatapoint.anl.infl   ./output/erroratdatapoint.anl
+
+
+echo Merging into netcdf file
+
+cp ./output/fieldgher.anl ./output/ghertonetcdf/fort.84
+cp ./output/errorfieldgher.anl ./output/ghertonetcdf/fort.87
+cd ./output/ghertonetcdf
+../../../bin/netcdfoutput.a
+cd ../..
+
 
 echo ======================================
 echo    Finished divaR
