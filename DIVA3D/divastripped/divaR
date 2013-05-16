@@ -45,7 +45,7 @@ divacalc
 # save errorfields
 cp ./output/errorfieldgher.anl   ./output/errorfieldgher.anl.infl
 cp ./output/errorfieldascii.anl   ./output/errorfieldascii.anl.infl
-cp ./output/errorfieldatxyascii.anl   ./output/errorfieldatxyascii.anl.infl
+cp ./output/erroratxyascii.anl   ./output/erroratxyascii.anl.infl
 cp ./output/erroratdatapoint.anl   ./output/erroratdatapoint.anl.infl
 
 
@@ -155,7 +155,7 @@ divacalc
 
 cp ./output/errorfieldgher.anl.infl   ./output/errorfieldgher.anl
 cp ./output/errorfieldascii.anl.infl   ./output/errorfieldascii.anl
-cp ./output/errorfieldatxyascii.anl.infl   ./output/errorfieldatxyascii.anl
+cp ./output/erroratxyascii.anl.infl   ./output/erroratxyascii.anl
 cp ./output/erroratdatapoint.anl.infl   ./output/erroratdatapoint.anl
 
 

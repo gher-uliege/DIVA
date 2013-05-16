@@ -1,6 +1,13 @@
 #!/bin/bash
 export LC_ALL=C
 ipipe=0
+# Choose your solver here
+# 0: direct skyline
+# 1: parallel skyline
+# 2: iterative sparse
+solver=1
+
+
 echo //////////////////////////////////////////////////
 echo           Going to analyse a field
 echo //////////////////////////////////////////////////
@@ -341,8 +348,8 @@ echo $nelt >> ./fort.10
 echo datapr 1 >> ./fort.10
 echo $ireg >> ./fort.10
 #JMB
-if [ "$itcs" != "0" ] 
-then 
+if [ "$itcs" != "0" ]
+then
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> $divacalclog
 echo  Module constraint activated >> $divacalclog
 echo $itcs
@@ -350,7 +357,11 @@ echo constr 1 >> ./fort.10
 echo $itcs >> ./fort.10
 fi
 echo solver 1 >> ./fort.10
-echo 0 >> ./fort.10
+echo $solver >> ./fort.10
+if [ "$solver" == "2" ]
+then
+echo 0 0 0 >> ./fort.10
+fi
 echo stores 1 >> ./fort.10
 echo 3 >> ./fort.10
 echo VARBAK: $varbak >> $divacalclog
