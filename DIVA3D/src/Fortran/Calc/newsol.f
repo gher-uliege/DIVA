@@ -24,6 +24,7 @@ C      REAL*8, DIMENSION(:) , SAVE,   ALLOCATABLE :: skmatx
      &      iloop,iquit,ir,is,ithread,iwait,j,jd,
      &       jh,jmax,jr,k,k0,k00,kmax,nthreads,ntotv
       integer nthreadsasked
+      logical ntt
       common/forsolver/   nthreadsasked
       
       integer omp_get_max_threads
@@ -34,6 +35,10 @@ C      REAL*8, DIMENSION(:) , SAVE,   ALLOCATABLE :: skmatx
       integer omp_get_thread_num
       external OMP_GET_THREAD_NUM
       integer omp_get_num_procs
+      integer omp_get_num_threads
+c      integer omp_set_dynamic
+c      external omp_set_dynamic
+      external omp_get_num_threads
       external omp_get_num_procs
       ntotv=neq
       if (isfirsttime.eq.1) then
@@ -109,6 +114,9 @@ C      nbest=1
       if(nbest.gt.nthreads) nbest=nthreads
       call omp_set_num_threads(nbest)
 ! Get (actual) number of threads
+
+      write(6,*) 'Dynamic threading'
+      call omp_set_dynamic(ntt)
       nthreads=omp_get_max_threads()
       write(6,*) 'NTHREADS',nthreads
 ! Initializations
@@ -122,6 +130,7 @@ C$OMP& SHARED (VFG,jmax,kmax,maxa,nthreads,ntotv,
 C$OMP& skmatx)
 ! Factorize skmatx and reduce fmatx
 C       write(6,*) 'Next omp call'
+        write(6,*) 'Thrads in use', omp_get_num_threads()
        ithread=omp_get_thread_num()
 C       write(6,*) 'In Parallel section thread',ithread
        iloop=0
@@ -150,6 +159,7 @@ C       write(6,*) 'In Parallel section thread',ithread
 ! Judge if hesitation is necessary
              if (kmax.lt.jr) then
                ihesitate=1
+!               write(6,*) 'Hesitation'
                ie0=jmax
              endif
              if (jh.eq.2) then

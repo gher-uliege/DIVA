@@ -15,7 +15,7 @@ DIVA_PARALLEL=1
 # Compilation flags
 #-----------------
 
-flags='-O3  -cpp   -DDIVAITERATIVE ' #  -DDIVABINARYFILESMESH '			#--charles
+flags='-O3  -cpp   -DDIVAITERATIVE  ' # ' -DDIVABINARYFILESMESH -DDIVABINARYFILES '			#--charles
 #flags='-O0' 			# no optimization
 
 
@@ -24,7 +24,7 @@ flagscalc=' -O3 -cpp   -DDIVAITERATIVE -Wall -fbounds-check'
 if [ "$DIVA_PARALLEL" = 1 ]
 then
 echo Going to use parallel version
-flagscalc='-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL ' # -DDIVABINARYFILESMESH ' #'
+flagscalc='-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL  ' # -DDIVABINARYFILESMESH -DDIVABINARYFILES ' #'
 echo $flagscalc
 
 fi
