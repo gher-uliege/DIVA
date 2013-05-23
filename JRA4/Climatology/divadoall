@@ -207,9 +207,9 @@ do
 echo 'divadoall:' Data source file is $ODVDATA
 echo 'divadoall:' Trying to guess ODV format on $ODVDATA
 
-divaguessformsODV4 $ODVDATA
+./divaguessformsODV4 $ODVDATA
 echo 'divadoall:' Now extracting
-divaselectorODV4 $ODVDATA
+./divaselectorODV4 $ODVDATA
 
 echo 'divadoall:' finished with $ODVDATA
 done

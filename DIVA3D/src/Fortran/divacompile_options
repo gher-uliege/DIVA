@@ -3,7 +3,6 @@
 # Name of the fortran compiler
 #-----------------------------
 
-compiler=ifort			#--charles
 compiler=gfortran
 
 
@@ -51,7 +50,7 @@ else
     compiler=`nf-config --fc`
    else
 # put netcdlibrary by hand
-   nclib=/usr/lib/libnetcdff.dll.a	#--charles
+   nclib=/usr/lib/libnetcdff.dll.a	
    fi
 fi
 # Use of Plplot (creation of scientific plots)

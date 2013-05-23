@@ -296,7 +296,7 @@ awk -v mm1=$mm1 -v mm2=$mm2 -v year1=$year1 -v year2=$year2 \
 {if (mm1 <=$6+0 && $6+0 <= mm2 && year1<=$5+0 && $5+0 <= year2) print $1,$2,$3,$4,$5-year1+1,$6-mm1+1,$7,$8+1,$9,$10}
 }' ${WORK}/$var.$lnum > input/${var}.${yyy}.${mmm}.$lnum
 
-specialdataonly input/${var}.${yyy}.${mmm}.$lnum
+./specialdataonly input/${var}.${yyy}.${mmm}.$lnum
 
 #mv input/${var}.${yyy}.${mmm}.$lnum input/divadata/${var}.${yyy}.${mmm}.$lnum
 #Assume file already exist and need to add

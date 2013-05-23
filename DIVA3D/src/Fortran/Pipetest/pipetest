@@ -1,3 +1,5 @@
+#!/bin/bash
+
 rm -f fort.*
 rm -f divapipe
 rm -f dvping
@@ -11,7 +13,7 @@ echo 1 > fort.55
 ../piperw.a &
 cd ..
 echo 0 > fort.55
-piperw.a
+./piperw.a
 
 cat fort.66
 
