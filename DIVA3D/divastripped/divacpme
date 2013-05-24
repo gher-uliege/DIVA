@@ -68,7 +68,7 @@ cp ./input/param.par ./input/param.par.nocpme
 # adapt param
 
 echo $lc
-lcerr=$(echo $lc | awk '{print $1/1.68537}')
+lcerr=$(echo $lc | awk '{print $1/1.70766}')
 
 echo $lcerr
 # no new mesh until really need to be fine ?
