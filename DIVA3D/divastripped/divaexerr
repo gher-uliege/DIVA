@@ -212,7 +212,7 @@ lcerr=$(echo $lc | awk '{print $1/1.70677}')
 #lcerr=$(echo $lc | awk '{print $1/3.5}')
 
 echo $lcerr
-# 24 may test without remeshing since anyway no need to converge 
+# 24 mai 2013 test without remeshing since anyway no need to converge
 divamesh
 
 echo $linecomment > ./input/param.par
