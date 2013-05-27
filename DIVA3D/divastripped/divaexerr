@@ -182,8 +182,8 @@ paste ./output/expectederroratdatapoint.anl ./output/Bii.dat ./input/data.dat  |
 else
 echo Working with error
 
-cp  ./output/expectederroratdatapoint.anl bidonexerr.dat
-cp  ./output/Bii.dat bidonexerrBii.dat
+#cp  ./output/expectederroratdatapoint.anl bidonexerr.dat
+#cp  ./output/Bii.dat bidonexerrBii.dat
 #paste ./output/expectederroratdatapoint.anl ./input/data.dat ./output/Bii.dat | awk -v valex=$valex -v snr=$snr -v varbak=$varbak '{if ($4 != valex){print $5,$6,sqrt(varbak/snr*$4/$8/$11),1}}' > ./input/data.dat.exerr
 paste ./output/expectederroratdatapoint.anl  ./output/Bii.dat ./input/data.dat | awk -v valex=$valex -v snr=$snr -v varbak=$varbak '{if ($4 != valex){print $8,$9,sqrt(varbak/snr*$4/$11/$7),1}}' > ./input/data.dat.exerr
 fi
