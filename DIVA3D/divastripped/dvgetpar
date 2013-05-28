@@ -1,0 +1,88 @@
+#!/bin/bash
+export LC_ALL=C
+
+if [ "$#" != "1" ]
+then
+echo '=========================================='
+echo  Usage:
+echo '    ' dvchpar parameter value
+echo  Example: change signal/noise ratio to 0.1
+echo '    ' dvchpar SNR 0.1
+echo '=========================================='
+
+exit
+fi
+
+
+
+
+if [ "$1" == "LC" ]||[ "$1" == "lc" ]||[ "$1" == "length" ]||[ "$1" == "CL" ]||[ "$1" == "cl" ]
+then
+ il=2
+fi
+
+if [ "$1" == "icoordchange" ]||[ "$1" == "icoord" ]||[ "$1" == "ICOORD" ]
+then
+  il=4
+fi
+
+if [ "$1" == "ispec" ]||[ "$1" == "ISPEC" ]
+then
+  il=6
+fi
+
+if [ "$1" == "ireg" ]||[ "$1" == "IREG" ]
+then
+ il=8
+fi
+
+if [ "$1" == "xori" ]||[ "$1" == "XORI" ]||[ "$1" == "x1" ]
+then
+ il=10
+fi
+
+if [ "$1" == "yori" ]||[ "$1" == "YORI" ]||[ "$1" == "y1" ]
+then
+  il=12
+fi
+
+if [ "$1" == "dx" ]||[ "$1" == "DX" ]
+then
+  il=14
+fi
+
+if [ "$1" == "dy" ]||[ "$1" == "DY" ]
+then
+  il=16
+fi
+
+
+if [ "$1" == "nx" ]||[ "$1" == "NX" ]
+then
+  il=18
+fi
+
+if [ "$1" == "ny" ]||[ "$1" == "NY" ]
+then
+  il=20
+fi
+
+
+if [ "$1" == "valex" ]||[ "$1" == "VALEX" ]
+then
+  il=22
+fi
+
+
+if [ "$1" == "SNR" ]
+then
+  il=24
+fi
+
+
+if [ "$1" == "varbak" ]||[ "$1" == "VARBAK" ]||[ "$1" == "VARBACK" ]||[ "$1" == "varback" ]
+then
+  il=26
+fi
+
+head -$il ./input/param.par | tail -1
