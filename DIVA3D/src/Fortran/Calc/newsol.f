@@ -116,7 +116,12 @@ C      nbest=1
 ! Get (actual) number of threads
 
       write(6,*) 'Dynamic threading'
-      call omp_set_dynamic(ntt)
+! Commented 30 May 2013
+! need further tests
+! possible problem with certain Linux distributions
+!      call omp_set_dynamic(ntt)
+!--------------------------------------------------
+
       nthreads=omp_get_max_threads()
       write(6,*) 'NTHREADS',nthreads
 ! Initializations
