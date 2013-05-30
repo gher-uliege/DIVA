@@ -1,6 +1,6 @@
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 C                                                                      C
-C           Data Interpolating Variational Analysis  (4.4)             C
+C           Data Interpolating Variational Analysis  (4.6.1)           C
 C           ========================================                   C
 C                                                                      C
 C                     GHER - UNIVERSITY OF LIEGE                       C
