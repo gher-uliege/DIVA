@@ -3,8 +3,8 @@
       real*4 A(XM),B(XM),C(XM)
       
       read(5,*,end=200) valex,M,N
-      read(5,*) val, valm
-      
+      read(5,*) val
+      valm=0
       
       call RDMAT(A,M,N,M,20)
       
@@ -17,7 +17,7 @@
       real*4 A(N,M),B(N,M),C(N,M)
       do i=1,M
       do j=1,N
-      vals=val*sqrt(amax1(0.,1.-A(i,j)))
+      vals=val+A(i,j)
       if(abs(A(i,j)-valex).lt.0.00001*abs(valex)) vals=valex
       C(i,j)=vals
       enddo

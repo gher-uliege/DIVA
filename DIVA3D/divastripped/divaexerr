@@ -8,7 +8,7 @@ echo ===============
 echo  A la ispec=-11
 echo ===============
 imeth=1
-finesse=$(echo $finesse | awk '{print $1*2}')
+#finesse=$(echo $finesse | awk '{print $1*2}')
 fi
 
 
@@ -118,7 +118,14 @@ fi
 # For the moment uniform distribution of points
 echo $NP $xori $yori $dx $dy $nx $ny | awk '{NP=$1;{for (i = 1; i <= NP; i++) {x=$2+$4*$6*rand();y=$3+$5*$7*rand();print x,y,0,1E-8}}}' >> ${datafile}
 
-#cp ./input/data.dat pseudo.dat
+# JUNE2913 Here if imeth 1 add some more points on the boundary
+if [ "$imeth" == "1" ]
+then
+cd meshgenwork
+../../bin/boundarypoints.a
+cd ..
+cat ./meshgenwork/fort.80 >>  ${datafile}
+fi
 
 # Since new data erase fieldatdatapoint
 
@@ -128,7 +135,9 @@ rm -f ./output/fieldatdatapoint.anl
 fi
 
 # now take out pseudo data that are not on the mesh
-divadataclean
+divadataclean 
+# Save for plotting
+cp ./input/data.dat ./workexerr/output/pseudo.dat
 #ls -l ./output/meshvisu
 #divaclean
 #ls -l ./output/meshvisu
@@ -185,7 +194,7 @@ echo Working with error
 #cp  ./output/expectederroratdatapoint.anl bidonexerr.dat
 #cp  ./output/Bii.dat bidonexerrBii.dat
 #paste ./output/expectederroratdatapoint.anl ./input/data.dat ./output/Bii.dat | awk -v valex=$valex -v snr=$snr -v varbak=$varbak '{if ($4 != valex){print $5,$6,sqrt(varbak/snr*$4/$8/$11),1}}' > ./input/data.dat.exerr
-paste ./output/expectederroratdatapoint.anl  ./output/Bii.dat ./input/data.dat | awk -v valex=$valex -v snr=$snr -v varbak=$varbak '{if ($4 != valex){print $8,$9,sqrt(varbak/snr*$4/$11/$7),1}}' > ./input/data.dat.exerr
+paste ./output/expectederroratdatapoint.anl  ./output/Bii.dat ./input/data.dat | awk -v valex=$valex -v snr=$snr -v varbak=$varbak '{if ($4 != valex){print $8,$9,sqrt(varbak/snr*$4/$11/$7)-sqrt(varbak),1}}' > ./input/data.dat.exerr
 fi
 # Create new pseudo data correction with this error as input (so zero far away from point
 
@@ -223,7 +232,7 @@ echo $linecomment3 >> ./input/param.par
 echo 0 >> ./input/param.par
 echo $linecomment4 >> ./input/param.par
 # ireg chancges depending on method
-echo $imeth >> ./input/param.par
+echo 0 >> ./input/param.par
 echo $linecomment5 >> ./input/param.par
 echo $xori >> ./input/param.par
 echo $linecomment6 >> ./input/param.par
@@ -249,7 +258,7 @@ divacalc
 
 
 
-# now add up for 
+# now add up for
 if [ "$imeth" == "0" ]
 then
 echo Summing up
@@ -275,8 +284,35 @@ cd ..
 # do the job on fieldatdatapoint which includes also xy and split afterwards
 cat ./output/fieldatdatapoint.anl | awk -v valex=$valex -v varb=$varbak '{if ($3==valex){print $1,$2,$3} else {val=0; if ($3<1) val= sqrt(varb*(1-$3)); {print $1,$2,val}}}' > bidon
 mv bidon ./output/fieldatdatapoint.anl
+fi
 
 
+# now add up for
+if [ "$imeth" == "1" ]
+then
+echo Summing up
+
+echo 0 | awk -v varb=$varbak '{print sqrt(varb),-sqrt(varb)}' > coucou
+echo ./output/fieldgher.anl >> coucou
+echo bidon >> coucou
+cat coucou | ../bin/addc.a
+rm coucou
+mv bidon ./output/fieldgher.anl
+# Need to do the same for ascii file 
+
+cd divawork
+cp  ../output/fieldascii.anl fort.20
+echo $valex $nx $ny > coucou
+echo 0 | awk -v varb=$varbak '{print sqrt(varb),-sqrt(varb)}' >> coucou
+cat coucou | ../../bin/addgridc.a
+mv fort.22 ../output/fieldascii.anl 
+rm coucou
+cd ..
+
+# and xy and data ...
+# do the job on fieldatdatapoint which includes also xy and split afterwards
+cat ./output/fieldatdatapoint.anl | awk -v valex=$valex -v varb=$varbak '{if ($3==valex){print $1,$2,$3} else {val=0; if ($3<1) val= sqrt(varb)+$3; {print $1,$2,val}}}' > bidon
+mv bidon ./output/fieldatdatapoint.anl
 fi
 
 
