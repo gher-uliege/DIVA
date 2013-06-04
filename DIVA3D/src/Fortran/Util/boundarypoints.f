@@ -72,8 +72,8 @@ C       write(6,*) '??',i,jj,j
       do j=1+nnt1,nnt
       if(nma(j,2).eq.0) then
        i=nma(j,1)
-       write(6,*) 'Found a single',j,nma(j,1),kconn(i,2),kconn(i,4)
-     & ,kconn(i,6)
+C       write(6,*) 'Found a single',j,nma(j,1),kconn(i,2),kconn(i,4)
+C     & ,kconn(i,6)
 
       if (-kconn(i,2).eq.j) then
        j1=1
@@ -90,13 +90,13 @@ C       write(6,*) '??',i,jj,j
        j2=1
        j3=2
       endif
-      write(6,*) j1,j2,j3 ,kconn(i,j1),kconn(i,j2),kconn(i,j3)
+C      write(6,*) j1,j2,j3 ,kconn(i,j1),kconn(i,j2),kconn(i,j3)
       i1= kconn(i,2*j1-1)
       i2= kconn(i,2*j2-1)
       i3= kconn(i,2*j3-1)
       xx=0.5*0.5*(tcoog(i1,1)+tcoog(i2,1))+0.5*tcoog(i3,1)
       yy=0.5*0.5*(tcoog(i1,2)+tcoog(i2,2))+0.5*tcoog(i3,2)
-      write(80,*) xx,yy,0,1E-6
+      write(80,*) xx,yy,0,1E-8
 
 
 
