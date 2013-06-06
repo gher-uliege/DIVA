@@ -99,7 +99,7 @@ echo
 
 echo Finally testing pipes needed for exact error calculations
 echo If the program hangs it means pipes are not supported
-echo In this case you need to adapt parameter ipipe to ipepe=0 in divacalc
+echo In this case you need to adapt parameter ipipe to ipipe=0 in divacalc
 cd ../src/Fortran/Pipetest
 ./pipetest
 
