@@ -8,29 +8,22 @@ ipipe=0
 solver=1
 
 
-echo //////////////////////////////////////////////////
-echo           Going to analyse a field
-echo //////////////////////////////////////////////////
-
 # Define log files
 #-----------------
 divarundir=$(pwd)
 divacalclog=$divarundir'/output/divacalc.log'
 divalog=$divarundir'/output/diva.log'
 
-echo ////////////////////////////////////////////////// > $divacalclog
-echo           Going to analyse a field >> $divacalclog
-echo ////////////////////////////////////////////////// >> $divacalclog
+echo //////////////////////////////////////////////////  | tee -a $divacalclog
+echo           Going to analyse a field                  | tee -a $divacalclog
+echo //////////////////////////////////////////////////  | tee -a $divacalclog
 #
 divarunning=$(ps -eafl | grep -i 'diva\.a' | wc -l)
 if [ "$divarunning" != "0" ]
 then
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> $divacalclog
-echo ????????diva already running?????? >> $divacalclog
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> $divacalclog
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-echo ????????diva already running??????
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! | tee -a $divacalclog
+echo ????????diva already running?????? | tee -a $divacalclog
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! | tee -a $divacalclog
 ps -eafl | grep -i 'diva\.a'
 fi
 iqc=0
@@ -458,19 +451,12 @@ dataonmesh=0
 # Check if fort.84 was generated AND if not empty...
 if [ ! -s ./fort.84 ];
 then
-        echo ' ' >> $divacalclog
-        echo '//////////////////////////////////////////////////' >> $divacalclog
-        echo 'Problem in diva.a : analysis could not be finished' >> $divacalclog
-        echo ' ' >> $divacalclog
-        echo 'Check diva.log' >> $divacalclog
-        echo '//////////////////////////////////////////////////' >> $divacalclog
-
-        echo ' '
-        echo '//////////////////////////////////////////////////'
-        echo 'Problem in diva.a : analysis could not be finished'
-        echo ' '
-        echo 'Check diva.log'
-        echo '//////////////////////////////////////////////////'
+        echo ' ' | tee -a $divacalclog
+        echo '//////////////////////////////////////////////////' | tee -a $divacalclog $divalog
+        echo 'Problem in diva.a : analysis could not be finished' | tee -a $divacalclog $divalog
+        echo ' '						  | tee -a $divacalclog $divalog
+        echo 'Check diva.log'					  | tee -a $divacalclog $divalog
+        echo '//////////////////////////////////////////////////' | tee -a $divacalclog $divalog
 fi
 ##---
 
@@ -515,15 +501,12 @@ then
 #output of results to user
 cp fort.76 ../output/expectederroratdatapoint.anl
 cp fort.71 ../output/fieldatdatapoint.anl
-echo ' '
-echo divacalc: Looking for outliers > $divacalclog
-echo ' '
 
 
-echo divacalc: ////////////////////////////////////////// >> $divalog
-echo divacalc:       lookforoutliers   >> $divalog
-echo divacalc: ////////////////////////////////////////// >> $divalog
-echo ' '  >> $divalog
+echo divacalc: ////////////////////////////////////////// | tee -a $divalog $divacalclog
+echo divacalc:       lookforoutliers  			  | tee -a $divalog $divacalclog 
+echo divacalc: ////////////////////////////////////////// | tee -a $divalog $divacalclog
+echo ' '  						  | tee -a $divalog $divacalclog
 
 echo $valex | ../../bin/lookforoutliers.a >> $divalog
 if [ $? -ne 0 ];then
@@ -550,16 +533,11 @@ then
 mv -f fort.66 ../output/outliers.dat
 mv -f fort.67 ../output/outliers.normalized.dat
 else
-echo ' ' >> $divacalclog
-echo -------------------------------------------- >> $divacalclog
-echo A problem was encountered during execution ! >> $divacalclog
-echo 'Check execution track in diva.log' >> $divacalclog
-echo -------------------------------------------- >> $divacalclog
-echo ' '
-echo --------------------------------------------
-echo A problem was encountered during execution !
-echo 'Check execution track in diva.log'
-echo --------------------------------------------
+echo ' '                                          | tee -a $divacalclog
+echo -------------------------------------------- | tee -a $divacalclog
+echo A problem was encountered during execution ! | tee -a $divacalclog
+echo 'Check execution track in diva.log'	  | tee -a $divacalclog
+echo -------------------------------------------- | tee -a $divacalclog
 fi
 else
 #output as netcdf not yet done
