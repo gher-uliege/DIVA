@@ -13,19 +13,14 @@ read comment
 read cont
 } < $Fileinf
 #
-diva3dlog='./output/3Danalysis/'$var'.diva3D.log'
+divarundir=$(pwd)
+diva3dlog=$divarundir'/output/3Danalysis/'$var'.diva3D.log'
 #
-echo 'diva3Dcont:' 
-echo 'diva3Dcont:' 'Start contour generation flag number: '$cont
-echo 'diva3Dcont:' 'on '$var
-echo 'diva3Dcont:' 'level '$bottm' to level '$surf
-echo 'diva3Dcont:'
-#
-echo 'diva3Dcont:' >> $diva3dlog
-echo 'diva3Dcont:' 'Start contour generation flag number: '$cont >> $diva3dlog
-echo 'diva3Dcont:' ' on '$var >> $diva3dlog
-echo 'diva3Dcont:' 'level '$bottm' to level '$surf >> $diva3dlog
-echo 'diva3Dcont:' >> $diva3dlog
+echo 'diva3Dcont:' 							| tee -a $diva3dlog 
+echo 'diva3Dcont:' 'Start contour generation flag number: '$cont	| tee -a $diva3dlog
+echo 'diva3Dcont:' 'on '$var						| tee -a $diva3dlog
+echo 'diva3Dcont:' 'level '$bottm' to level '$surf			| tee -a $diva3dlog
+echo 'diva3Dcont:'							| tee -a $diva3dlog
 #
 #
 if [ "$cont" -eq "1" ]; then
@@ -53,26 +48,17 @@ else
     echo ./input/. >> $diva3dlog
     echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo >> $diva3dlog
    else
-    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
-    echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!' >> $diva3dlog
-    echo 'Missing contour.depth file, could not perform !!' >> $diva3dlog
-    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
-#
-    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-    echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'
-    echo 'Missing contour.depth file, could not perform !!'
-    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' 	| tee -a $diva3dlog
+    echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'		| tee -a $diva3dlog
+    echo 'Missing contour.depth file, could not perform !!'	| tee -a $diva3dlog
+    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'		| tee -a $diva3dlog
    fi
   else
-    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-    echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'
-    echo 'Missing param.par file, could not perform !!'
-    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' 	| tee -a $diva3dlog
+    echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'		| tee -a $diva3dlog
+    echo 'Missing param.par file, could not perform !!'		| tee -a $diva3dlog
+    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'		| tee -a $diva3dlog
 #
-    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
-    echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!' >> $diva3dlog
-    echo 'Missing param.par file, could not perform !!' >> $diva3dlog
-    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
   fi
  else
   if [ -f ./input/topo.gebco ]; then
@@ -91,26 +77,18 @@ else
       echo ./input/. >> $diva3dlog
       echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo >> $diva3dlog
      else
-      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
-      echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!' >> $diva3dlog
-      echo 'Missing contour.depth file, could not perform !!' >> $diva3dlog
-      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
 #
-      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-      echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'
-      echo 'Missing contour.depth file, could not perform !!'
-      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+      echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+      echo 'Missing contour.depth file, could not perform !!'	| tee -a $diva3dlog
+      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
      fi
     else
-      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
-      echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!' >> $diva3dlog
-      echo 'Missing param.par file, could not perform !!' >> $diva3dlog
-      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
 #
-      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-      echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'
-      echo 'Missing param.par file, could not perform !!'
-      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' 	| tee -a $diva3dlog
+      echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!' 	| tee -a $diva3dlog
+      echo 'Missing param.par file, could not perform !!'	| tee -a $diva3dlog	
+      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
     fi
   fi
  fi
@@ -137,15 +115,11 @@ if [ -f ./input/topo.dat ]; then
     mv bidon $diva3dlog
 
    else
-     echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
-     echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!' >> $diva3dlog
-     echo 'Missing param.par file, could not perform !!' >> $diva3dlog
-     echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
 #
-     echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-     echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'
-     echo 'Missing param.par file, could not perform !!'
-     echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+     echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+     echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+     echo 'Missing param.par file, could not perform !!'	| tee -a $diva3dlog
+     echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
    fi
 else
   if [ -f ./input/topo.gebco ]; then
@@ -157,15 +131,10 @@ else
     mv bidon $diva3dlog
 
     else
-      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
-      echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!' >> $diva3dlog
-      echo 'Missing param.par file, could not perform !!' >> $diva3dlog
-      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
-#
-      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-      echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'
-      echo 'Missing param.par file, could not perform !!'
-      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+      echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+      echo 'Missing param.par file, could not perform !!'	| tee -a $diva3dlog
+      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
     fi
   fi
  mv ./output/TopoInfo.dat ./input/.
@@ -194,15 +163,11 @@ cp -v ./output/U* ./input/divaUVcons
 cp -v ./output/V* ./input/divaUVcons
 cp -v ./output/constraint.dat ./input/.
 else
-echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
-echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!' >> $diva3dlog
-echo 'Missing param.par file, could not perform !!' >> $diva3dlog
-echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
 #
-echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'
-echo 'Missing param.par file, could not perform !!'
-echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+echo 'Missing param.par file, could not perform !!'	| tee -a $diva3dlog
+echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
 fi
 fi
 fi
