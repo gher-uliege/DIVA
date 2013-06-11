@@ -51,19 +51,19 @@ module utils
    read(str(1:i-1),*) year
    
    ! month
-   j = myindex(str,'-',i+1)
+   j = indexof(str,'-',i+1)
    read(str(i+1:j-1),*) month
 
    ! day
-   i = myindex(str,'T',j+1)
+   i = indexof(str,'T',j+1)
    read(str(j+1:i-1),*) day
 
    ! hour
-   j = myindex(str,':',i+1)
+   j = indexof(str,':',i+1)
    read(str(i+1:j-1),*) hour
 
    ! minute
-   i = myindex(str,':',j+1)
+   i = indexof(str,':',j+1)
    read(str(j+1:i-1),*) minute
 
    ! second
@@ -72,16 +72,17 @@ module utils
    write(6,*) 'date ',year,month,day,hour,minute,seconds
    contains
 
-    function myindex(str,substr,start) result(ind)
-     character(len=*), intent(in) :: str, substr
-     integer, intent(in) :: start
-     integer :: ind
-     
-     ind = index(str(start:),substr)
-     if (ind /= -1) ind = ind+start-1
-    end function myindex
 
   end subroutine parseISOData
+
+  function indexof(str,substr,start) result(ind)
+   character(len=*), intent(in) :: str, substr
+   integer, intent(in) :: start
+   integer :: ind
+   
+   ind = index(str(start:),substr)
+   if (ind /= -1) ind = ind+start-1
+  end function indexof
 
 
   function mjd(y,m,d,h,min,s)
@@ -130,7 +131,7 @@ module utils
     implicit none
     character(len=*), intent(in) :: file
     integer, intent(in) :: unit
-    real, pointer :: coord(:,:)
+    real(8), pointer :: coord(:,:)
     character(len=*), pointer :: ids(:)
 
     integer :: count,i,j,ncoord, tmp(4), iostat
@@ -179,43 +180,24 @@ module utils
    end subroutine loadObsFile
 
 
-   subroutine saveNCObsFile(ncfile,coord,ids,timeunit)
+   subroutine saveNCObsFile(ncfile,coord,ids)
+    use netcdf
     implicit none
-    character(len=*), intent(in) :: ncfile,timeunit,ids(:)
-    real :: coord(:,:)
     
-   end subroutine saveNCObsFile
+    character(len=*), intent(in) :: ncfile,ids(:)
+    real(8) :: coord(:,:)
+    integer :: iostat, strlen
 
-end module utils
+    character(len=maxlen) :: timeunit
+    integer :: ncid, status, dimids, varidcoord(4), varid, dimidstr
+    integer :: i,j
 
-program netcdfobsid
- use netcdf
- use utils
- implicit none
 
- character(len=maxlen) :: file,ncfile,timeunit
- integer :: ncid, status, dimids, varidcoord(4), varid, dimidstr
- integer :: i,j
- real :: temp(6,4)
- real, pointer :: coord(:,:)
- character(len=maxlen), pointer :: ids(:)
- integer :: iargc,iostat,unit = 10, strlen
-
-  if (iargc().ne.2) then
-     write(6,*) 'Usage: netcdfobsid <obsid.txt> <file.nc> <time unit>'
-     ERROR_STOP 
-  end if
-
-  call getarg(1,file)
-
-  write(timeunit,'("days since ",I4,"-",I2.2,"-",I2.2," ",I2.2,":",I2.2,":",I2.2)') timeOrigin(1),timeOrigin(2),timeOrigin(3), &
+    write(timeunit,'("days since ",I4,"-",I2.2,"-",I2.2," ",I2.2,":",I2.2,":",I2.2)') timeOrigin(1),timeOrigin(2),timeOrigin(3), &
          timeOrigin(4),timeOrigin(5),timeOrigin(6)
 
-  write(6,*) 'timeunits ',timeunit
-
-
-  call loadObsFile(file,unit,coord,ids)
-
+    write(6,*) 'timeunits ',timeunit
+    
   ! longest id
   strlen = 0
   do j=1,size(ids)
@@ -286,18 +268,46 @@ program netcdfobsid
  end do
 
  call check_error(nf90_close(ncid))
-
- deallocate(coord,ids)
-
-contains
+   end subroutine saveNCObsFile
 
  subroutine check_error(status)
+  use netcdf
   integer, intent ( in) :: status
 
   if(status /= nf90_noerr) then
     write(6,*) 'NetCDF error: ',trim(nf90_strerror(status))
+    ERROR_STOP
     stop "Stopped"
   end if
  end subroutine check_error
+
+end module utils
+
+program netcdfobsid
+ use netcdf
+ use utils
+ implicit none
+
+ character(len=maxlen) :: file,ncfile,timeunit
+ integer :: ncid, status, dimids, varidcoord(4), varid, dimidstr
+ integer :: i,j
+ real :: temp(6,4)
+ real(8), pointer :: coord(:,:)
+ character(len=maxlen), pointer :: ids(:)
+ integer :: iargc,iostat,unit = 10, strlen
+
+  if (iargc().ne.2) then
+     write(6,*) 'Usage: netcdfobsid <obsid.txt> <file.nc>'
+     ERROR_STOP 
+  end if
+
+  call getarg(1,file)
+  call getarg(2,ncfile)
+
+  call loadObsFile(file,unit,coord,ids)
+  call saveNCObsFile(ncfile,coord,ids)
+
+
+  deallocate(coord,ids)
 
 end program netcdfobsid
