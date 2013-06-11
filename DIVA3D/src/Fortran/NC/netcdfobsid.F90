@@ -24,11 +24,19 @@
 #define ERROR_STOP stop
 
 module utils
+ 
+ integer, parameter :: maxlen = 256
+ integer :: timeOrigin(6) = (/1900,1,1,0,0,0/)
+
  contains
+
+
 
 ! parses data of the form yyyy-mm-hhTHH:MM:SS.SSS
 ! for example
 !   1988-02-15T00:00:00.000
+  
+
 
   subroutine parseISOData(str,year,month,day,hour,minute,seconds)
    implicit none
@@ -76,6 +84,29 @@ module utils
   end subroutine parseISOData
 
 
+  function mjd(y,m,d,h,min,s)
+   implicit none
+   integer, intent(in) :: d,m,y,h,min
+   real, intent(in)  :: s
+   real(8) :: mjd
+
+! Mathematicians and programmers have naturally 
+! interested themselves in mathematical and computational 
+! algorithms to convert between Julian day numbers and 
+! Gregorian dates. The following conversion algorithm is due 
+! to Henry F. Fliegel and Thomas C. Van Flandern: 
+! The Julian day (jd) is computed from Gregorian day, month and year (d, m, y) as follows:
+! http://hermetic.magnet.ch/cal_stud/jdn.htm
+
+! ModifiedJulianDay = 0 for 1858-11-17 CE.
+
+   mjd = (( 1461 * ( y + 4800 + ( m - 14 ) / 12 ) ) / 4 +        &
+        ( 367 * ( m - 2 - 12 * ( ( m - 14 ) / 12 ) ) ) / 12 -   &
+        ( 3 * ( ( y + 4900 + ( m - 14 ) / 12 ) / 100 ) ) / 4 +  &
+        d - 32075 - 2400001)*1d0 + h/24d0 + min/(24*60d0)+ s/(24*60*60d0)               
+  end function mjd
+
+
   function numberOfLines(file,unit) result(count)
    implicit none
     character(len=*), intent(in) :: file
@@ -105,36 +136,43 @@ module utils
     integer :: count,i,j,ncoord, tmp(4), iostat
     integer :: year,month,day,hour,minute
     real :: seconds
+    character(len=maxlen) :: date
+    real(8) :: t0
 
+    t0 = mjd(timeOrigin(1),timeOrigin(2),timeOrigin(3), &
+         timeOrigin(4),timeOrigin(5),real(timeOrigin(6)))
 
-    call parseISOData('1988-02-15T10:22:01.023',year,month,day,hour,minute,seconds)
-    call parseISOData('1988-2-15T1:2:01.023',year,month,day,hour,minute,seconds)
+!    call parseISOData('1988-02-15T10:22:01.023',year,month,day,hour,minute,seconds)
+!    call parseISOData('1988-2-15T1:2:01.023',year,month,day,hour,minute,seconds)
 
     count = numberOfLines(file,unit)
     allocate(ids(count))
     
     open(unit,file=file) 
 
-!   try reading first line for 4, 3 or 2 coordinates    
-    do ncoord = 4,2,-1
-      rewind(unit)
-      read(unit,*,iostat=iostat) (tmp(i), i=1,ncoord), ids(1)
-      if (iostat == 0) exit
-    end do
+! !   try reading first line for 4, 3 or 2 coordinates    
+!     do ncoord = 4,2,-1
+!       rewind(unit)
+!       read(unit,*,iostat=iostat) (tmp(i), i=1,ncoord), ids(1)
+!       if (iostat == 0) exit
+!     end do
 
-    write(6,*) 'ncoord ',ncoord, iostat
+!     write(6,*) 'ncoord ',ncoord, iostat,count
 
-    if (iostat /= 0) then
-      write(0,"(A,A,':',I2,A,A)") 'Error: ',trim(__FILE__),__LINE__,' unable to read coordinates from file ',trim(file)
-      close(unit)
-      ERROR_STOP
-    end if
-    
+!     if (iostat /= 0) then
+!       write(0,"(A,A,':',I2,A,A)") 'Error: ',trim(__FILE__),__LINE__,' unable to read coordinates from file ',trim(file)
+!       close(unit)
+!       ERROR_STOP
+!     end if
+
+    ncoord = 4
     allocate(coord(ncoord,count))
     rewind(unit)
 
     do j=1,count
-      read(unit,*) (coord(i,j), i=1,ncoord), ids(j)
+      read(unit,*) (coord(i,j), i=1,3), date, ids(j)
+      call parseISOData(date,year,month,day,hour,minute,seconds)
+      coord(4,j) = mjd(year,month,day,hour,minute,seconds) - t0
     end do
     close(unit)
 
@@ -155,7 +193,6 @@ program netcdfobsid
  use utils
  implicit none
 
- integer, parameter :: maxlen = 256
  character(len=maxlen) :: file,ncfile,timeunit
  integer :: ncid, status, dimids, varidcoord(4), varid, dimidstr
  integer :: i,j
@@ -170,7 +207,12 @@ program netcdfobsid
   end if
 
   call getarg(1,file)
-  timeunit = 'days since 1900-00-00'
+
+  write(timeunit,'("days since ",I4,"-",I2.2,"-",I2.2," ",I2.2,":",I2.2,":",I2.2)') timeOrigin(1),timeOrigin(2),timeOrigin(3), &
+         timeOrigin(4),timeOrigin(5),timeOrigin(6)
+
+  write(6,*) 'timeunits ',timeunit
+
 
   call loadObsFile(file,unit,coord,ids)
 
