@@ -19,7 +19,7 @@
 
 module divaio
 
- integer, parameter :: maxlen = 256
+ integer, parameter :: maxlen = 512
  ! time origin (/year,month,day,hour,minute,seconds/)
  integer :: timeOrigin(6) = (/1900,1,1,0,0,0/)
 
@@ -87,13 +87,9 @@ contains
   real, intent(in)  :: s
   real(8) :: mjd
 
-  ! Mathematicians and programmers have naturally 
-  ! interested themselves in mathematical and computational 
-  ! algorithms to convert between Julian day numbers and 
-  ! Gregorian dates. The following conversion algorithm is due 
+  ! The following conversion algorithm is due 
   ! to Henry F. Fliegel and Thomas C. Van Flandern: 
   ! The Julian day (jd) is computed from Gregorian day, month and year (d, m, y) as follows:
-  ! http://hermetic.magnet.ch/cal_stud/jdn.htm
 
   ! ModifiedJulianDay = 0 for 1858-11-17 CE.
 
@@ -136,8 +132,8 @@ contains
 
   integer :: count,i,j,ncoord, iostat
   integer :: year,month,day,hour,minute
-  real :: seconds
-  character(len=maxlen) :: date
+  real :: seconds, tmp(3)
+  character(len=maxlen) :: date, line
   real(8) :: t0
 
   t0 = mjd(timeOrigin(1),timeOrigin(2),timeOrigin(3), &
@@ -150,12 +146,37 @@ contains
 
   open(unit,file=file) 
 
-  ncoord = 4
+  read(unit,'(A)',iostat=iostat) line
+
+  ! count number of columns
+  line = ' '//line
+  ncoord = 0
+  do i = 2,len_trim(line)
+    ! start of a column
+    if (line(i-1:i-1) == ' ' .and. line(i:i) /= ' ') ncoord = ncoord+1
+  end do
+
+  if (ncoord < 3 .or. ncoord > 5) then
+    write(0,"(A,A,':',I3,A,A)") 'Error: ',trim(__FILE__),__LINE__, &
+             ' expect 3, 4 or 5 columns in file ',trim(file)
+    ERROR_STOP
+  end if
+
+  ! the last column is not a coordinate
+  ncoord = ncoord - 1
+!  write(6,*) 'ncoord',ncoord
+  
+  
   allocate(coord(ncoord,count))
   rewind(unit)
 
-  do j=1,count
-    read(unit,*,iostat=iostat) (coord(i,j), i=1,3), date, ids(j)
+  do j = 1,count
+    if (ncoord == 4) then
+      read(unit,*,iostat=iostat) (coord(i,j), i=1,ncoord-1), date, ids(j)
+    else
+      read(unit,*,iostat=iostat) (coord(i,j), i=1,ncoord), ids(j)
+    end if
+
     if (iostat /= 0) then
       write(0,"(A,A,':',I3,A,I10,A)") 'Error: ',trim(__FILE__),__LINE__, &
            ' unable to read line ',j,' from file ',trim(file)
@@ -163,19 +184,24 @@ contains
       ERROR_STOP      
     end if
     
-    iostat = parseISODate(date,year,month,day,hour,minute,seconds)
-    if (iostat /= 0) then
-      write(0,"(A,A,':',I3,A,A,A,I10,A,A)") 'Error: ',trim(__FILE__),__LINE__, &
-           ' unable to parse date ',trim(date),' at line ',j,' from file ',trim(file)
-      close(unit)
-      ERROR_STOP      
-    end if
 
-    coord(4,j) = mjd(year,month,day,hour,minute,seconds) - t0
+    if (ncoord == 4) then
+      iostat = parseISODate(date,year,month,day,hour,minute,seconds)
+      if (iostat /= 0) then
+        write(0,"(A,A,':',I3,A,A,A,I10,A,A)") 'Error: ',trim(__FILE__),__LINE__, &
+             ' unable to parse date ',trim(date),' at line ',j,' from file ',trim(file)
+        close(unit)
+        ERROR_STOP      
+      end if
+
+      coord(4,j) = mjd(year,month,day,hour,minute,seconds) - t0
+    end if
   end do
+
   close(unit)
 
  end subroutine loadObsFile
+
 
  ! save a observation file in NetCDF format
  subroutine saveNCObsFile(ncfile,coord,ids)
