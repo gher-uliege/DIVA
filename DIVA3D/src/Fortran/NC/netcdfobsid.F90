@@ -159,14 +159,14 @@ contains
   if (ncoord < 3 .or. ncoord > 5) then
     write(0,"(A,A,':',I3,A,A)") 'Error: ',trim(__FILE__),__LINE__, &
              ' expect 3, 4 or 5 columns in file ',trim(file)
+    close(unit)
     ERROR_STOP
   end if
 
   ! the last column is not a coordinate
   ncoord = ncoord - 1
 !  write(6,*) 'ncoord',ncoord
-  
-  
+    
   allocate(coord(ncoord,count))
   rewind(unit)
 
