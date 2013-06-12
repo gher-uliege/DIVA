@@ -145,6 +145,16 @@ stationcol=$(grep "Station" ODVcolumns | head -1 |  awk -F "$delimiter" '{print 
 loncol=$(grep -i "Longitude" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 latcol=$(grep -i "Latitude" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 datecol=$(grep -i "YYYY-MM" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
+#2013 maybe add here tests on presence of CDI and replace or replace cruisecol by CDI if present
+cdicol=$(grep -i "CDI" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
+if [ "$cdicol" == "" ]
+then
+echo WARNING NO CDI FOUND
+#cdicol=$cruisecol
+else
+echo CDI found in column $cdicol
+cruisecol=$cdicol
+fi
 # Pressure for the moment if depht, carefull about bottom depth columns
 if [ "$dcoordinate" == "Pressure" ]
 then
@@ -236,7 +246,7 @@ return 0
       {if ($datacol > boundmax) qfok=0};
 #
 #      if ( $qccol==1 || $qccol==2 || $qccol==8 );
-      if ($datacol > "" && qfok==1 && $datacol != valexodv) print $loncol,$latcol,$datacol,$depthcol,$qccol,year,month,day,hour,$cruisecol $datecol,$stationcol $datecol}' \
+      if ($datacol > "" && qfok==1 && $datacol != valexodv) print $loncol,$latcol,$datacol,$depthcol,$qccol,year,month,day,hour,$datecol,$cruisecol}' \
        > ${WORK}/${var}.bigfile
 
 fi
@@ -292,7 +302,7 @@ echo month from $mm1 to $mm2
 
 # dans awk if(mm2>12) $x=$x+12
 awk -v mm1=$mm1 -v mm2=$mm2 -v year1=$year1 -v year2=$year2 \
-'{{if (mm2>12) $6=$6+12}; 
+'{{if (mm2>12) $6=$6+12};
 {if (mm1 <=$6+0 && $6+0 <= mm2 && year1<=$5+0 && $5+0 <= year2) print $1,$2,$3,$4,$5-year1+1,$6-mm1+1,$7,$8+1,$9,$10}
 }' ${WORK}/$var.$lnum > input/${var}.${yyy}.${mmm}.$lnum
 
