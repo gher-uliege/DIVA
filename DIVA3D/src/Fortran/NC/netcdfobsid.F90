@@ -5,14 +5,15 @@
 ! netcdfobsid <obsid.txt> <file.nc>
 !
 ! obsid.txt: text file with 5 columns: longitude (degrees north), latitude 
-! (degrees east), depth (meters, positif in water) and time 
-! (yyyy-mm-ddTHH:MM:SS) and id separated by space
+! (degrees east), depth (meters, positive in water) and time 
+! (yyyy-mm-ddTHH:MM:SS) and id separated by space. The id cannot contain a
+! space. The time or the time and depth column can be omitted.
 !   
 ! file.nc: netcdf file where the information is appended (file must exist)
 !
 ! Compile with something like:
 !
-! gfortran $(nc-config --fflags) -o netcdfobsid netcdfobsid.f90 \
+! gfortran $(nc-config --fflags) -o netcdfobsid netcdfobsid.F90 \
 !   $(nc-config --flibs)
 !
 
@@ -72,7 +73,7 @@ contains
 
 
  ! index of sub-string in string str starting at index start
- ! retuns -1 is sub-string is not found
+ ! returns -1 is sub-string is not found
  function indexof(str,substr,start) result(ind)
   character(len=*), intent(in) :: str, substr
   integer, intent(in) :: start
@@ -82,7 +83,7 @@ contains
   if (ind /= -1) ind = ind+start-1
  end function indexof
 
- ! modified julian day number
+ ! modified Julian day number
 
  function mjd(y,m,d,h,min,s)
   implicit none
@@ -322,3 +323,6 @@ program netcdfobsid
  deallocate(coord,ids)
 
 end program netcdfobsid
+
+! LocalWords:  netcdfobsid obsid txt nc netcdf gfortran config fflags
+! LocalWords:  flibs str Fliegel Flandern jd ModifiedJulianDay
