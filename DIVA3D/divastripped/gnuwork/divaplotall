@@ -6,7 +6,7 @@ DRIVER=png
 
 #===============================================
 # ADAPT the following to the gnuplot executable
-gplot=c:/JMB/gnuplot/bin/wgnuplot.exe
+gplot=c:/JMB/gp440win/gnuplot/bin/wgnuplot.exe
 gplot=gnuplot
 export gplot
 #===============================================
