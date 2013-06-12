@@ -112,10 +112,16 @@ echo $jj
 $compiler  $nocyg $jj -o `basename $jj .f`.a $nclib
 done
 
-n4=`ls -1p *.a | grep -vc "/$"` 
-n4max=`ls -1p *.f | grep -vc "/$"` 
+for jj in `ls *.F90`
+do
+echo $jj
+$compiler -I/usr/include $nocyg $jj -o `basename $jj .F90`.a $nclib
+done
 
-echo You have compiled $n4 programs 
+n4=`ls -1p *.a | grep -vc "/$"` 
+n4max=`ls -1p *.f *.F90 | grep -vc "/$"`
+
+echo You have compiled $n4 programs
 echo out of $n4max 
 
 mv *.a ../../../bin/
@@ -165,7 +171,7 @@ done
 for jj in `ls *.f90`
 do
 echo $jj
-$compiler $flags $jj -o `basename $jj .f90`.a
+$compiler $flags  $jj -o `basename $jj .f90`.a
 done
 
 
