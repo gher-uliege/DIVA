@@ -218,7 +218,7 @@ contains
   real(8) :: coord(:,:)
   integer :: strlen
 
-  character(len=maxlen) :: timeunit
+  character(len=maxlen) :: timeunit, coordinates
   integer :: ncid, dimids, varidcoord(4), varid, dimidstr
   integer :: i,j
 
@@ -252,17 +252,23 @@ contains
   check(nf90_def_var(ncid, 'obslat', nf90_double, dimids, varidcoord(2)))
   check(nf90_put_att(ncid, varidcoord(2), 'units', 'degrees_north'))
 
+  coordinates =  'obslat obslon'
+
   if (size(coord,1) > 2) then
     check(nf90_def_var(ncid, 'obsdepth', nf90_double, dimids, varidcoord(3)))
     check(nf90_put_att(ncid, varidcoord(3), 'units', 'meters'))
     check(nf90_put_att(ncid, varidcoord(3), 'positive', 'down'))
+    coordinates = 'obsdepth ' // coordinates
 
     if (size(coord,1) > 3) then
 
       check(nf90_def_var(ncid, 'obstime', nf90_double, dimids, varidcoord(4)))
       check(nf90_put_att(ncid, varidcoord(4), 'units', timeunit))
+      coordinates = 'obstime ' // coordinates
     end if
   end if
+
+  check(nf90_put_att(ncid, varid, 'coordinates', coordinates))
 
   check(nf90_enddef(ncid))
 
