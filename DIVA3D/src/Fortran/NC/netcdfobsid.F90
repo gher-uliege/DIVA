@@ -1,22 +1,25 @@
-! netcdfobsid adds coordinates of observations (longitude, latitude, depth and time) 
-! and observation identifier to a NetCDF file
+! netcdfobsid adds coordinates of observations (longitude, latitude, depth and 
+! time) and observation identifier to a NetCDF file
 !
 ! Call as
 ! netcdfobsid <obsid.txt> <file.nc>
 !
-! obsid.txt: text file with 5 columns: longitude (degrees north), latitude (degrees east), 
-! depth (meters, positif in water) and time (yyyy-mm-ddTHH:MM:SS and id separated by space)
+! obsid.txt: text file with 5 columns: longitude (degrees north), latitude 
+! (degrees east), depth (meters, positif in water) and time 
+! (yyyy-mm-ddTHH:MM:SS) and id separated by space
 !   
 ! file.nc: netcdf file where the information is appended (file must exist)
 !
 ! Compile with something like:
 !
-! gfortran $(nc-config --fflags) -o netcdfobsid netcdfobsid.f90  $(nc-config --flibs)
+! gfortran $(nc-config --fflags) -o netcdfobsid netcdfobsid.f90 \
+!   $(nc-config --flibs)
 !
 
-#define ERROR_STOP stop
+#define ERROR_STOP call exit(1)
 #define check(status) call check_error(status,__FILE__,__LINE__)
 
+! input-output module
 module divaio
 
  integer, parameter :: maxlen = 512
@@ -89,14 +92,15 @@ contains
 
   ! The following conversion algorithm is due 
   ! to Henry F. Fliegel and Thomas C. Van Flandern: 
-  ! The Julian day (jd) is computed from Gregorian day, month and year (d, m, y) as follows:
+  ! The Julian day (jd) is computed from Gregorian day, month and year (d, m, y)
+  ! as follows:
 
   ! ModifiedJulianDay = 0 for 1858-11-17 CE.
 
   mjd = (( 1461 * ( y + 4800 + ( m - 14 ) / 12 ) ) / 4 +        &
        ( 367 * ( m - 2 - 12 * ( ( m - 14 ) / 12 ) ) ) / 12 -   &
        ( 3 * ( ( y + 4900 + ( m - 14 ) / 12 ) / 100 ) ) / 4 +  &
-       d - 32075 - 2400001)*1d0 + h/24d0 + min/(24*60d0)+ s/(24*60*60d0)               
+       d - 32075 - 2400001)*1d0 + h/24d0 + min/(24*60d0)+ s/(24*60*60d0)
  end function mjd
 
 
@@ -132,14 +136,14 @@ contains
 
   integer :: count,i,j,ncoord, iostat
   integer :: year,month,day,hour,minute
-  real :: seconds, tmp(3)
+  real :: seconds
   character(len=maxlen) :: date, line
   real(8) :: t0
 
   t0 = mjd(timeOrigin(1),timeOrigin(2),timeOrigin(3), &
        timeOrigin(4),timeOrigin(5),real(timeOrigin(6)))
 
-  !    call parseISODate('1988-2-15T1:2:01.023',year,month,day,hour,minute,seconds)
+  ! call parseISODate('1988-2-15T1:2:01.023',year,month,day,hour,minute,seconds)
 
   count = numberOfLines(file,unit)
   allocate(ids(count))
@@ -188,8 +192,9 @@ contains
     if (ncoord == 4) then
       iostat = parseISODate(date,year,month,day,hour,minute,seconds)
       if (iostat /= 0) then
-        write(0,"(A,A,':',I3,A,A,A,I10,A,A)") 'Error: ',trim(__FILE__),__LINE__, &
-             ' unable to parse date ',trim(date),' at line ',j,' from file ',trim(file)
+        write(0,"(A,A,':',I3,A,A,A,I10,A,A)") 'Error: ',trim(__FILE__),   &
+             __LINE__, ' unable to parse date ',trim(date),' at line ',j, &
+             ' from file ',trim(file)
         close(unit)
         ERROR_STOP      
       end if
@@ -217,7 +222,8 @@ contains
   integer :: i,j
 
 
-  write(timeunit,'("days since ",I4,"-",I2.2,"-",I2.2," ",I2.2,":",I2.2,":",I2.2)') &
+  write(timeunit, &
+       '("days since ",I4,"-",I2.2,"-",I2.2," ",I2.2,":",I2.2,":",I2.2)') &
        timeOrigin(1),timeOrigin(2),timeOrigin(3), &
        timeOrigin(4),timeOrigin(5),timeOrigin(6)
 
@@ -281,7 +287,8 @@ contains
 
   if(status /= nf90_noerr) then
     if (present(file) .and. present(line)) then
-      write(6,*) 'NetCDF error: ',file,line,trim(nf90_strerror(status))
+      write(6,*) 'NetCDF error: ',file,'line ',line, &
+           trim(nf90_strerror(status))
     else
       write(0,*) 'NetCDF error: ',trim(nf90_strerror(status))
     end if
