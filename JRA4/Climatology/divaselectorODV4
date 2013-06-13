@@ -256,7 +256,7 @@ return 0
 # Added simple qc on range
       {if ($datacol < boundmin) qfok=0};
       {if ($datacol > boundmax) qfok=0};
-      {if (issdn==1) {foralex=$edmocode"-"$cdicode} else {foralex="Cruise:"$cruisecol}};
+      {if (issdn==1) {foralex=$edmocol"-"$cdicol} else {foralex="Cruise:"$cruisecol}};
 #
 #      if ( $qccol==1 || $qccol==2 || $qccol==8 );
       if ($datacol > "" && qfok==1 && $datacol != valexodv) print $loncol,$latcol,$datacol,$depthcol,$qccol,year,month,day,hour,$datecol,foralex}' \
