@@ -1,4 +1,4 @@
-! netcdfobsid adds coordinates of observations (longitude, latitude, depth and 
+! netcdfobsid adds coordinates of observations (longitude, latitude, depth and
 ! time) and observation identifier to a NetCDF file
 !
 ! Call as
@@ -60,13 +60,18 @@ contains
   read(str(i+1:j-1),*) hour
 
   ! minute
+  minute=0
+  seconds=0
   i = indexof(str,':',j+1)
-  read(str(j+1:i-1),*) minute
+  read(str(j+1:i-1),*,END=123,ERR=123) minute
 
   ! second
-  read(str(i+1:),*) seconds
-
-  !write(6,*) 'date ',year,month,day,hour,minute,seconds
+  read(str(i+1:),*,END=999,ERR=999) seconds
+  goto 999
+ 123    continue
+   read(str(i+1:),*,END=999,ERR=999) minute
+ 999    continue
+!  write(6,*) 'date ',str,year,month,day,hour,minute,seconds
 
   status = 0
  end function parseISODate
