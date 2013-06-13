@@ -146,15 +146,24 @@ loncol=$(grep -i "Longitude" ODVcolumns | head -1 |  awk -F "$delimiter" '{print
 latcol=$(grep -i "Latitude" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 datecol=$(grep -i "YYYY-MM" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 #2013 maybe add here tests on presence of CDI and replace or replace cruisecol by CDI if present
-cdicol=$(grep -i "CDI" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
+cdicol=$(grep -i "LOCAL_CDI" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
+edmocol=$(grep -i "EDMO" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
+issdn=1
 if [ "$cdicol" == "" ]
 then
 echo WARNING NO CDI FOUND
-#cdicol=$cruisecol
+issdn=0
 else
 echo CDI found in column $cdicol
-cruisecol=$cdicol
 fi
+if [ "$edmocol" == "" ]
+then
+echo WARNING NO EDMO-CODE FOUND
+issdn=0
+else
+echo EDMO found in column $edmocol
+fi
+
 # Pressure for the moment if depht, carefull about bottom depth columns
 if [ "$dcoordinate" == "Pressure" ]
 then
@@ -211,7 +220,8 @@ then
 
 tail -$userlines $inputfile | \
     awk -F "$delimiter" -v datacol=$datacol -v qccol=$qccol -v latcol=$latcol -v loncol=$loncol -v datecol=$datecol -v depthcol=$depthcol -v todepth=$todepth \
-         -v cruisecol=$cruisecol -v stationcol=$stationcol -v valexodv=$valexodv -v boundmin=$boundmin -v boundmax=$boundmax\
+         -v cruisecol=$cruisecol -v stationcol=$stationcol -v valexodv=$valexodv -v boundmin=$boundmin -v boundmax=$boundmax \
+        -v issdn=$issdn -v edmocol=$edmocol -v cdicol=$cdicol \
       '
       function myqfok(qf,n,qval)
 #        =====
@@ -228,6 +238,8 @@ return 0
       {if ($3 > "") {z=$3} else {$3=z}};
       {if ($loncol > "") {w=$loncol} else {$loncol=w}};
       {if ($cruisecol > "") {wcruise=$cruisecol} else {$cruisecol=wcruise}};
+      {if (issdn == 1) {if ($cdicol > "") {wcdi=$cdicol} else {$cdicol=wcdi}}};
+      {if (issdn == 1) {if ($edmocol > "") {wedmo=$edmocol} else {$edmocol=wedmo}}};
       {if ($stationcol > "") {wstation=$stationcol} else {$stationcol=wstation}};
       {if ($loncol +0< -180+0) {n=int((-180-$loncol)/360)+1; $loncol=$loncol+n*360}} ;
       {if ($loncol +0> -180+360) {n=int(($loncol-(-180))/360); $loncol=$loncol-n*360}} ;
@@ -244,9 +256,10 @@ return 0
 # Added simple qc on range
       {if ($datacol < boundmin) qfok=0};
       {if ($datacol > boundmax) qfok=0};
+      {if (issdn==1) {foralex=$edmocode"-"$cdicode} else {foralex="Cruise:"$cruisecol}};
 #
 #      if ( $qccol==1 || $qccol==2 || $qccol==8 );
-      if ($datacol > "" && qfok==1 && $datacol != valexodv) print $loncol,$latcol,$datacol,$depthcol,$qccol,year,month,day,hour,$datecol,$cruisecol}' \
+      if ($datacol > "" && qfok==1 && $datacol != valexodv) print $loncol,$latcol,$datacol,$depthcol,$qccol,year,month,day,hour,$datecol,foralex}' \
        > ${WORK}/${var}.bigfile
 
 fi
