@@ -1,4 +1,4 @@
-! netcdfobsid adds coordinates of observations (longitude, latitude, depth and
+! netcdfobsid adds coordinates of observations (longitude, latitude, depth and 
 ! time) and observation identifier to a NetCDF file
 !
 ! Call as
@@ -6,8 +6,9 @@
 !
 ! obsid.txt: text file with 5 columns: longitude (degrees north), latitude 
 ! (degrees east), depth (meters, positive in water) and time 
-! (yyyy-mm-ddTHH:MM:SS) and id separated by space. The id cannot contain a
-! space. The time or the time and depth column can be omitted.
+! (yyyy-mm-ddTHH:MM:SS, seconds, minutes and days might be omitted) and id 
+! separated by space. The id cannot contain a space. The time or the time and 
+! depth column can be omitted.
 !   
 ! file.nc: netcdf file where the information is appended (file must exist)
 !
@@ -41,37 +42,62 @@ contains
 
   integer :: i,j,iostat, status
 
+  hour = 0
+  minute = 0
+  seconds = 0
+
   status = -1
   ! year
   i = index(str,'-')
+  if (i == 0) return
   read(str(1:i-1),*,iostat=iostat) year
   if (iostat /= 0) return
 
   ! month
   j = indexof(str,'-',i+1)
-  read(str(i+1:j-1),*) month
+  if (j == 0) return
+  read(str(i+1:j-1),*,iostat=iostat) month
+  if (iostat /= 0) return
 
   ! day
   i = indexof(str,'T',j+1)
-  read(str(j+1:i-1),*) day
+  if (i == 0) then
+    ! there are no hours, the remaining of the string are days
+    read(str(j+1:),*,iostat=iostat) day
+    if (iostat == 0) status = 0
+    return
+  end  if
+
+  read(str(j+1:i-1),*,iostat=iostat) day
+  if (iostat /= 0) return
 
   ! hour
   j = indexof(str,':',i+1)
-  read(str(i+1:j-1),*) hour
+  if (j == 0) then
+    ! there are no minutes, the remaining of the string are hours
+    read(str(i+1:),*,iostat=iostat) hour
+    if (iostat == 0) status = 0
+    return
+  end  if
+
+  read(str(i+1:j-1),*,iostat=iostat) hour
+  if (iostat /= 0) return
 
   ! minute
-  minute=0
-  seconds=0
   i = indexof(str,':',j+1)
-  read(str(j+1:i-1),*,END=123,ERR=123) minute
+  if (i == 0) then
+    ! there are no seconds, the remaining of the string are minutes
+    read(str(j+1:),*,iostat=iostat) minute
+    if (iostat == 0) status = 0
+    return
+  end  if
+
+  read(str(j+1:i-1),*,iostat=iostat) minute
+  if (iostat /= 0) return
 
   ! second
-  read(str(i+1:),*,END=999,ERR=999) seconds
-  goto 999
- 123    continue
-   read(str(i+1:),*,END=999,ERR=999) minute
- 999    continue
-!  write(6,*) 'date ',str,year,month,day,hour,minute,seconds
+  read(str(i+1:),*,iostat=iostat) seconds
+  if (iostat /= 0) return
 
   status = 0
  end function parseISODate
@@ -85,7 +111,7 @@ contains
   integer :: ind
 
   ind = index(str(start:),substr)
-  if (ind /= -1) ind = ind+start-1
+  if (ind /= 0) ind = ind+start-1
  end function indexof
 
  ! modified Julian day number
@@ -148,6 +174,9 @@ contains
 
   t0 = mjd(timeOrigin(1),timeOrigin(2),timeOrigin(3), &
        timeOrigin(4),timeOrigin(5),real(timeOrigin(6)))
+
+!  i = parseISODate('1986-01-25T13:45',year,month,day,hour,minute,seconds)
+!  stop
 
   ! call parseISODate('1988-2-15T1:2:01.023',year,month,day,hour,minute,seconds)
 
@@ -299,7 +328,7 @@ contains
 
   if(status /= nf90_noerr) then
     if (present(file) .and. present(line)) then
-      write(6,*) 'NetCDF error: ',file,'line ',line, &
+      write(0,*) 'NetCDF error: ',file,'line ',line, &
            trim(nf90_strerror(status))
     else
       write(0,*) 'NetCDF error: ',trim(nf90_strerror(status))
