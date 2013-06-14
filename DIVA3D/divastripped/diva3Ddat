@@ -198,8 +198,8 @@ echo '%%%%%%%%%%%%  cleaning '$var'.'$lev' %%%%% original data nmbr '$nbdat >> $
   else
    echo 'diva3Ddat:  generating a mesh for '$var'.'$lev >> $diva3dlog
 
-echo diva3Ddat: ////////////////////////////////////////// >> ./output/diva.log
-echo 'diva3Ddat:         Creating mesh: '$var'.'$lev >> ./output/diva.log
+echo diva3Ddat: ////////////////////////////////////////// >> $divalog
+echo 'diva3Ddat:         Creating mesh: '$var'.'$lev       >> $divalog
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
 echo ' '  >> $divalog
 divamesh

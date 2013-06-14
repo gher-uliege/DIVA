@@ -170,8 +170,8 @@ mv -f ./input/data.dat.ori ./input/data.dat
 mv -f ./input/valatxy.coord.ori ./input/valatxy.coord
 cp ./output/gcv.dat ./divawork/fort.11
 cd divawork
-echo divacvrand:Looking for the minimum of GCV >> $divacvrandlog
-echo ' ' >> ../$divacvrandlog
+echo divacvrand:Looking for the minimum of GCV  >> $divacvrandlog
+echo ' ' 					>> $divacvrandlog
 if [ -f ../input/gcvsampling.dat ] 
 then 
 ../../bin/findmin.a >> $divalog
