@@ -33,7 +33,7 @@ divamesh
  mv bidon $divacvlog
 fi
 else
-echo divacv:Need to provide gcvsampling.dat in ./input ! | tee -q $divacvlog
+echo divacv:Need to provide gcvsampling.dat in ./input ! | tee -a $divacvlog
 fi
 ijm=0
 for gcv in `cat ./input/gcvsampling.dat`
