@@ -204,6 +204,12 @@ done
 for ODVDATA in `cat datasource`
 do
 
+#Handling of end-of-file in ODV format files
+dos2unix $ODVDATA # CRLF => CR and LF
+cat $ODVDATA | tr '\r' '\n' > bidontransfert.txt # CR => LF
+mv bidontransfert.txt $ODVDATA 
+###
+
 echo 'divadoall:' Data source file is $ODVDATA
 echo 'divadoall:' Trying to guess ODV format on $ODVDATA
 
