@@ -1,5 +1,5 @@
 #!/bin/bash
-
+export LC_ALL=C
 divarundir=$(pwd)
 divameshlog=$divarundir'/output/divamesh.log'
 divalog=$divarundir'/output/diva.log'
