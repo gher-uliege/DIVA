@@ -60,16 +60,16 @@ echo Trying to make data extraction on data file $inputfile
 #echo Number of lines in the data file :
 #wc -l $inputfile
 datalines=$(wc -l $inputfile | awk '{print $1}')
-headerlines=$(head -1000 $inputfile | grep "//"  | wc -l)
+headerlines=$(cat $inputfile | grep "//"  | wc -l)
 let userlines=$datalines-headerlines
 let userlines=$userlines-1
-echo data $datalines header $headerlines user $userlines
+echo data $datalines comments $headerlines user $userlines
 # 
 echo Trying to see if exclusion value is present
 
 valexodv=$(grep -a MissingValueIndicators $inputfile | awk -F ">" '{print $2}' | awk -F "<" '{print $1}')
 echo  valexodv =  $valexodv
-echo 
+echo
 #//<MissingValueIndicators>NaN</MissingValueIndicators>
 
 
@@ -218,7 +218,7 @@ echo Foreseen to put two parameters on CDI EDMO
 if [ "$ivar" == "1" ]
 then
 
-tail -$userlines $inputfile | \
+awk -F "$delimiter" '{if (substr($0,1,2) !="//")  {print $0} }' | \
     awk -F "$delimiter" -v datacol=$datacol -v qccol=$qccol -v latcol=$latcol -v loncol=$loncol -v datecol=$datecol -v depthcol=$depthcol -v todepth=$todepth \
          -v cruisecol=$cruisecol -v stationcol=$stationcol -v valexodv=$valexodv -v boundmin=$boundmin -v boundmax=$boundmax \
         -v issdn=$issdn -v edmocol=$edmocol -v cdicol=$cdicol \
