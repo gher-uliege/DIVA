@@ -218,7 +218,7 @@ echo Foreseen to put two parameters on CDI EDMO
 if [ "$ivar" == "1" ]
 then
 
-awk -F "$delimiter" '{if (substr($0,1,2) !="//")  {print $0} }' | \
+awk -F "$delimiter" '{if (substr($0,1,2) !="//")  {print $0} }' $inputfile | \
     awk -F "$delimiter" -v datacol=$datacol -v qccol=$qccol -v latcol=$latcol -v loncol=$loncol -v datecol=$datecol -v depthcol=$depthcol -v todepth=$todepth \
          -v cruisecol=$cruisecol -v stationcol=$stationcol -v valexodv=$valexodv -v boundmin=$boundmin -v boundmax=$boundmax \
         -v issdn=$issdn -v edmocol=$edmocol -v cdicol=$cdicol \
