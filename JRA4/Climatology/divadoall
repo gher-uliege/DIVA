@@ -214,6 +214,31 @@ echo 'divadoall:' Data source file is $ODVDATA
 echo 'divadoall:' Trying to guess ODV format on $ODVDATA
 
 ./divaguessformsODV4 $ODVDATA
+
+###############################################
+# Handling one depth or depth+speed (ready)  ##
+###############################################
+
+onedepth=yes ### CHANGE this parameter (ex. : "no") if you want to disable the script "onedepthODV4" ###
+if [ $onedepth == yes ]
+then
+./divaonedepthODV4 $ODVDATA
+else
+echo "no handling of one depth (or depth+speed) files !"
+fi
+
+done
+
+for ODVDATA in `cat datasource`
+do
+
+echo 'divadoall:' Data source file is $ODVDATA
+echo 'divadoall:' Trying to guess ODV format on $ODVDATA
+
+./divaguessformsODV4 $ODVDATA
+
+################################
+
 echo 'divadoall:' Now extracting
 ./divaselectorODV4 $ODVDATA
 
@@ -862,6 +887,22 @@ divadoNCYR $isxmlgenerat
 fi
 
 fi
+
+###################################
+### Checking errors in diva.log ###
+flag_err=0
+logfile=../../../diva-4.6.1/DIVA3D/divastripped/output/diva.log
+echo 'check-list of errors :'
+flag_err=$(grep -i -e "warning" -e "data\ error" $logfile | wc -l)
+if [ $flag_err == 0 ]
+then
+echo 'no error, you are lucky'
+else
+echo $flag_err 'errors !!! Please WATCH diva.log !!!!'
+fi
+###################################
+
+
 
 echo 'divadoall:' ==================
 echo 'divadoall: Finished  '$var
