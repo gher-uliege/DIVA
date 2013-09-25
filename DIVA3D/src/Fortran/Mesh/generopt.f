@@ -1231,7 +1231,7 @@ C       ON LE 'LISSERA' NL FOIS, OU NL EST LU DANS UN FICHIER 11
 
       IMPLICIT NONE
       integer*4 jm1  ,JJ,KK
-      parameter(jm1=50)
+      parameter(jm1=100)  ! initialement, jm1=50
       INTEGER*4 NMAX,MMAX,MA,NO,B(4),C,A,MAILLE(MMAX,6)
       real*8 NOEUD(NMAX,2),AX,AY,DD1,DD2
       INTEGER*4 I,J,K,M,N,MN(jm1,2),NN(jm1),S,T,NL,P
@@ -1287,7 +1287,7 @@ C           write(6,*) 'Mesh',MA
 C
 50           M=M+1
            if(M.GT.JM1) THEN
-           write(6,*) 'increase JM1'
+           write(6,*) 'increase JM1 : SEVERE ERROR !!!!!!'
            stop
            endif
            MN(M,1)=J
