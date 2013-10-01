@@ -39,6 +39,10 @@ fi
 ####################
 
 inputfile=$1 # /home/sylvain/DIVA/usersw31234-data_centre43-2013-09-03_result/7011_20130903_125015.txt
+path_metadata=$(echo $inputfile | awk -F "/" '{print $NF}')
+metadata_num=$(echo $path_metadata | awk -F "_" '{print $NF}')
+metadata_num=${metadata_num:0:4}
+path_metadata=$(echo $inputfile | sed s/$path_metadata//g)
 
 #if [ "$#" != "1" ]
 #then
@@ -109,6 +113,18 @@ fi
 	let beginline=$headerlines+3
 	echo data $datalines, header $headerlines, user $userlines, begin $beginline
 	fi
+
+### Metadata file (only needed for 1 depth files)
+
+if [ $flag_depth_speed == 0 ]
+then
+	metadata_file=$(ls $path_metadata*$metadata_num*metadata*)
+	ret=$?
+	if [ $ret != 0 ]; then
+	  echo "Warning: no metadata file found"
+	  exit $ret
+	fi
+fi
 
 ### Value of the exclusion value given by the user ###
 
@@ -300,10 +316,32 @@ fi
 
 if [ $flag_depth_speed == 0 ]
 then
-## Reading of Bot.Depth
+## Reading of Bot.Depth, Station, Metadata Depths !!
 echo $beginline,$botdepthcol
 botdepth=$(awk -F "$delimiter" -v beginline=$beginline -v botdepthcol=$botdepthcol 'NR==beginline {print $botdepthcol}' $inputfile)
-echo bothdepth = $botdepth
+station=$(awk -F "$delimiter" -v beginline=$beginline 'NR==beginline {print $2}' $inputfile)
+echo botdepth = $botdepth, station = $station
+
+mindepth_col=$(awk -F "," -v var='"Minimum instrument depth (m)"' '{for(n=1;n<=NF;n++) if($n == var) print n}' $metadata_file)
+maxdepth_col=$(awk -F "," -v var='"Maximum instrument depth (m)"' '{for(n=1;n<=NF;n++) if($n == var) print n}' $metadata_file)
+echo $mindepth_col, $maxdepth_col
+if [ -z $mindepth_col ] || [ -z $maxdepth_col ]
+then 
+echo "no depth in metadata" 
+exit
+fi
+mdepth_line=$(grep -n "$station" $metadata_file)
+mdepth_line=${mdepth_line:0:1}
+echo $mdepth_line
+mindepth=$(awk -F "," -v mdepth_line=$mdepth_line -v mindepth_col=$mindepth_col 'NR==mdepth_line {print $mindepth_col}' $metadata_file)
+mindepth=$(echo $mindepth | sed s/'"'//g)
+maxdepth=$(awk -F "," -v mdepth_line=$mdepth_line -v maxdepth_col=$maxdepth_col 'NR==mdepth_line {print $maxdepth_col}' $metadata_file)
+maxdepth=$(echo $maxdepth | sed s/'"'//g)
+echo mindepth = $mindepth, maxdeph = $maxdepth
+instr_depth=$(echo "($mindepth+$maxdepth)/2." | bc ; scale=4)
+echo $instr_depth
+botdepth=$instr_depth
+echo measurement depth = $botdepth
 
 ## Reading of contour.depth and extraction of 2 surrounding depth values
 

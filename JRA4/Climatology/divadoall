@@ -219,8 +219,8 @@ echo 'divadoall:' Trying to guess ODV format on $ODVDATA
 # Handling one depth or depth+speed (ready)  ##
 ###############################################
 
-onedepth=yes ### CHANGE this parameter (ex. : "no") if you want to disable the script "onedepthODV4" ###
-if [ $onedepth == yes ]
+onedepth=yes ### CHANGE this parameter (ex. : "no") if you want to disable the script "divaonedepthODV4" ###
+if [ $onedepth == yes ] && [ $isextractf == 1 ]
 then
 ./divaonedepthODV4 $ODVDATA
 else
