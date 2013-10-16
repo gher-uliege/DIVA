@@ -96,7 +96,7 @@ echo Delimiter for ODV $delimiter
 if [ "$dcoordinate" == "Pressure" ]
 then
 zfound1=$(grep -i "pressure" ODVcolumns | wc -l)
-zfound2=$(grep -i "press" ODVcolumns | wc -l)
+zfound2=$(grep -i -e "press" -e "pres" ODVcolumns | wc -l)
 let zfound=$zfound1+$zfound2
 if [ "$zfound" -le "0" ]
 then
@@ -139,7 +139,7 @@ for var in `cat varlist`
 do
 echo Working on parameter $var
 #head ODVcolumns
-datacol=$(grep "$var" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
+datacol=$(grep -i "$var" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 cruisecol=$(grep "Cruise" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 stationcol=$(grep "Station" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 loncol=$(grep -i "Longitude" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
@@ -167,7 +167,7 @@ fi
 # Pressure for the moment if depht, carefull about bottom depth columns
 if [ "$dcoordinate" == "Pressure" ]
 then
-depthcol=$(grep -i "pressure" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
+depthcol=$(grep -i -e "pressure" -e "press" -e "pres" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 echo === PRESSURE COORDINATE in column $depthcol
 else
 depthcol=$(grep -i "Depth" ODVcolumns | head -2 | tail -1 |  awk -F "$delimiter" '{print $3}')
