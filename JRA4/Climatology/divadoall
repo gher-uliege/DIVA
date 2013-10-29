@@ -248,6 +248,19 @@ echo 'divadoall:'
 echo 'divadoall:' '======================= Finished with data extraction ==========='
 echo 'divadoall:' '================================================================='
 fi
+
+#####################################
+# Handling of duplicates data files #
+#####################################
+check_duplicates=yes ### CHANGE this parameter (ex. : "no") if you want to disable the script "divaduplicatesODV4" ###
+
+if [ $check_duplicates == yes ] && [ $isanalysis -ne 0 ]
+then
+./divaduplicatesODV4
+fi
+
+#####################################
+
 echo 'divadoall:' 
 echo 'divadoall:' '================================================================='
 echo 'divadoall:' '======================= Starting analysis loops ==========='
