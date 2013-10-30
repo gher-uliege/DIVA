@@ -904,9 +904,9 @@ fi
 ###################################
 ### Checking errors in diva.log ###
 flag_err=0
-logfile=../../../diva-4.6.1/DIVA3D/divastripped/output/diva.log
+logfile=../../DIVA3D/divastripped/output/diva.log
 echo 'check-list of errors :'
-flag_err=$(grep -i -e "warning" -e "data\ error" $logfile | wc -l)
+flag_err=$(grep -i "data\ error" $logfile | wc -l)
 if [ $flag_err == 0 ]
 then
 echo 'no error, you are lucky'
