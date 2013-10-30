@@ -891,7 +891,7 @@ echo 'divadoall:' Producing 4D yearly netcdf files
 #####################################
 if [ "$isxmlgenerat" == "-1" -o "$isxmlgenerat" == "1" -o "$isxmlgenerat" == "0" ]
 then
-divadoNCDF $isxmlgenerat
+./divadoNCDF $isxmlgenerat
 fi
 
 if [ "$isxmlgenerat" == "-11" -o "$isxmlgenerat" == "11" ]
