@@ -5,8 +5,8 @@ dcoordinate=Depth
 todepth=0
 valexodv=""
 
-mkdir input
-mkdir input/divadata
+mkdir -p input
+mkdir -p input/divadata
 #dcoordinate=Pressure
 #todepth=-1
 #todepth=1 means transformation of pressure to depth (saunder and Fofonoff)
@@ -26,7 +26,7 @@ rm -f ${WORK}/*
 fi
 else
 echo Creating working directory $WORK
-mkdir $WORK
+mkdir -p $WORK
 fi
 
 if [ -f "pressure.coordinates" ]
@@ -75,7 +75,7 @@ echo
 
 
 echo Checking file structure
-divaguessformsODV4 $inputfile
+./divaguessformsODV4 $inputfile
 echo
 echo =================
 echo Finished checking
