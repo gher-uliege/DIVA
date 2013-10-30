@@ -1,0 +1,67 @@
+#!/bin/bash
+export LC_ALL=C 
+
+if [ "$#" != "1" ]
+then
+Echo =======================================
+Echo Usage:  divaguessform datafile
+Echo =======================================
+exit
+fi
+
+# First try to determine which delimiter by testing which one gives the
+# maximum number of equal number of fields on the lines
+
+NTABS=$(awk -F "\t" 'BEGIN {n=0;NFO=0} {if(substr($0,1,2) != "//") { if (NF==NFO) {n=n+NF} else {NFO=NF}}} END {print n+NF}' $1)
+NSEMI=$(awk -F ";" 'BEGIN {n=0;NFO=0} {if(substr($0,1,2) != "//") { if (NF==NFO) {n=n+NF} else {NFO=NF}}} END {print n+NF}' $1)
+delimiter="\t"
+echo $NTABS and $NSEMI
+
+if [ "$NSEMI" -gt "$NTABS" ]
+then
+delimiter=";"
+fi
+
+echo "$delimiter" > ODVdelimiter
+
+awk -F "$delimiter" '{\
+if(substr($0,1,2) != "//" && /ongitude/) { print $0 } 
+}' $1 > ODVheader
+
+awk -F "$delimiter" '{\
+for(i=1;i<=NF;i++){{print $i "\t \t" i} }
+}' ODVheader > ODVcolumns
+
+####
+# Handling of end-of-line character problems  (Sylvain Watelet - 29/08/2013)
+z=$(awk -F "$delimiter" '{print NF}' ODVheader)
+m=0
+
+m=$(awk -F "$delimiter" 'NF>0 {
+                    for (i=1;i<=NF;i++) {
+                        if($i != "Longitude [degrees_east]") {m=m+1} else {m=0}
+                        }
+                     }
+            END     {print m ;
+                      } ' ODVheader)
+
+echo $m, $z
+#m=14
+
+if [ -n "$m" ] # verification of the existence of $m (in case of other problems linked to the file reading)
+then
+true # no problem
+else 
+echo "$1" >> ODVerrorfiles # problem
+exit 
+fi
+
+if [ $m -eq $z ]
+then
+#echo $m
+echo "$1" >> ODVerrorfiles
+else
+true # rm -f ODVerrorfiles
+fi
+
+####

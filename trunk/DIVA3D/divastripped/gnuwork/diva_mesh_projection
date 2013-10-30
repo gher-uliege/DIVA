@@ -1,0 +1,26 @@
+#!/bin/bash
+
+if [ -f fort.68 ] 
+then
+
+echo gnuplot is $gplot
+awk '{print $0 >> "bidon"}' << EOF
+#the gnuplot commands
+unset pm3d
+set style line 10 linetype 1 lw 2 linecolor rgb "black"
+set style line 9 linetype 1 lw 1 linecolor rgb "light-gray"
+set angles degrees
+
+set xtics ("longref" 0)
+
+
+#end gnuplot commands
+exit
+EOF
+echo "plot 'fort.71' using " '(($1-longref)*cos($2)):($2)' " with lines ls 9 t 'DIVA mesh'" >> bidon
+$gplot bidon
+
+else
+echo No plot produced
+
+fi

@@ -1,0 +1,165 @@
+#!/bin/bash
+#
+##########################################
+#
+  Fileinf=./input/3Dinfo
+{
+read comment
+read var
+read comment
+read lay1
+read comment
+read lay2
+read comment
+read cont
+read comment
+read datop
+read comment
+read parop
+read comment
+read ana3d
+} < $Fileinf
+#
+mkdir -p ./output/3Danalysis/
+
+# Define log files 
+#-----------------
+divarundir=$(pwd)
+divalog=$divarundir'/output/diva.log' 
+diva3dlog=$divarundir'/output/3Danalysis/'$var'.diva3D.log'
+
+#
+echo 'diva3Ddress:'					| tee $divalog $diva3dlog 
+echo 'diva3Ddress:' 'Start run on '$var			| tee -a $divalog $diva3dlog
+echo 'diva3Ddress:' 'level '$lay1' to level '$lay2	| tee -a $divalog $diva3dlog
+echo 'diva3Ddress:'					| tee -a $divalog $diva3dlog
+
+#
+########################################################################
+#
+if [ "$cont" -ge "1" ]; then
+#
+echo 'diva3Ddress:'						| tee -a $diva3dlog 
+echo 'diva3Ddress:' 'Running diva3Dcont (contour generation) '	| tee -a $diva3dlog
+echo 'diva3Ddress:' 'on '$var					| tee -a $diva3dlog
+echo 'diva3Ddress:' 'level '$lay1' to level '$lay2		| tee -a $diva3dlog
+echo 'diva3Ddress:'						| tee -a $diva3dlog
+#
+#
+./diva3Dcont
+fi
+########################################################################
+#
+if [ "$datop" -ge "1" ]; then
+#
+echo 'diva3Ddress:' 						| tee -a $diva3dlog
+echo 'diva3Ddress:' 'Running diva3Ddat (data cleaning)  '	| tee -a $diva3dlog
+echo 'diva3Ddress:' ' on '$var					| tee -a $diva3dlog
+echo 'diva3Ddress:' 'level '$lay1' to level '$lay2		| tee -a $diva3dlog
+echo 'diva3Ddress:'						| tee -a $diva3dlog
+#
+#
+./diva3Ddat
+fi
+########################################################################
+#
+if [ "$parop" == "1" -o  "$parop" == "-1" ]; then
+#
+echo 'diva3Ddress:' 						| tee -a $diva3dlog
+echo 'diva3Ddress:' 'Running diva3Dclop  (CL optimisation)'	| tee -a $diva3dlog
+echo 'diva3Ddress:' ' on '$var					| tee -a $diva3dlog
+echo 'diva3Ddress:' 'level '$lay1' to level '$lay2		| tee -a $diva3dlog
+echo 'diva3Ddress:'						| tee -a $diva3dlog
+#
+./diva3Dclop
+fi
+########################################################################
+if [ "$parop" == "2" -o  "$parop" == "-2" ]; then
+#
+echo 'diva3Ddress:' 						| tee -a $diva3dlog
+echo 'diva3Ddress:' 'Running diva3Dsnop  (SN optimisation)'	| tee -a $diva3dlog
+echo 'diva3Ddress:' ' on '$var					| tee -a $diva3dlog
+echo 'diva3Ddress:' 'level '$lay1' to level '$lay2		| tee -a $diva3dlog
+echo 'diva3Ddress:'						| tee -a $diva3dlog
+#
+./diva3Dsnop
+fi
+########################################################################
+#
+if [ "$parop" == "3" -o  "$parop" == "-3" ]; then
+#
+echo 'diva3Ddress:' 						| tee -a $diva3dlog
+echo 'diva3Ddress:' 'Running diva3Dclop  (CL optimisation)'	| tee -a $diva3dlog
+echo 'diva3Ddress:' ' on '$var					| tee -a $diva3dlog
+echo 'diva3Ddress:' 'level '$lay1' to level '$lay2		| tee -a $diva3dlog
+echo 'diva3Ddress:'						| tee -a $diva3dlog
+#
+./diva3Dclop
+#
+echo 'diva3Ddress:' 						| tee -a $diva3dlog
+echo 'diva3Ddress:' 'Running diva3Dsnop  (SN optimisation)'	| tee -a $diva3dlog
+echo 'diva3Ddress:' ' on '$var					| tee -a $diva3dlog
+echo 'diva3Ddress:' 'level '$lay1' to level '$lay2		| tee -a $diva3dlog
+echo 'diva3Ddress:'						| tee -a $diva3dlog
+#
+./diva3Dsnop
+fi
+########################################################################
+#
+if [ "$parop" == "10" -o  "$parop" == "-10" ]; then
+#
+echo 'diva3Ddress:' 						| tee -a $diva3dlog
+echo 'diva3Ddress:' 'Running diva3Dclop  (CL optimisation)'	| tee -a $diva3dlog
+echo 'diva3Ddress:' ' on '$var					| tee -a $diva3dlog
+echo 'diva3Ddress:' 'level '$lay1' to level '$lay2		| tee -a $diva3dlog
+echo 'diva3Ddress:'						| tee -a $diva3dlog
+#
+./diva3Dclop
+fi
+########################################################################
+#
+if [ "$parop" == "30" -o  "$parop" == "-30" ]; then
+#
+echo 'diva3Ddress:' 						| tee -a $diva3dlog
+echo 'diva3Ddress:' 'Running diva3Dclop  (CL optimisation)'	| tee -a $diva3dlog
+echo 'diva3Ddress:' ' on '$var					| tee -a $diva3dlog
+echo 'diva3Ddress:' 'level '$lay1' to level '$lay2		| tee -a $diva3dlog
+echo 'diva3Ddress:'						| tee -a $diva3dlog
+#
+./diva3Dclop
+#
+echo 'diva3Ddress:' 						| tee -a $diva3dlog
+echo 'diva3Ddress:' 'Running diva3Dsnop  (SN optimisation)'	| tee -a $diva3dlog
+echo 'diva3Ddress:' ' on '$var					| tee -a $diva3dlog
+echo 'diva3Ddress:' 'level '$lay1' to level '$lay2		| tee -a $diva3dlog
+echo 'diva3Ddress:'						| tee -a $diva3dlog
+#
+./diva3Dsnop
+fi
+########################################################################
+#
+if [ "$ana3d" -eq "1" -o  "$ana3d" -eq "2" ]; then
+#
+echo 'diva3Ddress:' 						| tee -a $diva3dlog
+echo 'diva3Ddress:' 'Running diva3Dsup  (3D analysis)'		| tee -a $diva3dlog
+echo 'diva3Ddress:' ' on '$var					| tee -a $diva3dlog
+echo 'diva3Ddress:' 'level '$lay1' to level '$lay2		| tee -a $diva3dlog
+echo 'diva3Ddress:'						| tee -a $diva3dlog
+#
+./diva3Dsub
+fi
+#
+########################################################################
+#
+if [ "$ana3d" -ge "3" ]; then
+#
+echo 'diva3Ddress:' 						| tee -a $diva3dlog
+echo 'diva3Ddress:' 'Running diva3Drefiltr (3D analysis)'	| tee -a $diva3dlog
+echo 'diva3Ddress:' ' on '$var					| tee -a $diva3dlog
+echo 'diva3Ddress:' 'level '$lay1' to level '$lay2		| tee -a $diva3dlog
+echo 'diva3Ddress:'						| tee -a $diva3dlog
+#
+./diva3Drefiltr
+fi
+#
+########################################################################

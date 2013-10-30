@@ -1,0 +1,14 @@
+! Code name for salinity
+Salinity
+! Code name for temperature
+Temperature
+! Relative Error 1 (epsilon1):
+0.2
+! Relative Error 2 (epsilon2):
+0.3
+! Relative width fooprint:
+2.
+! Variational-Mixing combination factor:
+1.
+! Maximum iteration permited for each level:
+5

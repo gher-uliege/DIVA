@@ -1,0 +1,25 @@
+#!/bin/bash
+#####################################################
+#
+# $1 = level number
+# $2 = variable name.
+#======================================
+lev=$1
+var=$2
+if [ -f ./input/divatrans/$var.$lev.anl.mat ];then
+  if [ -f ./output/3Danalysis/Fields/$var.$lev.anl.nc ];then
+    cp ./output/3Danalysis/Fields/$var.$lev.anl.nc ./output/3Danalysis/Fields/$var.$lev.anl.tr.nc
+    gherfile=./output/3Danalysis/Fields/$var.$lev.anl.nc
+    nitfile=./input/divatrans/$var.$lev.anl.mat
+    echo $gherfile
+    matlab="matlab -nosplash -nodesktop"
+    $matlab <<EOF
+    invtrans_NCDF('$gherfile','$nitfile','$PWD/input/divatrans','$PWD/output/3Danalysis/Fields')
+EOF
+    echo dv3D_invtrans: pour $var.$lev.anl.nc
+  else
+    echo dv3D_invtrans did not find $var.$lev.anl.nc
+  fi
+else
+    echo dv3D_invtrans did not find $var.$lev.anl.mat
+fi

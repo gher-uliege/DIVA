@@ -1,0 +1,417 @@
+
+
+\documentclass[8pt,a4paper,notitlepage]{book}
+\usepackage{array,amsmath}
+
+
+
+\usepackage{pstricks,pst-node,pst-text,pst-3d,pst-grad}
+\usepackage[dvips]{graphicx}
+\usepackage{psfrag}
+\usepackage{xspace}
+\usepackage{float}
+\usepackage{verbatim}
+
+\usepackage{multicol}
+\usepackage{calc}
+
+%\usepackage{import}
+
+%\usepackage{nicefrac}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{times}
+\usepackage{shadow}
+\usepackage{pifont}
+\usepackage{color}
+\usepackage[dvips]{hyperref}
+%\usepackage{prettyref}
+%\usepackage[small,hang]{caption2}
+%\usepackage{caption2}
+%\usepackage{cancel}
+%\usepackage{hanging}
+\usepackage{rotating}
+%\usepackage{latexsub}
+%\usepackage{nomencl}
+%\usepackage{makeidx%
+%,showidx
+%to show where indexes are defined, just use showidx
+%}
+
+\DeclareFixedFont{\petitefonte}{\encodingdefault}%
+{\familydefault}{\seriesdefault}{\shapedefault}{6pt}
+\newcommand{\petit}{\petitefonte}
+
+\usepackage{curves}
+
+\usepackage{textcomp}
+
+%\usepackage{bez123}
+
+\newcommand{\LaTeXPiX}[3]{
+                          \begin{sidewaysfigure*}[ht]
+                             \begin{center}
+                             {\small{
+                                \input{#1.eepic}
+                                \caption{#2
+                                \label{#3}}
+                                }}
+                             \end{center}
+                          \end{sidewaysfigure*}
+                         }
+%\usepackage{geometry}
+%\geometry{scale=.9, nohead}
+
+\newcommand{\diva}{DIVA}
+\newcommand{\Diva}{DIVA}
+
+\floatstyle{boxed}
+\newfloat{exfile}{htbp}{exf}[section]
+\floatname{exfile}{Example file}
+
+\begin{document}
+
+\chapter{DIVA Receipes, V2.0}
+
+
+A cook-book for creating climatologies with \Diva, adapted for use with ODV4 spreadsheets.
+
+
+\section{Domain}
+
+\begin{itemize}
+\item Decide which region is of interest for you. 
+\item You can increase this domain of interest slightly to avoid any "boundary problems" (10 percent typically).
+\item Find a topography file covering this extended region (Example: with {\tt gebco}, export topography as {\tt ascii}, see the {\diva} usermanual for details)
+\item Apply some masking to the topography to exclude regions that are not of interests (lowlands, lakes, unconnected regional seas, estuaries). An example how to do this with scripts can be found in {\tt gebcoprep*}. Otherwise you can edit the topographic file by hand or in Matlab and change topographic values locally.
+\item Transform the topography to a {\diva}   topography (Example with {\tt gebco2diva 15 15} to undersample to orginal 1 minute grid to a 1/4 degree grid).
+\end{itemize}
+
+After this, you should have topographic files {\tt topo.grd} and {\tt TopoInfo.dat} that correspond to a possibly slightly larger domain than that for the analysis.
+
+
+{\bf NOTE}: do not use a too fine topography, this will lead to unecessarely complex boundaries and too fine meshes near the coasts. For plotting purposes you can always overlay finer coastlines than those used for the analysis.
+(To decrease the resolution of the {\tt gebco} topographie, you can invoke for example {\tt gebco2diva 2 3} that subsamples the original {\tt topo.gebco} file  by using every second point in x and third in y direction only)
+
+{\bf NOTE}: coordinates and files must be decimal numbers with decimal separators {\tt .} and not {\tt ,} as found in some country local settings. Also note that longitude-latitude coordinates must be decimal. ODV exported files sometimes have the origin of longitude in 0, but since ODV4 there is an option to choose $[$0:360$]$ or $[$-180:180$]$. If your domain includes the Greenwich meridian and if your data extraction goes via an ODV spreadsheat export on $[$0:360$]$, you might therefore need to adapt {\tt divaselectorODV4} to change the coordinate origin.
+
+
+
+
+\section{Levels}
+
+\begin{itemize}
+\item Decide at which values of depth you want the analysis. Typically you might want to use IODE standard depth (provided as en example in {\tt contour.depth.iode}).
+\item Encode the analysis depth you want in file {\tt contour.depth} (first the deepest level, up to the uppermost layer, all depth values being positive).
+\end{itemize}
+
+{\bf NOTE}: At this point you can already test the contour generation for the boundaries of the finite-element mesh if you know how to do it with {\tt divacont}.
+
+\section{Data}
+
+
+\begin{itemize}
+\item
+For easy use, import your data (by hand) into Ocean Data View (ODV, found at \url{http://odv.awi.de/}, now at version 4.0). You can for example extract data from the world ocean atlas at \url{http://www.nodc.noaa.gov/OC5/SELECT/dbsearch/dbsearch.html} and choose the export in the native world ocean atlas. This allows a direct import of the file into ODV via ODV collections.
+\item During the import into ODV, you might consider sampling the profiles at regular intervals for easier level selection later, though a vertical interpolation tool is also available in {\tt divaselectorODV4} and is activated by default.
+\item Once imported in ODV you can apply some selection criteria if you want to reduce the amount of data exported for \diva 
+\item Then export the data you want as ODV generic spreadsheat and name this exported file for example as {\tt woaODV.txt}) and if possible, take already care of the longitude range  $[$0:360$]$ or $[$-180:180$]$ according to your needs. For european projects, the range $[$-180:180$]$  is the most appropriate and is coded in {\tt divaselectorODV4} to transform any range into the $[$-180:180$]$ range.
+\item Look at the header of the exported file to have an idea of the name of the variables that are in the file (use command {\tt head -40 woaODV.txt}). If in doubt, apply {\tt divaguessforms woaODV.txt} that will create file {\tt ODVcolumns} which includes names of variables and the columns in which to find them.
+\end{itemize}
+
+If you do not use {\tt divaselectorODV4} and prepare your data yourself, you need to create  file {\tt VAR.units} in the main climatology directory. This file containes the units of variable {\tt VAR}. {\tt divaselectorODV4} does create this file based on the units provided by ODV. Similarly you might want to create {\tt VAR.longname} which contains a long name of the variable (eg. temp.longname containes a line with "Temperature" if your variable name is temp and stands for temperature).
+
+{\bf NOTE}: do not forget to deal adequately with data elimination based on quality flags, either before importing in ODV, selection within ODV, or during export from ODV. Ensure that you export the quality flags with the data and make sure you know their meaning.
+
+{\bf NOTE}: if you want to use another filename than {\tt woaODV.txt}, you can do it, but you need to edit {\tt datasource} which contains filename of the data file.
+
+{\bf NOTE}: if original data export was done with pressure (in dbar) vertical coordinate, you can either chose to map it as if they were meters or apply the Saunders correction. In both cases, you MUST tell {\tt divaselectorODV4} to use pressure coordinate as input by editing {\tt driver} and assigning a special value to the dataextraction flag: -1 to use pressure coordinate and assume they are meters. Flag value -10 to use pressure coordinates and transform to meters by using the Saunders approach.
+
+
+{\bf NOTE:} if there is a {\tt qflist} file, the selection with {\tt divaselectorODV4} will only use those measurements for which the quality flag is one of those found in the file {\tt qflist}. In the absence of {\tt qflist}, no quality flag analysis is done and all data taken.
+
+{\bf NOTE:} if you activate the data extraction in the {\tt driver} file, the execution of {\tt divadoall} will run the {\tt divaselectorODV4} automatically, including interpolation to the levels specified in {\tt contour.depth}. 
+
+{\bf NOTE:} if you change {\tt contour.depth} you need to rerun the data extraction.
+
+{\bf NOTE:} you can specify several ODV spreadsheet files as input files, one name per line, in {\tt datasource}, {\it provided they have the same naming, depth and qualtify conventions}.
+
+{\bf NOTE:} if your import your data into ODV and have some special value on data to say "missing", make sure you do not export those points or export them with an 
+adequate quality flag. For the moment, there is no provision for DIVA to guess that some special data value mean "missing".
+ 
+\begin{exfile}[H]
+\begin{footnotesize}
+\begin{verbatim}
+0
+3
+1
+\end{verbatim}
+\end{footnotesize}
+\caption{{\tt qflist } file content.} 
+\end{exfile}
+
+
+
+\section{Climatology definition}
+
+Decide what you want to produce by editing the following files
+\begin{itemize}
+\item {\tt varlist}: contains on each line the name {\tt VAR} of the variable to be treated (this is typically the header name from the ODV export).
+\item {\tt yearlist}: contains on each line the period to be covered. Ex {\tt 19301980} from 1930 to 1980 included. 
+\item {\tt monthlist}: contains on each line the range of month to be covered. Ex 0103 means January,  February and March together. Values as 1202 are allowed and cover December, January and February. For a climatology for each month, file {\tt monthtlist} therefore will contain 12 lines from 0101 to 1212.
+\end{itemize}
+
+
+When data extraction is activated and executed, data files  {\tt VAR.yearcode.monthcode.levelcode} are created, for example {\tt sali.19752005.0202.10007}. The level code is {\tt 10000+ linenumber}, where {\tt linenumber} is the number of the line of {\tt contour.depth}.
+{\bf If you create your data files directly from your data base, you must follow this naming structure.}
+
+
+For extraction {\tt divadoall} extracts data for a given layer by a Ross Reiner interpolation from the original profile data. There is thus no need to prepare profiles on a regular vertical grid.
+
+
+
+{\bf NOTE:} you can eliminate some data after extraction by adapting the script {\tt specialdataonly} that based on coordinates (or values of the variable if you want so), eliminates some of the data. Be sure to edit the file {\tt specialdataonly} to make sure that you take the value you need (you can comment lines by {\tt \#}). 
+
+{\bf TO CHECK: specialdataonly, longitude range}
+
+
+
+{\bf NOTE}: climatological analyses assume data coverage is homogeneous in time and space. If this is not the case with your data (for example a lot of cruises in a specially hot year), special reference fields should be applied. This is an advanced topic and needs probably to be done on a per case basis.
+
+
+%{\bf NOTE}: Presently data extraction via {\tt divaselectorODV4} called by {\tt divadoall} does not support vertical interpolation to the level depth. 
+
+\section{\diva {  } parameters to control the analysis}
+\begin{itemize}
+\item
+Decide on the output grid you want (normally the original region of interest, see beginning of the receipe). Output resolution is the one you want for the gridded field and has nothing to do with the correlation length of the field, except that you generally chose the grid spacing much smaller than the correlation length.
+\item Edit {\tt param.par} and define the grid as desired.
+\item Choose the other parameters (proposed choices are {\tt ireg=1}, {\tt icoord=1}, {\tt ispec=17})
+\end{itemize}
+
+{\bf NOTE:} for a first iteration for climatology production, use {\tt ispec=11} which will provide poor-man's error estimates that are very quickly calculated. Later the real error fields 
+can be calculated once the parameters are optimized ({\tt ispec=-1}).
+
+
+\section{Plotting}
+You can always retrieve the analysed fields into visualisation software (via netcdf files or binary import) to fine-tune the maps. For a quick assessment of the climatology production, {\tt gnuplot} executions can be included in the production process. 
+
+There are a few controls you can apply for these gnuplot plots:
+\begin{itemize}
+\item {\tt VAR.bounds}: contains the lower and upper bounds during the plotting for the variable {\tt VAR} (which is one of the variable names found in {\tt varlist}) 
+\item {\tt VAR.pal}: contains the color palette for the same variable.
+\item {\tt plotboundingbox.dat}: contains the box for plotting. This is typically used to plot only the region of interest, without overlapping regions
+with other climatologies (the numerical fields include the overlappint regions, only the plotting is limited with the {\tt plotboundingbox.dat} file ).
+File containes {\tt xmin, xmax} on the first line, then {\tt ymin, ymax} on the second line.
+\end{itemize}
+
+{\bf NOTE}: the gnuplot colorbars use a scale that is actually remapped to the bounds found in {\tt VAR.bound}. Exemple:
+if your colorbar definition goes from 0 to 10 and the {\tt VAR} bounds are from 0 and 100, a value of 50 in the variable analysed will use the color found in the colorbar definition at value 5. To help you designing a specially adapted colorbar lets say for salinity, it is therefore a good idea to define the colorbar with the same bounds as those in {\tt VAR.bounds}.
+
+{\bf NOTE}: for adapting the color palette, file {\tt gnuplotcolornames} containes a list of preexisting colors and their hexadecimal codes you can use instead of names.
+
+
+\section{Execution control}
+
+
+
+For the control of the execution edit {\tt driver} and adapt the self explaining parameters
+\begin{exfile}[H]
+\begin{footnotesize}
+\begin{verbatim}
+extract flag: 1 do it, 0 do nothing, -1 press coord, -10 pressure+Saunders
+0
+boundary lines and coastlines generation
+1
+data cleaning: 1 data on mesh, 2 calculate RL, 3 both, 4 cleaning and outliers elimination, 5 =4+2
+3
+minimal number of data in a layer. If less, uses data from any month
+10
+isoptimise 0 nothing, 1 L, 2 SN, 3 both,  negative values filter vertically
+0
+Minimal L
+0.1
+Maximal L
+1
+Minimal SN
+0.05
+Maximal SN
+0.5
+analysis 1 do it 0 do nothing
+1
+lowerlevel number
+7
+upperlevel number
+11
+reference (to come)
+0
+isplot 0 or 1
+1
+number of groups for data detrending, 0 if no detrending.
+0
+\end{verbatim}
+\end{footnotesize}
+\caption{{\tt driver} file content.} 
+\end{exfile}
+
+
+
+The global analysis script {\tt divadoall} will use the information in file {\tt driver} to take the desired actions.
+
+\section{First run}
+
+If you prepared all the previous files, you are now ready to try the climatology production and test 
+everything from contour generation over parameter optimisation analysis and plotting
+by running  {\tt divadoall}.
+
+This can take quite some time depending on the options activated, but during execution you can follow the files created and look at the plots (in {\tt output/3Danalysis/GnuPlots})
+
+
+
+
+After the first runs and elimination of implementation errors (be careful about end-of-line problems (remember {\tt dos2unix}), file permissions, limited disk space, input-data file formats) tuning can be perfomed.
+
+
+{\bf NOTE}: When cleanning data and eliminating outliers (data cleaning flag value equal to 4 or 5 in the {\tt driver}), the data files in {\tt input/divadata} will be replaced by the cleaned ones. In {\tt output/3Danalysis/FieldWithOutliers} are stored the 2D analysis and related files made with the original data files. 
+
+{\bf NOTE}: When cleanning data and eliminating outliers, and making analysis in the same run of divadoall (data cleaning flag value equal to 4 or 5, and analysis flag value equal to 1  in the {\tt driver}), The analysis files stored in {\tt output/3Danalysis} will be made on the basis of cleaned data file (except the ones in  {\tt output/3Danalysis/FieldWithOutliers} of course).
+
+\section{Advection constraint and Reference fields}
+If you prepared advection constraint fields and/or reference fields, you have to store them respectively in {\tt /input/divaUVcons\_all} and {\tt input/divarefe\_all}. The advection constraint fields can be named as: {\tt Uvel.level} and {\tt Vvel.level}, {\tt Uvel.month.level} and {\tt Vvel.month.level} or {\tt Uvel.year.month.level} and {\tt Vvel.year.month.level}. You have to provide in {\tt /input/divaUVcons\_all} two additional files: {\tt constraint.dat} and {\tt UVinfo.dat}.
+ 
+\begin{exfile}[H]
+\begin{footnotesize}
+\begin{verbatim}
+10 0
+\end{verbatim}
+\end{footnotesize}
+\caption{{\tt constraint.dat } file content.} 
+\end{exfile}
+
+ The reference fields must be named as: {\tt VAR.year.0112.level}. You have to provide in {\tt /input/divarefe\_all} a {\tt GridInfo.dat} file.
+
+If you want to acctivate using advection constraint and/or reference fields, you'll have to provide a file {\tt constandrefe} (aside {\tt divadoall} and {\tt driver}) with the flag value equal to 1 for the action to be taken.
+ 
+\begin{exfile}[H]
+\begin{footnotesize}
+\begin{verbatim}
+Advection constraint flag: 1 do it, 0 no
+1
+Reference fields flag: 1 use it, 0 no
+1
+\end{verbatim}
+\end{footnotesize}
+\caption{{\tt constandrefe } file content.} 
+\end{exfile}
+
+\section{Fine tuning}
+Length scale selected might not be optimal if
+\begin{itemize}
+\item the data actually provided to {\diva} include a lot of data not on the analysis mesh. The estimation of L uses indeed all data, irrespectively if they are going to be used in the analysis or not. In this case make sure to activate the data-cleaning flag (=1) in {\tt driver}
+\item when RL or advection constraint is activated, the fit does not make much sense neither.
+\item You can manually optimise (by looking at the output of the cross validator)
+\end{itemize}
+If in doubt, fix the range for $L$ narrowly around the value of $L$ you expect from your experience. Also if data coverage is not homogenous (mixing 
+local high resolution cruises with global cruises), the signal/noise ration should be reduced.
+
+
+
+The adapted parameter files after an optimisation are in {\tt newinput}. You can use them as the next input if necessary. 
+
+\section{Removing of outliers}
+{\bf Todo} Streamline data: reduce weight of outliers : in the {\tt newinput} using the outlier of the outputs, 
+save original input and rename directory {\tt newinput} to {\tt input} and adapt {\tt data.dat}.
+
+Then do the whole thing again.
+
+\section{Detrending}
+If you use {\tt divaselectorODV4} for the creation of the input files, columns 5, 6 and 7 contain respectively groups years, month and hours (1 for the first year in the selection etc). This allows a direct use of {\tt divadetrend} instead of {\tt divacalc}. To activate the option, edit {\tt driver}.
+
+This particular structure of the file also allows for another cross-validation technique, eliminating one year data at a time in order to avoid redundancies due to small scale cruises. To activate this (costly) option instead of the usual cross-validation techniques used to estimate the signal/noise ration, you must contact us.
+
+
+\section{Publishing}
+
+The use of {\tt divadoall} also prepares gnuplot .png files and netCDF files.
+Gnuplot files are produced when the correponding flag is put equal to 1 in the {\tt driver} file.
+Netcdf 3D files are automatically generated for each set {\tt VAR.lowerlevel.upperlevel}. You have to provide an information file {\tt NCDFinfo} in {\tt ./input}.
+
+\begin{exfile}[H]
+\begin{footnotesize}
+\begin{verbatim}
+ Title string for 3D NetCDF file:
+'Diva 3D analysis of Medar data'
+ Reference time for data (ie: days since since 1900-01-01), if not climatological data
+'months since since xxxx-01-01'
+ Time value (that reprsents the data set), if not climatological data
+1200
+ Cell_methode string:
+'time: mean (this month data from all years)'
+ Institution name: where the dataset was produced.
+'ULg_GHER'
+ Production group and date
+'Diva group'
+ Source (observation, radiosonde, database, model-generated data,...)
+'Medar merged data'
+Comment
+'No comment'
+\end{verbatim}
+\end{footnotesize}
+\caption{{\tt NCDFinfo } file content.} 
+\end{exfile}
+
+To prepare netcdf 4D files, use {\tt divadoNCDF}. When {\tt divadoall} runs are performed for several months, a list of generated netcdf files {\tt VAR.3DNCliste} is created in {\tt output/3Danalysis} directory.
+
+\begin{exfile}[H]
+\begin{footnotesize}
+\begin{verbatim}
+ temp.xxxxxxxx.0103.10001.10025.anl.nc           1
+ temp.xxxxxxxx.0406.10001.10025.anl.nc           1
+ temp.xxxxxxxx.0709.10001.10025.anl.nc           1
+ temp.xxxxxxxx.0912.10001.10025.anl.nc           1
+\end{verbatim}
+\end{footnotesize}
+\caption{{\tt VAR.3DNCliste} file content.} 
+\end{exfile}
+
+ To generate a 4D netcdf file of all the 3D netcdf files named in the list, simply run {\tt divadoNCDF}. If you want to not consider one or more 3D netcdf files, edit the {\tt VAR.3DNCliste} and change the flag value of the correponding file name to 0.
+
+{\bf NOTE}: {\tt divadoall} runs produce an info file {\tt VAR.3DNCinfo} which is used to produce the 4D netcdf file. This file must remain in the {\tt output/3Danalysis} with the {\tt VAR.3DNCliste} file.
+
+\begin{itemize}
+\item netCDF files are ready for use {\tt VAR.lowerlevel.upperlevel.nc} and can be presented on a web page for download
+\item gnuplot .png files are also readily shown on html pages 
+\end{itemize}
+
+For more advanced presentations, you can use {\tt Java} tools for animations.
+
+An example on how to prepare GoogleEarth compatible {\tt .kml} files with a collection of .png files is also provided when you chose the plotting option.
+
+
+\section{WARNING}
+
+For yet unknown reasons, some versions of cygwin seem to be allergic to move files and directories when Explorer is open on one of them. {\bf So do NEVER open an
+explorer window on the {\tt divastripped} directory during climatology production.}
+
+
+\section{Efficiency}
+
+If you know what you do, you can save some computing time by not regenerating meshes when running a second time {\tt divadoall}. Indeed, if you correlation length
+is not changed or if you created the mesh with a small correlation length, you can keep the meshes, even if in a subsequent analysis your correlation length is larger. To use preexisting meshes, copy the files {\tt  meshtopo.*} and {\tt mesh.dat.*} found in directory {\tt newinput/divamesh} into a directory {\tt input/divamesh}. {\bf WARNING: } should you change the levels of analysis {\tt contour.depth}, you need to recreate the meshes and therefore erase the content of 
+{\tt input/divamesh}. The same holds if you use a much smaller correlation length than the one used to create the initial meshes.
+
+\section{Best practice for using features}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+

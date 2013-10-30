@@ -1,0 +1,143 @@
+#!/bin/bash
+# Usage divadatacoverage [-n] [-r]
+# -n: only needed if no gridded solution in output
+# -r: creates RL.dat and RLinfo.dat in input
+
+divadatacvlog='./output/divadatacovr.log'
+
+echo ' '
+echo =============================================================
+echo Preparing RL field based on data coverage
+echo Preparing data density field DATABINS.dat
+echo =============================================================
+
+echo ' ' > $divadatacvlog
+echo ============================================================= >> $divadatacvlog
+echo Preparing RL field based on data coverage >> $divadatacvlog
+echo Preparing data density field DATABINS.dat >> $divadatacvlog
+echo ============================================================= >> $divadatacvlog
+
+if [ "$1" == "-n" -o "$2" == "-n" ]
+then
+echo Preparing a dummy gridded solution first >> $divadatacvlog
+echo ======================================== >> $divadatacvlog
+cp ./input/param.par ./input/param.par.orirl
+Filepar=./input/param.par
+{
+read linecomment
+read lc
+read linecomment
+read icoordchange
+read linecomment
+read ispec
+read linecomment
+read ireg
+read linecomment
+read xori
+read linecomment
+read yori
+read linecomment
+read dx
+read linecomment
+read dy
+read linecomment
+read nx
+read linecomment
+read ny
+read linecomment
+read valex
+read linecomment
+read snr
+read linecomment
+read varbak
+} < $Filepar
+cd input
+head -1 param.par.orirl > param.par
+#echo $lc 10 | ../../bin/multiply.a >> param.par
+##echo $lc 1 | ../../bin/multiply.a >> param.par
+echo $(echo $lc | awk '{print ($1*1.)}') >> param.par
+
+
+head -5 param.par.orirl  | tail -3 >> param.par
+echo 0 >> param.par
+head -23 param.par.orirl   | tail -17 >> param.par
+##echo $snr 0.1 | ../../bin/multiply.a >> param.par
+echo $(echo $snr | awk '{print ($1*0.1)}') >> param.par
+
+
+echo varba >> param.par
+echo 0 >> param.par
+##echo sowhat sowhat
+##cp param.par param.par.jjjmb
+cd ..
+echo 'creating a mesh'
+#echo Gridding
+if [ -f  ./output/meshvisu/fort.22 ]; then
+  f22=1
+ if [ -f  ./output/meshvisu/fort.22 ]; then
+   f23=1
+   echo "divadatacoverage: using mesh found in ./output/meshvisu"
+  if [ -f  ./output/meshvisu/fort.10 ]; then
+    f10=1
+  fi
+ fi
+else
+ echo "divadatacoverage: generating mesh" >> $divadatacvlog
+divamesh
+fi
+##divamesh
+echo 'going to analyse' >> $divadatacvlog
+divacalc
+echo ' ' >> $divadatacvlog
+mv ./input/param.par.orirl ./input/param.par
+echo '  ' >> $divadatacvlog
+echo ============================================================== >> $divadatacvlog
+echo Finished preparing gridded field >> $divadatacvlog
+echo ============================================================== >> $divadatacvlog
+fi
+cp -v ./output/fieldgher.anl ./divawork/fort.10
+cp -v ./output/ghertonetcdf/GridInfo.dat ./divawork/fort.11
+cp -v ./input/data.dat ./divawork/fort.40
+cd divawork
+echo ////////////////////////////////////////// >> ../output/diva.log
+echo            Data length scale  >> ../output/diva.log
+echo ////////////////////////////////////////// >> ../output/diva.log
+echo ' '  >> ../output/diva.log
+echo 10 | ../../bin/datalengthscale.a >> ../output/diva.log
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divadataclean      datalengthscale.a
+echo Check execution track
+echo --------------------------------------------
+echo ' ' >> ../$divadatacvlog
+echo -------------------------------------------- >> ../$divadatacvlog
+echo A problem was encountered during execution ! >> ../$divadatacvlog
+echo          divadataclean      datalengthscale.a >> ../$divadatacvlog
+echo Check execution track >> ../$divadatacvlog
+echo -------------------------------------------- >> ../$divadatacvlog
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo          divadataclean      datalengthscale.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+fi
+cd ..
+cp -v ./divawork/fort.11 ./output/RLinfo.dat
+cp -v ./divawork/fort.20 ./output/RL.dat
+cp -v ./divawork/fort.21 ./output/DATABINS.dat
+cp -v ./divawork/fort.11 ./output/DATABINSinfo.dat
+cp -v ./divawork/fort.33 ./output/meandistance.dat
+if [ "$1" == "-r" -o "$2" == "-r" ]
+then
+echo ======================================================= >> $divadatacvlog
+echo Replacing  RL files >> $divadatacvlog
+cp -v ./output/RL*.dat ./input >> $divadatacvlog
+echo ======================================================= >> $divadatacvlog
+fi
+echo ' ' >> $divadatacvlog
+echo ============================================================== >> $divadatacvlog
+echo Finished preparing binning field >> $divadatacvlog
+echo ============================================================== >> $divadatacvlog
