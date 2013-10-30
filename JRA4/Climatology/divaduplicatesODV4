@@ -32,6 +32,7 @@
 					mv $datafile_tmp $datafile
 					
 				done
+                                :q
 			done
 
 		done
