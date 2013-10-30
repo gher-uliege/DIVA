@@ -293,13 +293,16 @@ C         write(6,*) '??',i,j
         if (iw(nn).gt.0) then
          work(nn)=work(nn)/iw(nn)
          w2(nn)=w2(nn)/iw(nn)-work(nn)**2
-         if(w2(nn).gt.0) w3(nn)=1/w2(nn)**2*(iw(nn)-1)
+         if(w2(nn).gt.1E-8*work(nn)**2) w3(nn)=1/w2(nn)**2*(iw(nn)-1)
 C Uniform weight
          w3mean=w3mean+w3(nn)
         endif
         enddo
         do nn=1,nbmax
+c        write(6,*) '??',nn,w3(nn),w3mean,nbmax
         w3(nn)=w3mean/nbmax+w3(nn)
+        if(iw(nn).lt.1) w3(nn)=0
+
 c        w3(nn)=1./nn
 c        w3(nn)=exp(-(nn-10)**2/100))
         enddo
