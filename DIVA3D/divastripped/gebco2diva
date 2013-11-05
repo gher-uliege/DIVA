@@ -45,7 +45,7 @@ else
  
 fi
 echo ////////////////////////////////////////// >> ../output/diva.log
-echo            Generating diva topography (.grd) >> ../output/diva.log
+echo '           Generating diva topography (.grd)' >> ../output/diva.log
 echo ////////////////////////////////////////// >> ../output/diva.log
 echo ' '  >> ../output/diva.log
 
