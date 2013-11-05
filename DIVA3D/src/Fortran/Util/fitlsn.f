@@ -323,7 +323,7 @@ c        w3(nn)=exp(-(nn-10)**2/100))
      &    sqrt((max(iw(nn),1.D0))),w3(nn)
  147    format(5(E14.6))
         if ((ifo.eq.0).and.(iw(nn).ne.0).and.(work(nn).lt.0).
-     & and.(nn.gt.3)) then
+     & and.(nn.gt.4)) then
         write(6,*) 'First zero crossing',nn,ddist,nn*ddist
 
         rlz=ddist*nn
