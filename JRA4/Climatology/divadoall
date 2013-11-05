@@ -210,6 +210,11 @@ cat $ODVDATA | tr '\r' '\n' > bidontransfert.txt # CR => LF
 mv bidontransfert.txt $ODVDATA 
 ###
 
+#### Handling of some special characters in ODV files ###
+cat $ODVDATA | tr "\00" " " > bidontransfert.txt # remove \00 not recognize by virtualbox (ubuntu) on windows os
+mv bidontransfert.txt $ODVDATA
+#####
+
 echo 'divadoall:' Data source file is $ODVDATA
 echo 'divadoall:' Trying to guess ODV format on $ODVDATA
 
