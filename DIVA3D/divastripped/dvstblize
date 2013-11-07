@@ -137,7 +137,7 @@ cp -v stbinfo.* infores.* ../output/3Danalysis/.
 if [ -d  ../output/3Danalysis/NCstab ]; then
 mv *.nc ../output/3Danalysis/NCstab/.
 else
-mkdir  ../output/3Danalysis/NCstab
+mkdir -p ../output/3Danalysis/NCstab
 mv *.nc ../output/3Danalysis/NCstab/.
 fi
 cd ..

@@ -45,16 +45,16 @@ then
 echo cleaning up workexerr
 rm -R -f ./workexerr/*
 else
-mkdir -v ./workexerr
+mkdir -pv ./workexerr
 fi
 
 # For the moment full copy  could be  more selective
 # cp -R ./output ./workexerr
 
 mv output workexerr
-mkdir output
-mkdir output/ghertonetcdf
-mkdir output/meshvisu
+mkdir -p output
+mkdir -p output/ghertonetcdf
+mkdir -p output/meshvisu
 ls -l ./workexerr
 cp  ./workexerr/output/meshvisu/fort.10 ./output/meshvisu/fort.10
 cp  ./workexerr/output/meshvisu/fort.22 ./output/meshvisu/fort.22

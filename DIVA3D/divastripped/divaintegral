@@ -149,7 +149,7 @@ echo 0 >> ./input/param.par
 echo 0 >> ./input/param.par
 head -26 ./input/param.par.nointegral | tail -18 >> ./input/param.par
 echo need to save original outputs...
-mkdir ./output3
+mkdir -p ./output3
 cp -r ./output/* ./output3
 cp -v ./input/data.dat ./output3/Csum.dat
 divamesh
@@ -196,7 +196,7 @@ echo 0 >> ./input/param.par
 echo 0 >> ./input/param.par
 head -26 ./input/param.par.nointegral | tail -18 >> ./input/param.par
 echo need to save original outputs...
-mkdir ./output3
+mkdir -p ./output3
 cp -r ./output/* ./output3
 divamesh
 divacalc -pfsum

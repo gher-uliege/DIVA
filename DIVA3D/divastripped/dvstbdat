@@ -21,7 +21,7 @@ DATADir=./data
 if [ -d $DATADir ];then
 rm -rf $DATADir
 fi
-mkdir $DATADir
+mkdir -p $DATADir
 #
 if [ -f fort.44 ];then
 rm fort.44

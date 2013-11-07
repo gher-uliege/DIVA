@@ -4,7 +4,7 @@
 if [ -d ./3DWORK ];then
  rm -rf ./3DWORK/*
 else
- mkdir ./3DWORK
+ mkdir -p ./3DWORK
 fi
 #
   Fileinf=./input/STBinfo

@@ -220,7 +220,7 @@ then
  cp -v ./output/meshvisu/fort.22 ./input/divamesh/meshtopo.$lev
  cp -v ./output/meshvisu/fort.23 ./input/divamesh/mesh.dat.$lev
 else
- mkdir ./input/divamesh
+ mkdir -p ./input/divamesh
  cp -v ./output/meshvisu/fort.22 ./input/divamesh/meshtopo.$lev
  cp -v ./output/meshvisu/fort.23 ./input/divamesh/mesh.dat.$lev
 fi
