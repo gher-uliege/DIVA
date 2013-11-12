@@ -150,12 +150,13 @@ C       write(6,*) 'In Parallel section thread',ithread
 ! Start of core code
           ie0=0
 
-!$OMP flush (kmax)
+C$OMP FLUSH (kmax)
            do while (kmax.lt.jd)
 ! Initializations
             ihesitate=0
             ie0old=ie0
-!$OMP flush (jmax,kmax)
+! JMB2013 why flush in jmax here
+C$OMP FLUSH (jmax,kmax)
 ! Judge if hesitation is necessary
              if (kmax.lt.jr) then
                ihesitate=1
@@ -166,7 +167,7 @@ C       write(6,*) 'In Parallel section thread',ithread
 ! Reduce diagonal term
                iwait=1
                do while (iwait.eq.1)
-!$OMP flush (kmax)
+C$OMP FLUSH (kmax)
                 if (kmax.ge.jr-1) then
                    d=skmatx(jr+1)
                    skmatx(jr+1)=d/skmatx(jr)
@@ -215,14 +216,17 @@ C     &  -dot_product(skmatx(jr+1:jr+jh-1),VFG(is-1:is+jh-3))
                  endif
                endif
                if (ihesitate.eq.0) then
-!$OMP critical
+C$OMP CRITICAL
+C$OMP FLUSH (jmax)
+C JMB TRY FLUSH jmax ??? ALSO CHANGE !OME into COPM ?
                  if (j.gt.jmax) then
                   jmax=j
                   kmax=jd
                  endif
-!$OMP end critical
+C$OMP END CRITICAL
                endif
-!$OMP flush (jmax,kmax)
+C$OMP FLUSH (jmax,kmax)
+C             write(6,*) ithread,jmax,kmax,ihesitate,jr,is,jh,j,id,ih1
             enddo
           enddo
 
@@ -230,7 +234,7 @@ C     &  -dot_product(skmatx(jr+1:jr+jh-1),VFG(is-1:is+jh-3))
 
 
 
-!$OMP END PARALLEL
+C$OMP END PARALLEL
 
 
 C Take out parts working on right hand side in all cases
@@ -322,6 +326,7 @@ C               iwait=1
 !$OMP end critical
                endif
 !$OMP flush (jmax,kmax)
+
             enddo
           enddo
 
