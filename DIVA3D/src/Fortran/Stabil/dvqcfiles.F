@@ -28,7 +28,7 @@
       READ(44,*) nblines
       READ(44,*) istep
       CLOSE(44)
-      nbcols=max(1,nbccol-3)
+!JMB112013 NOT USED      nbcols=max(1,nbccol-3)
       ALLOCATE(LONVAL(nblines))
       ALLOCATE(LATVAL(nblines))
       ALLOCATE(VARVAL(nblines))
