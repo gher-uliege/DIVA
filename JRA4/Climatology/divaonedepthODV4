@@ -10,7 +10,7 @@
 ############################################################################
 
 echo "one depth (or speed+depth) ?"
-sleep 0.1
+#sleep 0.1
 
 #################
 ### Functions ###
@@ -69,8 +69,8 @@ c=$(grep -vi -e "bot.depth" -e "bot.\ depth" ODVcolumns | grep -i "depth" | wc -
 x=$(grep -i "currdir" ODVcolumns | wc -l)
 y=$(grep -i "currspd" ODVcolumns | wc -l)
 
-let flag_depth=$a+$b+$c
-let flag_speed=$x+$y
+flag_depth=$(($a+$b+$c))
+flag_speed=$(($x+$y))
 
 ### Determination of the vertical axis ###
 flag_depth_speed=0
@@ -78,7 +78,7 @@ if [ $flag_depth -gt 0 ] && [ $flag_speed -eq 2 ]
 then
 echo "this file has a depth axis AND speed components"
 flag_depth_speed=1
-sleep 1
+#sleep 1
 else
 
 	zfound1=$(grep -i "pressure" ODVcolumns | wc -l)
@@ -610,7 +610,7 @@ while read line
 	done < monthlist
 
 echo "one depth !"
-sleep 0.5
+#sleep 0.5
 
 
 # à faire : 
