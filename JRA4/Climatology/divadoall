@@ -916,7 +916,7 @@ if [ $flag_err == 0 ]
 then
 echo 'no error, you are lucky'
 else
-echo $flag_err 'errors !!! Please WATCH diva.log !!!!'
+echo $flag_err 'errors !!! Please WATCH DIVA3D/divastripped/output/diva.log !!!!'
 fi
 ###################################
 
