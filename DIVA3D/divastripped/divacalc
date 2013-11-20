@@ -19,7 +19,7 @@ echo //////////////////////////////////////////////////  | tee $divacalclog
 echo           Going to analyse a field                  | tee -a $divacalclog
 echo '                                            '      | tee $divacalclog
 echo  'running divacalc with flag number for solver = '$solver | tee -a $divacalclog
-echo ' possible values are 0: direct skyline, 1: parallel skylineand 2: iterative sparse' | tee -a $divacalclog
+echo ' possible values are 0: direct skyline, 1: parallel skyline and 2: iterative sparse' | tee -a $divacalclog
 echo //////////////////////////////////////////////////  | tee -a $divacalclog
 #
 divarunning=$(ps -eafl | grep -i 'diva\.a' | wc -l)
@@ -514,18 +514,12 @@ echo ' '  						  | tee -a $divalog $divacalclog
 
 echo $valex | ../../bin/lookforoutliers.a >> $divalog
 if [ $? -ne 0 ];then
-echo ' '
-echo --------------------------------------------
-echo A problem was encountered during execution !
-echo       divacalc:   lookforoutliers.a
-echo 'Check execution track in diva.log'
-echo --------------------------------------------
-echo ' ' >> $divalog
-echo -------------------------------------------- >> $divalog
-echo A problem was encountered during execution ! >> $divalog
-echo       divacalc:    lookforoutliers.a  >> $divalog
-echo 'Check execution track in diva.log' >> $divalog
-echo -------------------------------------------- >> $divalog
+echo ' '                                          | tee -a $divalog
+echo -------------------------------------------- | tee -a $divalog
+echo A problem was encountered during execution ! | tee -a $divalog
+echo       divacalc:   lookforoutliers.a          | tee -a $divalog
+echo 'Check execution track in diva.log'          | tee -a $divalog
+echo -------------------------------------------- | tee -a $divalog
 fi
 echo ' '
 
@@ -594,7 +588,7 @@ if [ -f ../input/iceedge.dat ]
 then
 echo Ice edge to be used as mask
 cd ..
-dvicemask
+./dvicemask
 cp ./output/fieldgher.anl ./divawork/fort.84
 cd divawork
 echo finished ice edge case
@@ -722,18 +716,18 @@ echo -------------------- | tee -a $divacalclog
 
 if [ "$iflagcpme" == "1" ]
 then
-divacpme 
+./divacpme 
 fi
 
 if [ "$iflagexerr" == "1" ]
 then
-divaexerr
+./divaexerr
 fi
 
 
 if [ "$iflagexerr" == "2" ]
 then
-divaexerr full
+./divaexerr full
 fi
 
 
