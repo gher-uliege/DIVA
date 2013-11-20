@@ -13,23 +13,36 @@ awk -F " " \
 echo Modified topo is in input/topo.gebco
 
 fi
+
 if [ -f ./input/topo.gebco ];then
+##################################################
+
 cp ./input/topo.gebco ${DIVADIR}/input/.
 
 if [ -f ./input/takeout.coord ];then
 cp ./input/takeout.coord ${DIVADIR}/input/.
 fi
 cd ${DIVADIR}
-##################################################
 # loop on coordinates in takeout.coord if any
 
 ./dvgebcomodif
+
+if [ "$#" == "2" ];then
+nx=$1
+ny=$2
+./gebco2diva $nx $ny
+else
+./gebco2diva
+fi
 mv  $WDIR/input/topo.gebco   $WDIR/input/topo.gebco.ori
 mv ${DIVADIR}/input/topo.gebco  $WDIR/input/topo.gebco
+mv ${DIVADIR}/output/topo.grd  $WDIR/input/topo.grd
+mv ${DIVADIR}/output/TopoInfo.dat  $WDIR/input/.
 
-echo ============================================
-echo Finished modifying topo.gebco, 
-echo Original topo.gebco is in input/topo.gebco.ori
-echo Modified topo is in input/topo.gebco
-echo ============================================
+echo '======================================================================'
+echo 'Finished modifying topo.gebco, '
+echo 'Original topo.gebco is in input/topo.gebco.ori'
+echo 'Modified topo.gebco, topo.grd andTopoInfo.dat are in input/.'
+echo '======================================================================'
+
 fi
