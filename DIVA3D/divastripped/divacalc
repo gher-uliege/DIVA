@@ -5,7 +5,7 @@ ipipe=0
 # 0: direct skyline
 # 1: parallel skyline
 # 2: iterative sparse
-solver=1
+solver=0
 
 
 # Define log files
@@ -14,8 +14,12 @@ divarundir=$(pwd)
 divacalclog=$divarundir'/output/divacalc.log'
 divalog=$divarundir'/output/diva.log'
 
+
 echo //////////////////////////////////////////////////  | tee $divacalclog
 echo           Going to analyse a field                  | tee -a $divacalclog
+echo '                                            '      | tee $divacalclog
+echo  'running divacalc with flag number for solver = '$solver | tee -a $divacalclog
+echo ' possible values are 0: direct skyline, 1: parallel skylineand 2: iterative sparse' | tee -a $divacalclog
 echo //////////////////////////////////////////////////  | tee -a $divacalclog
 #
 divarunning=$(ps -eafl | grep -i 'diva\.a' | wc -l)

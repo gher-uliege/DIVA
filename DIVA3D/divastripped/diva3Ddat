@@ -39,6 +39,7 @@ read gmax
 #
 divarundir=$(pwd)
 diva3dlog=$divarundir'/output/3Danalysis/'$var'.diva3D.log'
+divalog=$divarundir'/output/diva.log'
 #
 echo 'diva3Ddat:'						| tee -a $diva3dlog 
 echo 'diva3Ddat:' 'Start data cleaning flag number: '$datop	| tee -a $diva3dlog
