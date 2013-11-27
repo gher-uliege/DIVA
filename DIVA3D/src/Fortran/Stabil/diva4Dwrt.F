@@ -16,7 +16,7 @@
      &                                       , CORLEN, SN, VARBAK
 !
       REAL*4 ,DIMENSION(:,:),    ALLOCATABLE :: resmax1,resmin1,clbnds
-     &                                        , varbot
+     &                                        , xclbnds, varbot
      &                                        , varb1, varb2
 !
       REAL*4 , DIMENSION(:,:,:),  ALLOCATABLE :: var, var1, var2
@@ -28,8 +28,11 @@
       integer                   :: NX,NY,NK,ndata,nl,ivars,chlen,lev
       integer*4                 :: KMAX,ipr,nw,IMAX,JMAX
       integer                   :: ICOOC,IREG,ISPEC, ilev, nbdat
+      integer                   :: nm,xm1,xm2,xy1,xy2
+      integer,DIMENSION(12)     :: numday, mdur
 !
-      real*4                     :: VALEXC, zz,time_val,
+      real*4                  :: time_val,time_Yval,time_Mval,time_Dval
+      real*4                  :: VALEXC, zz,
      &              var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
      &              vbt_min,vbt_max,var1_min,var1_max,
      &              vbt1_min,vbt1_max,vbt2_min,vbt2_max,
@@ -46,7 +49,7 @@
      &                            , WestBL,SouthBL,EastBL,NorthBL
 !
       character (len=8)         :: Real_clock
-      integer                    :: xy1,xy2
+!!      integer                    :: xy1,xy2
 !
       character (len=4)          :: yy1,yy2
       CHARACTER (len=255)        :: divafile,comments
@@ -73,6 +76,9 @@
      &                                               , Ref_time_l
 !
       LOGICAL                          :: exist
+
+      DATA  numday /15,45,75,105,136,166,197,228,258,289,319,350/
+      DATA    mdur /31,28,31,30,31,30,31,31,30,31,30,31/
 !--------------------------------------------------------------
 !
       EXECIN='./fort.44'
@@ -86,6 +92,7 @@
       ALLOCATE(all_files(time_len))
       ALLOCATE(les_files(time_len))
       ALLOCATE(clbnds(2,time_len))
+      ALLOCATE(xclbnds(2,time_len))
 !
       EXECIN='../3DWORK/3Dncliste'
       OPEN(2,FILE=EXECIN,STATUS='OLD')
@@ -388,8 +395,11 @@
         cellmeth =  cellmeth_l(ivars)
         Ref_time = Ref_time_l(ivars)
 !
+!==================================================================
+!time_Yval,xclbnds,
 !      CALL NC_4DSDNII(imax,jmax,nk,ipar,time_len,time_val,clbnds,
-      CALL NC_4DCLIM(imax,jmax,nk,ipar,time_len,time_val,clbnds,
+      CALL NC_4DCLIM(
+     &  imax,jmax,nk,ipar,time_len,time_val,clbnds,
      &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
      &  xlon,ylat,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
      &  var_min0,var_max0,vbt_min0,vbt_max0,ver_min0,ver_max0,

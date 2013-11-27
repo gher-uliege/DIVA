@@ -20,7 +20,7 @@
      &                                        , varbot, verbot
      &                                        , varb1, varb2
      &                                     , mskbot,mskb1,mskb2,mskber
-      REAL*4 ,DIMENSION(2,1)                 :: clbnds
+      REAL*4 ,DIMENSION(2,1)                 :: clbnds,xclbnds
 !
       REAL*4 , DIMENSION(:,:,:),  ALLOCATABLE :: var, var1, var2
      &                                         , verr,reler,dbins
@@ -33,8 +33,10 @@
       integer*4                 :: KMAX, ipr, nw, IMAX, JMAX, flag
       integer                   :: ICOOC, IREG, ISPEC
       integer                   :: nm,xm1,xm2,xy1,xy2
+      integer,DIMENSION(12)     :: numday, mdur,mini,mend
 !
-      real*4                     :: zz, time_val,VALEXC,
+      real*4                   :: time_val,time_Dval,time_Mval,time_Yval
+      real*4                   :: zz,VALEXC,
      &              var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
      &              vbt_min,vbt_max,var1_min,var1_max,
      &              vbt1_min,vbt1_max,vbt2_min,vbt2_max,
@@ -58,6 +60,11 @@
       character (len=20), DIMENSION(2)           :: l_units
 !
       LOGICAL                          :: exist
+
+      DATA  numday /15,45,75,105,136,166,197,228,258,289,319,350/
+      DATA  mini /1,32,60,91,121,152,182,213,244,274,305,335/
+      DATA  mend /31,59,90,120,151,180,212,243,273,304,334,365/
+      DATA    mdur /31,28,31,30,31,30,31,31,30,31,30,31/
 !--------------------------------------------------------------
 !
       EXECIN='./fort.44'
@@ -109,7 +116,7 @@
         xy2 = 0
         WRITE(Ref_time,'("Months since xxxx-01-01 ")')
         WRITE(cellmeth,'(
-     &"time: mean within month time: mean over years")')
+     &"time: mean within years time: mean over years")')
         close(2)
         INSTITUT = 'Not specified'
         PRODUCTION = 'Not specified'
@@ -152,7 +159,7 @@
         if(yy1(1:4) .EQ. 'xxxx') yy1='1850'
         if(yy2(1:4) .EQ. 'xxxx') yy2='2050'
         WRITE(Ref_time,
-     &'("Months since ",a,"-01-01")'),yy1(1:4) ! ,yy2(1:4) 
+     &'("Days since ",a,"-01-01")'),yy1(1:4) ! ,yy2(1:4) 
         read (mm1,'(I2.2)') xm1
         read (mm2,'(I2.2)') xm2
         read (yy1,'(I4.4)') xy1
@@ -162,12 +169,25 @@
         else
            nm = xm2 - xm1 + 1
         endif
-        time_val = 12*(nint(float(xy2)-float(xy1))/2)
-     &                        +float(xm1-1)+float(nm)/2
-        clbnds(1,1)= 1.*xm1 !float(xm1)
-        clbnds(2,1)= 1.*xm2 !float(xm2)
-        WRITE(cellmeth,'(
-     &"time: mean within month time: mean over years")')
+        time_Yval =  float(xy1)+nint(float(xy2)-float(xy1)+1.)/2
+        time_Mval = 12*(float(xy1)+nint(float(xy2)-float(xy1)+1.)/2)
+!n     &                        +float(nm)
+        time_Dval = 365*(float(xy1)+nint(float(xy2)-float(xy1))/2)
+!n     &                        +nint(30.*float(nm)))
+        time_val = time_Dval
+!
+!x        clbnds(1,1)= 1.*numday(xm1)
+!x        clbnds(2,1)= 1.*numday(xm2)
+!x        clbnds(1,1)= time_val+float(numday(xm1))
+!x        clbnds(2,1)= time_val+float(numday(xm2))
+        clbnds(1,1)= time_val+float(mini(xm1))
+        clbnds(2,1)= time_val+float(mend(xm2))
+!
+        xclbnds(1,1)= time_val+float(numday(xm1))
+        xclbnds(2,1)= time_val+float(numday(xm2))
+!
+!x        WRITE(cellmeth,'(
+!x     &"time: mean within years time: mean over years")')
 !
       ENDIF
 !
@@ -849,8 +869,10 @@
       WRITE(file_name,'("../output/3Danalysis/",
      &a,".1",i4.4,".1",i4.4,".anl.nc")')TRIM(var_shname),MINLEV,MAXLEV
 !
+!!time_Yval,xclbnds,
       iun=1
-      CALL NC_4DCLIM(IMAX, JMAX,nk,ipar,iun,time_val,clbnds,
+      CALL NC_4DCLIM(
+     &  IMAX, JMAX,nk,ipar,iun,time_val,clbnds,
      &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
      &  xlon,ylat,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
      &  var_min,var_max,vbt_min,vbt_max,ver_min,ver_max,dbin_min,
