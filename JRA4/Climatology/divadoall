@@ -201,7 +201,8 @@ done
 
 done
 
-for ODVDATA in `cat datasource`
+#for ODVDATA in `cat datasource`
+while read -r ODVDATA qflag1 qflag2
 do
 
 #Handling of end-of-file in ODV format files
@@ -221,7 +222,7 @@ echo 'divadoall:' Trying to guess ODV format on $ODVDATA
 ./divaguessformsODV4 $ODVDATA
 
 ###############################################
-# Handling one depth or depth+speed (ready)  ##
+# Handling one depth or depth+speed  ##########
 ###############################################
 
 onedepth=yes ### CHANGE this parameter (ex. : "no") if you want to disable the script "divaonedepthODV4" ###
@@ -232,9 +233,11 @@ else
 echo "no handling of one depth (or depth+speed) files !"
 fi
 
-done
+done < datasource
 
-for ODVDATA in `cat datasource`
+multiple_qflags=0
+#for ODVDATA in `cat datasource`
+while read -r ODVDATA qflag1 qflag2
 do
 
 echo 'divadoall:' Data source file is $ODVDATA
@@ -244,11 +247,28 @@ echo 'divadoall:' Trying to guess ODV format on $ODVDATA
 
 ################################
 
+#############################################################################################
+### Handling of different QFLAGS for each data file (e.g. working with several data bases)###
+### To use this, simply write the qflags after each file name in datasource #################
+
+echo $ODVDATA $qflag1 $qflag2
+
+if [ ! -z $qflag1 ]
+then
+echo $qflag1 > qflist
+multiple_qflags=1
+elif [ $multiple_qflags -eq 1 ]
+then 
+rm -f qflist
+fi
+#############################################################################################
+
 echo 'divadoall:' Now extracting
 ./divaselectorODV4 $ODVDATA
 
 echo 'divadoall:' finished with $ODVDATA
-done
+done < datasource
+
 echo 'divadoall:' 
 echo 'divadoall:' '======================= Finished with data extraction ==========='
 echo 'divadoall:' '================================================================='
