@@ -203,7 +203,7 @@ echo checking for bounds $boundmin and $boundmax
 
 echo Now producing one big file for variable $var
 iqf=0
-if [ -f qflist ]
+if [ -f qflist ] && [ -s qflist ]
 then
 echo Quality flags retained are 
 cat qflist
