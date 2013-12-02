@@ -88,6 +88,8 @@ else
 	then
 	:
 	else 
+	echo "no."
+	sleep 0.1
 	exit # => coordinate = pressure
 	fi
 
@@ -95,6 +97,8 @@ else
 	zfound2=$(grep -i -e "bot.depth" -e "bot.\ depth" ODVcolumns | wc -l)
 	if [ "$zfound1" -ge "$zfound2" ]
 	then
+	echo "no."
+	sleep 0.1
 	exit # => depth axis (m) is present
 	else
 	botdepthcol=$(grep -i -e "bot.depth" -e "bot.\ depth" ODVcolumns | head -1 | awk -F "$delimiter" '{print $3}') #echo $botdepthcol
