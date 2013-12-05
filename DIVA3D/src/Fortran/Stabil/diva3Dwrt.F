@@ -20,7 +20,7 @@
      &                                        , varbot, verbot
      &                                        , varb1, varb2
      &                                     , mskbot,mskb1,mskb2,mskber
-      REAL*4 ,DIMENSION(2,1)                 :: clbnds,xclbnds
+      REAL*4 ,DIMENSION(2,1)                 :: clbnds
 !
       REAL*4 , DIMENSION(:,:,:),  ALLOCATABLE :: var, var1, var2
      &                                         , verr,reler,dbins
@@ -176,18 +176,8 @@
 !n     &                        +nint(30.*float(nm)))
         time_val = time_Dval
 !
-!x        clbnds(1,1)= 1.*numday(xm1)
-!x        clbnds(2,1)= 1.*numday(xm2)
-!x        clbnds(1,1)= time_val+float(numday(xm1))
-!x        clbnds(2,1)= time_val+float(numday(xm2))
-        clbnds(1,1)= time_val+float(mini(xm1))
-        clbnds(2,1)= time_val+float(mend(xm2))
-!
-        xclbnds(1,1)= time_val+float(numday(xm1))
-        xclbnds(2,1)= time_val+float(numday(xm2))
-!
-!x        WRITE(cellmeth,'(
-!x     &"time: mean within years time: mean over years")')
+        clbnds(1,1)= float(mini(xm1))
+        clbnds(2,1)= float(mend(xm2))
 !
       ENDIF
 !
@@ -869,7 +859,6 @@
       WRITE(file_name,'("../output/3Danalysis/",
      &a,".1",i4.4,".1",i4.4,".anl.nc")')TRIM(var_shname),MINLEV,MAXLEV
 !
-!!time_Yval,xclbnds,
       iun=1
       CALL NC_4DCLIM(
      &  IMAX, JMAX,nk,ipar,iun,time_val,clbnds,

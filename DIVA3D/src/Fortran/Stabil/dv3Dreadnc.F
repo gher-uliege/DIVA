@@ -32,7 +32,7 @@
         real*4  ,dimension(im4,jm4)          :: varbot,varb1,varb2
 !
         real*4  ,dimension(2,1)              :: clbnds
-     &                                        ,climatology_bounds
+        real*4  ,dimension(2)                :: climatology_bounds
 !   
         real*4  ,dimension(im4)              :: clo
         real*4  ,dimension(jm4)              :: cla
@@ -54,6 +54,7 @@
      &                         , vbt_shname,vbt_lgname
      &                         , string256
 !
+      integer  ,dimension(2)              :: stpar0, prcnt0
       integer  ,dimension(2)              :: stpar, prcnt
       integer  ,dimension(3)              :: dim2
       integer  ,dimension(3)              :: star2, coun2
@@ -205,12 +206,12 @@
          STOP 'Stopped in NC_READ3DCL def clbnds'
       ENDIF
 !
-      status = nf_get_att_real(ncid,idcb,'climatology_bounds',
-     &                            clbnds)
-      IF (status .NE.nf_noerr) THEN
-         print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ3DCL put clbnds'
-      ENDIF
+!x      status = nf_get_att_real(ncid,idcb,'climatology_bounds',
+!x     &                            clbnds)
+!x      IF (status .NE.nf_noerr) THEN
+!x         print *,nf_strerror(status)
+!x         STOP 'Stopped in NC_READ3DCL put clbnds'
+!x      ENDIF
 
 !!      ENDIF
 !
@@ -660,25 +661,46 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_READ3DCL get varbot'
       ENDIF
+
+
+!
+      stpar(1)=1
+      stpar(2)=icdf
+      prcnt(1)=2
+      prcnt(2)=1
+!
+      status = 
+     &nf_get_vara_real(ncid,idcb, stpar, prcnt,climatology_bounds)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO put xclbnds'
+      ENDIF
+
+      write(*,*) 'NCREAD   climatology_bounds '
+      write(*,*) 'climatology_bounds ',climatology_bounds
+
+
+      clbnds(1,1) = climatology_bounds(1)
+      clbnds(2,1) = climatology_bounds(2)
 !
       stpar(1)=1
       stpar(2)=icdf
       prcnt(1)=KM
       prcnt(2)=1
 
-      status = nf_get_var1_real(ncid,id0_1, stpar, prcnt,CORLEN)
+      status = nf_get_vara_real(ncid,id0_1, stpar, prcnt,CORLEN)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_READ3DCL get CORLEN'
       ENDIF
 !
-      status = nf_get_var1_real(ncid,id0_2, stpar, prcnt,SN)
+      status = nf_get_vara_real(ncid,id0_2, stpar, prcnt,SN)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_READ3DCL get SN'
       ENDIF
 !
-      status = nf_get_var1_real(ncid,id0_3, stpar, prcnt,VARBAK)
+      status = nf_get_vara_real(ncid,id0_3, stpar, prcnt,VARBAK)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_READ3DCL get VARBAK'

@@ -40,7 +40,7 @@
      &                                       , Verr,reler,dbins
      &                                       , obins,rlfield
         real*4  ,dimension(im4,jm4)          :: varbot,varb1,varb2
-        real*4  ,dimension(time_len,2)       :: clbnds ,xclbnds 
+        real*4  ,dimension(2,time_len)       :: clbnds ,xclbnds 
         real*4  ,dimension(2)       :: climatology_bounds
 !   
         real*4  ,dimension(im4)              :: clo
@@ -253,8 +253,8 @@
 !
       if(ipar == 1) then
 
-      cbdim(1)=timeid
-      cbdim(2)=nvid
+      cbdim(2)=timeid
+      cbdim(1)=nvid
       status=nf_def_var(ncid,'climatology_bounds',nf_float,
      &                                           two,cbdim,idcb)
       IF (status .NE.nf_noerr) THEN
@@ -263,12 +263,12 @@
       ENDIF
 !
       ttime_len=2*time_len
-      status = nf_put_att_real(ncid,idcb,'climatology_bounds',
-     &                            nf_float,ttime_len,clbnds)
-      IF (status .NE.nf_noerr) THEN
-         print *,nf_strerror(status)
-         STOP 'Stopped in NC_4DCLIMATO put clbnds'
-      ENDIF
+!x      status = nf_put_att_real(ncid,idcb,'climatology_bounds',
+!x     &                            nf_float,ttime_len,clbnds)
+!x      IF (status .NE.nf_noerr) THEN
+!x         print *,nf_strerror(status)
+!x         STOP 'Stopped in NC_4DCLIMATO put clbnds'
+!x      ENDIF
 
       ENDIF
 !
@@ -1222,12 +1222,12 @@
 !
       ttime_len=2*time_len
 !
-      status = nf_put_att_real(ncid,idcb,'climatology_bounds',
-     &                            nf_float,ttime_len,clbnds)
-      IF (status .NE.nf_noerr) THEN
-         print *,nf_strerror(status)
-         STOP 'Stopped in NC_4DCLIMATO put clbnds'
-      ENDIF
+!x      status = nf_put_att_real(ncid,idcb,'climatology_bounds',
+!x     &                            nf_float,ttime_len,clbnds)
+!x      IF (status .NE.nf_noerr) THEN
+!x         print *,nf_strerror(status)
+!x         STOP 'Stopped in NC_4DCLIMATO put clbnds'
+!x      ENDIF
 !
       status = nf_enddef(ncid)
       IF (status .NE.nf_noerr) THEN
@@ -1335,17 +1335,19 @@
 !
       stpar(1)=1
       stpar(2)=icdf
-      prcnt(1)=1
-      prcnt(2)=2
+      prcnt(1)=2
+      prcnt(2)=1
 !
-!x
-      climatology_bounds(1) = clbnds(icdf,1)
-      climatology_bounds(2) = clbnds(icdf,2)
-!x      climatology_bounds(1) = time_val+ clbnds(1,icdf)
-!x      climatology_bounds(2) = time_val+ clbnds(2,icdf)
+      climatology_bounds(1) = clbnds(1,icdf)
+      climatology_bounds(2) = clbnds(2,icdf)
 !
+      write(*,*) 'NCWRT   climatology_bounds '
+      write(*,*) 'climatology_bounds ',climatology_bounds
+
+
+
       status = 
-     &nf_put_var1_real(ncid,idcb, stpar, prcnt,climatology_bounds)
+     &nf_put_vara_real(ncid,idcb, stpar, prcnt,climatology_bounds)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put xclbnds'
@@ -1353,22 +1355,22 @@
 !
       stpar(1)=1
       stpar(2)=icdf
-      prcnt(1)=1
-      prcnt(2)=KM
+      prcnt(1)=KM
+      prcnt(2)=1
 !
-      status = nf_put_var1_real(ncid,id0_1, stpar, prcnt,CORLEN)
+      status = nf_put_vara_real(ncid,id0_1, stpar, prcnt,CORLEN)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put CORLEN'
       ENDIF
 !
-      status = nf_put_var1_real(ncid,id0_2, stpar, prcnt,SN)
+      status = nf_put_vara_real(ncid,id0_2, stpar, prcnt,SN)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put SN'
       ENDIF
 !
-      status = nf_put_var1_real(ncid,id0_3, stpar, prcnt,VARBAK)
+      status = nf_put_vara_real(ncid,id0_3, stpar, prcnt,VARBAK)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put VARBAK'
