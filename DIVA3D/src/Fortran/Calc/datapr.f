@@ -474,8 +474,12 @@ C Compute Linear Regression
          IF (D.NE.0) THEN
          CALL LUBKSB (A,3,NP,INDX,B)
                      ELSE
-         
+!    MO: teste sur TOTDAT:
+         IF(TOTDAT.GT.0.) THEN
          B(1)=B(1)/TOTDAT
+         ELSE
+         B(1) = 0.
+         ENDIF
          B(2)=0
          B(3)=0
          write(6,*) 'Using average value as reference',B(1)
