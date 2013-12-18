@@ -132,6 +132,9 @@ head -4 ../output/paramfit.dat | tail -1 >> ../output/param.par.fit
 head -25 ../input/param.par | tail -1 >> ../output/param.par.fit
 head -6 ../output/paramfit.dat | tail -1  >> ../output/param.par.fit
 
+head -8 ../output/paramfit.dat | tail -1  >> ../output/quality.fit
+echo $nsamp >> ../output/nsamp.fit
+
 if [ "$iparsave" == "1" ]
 then
 echo ======================================================= | tee -a $divafitlog

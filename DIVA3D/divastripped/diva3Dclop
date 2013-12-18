@@ -525,7 +525,8 @@ llll=`cat './output/'$var'.CL.dat' |wc -l`
 if [ "$llll" -gt "0" ]
 then
 echo Filtering CL file ${var}.CL.dat >> $diva3dlog
-awkfilter ./output/${var}.CL.dat > bidon
+../bin/main_tomvec.a 
+#awkfilter ./output/${var}.CL.dat > bidon
 mv ./output/${var}.CL.dat ./output/${var}.CL.dat.ori
 #echo 'Filtered CL.dat:'
 #cat bidon

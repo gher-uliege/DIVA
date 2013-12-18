@@ -256,6 +256,10 @@ echo $ODVDATA $qflag1 $qflag2
 if [ ! -z $qflag1 ]
 then
 echo $qflag1 > qflist
+	if [ ! -z $qflag2 ]
+	then
+	echo $qflag2 >> qflist
+	fi
 multiple_qflags=1
 elif [ $multiple_qflags -eq 1 ]
 then 

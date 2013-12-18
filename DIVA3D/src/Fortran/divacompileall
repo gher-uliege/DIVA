@@ -239,9 +239,10 @@ $compiler $flags refesorts.F -o sortref.a
 $compiler $flags refedispach.F -o refdispach.a
 $compiler $flags datacalmoy.F -o datacalmoy.a
 $compiler $flags dvqcfiles.F -o dvqcfiles.a
+$compiler $flags main_tomvec.f90 tomvec.f -o main_tomvec.a
 
 n8=`ls -1p *.a | grep -vc "/$"`
-n8max=28
+n8max=29
 
 echo You have compiled $n8 programs
 echo out of $n8max

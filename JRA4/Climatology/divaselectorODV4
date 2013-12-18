@@ -281,10 +281,23 @@ do
 let lev=$lev+1
 let lnum=10000+$lev
 
-echo Now split in layers $lnum and drop exclusion values 
-echo Order now: x y val 1 year month day hour meta1 meta2
+## Determination of the weight for each file in datasource ##
 
+echo Now split in layers $lnum and drop exclusion values
+
+flag_weight=1 # 1 if different weights, 0 if not
+if [ $(echo "$inputfile" | grep -e "APB" -e "XBT" -e "MBT" | wc -l) -eq 1 ] && [ $flag_weight -eq 1 ]
+then 
+echo Order now: x y val 0.5 year month day hour meta1 meta2
+awk -v lnum=$lnum '{if ($12 == lnum && $3 != 99999) {print $1,$2,$3,0.5,$6,$7,$8,$9,$10,$11}}' ${WORK}/${var}.bigfile.interp > ${WORK}/$var.$lnum
+elif [ $(echo "$inputfile" | grep -e "CTD" -e "PFL" -e "MRB" -e "DRB" -e "ARGO" | wc -l) -eq 1 ] && [ $flag_weight -eq 1 ]
+then
+echo Order now: x y val 1.1 year month day hour meta1 meta2
+awk -v lnum=$lnum '{if ($12 == lnum && $3 != 99999) {print $1,$2,$3,1.1,$6,$7,$8,$9,$10,$11}}' ${WORK}/${var}.bigfile.interp > ${WORK}/$var.$lnum
+else
+echo Order now: x y val 1 year month day hour meta1 meta2
 awk -v lnum=$lnum '{if ($12 == lnum && $3 != 99999) {print $1,$2,$3,1,$6,$7,$8,$9,$10,$11}}' ${WORK}/${var}.bigfile.interp > ${WORK}/$var.$lnum
+fi
 
 #Then extract for each layer the dates (small files now)
 
