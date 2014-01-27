@@ -786,8 +786,8 @@ echo 'divadoall:' ' input 3Dinfo file for diva3Ddress:'
 #ls -l ./input
 #For trended data
 
-rm ./input/dodetrend.dat
-rm ./input/detrendinfo
+rm -f ./input/dodetrend.dat
+rm -f ./input/detrendinfo
 
 if [ "$jmtrend" -ge "29" ]
 then
@@ -806,6 +806,11 @@ echo comment >> ./input/detrendinfo
 echo 10      >> ./input/detrendinfo
 fi
 fi
+
+if [ -f ./output/ghertonetcdf ] 
+then rm -f ./output/ghertonetcdf 
+fi
+mkdir -p ./output/ghertonetcdf
 
 echo 'divadoall:' 
 echo 'divadoall:' 'Running diva3Ddress on '$var $year $month

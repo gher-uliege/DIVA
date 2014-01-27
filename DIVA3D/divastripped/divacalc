@@ -593,10 +593,10 @@ cp ./output/fieldgher.anl ./divawork/fort.84
 cd divawork
 echo finished ice edge case
 fi
-cp fort.84 ../output/ghertonetcdf
+cp fort.84 ../output/ghertonetcdf/fort.84
 if [ -f fort.87 ]
 then 
-cp  fort.87 ../output/ghertonetcdf
+cp  fort.87 ../output/ghertonetcdf/fort.87
 fi
 iecal=0
 if [ "$ispec" == "1" ]
