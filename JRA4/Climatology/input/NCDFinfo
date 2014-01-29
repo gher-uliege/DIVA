@@ -5,7 +5,7 @@
  Time value (that reprsents the data set), if not climatological data
 1200
  Cell_methode string:
-'time: mean (this month data from all years)'
+'time: mean within years time: mean over years'
  Institution name: where the dataset was produced.
 'University of Liege, GeoHydrodynamics and Environment Research'
  Production group and e-mail

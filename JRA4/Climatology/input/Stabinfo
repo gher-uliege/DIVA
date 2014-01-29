@@ -1,14 +1,14 @@
 ! Code name for salinity
-psal.xxxxxxxx.0404
+Salinity
 ! Code name for temperature
-temp.xxxxxxxx.0404
+Temperature
 ! Relative Error 1 (epsilon1):
-0.1
+0.2
 ! Relative Error 2 (epsilon2):
-0.15
+0.3
 ! Relative width fooprint:
-1.
+2.
 ! Variational-Mixing combination factor:
-0.4
+1.
 ! Maximum iteration permited for each level:
-10
+5
