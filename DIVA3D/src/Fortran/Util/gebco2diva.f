@@ -105,7 +105,7 @@ c      write(6,*),x,y,i,j,jjjjj,imax,jmax
  999  continue
       xs=0
       ys=0
-      if (isgebco.eq.1) then
+      if (isgebco.ge.1) then
       xs=(ired-1)*dx
       ys=0
       endif
