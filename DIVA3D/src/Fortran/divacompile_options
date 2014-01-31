@@ -3,7 +3,7 @@
 # Name of the fortran compiler
 #-----------------------------
 
-compiler=gfortran
+compiler="gfortran -frecord-marker=4"
 #compiler=ifort
 
 # To use parall version, put value to 1
