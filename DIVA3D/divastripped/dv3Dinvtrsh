@@ -86,13 +86,9 @@ exit
 
 fi
 
-##if [ -d ./3DWORK ];then
-##echo 'starting transformation of '$var'.'$lev'.anl.nc'
-##else
 mkdir -p ./3DWORK
 echo 'starting transformation of '$var'.'$lev'.anl.nc' >> $diva3dlog
 echo 'starting transformation of '$var'.'$lev'.anl.nc'
-##fi
 #
 echo $ncdfile > ./3DWORK/ncname
 echo $binfile >> ./3DWORK/ncname
@@ -110,11 +106,11 @@ echo 'Start analyses inverse transformation '$ntrans
 echo 'Start analyses inverse transformation '$ntrans >> $diva3dlog
 
 cd ./3DWORK
-if [ -f ERR.$var.$lev ];then
-
-  echo 'No inverse transformation for '$var.$lev >> ../$diva3dlog
-  echo 'No inverse transformation for '$var.$lev
-  else
+#if [ -f ERR.$var.$lev ];then
+#
+#  echo 'No inverse transformation for '$var.$lev >> ../$diva3dlog
+#  echo 'No inverse transformation for '$var.$lev
+#else
   echo ' Inverse transformation for '$var.$lev >> ../$diva3dlog
   echo ' Inverse transformation for '$var.$lev
 
@@ -147,7 +143,7 @@ if [ -f ERR.$var.$lev ];then
   echo -------------------------------------------- >> ../output/diva.log
   fi
 
-fi
+#fi
 cd ../
 #
 # End analyses inverse transformations

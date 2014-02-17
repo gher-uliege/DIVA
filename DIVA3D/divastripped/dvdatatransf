@@ -13,12 +13,13 @@ echo 'starting data transformation' > $dvdatatransflog
 echo 'starting data transformation'
 else
 mkdir -p ./3DWORK
-echo 'starting data transformation' > $dvdatatransflog
-echo 'starting data transformation'
+echo 'starting data transformation flag=' $itrans > $dvdatatransflog
+echo 'starting data transformation:' $itrans
 fi
 echo 'making a backup of  ./input/divadata' >> $dvdatatransflog
 cp -r ./input/divadata ./input/divadata_BKP
 #
+
 if [ "$itrans" == "13" -o "$itrans" == "23" ];then 
 echo Start anamorphose transformation >> $dvdatatransflog
 #################################
@@ -177,6 +178,87 @@ else
 # Start data transformation
 #################################
 #
+echo Start data transformation: $itrans
+#
+if [ "$itrans" == "12" -o "$itrans" == "22" ];then 
+echo dvdatatrans: Will go for Logit transformation >> $dvdatatransflog
+#################################
+cd ./input/divadata
+if [ -f "$var.logitrange" ];then
+ cp $var'.logitrange' .../../3DWORK/Logitrange
+else
+ echo 9999. > ../../3DWORK/Logitrange
+ echo -9999. >> ../../3DWORK/Logitrange
+fi
+cat $var.1* >../../3DWORK/ALL_DATA
+cd ../../3DWORK/
+file='ALL_DATA'
+nbln=$(cat $file |wc -l)
+echo $nbln > 'all_nblall'
+echo $var >> 'all_nblall'
+echo $bottm >> 'all_nblall'
+echo $surf >> 'all_nblall'
+cd ../input/divadata
+dep=$bottm
+while [ $dep -le $surf ]
+do
+let level=10000+$dep
+  file=$var.$level
+  nbcl=$(head -n 1 $file | wc -w)
+  nbln=$(cat $file |wc -l)
+  file=$var'_'$level'_info'
+  echo $nbln > ../../3DWORK/$file
+  echo $nbcl >> ../../3DWORK/$file
+  echo $dep >> ../../3DWORK/$file
+#
+let dep=$dep+1
+done
+
+cd ../../3DWORK/
+echo dvdatatransf: ////////////////////////////////////////// >> ../output/diva.log
+echo dvdatatransf:      dvlogitrange   >> ../output/diva.log
+echo dvdatatransf: ////////////////////////////////////////// >> ../output/diva.log
+echo ' '  >> ../output/diva.log
+
+../../bin/dvlogitrange.a  >> ../output/diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo       dvdatatransf:  dvlogitrange.a
+echo Check execution track
+echo --------------------------------------------
+echo ' ' >> ../$dvdatatransflog
+echo -------------------------------------------- >> ../$dvdatatransflog
+echo A problem was encountered during execution ! >> ../$dvdatatransflog
+echo       dvdatatransf:  dvlogitrange.a >> ../$dvdatatransflog
+echo Check execution track >> ../$dvdatatransflog
+echo -------------------------------------------- >> ../$dvdatatransflog
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo       dvdatatransf:   dvlogitrange.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+fi
+
+#cat  ../output/diva.log | tail -2
+
+cd ../input/divadata
+dep=$bottm
+while [ $dep -le $surf ]
+do
+let level=10000+$dep
+if [ -f $var.$level'_shrink' ];then
+ cp $var.$level $var.$level'.save'
+ mv $var.$level'_shrink' $var.$level
+fi
+let dep=$dep+1
+done
+cd ../..
+fi
+
 dep=$bottm
 rm -f ./3DWORK/fort.44
 while [ $dep -le $surf ]
@@ -198,14 +280,16 @@ cd ./input/divadata
 
   cd ../../3DWORK/
 
-
+rm -f  fort.55 
 
 echo dvdatatransf: ////////////////////////////////////////// >> ../output/diva.log
 echo dvdatatransf:      datatrans   >> ../output/diva.log
 echo dvdatatransf: ////////////////////////////////////////// >> ../output/diva.log
 echo ' '  >> ../output/diva.log
 
-  ../../bin/datatrans.a >> ../output/diva.log
+  ../../bin/datatrans.a
+
+### >> ../output/diva.log
 
 if [ $? -ne 0 ];then
 echo ' '
@@ -227,11 +311,14 @@ echo       dvdatatransf:   datatrans.a  >> ../output/diva.log
 echo Check execution track >> ../output/diva.log
 echo -------------------------------------------- >> ../output/diva.log
 fi
-
-
-  if [ -f fort.55 ];then
+if [ -f fort.55 ];then
   mv fort.55 ERR.$var.$level
-  fi
+
+ echo ' fort.55 found, log trans error!'
+  ls -l
+  cat ERR.$var.$lev
+
+fi
 cd ../
 #
  dep=`expr $dep + 1`

@@ -25,6 +25,7 @@
       REAL*4 , DIMENSION(:,:,:),  ALLOCATABLE :: var, var1, var2
      &                                         , verr,reler,dbins
      &                                         , obins,rlfield
+      real*8           :: mjd
 !
       integer,DIMENSION(:,:,:),  ALLOCATABLE :: mask,mask1,mask2,masker
 !
@@ -33,9 +34,10 @@
       integer*4                 :: KMAX, ipr, nw, IMAX, JMAX, flag
       integer                   :: ICOOC, IREG, ISPEC
       integer                   :: nm,xm1,xm2,xy1,xy2
-      integer,DIMENSION(12)     :: numday, mdur,mini,mend
+      integer,DIMENSION(12)     :: mfin
 !
-      real*4                   :: time_val,time_Dval,time_Mval,time_Yval
+      real*4                   :: time_val,time_Dval, t0
+     &                           ,time_Mval,time_Yval
       real*4                   :: zz,VALEXC,
      &              var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
      &              vbt_min,vbt_max,var1_min,var1_max,
@@ -61,10 +63,7 @@
 !
       LOGICAL                          :: exist
 
-      DATA  numday /15,45,75,105,136,166,197,228,258,289,319,350/
-      DATA  mini /1,32,60,91,121,152,182,213,244,274,305,335/
-      DATA  mend /31,59,90,120,151,180,212,243,273,304,334,365/
-      DATA    mdur /31,28,31,30,31,30,31,31,30,31,30,31/
+      DATA  mfin /31,28,31,30,31,30,31,31,30,31,30,31/
 !--------------------------------------------------------------
 !
       EXECIN='./fort.44'
@@ -171,13 +170,13 @@
         endif
         time_Yval =  float(xy1)+nint(float(xy2)-float(xy1)+1.)/2
         time_Mval = 12*(float(xy1)+nint(float(xy2)-float(xy1)+1.)/2)
-!n     &                        +float(nm)
-        time_Dval = 365*(float(xy1)+nint(float(xy2)-float(xy1))/2)
-!n     &                        +nint(30.*float(nm)))
+        time_Dval = 365*float(xy2)
         time_val = time_Dval
 !
-        clbnds(1,1)= float(mini(xm1))
-        clbnds(2,1)= float(mend(xm2))
+!
+        t0 = mjd(xy1,1,1,0.)
+        clbnds(1,1)= mjd(xy1,xm1,1,0.)-t0
+        clbnds(2,1)= mjd(xy2,xm2+1,1,0.)-t0
 !
       ENDIF
 !
@@ -550,17 +549,36 @@
 !
 ! Masking of fields
 !
+!x        klev = 0
+!x        DO istep = MINLEV,MAXLEV
+!x          klev = klev + 1
+!x            DO j = 1,jmax
+!x              DO i = 1,imax
+!x                IF(verr(i,j,klev) == VALEXC .OR. verr(i,j,klev) > 0.3)
+!x     &THEN
+!x                   var1(i,j,klev) = VALEXC
+!x                   mask1(i,j,klev) = 0
+!x                ENDIF
+!x                IF(verr(i,j,klev) == VALEXC .OR. verr(i,j,klev) > 0.5)
+!x     &THEN
+!x                   var2(i,j,klev) = VALEXC
+!x                   mask2(i,j,klev) = 0
+!x                ENDIF
+!x              ENDDO
+!x            ENDDO
+!x        ENDDO
+!
         klev = 0
         DO istep = MINLEV,MAXLEV
           klev = klev + 1
             DO j = 1,jmax
               DO i = 1,imax
-                IF(verr(i,j,klev) == VALEXC .OR. verr(i,j,klev) > 0.3)
+                IF(reler(i,j,klev) == VALEXC .OR. reler(i,j,klev) > 0.3)
      &THEN
                    var1(i,j,klev) = VALEXC
                    mask1(i,j,klev) = 0
                 ENDIF
-                IF(verr(i,j,klev) == VALEXC .OR. verr(i,j,klev) > 0.5)
+                IF(reler(i,j,klev) == VALEXC .OR. reler(i,j,klev) > 0.5)
      &THEN
                    var2(i,j,klev) = VALEXC
                    mask2(i,j,klev) = 0
@@ -965,3 +983,29 @@
         if (i2neg.eq.1) x2r=-x2r
         return
         end
+
+
+      function mjd(y,m,d,s)
+      implicit none
+      integer d,m,y
+      real s
+      real*8 mjd
+
+! Mathematicians and programmers have naturally 
+! interested themselves in mathematical and computational 
+! algorithms to convert between Julian day numbers and 
+! Gregorian dates. The following conversion algorithm is due 
+! to Henry F. Fliegel and Thomas C. Van Flandern: 
+! The Julian day (jd) is computed from Gregorian day, month
+! and year (d, m, y) as follows:
+! http://hermetic.magnet.ch/cal_stud/jdn.htm
+
+! ModifiedJulianDay = 0 for 1858-11-17 CE.
+
+      mjd = (( 1461 * ( y + 4800 + ( m - 14 ) / 12 ) ) / 4 +    
+     &       ( 367 * ( m - 2 - 12 * ( ( m - 14 ) / 12 ) ) ) / 12 -
+     &       ( 3 * ( ( y + 4900 + ( m - 14 ) / 12 ) / 100 ) ) / 4 +
+     &       d - 32075 - 2400001)*1d0 + s/(24*60*60d0)               
+
+      end function mjd
+

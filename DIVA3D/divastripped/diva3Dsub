@@ -54,6 +54,11 @@ echo 'diva3Dsub: ./output/3Danalysis exists' >> $diva3dlog
 else
 mkdir -p ./output/3Danalysis/
 fi
+if [ -d  ./3DWORK ];then
+rm -f ./3DWORK/*
+else
+mkdir -p ./3DWORK
+fi
 #
 if [ "$gnup" == "1" ]
 then
@@ -70,8 +75,11 @@ fi
 fi
 ##                   fi "$act" == "2"
 #
+###############################################################################
 if [ -f ./input/dvtransinfo ];then
-############################
+########################################## DATA TRANSFORMATION START
+#                                         ###########################
+#
 echo 'transforming input data:' $bottm $surf $var >> $diva3dlog
   Fileinf=./input/dvtransinfo
 {
@@ -107,8 +115,10 @@ echo ' '  >> ./output/diva.log
     mv bidon $diva3dlog
 
 fi
+########################################## DATA TRANSFORMATION END
+#                                         ###########################
 fi
-############################fi -f ./input/dvtransinfo
+###############################################################################
 #
 if [ -f ./input/dvlaymixinfo ];then
 #############################
@@ -143,7 +153,9 @@ fi
 echo ' level  data_nbr' > './output/3Danalysis/'$var'.nbrdata'
 #
 #
-################################## loop on levels ########################
+########################################## ANALYSIS: START
+#                                         ###########################
+################## loop on levels
 dep=$bottm
 while [ $dep -le $surf ]
 do
@@ -196,6 +208,8 @@ echo ' '
 echo ' '
 
 if [ -f "./input/dvtransinfo" ];then
+########################################## INVERS TRANSFORMATION: START
+#                                         #############################
 #############################
 
   Fileinf=./input/dvtransinfo
@@ -233,8 +247,30 @@ fi
 
  ./dv3Dinvtrsh $level $var $ntrans $act
 
+if [ "$gnup" -ge "101" ]
+echo $level > levvar
+echo $var >> levvar
+then
+if [ "$gmin" -le "$gmax" ]
+then
+./dv3Dgnu $gmin $gmax
+else
+./dv3Dgnu
 fi
-##################################### -f "./input/dvtransinfo"
+cd ./gnuwork/plots
+for i in `ls *.png`
+do
+mv  $i ../../output/3Danalysis/GnuPlots/'$var'.'$level'.'$i
+done
+cd ../..
+#
+fi
+
+
+########################################## INVERS TRANSFORMATION: END
+#                                         #############################
+fi
+#####################################
 #
 fi
 #####################################fi "$act" == "1" -o  "$act" == "2"
@@ -244,6 +280,8 @@ done
 #
 echo ' finished with analysing! ' >> $diva3dlog
 
+########################################## ANALYSIS: END
+#                                         ###########################
 ##################
 
 if [ -f "./input/diva3Ddoqc" ];then
@@ -275,6 +313,7 @@ else
 fi
 #
 if [ -f "./input/dvtransinfo" ];then
+#
 mv ./input/divadata ./input/divadata_tmp
 mv ./input/divadata_BKP ./input/divadata 
 if [ -d "./input/divadata_trans" ];then

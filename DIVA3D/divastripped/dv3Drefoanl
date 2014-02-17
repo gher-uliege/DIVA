@@ -27,7 +27,7 @@ echo '***********' > $dv3Drefoanllog
 echo 'dv3Drefoanl:' 
 echo 'dv3Drefoanl:' 'Start data analysis flag number: '$action
 echo 'dv3Drefoanl:' 'on '$var'.'$lev
-echo 'dv3Drefoanl:'
+echo 'dv3Drefoanl: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>$gnpl $gmin $gmax' $gnpl $gmin $gmax
 #
 echo 'dv3Drefoanl:' >> $dv3Drefoanllog
 echo 'dv3Drefoanl:' 'Start data analysis flag number: '$action >> $dv3Drefoanllog
@@ -46,8 +46,10 @@ else
    fi
  fi
 fi
+
 if [ -f ./input/param.par ];then
  runflag=0
+
 if [ "$action" == "2" ];then
 cp ./input/param.par ./input/param.par.svori
 #
@@ -114,12 +116,16 @@ if [ "$#" == "8" ];then
 echo dv3Drefoanl stabilisation: dvstbchp 1 >> $dv3Drefoanllog
 ./dvstbchp 1
 fi
+
 else
  runflag=1
 fi
+
+
 #
 dataflag=0
 if [ "$action" == "1" ];then
+########################################################################### $action == "1" start
 #
 if [ -f ./input/divadata/$var.$lev ];then
  cp -f ./input/divadata/$var.$lev  ./input/data.dat
@@ -132,6 +138,16 @@ if [ -f ./input/divadata/$var.$lev ];then
 else
  echo '!!!!! dvrefoanl: did not find data file '$var'.'$lev' in divadata/ !!!!!' >> $dv3Drefoanllog
  runflag=2
+fi
+#
+
+echo dv3Drefoanal: check on /output/ghertonetcdf?
+if [ -d ./output/ghertonetcdf ]
+then
+echo ./output/ghertonetcdf exists
+else
+echo ./output/ghertonetcdf dosn t exist
+mkdir -p ./output/ghertonetcdf
 fi
 #
 if [ -f ./input/divarefe/$var'.'$lev'.datapoint.ref' ];then
@@ -166,8 +182,12 @@ else
 fi
 #
 fi
+########################################################################### $action == "1" end
+#
 #
 if [ "$action" == "2" ];then
+########################################################################### $action == "2" start
+#
 if [ -f './input/divadata/'$var'.'$lev ];then
  cp -f './input/divadata/'$var'.'$lev  ./input/data.dat
 else
@@ -176,6 +196,8 @@ else
  runflag=2
 fi
 fi
+########################################################################### $action == "2" end
+#
 #
 if [ -f ./input/divaparam/coast.cont.$lev ];then
  cp -f ./input/divaparam/coast.cont.$lev  ./input/coast.cont
@@ -205,6 +227,8 @@ fi
 ###########################################################
 #
 if [ "$runflag" -eq "0" ];then
+########################################################################### $runflag == "0" start
+#
 #
 if [ -f ./input/divaparam/3Dconstraint ]
 then
@@ -258,8 +282,10 @@ then
  fi
 fi
 #
+#
+#
 if [ -f ./input/divaparam/RLinfo.$var.$lev ];then
- cp -f ./input/divaparam/RLinfo.$var..$lev ./input/RLinfo.dat
+ cp -f ./input/divaparam/RLinfo.$var.$lev ./input/RLinfo.dat
 else
  if [ -f ./input/divaparam/RLinfo.$lev ];then
   cp -f ./input/divaparam/RLinfo.$lev ./input/RLinfo.dat
@@ -284,8 +310,11 @@ if [ -f ./input/RLinfo.dat ];then
 fi
 #------------------------------------------------------------
 #
+mkdir -p ./input/divamesh
+#
 if [ "$action" == "1" ];then
-
+########################################################################### $action == "1" start
+#
 echo ' ' >> $dv3Drefoanllog
 echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%' >> $dv3Drefoanllog
 echo '%%%%%%%%%%%% running  analysis for '$var'.'$lev >> $dv3Drefoanllog
@@ -298,6 +327,9 @@ echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 echo ' '
 
 if [ "$refanl" == "1" ];then
+########################################### ANALYSIS without reference: start
+#
+
 #echo Cleaning up the mess
 divaclean
 #echo Gridding
@@ -321,6 +353,7 @@ divamesh
  cp -v ./output/meshvisu/fort.10 ./input/divaparam/coast.cont.$lev
 fi
 #
+
 if [ "$detrd" -eq "1" ];then
 #
   Fileinf=./input/detrendinfo
@@ -341,18 +374,21 @@ echo ' '  >> ./output/diva.log
     cat $dv3Drefoanllog ./output/divadetrend.log > bidon
     mv bidon $dv3Drefoanllog
 
+
 else
+
 #echo Analysing
 
 echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
 echo dv3Drefoanl:                 divacalc   >> ./output/diva.log
 echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
 echo ' '  >> ./output/diva.log
-divacalc
+./divacalc
     cat $dv3Drefoanllog ./output/divacalc.log > bidon
     mv bidon $dv3Drefoanllog
 
 fi
+
 echo ' ' >> $dv3Drefoanllog
 echo '%%%%%%%%%%%% Finished  analysis for '$var'.'$lev >> $dv3Drefoanllog
 echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%' >> $dv3Drefoanllog
@@ -361,7 +397,11 @@ echo ' '
 echo '%%%%%%%%%%%% Finished  analysis for '$var'.'$lev
 echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 echo ' '
+########################################### ANALYSIS without reference: end
+#
 else
+########################################### ANALYSIS with reference: start
+#
  echo '>>>>>>>>>>>>  making anomalies for '$var'.'$lev >> $dv3Drefoanllog
 
 echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
@@ -444,7 +484,10 @@ echo ' '
 echo '%%%%%%%%%%%% Finished  analysis for '$var'.'$lev
 echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 echo ' '
+#
+########################################### ANALYSIS with reference: end
 fi
+#
 #
 if [ -f ./input/divadata/$var'.'$lev'.DATABINS' ];then
  echo ' '
@@ -482,10 +525,12 @@ fi
 if [ "$#" == "8" ];then
 cp -v ./output/ghertonetcdf/fort.84 ./output/3Danalysis/Fields/$var'.'$lev'.anl'
 else
+
 if [ "$dataflag" == "1" ]; then
 cp -v ./output/ghertonetcdf/GridInfo.dat ./output/3Danalysis/Fields/GridInfo.dat
 cp -v ./output/ghertonetcdf/fort.84 ./output/3Danalysis/Fields/$var'.'$lev'.anl'
-cp -v ./output/ghertonetcdf/fort.84 ./output/3Danalysis/Fields/$var'.'$lev'.error'
+#cp -v ./output/ghertonetcdf/fort.84 ./output/3Danalysis/Fields/$var'.'$lev'.error'
+cp -v ./output/errorfieldgher.anl ./output/3Danalysis/Fields/$var'.'$lev'.error'
 cp -v ./output/ghertonetcdf/results.nc ./output/3Danalysis/Fields/$var'.'$lev'.anl.nc'
 else
 cp -v ./output/ghertonetcdf/results.nc ./output/3Danalysis/Fields/$var'.'$lev'.anl.nc'
@@ -508,25 +553,32 @@ else
 fi
 #
 fi
+
 if [ -f ./output/erroratxyascii.anl ];then
 cp -v ./output/erroratxyascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.erroratxyascii.anl'
 fi
+
 if [ -f ./output/expectederroratdatapointbis.anl ];then
 cp -v ./output/expectederroratdatapointbis.anl ./output/3Danalysis/Fields/$var'.'$lev'.erroratdatapoint'
 fi
+
 if [ -f ./output/fieldatdatapoint.anl ];then
 cp -v ./output/fieldatdatapoint.anl ./output/3Danalysis/Fields/$var'.'$lev'.fieldatdatapoint.anl'
 fi
 #
+
 if [ -f ./output/outliersbis.normalized.dat ];then
 cp -v ./output/outliersbis.normalized.dat ./output/3Danalysis/Fields/$var'.'$lev'.outliersbis.norm'
 fi
+
 if [ -f ./output/outliersbis.dat ];then
 cp -v ./output/outliersbis.dat ./output/3Danalysis/Fields/$var'.'$lev'.outliersbis'
 fi
+
 if [ -f ./input/data.dat.nooutliers ];then
 cp -v ./input/data.dat.nooutliers ./input/divadata/$var'.'$lev'.nooutliers'
 fi
+
 #------------------------------------------------------------
 #
 if [ "$gnpl" == "1" ]
@@ -548,15 +600,21 @@ fi
 cd ./gnuwork/plots
 for i in `ls *.png`
 do
-cp -v $i ../../output/3Danalysis/GnuPlots/$var'.'$lev'.'$i
+mv  $i ../../output/3Danalysis/GnuPlots/$var'.'$lev'.'$i
 done
 cd ../..
-fi
 #
 fi
 fi
+########################################################################### $action == "1" end
+#
+fi
+
+
 #
 if [ "$action" == "2" ];then
+########################################################################### $action == "2" start
+#
 echo ' ' >> $dv3Drefoanllog
 echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%' >> $dv3Drefoanllog
 echo '%%%%%%%%%%%% Making reference for '$var'.'$lev >> $dv3Drefoanllog
@@ -618,6 +676,7 @@ cp -v ./output/fieldatdatapoint.anl.ref ./input/divarefe_all/$var'.'$lev'.datapo
 cp -v ./output/fieldascii.anl.ref ./input/divarefe_all/$var'.'$lev'.ascii.ref'
 cp -v ./output/fieldgher.anl.ref ./input/divarefe_all/$var'.'$lev'.ref'
 fi
+
 cp -v ./output/ghertonetcdf/GridInfo.dat ./input/divarefe/GridInfo.dat
 cp -v ./output/fieldatdatapoint.anl.ref ./input/divarefe/$var'.'$lev'.datapoint.ref'
 cp -v ./output/fieldascii.anl.ref ./input/divarefe/$var'.'$lev'.ascii.ref'
@@ -631,12 +690,15 @@ cp -v ./output/fieldgher.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.ref'
 cp -v ./output/valatxyascii.anl.ref ./output/3Danalysis/Fields/$var'.'$lev'.valatxyasc.ref'
 cp -v ./output/errorfieldgher.anl ./output/3Danalysis/Fields/$var'.'$lev'.ref.error'
 cp -v ./output/errorfieldascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.ref.errorascii'
+
 if [ -f ./output/erroratxyascii.anl ];then
 cp -v ./output/erroratxyascii.anl ./output/3Danalysis/Fields/$var'.'$lev'.erroratxyascii.anl'
 fi
+
 if [ -f ./output/expectederroratdatapointbis.anl ];then
 cp -v ./output/expectederroratdatapointbis.anl ./output/3Danalysis/Fields/$var'.'$lev'.erroratdatapoint'
 fi
+
 if [ -f ./output/fieldatdatapoint.anl ];then
 cp -v ./output/fieldatdatapoint.anl ./output/3Danalysis/Fields/$var'.'$lev'.fieldatdatapoint.anl'
 fi
@@ -663,17 +725,23 @@ do
 cp -v $i ../../output/3Danalysis/GnuPlots/$var'.'$lev'.'$i
 done
 cd ../../
+#
 fi
+#
+fi
+########################################################################### $action == "2" end
+#
 fi
 #------------------------------------------------------------
-fi
 if [ "$#" == "8" ];then
 echo dv3Drefoanl: dvstbchp 0
 #ls ./input/
 ./dvstbchp 0
 fi
 ##################################################################
+
 else
+
 if [ "$runflag" -eq "1" ];then
 echo '!!!!!!!!!!!!!diva3Dsub WARNING: !!!!!!!!!!!!!!!!!!' >> $dv3Drefoanllog
 echo '!!!!!!!!DID NOT FIND param.par FILE FOR '$var $lev'!'  >> $dv3Drefoanllog

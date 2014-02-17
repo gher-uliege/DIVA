@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gmd:MD_Metadata xmlns:gts="http://www.isotc211.org/2005/gts" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:xlink="http://www.w3.org/1999/xlink">
-	<gmd:fileIdentifier xmlns:gmx="http://www.isotc211.org/2005/gmx" xmlns:srv="http://www.isotc211.org/2005/srv">
-		<gco:CharacterString>SDN:PRODUCT:EDMO id:SDN:PRODUCT:EDMO id:MOstr_SDN_Local_Product_ID_endMO</gco:CharacterString>
+<gmd:MD_Metadata xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gts="http://www.isotc211.org/2005/gts" xmlns:gml="http://www.opengis.net/gml" xmlns:gmd="http://www.isotc211.org/2005/gmd">
+	<gmd:fileIdentifier>
+		<gco:CharacterString>SDN::EDMO id: MOstr_SDN_Local_Product_ID_endMO</gco:CharacterString>
 	</gmd:fileIdentifier>
 	<gmd:language>
-		<gco:CharacterString>eng</gco:CharacterString>
+		<gmd:LanguageCode codeList="http://www.loc.gov/standards/iso639-2/" codeListValue="eng"/>
 	</gmd:language>
 	<gmd:characterSet>
-		<gmd:MD_CharacterSetCode codeListValue="utf8" codeList="./resources/codeList.xml#MD_CharacterSetCode"/>
+		<gmd:MD_CharacterSetCode codeListValue="utf8" codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_CharacterSetCode"/>
 	</gmd:characterSet>
 	<gmd:hierarchyLevelName>
-		<gmx:Anchor xmlns:gmx="http://www.isotc211.org/2005/gmx" xlink:href="http://www.seadatanet.org/urnurl/SDN:L231:6:PRODUCT">SDN:L231:6:PRODUCT = Product record</gmx:Anchor>
+		<gmx:Anchor xmlns:gmx="http://www.isotc211.org/2005/gmx" xlink:href="http://www.seadatanet.org/urnurl/"/>
 	</gmd:hierarchyLevelName>
 	<gmd:contact>
 		<gmd:CI_ResponsibleParty>
@@ -29,15 +29,15 @@
 				</gmd:CI_Contact>
 			</gmd:contactInfo>
 			<gmd:role>
-				<gmd:CI_RoleCode codeListValue="author" codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_RoleCode"/>
+				<gmd:CI_RoleCode codeListValue="author" codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_RoleCode"/>
 			</gmd:role>
 		</gmd:CI_ResponsibleParty>
 	</gmd:contact>
 	<gmd:dateStamp>
-		<gco:DateTime xmlns:gmx="http://www.isotc211.org/2005/gmx" xmlns:srv="http://www.isotc211.org/2005/srv">2013-01-10T00:00:00</gco:DateTime>
+		<gco:DateTime>2014-02-02T12:39:30</gco:DateTime>
 	</gmd:dateStamp>
 	<gmd:metadataStandardName>
-		<gco:CharacterString>ISO 19115:2003/19139</gco:CharacterString>
+		<gco:CharacterString>ISO 19115:2003/19139 - EMODNET - CHEMISTRY</gco:CharacterString>
 	</gmd:metadataStandardName>
 	<gmd:metadataStandardVersion>
 		<gco:CharacterString>1.0</gco:CharacterString>
@@ -50,38 +50,38 @@
 			<gmd:axisDimensionProperties>
 				<gmd:MD_Dimension>
 					<gmd:dimensionName>
-						<gmd:MD_DimensionNameTypeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_DimensionNameTypeCode" codeListValue="column"/>
+						<gmd:MD_DimensionNameTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_DimensionNameTypeCode" codeListValue="column"/>
 					</gmd:dimensionName>
 					<gmd:dimensionSize>
-						<gco:Integer>9991</gco:Integer>
+						<gco:Integer>MOstr_Number_of_columns_endMO</gco:Integer>
 					</gmd:dimensionSize>
 				</gmd:MD_Dimension>
 			</gmd:axisDimensionProperties>
 			<gmd:axisDimensionProperties>
 				<gmd:MD_Dimension>
 					<gmd:dimensionName>
-						<gmd:MD_DimensionNameTypeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_DimensionNameTypeCode" codeListValue="row"/>
+						<gmd:MD_DimensionNameTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_DimensionNameTypeCode" codeListValue="row"/>
 					</gmd:dimensionName>
 					<gmd:dimensionSize>
-						<gco:Integer>9992</gco:Integer>
+						<gco:Integer>MOstr_Number_of_lines_endMO</gco:Integer>
 					</gmd:dimensionSize>
 				</gmd:MD_Dimension>
 			</gmd:axisDimensionProperties>
 			<gmd:axisDimensionProperties>
 				<gmd:MD_Dimension>
 					<gmd:dimensionName>
-						<gmd:MD_DimensionNameTypeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_DimensionNameTypeCode" codeListValue="time"/>
+						<gmd:MD_DimensionNameTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_DimensionNameTypeCode" codeListValue="time"/>
 					</gmd:dimensionName>
 					<gmd:dimensionSize>
 						<gco:Integer>1</gco:Integer>
 					</gmd:dimensionSize>
 					<gmd:resolution>
-						<gco:Measure uom="MOstr_Time_unit_endMO">Climatology</gco:Measure>
+						<gco:Measure uom="">MOstr_time_resolution_endMO</gco:Measure>
 					</gmd:resolution>
 				</gmd:MD_Dimension>
 			</gmd:axisDimensionProperties>
 			<gmd:cellGeometry>
-				<gmd:MD_CellGeometryCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_CellGeometryCode" codeListValue="point"/>
+				<gmd:MD_CellGeometryCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_CellGeometryCode" codeListValue="point"/>
 			</gmd:cellGeometry>
 			<gmd:transformationParameterAvailability>
 				<gco:Boolean>false</gco:Boolean>
@@ -119,32 +119,32 @@
 						<gco:CharacterString>Emodnet Chemistry Product Metadata</gco:CharacterString>
 					</gmd:title>
 					<gmd:alternateTitle>
-						<gco:CharacterString>SDN:PRODUCT:EDMO id:MOstr_SDN_Local_Product_ID_endMO</gco:CharacterString>
+						<gco:CharacterString>MOstr_SDN_Local_Product_ID_endMO</gco:CharacterString>
 					</gmd:alternateTitle>
 					<gmd:date>
 						<gmd:CI_Date>
 							<gmd:date>
-								<gco:DateTime>2013-01-09T00:00:00</gco:DateTime>
+								<gco:DateTime>2014-01-30T12:00:00</gco:DateTime>
 							</gmd:date>
 							<gmd:dateType>
-								<gmd:CI_DateTypeCode codeListValue="creation" codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_DateTypeCode"/>
+								<gmd:CI_DateTypeCode codeListValue="creation" codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_DateTypeCode"/>
 							</gmd:dateType>
 						</gmd:CI_Date>
 					</gmd:date>
 					<gmd:date>
 						<gmd:CI_Date>
 							<gmd:date>
-								<gco:DateTime>2013-01-10T00:00:00</gco:DateTime>
+								<gco:DateTime>2014-01-30T12:00:00</gco:DateTime>
 							</gmd:date>
 							<gmd:dateType>
-								<gmd:CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_DateTypeCode" codeListValue="revision"/>
+								<gmd:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision"/>
 							</gmd:dateType>
 						</gmd:CI_Date>
 					</gmd:date>
 					<gmd:identifier>
 						<gmd:MD_Identifier>
 							<gmd:code>
-								<gco:CharacterString>SDN:PRODUCT:EDMO id:MOstr_SDN_Local_Product_ID_endMO</gco:CharacterString>
+								<gco:CharacterString>MOstr_SDN_Local_Product_ID_endMO</gco:CharacterString>
 							</gmd:code>
 						</gmd:MD_Identifier>
 					</gmd:identifier>
@@ -170,7 +170,7 @@
 						</gmd:CI_Contact>
 					</gmd:contactInfo>
 					<gmd:role>
-						<gmd:CI_RoleCode codeListValue="originator" codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_RoleCode"/>
+						<gmd:CI_RoleCode codeListValue="originator" codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_RoleCode"/>
 					</gmd:role>
 				</gmd:CI_ResponsibleParty>
 			</gmd:pointOfContact>
@@ -191,7 +191,7 @@
 						</gmd:CI_Contact>
 					</gmd:contactInfo>
 					<gmd:role>
-						<gmd:CI_RoleCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_RoleCode" codeListValue="custodian"/>
+						<gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_RoleCode" codeListValue="custodian"/>
 					</gmd:role>
 				</gmd:CI_ResponsibleParty>
 			</gmd:pointOfContact>
@@ -211,7 +211,7 @@
 						<gco:CharacterString>SDN:EDMERP::11805 = EMODNet Chemistry</gco:CharacterString>
 					</gmd:keyword>
 					<gmd:type>
-						<gmd:MD_KeywordTypeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_KeywordTypeCode" codeListValue="theme"/>
+						<gmd:MD_KeywordTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_KeywordTypeCode" codeListValue="theme"/>
 					</gmd:type>
 					<gmd:thesaurusName>
 						<gmd:CI_Citation>
@@ -227,7 +227,7 @@
 										<gco:DateTime>2009-06-11T00:00:00</gco:DateTime>
 									</gmd:date>
 									<gmd:dateType>
-										<gmd:CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_DateTypeCode" codeListValue="publication"/>
+										<gmd:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication"/>
 									</gmd:dateType>
 								</gmd:CI_Date>
 							</gmd:date>
@@ -241,7 +241,7 @@
 						<gco:CharacterString>SDN:L054:12:130 = CTD</gco:CharacterString>
 					</gmd:keyword>
 					<gmd:type>
-						<gmd:MD_KeywordTypeCode codeListValue="theme" codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_KeywordTypeCode"/>
+						<gmd:MD_KeywordTypeCode codeListValue="theme" codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_KeywordTypeCode"/>
 					</gmd:type>
 					<gmd:thesaurusName>
 						<gmd:CI_Citation>
@@ -256,10 +256,10 @@
 			<gmd:descriptiveKeywords>
 				<gmd:MD_Keywords>
 					<gmd:keyword>
-						<gco:CharacterString>SDN:L056:3:POS24 = dead reckoning</gco:CharacterString>
+						<gco:CharacterString>SDN:L056:3:357 = acoustic tracking systems</gco:CharacterString>
 					</gmd:keyword>
 					<gmd:type>
-						<gmd:MD_KeywordTypeCode codeListValue="stratum" codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_KeywordTypeCode"/>
+						<gmd:MD_KeywordTypeCode codeListValue="stratum" codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_KeywordTypeCode"/>
 					</gmd:type>
 					<gmd:thesaurusName>
 						<gmd:CI_Citation>
@@ -277,7 +277,7 @@
 						<gco:CharacterString>SDN:P021:68:NTRA = Nitrate concentration parameters in the water column</gco:CharacterString>
 					</gmd:keyword>
 					<gmd:type>
-						<gmd:MD_KeywordTypeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_KeywordTypeCode" codeListValue="discipline"/>
+						<gmd:MD_KeywordTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_KeywordTypeCode" codeListValue="discipline"/>
 					</gmd:type>
 					<gmd:thesaurusName>
 						<gmd:CI_Citation>
@@ -295,7 +295,7 @@
 						<gco:CharacterString>Hydrography</gco:CharacterString>
 					</gmd:keyword>
 					<gmd:type>
-						<gmd:MD_KeywordTypeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_KeywordTypeCode" codeListValue="theme"/>
+						<gmd:MD_KeywordTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_KeywordTypeCode" codeListValue="theme"/>
 					</gmd:type>
 					<gmd:thesaurusName>
 						<gmd:CI_Citation>
@@ -310,35 +310,35 @@
 			<gmd:resourceConstraints>
 				<gmd:MD_LegalConstraints>
 					<gmd:useLimitation>
-						<gco:CharacterString>MOstr_Not_to_be_used_for_what_endMO</gco:CharacterString>
+						<gco:CharacterString>MOstr_use_limitation_endMO</gco:CharacterString>
 					</gmd:useLimitation>
 					<gmd:accessConstraints>
-						<gmd:MD_RestrictionCode codeListValue="license" codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_RestrictionCode"/>
+						<gmd:MD_RestrictionCode codeListValue="license" codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_RestrictionCode"/>
 					</gmd:accessConstraints>
 					<gmd:useConstraints>
-						<gmd:MD_RestrictionCode codeListValue="license" codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_RestrictionCode"/>
+						<gmd:MD_RestrictionCode codeListValue="copyright" codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_RestrictionCode"/>
 					</gmd:useConstraints>
 					<gmd:otherConstraints>
-						<gco:CharacterString>Mostr_Other_restrictions_and_leagal_prerequisities_endMO</gco:CharacterString>
+						<gco:CharacterString>MOstr_Other_constraints_endMO</gco:CharacterString>
 					</gmd:otherConstraints>
 				</gmd:MD_LegalConstraints>
 			</gmd:resourceConstraints>
 			<gmd:resourceConstraints>
 				<gmd:MD_Constraints>
 					<gmd:useLimitation>
-						<gco:CharacterString>MOstr_Use_Limitation_for_what_endMO</gco:CharacterString>
+						<gco:CharacterString>MOstr_Expected_users_uses_and_limitations_endMO</gco:CharacterString>
 					</gmd:useLimitation>
 				</gmd:MD_Constraints>
 			</gmd:resourceConstraints>
 			<gmd:spatialRepresentationType>
-				<gmd:MD_SpatialRepresentationTypeCode codeListValue="SDN:L021:1:006 = Surface" codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_SpatialRepresentationTypeCode"/>
+				<gmd:MD_SpatialRepresentationTypeCode codeListValue="grid" codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_SpatialRepresentationTypeCode"/>
 			</gmd:spatialRepresentationType>
 			<gmd:spatialResolution>
 				<gmd:MD_Resolution>
 					<gmd:equivalentScale>
 						<gmd:MD_RepresentativeFraction>
 							<gmd:denominator>
-								<gco:Integer>No</gco:Integer>
+								<gco:Integer>1</gco:Integer>
 							</gmd:denominator>
 						</gmd:MD_RepresentativeFraction>
 					</gmd:equivalentScale>
@@ -352,10 +352,10 @@
 				</gmd:MD_Resolution>
 			</gmd:spatialResolution>
 			<gmd:language>
-				<gco:CharacterString>eng</gco:CharacterString>
+				<gmd:LanguageCode codeList="http://www.loc.gov/standards/iso639-2/" codeListValue="eng"/>
 			</gmd:language>
 			<gmd:characterSet>
-				<gmd:MD_CharacterSetCode codeListValue="utf8" codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_CharacterSetCode"/>
+				<gmd:MD_CharacterSetCode codeListValue="utf8" codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_CharacterSetCode"/>
 			</gmd:characterSet>
 			<gmd:topicCategory>
 				<gmd:MD_TopicCategoryCode>oceans</gmd:MD_TopicCategoryCode>
@@ -366,8 +366,8 @@
 						<gmd:EX_TemporalExtent>
 							<gmd:extent>
 								<gml:TimePeriod gml:id="d2e435a1049886">
-										<gml:beginPosition>2010-01-01T00:00:00</gml:beginPosition>
-										<gml:endPosition>2012-12-31T00:00:00</gml:endPosition>
+										<gml:beginPosition>2001-09-01T00:00:00</gml:beginPosition>
+										<gml:endPosition>2002-09-01T00:00:00</gml:endPosition>
 								</gml:TimePeriod>
 							</gmd:extent>
 						</gmd:EX_TemporalExtent>
@@ -408,8 +408,8 @@
 			<gmd:extent>
 				<gmd:EX_Extent>
 					<gmd:description>
-						<gco:CharacterString>Map projection parameters, values and units : 
-Axes units : MOstr_GeodeticsysDes1_endMO</gco:CharacterString>
+						<gco:CharacterString>Map projection parameters, values and units : MOstr_GeodeticsysDes1_endMO
+Axes units : MOstr_GeodeticsysDes2_endMO</gco:CharacterString>
 					</gmd:description>
 					<gmd:geographicElement>
 						<gmd:EX_GeographicDescription>
@@ -455,7 +455,7 @@ Axes units : MOstr_GeodeticsysDes1_endMO</gco:CharacterString>
 								<gco:CharacterString>SDN:EDMO::EDMO id = SDN:EDMO name_ddc</gco:CharacterString>
 							</gmd:organisationName>
 							<gmd:role>
-								<gmd:CI_RoleCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_RoleCode" codeListValue="distributor"/>
+								<gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_RoleCode" codeListValue="distributor"/>
 							</gmd:role>
 						</gmd:CI_ResponsibleParty>
 					</gmd:distributorContact>
@@ -469,7 +469,7 @@ Axes units : MOstr_GeodeticsysDes1_endMO</gco:CharacterString>
 					<gmd:onLine>
 						<gmd:CI_OnlineResource>
 							<gmd:linkage>
-								<gmd:URL>MOstr_URL_Accessing_website_endMO</gmd:URL>
+								<gmd:URL xmlns:gmx="http://www.isotc211.org/2005/gmx">MOstr_URL_Accessing_website_endMO</gmd:URL>
 							</gmd:linkage>
 							<gmd:protocol>
 								<gco:CharacterString>WWW:LINK-1.0-http--link</gco:CharacterString>
@@ -478,10 +478,10 @@ Axes units : MOstr_GeodeticsysDes1_endMO</gco:CharacterString>
 								<gco:CharacterString>MOstr_name_resource_endMO</gco:CharacterString>
 							</gmd:name>
 							<gmd:description>
-								<gco:CharacterString>Mostr_description_access_web_endMOb</gco:CharacterString>
+								<gco:CharacterString>Mostr_description_access_web_endMO</gco:CharacterString>
 							</gmd:description>
 							<gmd:function>
-								<gmd:CI_OnLineFunctionCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#CI_OnLineFunctionCode" codeListValue="download"/>
+								<gmd:CI_OnLineFunctionCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_OnLineFunctionCode" codeListValue="download"/>
 							</gmd:function>
 						</gmd:CI_OnlineResource>
 					</gmd:onLine>
@@ -494,7 +494,7 @@ Axes units : MOstr_GeodeticsysDes1_endMO</gco:CharacterString>
 			<gmd:scope>
 				<gmd:DQ_Scope>
 					<gmd:level>
-						<gmd:MD_ScopeCode codeListValue="dataset" codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_ScopeCode"/>
+						<gmd:MD_ScopeCode codeListValue="dataset" codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_ScopeCode"/>
 					</gmd:level>
 					<gmd:extent>
 						<gmd:EX_Extent>
@@ -525,7 +525,7 @@ Axes units : MOstr_GeodeticsysDes1_endMO</gco:CharacterString>
 												<gml:verticalDatum>
 													<gml:VerticalDatum gml:id="d51e690a1049886">
 														<gml:description>desc</gml:description>
-														<gml:identifier codeSpace="">SDN:L111:7:D08 = sea level</gml:identifier>
+														<gml:identifier codeSpace="">SDN:L111:7:D11 = mean sea level</gml:identifier>
 														<gml:name>VerticalDatum</gml:name>
 														<gml:scope>not defined</gml:scope>
 													</gml:VerticalDatum>
@@ -552,7 +552,7 @@ Axes units : MOstr_GeodeticsysDes1_endMO</gco:CharacterString>
 			<gmd:scope>
 				<gmd:DQ_Scope>
 					<gmd:level>
-						<gmd:MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_ScopeCode" codeListValue="feature"/>
+						<gmd:MD_ScopeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_ScopeCode" codeListValue="feature"/>
 					</gmd:level>
 					<gmd:levelDescription>
 						<gmd:MD_ScopeDescription>
@@ -576,10 +576,10 @@ Axes units : MOstr_GeodeticsysDes1_endMO</gco:CharacterString>
 						</gmd:MD_Identifier>
 					</gmd:measureIdentification>
 					<gmd:measureDescription>
-						<gco:CharacterString>Not relevant</gco:CharacterString>
+						<gco:CharacterString>MOstr_Hor_accuracy_description_endMO</gco:CharacterString>
 					</gmd:measureDescription>
 					<gmd:evaluationMethodDescription>
-						<gco:CharacterString>See Diva documentation</gco:CharacterString>
+						<gco:CharacterString>MOstr_Hor_accuracy_Evaluation_method_endMO</gco:CharacterString>
 					</gmd:evaluationMethodDescription>
 					<gmd:result>
 						<gmd:DQ_QuantitativeResult>
@@ -593,7 +593,7 @@ Axes units : MOstr_GeodeticsysDes1_endMO</gco:CharacterString>
 								</gml:BaseUnit>
 							</gmd:valueUnit>
 							<gmd:value>
-								<gco:Record>See error fields and error masked fields</gco:Record>
+								<gco:Record>MOstr_Hor_accuracy_quantitative_value_endMO</gco:Record>
 							</gmd:value>
 						</gmd:DQ_QuantitativeResult>
 					</gmd:result>
@@ -612,10 +612,10 @@ Axes units : MOstr_GeodeticsysDes1_endMO</gco:CharacterString>
 						</gmd:MD_Identifier>
 					</gmd:measureIdentification>
 					<gmd:measureDescription>
-						<gco:CharacterString>Not relevant</gco:CharacterString>
+						<gco:CharacterString>MOstr_Vert_accuracy_Measure_description_endMO</gco:CharacterString>
 					</gmd:measureDescription>
 					<gmd:evaluationMethodDescription>
-						<gco:CharacterString>Not relevant</gco:CharacterString>
+						<gco:CharacterString>MOstr_Vert_accuracy_Evaluation_method_endMO</gco:CharacterString>
 					</gmd:evaluationMethodDescription>
 					<gmd:result>
 						<gmd:DQ_QuantitativeResult>
@@ -639,12 +639,12 @@ Axes units : MOstr_GeodeticsysDes1_endMO</gco:CharacterString>
 			<gmd:scope>
 				<gmd:DQ_Scope>
 					<gmd:level>
-						<gmd:MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_ScopeCode" codeListValue="software"/>
+						<gmd:MD_ScopeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_ScopeCode" codeListValue="software"/>
 					</gmd:level>
 					<gmd:extent>
 						<gmd:EX_Extent>
 							<gmd:description>
-								<gco:CharacterString>DIVA software</gco:CharacterString>
+								<gco:CharacterString>Data Interpolation Variational Analysis: DIVA</gco:CharacterString>
 							</gmd:description>
 						</gmd:EX_Extent>
 					</gmd:extent>
@@ -664,19 +664,19 @@ Axes units : MOstr_GeodeticsysDes1_endMO</gco:CharacterString>
 			<gmd:scope>
 				<gmd:DQ_Scope>
 					<gmd:level>
-						<gmd:MD_ScopeCode codeList="http://www.isotc211.org/2005/resources/codeList.xml#MD_ScopeCode" codeListValue="propertyType"/>
+						<gmd:MD_ScopeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_ScopeCode" codeListValue="propertyType"/>
 					</gmd:level>
 				</gmd:DQ_Scope>
 			</gmd:scope>
 			<gmd:lineage>
 				<gmd:LI_Lineage>
 					<gmd:statement>
-						<gco:CharacterString>Description of data processing : MOstr_Description_of_data_processing_endMO</gco:CharacterString>
+						<gco:CharacterString>Description of data processing : MOstr_Description_of_data_processing_sources_endMO</gco:CharacterString>
 					</gmd:statement>
 					<gmd:source>
 						<gmd:LI_Source>
 							<gmd:description>
-								<gco:CharacterString>Description of processed data sources : MOstr_Description_of_data_sources_endMO</gco:CharacterString>
+								<gco:CharacterString>Description of processed data sources : MOstr_Description_of_processed_data_sources_endMO</gco:CharacterString>
 							</gmd:description>
 						</gmd:LI_Source>
 					</gmd:source>

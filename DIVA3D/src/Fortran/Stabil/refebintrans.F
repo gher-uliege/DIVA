@@ -1,5 +1,5 @@
 !
-      PROGRAM dv2Dnc2asc
+      PROGRAM RefeBinTrans
 !
       implicit none
 !
@@ -70,7 +70,7 @@
          CALL TRANSFUN(itrans,nbval,VECFLD)
 !
       nbval2 = 0
-       DO i=1,NX*NX
+       DO i=1,NX*NY
         IF(U(i) .ne. VALEXC) THEN
            nbval2 = nbval2+1
            U(i) = VECFLD(nbval2)

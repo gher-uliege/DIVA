@@ -92,17 +92,17 @@ cp -v ./output/3Danalysis/Fields/GridInfo.dat ${DIVADIR}/divastripped/output/3Da
 
 cd ./output/3Danalysis/
 for ncfile in `ls $var.*.anl.nc` ;do
-echo $ncfile
+#echo $ncfile
 cp -v $ncfile ../../${DIVADIR}/divastripped/output/3Danalysis/.
 done
 
 for dtfile in `ls $var'.'$year'.'*'.nbrdata'` ;do
-echo $dtfile
+#echo $dtfile
 cp -v $dtfile ../../${DIVADIR}/divastripped/output/3Danalysis/.
 done
 
 for dtfile in `ls $var'.'$year'.'*'.3Dparam'` ;do
-echo $dtfile
+#echo $dtfile
 cp -v $dtfile ../../${DIVADIR}/divastripped/output/3Danalysis/.
 done
 cd ../../
@@ -126,7 +126,7 @@ rm -f ./output/metajmb
 fi
 let lev=0+$minlevel
 let upperlevel=0+$upperlevel
-echo SO SOS
+#echo SO SOS
 while [ "$lev" -le "$upperlevel" ]
 do
 echo working on level $lev for $varl
@@ -134,30 +134,25 @@ let levn=10000+$lev
 
 # exloit the 3DNC info file to know which data have been used
 
-cat './output/3Danalysis/'$var'.'$year'.3DNCliste'
-
-
+#cat './output/3Danalysis/'$var'.'$year'.3DNCliste'
 
 for ii in `cat './output/3Danalysis/'$var'.'$year'.3DNCliste' | awk '{print $1}' `
 
-
 do
-echo $ii
+#echo $ii
 jmm=$(echo $ii | awk -F . '{print $3}')
 jmt=$(echo $ii | awk -F . '{print $1}')
 jmy=$(echo $ii | awk -F . '{print $2}')
 
-echo So $jmm $jmt $jmy $levn
+#echo So $jmm $jmt $jmy $levn
 
 ls -l ${WDIR}/input/divadata/$jmt'.'$jmy'.'$jmm'.'$levn
 depthval=$(head -$lev ${WDIR}/input/contour.depth | tail -1)
-echo Depth $depthval
+#echo Depth $depthval
 
 cat ${WDIR}/input/divadata/$jmt'.'$jmy'.'$jmm'.'$levn | awk -v depth=$depthval '{print $1,$2,depth,$9,$10}' >> ./output/metajmb
 
-
 done
-
 
 let lev=1+$lev
 done
@@ -165,7 +160,7 @@ done
 
 
 echo ======
-cat ./output/metajmb
+#cat ./output/metajmb
 echo ======
 
 diva4Dncwrite $varl $vld
