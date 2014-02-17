@@ -203,7 +203,7 @@ echo checking for bounds $boundmin and $boundmax
 
 echo Now producing one big file for variable $var
 iqf=0
-if [ -f qflist ] && [ -s qflist ]
+if [ -f qflist ]
 then
 echo Quality flags retained are 
 cat qflist
@@ -256,7 +256,7 @@ return 0
 # Added simple qc on range
       {if ($datacol < boundmin) qfok=0};
       {if ($datacol > boundmax) qfok=0};
-      {if (issdn==1) {foralex=$edmocol"-"$cdicol} else {foralex="Cruise:"$cruisecol}};
+      {if (issdn==1) {foralex=$edmocol"-"$cdicol} else {foralex="Cruise:"$cruisecol"-"$stationcol}};
 #
 #      if ( $qccol==1 || $qccol==2 || $qccol==8 );
       if ($datacol > "" && qfok==1 && $datacol != valexodv) print $loncol,$latcol,$datacol,$depthcol,$qccol,year,month,day,hour,$datecol,foralex}' \
@@ -281,23 +281,10 @@ do
 let lev=$lev+1
 let lnum=10000+$lev
 
-## Determination of the weight for each file in datasource ##
-
-echo Now split in layers $lnum and drop exclusion values
-
-flag_weight=1 # 1 if different weights, 0 if not
-if [ $(echo "$inputfile" | grep -e "APB" -e "XBT" -e "MBT" | wc -l) -eq 1 ] && [ $flag_weight -eq 1 ]
-then 
-echo Order now: x y val 0.5 year month day hour meta1 meta2
-awk -v lnum=$lnum '{if ($12 == lnum && $3 != 99999) {print $1,$2,$3,0.5,$6,$7,$8,$9,$10,$11}}' ${WORK}/${var}.bigfile.interp > ${WORK}/$var.$lnum
-elif [ $(echo "$inputfile" | grep -e "CTD" -e "PFL" -e "MRB" -e "DRB" -e "ARGO" | wc -l) -eq 1 ] && [ $flag_weight -eq 1 ]
-then
-echo Order now: x y val 1.1 year month day hour meta1 meta2
-awk -v lnum=$lnum '{if ($12 == lnum && $3 != 99999) {print $1,$2,$3,1.1,$6,$7,$8,$9,$10,$11}}' ${WORK}/${var}.bigfile.interp > ${WORK}/$var.$lnum
-else
+echo Now split in layers $lnum and drop exclusion values 
 echo Order now: x y val 1 year month day hour meta1 meta2
+
 awk -v lnum=$lnum '{if ($12 == lnum && $3 != 99999) {print $1,$2,$3,1,$6,$7,$8,$9,$10,$11}}' ${WORK}/${var}.bigfile.interp > ${WORK}/$var.$lnum
-fi
 
 #Then extract for each layer the dates (small files now)
 
