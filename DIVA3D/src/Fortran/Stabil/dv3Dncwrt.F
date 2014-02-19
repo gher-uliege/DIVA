@@ -98,6 +98,8 @@
       save                    :: idlon,idlat,iddepth
       save                    :: ncid,status
 !
+      LOGICAL                 :: exist
+!
       data icdf /0/
 !-------------------------------------------------------------------
 !
@@ -982,6 +984,25 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO sdn'
       ENDIF
+!
+
+      write(*,*) 'going to look for sextantcatalog_id'
+
+      INQUIRE(FILE='sextantcatalog_id',EXIST=exist)
+      IF(exist) THEN
+          CLOSE(12)
+          OPEN(UNIT=12,FILE='sextantcatalog_id')
+          READ(12,*) string256
+      write(*,*) ' sextantcatalog_id: ',string256
+          CLOSE(12)
+          status=nf_put_att_text
+     &         (ncid,NF_GLOBAL,'Sextant_catalogue_xml_file_uuid',
+     &         LEN_TRIM(string256),TRIM(string256))
+          IF (status .NE.nf_noerr) THEN
+             print *,nf_strerror(status)
+             STOP 'Stopped in NC_4DCLIMATO sdn'
+          ENDIF
+       ENDIF
 !
         STATUS=NF_PUT_ATT_TEXT(NCID,NF_GLOBAL,'Author_e-mail',
      &	                 LEN_TRIM(Email),TRIM(Email))
