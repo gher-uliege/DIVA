@@ -260,7 +260,7 @@ fi
 cd ./gnuwork/plots
 for i in `ls *.png`
 do
-mv  $i ../../output/3Danalysis/GnuPlots/'$var'.'$level'.'$i
+mv  $i '../../output/3Danalysis/GnuPlots/'$var'.'$level'.'$i
 done
 cd ../..
 #
