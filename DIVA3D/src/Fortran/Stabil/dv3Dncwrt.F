@@ -996,7 +996,7 @@
       write(*,*) ' sextantcatalog_id: ',string256
           CLOSE(12)
           status=nf_put_att_text
-     &         (ncid,NF_GLOBAL,'Sextant_catalogue_xml_file_uuid',
+     &         (ncid,NF_GLOBAL,'product_id',
      &         LEN_TRIM(string256),TRIM(string256))
           IF (status .NE.nf_noerr) THEN
              print *,nf_strerror(status)
