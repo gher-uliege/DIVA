@@ -174,9 +174,11 @@ echo ' '
 #echo now saving needs to be done
 if [ -f "./output/3Danalysis/$var.$year.4Danl.nc" ];then
 cp -v ./output/3Danalysis/$var.$year.4Danl.nc ${WDIR}/output/3Danalysis/.
+cp -v ./3DWORK/sextantcatalog_id ${WDIR}/output/3Danalysis/$var'.'$year'.product_id_uuid'
 fi
 if [ -f "./output/3Danalysis/$var.4Danl.nc" ];then
 cp -v ./output/3Danalysis/$var.4Danl.nc ${WDIR}/output/3Danalysis/.
+cp -v ./3DWORK/sextantcatalog_id ${WDIR}/output/3Danalysis/$var'.product_id_uuid'
 fi
 cp -v ./output/3Danalysis/$var'.4DNCMetainfo' ${WDIR}/output/3Danalysis/.
 cp -v ./output/3Danalysis/$var'.Metainfo.txt' ${WDIR}/output/3Danalysis/.
