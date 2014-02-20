@@ -248,6 +248,7 @@ return 0
       year=substr($datecol,1,4);
       month=substr($datecol,6,2);
       day=substr($datecol,9,2);
+      {if (length(day) == 0) {day=15}};
       {if (length($datecol) > 12) {hour=substr($datecol,12,2)} else {hour=0}};
       {if (length($datecol) > 15) {minu=substr($datecol,15,2)} else {minu=0}};
       {if (minu > 30) hour=hour+1};
