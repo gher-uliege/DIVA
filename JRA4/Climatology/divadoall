@@ -533,6 +533,12 @@ if [ -d ./input/divatrans ];then
 fi
 let lev=$lev+1
 done
+
+
+if [ -f "./input/divadata/$var.logitrange" ];then
+cp -v ./input/divadata/$var.logitrange  ${DIVADIR}/divastripped/input/divadata
+fi
+
 #
 #############
 isanalysissave=$isanalysis
