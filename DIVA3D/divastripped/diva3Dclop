@@ -262,7 +262,7 @@ echo '>>>>>>>>>>>> did not find reference field for '$var'.'$lev'  <<<<<<<< ' | 
 fi
 ##
 small="100"
-medium="2000"
+medium="5000"
 nblines=`cat './input/data.dat' |wc -l` 
 nbdat=$nblines
 #

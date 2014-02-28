@@ -202,7 +202,7 @@ done
 done
 
 #for ODVDATA in `cat datasource`
-while read -r ODVDATA qflag1 qflag2
+(cat datasource; echo) | while read -r ODVDATA qflag1 qflag2
 do
 
 #Handling of end-of-file in ODV format files
@@ -237,7 +237,7 @@ done < datasource
 
 multiple_qflags=0
 #for ODVDATA in `cat datasource`
-while read -r ODVDATA qflag1 qflag2
+(cat datasource; echo) | while read -r ODVDATA qflag1 qflag2
 do
 
 echo 'divadoall:' Data source file is $ODVDATA
@@ -283,7 +283,7 @@ fi
 #####################################
 check_duplicates=yes ### CHANGE this parameter (ex. : "no") if you want to disable the script "divaduplicatesODV4" ###
 
-if [ $check_duplicates == yes ] && [ $isanalysis -ne 0 ]
+if [ $check_duplicates == yes ] && [ $(($isoptimise + $isanalysis)) -ne 0 ] # [ $isanalysis -ne 0 ]
 then
 ./divaduplicatesODV4
 fi
