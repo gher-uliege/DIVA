@@ -2,6 +2,8 @@
 
 #set -x # to debug
 
+export LC_ALL=C # to get the same sorting order on different systems
+
 ############################################################################
 # Sylvain Watelet - 28/10/2013 						   #
 # Handling of duplicates input data                                        #
