@@ -35,9 +35,7 @@
 		read(12,*) depth((n-lay1)+1)
 		depth((n-lay1)+1)=(-1)*depth((n-lay1)+1) !
 	Enddo
-	
-	
-	
+		
 	open(13,file="./output/quality.fit",status="old")
 	i=1
 	Do while (.true.)
@@ -70,6 +68,8 @@
 
 1020 	continue
 	j=j-1
+
+        IF(nlayer .gt. 2) THEN
 
 	allocate(A(1,nlayer),B(1,nlayer),C(1,nlayer),F(1,nlayer),X(1,nlayer))
 
@@ -121,6 +121,16 @@
 	Do i=1,nlayer
 	write(15,*) X(1,i) !, cl(i)
 	Enddo
+
+        ELSE
+
+	open(15,file="bidon",status="replace")
+	Do i=1,nlayer
+	write(15,*) cl(i)
+	Enddo
+
+        ENDIF
+
 
 	deallocate(A,B,C,F,X)
 	close(10)
