@@ -69,7 +69,7 @@
 1020 	continue
 	j=j-1
 
-        IF(nlayer .gt. 2) THEN
+        IF(nlayer .gt. 1) THEN
 
 	allocate(A(1,nlayer),B(1,nlayer),C(1,nlayer),F(1,nlayer),X(1,nlayer))
 
