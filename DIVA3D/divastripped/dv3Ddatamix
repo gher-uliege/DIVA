@@ -62,7 +62,7 @@ fi
 #===============================================================
 #
 #
-cd ./input/divadata
+cd ./input/divadata_ORI
 
   file=$var.$level
   nbcl=$(head -n 1 $file | wc -w)
