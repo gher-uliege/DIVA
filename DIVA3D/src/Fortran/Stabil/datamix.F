@@ -63,7 +63,7 @@
            ENDIF
         ENDIF
       ENDIF
-          
+
       WRITE(VARFILEIN,
      &'(a,".1",i4.4)')TRIM(var_name),istep
       WRITE(datafile,
@@ -72,16 +72,16 @@
       WRITE(VARFILEP,
      &'(a,".1",i4.4)')TRIM(var_name),iplus
       WRITE(datafilep,
-     &'("../input/divadata/",a)')TRIM(VARFILEP)
+     &'("../input/divadata_ORI/",a)')TRIM(VARFILEP)
 
       IF(ic1 == 0) THEN           
        WRITE(VARFILEM,
      &'(a,".1",i4.4)')TRIM(var_name),iminus
        WRITE(datafilem,
-     &'("../input/divadata/",a)')TRIM(VARFILEM)
+     &'("../input/divadata_ORI/",a)')TRIM(VARFILEM)
       ENDIF
-!
-      OPEN(10, FILE=datafile, STATUS='OLD')
+
+      OPEN(10, FILE=TRIM(datafile), STATUS='OLD')
 !
        FINLINE='00'
 !
@@ -139,8 +139,8 @@
 !
        WVAL=itrans*WVAL
 !
-       OPEN(11, FILE=datafile)
-
+       OPEN(11, FILE=TRIM(datafile))
+!
        IF(nbccol == 10) THEN
          DO n = 1,nblines
            write(11,*) LONVAL(n),LATVAL(n),VARVAL(n)
@@ -194,7 +194,7 @@
            write(11,*) LONVAL(n),LATVAL(n),VARVAL(n)
          ENDDO
        ENDIF
-
+!
       DEALLOCATE(LONVAL)
       DEALLOCATE(LATVAL)
       DEALLOCATE(VARVAL)
@@ -209,8 +209,8 @@
       ALLOCATE(VARVAL(nblinem))
       ALLOCATE(WVAL(nblinem))
       ALLOCATE(FINLINE(nbcolm,nblinem))    
-
-      OPEN(10, FILE=datafilem, STATUS='OLD')
+!
+      OPEN(10, FILE=TRIM(datafilem), STATUS='OLD')
 !
        IF(nbccolm .ge. 10) THEN
          DO n = 1,nblinem
@@ -334,7 +334,7 @@
       ALLOCATE(WVAL(nblinep))
       ALLOCATE(FINLINE(nbcolp,nblinep))    
 
-      OPEN(10, FILE=datafilep, STATUS='OLD')
+      OPEN(10, FILE=TRIM(datafilep), STATUS='OLD')
 !
        IF(nbccolp .ge. 10) THEN
          DO n = 1,nblinep
