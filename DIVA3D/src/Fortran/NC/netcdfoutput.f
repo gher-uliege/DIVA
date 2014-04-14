@@ -216,6 +216,14 @@ C      write(6,*) i_2,j_2,valexu,error_min
       print *, ' error_min= ',error_min
       print *, ' error_max= ',error_max
 c
+C-----------------------------------------
+C	Replacing VALEXU by valex (more consistent)
+	Do i=1,IMAX
+	Do j=1,jmax
+		if (U1(i,j).eq.VALEXU) U1(i,j)=valex
+		if (U2(i,j).eq.VALEXU) U2(i,j)=valex
+	Enddo
+	Enddo
 C-----------------------------------------------------------------------
 C     Always check the return code of every netCDF function call. In
 C     this example program, any retval which is not equal to nf_noerr
@@ -414,12 +422,12 @@ C pass the values read to the calling routine
         nbmotr=nbmots
         valexr=valexc
 
-C      print *, 'iprecr=', iprec
-C      print *, 'imaxr=', imaxc
-C      print *, 'jmaxr=', jmaxc
-C      print *, 'kmaxr=', kmaxc
-C      print *, 'nbmotr=', nbmots
-C      print *, 'valexr=', valexc
+c      print *, 'iprecr=', iprec
+c      print *, 'imaxr=', imaxc
+c      print *, 'jmaxr=', jmaxc
+c      print *, 'kmaxr=', kmaxc
+c      print *, 'nbmotr=', nbmots
+c      print *, 'valexr=', valexc
 
 
 C

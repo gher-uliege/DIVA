@@ -24,7 +24,7 @@ C        valexw = valexu
         WRITE(6,*) ' VALEUR D EXCLUSION POUR B: ',VALEXU
         WRITE(6,*) ' VALEUR D EXCLUSION POUR X: ',VALEXW
 
-        call usum(u,v,w,valexu,imax,jmax,kmax)
+        call usum(u,v,w,valexu,imax,jmax,kmax,valexw)
         open (unit=12,file=out,form='unformatted')
         CALL UWRITC(12,W8,W,VALEXU,IPR,IMAX,JMAX,KMAX,NW)
 
@@ -32,17 +32,20 @@ C        valexw = valexu
         END
 
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
-        subroutine usum(u,v,w,valexu,imax,jmax,kmax)
+        subroutine usum(u,v,w,valexu,imax,jmax,kmax,valexw)
         real*4 u(imax,jmax,kmax),v(imax,jmax,kmax)
         real*4 w(imax,jmax,kmax)
+
         do k=1,kmax
          do j=1,jmax
           do i=1,imax
-          w(i,j,k)=u(i,j,k)
-          if(u(i,j,k).ne.valexu) w(i,j,k)=u(i,j,k)+v(i,j,k)
+          w(i,j,k)=valexu ! instead of u(i,j,k)
+          if ((u(i,j,k).ne.valexu).and.(v(i,j,k).ne.valexw)) 
+     &    w(i,j,k)=u(i,j,k)+v(i,j,k)
           enddo
          enddo
         enddo
+
         return
         end
         INCLUDE 'ureadc.f'

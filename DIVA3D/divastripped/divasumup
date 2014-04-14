@@ -164,7 +164,7 @@ echo -------------------------------------------- >> ../output/diva.log
 fi
 mv fort.22 ../output/fieldatdatapoint.anl
 fi
-cp ../output/fieldgher.anl ../output/ghertonetcdf/fort.84
+cp -v ../output/fieldgher.anl ../output/ghertonetcdf/fort.84
 if [ -f ../output/errorfieldgher.anl ]
 then 
 cp -v ../output/errorfieldgher.anl ../output/ghertonetcdf/fort.87
@@ -234,6 +234,74 @@ if [ "$ispec" == "-17" ]
 then
 iecal=1
 fi
+
+# adding other values of ispec
+
+if [ "$ispec" == "101" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "103" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "105" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "107" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "111" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "113" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "115" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "117" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-101" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-103" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-105" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-107" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-111" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-113" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-115" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-117" ]
+then
+iecal=1
+fi
+
 # JMB ADAPTED FOR DIFFERENT CASES IF ISPEC
 if [ "$varbak" != "0" ]
 then
