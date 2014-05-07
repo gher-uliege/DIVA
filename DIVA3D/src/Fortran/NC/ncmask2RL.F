@@ -151,7 +151,11 @@
       do i=1,IM
       do j=1,JM
 !?      var(i,j)=0.2
-      if (var(i,j).gt.0.999) var(i,j)=1
+      if (var(i,j).gt.0.999) then 
+       var(i,j)=1
+      else
+       var(i,j)=0.2
+      endif
       enddo
       enddo
 !

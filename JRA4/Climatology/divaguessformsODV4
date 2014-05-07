@@ -3,9 +3,9 @@ export LC_ALL=C
 
 if [ "$#" != "1" ]
 then
-Echo =======================================
-Echo Usage:  divaguessform datafile
-Echo =======================================
+echo =======================================
+echo Usage:  divaguessform datafile
+echo =======================================
 exit
 fi
 

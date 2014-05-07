@@ -19,7 +19,7 @@ C      COMMON /SDYN/ S
 C      COMMON /LDYN/ L
 C
 C#else
-      PARAMETER(nrea=150000000)
+      PARAMETER(nrea=180000000)
       PARAMETER(nent=20000000)
 
       COMMON /SDYN/ S(nrea)

@@ -64,7 +64,7 @@ C     12 : CONTIENT LES DONNEES SUR LES REGIONS A MAILLER DIFFEREMENT
       K=0
       OPEN(UNIT=12,FILE='fort.12')
       READ(12,*) NR
-      IF(NR.GT.NRMAX) STOP 'TOO MANY REGIONS, REDEFINE NRMAX'
+      IF(NR.GT.NRMAX) STOP 'TOO MANY REGIONS,REDEFINE NRMAX,SEVERE ERR'
       DO 20 I=1,NR
         READ(12,*) G(I),KNMAX(I)
         DO 10 J=1,KNMAX(I)
@@ -92,15 +92,14 @@ c**rs      OPEN(UNIT=10,FILE='fort.10')
       OPEN(UNIT=10,FILE='fort.10')
       endif
       READ(10,*) NC
-      IF(NC.GT.NCMAX) STOP 'TOO MANY CONTOURS, REDEFINE NCMAX'
+      IF(NC.GT.NCMAX) STOP 'TOO MANY CONTOURS,REDEFINE NCMAX,SEVERE ERR'
       DO 30 I=1,NC
        READ(10,*) N
        PPTC(I)=N
        DO 40 K=1,N
           J=J+1
           IF(J.GE.NMAX) THEN
-             WRITE(*,'(A)')  'TOO MANY POINTS ON CONTOUR, REDEFINE NMAX'
-                         STOP
+             STOP 'TOO MANY POINTS ON CONTOUR,REDEFINE NMAX,SEVERE ERR'
           ENDIF 
           READ(10,*) X(J),Y(J)
           IF(J.EQ.1) THEN
@@ -304,7 +303,7 @@ c       write(6,*) M,D,L,A,B,X(A),X(B)
              NP=NP+1
              IF(NP.GE.NMAX) THEN
               WRITE(*,'(A)')  'Too many contour points'
-              WRITE(*,'(A)')  ' increase NMAX'
+              WRITE(*,'(A)')  ' increase NMAX : SEVERE ERROR'
               STOP
              ENDIF
              NEWPT(NP,1)=I
@@ -323,7 +322,7 @@ c       write(6,*) M,D,L,A,B,X(A),X(B)
       NP2=NP
       IF((NP+N).GE.NMAX) THEN
         WRITE(*,'(A)')  'Too many contour points'
-        WRITE(*,'(A)')  ' please increase NMAX'
+        WRITE(*,'(A)')  ' please increase NMAX : SEVERE ERROR'
         STOP
       ENDIF
 c      write(6,*) 'Contours',NP,N
@@ -457,7 +456,7 @@ C     ELIMINATION DES MAILLE DE CONCAVITE
 C ------------------------------------------
       WRITE(*,'(A)') 'ELIMINATION OF CONCAVE ELEMENTS'
 
-C     DETECTION DES MAILLES D'ENTRéE DE CONCAVITE
+C     DETECTION DES MAILLES D'ENTREE DE CONCAVITE
 Ctest
 c      CALL SORTIE(MAILLE,NOEUD,NMAX,MMAX,NO,MA)
 c      stop
@@ -511,7 +510,7 @@ c           write(6,*) 'Elimination of mesh',MA,NC,I
        WRITE(*,'(A)') ' PLEASE VERIFY YOUR CONTOURS '  
        WRITE(*,'(A)') ' DOMAIN TO LEFT'
 
-       STOP 'Severe error in contourgen'
+       STOP 'SEVERE ERROR in contourgen'
       ENDIF
  
 C -----------------
@@ -667,7 +666,7 @@ c           write(6,*) 'a???',I,S
 
 C     UTILISATION DU TEST DU CERCLE CIRCONSCRIT A LA MAILLE
 C      POUR REPERTORIER LES MAILLES A MODIFIER
-C Chercher ici pour des problème d'arrondi et voir si l'on peut
+C Chercher ici pour des problemes d'arrondi et voir si l'on peut
 C chercher un peu plus loin pour etre sur? Probablement justement pas??
 
       M=1
@@ -836,7 +835,7 @@ c      enddo
       ENDIF
 
 C     CREATION DES NOUVELLES MAILLES DANS UN TABLEAU MTEMP (PROVISOIRE)
-      if (L.GT.NPOURC) STOP 'INCREASE NPOURC'
+      if (L.GT.NPOURC) STOP 'SEVERE ERROR : INCREASE NPOURC'
       DO 40 I=1,L
        C=CE(I,1)
        IF(I.LE.NM) THEN
@@ -956,8 +955,28 @@ C           ET INTRODUCTION DANS LE MAILLAGE )
       real*8 NOEUD(NMAX,2),XP,YP
       
 
-      IF(MA.GE.MMAX) STOP 'TROP DE MAILLES, REDEFINIR MMAX'
-      IF(NO.GE.NMAX) STOP 'TROP DE NOEUDS, REDEFINIR NMAX'
+c      IF(MA.GE.MMAX) STOP 'TROP DE MAILLES, REDEFINIR MMAX'
+c      IF(NO.GE.NMAX) STOP 'TROP DE NOEUDS, REDEFINIR NMAX'
+
+      if ((MA.GE.MMAX).or.(NO.GE.NMAX)) then
+
+      write(0,'(A)') "SEVERE ERROR, YOU ASKED FOR A TOO FINE MESH"
+      write(0,'(A)') "INCREASE NMAX. ABORTED"
+      write(0,'(A)') "================================================"
+      write(0,'(A)') "You received this error message because you used"
+      write(0,'(A)') "either a too fine coastline or a too small"
+      write(0,'(A)') "correlation length."
+      write(0,'(A)') "Rather to increase NMAX in generopt.f you should"
+      write(0,'(A)') "try to adapt L or the coastines/topography"
+      write(0,'(A)') "resolution, because even when increasing NMAX"
+      write(0,'(A)') "you will end up with a too fine mesh for the"
+      write(0,'(A)') "subsequent analysis."
+      write(0,'(A)') "================================================"
+
+      STOP 'around l977 in generopt.f'
+	
+      endif
+
 
 c     write(6,*) 'before '
 c      write(6,*) 'MLOC call',I,XP,YP
@@ -1595,9 +1614,9 @@ C      READ(21,*) NO
 C      READ(21,*) MA
 C      CLOSE(21)
 
-      IF(NO.GT.NMAX) STOP 'Too many nodes increase NMAX'
-      IF(MA.GT.MMAX) STOP 'Too many elements, increase MMAX'
-      IF(NO.GT.NW) STOP 'Too many nodes increase NW'
+      IF(NO.GT.NMAX) STOP 'Too many nodes increase NMAX, SEVERE ERROR'
+      IF(MA.GT.MMAX) STOP 'Too many elements increase MMAX, SEVERE ERR'
+      IF(NO.GT.NW) STOP 'Too many nodes increase NW, SEVERE ERROR'
  
       
 C      OPEN(UNIT=20,file='fort.20')
@@ -1632,7 +1651,7 @@ C --- INTRODUCTION DES NOEUDS D'INTERFACE
                 Y=(Y1+Y2)/2
 
                 IF(NO.EQ.NMAX) THEN
-                    STOP 'Too many nodes, increase NMAX'
+                    STOP 'Too many nodes, increase NMAX : SEVERE ERROR'
                 ENDIF
 
                 NO=NO+1

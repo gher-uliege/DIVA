@@ -1,0 +1,14 @@
+#!/bin/bash
+
+./divadoall | tee divadoall.log
+
+cat divadoall.log | grep -i SEVERE > divadoall.severeerrors
+SEVEREERROR=$(cat divadoall.severeerrors | wc -l)
+
+echo "godiva: checking for severe errors..."
+if [ $SEVEREERROR -eq 0 ] 
+then
+echo "godiva: no severe error."
+else
+echo $SEVEREERROR "godiva: SEVERE ERROR(S), please check divadoall.severeerrors and divadoall.log !"
+fi
