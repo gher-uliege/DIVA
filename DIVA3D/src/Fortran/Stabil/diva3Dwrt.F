@@ -33,6 +33,7 @@
       integer                   :: NX, NY, NK, ndata, nl,chlen,iun
       integer*4                 :: KMAX, ipr, nw, IMAX, JMAX, flag
       integer                   :: ICOOC, IREG, ISPEC
+      real*4			:: RICOOC
       integer                   :: nm,xm1,xm2,xy1,xy2
       integer,DIMENSION(12)     :: mfin
 !
@@ -269,7 +270,10 @@
             READ(2,*)! comments
             READ(2,*) CORLEN(klev)
             READ(2,*)! comments
-            READ(2,*) ICOOC
+!           READ(2,*) ICOOC
+	    READ(2,*) RICOOC
+	    ICOOC=RICOOC ! we only keep the integer part of ICOOC
+!	    write(0,*) ICOOC
             READ(2,*)! comments
             READ(2,*) ISPEC
             READ(2,*)! comments
