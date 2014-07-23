@@ -46,7 +46,6 @@
       real*4                     :: xorig, yorig, dx, dy, xend, yend
      &                            , WestBL,SouthBL,EastBL,NorthBL
 !
-      character (len=12)         :: Real_clock
       integer                    :: xy1,xy2
 !
       character (len=4)          :: yy1,yy2

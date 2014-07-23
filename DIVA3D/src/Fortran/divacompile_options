@@ -39,6 +39,7 @@ echo nf-config $nfconfigok
 if [ "$ncconfigok" != "0" ]
 then
 nclib=`nc-config --flibs`
+ncinc=`nc-config --fflags`
 compiler=`nc-config --fc`
 else
    if [ "$nfconfigok" != "0" ]
@@ -47,10 +48,12 @@ else
 # or by hand
     nclib=/usr/lib/libnetcdff.dll.a
     echo $nclib
+    ncinc=`nf-config --fflags`
     compiler=`nf-config --fc`
    else
 # put netcdlibrary by hand
    nclib=/usr/lib/libnetcdff.dll.a	
+   ncinc=-I/usr/include
    fi
 fi
 # Use of Plplot (creation of scientific plots)

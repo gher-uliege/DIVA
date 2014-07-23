@@ -48,8 +48,6 @@
       real*4                     :: xorig, yorig, dx, dy, xend, yend
      &                            , WestBL,SouthBL,EastBL,NorthBL
 !
-      character (len=8)         :: Real_clock
-!!      integer                    :: xy1,xy2
 !
       character (len=4)          :: yy1,yy2
       CHARACTER (len=255)        :: divafile,comments

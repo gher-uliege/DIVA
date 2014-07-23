@@ -16,6 +16,7 @@
      &  L_INSTITUT,INSTITUT,L_PRODUCTION,PRODUCTION,L_SOURCE,SOURCE,
      &  L_COMMENT,COMMENT)
 !
+       use divaio
        IMPLICIT NONE
 !
 !-------------------------------------------------------------------
@@ -76,7 +77,8 @@
      &                         , vbt_shname,vbt_lgname
      &                         , string256
 !
-	character (len=8)   :: Real_clock
+        ! time values for date_and_time function
+ 	integer (8)   :: current_time
 !
       integer  ,dimension(2)              :: cbdim, pardim
       integer  ,dimension(2)              :: stpar, prcnt
@@ -1190,10 +1192,10 @@
          STOP 'Stopped in NC_4DCLIMATO put att prod'
       ENDIF
 !
-      CALL DATE_AND_TIME(Real_clock) 
-
       STATUS=NF_PUT_ATT_TEXT(NCID,NF_GLOBAL,'date',
-     &	                 LEN_TRIM(Real_clock),TRIM(Real_clock))
+     &                   len('YYYY-MM-DD hh:mm:ss.ss'),
+     &                   mjdstr(mjdnow(),'YYYY-MM-DD hh:mm:ss.ss'))
+      
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put att date'

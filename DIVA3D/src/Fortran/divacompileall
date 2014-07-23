@@ -106,6 +106,10 @@ echo -------------------------
 echo ' '
 
 cd ../NC
+# first compile the module
+echo "Compile module divaio"
+$compiler $ncinc  $nocyg -c divaio.F90
+
 for jj in `ls *.f`
 do
 echo $jj
@@ -117,14 +121,14 @@ echo $jj
 $compiler  $nocyg $jj -o `basename $jj .F`.a $nclib
 done
 
-for jj in `ls *.F90`
+for jj in `ls *.F90 | grep -v divaio.F90`
 do
 echo $jj
-$compiler -I/usr/include $nocyg $jj -o `basename $jj .F90`.a $nclib
+$compiler $ncinc $nocyg $jj -o `basename $jj .F90`.a divaio.o $nclib
 done
 
 n4=`ls -1p *.a | grep -vc "/$"` 
-n4max=`ls -1p *.f *.F *.F90 | grep -vc "/$"`
+n4max=`ls -1p *.f *.F *.F90 | grep -v divaio.F90 | grep -vc "/$"`
 
 echo You have compiled $n4 programs
 echo out of $n4max 
@@ -216,18 +220,18 @@ echo ' '
 
 cd ../Stabil
 
-$compiler $flags diva3Dwrt.F ureadc.F uwritc.F dv2Dreadnc.F dv3Dncwrt.F -o diva3Dstr.a $nclib $ncinc
-$compiler $flags diva4Dwrt.F dv3Dreadnc.F dv3Dncwrt.F -o diva4Dstr.a $nclib $ncinc
-$compiler $flags dv4DYRwrt.F dv3Dreadnc.F dv3DncYRw.F -o dv4DYRstr.a $nclib $ncinc
-$compiler $flags diva3Dref.F ureadc.F uwritc.F diva3Dnc.F -o diva3Dref.a $nclib $ncinc
-$compiler $flags stabil.F N2brunt.F albe2d.F potmp.F pzcon.F ureadc.F -o stabil.a $nclib $ncinc
-$compiler $flags dv3Dtswrt.F dvvarerr.F brunt.F AlpBetSig.F potmp.F pzcon.F dv3Dtsdnc.F -o dv3Dtswrt.a $nclib $ncinc
+$compiler $flags $ncinc -I ../NC diva3Dwrt.F ureadc.F uwritc.F dv2Dreadnc.F dv3Dncwrt.F ../NC/divaio.o -o diva3Dstr.a $nclib 
+$compiler $flags $ncinc -I ../NC diva4Dwrt.F dv3Dreadnc.F dv3Dncwrt.F ../NC/divaio.o -o diva4Dstr.a $nclib
+$compiler $flags $ncinc -I ../NC dv4DYRwrt.F dv3Dreadnc.F dv3DncYRw.F ../NC/divaio.o -o dv4DYRstr.a $nclib
+$compiler $flags $ncinc -I ../NC diva3Dref.F ureadc.F uwritc.F diva3Dnc.F ../NC/divaio.o -o diva3Dref.a $nclib
+$compiler $flags $ncinc stabil.F N2brunt.F albe2d.F potmp.F pzcon.F ureadc.F -o stabil.a $nclib
+$compiler $flags $ncinc dv3Dtswrt.F dvvarerr.F brunt.F AlpBetSig.F potmp.F pzcon.F dv3Dtsdnc.F ../NC/divaio.o -o dv3Dtswrt.a $nclib
 $compiler $flags datatrans.F transfun.F userfunc.F -o datatrans.a
 $compiler $flags refetrans.F transfun.F userfunc.F -o refetrans.a
 $compiler $flags refebintrans.F transfun.F userfunc.F ureadc.F uwritc.F -o refebintrans.a
-$compiler $flags anatrans.F dv2Dreadnc.F transfun.F userfunc.F dv2Drewtnc.F ureadc.F uwritc.F -o anatrans.a $nclib $ncinc
-$compiler $flags diva3D_qc.F ureadc.F uwritc.F dv2Dreadnc.F diva_ncclim.F caldivanorm.F -o diva3Dqcwrt.a $nclib $ncinc
-$compiler $flags diva4D_qc.F dv3Dreadnc.F diva_ncclim.F caldivanorm.F calrms.F -o diva4Dqcwrt.a $nclib $ncinc
+$compiler $flags $ncinc anatrans.F dv2Dreadnc.F transfun.F userfunc.F dv2Drewtnc.F ureadc.F uwritc.F -o anatrans.a $nclib
+$compiler $flags $ncinc diva3D_qc.F ureadc.F uwritc.F dv2Dreadnc.F diva_ncclim.F caldivanorm.F ../NC/divaio.o -o diva3Dqcwrt.a $nclib
+$compiler $flags $ncinc diva4D_qc.F dv3Dreadnc.F diva_ncclim.F caldivanorm.F calrms.F ../NC/divaio.o -o diva4Dqcwrt.a $nclib
 $compiler $flags fillfilavref.F ureadc.F uwritc.F -o fillfilavref.a
 $compiler $flags datapre.F -o datapre.a
 $compiler $flags wclfile.F -o wclfile.a
