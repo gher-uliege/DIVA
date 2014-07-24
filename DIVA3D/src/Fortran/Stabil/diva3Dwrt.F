@@ -272,7 +272,7 @@
             READ(2,*)! comments
 !           READ(2,*) ICOOC
 	    READ(2,*) RICOOC
-	    ICOOC=RICOOC ! we only keep the integer part of ICOOC
+	    ICOOC=nint(RICOOC) ! we only keep the nearest integer of ICOOC
 !	    write(0,*) ICOOC
             READ(2,*)! comments
             READ(2,*) ISPEC
