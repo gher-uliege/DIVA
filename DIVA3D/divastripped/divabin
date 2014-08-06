@@ -1,0 +1,141 @@
+#!/bin/bash
+export LC_ALL=C 
+
+#------------------------------------------------
+# Sylvain Watelet - 16/07/2014 - GHER (ULg)
+# swatelet@ulg.ac.be
+# 
+# This script performs a binning of the input 
+# data before the optimisation of CL and SNR 
+# parameters.
+#------------------------------------------------
+
+echo "Begin divabin."
+
+datafile="./input/data.dat"
+datafile_bkp="./input/data.dat.notbinned"
+paramfile="./input/param.par"
+
+cp $datafile $datafile_bkp
+rm -f ./input/tmpfile
+
+#------------------------------------------------
+# Sorting of data.dat
+#------------------------------------------------
+
+rm -f ${datafile}"_tmp"
+sort -k1n,1n -k2n,2n $datafile >> ${datafile}"_tmp"
+mv ${datafile}"_tmp" $datafile
+
+#------------------------------------------------
+# Reading data.dat
+#------------------------------------------------
+
+i=1
+#(cat $datafile; echo) | # => causes problems with storage of the arrays (sub-shell because of pipe)
+while read -r col1[i] col2[i] col3[i] col4[i] col5[i] col6[i] col7[i] col8[i] col9[i] col10[i]
+do
+#echo ${col1[i]} ${col2[i]} ${col3[i]} ${col4[i]} ${col5[i]} ${col6[i]} ${col7[i]} ${col8[i]} ${col9[i]} ${col10[i]}
+#echo ${col1[i]} ${col2[i]} ${col3[i]}
+i=$(($i+1))
+done < $datafile
+
+datalines=$(cat $datafile | wc -l)
+echo "lines =" $datalines
+
+#------------------------------------------------
+# Reading param.par
+#------------------------------------------------
+
+{
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read dx
+read comment
+read dy
+} < $paramfile
+
+echo "x step =" $dx "y step =" $dy
+
+#------------------------------------------------
+# Computing close neighbours
+#------------------------------------------------
+
+#rm $datafile
+
+#echo ${col1[1]}
+#echo "${col1[1]} - ${col1[2]}"
+#echo $(echo "${col1[1]} - ${col1[2]}" | bc -l | sed -r 's/^(-?)./\10./') # replace -.2 by -0.2
+#echo ${col1[0]}
+#sleep 100
+
+neighbours=0
+firstyes=1
+for i in `seq 1 $datalines`
+do
+#echo $i
+previous="yes"
+	for j in `seq $firstyes $datalines`
+	do	
+		if [ $(echo "sqrt((${col1[i]} - ${col1[j]})^2) <= $dy" | bc -l) -eq 1 ] # && [ $i -ne $j ] && [ $(echo "sqrt((${col2[i]} - ${col2[j]})^2) <= $dx" | bc -l) -eq 1 ]
+		then
+			if [ $previous == "no" ]
+			then
+			firstyes=$j			
+			fi
+		previous="yes"
+			if [ $i -ne $j ] # not the same line
+			then
+				if [ $(echo "sqrt((${col2[i]} - ${col2[j]})^2) <= $dx" | bc -l) -eq 1 ] # close longitude
+				then
+#				echo "yes" $i $j
+				neighbours=$(($neighbours+1))
+				echo $i $j >> ./input/tmpfile
+				col2[j]=$j*10000 # a single measurement is used ONCE only 
+				fi
+			fi
+		else
+		previous="no"
+#		echo "no" $i $j
+			if [ $(echo "(${col1[j]} - ${col1[i]}) > 0" | bc -l) -eq 1 ] # to avoid cycling before the "yes"
+			then
+			continue 2 # to cycle two levels of loop
+			fi
+		fi
+#		sleep 100
+	done
+done
+
+#echo "number of neighbours :" $neigbours
+
+#------------------------------------------------
+# Binning neighbours
+#------------------------------------------------
+
+../bin/binning_lines.a $datafile
+mv ./input/bidon $datafile
+echo "End divabin."
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -8,6 +8,13 @@
 #
 #####################################################
 #
+
+#------------------------------------------------
+# user can ask for binning the data before 
+# the optimization with binning=1
+binning=1
+#------------------------------------------------
+
   Fileinf=./input/3Dinfo
 {
 read comment
@@ -364,6 +371,12 @@ if [ -f ./input/RLinfo.dat ];then
   fi
  fi
 fi
+
+if [ $binning -eq 1 ]
+then
+./divabin
+fi
+
 #------------------------------------------------------------
 if [ -f ./input/divaparam/SNminmax ];then
  cd  ./3DWORK
@@ -555,7 +568,14 @@ fi
 fi
 #
 dep=`expr $dep + 1`
+
+if [ $binning -eq 1 ]
+then
+mv ./input/data.notbinned ./input/data.dat
+fi
+
 done
+
 #
 #
 if [ -f './output/'$var'.SN.dat' ];then

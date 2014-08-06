@@ -1,5 +1,12 @@
 #!/bin/bash
 export LC_ALL=C
+
+#------------------------------------------------
+# user can ask for binning the data before 
+# the optimization with binning=1
+binning=0
+#------------------------------------------------
+
 nsamp=0
 iparsave=0
 llimit=0
@@ -64,6 +71,11 @@ fi
 #echo Cleaning unuseful files
 #echo ' '
 rm -f fort.10 fort.11 fort.99 fort.98
+
+if [ $binning -eq 1 ]
+then
+./divabin
+fi
 
 echo 'Going to fit covariance function' | tee -a $divafitlog
 echo ' ' 			        | tee -a $divafitlog
@@ -152,5 +164,11 @@ echo covariancefit.dat was not generated !	  | tee -a $divafitlog
 echo Check execution track			  | tee -a $divafitlog
 echo -------------------------------------------- | tee -a $divafitlog
 cd ..
+
+if [ $binning -eq 1 ]
+then
+mv ./input/data.notbinned ./input/data.dat
+fi
+
 fi
 
