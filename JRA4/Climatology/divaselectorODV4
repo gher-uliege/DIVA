@@ -139,7 +139,7 @@ for var in `cat varlist`
 do
 echo Working on parameter $var
 #head ODVcolumns
-datacol=$(grep -i "$var" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
+datacol=$(grep -w "$var" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 cruisecol=$(grep "Cruise" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 stationcol=$(grep "Station" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 loncol=$(grep -i "Longitude" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
