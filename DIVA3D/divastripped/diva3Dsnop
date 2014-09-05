@@ -12,7 +12,7 @@
 #------------------------------------------------
 # user can ask for binning the data before 
 # the optimization with binning=1
-binning=1
+binning=0
 #------------------------------------------------
 
   Fileinf=./input/3Dinfo
@@ -573,6 +573,36 @@ if [ $binning -eq 1 ]
 then
 mv ./input/data.notbinned ./input/data.dat
 fi
+
+FILENAME="./divawork/fort.27" 
+{
+read poubelle
+read sn_opt
+read poubelle
+read poubelle
+read poubelle
+read poubelle
+read poubelle
+read poubelle
+read poubelle
+read -r other_sn poubelle
+} < $FILENAME
+sn_opt=$(echo $sn_opt | awk {' printf "%12.2f\n",$1 '})
+other_sn=$(echo $other_sn | awk {' printf "%12.2f\n",$1 '})
+#ratio=$(echo "$sn_opt/$other_sn" | bc -l)
+#echo $sn_opt, $other_sn, $ratio
+
+if [ $( echo "($sn_opt/$other_sn)>2." | bc -l ) -eq 1 ]
+then
+echo "WARNING : SN could be too large"
+elif [ $( echo "($sn_opt/$other_sn)<0.5" | bc -l ) -eq 1 ]
+then
+echo "WARNING : SN could be too low"
+#else
+#echo "no warning"
+fi
+
+sleep 5
 
 done
 
