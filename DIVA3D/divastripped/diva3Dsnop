@@ -602,8 +602,6 @@ echo "WARNING : SN could be too low"
 #echo "no warning"
 fi
 
-sleep 5
-
 done
 
 #
