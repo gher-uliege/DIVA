@@ -5,10 +5,32 @@
 cat divadoall.log | grep -i SEVERE > divadoall.severeerrors
 SEVEREERROR=$(cat divadoall.severeerrors | wc -l)
 
+cat divadoall.log | grep -vi SEVERE | grep -i error\> > divadoall.errors
+ERROR=$(cat divadoall.errors | wc -l)
+
+cat divadoall.log | grep -i warning > divadoall.warnings
+WARNING=$(cat divadoall.warnings | wc -l)
+
 echo "godiva: checking for severe errors..."
 if [ $SEVEREERROR -eq 0 ] 
 then
 echo "godiva: no severe error."
 else
-echo $SEVEREERROR "godiva: SEVERE ERROR(S), please check divadoall.severeerrors and divadoall.log !"
+echo "godiva: $SEVEREERROR SEVERE ERROR(S), please check divadoall.severeerrors and divadoall.log !"
+fi
+
+echo "godiva: checking for other errors..."
+if [ $ERROR -eq 0 ] 
+then
+echo "godiva: no other error."
+else
+echo "godiva: $ERROR other ERROR(S), please check divadoall.errors and divadoall.log !"
+fi
+
+echo "godiva: checking for warnings..."
+if [ $WARNING -eq 0 ] 
+then
+echo "godiva: no warning."
+else
+echo "godiva: $WARNING WARNING(S), please check divadoall.warnings and divadoall.log !"
 fi

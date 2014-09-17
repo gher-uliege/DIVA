@@ -427,7 +427,7 @@ echo 'divadoall:'
 echo 'divadoall:' '======================  Copying inputs to DIVA working derectory ======'
 echo 'divadoall:' 
 
-if [ "$iscontour" -ne "0" ]
+if [ "$iscontour" -ne "0" ] || [ "$isdataclean" -eq "6" ]
 then
 
 if [ -f ./input/topo.dat ];then

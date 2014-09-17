@@ -188,7 +188,7 @@ else
  fmeshe=0
 fi
 #
-if [ "$datop" -eq "1" -o "$datop" -eq "3"  -o "$datop" -ge "4" -o "$datop" -ge "5" ];then
+if [ "$datop" -eq "1" -o "$datop" -eq "3"  -o "$datop" -eq "4" -o "$datop" -eq "5" ];then
 echo '%%%%%%%%%%%%  cleaning '$var'.'$lev' %%%%% original data nmbr '$nbdat
 echo '%%%%%%%%%%%%  cleaning '$var'.'$lev' %%%%% original data nmbr '$nbdat >> $diva3dlog
 ./divaclean
@@ -394,6 +394,47 @@ fi
 ####################
 fi
 #
+
+#------------------------------------------------
+# Sylvain Watelet - 15/09/2014
+# datop=6 <=> relative length dep. on depth
+#------------------------------------------------
+
+if [ "$datop" -eq "6" ];then
+  ./divaclean
+  if [ -f ./input/divamesh/meshtopo.$lev ]; then
+   cp -v ./input/divamesh/meshtopo.$lev ./output/meshvisu/fort.22
+   cp -v ./input/divamesh/mesh.dat.$lev ./output/meshvisu/fort.23
+   cp -v ./input/divaparam/coast.cont.$lev ./output/meshvisu/fort.10
+  else
+   echo 'diva3Ddat:  generating a mesh for '$var'.'$lev  >> $diva3dlog
+
+echo diva3Ddat: ////////////////////////////////////////// >> $divalog
+echo 'diva3Ddat:         Creating mesh: '$var'.'$lev >> $divalog
+echo diva3Ddat: ////////////////////////////////////////// >> $divalog
+echo ' '  >> $divalog
+  divamesh
+    cat $diva3dlog ./output/divamesh.log > bidon
+    mv bidon $diva3dlog
+
+   cp -v ./output/meshvisu/fort.22 ./input/divamesh/meshtopo.$lev
+   cp -v ./output/meshvisu/fort.23 ./input/divamesh/mesh.dat.$lev
+  fi
+
+echo diva3Ddat: ////////////////////////////////////////// >> $divalog
+echo 'diva3Ddat:   Variable RL field (dep. on depth) '$var'.'$lev >> $divalog
+echo diva3Ddat: ////////////////////////////////////////// >> $divalog
+echo ' '  >> $divalog
+
+  ./divarlvardepth
+    cat $diva3dlog ./output/divarlvar.log > bidon
+    mv bidon $diva3dlog
+
+  cp -v ./output/RL.dat ./input/divaparam/RL.$var.$lev
+  cp -v ./output/RLinfo.dat ./input/divaparam/RLinfo.dat
+fi
+#------------------------------------------------
+
 else
 if [ "$errflag" -eq "1" ];then
 echo '!!!!!!!!!!!!!diva3Ddat WARNING: !!!!!!!!!!!!!!!!!!' 	| tee -a $diva3dlog
