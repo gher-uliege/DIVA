@@ -225,13 +225,13 @@ $compiler $flags $ncinc -I ../NC diva4Dwrt.F dv3Dreadnc.F dv3Dncwrt.F ../NC/diva
 $compiler $flags $ncinc -I ../NC dv4DYRwrt.F dv3Dreadnc.F dv3DncYRw.F ../NC/divaio.o -o dv4DYRstr.a $nclib
 $compiler $flags $ncinc -I ../NC diva3Dref.F ureadc.F uwritc.F diva3Dnc.F ../NC/divaio.o -o diva3Dref.a $nclib
 $compiler $flags $ncinc stabil.F N2brunt.F albe2d.F potmp.F pzcon.F ureadc.F -o stabil.a $nclib
-$compiler $flags $ncinc dv3Dtswrt.F dvvarerr.F brunt.F AlpBetSig.F potmp.F pzcon.F dv3Dtsdnc.F ../NC/divaio.o -o dv3Dtswrt.a $nclib
+$compiler $flags $ncinc -I ../NC dv3Dtswrt.F dvvarerr.F brunt.F AlpBetSig.F potmp.F pzcon.F dv3Dtsdnc.F ../NC/divaio.o -o dv3Dtswrt.a $nclib
 $compiler $flags datatrans.F transfun.F userfunc.F -o datatrans.a
 $compiler $flags refetrans.F transfun.F userfunc.F -o refetrans.a
 $compiler $flags refebintrans.F transfun.F userfunc.F ureadc.F uwritc.F -o refebintrans.a
 $compiler $flags $ncinc anatrans.F dv2Dreadnc.F transfun.F userfunc.F dv2Drewtnc.F ureadc.F uwritc.F -o anatrans.a $nclib
-$compiler $flags $ncinc diva3D_qc.F ureadc.F uwritc.F dv2Dreadnc.F diva_ncclim.F caldivanorm.F ../NC/divaio.o -o diva3Dqcwrt.a $nclib
-$compiler $flags $ncinc diva4D_qc.F dv3Dreadnc.F diva_ncclim.F caldivanorm.F calrms.F ../NC/divaio.o -o diva4Dqcwrt.a $nclib
+$compiler $flags $ncinc -I ../NC diva3D_qc.F ureadc.F uwritc.F dv2Dreadnc.F diva_ncclim.F caldivanorm.F ../NC/divaio.o -o diva3Dqcwrt.a $nclib
+$compiler $flags $ncinc -I ../NC diva4D_qc.F dv3Dreadnc.F diva_ncclim.F caldivanorm.F calrms.F ../NC/divaio.o -o diva4Dqcwrt.a $nclib
 $compiler $flags fillfilavref.F ureadc.F uwritc.F -o fillfilavref.a
 $compiler $flags datapre.F -o datapre.a
 $compiler $flags wclfile.F -o wclfile.a
