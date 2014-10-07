@@ -72,7 +72,7 @@
          close(10)
       ENDIF
 !
-      RETURN
+!!      RETURN
       END
 
       SUBROUTINE DVDATASHRINK(A,B)

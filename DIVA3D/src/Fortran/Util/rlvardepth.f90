@@ -340,7 +340,7 @@ contains
          write(*,*)' number of values retrieved:', (kl-1)*nbmots+kc-1
          imaxr=0
          return
-         end
+         End subroutine
          
 
        
@@ -458,7 +458,7 @@ contains
         write(*,*) 'imaxc,jmaxc,kmaxc,iprec,nbmots,valexc'
         write(*,*) imaxc,jmaxc,kmaxc,iprec,nbmots,valexc
          return
-         end
+         End subroutine
 
       subroutine UFILL(c,valexc,imax,jmax,kmax)
 	implicit none
@@ -485,7 +485,7 @@ contains
 !c
        call JM0000(c,valexc,imax,jmax,kmax,work,work2,ic,ic2)
        return
-       end
+       End subroutine
 !c
        subroutine JM0000(c,valexc,imax,jmax,kmax,work,work2,ic,ic2)
 	implicit none
@@ -612,6 +612,6 @@ contains
  99    continue
 
        return
-       end
+       End subroutine
 
 End program rlvardepth
