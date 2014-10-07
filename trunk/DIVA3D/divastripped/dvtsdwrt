@@ -1,0 +1,50 @@
+#!/bin/bash
+#####################################################
+#
+#
+  Fileinf=./input/STBinfo
+{
+read comment
+read psal
+read comment
+read temp
+read comment
+read lay1
+read comment
+read lay2
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read comment
+read maxit
+} < $Fileinf
+#
+if [ -d ./3DWORK ]; then
+:
+else
+ mkdir -p ./3DWORK
+fi
+cd ./3DWORK/
+#
+if [ -f fort.44 ];then
+rm fort.44
+fi
+#
+nbfls=`cat '../input/3Dinfosalinity' |wc -l`
+echo $nbfls >> ./fort.44
+#
+##if [ "$actp" == "1" ];then
+echo ' dvtsdwrt: Going to write TSDN2 nc file'
+../../bin/dv3Dtswrt.a
+##fi
+##if [ "$actp" == "2" ];then
+###../../bin/dv3Drstw.a
+##fi
+cd ..

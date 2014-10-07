@@ -1,0 +1,38 @@
+#!/bin/bash
+export LC_ALL=C
+echo ========================================================
+echo Going to clean data points that are considered outliers
+echo Using outliersbis.normalized.dat
+echo Need to change if divaqc or divaqcter
+echo ========================================================
+dvoutliercleanlog=./output/dvoutlierclean.log
+echo ======================================================== > $dvoutliercleanlog
+echo Going to clean data points that are considered outliers >> $dvoutliercleanlog
+echo Using outliersbis.normalized.dat >> $dvoutliercleanlog
+echo Need to change if divaqc or divaqcter >> $dvoutliercleanlog
+echo ======================================================== >> $dvoutliercleanlog
+#
+if [ -f ./output/outliersbis.normalized.dat ]
+then
+awk -v valex=$valex 'NR==FNR {s[i++]=$0; isok[i-1]=1; next} { if ( $1+0. > 4.0 ) {xx=int($2-1);isok[xx]=0}; j=0} END {j=0; while(j < i) { if (isok[j]==1) print s[j];j=j+1} } ' ./input/data.dat ./output/outliersbis.normalized.dat > ./input/data.dat.nooutliers
+echo Before cleaning >> $dvoutliercleanlog
+wc -l ./input/data.dat >> $dvoutliercleanlog
+echo After cleaning of points outside of the mesh >> $dvoutliercleanlog
+wc -l ./input/data.dat.nooutliers >> $dvoutliercleanlog
+echo Before cleaning 
+wc -l ./input/data.dat
+echo After cleaning of points outside of the mesh
+wc -l ./input/data.dat.nooutliers
+if [ "$1" == "-r" ] 
+then
+mv -v ./input/data.dat ./input/data.dat.withoutliers
+mv -v ./input/data.dat.nooutliers ./input/data.dat
+fi
+else
+echo ==================================== >> $dvoutliercleanlog
+echo Sorry, no outlier detection was done >> $dvoutliercleanlog
+echo ==================================== >> $dvoutliercleanlog
+echo ====================================
+echo Sorry, no outlier detection was done
+echo ====================================
+fi

@@ -1,0 +1,174 @@
+#!/bin/bash
+export LC_ALL=C
+
+#------------------------------------------------
+# user can ask for binning the data before 
+# the optimization with binning=1
+binning=0
+#------------------------------------------------
+
+nsamp=0
+iparsave=0
+llimit=0
+echo ////////////////////////////////////////
+echo    Fitting of the covariance function
+echo ////////////////////////////////////////
+echo ' '
+
+source ./dvmakelog
+
+echo divafit: > $divafitlog
+echo '********' >> $divafitlog
+
+if [ "$#" == "1" ]
+then
+if [ "$1" != "-r" -a "$1" != "-l" ]
+then
+echo Subsampling activated >> $divafitlog
+nsamp=$1
+fi
+if [ "$1" == "-r" ]
+then
+echo Will replace param.par >> $divafitlog
+iparsave=1
+fi
+if [ "$1" == "-l" ]
+then
+echo Will try to use meandistance.dat as lower limit on L >> $divafitlog
+llimit=1
+fi
+fi
+if [ "$#" == "2" ]
+then
+if [ "$1" != "-r" ]
+then
+echo Subsampling activated >> $divafitlog
+nsamp=$1
+echo Will try to use meandistance.dat as lower limit on L >> $divafitlog
+llimit=1
+else
+echo Will replace param.par >> $divafitlog
+iparsave=1
+if [ "$2" != "-l" ]
+then
+echo Subsampling activated >> $divafitlog
+nsamp=$2
+else
+echo Will try to use meandistance.dat as lower limit on L >> $divafitlog
+llimit=1
+fi
+fi
+fi
+if [ "$#" == "3" ]
+then
+echo Will replace param.par >> $divafitlog
+iparsave=1
+echo Will try to use meandistance.dat as lower limit on L >> $divafitlog
+llimit=1
+echo Subsampling activated >> $divafitlog
+nsamp=$2
+fi
+#echo Cleaning unuseful files
+#echo ' '
+rm -f fort.10 fort.11 fort.99 fort.98
+
+if [ $binning -eq 1 ]
+then
+./divabin
+fi
+
+echo 'Going to fit covariance function' | tee -a $divafitlog
+echo ' ' 			        | tee -a $divafitlog
+head -4 ./input/param.par | tail -1   > fort.11
+head -8 ./input/param.par | tail -1   >> fort.11
+if [ -f ./input/data.dat ] 
+then
+cp ./input/data.dat ./divawork/fort.10
+else
+echo 'Need to provide data.dat in ./input !' | tee -a $divafitlog
+fi
+mv fort.11 ./divawork
+
+cd ./divawork
+
+echo $nsamp | ../../bin/fitlsn.a >> $divalog
+
+if [ $? -ne 0 ];then
+echo ' ' | tee -a $divalog $divafitlog
+echo -------------------------------------------- | tee -a $divalog $divafitlog
+echo A problem was encountered during execution ! | tee -a $divalog $divafitlog
+echo          divafit      fitlsn.a		  | tee -a $divalog $divafitlog
+echo Check execution track			  | tee -a $divalog $divafitlog
+echo -------------------------------------------- | tee -a $divalog $divafitlog
+fi
+
+if [ -f fort.98 ] 
+then 
+mv fort.98 ../output/covariancefit.dat
+mv fort.99 ../output/covariance.dat
+mv fort.66 ../output/paramfit.dat
+echo ------------------------------------------------------------- | tee -a $divafitlog
+echo Finished fitting 					           | tee -a $divafitlog
+echo 'Estimated correlation length L = ' $(awk 'FNR == 2 { print; exit }' ../output/paramfit.dat) | tee -a $divafitlog
+echo Files created : covariancefit.dat covariance.dat paramfit.dat | tee -a $divafitlog
+echo ------------------------------------------------------------- | tee -a $divafitlog
+
+if [ -e ../gnuwork ]
+then
+mv fort.55 ../gnuwork/xrangecova
+fi
+
+rm -f fort.10 fort.11
+echo 'Creating adapted param.par in ./output/param.par.fit' >> $divafitlog
+head -1 ../input/param.par > ../output/param.par.fit
+
+if [ "$llimit" == "1" -a -f ../output/meandistance.dat ]
+then
+echo Found meandistance.dat and flag "-l" was used, so >> $divafitlog
+echo using meandistance.dat >> $divafitlog
+rm -f bidon1
+rm -f bidon2
+head -2 ../output/meandistance.dat | tail -1 > bidon1
+head -2 ../output/paramfit.dat | tail -1 > bidon2
+paste bidon1 bidon2 | awk -F "\t" '{if ($1 > $2) {print $1} else {print $2}}' > bidon
+head -1 bidon >>  ../output/param.par.fit
+rm -f bidon1
+rm -f bidon2
+rm -f bidon
+else
+head -2 ../output/paramfit.dat | tail -1 >> ../output/param.par.fit
+fi
+
+head -23 ../input/param.par | tail -21 >> ../output/param.par.fit
+head -4 ../output/paramfit.dat | tail -1 >> ../output/param.par.fit
+head -25 ../input/param.par | tail -1 >> ../output/param.par.fit
+head -6 ../output/paramfit.dat | tail -1  >> ../output/param.par.fit
+
+head -8 ../output/paramfit.dat | tail -1  >> ../output/quality.fit
+echo $nsamp >> ../output/nsamp.fit
+
+if [ "$iparsave" == "1" ]
+then
+echo ======================================================= | tee -a $divafitlog
+echo Replacing  param file with fit  			     | tee -a $divafitlog
+cd ..
+cp -v ./input/param.par ./input/param.par.old
+cp -v ./output/param.par.fit ./input/param.par
+echo =======================================================
+fi
+else
+echo ' ' | tee -a $divafitlog
+echo -------------------------------------------- | tee -a $divafitlog
+echo A problem was encountered during execution ! | tee -a $divafitlog
+echo covariancefit.dat was not generated !	  | tee -a $divafitlog
+echo Check execution track			  | tee -a $divafitlog
+echo -------------------------------------------- | tee -a $divafitlog
+cd ..
+
+if [ $binning -eq 1 ]
+then
+mv ./input/data.notbinned ./input/data.dat
+fi
+
+fi
+

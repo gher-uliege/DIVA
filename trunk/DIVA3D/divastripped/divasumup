@@ -1,0 +1,381 @@
+#!/bin/bash
+if [ -f ./input/param.par.ori ] 
+then
+echo replacing by original param file
+echo and data 
+mv ./input/param.par.ori ./input/param.par
+mv ./input/data.dat.full ./input/data.dat
+fi
+
+divasumuplog='./output/divasumup.log'
+echo divasumup: > $divasumuplog
+echo **********  >> $divasumuplog
+
+cd divawork
+Filepar=../input/param.par
+{
+read linecomment
+read lc
+read linecomment
+read icoordchange
+read linecomment
+read ispec
+read linecomment
+read ireg
+read linecomment
+read xori
+read linecomment
+read yori
+read linecomment
+read dx
+read linecomment
+read dy
+read linecomment
+read nx
+read linecomment
+read ny
+read linecomment
+read valex
+read linecomment
+read snr
+read linecomment
+read varbak
+} < $Filepar
+rm -f bidon
+echo ../output/fieldgher.anl > coucou
+echo ../output/fieldgher.anl.ref >> coucou
+echo bidon >> coucou
+cat coucou | ../../bin/sum.a >> ../output/diva.log
+if [ $? -ne 0 ];then
+echo ' ' >> ../$divasumuplog
+echo -------------------------------------------- >> ../$divasumuplog
+echo A problem was encountered during execution ! >> ../$divasumuplog
+echo          divasumup      sum.a >> ../$divasumuplog
+echo Check execution track >> ../$divasumuplog
+echo -------------------------------------------- >> ../$divasumuplog
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divasumup      sum.a
+echo Check execution track
+echo --------------------------------------------
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo          divasumup      sum.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+fi
+if [ -f bidon ]
+then
+echo 'Added up analysed field'
+echo 'replacing analysis'
+mv bidon ../output/fieldgher.anl
+echo 'gridded ascii file, replacing anomalies'
+rm -f fort.20 
+rm -f fort.21
+rm -f fort.22
+cp  ../output/fieldascii.anl fort.20
+cp  ../output/fieldascii.anl.ref fort.21
+echo $valex $nx $ny | ../../bin/sumgrid.a >> ../output/diva.log
+if [ $? -ne 0 ];then
+echo ' ' >> ../$divasumuplog
+echo -------------------------------------------- >> ../$divasumuplog
+echo A problem was encountered during execution ! >> ../$divasumuplog
+echo          divasumup      sumgrid.a >> ../$divasumuplog
+echo Check execution track >> ../$divasumuplog
+echo -------------------------------------------- >> ../$divasumuplog
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divasumup      sumgrid.a
+echo Check execution track
+echo --------------------------------------------
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo          divasumup      sumgrid.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+fi
+mv fort.22 ../output/fieldascii.anl 
+echo 'adding ascii files and replacing anomalies analysis' >> ../$divasumuplog
+rm -f fort.20 
+rm -f fort.21
+rm -f fort.22
+if [ -f ../output/valatxyascii.anl ]
+then
+if [ -f ../output/valatxyascii.anl.ref ]
+then
+echo 'valatxy' >> ../$divasumuplog
+cp ../output/valatxyascii.anl fort.20
+cp ../output/valatxyascii.anl.ref fort.21
+
+echo $valex | ../../bin/sumup.a >> ../output/diva.log
+if [ $? -ne 0 ];then
+echo ' ' >> ../$divasumuplog
+echo -------------------------------------------- >> ../$divasumuplog
+echo A problem was encountered during execution ! >> ../$divasumuplog
+echo          divasumup      sumup.a >> ../$divasumuplog
+echo Check execution track >> ../$divasumuplog
+echo -------------------------------------------- >> ../$divasumuplog
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divasumup      sumup.a
+echo Check execution track
+echo --------------------------------------------
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo          divasumup      sumup.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+fi
+mv fort.22 ../output/valatxyascii.anl
+fi
+fi
+echo 'fieldatdatapoint'
+rm -f fort.20 
+rm -f fort.21
+rm -f fort.22
+cp ../output/fieldatdatapoint.anl fort.20
+cp ../output/fieldatdatapoint.anl.ref fort.21
+echo $valex | ../../bin/sumup.a >> ../output/diva.log
+if [ $? -ne 0 ];then
+echo ' ' >> ../$divasumuplog
+echo -------------------------------------------- >> ../$divasumuplog
+echo A problem was encountered during execution ! >> ../$divasumuplog
+echo '          divasumup      sum.a valex' >> ../$divasumuplog
+echo Check execution track >> ../$divasumuplog
+echo -------------------------------------------- >> ../$divasumuplog
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo '          divasumup      sum.a valex'
+echo Check execution track
+echo --------------------------------------------
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo '         divasumup      sum.a valex' >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+fi
+mv fort.22 ../output/fieldatdatapoint.anl
+fi
+cp -v ../output/fieldgher.anl ../output/ghertonetcdf/fort.84
+if [ -f ../output/errorfieldgher.anl ]
+then 
+cp -v ../output/errorfieldgher.anl ../output/ghertonetcdf/fort.87
+fi
+iecal=0
+if [ "$ispec" == "1" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "3" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "5" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "7" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "11" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "13" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "15" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "17" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-1" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-3" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-5" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-7" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-11" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-13" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-15" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-17" ]
+then
+iecal=1
+fi
+
+# adding other values of ispec
+
+if [ "$ispec" == "101" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "103" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "105" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "107" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "111" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "113" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "115" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "117" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-101" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-103" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-105" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-107" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-111" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-113" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-115" ]
+then
+iecal=1
+fi
+if [ "$ispec" == "-117" ]
+then
+iecal=1
+fi
+
+# JMB ADAPTED FOR DIFFERENT CASES IF ISPEC
+if [ "$varbak" != "0" ]
+then
+if [ "$iecal" == "1" ] 
+then
+echo Creating netcdf file for field and associated error
+cd ../output/ghertonetcdf
+../../../bin/netcdfoutput.a >> ../diva.log
+if [ $? -ne 0 ];then
+echo ' ' >> ../../$divasumuplog
+echo -------------------------------------------- >> ../../$divasumuplog
+echo A problem was encountered during execution ! >> ../../$divasumuplog
+echo          divasumup      netcdfoutput.a >> ../../$divasumuplog
+echo Check execution track >> ../../$divasumuplog
+echo -------------------------------------------- >> ../../$divasumuplog
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divasumup      netcdfoutput.a
+echo Check execution track
+echo --------------------------------------------
+echo ' ' >> ../diva.log
+echo -------------------------------------------- >> ../diva.log
+echo A problem was encountered during execution ! >> ../diva.log
+echo          divasumup      netcedfoutput.a  >> ../diva.log
+echo Check execution track >> ../diva.log
+echo -------------------------------------------- >> ../diva.log
+fi
+fi
+fi
+if [ "$varbak" == "0"  -o  "$iecal" == "0" ] 
+then
+echo Creating netcdf file only for field 
+echo since Varbak and ispec are $varbak $ispec
+cd ../output/ghertonetcdf
+../../../bin/netcdfoutputfield.a >> ../diva.log
+if [ $? -ne 0 ];then
+echo ' ' >> ../../$divasumuplog
+echo -------------------------------------------- >> ../../$divasumuplog
+echo A problem was encountered during execution ! >> ../../$divasumuplog
+echo          divasumup      netcdfoutputfield.a >> ../../$divasumuplog
+echo Check execution track >> ../../$divasumuplog
+echo -------------------------------------------- >> ../../$divasumuplog
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo          divasumup      netcdfoutputfield.a
+echo Check execution track
+echo --------------------------------------------
+echo ' ' >> ../diva.log
+echo -------------------------------------------- >> ../diva.log
+echo A problem was encountered during execution ! >> ../diva.log
+echo          divasumup      netcdfoutputfield.a  >> ../diva.log
+echo Check execution track >> ../diva.log
+echo -------------------------------------------- >> ../diva.log
+fi
+fi
+cd ../..
+mv ./input/data.dat ./input/data.dat.anom
+cp ./input/data.dat.full ./input/data.dat
+echo =================================================================== >> $divasumuplog
+echo data.dat now contains again original data >> $divasumuplog
+echo data.dat.anom contains anomalies >> $divasumuplog
+echo =================================================================== >> $divasumuplog
+echo ' ' >> $divasumuplog
+echo -------------------- >> $divasumuplog
+echo Analysis is finished >> $divasumuplog
+echo -------------------- >> $divasumuplog
+echo ===================================================================
+echo data.dat now contains again original data
+echo data.dat.anom contains anomalies
+echo ===================================================================
+echo ' '
+echo --------------------
+echo Analysis is finished
+echo --------------------
+cd ..

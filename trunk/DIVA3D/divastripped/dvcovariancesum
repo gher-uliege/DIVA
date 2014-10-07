@@ -1,0 +1,124 @@
+#!/bin/bash
+echo dvcovariancesum://////////////////////////////////////////////////
+echo dvcovariancesum:          Going to compute covariances sums
+echo dvcovariancesum:          called when ispec minus 116
+echo dvcovariancesum://////////////////////////////////////////////////
+echo ' ' 
+
+dvcovariancesumlog='./output/dvcovariancesum.log'
+echo dvcovariancesum:////////////////////////////////////////////////// > $dvcovariancesumlog
+echo dvcovariancesum:          Going to compute covariances sums >> $dvcovariancesumlog
+echo dvcovariancesum:          called when ispec minus 116 >> $dvcovariancesumlog
+echo dvcovariancesum:////////////////////////////////////////////////// >> $dvcovariancesumlog
+echo ' '  >> $dvcovariancesumlog
+
+if [ -f ./input/data.dat ] 
+then 
+cp ./input/data.dat ./divawork/fort.79
+head -1 ./meshgenwork/fort.22 > ./divawork/bidon
+{
+read nnn xxx yyy
+} < ./divawork/bidon
+rm ./divawork/bidon
+echo $xxx $yyy 1 1.E-10 > ./divawork/fort.44
+else
+echo dvcovariancesum: Need to provide data.dat in ./input ! >> $dvcovariancesumlog
+echo dvcovariancesum: Need to provide data.dat in ./input !
+fi
+# put into valatxy the list of points for the sum
+# need to put also weights??? (three columns)
+cd ./divawork
+rm -f fort.59
+rm -f fort.61
+wc -l ../input/integrationpoints.dat > fort.55
+cp ../input/integrationpoints.dat fort.45
+wc -l ../input/data.dat >> fort.55
+echo coord 1 > ./fort.10
+echo $icoordchange >> ./fort.10
+echo mathpr 1 >> ./fort.10
+echo 2 >> ./fort.10
+echo 0 >> ./fort.10
+echo 2 >> ./fort.10
+echo topolo 1 >> ./fort.10
+echo $nnt1 >> ./fort.10
+echo $nnint >> ./fort.10
+echo $nelt >> ./fort.10
+echo datapr 1 >> ./fort.10
+echo 0 >> ./fort.10
+if [ "$itcs" != "0" ] 
+then 
+echo dvcovariancesum: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> ../$dvcovariancesumlog
+echo dvcovariancesum:  Module constraint activated >> ../$dvcovariancesumlog
+echo dvcovariancesum: $itcs
+echo constr 1 >> ./fort.10
+echo $itcs >> ./fort.10
+echo dvcovariancesum: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> ../$dvcovariancesumlog
+fi
+echo solver 1 >> ./fort.10
+echo 0 >> ./fort.10
+echo stores 1 >> ./fort.10
+echo 3 >> ./fort.10
+echo dvcovariancesum: VARBAK: $varbak >> ../$dvcovariancesumlog
+if [ "$varbak" != "0" ]
+then
+if [ "$ispec" != "0" ]
+then
+echo dvcovariancesum: errors will be calculated >> ../$dvcovariancesumlog
+echo covar 1 >> ./fort.10
+echo $ispec >> ./fort.10
+fi
+fi
+echo stopex >> ./fort.10
+echo $lc 1 4 $xi | ../../bin/calcmu.a >> ../output/diva.log
+if [ $? -ne 0 ];then
+echo ' ' >> ../$dvcovariancesumlog
+echo dvcovariancesum: -------------------------------------------- >> ../$dvcovariancesumlog
+echo dvcovariancesum: A problem was encountered during execution ! >> ../$dvcovariancesumlog
+echo dvcovariancesum:                calmu.a >> ../$dvcovariancesumlog
+echo dvcovariancesum: Check execution track >> ../$dvcovariancesumlog
+echo dvcovariancesum: -------------------------------------------- >> ../$dvcovariancesumlog
+echo ' '
+echo dvcovariancesum: --------------------------------------------
+echo dvcovariancesum: A problem was encountered during execution !
+echo dvcovariancesum:                calmu.a
+echo dvcovariancesum: Check execution track
+echo dvcovariancesum: --------------------------------------------
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo                calmu.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+fi
+#execute diva
+let NREA=$NREA+3*$NDATA
+let NREA=$NREA+$NDDLT
+let NINT=$NINT+$NDATA
+echo $NINT $NREA | ../../bin/diva.a >> ../output/diva.log
+if [ $? -ne 0 ];then
+echo ' ' >> ../$dvcovariancesumlog
+echo dvcovariancesum: -------------------------------------------- >> ../$dvcovariancesumlog
+echo dvcovariancesum: A problem was encountered during execution ! >> ../$dvcovariancesumlog
+echo dvcovariancesum:                diva.a >> ../$dvcovariancesumlog
+echo dvcovariancesum: Check execution track >> ../$dvcovariancesumlog
+echo dvcovariancesum: -------------------------------------------- >> ../$dvcovariancesumlog
+echo ' '
+echo dvcovariancesum: --------------------------------------------
+echo dvcovariancesum: A problem was encountered during execution !
+echo dvcovariancesum:                diva.a
+echo dvcovariancesum: Check execution track
+echo dvcovariancesum: --------------------------------------------
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo                diva.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+fi
+let NREA=$NREA-3*$NDATA
+let NREA=$NREA-$NDDLT
+let NINT=$NINT-$NDATA
+echo dvcovariancesum: now saving sums >> ../output/diva.log
+cp fort.64 ../output/Pfsumum.dat
+cp fort.65 ../output/Csum.dat
+cd ..

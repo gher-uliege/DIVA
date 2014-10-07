@@ -1,0 +1,26 @@
+#!/bin/bash
+
+if [ -f fort.68 -a -f fort.67 ] 
+then
+
+echo gnuplot is $gplot
+awk '{print $0 >> "bidon"}' << EOF
+#the gnuplot commands
+set pm3d  interpolate ii,ii map
+set style data pm3d
+#set palette defined ( 0 "dark-blue", 1 "blue", 1.7 "green", 2.5 "yellow", 2.6 "yellow", 4 "red", 5 "dark-red" )
+set angles degrees
+
+set xtics ("longref" 0)
+EOF
+echo \
+"splot 'fort.68' using" '(($1-longref)*cos($2)):($2):(0.0):($3) t' "'Analysis, projected'#,'fort.67' using "'(($1-longref)*cos($2)):($2):(0.0) with lines ls 9  notitle' >> bidon
+
+
+
+$gplot bidon
+
+else
+echo No plot produced
+
+fi

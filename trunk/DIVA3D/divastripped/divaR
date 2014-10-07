@@ -1,0 +1,232 @@
+#!/bin/bash
+export LC_ALL=C
+
+if [ "$#" -lt "2" ]
+then
+
+echo ==================================================
+echo   Usage : divaR LC SNR
+echo      where LC is the correlation length of R
+echo            SNR is the signal/noise ratio of R
+echo             compared to traditional diagonal R
+echo ==================================================
+exit
+fi
+
+
+# ok for the moment R is characterised here but should be interfaced elsewehere
+LCR=$1
+SNRR=$2
+
+# Welcome into the code meant to mimic a non-diagonal R
+echo ==================================================
+echo   Trying to use non-diagonal R
+echo ==================================================
+
+
+
+# Get original parameters and save parameter file
+#LC=$(head -2 ./input/param.par | tail -1 | awk '{print $1}')
+#SNR=$(head -24 ./input/param.par | tail -1 | awk '{print $1}')
+
+LC=$(dvgetpar LC)
+SNR=$(dvgetpar SNR)
+
+echo B has LC and SNR $LC  $SNR
+echo R has LC and SNR $LCR  $SNRR
+
+# if LCR > LC exit and say that filtering out large scale is not yet provided but will come
+Highpass=$(echo  $LC $LCR  | awk '{if ($2>$1) {print 1} else {print 0}}')
+if [ "$Highpass" == "1" ]
+then
+echo ==================================================
+echo   It is assumed that R has smaller scales than B
+echo   High pass filtering will be immplemented later
+echo ==================================================
+exit
+fi
+
+
+
+# if LCR and LC too close AND SN SNR too large exit by telling that it is better to assume LCR=LC
+# and make an analysis with LC and changer SNR according to documentation Section xxx
+#
+
+Overlap=$(echo $LC $SNR $LCR $SNRR | awk '{if ( ($1-$3)*($1-$3)<0.01*($1*$3)  && ($2 > 1)  && ($4 >1) ) {print 1} else {print 0}}')
+if [ "$Overlap" == "1" ]
+then
+echo ==================================================
+echo   It is assumed that R has much smaller scales than B
+echo   or that at least one of the SNR is small
+echo   Otherwise it is better to use normal analysis with
+echo   changed SNR, see documentation
+echo ==================================================
+exit
+fi
+
+cp ./input/param.par ./input/param.par.oriR
+
+
+
+# Make sure original data are stored in a file and complemented with fourth column if necessary
+# Any column after column 4 is not used here sorry
+
+cat ./input/data.dat | awk '{if ( NF<4 ) {$4=1}; print $1,$2,$3,$4} ' > ./input/data.dat.oriR
+cp ./input/data.dat.oriR ./input/data.dat
+
+
+# Apply inflation approach to get error fields
+# Get coordinate change parameter
+#ICOORD=$(head -4 ./input/param.par | tail -1 | awk '{print $1}')
+ICOORD=$(dvgetpar ICOORD)
+cat ./input/data.dat | awk '{print $1,$2,1}' > ./input/data.dat.x
+dvrtimesx $LCR $ICOORD
+
+# add result on diagonal
+head ./input/data.dat
+echo inflating
+paste ./output/data.dat.Rx ./input/data.dat.oriR | awk -v SN=$SNRR '{print $2,$3,$4, 1/(1/$5+$1*SN)  }' > ./input/data.dat
+head ./output/data.dat.Rx
+echo gives
+head ./input/data.dat
+divacalc
+
+
+
+
+
+
+cp ./input/data.dat.oriR ./input/data.dat
+
+
+
+# if LCR is too small also apply only inflation
+#  Criterium based on LC/LCR and LCR*LCR/(dx*dy) values and domain size over LCR*LCR via smallest bounding box  of contours /analysis
+dx=$(dvgetpar dx)
+dy=$(dvgetpar dy)
+
+GOFULL=$(echo $dx $dy $LC $LCR  | awk '{if ($4*$4>$1*$2) {print 1} else {print 0}}')
+echo Indicator $GOFULL
+
+if [ "$GOFULL" == "0" ]
+then
+echo ==================================================
+echo   Only inflation approach was used as LC of R is
+echo   small compared to the output grid size
+echo ==================================================
+exit
+fi
+
+
+
+# If full calculation is demanded save error fields for further use and proceed
+# save errorfields
+
+echo Saving error fields from inflation approach
+cp ./output/errorfieldgher.anl   ./output/errorfieldgher.anl.infl
+cp ./output/errorfieldascii.anl   ./output/errorfieldascii.anl.infl
+cp ./output/erroratxyascii.anl   ./output/erroratxyascii.anl.infl
+cp ./output/erroratdatapoint.anl   ./output/erroratdatapoint.anl.infl
+
+echo Now entering real R calculations
+
+
+
+# No need to overload calculations during iterations so modify parameter file
+dvchpar NX 1
+dvchpar NY 1
+dvchpar ispec 0
+
+
+
+# Mesh with a length that allows to marginally resolve the data correlation length
+# Normally a factor 10 to 20 is allowed
+# Add a test on $LCR with respect to $LC here and call dvchpar
+LCM=$(echo $LC $LCR | awk '{if (10*$2 < $1) {print 10*$2} else {print $1} }')
+echo Mesh to be generated using length scale $LCM
+dvchpar LC $LCM
+# Now make mesh and put back normal L
+divamesh
+dvchpar LC $LC
+
+
+# First analysis to get HK1
+divacalc
+
+# I-HK1
+paste ./input/data.dat.oriR ./output/fieldatdatapoint.anl | awk '{print $1,$2,$3-$7,$4}' > ./input/data.dat
+
+# Save this vector called x in manuscript
+cp ./input/data.dat ./input/data.dat.x
+
+
+
+# Now iterate to invert I-HK1 HK2
+
+# Add code to calculate number if iterations based on the two SNR rations and the two LC
+# xi sim SNR/(1+SNR)*SNRR/(1+SNRR)*LCR/LC
+itermax=10
+niter=$(echo $SNR $SNRR $LC $LCR $itermax | awk '{ val=-3*log(10)/log($1/(1+$1)*$2/(1+$2)*$4/$3); if (val<$5) {print int(val)+1} else {print $5}  }')
+echo ============================
+echo Iterations to be done $niter
+echo ============================
+itermax=$niter
+
+echo Converging ?
+head -1 ./input/data.dat
+
+i=0
+while [ $i -lt $itermax ]
+do
+ let i=$i+1
+ echo $i
+ dvchpar LC $LCR
+ dvchpar SNR $SNRR
+ divacalc
+ dvouttoin
+ dvchpar LC $LC
+ dvchpar SNR $SNR
+ divacalc
+# now fielatdatapoint contains HK1HK2 y so use it to update y stored in data.dat
+paste ./input/data.dat.x ./output/fieldatdatapoint.anl | awk '{print $1,$2,$3+$7,$4}' > ./input/data.dat
+echo Converging ?
+head -1 ./input/data.dat
+
+done
+
+# now data.dat contains y  after iterations
+#
+# Apply HK2 to this vector
+dvchpar LC $LCR
+dvchpar SNR $SNRR
+divacalc
+
+
+# Now finally prepare data to be analysed : original data minus the last output
+paste ./input/data.dat.oriR ./output/fieldatdatapoint.anl | awk '{print $1,$2,$3-$7,$4}' > ./input/data.dat
+
+# Final calculation with original parameters
+mv ./input/param.par.oriR ./input/param.par
+
+divacalc
+
+# For error calculattion probably better to use inflation approach and the apply with desired ispec
+
+cp ./output/errorfieldgher.anl.infl   ./output/errorfieldgher.anl
+cp ./output/errorfieldascii.anl.infl   ./output/errorfieldascii.anl
+cp ./output/erroratxyascii.anl.infl   ./output/erroratxyascii.anl
+cp ./output/erroratdatapoint.anl.infl   ./output/erroratdatapoint.anl
+
+
+echo Merging into netcdf file
+
+cp ./output/fieldgher.anl ./output/ghertonetcdf/fort.84
+cp ./output/errorfieldgher.anl ./output/ghertonetcdf/fort.87
+cd ./output/ghertonetcdf
+../../../bin/netcdfoutput.a
+cd ../..
+
+
+echo ======================================
+echo    Finished divaR
+echo ======================================

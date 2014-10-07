@@ -1,0 +1,29 @@
+plot 'fort.67' index  0 using 1:2 with filledcurves ls  2 t ''  \\
+,'fort.67' index    1 using 1:2 with filledcurves ls  1 title '' \\
+,'fort.67' index    2 using 1:2 with filledcurves ls  1 title '' \\
+,'fort.67' index    3 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index    4 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index    5 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index    6 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index    7 using 1:2 with filledcurves ls  1 title '' \\
+,'fort.67' index    8 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index    9 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index   10 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index   11 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index   12 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index   13 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index   14 using 1:2 with filledcurves ls  1 title '' \\
+,'fort.67' index   15 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index   16 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index   17 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index   18 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index   19 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index   20 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index   21 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index   22 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index   23 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index   24 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index   25 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index   26 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index   27 using 1:2 with filledcurves ls  2 title '' \\
+,'fort.67' index   28 using 1:2 with filledcurves ls  2 title '' 

@@ -1,0 +1,131 @@
+#!/bin/bash
+echo //////////////////////////////////////////////////
+echo           Going to compute covariances
+echo //////////////////////////////////////////////////
+echo ' '
+
+divarundir=$(pwd)
+dvcovariancelog=${divarundir}'/output/dvcovariance.log'
+
+echo ////////////////////////////////////////////////// > $dvcovariancelog
+echo           Going to compute covariances >> $dvcovariancelog
+echo ////////////////////////////////////////////////// >> $dvcovariancelog
+echo ' ' >> $dvcovariancelog
+ 
+if [ -f ./input/data.dat ] 
+then 
+cp ./input/data.dat ./divawork/fort.45
+head -1 ./meshgenwork/fort.22 > ./divawork/bidon
+{
+read nnn xxx yyy
+} < ./divawork/bidon
+rm ./divawork/bidon
+echo $xxx $yyy 1 1.E-10 > ./divawork/fort.44
+else
+echo Need to provide data.dat in ./input ! | tee -a $dvcovariancelog
+fi
+cd ./divawork
+rm -f fort.59
+rm -f fort.61
+wc -l fort.45 > fort.55
+echo coord 1 > ./fort.10
+echo $icoordchange >> ./fort.10
+echo mathpr 1 >> ./fort.10
+echo 2 >> ./fort.10
+echo 0 >> ./fort.10
+echo 2 >> ./fort.10
+echo topolo 1 >> ./fort.10
+echo $nnt1 >> ./fort.10
+echo $nnint >> ./fort.10
+echo $nelt >> ./fort.10
+echo datapr 1 >> ./fort.10
+echo 0 >> ./fort.10
+if [ "$itcs" != "0" ] 
+then 
+echo dvcovariance: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> $dvcovariancelog
+echo dvcovariance:   Module constraint activated >> $dvcovariancelog
+echo dvcovariance:  $itcs
+echo constr 1 >> ./fort.10
+echo $itcs >> ./fort.10
+echo dvcovariance:  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> $dvcovariancelog
+fi
+echo solver 1 >> ./fort.10
+echo 0 >> ./fort.10
+echo stores 1 >> ./fort.10
+echo 3 >> ./fort.10
+echo VARBAK: $varbak >> $dvcovariancelog
+if [ "$varbak" != "0" ]
+then
+if [ "$ispec" != "0" ]
+then
+echo dvcovariance:  errors will be calculated >> $dvcovariancelog
+echo covar 1 >> ./fort.10
+echo $ispec >> ./fort.10
+fi
+fi
+echo stopex >> ./fort.10
+echo $lc 1 4 $xi | ../../bin/calcmu.a >> $divalog
+if [ $? -ne "0" ];then
+echo dvcovariance: ' ' | tee -a $divalog $dvcovariancelog
+echo dvcovariance: -------------------------------------------- | tee -a $divalog $dvcovariancelog
+echo dvcovariance: A problem was encountered during execution ! | tee -a $divalog $dvcovariancelog
+echo dvcovariance:               calmu.a 			| tee -a $divalog $dvcovariancelog
+echo dvcovariance: Check execution track 			| tee -a $divalog $dvcovariancelog
+echo dvcovariance: -------------------------------------------- | tee -a $divalog $dvcovariancelog
+fi
+#execute diva
+let NREA=$NREA+3*$NDATA
+let NREA=$NREA+$NDDLT
+let NINT=$NINT+$NDATA
+mkdir -p sub
+rm -f fort.61
+echo $ipipe > fort.59
+cd sub
+rm -f fort.*
+cp ../fort.* .
+cd ..
+rm -f divapipe
+if [ "$ipipe" == "1" ] 
+then
+#mknod divapipe p
+rm -f dvping
+mknod dvping p
+rm -f dvpong
+mknod dvpong p
+sleep 1
+cd sub
+echo dvcovariance: Launching a detached diva.a >> $dvcovariancelog
+echo $NINT $NREA | ../../../bin/diva.a >> $divalog &
+if [ $? -ne "0" ];then
+echo ' ' | tee -a $dvcovariancelog $divalog
+echo dvcovariance: -------------------------------------------- | tee -a $dvcovariancelog $divalog
+echo dvcovariance: A problem was encountered during execution ! | tee -a $dvcovariancelog $divalog
+echo dvcovariance:                diva.a                        | tee -a $dvcovariancelog $divalog
+echo dvcovariance: Check execution track                        | tee -a $dvcovariancelog $divalog
+echo dvcovariance: -------------------------------------------- | tee -a $dvcovariancelog $divalog
+fi
+else
+cd sub
+echo Launching a sequential diva.a
+echo $NINT $NREA | ../../../bin/diva.a >> $divalog
+if [ $? -ne "0" ];then
+echo ' ' >> $dvcovariancelog
+echo ' ' | tee -a $dvcovariancelog $divalog
+echo dvcovariance: -------------------------------------------- | tee -a $dvcovariancelog $divalog
+echo dvcovariance: A problem was encountered during execution ! | tee -a $dvcovariancelog $divalog
+echo dvcovariance:                diva.a                        | tee -a $dvcovariancelog $divalog
+echo dvcovariance: Check execution track			| tee -a $dvcovariancelog $divalog
+echo dvcovariance: -------------------------------------------- | tee -a $dvcovariancelog $divalog
+fi
+fi
+let NREA=$NREA-3*$NDATA
+let NREA=$NREA-$NDDLT
+let NINT=$NINT-$NDATA
+cd ..
+cd ..
+echo dvcovariance: ==============================================  | tee -a $dvcovariancelog
+echo dvcovariance: ----------------------------------------------  | tee -a $dvcovariancelog
+echo dvcovariance: Analysed for covariance is launched             | tee -a $dvcovariancelog
+echo dvcovariance: Now will start diva for fields and errors       | tee -a $dvcovariancelog
+echo dvcovariance: ----------------------------------------------  | tee -a $dvcovariancelog
+echo dvcovariance:  ============================================== | tee -a $dvcovariancelog

@@ -1,0 +1,94 @@
+#!/bin/bash
+echo /////////////////////////////////
+echo        Contour generation
+echo /////////////////////////////////
+echo ' '
+
+divacontlog='./output/divacont.log'
+echo ///////////////////////////////// >$divacontlog
+echo        Contour generation >>$divacontlog
+echo ///////////////////////////////// >>$divacontlog
+echo ' ' >>$divacontlog
+
+echo Cleaning up old files >>$divacontlog
+echo ' '
+rm -f ./divawork/fort.10
+rm -f ./divawork/fort.11
+rm -f ./divawork/fort.12
+rm -f ./divawork/fort.13
+echo Cleaning finished   >>$divacontlog
+if [ -f ./input/TopoInfo.dat ] 
+then
+cat ./input/TopoInfo.dat 
+cp ./input/TopoInfo.dat ./divawork/fort.10
+else
+echo Need to provide TopoInfo.dat in ./input ! >>$divacontlog
+echo ' !!!!!!!!!!!!! Need to provide TopoInfo.dat in ./input !'
+fi
+if [ -f ./input/topo.grd ] 
+then
+cp ./input/topo.grd ./divawork/fort.12
+else 
+echo Need to provide topo.grd in ./input ! >>$divacontlog
+echo Need to provide topo.grd in ./input !
+fi 
+if [ -f ./input/contour.depth ] 
+then
+cp ./input/contour.depth ./divawork/fort.13
+else
+echo Need to provide contour.depth in ./input !
+echo Need to provide contour.depth in ./input ! >>$divacontlog
+echo Assuming zero depth contour is asked >>$divacontlog
+fi
+echo Contour creation >>$divacontlog
+echo ' ' >>$divacontlog
+cd ./divawork
+
+echo ////////////////////////////////////////// >> ../output/diva.log
+echo            Generating contour files >> ../output/diva.log
+echo ////////////////////////////////////////// >> ../output/diva.log
+echo ' '  >> ../output/diva.log
+
+../../bin/contourgen.a >> ../output/diva.log
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo       divacont:   contourgen.a
+echo Check execution track
+echo --------------------------------------------
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo        divacont:    contourgen.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+fi
+cd ..
+if [ -f ./divawork/coast.cont ]
+then 
+echo Copying coast files in output >>$divacontlog
+echo ' '
+cp -v ./divawork/coast.cont*  ./output
+rm -f ./divawork/fort.10
+rm -f ./divawork/fort.11
+echo ---------------- >>$divacontlog
+echo Contours created  >>$divacontlog
+echo ---------------- >>$divacontlog
+if [ "$1" == "-r" ]
+then
+echo 'Moving coast.cont into ./input directory' >>$divacontlog
+cp -v ./output/coast.cont* ./input
+fi
+else
+echo ' ' >>$divacontlog
+echo -------------------------------------------- >>$divacontlog
+echo A problem was encountered during execution ! >>$divacontlog
+echo Check execution track >>$divacontlog
+echo -------------------------------------------- >>$divacontlog
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo Check execution track
+echo --------------------------------------------
+fi

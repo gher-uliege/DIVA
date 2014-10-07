@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# Creates the file names for the log files
+#
+divarundir=$(pwd)
+divalog=$divarundir'/output/diva.log'
+divameshlog=$divarundir'/output/divamesh.log'
+divacalclog=$divarundir'/output/divacalc.log'
+divafitlog=$divarundir'/output/divafit.log'
+divagcvlog=$divarundir'/output/divagcv.log'
+divacvlog=$divarundir'/output/divacv.log'
+divacvrandlog=$divarundir'/output/divacvrand.log'
