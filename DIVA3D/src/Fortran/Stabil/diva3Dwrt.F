@@ -170,8 +170,12 @@
            nm = xm2 - xm1 + 1
         endif
         time_Yval =  float(xy1)+nint(float(xy2)-float(xy1)+1.)/2
-        time_Mval = 12*(float(xy1)+nint(float(xy2)-float(xy1)+1.)/2)
-        time_Dval = 365*float(xy2)
+!       time_Mval = 12*(float(xy1)+nint(float(xy2)-float(xy1)+1.)/2)
+	time_Mval = xm1+nint((xm2-xm1)+1.)/2
+!       time_Dval = 365*float(xy2)
+        time_Dval = mjd(int(time_Yval),int(time_Mval),1,0.)
+     &-mjd(xy1,1,1,0.)
+!     	write(0,*) time_Yval,time_Mval,time_Dval
         time_val = time_Dval
 !
 !
