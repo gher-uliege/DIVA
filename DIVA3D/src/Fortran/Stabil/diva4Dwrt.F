@@ -12,6 +12,7 @@
 !
       integer , DIMENSION(:) ,  ALLOCATABLE :: flags
       REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: dep
+      real*8 :: mjd
       REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: XLON,YLAT
      &                                       , CORLEN, SN, VARBAK
 !
@@ -24,7 +25,8 @@
      &                                        , obins,rlfield
 !
       integer                   :: i,j,k,klev,ic,top_lev,kuw,time_len
-     &                           , list_len
+     &                           , list_len,time_Yval1,time_Yval2
+     &				 , delta_mjd
       integer                   :: NX,NY,NK,ndata,nl,ivars,chlen,lev
       integer*4                 :: KMAX,ipr,nw,IMAX,JMAX
       integer                   :: ICOOC,IREG,ISPEC, ilev, nbdat
@@ -124,7 +126,14 @@
       read(chname,'(I5)')MAXLEV
       MINLEV = MINLEV - 10000
       MAXLEV = MAXLEV - 10000
-      var_shname = file_name(1:chlen-24)
+      Do i=1,time_len
+      	If (all_files(i)(1:chlen-24) == all_files(1)(1:chlen-24)) then  ! choice between 4D netcdf on month, or big netcdf (months + years)
+      	   var_shname = file_name(1:chlen-24)
+      	else
+      	   var_shname = file_name(1:chlen-28)//
+     &all_files(time_len)(chlen-27:chlen-24)
+      	Endif  
+      Enddo
       DO I = 1,time_len
       WRITE(file_name,'(a)')TRIM(all_files(I))
       all_vars(I) = file_name(1:chlen-19)
@@ -319,6 +328,22 @@
 !     &  var_lgname,cellmeth,var_units,vrb_units,l_units,Ref_time,
 !     &  title_string,INSTITUT,PRODUCTION,SOURCE,COMMENT)
 !
+
+        cellmeth =  cellmeth_l(ivars)
+        Ref_time = Ref_time_l(ivars)
+
+! Adding days to time_val when the reference year is different from the first netcdf
+        
+        chlen=len(trim(Ref_time_l(1)))
+	If (Ref_time(chlen-9:chlen-6) /=
+     & Ref_time_l(1)(chlen-9:chlen-6)) then
+	       read(Ref_time_l(1)(chlen-9:chlen-6),'(i4)') time_Yval1
+	       read(Ref_time(chlen-9:chlen-6),'(i4)') time_Yval2
+	       delta_mjd=mjd(time_Yval2,1,1,0.)-mjd(time_Yval1,1,1,0.)
+	       time_val=time_val+delta_mjd
+	       clbnds(1:2,ivars)=clbnds(1:2,ivars)+delta_mjd
+	Endif
+
       close(12)
       OPEN(UNIT=12,FILE=file_name2,STATUS='OLD',POSITION='APPEND')
       write(12,2001)TRIM(var_shname_l(ivars)),time_val
@@ -389,9 +414,7 @@
         IF(vbt1_max0 <= vbt1_max) vbt1_max0 = vbt1_max
         IF(vbt2_min0 >= vbt2_min) vbt2_min0 = vbt2_min
         IF(vbt2_max0 <= vbt2_max) vbt2_max0 = vbt2_max
-!
-        cellmeth =  cellmeth_l(ivars)
-        Ref_time = Ref_time_l(ivars)
+! 
 !
 !==================================================================
 !time_Yval,xclbnds,
@@ -459,3 +482,27 @@
 
       stop
       end
+      
+      function mjd(y,m,d,s)
+      implicit none
+      integer d,m,y
+      real s
+      real*8 mjd
+
+! Mathematicians and programmers have naturally 
+! interested themselves in mathematical and computational 
+! algorithms to convert between Julian day numbers and 
+! Gregorian dates. The following conversion algorithm is due 
+! to Henry F. Fliegel and Thomas C. Van Flandern: 
+! The Julian day (jd) is computed from Gregorian day, month
+! and year (d, m, y) as follows:
+! http://hermetic.magnet.ch/cal_stud/jdn.htm
+
+! ModifiedJulianDay = 0 for 1858-11-17 CE.
+
+      mjd = (( 1461 * ( y + 4800 + ( m - 14 ) / 12 ) ) / 4 +    
+     &       ( 367 * ( m - 2 - 12 * ( ( m - 14 ) / 12 ) ) ) / 12 -
+     &       ( 3 * ( ( y + 4900 + ( m - 14 ) / 12 ) / 100 ) ) / 4 +
+     &       d - 32075 - 2400001)*1d0 + s/(24*60*60d0)               
+
+      end function mjd
