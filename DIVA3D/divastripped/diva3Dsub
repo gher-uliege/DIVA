@@ -248,9 +248,9 @@ fi
  ./dv3Dinvtrsh $level $var $ntrans $act
 
 if [ "$gnup" -ge "101" ]
+then
 echo $level > levvar
 echo $var >> levvar
-then
 if [ "$gmin" -le "$gmax" ]
 then
 ./dv3Dgnu $gmin $gmax
@@ -291,7 +291,6 @@ fi
 
 #############
 
-
 if [ -f "./input/dvlaymixinfo" ];then
 if [ -d "./input/divadata_mixed" ];then
 rm -rf divadata_mixed
@@ -314,8 +313,10 @@ fi
 #
 if [ -f "./input/dvtransinfo" ];then
 #
-mv ./input/divadata ./input/divadata_tmp
-mv ./input/divadata_BKP ./input/divadata 
+rm -rf ./input/divadata_tmp
+cp ./input/divadata/* ./input/divadata_tmp/
+cp ./input/divadata_BKP/* ./input/divadata/
+rm -rf ./input/divadata_BKP
 if [ -d "./input/divadata_trans" ];then
 rm -rf divadata_trans
 mv ./input/divadata_tmp ./input/divadata_trans

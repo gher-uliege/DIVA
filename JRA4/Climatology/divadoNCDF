@@ -238,7 +238,9 @@ fi
 	if [ -f './output/3Danalysis/'$var'.'$year'.3DNCinfo' ] && [ "${year:0:4}" = ${year_begin:0:4} ]; then
 	cp -v './output/3Danalysis/'$var'.'$year'.3DNCinfo' ${DIVADIR}'/divastripped/output/3Danalysis/'$var'.'$period'.3DNCinfo'
 	elif [ -f './output/3Danalysis/'$var'.'$year'.3DNCinfo' ]; then
-	tail -3 './output/3Danalysis/'$var'.'$year'.3DNCinfo' >> ${DIVADIR}'/divastripped/output/3Danalysis/'$var'.'$period'.3DNCinfo'
+	nlines=$(cat './output/3Danalysis/'$var'.'$year'.3DNCinfo' | wc -l)
+	ntail=$(($nlines-11))
+	tail -$ntail './output/3Danalysis/'$var'.'$year'.3DNCinfo' >> ${DIVADIR}'/divastripped/output/3Danalysis/'$var'.'$period'.3DNCinfo'
 	fi
 	
 	cp -v ./output/3Danalysis/Fields/GridInfo.dat ${DIVADIR}/divastripped/output/3Danalysis/.
