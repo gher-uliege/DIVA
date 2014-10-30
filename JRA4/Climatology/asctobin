@@ -328,7 +328,7 @@ then
 	rdepth=$(($i+10000))
 	cp ./output/3Danalysis/Fields/$var1.*.$rdepth.anl ./input/divaparam/$var1.$var.$rdepth
 	done
-	cp ./output/3Danalysis/Fields/GridInfo.dat ./input/divaparam/RLinfo.dat
+	cp ./output/3Danalysis/Fields/GridInfo.dat ./input/divaparam/RLinfo.dat_erasethispart
 fi
 
 #read -t 10000
