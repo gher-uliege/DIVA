@@ -13,6 +13,7 @@
       integer , DIMENSION(:) ,  ALLOCATABLE :: flags
       integer*4 ,DIMENSION(:),  ALLOCATABLE :: idep
       REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: dep,time_yr
+      real*8 :: mjd
       REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: XLON,YLAT
      &                                       , CORLEN, SN, VARBAK
 !
@@ -25,12 +26,14 @@
      &                                        , obins,rlfield
 !
       integer                   :: i,j,k,klev,ic,top_lev,kuw,time_len
-     &                           , list_len
+     &                           , list_len,time_Yval1,time_Yval2
+     &				 , delta_mjd
       integer                   :: NX,NY,NK,ndata,nl,ivars,chlen,lev
       integer*4                 :: KMAX,ipr,nw,IMAX,JMAX
       integer                   :: ICOOC,IREG,ISPEC, ilev, nbdat, icdf
 !
-      real*4                     :: VALEXC, zz,time_val,
+      real*4                  :: time_val,time_Yval,time_Mval,time_Dval
+      real*4                     :: VALEXC, zz,
      &              var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
      &              vbt_min,vbt_max,var1_min,var1_max,
      &              vbt1_min,vbt1_max,vbt2_min,vbt2_max,
@@ -378,9 +381,23 @@
 !
         cellmeth =  cellmeth_l(ivars)
         Ref_time = Ref_time_l(ivars)
+        
+! Adding days to time_val when the reference year is different from the first netcdf
+        
+        chlen=len(trim(Ref_time_l(1)))
+	If (Ref_time(chlen-9:chlen-6) /=
+     & Ref_time_l(1)(chlen-9:chlen-6)) then
+	       read(Ref_time_l(1)(chlen-9:chlen-6),'(i4)') time_Yval1
+	       read(Ref_time(chlen-9:chlen-6),'(i4)') time_Yval2
+!	       write(0,*) time_Yval1,time_Yval2
+	       delta_mjd=mjd(time_Yval2,1,1,0.)-mjd(time_Yval1,1,1,0.)
+	       time_val=time_val+delta_mjd
+	       clbnds(1:2,ivars)=clbnds(1:2,ivars)+delta_mjd
+	Endif
 !
-
-      IF(ivars .gt. 1) time_yr(ivars)=time_yr(ivars-1)+time_val
+!	write(0,*) time_yr(ivars)
+      IF(ivars .gt. 1) time_yr(ivars)=time_val
+!        write(0,*) time_yr(ivars)
 !
       CALL NC_4DYEAR(imax,jmax,nk,ipar,list_len,time_yr(ivars),clbnds,
      &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
@@ -445,3 +462,27 @@
 !
       stop
       end
+      
+      function mjd(y,m,d,s)
+      implicit none
+      integer d,m,y
+      real s
+      real*8 mjd
+
+! Mathematicians and programmers have naturally 
+! interested themselves in mathematical and computational 
+! algorithms to convert between Julian day numbers and 
+! Gregorian dates. The following conversion algorithm is due 
+! to Henry F. Fliegel and Thomas C. Van Flandern: 
+! The Julian day (jd) is computed from Gregorian day, month
+! and year (d, m, y) as follows:
+! http://hermetic.magnet.ch/cal_stud/jdn.htm
+
+! ModifiedJulianDay = 0 for 1858-11-17 CE.
+
+      mjd = (( 1461 * ( y + 4800 + ( m - 14 ) / 12 ) ) / 4 +    
+     &       ( 367 * ( m - 2 - 12 * ( ( m - 14 ) / 12 ) ) ) / 12 -
+     &       ( 3 * ( ( y + 4900 + ( m - 14 ) / 12 ) / 100 ) ) / 4 +
+     &       d - 32075 - 2400001)*1d0 + s/(24*60*60d0)               
+
+      end function mjd

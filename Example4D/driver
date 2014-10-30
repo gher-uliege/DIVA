@@ -1,4 +1,4 @@
-extract flag: 1 do it, 0 do nothing, -1 press coord, -10 pressure+Saunders
+Data extraction: 1 do it, 0 do nothing, -1 press coord, -10 pressure+Saunders
 1
 boundary lines and coastlines generation: 0 nothing, 1: contours, 2: UV, 3: 1+2
 1
@@ -6,7 +6,7 @@ cleaning data on mesh: 1, 2: RL, 3: both, 4: 1 + outliers elimination, 5: =4+2
 0
 minimal number of data in a layer. If less, uses data from any month.
 0
-isoptimise 0 nothing, 1 L, 2 SN, 3 both, negative values filter vertically
+Parameters estimation and vertical filtering:
 0
 Minimal L
 0.25
@@ -16,15 +16,15 @@ Minimal SN
 0.1
 Maximal SN
 5.0
-analysis 1 do it 0 do nothing
+Analysis and reference field:
 1
 lowerlevel number
 1
 upperlevel number
 3
-reference (to come)
+4D netcdf files generation:
 0
-isplot 0 or 1
+gnuplot plots: 0 or 1
 0
-number of groups for data detrending, 0 if no detrending.
+Data detrending: number of groups, 0 if no detrending.
 0

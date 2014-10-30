@@ -42,6 +42,7 @@
         real*4  ,dimension(im4,jm4)          :: varbot,varb1,varb2
         real*4  ,dimension(2,time_len)       :: clbnds 
 !     &                                      , climatology_bounds
+	real*4	,dimension(2)		     :: climatology_bounds
 !   
         real*4  ,dimension(im4)              :: clo
         real*4  ,dimension(jm4)              :: cla
@@ -249,8 +250,8 @@
          STOP 'Stopped in NC_4DCLIMATO def var time'
       ENDIF
 !
-      cbdim(1)=timeid
-      cbdim(2)=nvid
+      cbdim(2)=timeid
+      cbdim(1)=nvid
       status=nf_def_var(ncid,'climatology_bounds',nf_float,
      &                                           two,cbdim,idcb)
       IF (status .NE.nf_noerr) THEN
@@ -1318,24 +1319,43 @@
 !
       stpar(1)=1
       stpar(2)=icdf
+      prcnt(1)=2
+      prcnt(2)=1
+!
+!	write(0,*) icdf,clbnds(1,icdf),clbnds(2,icdf)
+      climatology_bounds(1) = clbnds(1,icdf)
+      climatology_bounds(2) = clbnds(2,icdf)
+!
+      write(*,*) 'NCWRT   climatology_bounds '
+      write(*,*) 'climatology_bounds ',climatology_bounds
+
+
+
+      status = 
+     &nf_put_vara_real(ncid,idcb, stpar, prcnt,climatology_bounds)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO put xclbnds'
+      ENDIF
+!
+      stpar(1)=1
+      stpar(2)=icdf
       prcnt(1)=KM
       prcnt(2)=1
-
-
-      status = nf_put_var1_real(ncid,id0_1, stpar, prcnt,CORLEN)
+!
+      status = nf_put_vara_real(ncid,id0_1, stpar, prcnt,CORLEN)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put CORLEN'
       ENDIF
 !
-
-      status = nf_put_var1_real(ncid,id0_2, stpar, prcnt,SN)
+      status = nf_put_vara_real(ncid,id0_2, stpar, prcnt,SN)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put SN'
       ENDIF
 !
-      status = nf_put_var1_real(ncid,id0_3, stpar, prcnt,VARBAK)
+      status = nf_put_vara_real(ncid,id0_3, stpar, prcnt,VARBAK)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put VARBAK'
