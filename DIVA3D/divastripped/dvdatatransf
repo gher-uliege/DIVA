@@ -181,11 +181,12 @@ else
 echo Start data transformation: $itrans
 #
 if [ "$itrans" == "12" -o "$itrans" == "22" ];then 
-echo dvdatatrans: Will go for Logit transformation >> $dvdatatransflog
+echo "dvdatatrans: Will go for Logit transformation" >> $dvdatatransflog
 #################################
 cd ./input/divadata
-if [ -f "$var.logitrange" ];then
- cp $var'.logitrange' .../../3DWORK/Logitrange
+onlyvar=${var:0:${#var}-14}
+if [ -f "$onlyvar.logitrange" ];then
+ cp $onlyvar'.logitrange' ../../3DWORK/Logitrange
 else
  echo 9999. > ../../3DWORK/Logitrange
  echo -9999. >> ../../3DWORK/Logitrange

@@ -313,7 +313,8 @@ fi
 #
 if [ -f "./input/dvtransinfo" ];then
 #
-rm -rf ./input/divadata_tmp
+rm -rf ./input/divadata_tmp/
+mkdir ./input/divadata_tmp/
 cp ./input/divadata/* ./input/divadata_tmp/
 cp ./input/divadata_BKP/* ./input/divadata/
 rm -rf ./input/divadata_BKP

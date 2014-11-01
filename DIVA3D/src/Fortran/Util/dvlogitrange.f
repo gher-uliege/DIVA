@@ -102,7 +102,7 @@
       DO i = first_level,last_level
          istep = 10000 + i
          WRITE(file_name,
-     &'(a,"_1",i4.4,"_info")')TRIM(var_name),istep
+     &'(a,"_",i5,"_info")')TRIM(var_name),istep
 
          OPEN(UNIT=11,FILE=file_name)
          read(11,*) nblines
@@ -122,7 +122,7 @@
          ALLOCATE(FINLINE(nbcols-3,nblines))
 
          WRITE(file_name,
-     &'(a,".1",i4.4)')TRIM(var_name),istep
+     &'(a,".",i5)')TRIM(var_name),istep
          WRITE(datafile,
      &'("../input/divadata/",a)')TRIM(file_name)
          OPEN(10, FILE=datafile, STATUS='OLD')
@@ -133,7 +133,7 @@
          CLOSE(10)
 
          WRITE(file_name,
-     &'(a,".1",i4.4,"_shrink")')TRIM(var_name),istep
+     &'(a,".",i5,"_shrink")')TRIM(var_name),istep
          WRITE(datafile,
      &'("../input/divadata/",a)')TRIM(file_name)
          OPEN(11, FILE=datafile, STATUS='NEW')
@@ -208,6 +208,7 @@
             ENDDO
          ENDIF
          CLOSE(11)
+        deallocate(lonval,latval,varval,finline)
       ENDDO
       WRITE(*,*) 'DVDATASHRINK: Finished shrinking'
       RETURN
