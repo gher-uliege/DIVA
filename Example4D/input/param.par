@@ -3,7 +3,7 @@
 # icoordchange (=0 if no change of coordinates is to be performed; =1 if positions are in degrees and if you want to use real distances)#
 2
 # ispec: output files required#
-0
+11
 # ireg: mode selected for background field: 0=null guess; 1=mean of data; 2=regression plan if at least 3 non-aligned data provided#
 2
 # xori: x-coordinate of the first grid point of the output#
