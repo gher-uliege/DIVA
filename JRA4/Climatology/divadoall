@@ -317,6 +317,20 @@ echo 'divadoall:' '=======================      variable     '$var
 echo 'divadoall:' '=======================           year    '$year
 echo 'divadoall:' '=======================          month    '$month
 #########################################################
+
+#------------------------------------------------
+# Variable month code for reference field (same
+# as in monthlist)
+#------------------------------------------------
+refsameasmonthlist=no ### CHANGE this parameter ("no" or "yes") if you want to en/dis-able variable month code for reference field  ###
+if [ "$refsameasmonthlist" == "yes" ]
+then
+head -7 constandrefe > constandrefe_new
+echo "${month}" >> constandrefe_new
+mv constandrefe_new constandrefe
+fi
+#------------------------------------------------
+
 ##
 isanalysis=$isanalysisdrv
 ##
