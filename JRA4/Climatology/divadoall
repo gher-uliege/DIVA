@@ -712,10 +712,10 @@ isanalysis=$isanalysisval
 if [ "$isplot" -ne "0" ];then
 if [ -f ${var}.pal ]
 then
-echo 'divadoall:' using local palette for plotting
+echo 'divadoall: using local palette for plotting'
 cp -v ${var}.pal ${DIVADIR}/divastripped/gnuwork/analysis.pal
 else
-echo 'divadoall:' using default palette for plotting
+echo 'divadoall: using default palette for plotting'
 cp -v ${DIVADIR}/divastripped/gnuwork/analysis.pal.default ${DIVADIR}/divastripped/gnuwork/analysis.pal
 fi
 fi
@@ -743,41 +743,41 @@ echo 'divadoall:'
 echo 'divadoall:' ' preparing 3Dinfo input file for 3D DIVA run for: '$var $year $month
 echo 'divadoall:' 
 
-echo ! Variable  > ./input/3Dinfo
+echo "! Variable"  > ./input/3Dinfo
 echo $var.$year.$month >> ./input/3Dinfo
-echo ! Number of the first level to be processed  >> ./input/3Dinfo
+echo "! Number of the first level to be processed"  >> ./input/3Dinfo
 echo $minlevel >> ./input/3Dinfo
-echo ! Number of the last level to be processed  >> ./input/3Dinfo
+echo "! Number of the last level to be processed"  >> ./input/3Dinfo
 echo $upperlevel >> ./input/3Dinfo
-echo ! coast contour generation  >>  ./input/3Dinfo
+echo "! coast contour generation"  >>  ./input/3Dinfo
 echo $iscontour >> ./input/3Dinfo
-echo ! data cleaning >>  ./input/3Dinfo
+echo "! data cleaning" >>  ./input/3Dinfo
 echo $isdataclean >>  ./input/3Dinfo
-echo ! parameters optimisation >>  ./input/3Dinfo
+echo "! parameters optimisation" >>  ./input/3Dinfo
 echo $isoptimise >>  ./input/3Dinfo
-echo ! perform 3D analysis >>  ./input/3Dinfo
+echo "! perform 3D analysis" >>  ./input/3Dinfo
 echo $isanalysis >>  ./input/3Dinfo
-echo ! Min value for correlation lenght >> ./input/3Dinfo
+echo "! Min value for correlation lenght" >> ./input/3Dinfo
 echo $CLMIN  >> ./input/3Dinfo
-echo ! Max value for correlation lenght >> ./input/3Dinfo
+echo "! Max value for correlation lenght" >> ./input/3Dinfo
 echo $CLMAX >> ./input/3Dinfo
-echo ! Min value for S/N >> ./input/3Dinfo
+echo "! Min value for S/N" >> ./input/3Dinfo
 echo $SNMIN >> ./input/3Dinfo
-echo ! Max value for S/N >> ./input/3Dinfo
+echo "! Max value for S/N" >> ./input/3Dinfo
 echo $SNMAX >> ./input/3Dinfo
-echo !gp >>  ./input/3Dinfo
+echo "!gp" >>  ./input/3Dinfo
 echo $isplot >>  ./input/3Dinfo
-echo !gp >>  ./input/3Dinfo
+echo "!gp" >>  ./input/3Dinfo
 echo $GMIN >>  ./input/3Dinfo
-echo !gp >>  ./input/3Dinfo
+echo "!gp" >>  ./input/3Dinfo
 echo $GMAX >>  ./input/3Dinfo
 echo $titlecomm >> ./input/3Dinfo
 echo $titlestr >> ./input/3Dinfo
-echo ! Variable long name string >> ./input/3Dinfo
+echo "! Variable long name string" >> ./input/3Dinfo
 echo "'"${longvarname}"'" >> ./input/3Dinfo
-echo ! variable units string >> ./input/3Dinfo
+echo "! variable units string" >> ./input/3Dinfo
 echo "'"${longvarunit}"'" >> ./input/3Dinfo
-echo !pararam clim >> ./input/3Dinfo
+echo "!pararam clim" >> ./input/3Dinfo
 echo 1 >> ./input/3Dinfo
 echo $reftimecomm >> ./input/3Dinfo
 echo $reftimestr >> ./input/3Dinfo
