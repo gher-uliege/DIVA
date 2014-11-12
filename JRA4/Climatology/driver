@@ -4,7 +4,7 @@ boundary lines and coastlines generation: 0 nothing, 1: contours, 2: UV, 3: 1+2
 0
 cleaning data on mesh: 1, 2: RL, 3: both, 4: 1 + outliers elimination, 5: =4+2
 1
-minimal number of data in a layer. If less, uses data from any month.
+minimal number of data in a layer. If less, uses data from any month. -1 : never uses data from other months
 0
 Parameters estimation and vertical filtering:
 1
