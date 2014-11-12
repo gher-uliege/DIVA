@@ -91,7 +91,7 @@ if [ "$delimiter" == "t" ]
 then
 delimiter="\t"
 fi
-echo Delimiter for ODV $delimiter
+echo "Delimiter for ODV $delimiter"
 
 if [ "$dcoordinate" == "Pressure" ]
 then
@@ -100,7 +100,7 @@ zfound2=$(grep -i -e "press" -e "pres" ODVcolumns | wc -l)
 let zfound=$zfound1+$zfound2
 if [ "$zfound" -le "0" ]
 then
-echo Sorry, no pressure coordinates found, will try depth
+echo "Sorry, no pressure coordinates found, will try depth"
 dcoordinate=Depth
 todepth=0
 else
@@ -117,7 +117,7 @@ then
 zfound=$(grep -i "depth" ODVcolumns | wc -l)
 if [ "$zfound" -le "1" ]
 then
-echo Sorry, no depth coordinates found, will try pressure
+echo "Sorry, no depth coordinates found, will try pressure"
 dcoordinate=Pressure
 fi
 fi
@@ -125,19 +125,19 @@ fi
 
 
 #First drop all bad points for a given variable and keep only metainformation, z and variable 
-echo Making sure files have correct line endings
+echo "Making sure files have correct line endings"
 dos2unix varlist
 dos2unix yearlist
 dos2unix monthlist
 dos2unix qflist
 dos2unix input/contour.depth
-echo ----------------------------
-echo Now starting data extraction
-echo ----------------------------
+echo "----------------------------"
+echo "Now starting data extraction"
+echo "----------------------------"
 
 for var in `cat varlist`
 do
-echo Working on parameter $var
+echo "Working on parameter" $var
 #head ODVcolumns
 datacol=$(grep -w "$var" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 cruisecol=$(grep "Cruise" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
@@ -177,9 +177,9 @@ fi
 let qccol=$datacol+1
 units=$(grep "$var" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $1}' | awk -F "[" '{print $2}' \
                                         | awk -F "]" '{print $1}' )
-echo Data are in column $datacol
-echo Corresponding quality flags are in column $qccol
-echo Units are $units
+echo "Data are in column" $datacol
+echo "Corresponding quality flags are in column" $qccol
+echo "Units are" $units
 
 echo $units > $var.units
 echo $var > $var.longname
@@ -198,22 +198,22 @@ read boundmax
 } < $Fileinfbb
 fi
 
-echo checking for bounds $boundmin and $boundmax
+echo "checking for bounds $boundmin and $boundmax"
 # added test on bounds
 
-echo Now producing one big file for variable $var
+echo "Now producing one big file for variable" $var
 iqf=0
 if [ -f qflist ]
 then
-echo Quality flags retained are 
+echo "Quality flags retained are" 
 cat qflist
 iqf=1
 else
-echo All quality flags are retained
+echo "All quality flags are retained"
 touch qflist
 fi
 
-echo Foreseen to put two parameters on CDI EDMO
+echo "Foreseen to put two parameters on CDI EDMO"
 
 if [ "$ivar" == "1" ]
 then
@@ -267,7 +267,7 @@ fi
 
 #Then make interpolation on standard depth.
 
-echo Now interpolating
+echo "Now interpolating"
 
 # make sure columns are now in correct order
 
@@ -282,8 +282,8 @@ do
 let lev=$lev+1
 let lnum=10000+$lev
 
-echo Now split in layers $lnum and drop exclusion values 
-echo Order now: x y val 1 year month day hour meta1 meta2
+echo "Now split in layers" $lnum "and drop exclusion values"
+echo "Order now: x y val 1 year month day hour meta1 meta2"
 
 awk -v lnum=$lnum '{if ($12 == lnum && $3 != 99999) {print $1,$2,$3,1,$6,$7,$8,$9,$10,$11}}' ${WORK}/${var}.bigfile.interp > ${WORK}/$var.$lnum
 
@@ -306,13 +306,13 @@ year2=${yyy:4:4}
 
 if [ "$mm1" -gt "$mm2" ]
 then
-echo winter season across new year
+echo "winter season across new year"
 let mm2=$mm2+12
-echo Virtual ending month $mm2
+echo "Virtual ending month" $mm2
 fi
 
-echo year from $year1 to $year2
-echo month from $mm1 to $mm2
+echo "year from $year1 to $year2"
+echo "month from $mm1 to $mm2"
 
 # dans awk if(mm2>12) $x=$x+12
 awk -v mm1=$mm1 -v mm2=$mm2 -v year1=$year1 -v year2=$year2 \
@@ -335,18 +335,18 @@ done
 
 
 done
-echo Finished loop on layers
+echo "Finished loop on layers"
 
 
 
 done
-echo Finished loop on variables
+echo "Finished loop on variables"
 
 
 else
-echo ====SEVERE ERROR==================
-echo Data file specifyed does not exist
-echo ====SEVERE ERROR==================
+echo "====SEVERE ERROR=================="
+echo "Data file specifyed does not exist"
+echo "====SEVERE ERROR=================="
 exit
 fi
 
@@ -355,6 +355,6 @@ then
 rm qflist
 fi
 
-echo ==================================
-echo =======Finished data =============
-echo ==================================
+echo "=================================="
+echo "=======Finished data ============="
+echo "=================================="
