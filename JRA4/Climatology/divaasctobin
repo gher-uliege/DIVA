@@ -184,9 +184,9 @@ $drivercomment15
 0" > $driver
 
 	echo "$paramcomment1
-10
+5
 $paramcomment2
-0
+1
 $paramcomment3
 0
 $paramcomment4
@@ -213,7 +213,7 @@ $paramcomment13
 elif [ "$RL" == "1" ]
 then
 	echo "Creation of binary relative length fields via a run of diva..."
-	ireg=1
+	ireg=4
 	var1="RL"
 	rm -f ./output/3Danalysis/$var1.*.3DNCinfo
 	rm -f ./output/3Danalysis/$var1.*.3DNCliste
@@ -268,9 +268,9 @@ $drivercomment15
 0" > $driver
 
 	echo "$paramcomment1
-10
+5
 $paramcomment2
-0
+1
 $paramcomment3
 0
 $paramcomment4
