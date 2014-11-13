@@ -4,14 +4,14 @@
 
 
 
-echo Now testing divacalc
+echo "Now testing divacalc"
 
 inputdir=$(pwd)'/input/'
 contfile=${inputdir}'coast.cont'
 datafile=${inputdir}'data.dat'
 paramfile=${inputdir}'param.par'
 
-divaclean
+./divaclean
 
 ##echo ${inputdir}
 echo //////////////////////////////////////////////////
@@ -72,9 +72,9 @@ echo '1.0' >> ${paramfile}
 echo '# varbak' >> ${paramfile}
 echo '1.0' >> ${paramfile}
 
-divamesh
+./divamesh
 
-divacalc
+./divacalc
 
 echo ' '
 echo 'Check the results in'
@@ -97,11 +97,33 @@ echo
 echo
 echo
 
-echo Finally testing pipes needed for exact error calculations
-echo If the program hangs it means pipes are not supported
-echo In this case you need to adapt parameter ipipe to ipipe=0 in divacalc
+echo "Finally testing pipes needed for exact error calculations"
+echo "If the program hangs it means pipes are not supported"
+echo "In this case you need to adapt parameter ipipe to ipipe=0 in divacalc"
 cd ../src/Fortran/Pipetest
 ./pipetest
 
 cd ../../../divastripped
+
+echo
+echo
+echo
+
+echo "Now checking if dos2unix is present..."
+rm -f testdos2unixbis.txt
+echo "test" > testdos2unix.txt
+dos2unix -n testdos2unix.txt testdos2unixbis.txt > /dev/null 2>&1
+if [ -s testdos2unixbis.txt ]
+then
+echo "...dos2unix is present."
+else
+echo "...dos2unix is absent !"
+echo
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+echo !!! PLEASE INSTALL DOS2UNIX !!!!!!!!!!!!!!!!
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+fi
+rm -f testdos2unix.txt
+rm -f testdos2unixbis.txt
+echo
 
