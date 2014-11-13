@@ -117,7 +117,7 @@ c            write(72,*) x_ll,y_ll,valex
          endif
 C only add up points that are located in the mesh
        valb=val
-       IF (IREG.EQ.1) THEN
+       IF ((IREG.EQ.1).or.(ireg.eq.4)) THEN
          IF (IFIRST.EQ.1) THEN
             rewind(22)
             OPEN (UNIT=22,FILE='fort.22')
@@ -268,7 +268,7 @@ c            write(72,*) x_ll,y_ll,valex
          endif
 C only add up points that are located in the mesh
        valb=val
-       IF (IREG.EQ.1) THEN
+       IF ((IREG.EQ.1).or.(ireg.eq.4)) THEN
          IF (IFIRST.EQ.1) THEN
             rewind(22)
             OPEN (UNIT=22,FILE='fort.22')
@@ -523,7 +523,7 @@ C  INPUT OF DATA SET DESCRIPTION
 #endif
           if (icoordchange.ne.0) call llxy(x,y)
           valb=val
-         IF (IREG.EQ.1) THEN
+         IF ((IREG.EQ.1).or.(ireg.eq.4)) THEN
          IF (IFIRST.EQ.1) THEN
             rewind(22)
             OPEN (UNIT=22,FILE='fort.22')

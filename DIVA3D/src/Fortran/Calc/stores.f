@@ -228,7 +228,7 @@ C            if (icoordchange.ne.0) call xyll(x,y)
          ijmbval=ijmbval+1
          jmboff=ndata*2+ireclu-1
          valb=val
-         IF (IREG.EQ.1) THEN
+         IF ((IREG.EQ.1).or.(ireg.eq.4)) THEN
          IF (IFIRST.EQ.1) THEN
             rewind(22)
             OPEN (UNIT=22,FILE='fort.22')
@@ -547,7 +547,7 @@ C
 
 C --- Code Added for Version 2.2  (RS 22 March 94) ---
 
-      IF (IREG.EQ.1) THEN
+      IF ((IREG.EQ.1).or.(ireg.eq.4)) THEN
          IF (IFIRST.EQ.1) THEN
             OPEN (UNIT=22,FILE='fort.22')
             READ (22,*) XMEAN
@@ -745,7 +745,7 @@ C
 
 C --- Code Added for Version 2.2  (RS 22 March 94) ---
 
-      IF (IREG.EQ.1) THEN
+      IF ((IREG.EQ.1).or.(ireg.eq.4)) THEN
          IF (IFIRST.EQ.1) THEN
             OPEN (UNIT=22,FILE='fort.22')
             READ (22,*) XMEAN

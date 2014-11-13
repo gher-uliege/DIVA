@@ -507,8 +507,30 @@ c      VARDATA=VARDATA+TDATA (I,3)*TDATA(I,3)
 c      enddo
 c      write(6,*) 'Variance of anomalies',VARDATA/ndata
 c      write(33,*) VARDATA/ndata,ndata
-      END
-              
+
+      
+C Compute constant value (=1.)
+
+      IF (IREG.EQ.4) THEN
+         XMEAN = 1.
+         TOTDAT = 0.
+         DO I = 1,NDATA
+            IF (KELOS(I,1).GE.0) THEN
+               TOTDAT = TOTDAT + 1.
+            ENDIF
+	 Enddo
+
+         DO I = 1,NDATA
+            TDATA (I,3) = TDATA(I,3) - XMEAN
+	 Enddo
+         WRITE (22,*) XMEAN
+         WRITE (22,*) 'Total Nb  of data : '
+         WRITE (22,*) NDATA
+         WRITE (22,*) 'Nb of Inside data : '
+         WRITE (22,*) TOTDAT
+         CLOSE (22)
+      ENDIF
+      END              
 
 C -------------------------------------------------
 C --- LUDCMP & LUBKSB :
