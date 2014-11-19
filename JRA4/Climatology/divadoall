@@ -963,7 +963,8 @@ echo 'check-list of errors :'
 flag_err=$(grep -i "data\ error" $logfile | wc -l)
 if [ $flag_err == 0 ]
 then
-echo 'no error, you are lucky'
+echo 'No visible error, you are lucky.'
+echo "Info : if you are running ./divadoall, a more complete error check is available by launching ./godiva."
 else
 echo $flag_err 'errors !!! Please WATCH DIVA3D/divastripped/output/diva.log !!!!'
 fi

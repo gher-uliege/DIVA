@@ -171,3 +171,21 @@ echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
 fi
 fi
 fi
+
+#------------------------------------------------
+# Warning if layer below sea bottom
+#------------------------------------------------
+
+for file in `ls input/divaparam/coast.cont.*`
+do
+	lines=$(cat $file | wc -l)
+	if [ "$lines" == "1" ]
+	then
+	echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"	| tee -a $diva3dlog
+	echo "!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!"	| tee -a $diva3dlog
+	echo "!!WARNING : One layer is below sea bottom !!"	| tee -a $diva3dlog
+	echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"	| tee -a $diva3dlog
+	fi
+done
+
+#------------------------------------------------
