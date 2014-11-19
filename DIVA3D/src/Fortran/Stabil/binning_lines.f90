@@ -5,10 +5,12 @@
 Program binning_lines
 implicit none
 
-integer::i,j,k,n,z,old_col1,old_col2,a,lines,bin
- character(len=150)::line,var
+integer::i,j,k,n,y,z,old_col1,old_col2,a,lines,bin,nx,ny,samepixel,first_val,bigsquare,smallsquare
+integer::inlon,inlat
+real(kind=8)::xori,yori,dx,dy,lonmin,latmin,sumweight,first_wgt
+ character(len=150)::line,var,cxori,cyori,cnx,cny,cdx,cdy
 integer(kind=4),allocatable,dimension(:)::col1,col2,var5,var6,var7,var8,vec
-real(kind=8),allocatable,dimension(:)::var1,var2,var3,var4
+real(kind=8),allocatable,dimension(:)::var1,var2,var3,var4,col3,col4,weight
  character(len=50),allocatable,dimension(:)::var9,var10
 real(kind=8)::ave_var1,ave_var2,ave_var3,ave_var4
  character(len=50)::ave_var5,ave_var6,ave_var7,ave_var8
@@ -18,32 +20,50 @@ real(kind=8)::ave_var1,ave_var2,ave_var3,ave_var4
 
 call get_command_argument(1,var)
 write(*,*) var
+call get_command_argument(2,cxori)
+read(cxori,*) xori
+write(*,*) xori
+call get_command_argument(3,cyori)
+read(cyori,*) yori
+write(*,*) yori
+call get_command_argument(4,cnx)
+read(cnx,*) nx
+write(*,*) nx
+call get_command_argument(5,cny)
+read(cny,*) ny
+write(*,*) ny
+call get_command_argument(6,cdx)
+read(cdx,*) dx
+write(*,*) dx
+call get_command_argument(7,cdy)
+read(cdy,*) dy
+write(*,*) dy
 
 open(10,file=trim(var),status="unknown")
 open(11,file="./input/bidon",status="unknown")
-open(12,file="./input/tmpfile",status="unknown")
-
-write(*,*) "counting neighbours..."
-j=0
-Do while (.true.)
-	j=j+1
-	read(12,*,end=1014)
-Enddo
-1014 continue
-j=j-1
-
-allocate(col1(1:j),col2(1:j),vec(1:2*j))
-col1(:)=0
-col2(:)=0
-vec(:)=0
-
-rewind(12)
-
-write(*,*) "reading line numbers to bin..."
-k=0
-Do k=1,j
-	read(12,*) col1(k),col2(k)
-Enddo
+!open(12,file="./input/tmpfile",status="unknown")
+!
+!write(*,*) "counting neighbours..."
+!j=0
+!Do while (.true.)
+!	j=j+1
+!	read(12,*,end=1014)
+!Enddo
+!1014 continue
+!j=j-1
+!
+!allocate(col1(1:j),col2(1:j),vec(1:2*j))
+!col1(:)=0
+!col2(:)=0
+!vec(:)=0
+!
+!rewind(12)
+!
+!write(*,*) "reading line numbers to bin..."
+!k=0
+!Do k=1,j
+!	read(12,*) col1(k),col2(k)
+!Enddo
 
 write(*,*) "checking input file length..."
 j=0
@@ -55,6 +75,7 @@ Enddo
 j=j-1
 lines=j
 
+allocate(col1(1:4*j),col2(1:4*j),col3(1:4*j),col4(1:4*j),vec(1:j),weight(1:j))
 allocate(var1(1:j),var2(1:j),var3(1:j),var4(1:j),var5(1:j),var6(1:j),var7(1:j),var8(1:j),var9(1:j),var10(1:j))
 var1(:)=0.
 var2(:)=0.
@@ -82,6 +103,89 @@ Enddo
 
 1015 continue
 
+write(*,*) "creating the bins..."
+
+!------------------------------------------------
+! Creating the bins 
+! (data in current pixel + next to this one
+! (3 (4*0.5+4*0.25) other pixels))
+!------------------------------------------------
+
+lonmin=xori
+z=1
+Do i=1,nx
+	write(*,'(a,f6.2)') "longitude:",lonmin
+
+	latmin=yori
+	Do j=1,ny
+		samepixel=0
+		Do n=1,lines
+			bigsquare=0
+			smallsquare=0
+			inlon=0
+			inlat=0
+			! big square (4 pixels)
+			If ((var1(n)>lonmin-dx/2.).and.(var1(n)<=lonmin+dx+dx/2.)) then
+				If ((var2(n)>latmin-dy/2.).and.(var2(n)<=latmin+dy+dy/2.)) then
+					bigsquare=1
+					If ((var1(n)>lonmin).and.(var1(n)<=lonmin+dx)) inlon=1
+					If ((var2(n)>latmin).and.(var2(n)<=latmin+dy)) inlat=1
+					If (samepixel==0) then
+						first_val=n
+						samepixel=1
+						If ((var1(n)>lonmin).and.(var1(n)<=lonmin+dx)) then
+							If ((var2(n)>latmin).and.(var2(n)<=latmin+dy)) then
+								bigsquare=0
+								smallsquare=1
+							Endif
+						Endif
+						If (smallsquare==1) then
+						first_wgt=1.
+						else
+						 If (inlon==1) then
+					         first_wgt=(dy/2)/abs(var1(n)-(latmin+dy/2.))
+						 else if (inlat==1) then
+						 first_wgt=(dx/2.)/abs(var1(n)-(lonmin+dx/2.))
+						 else
+						 first_wgt=((dx/2.)/abs(var1(n)-(lonmin+dx/2.))+(dy/2)/abs(var1(n)-(latmin+dy/2.)))/2.
+						 Endif
+						 If (first_wgt<0.01) first_wgt=0.01
+						Endif
+						cycle
+					Endif
+					col1(z)=first_val
+					col2(z)=n
+					col3(z)=first_wgt
+					! small square (1 pixel)
+					If ((var1(n)>lonmin).and.(var1(n)<=lonmin+dx)) then
+						If ((var2(n)>latmin).and.(var2(n)<=latmin+dy)) then
+							smallsquare=1
+							bigsquare=0
+							col4(z)=1.
+							z=z+1
+						Endif
+					Endif
+					
+					! rest of the square (4*0.5+4*0.25=3 pixels)
+					If (bigsquare==1) then
+					 If (inlon==1) then
+					 col4(z)=(dy/2)/abs(var1(n)-(latmin+dy/2.))
+					 else if (inlat==1) then
+					 col4(z)=(dx/2.)/abs(var1(n)-(lonmin+dx/2.))
+					 else
+					 col4(z)=((dx/2.)/abs(var1(n)-(lonmin+dx/2.))+(dy/2)/abs(var1(n)-(latmin+dy/2.)))/2.
+					 Endif
+					 If (col4(z)<0.01) col4(z)=0.01
+					z=z+1
+					Endif
+				Endif
+			Endif
+		Enddo
+		latmin=latmin+dy
+	Enddo
+	lonmin=lonmin+dx
+Enddo
+
 write(*,*) "binning lines..."
 
 !------------------------------------------------
@@ -103,34 +207,35 @@ Do while (.true.)
 		a=1
 			Do while (col1(z)==old_col1)
 			vec(a)=col2(z)
+			weight(a)=col4(z)
 			a=a+1
 			z=z+1
 			Enddo
 		vec(a)=col1(z-1) ! now vec contains the indexes of one bin.
+		weight(a)=col3(z-1) ! now weight contains the weights of one bin.
 		Endif
-!	write(*,*) n, vec(1:4)
-!	call sleep(1)
 
 !------------------------------------------------
-! Averaging
+! Averaging + weighting
 !------------------------------------------------
 	
 	ave_var1=0.
 	ave_var2=0.
 	ave_var3=0.
 	ave_var4=0.
-	Do i=1,j*2
+	sumweight=0.
+	Do i=1,lines  !j*2 (why ?)
 		if (vec(i)==0) exit			
-		ave_var1=ave_var1+var1(vec(i))
-		ave_var2=ave_var2+var2(vec(i))
-		ave_var3=ave_var3+var3(vec(i))
-		ave_var4=ave_var4+var4(vec(i))
+		ave_var1=ave_var1+var1(vec(i))*weight(i)
+		ave_var2=ave_var2+var2(vec(i))*weight(i)
+		ave_var3=ave_var3+var3(vec(i))*weight(i)
+		ave_var4=ave_var4+var4(vec(i))*weight(i)
+		sumweight=sumweight+weight(i)
 	Enddo
-	i=i-1	
-	ave_var1=ave_var1/real(i)
-	ave_var2=ave_var2/real(i)
-	ave_var3=ave_var3/real(i)
-	ave_var4=ave_var4/real(i)
+	ave_var1=ave_var1/sumweight
+	ave_var2=ave_var2/sumweight
+	ave_var3=ave_var3/sumweight
+	ave_var4=ave_var4/sumweight
 
 	write(ave_var5,*) var5(vec(1))
 	write(ave_var6,*) var6(vec(1))
@@ -182,6 +287,6 @@ write(*,*) "end"
 
  close(10)
  close(11)
- close(12)
+! close(12)
 
 End program
