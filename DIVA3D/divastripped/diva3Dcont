@@ -29,6 +29,19 @@ echo ' ./input/divaparam exists.' >> $diva3dlog
 else
 mkdir -p ./input/divaparam
 fi
+if [ -f ./input/contour.depth ]
+then
+depth1=$(head -1 ./input/contour.depth)
+depth2=$(tail -1 ./input/contour.depth)
+ if [ $depth1 -lt $depth2 ]
+ then
+ echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"	| tee -a $diva3dlog
+ echo "!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!"	| tee -a $diva3dlog
+ echo "!! WARNING : in contour.depth, the layers !!" 	| tee -a $diva3dlog
+ echo "!!     are not in the correct order       !!"	| tee -a $diva3dlog
+ echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"	| tee -a $diva3dlog
+ fi
+fi
 if [ -f ./input/topo.grd ]; then
 echo " topo.grd found, will proceed to generate coast.cont files" >> $diva3dlog
 else
