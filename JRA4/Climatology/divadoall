@@ -4,6 +4,8 @@ export LC_ALL=C
 echo 'divadoall:' "divadoall run starts at:"
 date
 
+rm -rf ./newinput/*
+
 DIVADIR="../../DIVA3D"
 
 dos2unix datasource
@@ -63,8 +65,8 @@ idoanal=1
 fi
 
 
-echo 'divadoall:' ' Stat divadoall: idorefe = '$idorefe
-echo 'divadoall:' '                 idoanal = '$idoanal
+echo 'divadoall:' ' Start divadoall: idorefe = '$idorefe
+echo 'divadoall:' '                  idoanal = '$idoanal
 
 
 jmtrend=$(cat driver | wc -l)
