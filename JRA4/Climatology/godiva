@@ -5,7 +5,7 @@
 cat divadoall.log | grep -i SEVERE > divadoall.severeerrors
 SEVEREERROR=$(cat divadoall.severeerrors | wc -l)
 
-cat divadoall.log | grep -vi SEVERE | grep -i "error " > divadoall.errors
+cat divadoall.log | grep -vi SEVERE | grep -i -e "error " -e "error:" > divadoall.errors
 ERROR=$(cat divadoall.errors | wc -l)
 
 cat divadoall.log | grep -i warning > divadoall.warnings
