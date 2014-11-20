@@ -64,7 +64,7 @@ fi
 ### Detection of files with speed components and also a depth axis ####
 
 a=$(grep -i "pressure" ODVcolumns | wc -l)
-b=$(grep -i "press" ODVcolumns | wc -l)
+b=$(grep -i -e "press" -e "pres" ODVcolumns | wc -l)
 c=$(grep -vi -e "bot.depth" -e "bot.\ depth" ODVcolumns | grep -i "depth" | wc -l)
 x=$(grep -i "currdir" ODVcolumns | wc -l)
 y=$(grep -i "currspd" ODVcolumns | wc -l)
@@ -82,7 +82,7 @@ flag_depth_speed=1
 else
 
 	zfound1=$(grep -i "pressure" ODVcolumns | wc -l)
-	zfound2=$(grep -i "press" ODVcolumns | wc -l)
+	zfound2=$(grep -i -e "press" -e "pres" ODVcolumns | wc -l)
 	let zfound=$zfound1+$zfound2
 	if [ "$zfound" -le "0" ]
 	then
