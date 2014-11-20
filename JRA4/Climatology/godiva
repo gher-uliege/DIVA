@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./divadoall | tee divadoall.log
+./divadoall 2>&1 | tee divadoall.log
 
 cat divadoall.log | grep -i SEVERE > divadoall.severeerrors
 SEVEREERROR=$(cat divadoall.severeerrors | wc -l)
