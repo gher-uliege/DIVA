@@ -56,33 +56,33 @@ inputfile=$1
 
  if [ -f "$inputfile" ]
 then
-echo Trying to make data extraction on data file $inputfile
+echo "Trying to make data extraction on data file $inputfile"
 #echo Number of lines in the data file :
 #wc -l $inputfile
 datalines=$(wc -l $inputfile | awk '{print $1}')
 headerlines=$(cat $inputfile | grep "//"  | wc -l)
 let userlines=$datalines-headerlines
 let userlines=$userlines-1
-echo data $datalines comments $headerlines user $userlines
+echo "data $datalines comments $headerlines user $userlines"
 # 
-echo Trying to see if exclusion value is present
+echo "Trying to see if exclusion value is present"
 
 valexodv=$(grep -a MissingValueIndicators $inputfile | awk -F ">" '{print $2}' | awk -F "<" '{print $1}')
-echo  valexodv =  $valexodv
+echo  "valexodv =  $valexodv"
 echo
 #//<MissingValueIndicators>NaN</MissingValueIndicators>
 
 
 
-echo Checking file structure
+echo "Checking file structure"
 ./divaguessformsODV4 $inputfile
 echo
-echo =================
-echo Finished checking
-echo Columns found
+echo "================="
+echo "Finished checking"
+echo "Columns found"
 cat ODVcolumns
 echo 
-echo ================
+echo "================"
 {
 read delimiter
 } < ODVdelimiter
@@ -164,7 +164,7 @@ else
 echo EDMO found in column $edmocol
 fi
 
-# Pressure for the moment if depht, carefull about bottom depth columns
+# Pressure for the moment if depth, carefull about bottom depth columns
 if [ "$dcoordinate" == "Pressure" ]
 then
 depthcol=$(grep -i -e "pressure" -e "press" -e "pres" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
