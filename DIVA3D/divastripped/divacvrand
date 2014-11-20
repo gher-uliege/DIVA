@@ -82,7 +82,10 @@ do
 # Extract a random subsample 
 dvsample $isize $ijm
 let ijm=$ijm+1
-head -17 ./input/param.par.ori > bidon
+#head -17 ./input/param.par.ori > bidon
+head -5 ./input/param.par.ori > bidon
+echo 0 >> bidon
+head -17 ./input/param.par.ori | tail -11 >> bidon
 echo 1 >> bidon
 echo   >> bidon
 echo 1 >> bidon
