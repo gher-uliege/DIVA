@@ -87,7 +87,7 @@ iflagcpme=0
 iflagexerr=0
 if [ "$ispec" -ge "100" ]
 then
-echo Clever poor mans error
+echo "Clever poor mans error"
 iflagcpme=1
 fi
 
@@ -443,11 +443,11 @@ echo $NINT $NREA | ../../bin/diva.a >> $divacalclog
 
 if [ $? -ne 0 ];then
 echo ' ' | tee -a $divacalclog $divalog
-echo ------------------------------------------- | tee -a $divacalclog $divalog
-echo A problem was encountered during execution !| tee -a $divacalclog $divalog
-echo       divacalc:  diva.a			 | tee -a $divacalclog $divalog
-echo 'Check execution track in diva.log'	 | tee -a $divacalclog $divalog
-echo --------------------------------------------| tee -a $divacalclog $divalog
+echo "------------------------------------------- "	| tee -a $divacalclog $divalog
+echo "A problem was encountered during execution !"	| tee -a $divacalclog $divalog
+echo "      divacalc:  diva.a	"		 	| tee -a $divacalclog $divalog
+echo 'ERROR : Check execution track in diva.log'  	| tee -a $divacalclog $divalog
+echo "--------------------------------------------"	| tee -a $divacalclog $divalog
 fi
 
 dataonmesh=0
@@ -459,7 +459,7 @@ then
         echo '//////////////////////////////////////////////////' | tee -a $divacalclog $divalog
         echo 'Problem in diva.a : analysis could not be finished' | tee -a $divacalclog $divalog
         echo ' '						  | tee -a $divacalclog $divalog
-        echo 'Check diva.log'					  | tee -a $divacalclog $divalog
+        echo 'ERROR : Check diva.log'				  | tee -a $divacalclog $divalog
         echo '//////////////////////////////////////////////////' | tee -a $divacalclog $divalog
 fi
 ##---
@@ -518,7 +518,7 @@ echo ' '                                          | tee -a $divalog
 echo -------------------------------------------- | tee -a $divalog
 echo A problem was encountered during execution ! | tee -a $divalog
 echo       divacalc:   lookforoutliers.a          | tee -a $divalog
-echo 'Check execution track in diva.log'          | tee -a $divalog
+echo 'ERROR : Check execution track in diva.log'  | tee -a $divalog
 echo -------------------------------------------- | tee -a $divalog
 fi
 echo ' '
@@ -531,11 +531,11 @@ then
 mv -f fort.66 ../output/outliers.dat
 mv -f fort.67 ../output/outliers.normalized.dat
 else
-echo ' '                                          | tee -a $divacalclog
-echo -------------------------------------------- | tee -a $divacalclog
-echo A problem was encountered during execution ! | tee -a $divacalclog
-echo 'Check execution track in diva.log'	  | tee -a $divacalclog
-echo -------------------------------------------- | tee -a $divacalclog
+echo ' '                                          	| tee -a $divacalclog
+echo "--------------------------------------------" 	| tee -a $divacalclog
+echo "A problem was encountered during execution !" 	| tee -a $divacalclog
+echo 'ERROR : Check execution track in diva.log'  	| tee -a $divacalclog
+echo "--------------------------------------------" 	| tee -a $divacalclog
 fi
 else
 #output as netcdf not yet done
@@ -680,29 +680,29 @@ echo ' '  >> $divalog
 ../../../bin/netcdfoutput.a >> $divalog
 if [ $? -ne 0 ];then
 echo ' ' | tee -a $divacalclog $divalog
-echo -------------------------------------------- | tee -a $divacalclog $divalog
-echo A problem was encountered during execution ! | tee -a $divacalclog $divalog
-echo       divacalc:   netcdfoutput.a		  | tee -a $divacalclog $divalog
-echo 'Check execution track in diva.log'	  | tee -a $divacalclog $divalog
-echo -------------------------------------------- | tee -a $divacalclog $divalog
+echo "--------------------------------------------" 	| tee -a $divacalclog $divalog
+echo "A problem was encountered during execution !" 	| tee -a $divacalclog $divalog
+echo "      divacalc:   netcdfoutput.a"		  	| tee -a $divacalclog $divalog
+echo 'ERROR : Check execution track in diva.log'	  	| tee -a $divacalclog $divalog
+echo "--------------------------------------------" 	| tee -a $divacalclog $divalog
 fi
 fi
 fi
 if [ "$varbak" == "0"  -o  "$iecal" == "0" ] 
 then
-echo Creating netcdf file only for field  >> $divacalclog
-echo since Varbak and ispec are $varbak $ispec >> $divacalclog
+echo "Creating netcdf file only for field"  >> $divacalclog
+echo "since Varbak and ispec are $varbak $ispec" >> $divacalclog
 
 cd ../output/ghertonetcdf
 ../../../bin/netcdfoutputfield.a >> $divalog
 if [ $? -ne 0 ];then
 echo ' ' | tee -a $divacalclog $divalog
-echo -------------------------------------------- | tee -a $divacalclog $divalog
-echo A problem was encountered during execution ! | tee -a $divacalclog $divalog
-echo       divacalc:   netcdfoutputfield.a        | tee -a $divacalclog $divalog
-echo 'Check execution track in diva.log'          | tee -a $divacalclog $divalog
-echo -------------------------------------------- | tee -a $divacalclog $divalog
-echo ' '                                          | tee -a $divacalclog $divalog
+echo "--------------------------------------------" 	| tee -a $divacalclog $divalog
+echo "A problem was encountered during execution !" 	| tee -a $divacalclog $divalog
+echo "      divacalc:   netcdfoutputfield.a "       	| tee -a $divacalclog $divalog
+echo 'ERROR : Check execution track in diva.log'         | tee -a $divacalclog $divalog
+echo "--------------------------------------------" 	| tee -a $divacalclog $divalog
+echo ' '                                          	| tee -a $divacalclog $divalog
 fi
 ###rm -f ../error*.anl
 fi

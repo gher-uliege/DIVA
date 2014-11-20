@@ -119,6 +119,9 @@ fi
 fi
 #
 if [ "$cont" -ge "2" ]; then
+if [ -f ./input/topo.grd ]; then
+echo "topo.grd already present, no need to recreate it"
+else
 if [ -f ./input/topo.dat ]; then
    if [ -f ./input/param.par ]; then
       echo "running divatopo ........."$cont >> $diva3dlog
@@ -152,6 +155,7 @@ else
   fi
  mv ./output/TopoInfo.dat ./input/.
  mv ./output/topo.grd ./input/.
+fi
 fi
 if [ "$cont" -eq "3" ]; then
 if [ -d ./input/divaparam ];then

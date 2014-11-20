@@ -959,12 +959,12 @@ fi
 ### Checking errors in diva.log ###
 flag_err=0
 logfile=../../DIVA3D/divastripped/output/diva.log
-echo 'check-list of errors :'
+echo 'Quick check-list of errors :'
 flag_err=$(grep -i "data\ error" $logfile | wc -l)
 if [ $flag_err == 0 ]
 then
 echo 'No visible error, you are lucky.'
-echo "Info : if you are running ./divadoall, a more complete error check is available by launching ./godiva."
+echo "Info : if you are running ./divadoall, a more complete errors check is available by launching ./godiva."
 else
 echo $flag_err 'errors !!! Please WATCH DIVA3D/divastripped/output/diva.log !!!!'
 fi
