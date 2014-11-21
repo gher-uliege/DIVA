@@ -4,12 +4,12 @@
 
 ############################################################################
 # Sylvain Watelet - 11/09/2013 						   #
-# Handling of ODV files containing only one depth but several measurements #
+# Handling of ODV files containing no depth axis			   #
 # or a depth axis AND speed components					   #
 # (for the moment, only for CurrDir, CurrSpd and another scalar field)     #
 ############################################################################
 
-echo "one depth (or speed+depth) ?"
+echo "No depth axis (or speed+depth) ?"
 #sleep 0.1
 
 #################
@@ -65,7 +65,8 @@ fi
 
 a=$(grep -i "pressure" ODVcolumns | wc -l)
 b=$(grep -i -e "press" -e "pres" ODVcolumns | wc -l)
-c=$(grep -vi -e "bot.depth" -e "bot.\ depth" ODVcolumns | grep -i "depth" | wc -l)
+c=$(grep -vi -e " depth" -e "depth [a-z]" -e ".depth" ODVcolumns | grep -i "depth" | wc -l)
+#c=$(grep -vi -e "bot.depth" -e "bot.\ depth" ODVcolumns | grep -i "depth" | wc -l)
 x=$(grep -i "currdir" ODVcolumns | wc -l)
 y=$(grep -i "currspd" ODVcolumns | wc -l)
 
@@ -93,9 +94,11 @@ else
 	exit # => coordinate = pressure
 	fi
 
-	zfound1=$(grep -vi -e "bot.depth" -e "bot.\ depth" ODVcolumns | grep -i "depth" | wc -l)
-	zfound2=$(grep -i -e "bot.depth" -e "bot.\ depth" ODVcolumns | wc -l)
-	if [ "$zfound1" -ge "$zfound2" ]
+	#zfound1=$(grep -vi -e "bot.depth" -e "bot.\ depth" ODVcolumns | grep -i "depth" | wc -l)
+	#zfound2=$(grep -i -e "bot.depth" -e "bot.\ depth" ODVcolumns | wc -l)
+	zfound=$(grep -vi -e " depth" -e "depth [a-z]" -e ".depth" ODVcolumns | grep -i "depth" | wc -l)
+	#if [ "$zfound1" -ge "$zfound2" ]
+	if [ "$zfound" -gt "0" ]
 	then
 	echo "no."
 	sleep 0.1
@@ -234,7 +237,7 @@ ave_var_scal=${ave_tab[$var]}
 nvarscal=$(($nvarscal+1))
 	if [ $nvarscal -gt 1 ]
 	then
-	echo "!!!! ERROR : more than 1 scalar variable in your input file, please modify divaonedepthODV4 !!!"
+	echo "!!!! ERROR : more than 1 scalar variable in your input file, please modify divanodepthODV4 !!!"
 	exit
 	fi
 

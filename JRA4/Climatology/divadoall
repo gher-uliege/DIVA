@@ -227,10 +227,10 @@ echo 'divadoall:' Trying to guess ODV format on $ODVDATA
 # Handling one depth or depth+speed  ##########
 ###############################################
 
-onedepth=yes ### CHANGE this parameter (ex. : "no") if you want to disable the script "divaonedepthODV4" ###
+onedepth=yes ### CHANGE this parameter (ex. : "no") if you want to disable the script "divanodepthODV4" ###
 if [ $onedepth == yes ] && [ $isextractf == 1 ]
 then
-./divaonedepthODV4 $ODVDATA
+./divanodepthODV4 $ODVDATA
 else
 echo "no handling of one depth (or depth+speed) files !"
 fi
@@ -841,7 +841,7 @@ echo 'divadoall:'
 echo 'divadoall:' 
 echo 'divadoall:' 
 echo 'divadoall:' 
-diva3Ddress
+./diva3Ddress
 ##########################
 
 ## Restor driver flag values for next loop
