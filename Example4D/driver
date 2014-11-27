@@ -9,9 +9,9 @@ minimal number of data in a layer. If less, uses data from any month.
 Parameters estimation and vertical filtering:
 0
 Minimal L
-0.25
+1.4
 Maximal L
-5.
+10.
 Minimal SN
 0.1
 Maximal SN
