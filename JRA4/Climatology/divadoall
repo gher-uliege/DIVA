@@ -526,6 +526,7 @@ fi
 if [ -f ./input/divaparam/RLinfo.dat ];then 
  cp -v ./input/divaparam/RLinfo.dat ${DIVADIR}/divastripped/input/divaparam/.
  cp -v ./input/divaparam/RL.$var.$year.$month.$level ${DIVADIR}/divastripped/input/divaparam/.
+ cp -v ./input/divaparam/RL.dat ${DIVADIR}/divastripped/input/divaparam/.
 fi
 
 if [ -f ./input/divaparam/valatxy.coord.$var'.'$lev ];then
