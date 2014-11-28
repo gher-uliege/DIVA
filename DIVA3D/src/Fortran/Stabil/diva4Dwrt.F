@@ -250,7 +250,16 @@
 !--------------------------------------------------------------
 !
 !
-      WRITE(title_string,'("DIVA 4D analysis of ",a)')TRIM(var_shname)
+      chlen = 1
+      DO while(var_shname(chlen:chlen) .ne. ' ') 
+         chlen = chlen + 1
+      ENDDO
+      chlen = chlen - 1
+
+      WRITE(title_string,'("DIVA 4D analysis of ",a," (",a,
+     &") from year ",a," to year ",a)')
+     &var_shname(1:chlen-9),TRIM(var_units),var_shname(chlen-7:chlen-4)
+     &,var_shname(chlen-3:chlen)
 !
 !!!!      var_name = var_shname
       chlen = 1
