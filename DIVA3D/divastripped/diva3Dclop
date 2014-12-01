@@ -181,6 +181,7 @@ refdat=0
 if [ -f ./input/divarefe/$var'.'$lev'.datapoint.ref' ];then
 refdat=1
  cp -v ./input/divarefe/$var'.'$lev'.datapoint.ref' ./output/fieldatdatapoint.anl.ref
+   cp -v ./input/divarefe/$var'.'$lev'.ref' ./output/fieldgher.anl.ref # added in dec 2014
  cp -v ./input/divarefe/GridInfo.dat  ./output/ghertonetcdf/GridInfo.dat
 fi
 if [ -f ./input/divarefe/$var'.'$lev'.ref' ];then
