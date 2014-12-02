@@ -7,24 +7,27 @@
 !
 	include "netcdf.inc"
 !
-        integer                             :: im4,jm4
-        integer                             :: im,jm,km,ipar
+        integer                             :: im4,jm4,imask
+        integer                             :: im,jm,km,ipar,im2,jm2
         real*4                              :: hrss,time_val !,valexu
         real*8                              :: valex8
 !
-        real*4  ,dimension(:,:),allocatable        :: var
+        real*4  ,dimension(:,:),allocatable        :: var,mask
 !
-        real*4  ,dimension(:),allocatable              :: X
-        real*4  ,dimension(:),allocatable              :: Y
+        real*4  ,dimension(:),allocatable              :: X,X2
+        real*4  ,dimension(:),allocatable              :: Y,Y2
 !
 	character (len=*)     :: file_name !,var_shname
+	character (len=*)     :: file_name2 !,var_shname
 !
 	character (len=256)   :: err_shname,err_lgname
      &                         , string256
 !
-      character*(*) LAT_NAME, LON_NAME
-      parameter (LAT_NAME='lat', LON_NAME='lon')
+      character(len=3)::LAT_NAME, LON_NAME
+!      character*(*) LAT_NAME, LON_NAME
+!      parameter (LAT_NAME='lat', LON_NAME='lon')
       parameter (file_name='diva_bath.nc')
+      parameter (file_name2='masktopo.nc')
 
       integer  ,dimension(3)              :: dim
       integer  ,dimension(3)              :: start, count
@@ -39,7 +42,11 @@
 !
       im = im4
       jm = jm4
-!!
+      LON_NAME='lon'
+      LAT_NAME='lat'
+!------------------------------------------------
+! Reading diva_bath.nc
+!------------------------------------------------
       !-----------------------
       ! Open the data file
       !-----------------------
@@ -142,6 +149,127 @@
          print *,nf_strerror(status)
          STOP 'Stopped when closing' !,TRIM(file_name)
       ENDIF
+
+!------------------------------------------------
+
+!------------------------------------------------
+! Reading masktopo.nc
+!------------------------------------------------
+      imask=0
+      !-----------------------
+      ! Open the data file
+      !-----------------------
+!
+      status = nf_open(TRIM(file_name2), nf_nowrite,ncid)
+      IF (status .NE.nf_noerr) THEN
+!         print *,nf_strerror(status)
+         write(6,*) "no masktopo.nc found => no zone to be erased."
+         imask=1
+         goto 1020
+!         STOP 'Stopped in divabath2topogrd open file'
+      ENDIF
+!
+      !----------------------
+      !  Inquire dimensions id
+      !----------------------
+!
+      status=nf_inq_dimid(ncid,LON_NAME,lonid)
+      IF (status .NE.nf_noerr) LON_NAME="LON"
+      status=nf_inq_dimid(ncid,LON_NAME,lonid)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in divabath2topogrd def lon'
+      ENDIF
+
+      status=nf_inq_dimid(ncid,LAT_NAME,latid)
+      IF (status .NE.nf_noerr) LAT_NAME="LAT"
+      status=nf_inq_dimid(ncid,LAT_NAME,latid)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in divabath2topogrd def lat'
+      ENDIF
+!
+      status=nf_inq_dimlen(ncid,lonid,IM2)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in divabath2topogrd dimlen lon'
+      ENDIF
+
+      status=nf_inq_dimlen(ncid,latid,JM2)
+
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in divabath2topogrd dimlen lat'
+      ENDIF
+      !-----------------------
+      ! Inquire data variables
+      !-----------------------
+
+      status=nf_inq_varid(ncid,"MASKTOPO",id1)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in divabath2topogrd def bat'
+      ENDIF
+!
+
+
+      ierr = 1
+
+!
+      icdf=1
+!
+      status = nf_sync(ncid)
+!
+      start(1)=1
+      start(2)=1
+      start(3)=icdf
+      count(1)=IM2
+      count(2)=JM2
+      count(3)=1
+      
+      allocate(mask(IM2,JM2))
+      allocate(X2(IM2))
+      allocate(Y2(JM2))
+!
+      status=nf_get_vara_real(ncid,id1, start, count,mask)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in divabath2topogrd get var'
+      ENDIF
+!
+      start(1)=1
+      start(2)=1
+      start(3)=icdf
+      count(1)=IM2
+      count(2)=1
+      count(3)=1
+      status=nf_get_vara_real(ncid,lonid, start, count,x2)
+      write(6,*) 'x2',x2
+      start(1)=1
+      start(2)=1
+      start(3)=icdf
+      count(1)=JM2
+      count(2)=1
+      count(3)=1
+      status=nf_get_vara_real(ncid,latid, start, count,y2)
+      write(6,*) 'y2',y2
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in divabath2topogrd get var'
+      ENDIF
+!
+
+
+!
+      status=nf_close(ncid)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped when closing' !,TRIM(file_name)
+      ENDIF
+      
+!------------------------------------------------
+ 1020 continue
+     
 ! need to get exclusion value ...
        valex8=1E6
 
@@ -161,6 +289,20 @@
          stop 'NON UNIFORM GRID Y '
       endif
       enddo
+      
+!------------------------------------------------
+! Multipliying topo by mask
+!------------------------------------------------
+
+      If (imask==0) then
+      do i=1,IM
+      do j=1,JM
+      var(i,j)=mask(i,j)*var(i,j)
+      enddo
+      enddo
+      Endif
+
+!------------------------------------------------
 
 ! Change sign of topography
       do i=1,IM
@@ -168,6 +310,7 @@
       var(i,j)=-var(i,j)
       enddo
       enddo
+      
       write(13,*)  x(1)
       write(13,*)  y(1)
       write(13,*) x(2)-x(1)
