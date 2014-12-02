@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #------------------------------------------------
-# Sylvain Watelet - 27/10/2014
+# Sylvain Watelet - 02/12/2014
 # swatelet@ulg.ac.be
 #
 # This script transforms a netcdf file (myfield.nc) 
