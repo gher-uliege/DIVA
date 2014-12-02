@@ -127,8 +127,14 @@ echo $jj
 $compiler $ncinc $nocyg $jj -o `basename $jj .F90`.a divaio.o $nclib
 done
 
+for jj in `ls *.f90 | grep -v divaio.F90`
+do
+echo $jj
+$compiler $ncinc $nocyg $jj -o `basename $jj .f90`.a divaio.o $nclib
+done
+
 n4=`ls -1p *.a | grep -vc "/$"` 
-n4max=`ls -1p *.f *.F *.F90 | grep -v divaio.F90 | grep -vc "/$"`
+n4max=`ls -1p *.f *.F *.F90 *.f90 | grep -v divaio.F90 | grep -vc "/$"`
 
 echo You have compiled $n4 programs
 echo out of $n4max 
