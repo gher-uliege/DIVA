@@ -1,6 +1,6 @@
          parameter(imax=30000000)
          real*4 c(imax)
-         real*8 c8
+         real*8 c8(1)
          
          read(5,*) nx,ny,valex
          do i=1,nx*ny

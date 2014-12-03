@@ -2,7 +2,7 @@ C Template for calculating relative length scale based on data coverage
 C
              PARAMETER(IW=5000000)
              REAL*4 C(IW),RL(IW),RN(IW)
-             REAL*8 C8,RRR
+             REAL*8 C8(1),RRR
              REAL*4 X(IW),Y(IW)
 C Read data (just coordinates, not value)
           
@@ -43,7 +43,7 @@ C From here make a subroutine call to be able to use n(NX,NY) and RL(NX,NY)
              REAL*4 RN(NX,NY)
              REAL*4 C(NX,NY)
              REAL*4 X(*),Y(*)
-             REAL*8 RNDATA,RWET,RVAR,C8,RLM
+             REAL*8 RNDATA,RWET,RVAR,C8(1),RLM
 C Now do binning n(i,j): number of data points in box of size DELTAxDELTA
 C n(NX,NY)
              do i=1,NX

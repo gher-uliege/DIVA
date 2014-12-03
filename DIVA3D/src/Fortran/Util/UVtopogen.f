@@ -1,7 +1,7 @@
       parameter(nm=5000000)
       real*4 topo(nm),u(nm),v(nm)
       real*4 unn(nm),vnn(nm)
-      real*8 c8
+      real*8 c8(1)
       
       character*4 uname,vname
       character*10 un,vn
@@ -62,7 +62,7 @@ C output info file: no, just copy the topoinfo file !
       
       subroutine uvg(topo,U,V,UN,VN,M,N,z,dx,dy,valex)
       real*4 TOPO(M,N),U(M,N),V(M,N),UN(M,N),VN(M,N)
-      real*8 c8,DMEAN
+      real*8 c8(1),DMEAN
       real*4 valex
       
 C Calculate mean depth

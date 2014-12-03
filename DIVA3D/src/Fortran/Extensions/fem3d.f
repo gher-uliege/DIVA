@@ -23,7 +23,7 @@ C     dimension nsom(n1max),xel(n1max),yel(n1max)
      +       yel(n1max),zel(n1max),xsom(n1max),ysom(n1max),zsom(n1max),
      +       xbatmin,xbatmax,ybatmin,ybatmax,xmax,ymax,xmin,ymin,
      +       dxbat,dybat
-      real*8 c8
+      real*8 c8(1)
       zero=0
       one=1
 

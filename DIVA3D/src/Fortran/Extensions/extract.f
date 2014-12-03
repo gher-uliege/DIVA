@@ -42,7 +42,7 @@ C --------------------------------------------------------------------
 
     
       WRITE (6,*) 
-      WRITE (6,*) 
+      WRITE (6,*)
       WRITE (6,*) '-----------------------'
       WRITE (6,*) '--- DATA EXTRACTION ---' 
       WRITE (6,*) '-----------------------'
@@ -1716,7 +1716,7 @@ C --- Variables for reading MODB Files ---
       CHARACTER*18 PR
       CHARACTER*3  DTYPE
       CHARACTER*1  LAT1,LON1,CHAR1
-      CHARACTER*80 TEXT(200)
+      CHARACTER TEXT(20)*80
 
       REAL*4  LAT3,LON3,VAL,VAL2,DELTA,DEPTH
 
@@ -2550,7 +2550,7 @@ C     INTEGER*4 QCP,QCT,QCS,DATE,TIME,DEPTH
       INTEGER*4 LAT2,LON2
 
       CHARACTER*80 LINE
-      CHARACTER*80 TEXT (200)
+      CHARACTER TEXT(20)*80
       CHARACTER*18 PR
       CHARACTER*3  DTYPE
       CHARACTER*1  LAT1,LON1,CHAR1
@@ -2715,7 +2715,7 @@ C     INTEGER*4 QCP,QCT,QCS,DATE,TIME,DEPTH
       CHARACTER*18 PR
       CHARACTER*3  DTYPE
       CHARACTER*1  LAT1,LON1
-      CHARACTER*80 TEXT(200)
+      CHARACTER TEXT(20)*80
 
       REAL*4  LAT3,LON3
 
@@ -2862,7 +2862,7 @@ C     INTEGER*4 QCP,QCT,QCS,DATE,TIME,DEPTH
       CHARACTER*18 PR
       CHARACTER*3  DTYPE
       CHARACTER*1  LAT1,LON1
-      CHARACTER*80 TEXT(200)
+      CHARACTER TEXT(20)*80
 
       REAL*4  LAT3,LON3
 
@@ -3240,7 +3240,7 @@ C     Jean-Michel Brankart (Oct. 94)
 
       implicit none
 
-      character*80 msg,prg
+      character(LEN=*) msg,prg
 
       write(6,*) 'erreur dans le programme:',prg
       write(6,*) 'probleme:',msg

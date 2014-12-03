@@ -1,7 +1,7 @@
       parameter(nm=5000000)
       include'iodv.h'
       real*4 topo(nm)
-      real*8 c8
+      real*8 c8(1)
       integer*2 ic(nm*3)
       character*10 coastname
       character*16 cn

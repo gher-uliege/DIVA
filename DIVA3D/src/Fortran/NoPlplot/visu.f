@@ -327,7 +327,7 @@ C     ###################
 
       character*80 name 
       real*4 VALEX,AA(500000),clevel(512),A(200000)
-      real*8 c8
+      real*8 c8(1)
       integer IMAX,JMAX,KMAX,clrlv
 
       read(5,'(A)')name

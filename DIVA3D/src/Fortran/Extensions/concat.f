@@ -9,7 +9,7 @@
 
       subroutine concat2(A,AA,imax,jmax,kmax)
       character*100 outname,name
-      real*8 c8
+      real*8 c8(1)
       integer imax,jmax,kmax
       real*4 A(imax,jmax),AA(imax,jmax,kmax)
 

@@ -188,6 +188,7 @@ C	- LKELOS1 : ARRAY THAT IS USED AND SORTED BY THE QUICK SORT ROUTINE
 C  (3) ESTIMATION OF ERROR (esterr):
 C	- TBESS : TABULATION OF THE BESSEL FUNCTION
       dimension tbess(40000)
+      dimension bidon2(1,1),bidon1(1),ibidon2(1,1),ibidon1(1)
       integer opti,npadneed
       COMMON /CROC/ TMAX,TMAY,TMIX,TMIY,NCAT,NCAX,NCAY,
      &  NCAZ,TLEX,TLEY,TLCX,TLCY,NELKNTC,LKNTC,OPTI,npadneed,

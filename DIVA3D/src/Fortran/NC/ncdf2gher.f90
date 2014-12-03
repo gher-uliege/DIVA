@@ -13,6 +13,8 @@ integer::im,jm,km,ipar
 real(kind=4)::hrss,time_val !,valexu
 real(kind=8)::valex8
 
+        real*8 c8(1)
+
 real(kind=4),dimension(:,:),allocatable::var
 
 real(kind=4),dimension(:),allocatable::X
@@ -188,7 +190,7 @@ call get_command_argument(2,myfield)
       write(13,*) IM
       write(13,*) JM
       write(6,*) 'Finished writing info file'
-      call uwritc(12,valex8,var,valex8,4,IM,JM,1,IM*JM)
+      call uwritc(12,c8,var,valex8,4,IM,JM,1,IM*JM)
       write(6,*) 'Finished writing binary file'
       close(12)
       close(13)

@@ -1,7 +1,7 @@
        parameter(nm=50000000)
        
        real*4 c(nm),ce(nm)
-       real*8 c8
+       real*8 c8(1)
        
        call ureadc(20,c8,c,valex,ipr,imax,jmax,kmax,nb)
        write(6,*) 'Have read a gridded field'

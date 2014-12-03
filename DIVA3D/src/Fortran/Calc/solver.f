@@ -90,7 +90,7 @@ C
       bidon=0
       ibidon=0
       call fixbcd(s(ltuppe),s(ltlowe),s(ltdiag),s(ltrhsg),l(lklink),
-     &            l(lkskyh),bidon,ibidon)
+     &            l(lkskyh),bidon1,ibidon2)
 
                        else
 
@@ -237,7 +237,7 @@ C now s(lrkele) for TRKELE
             bidon=0
             call ckele2 (iel,tstif(iel),tcoog,kconn,tkele,trhse,
      &                   l(lklocs),
-     &                   bidon,wg,ipr,s(lrkele))
+     &                   bidon2,wg,ipr,s(lrkele))
             else
             call ckele2 (iel,tstif(iel),tcoog,kconn,tkele,trhse,
      &                   l(lklocs),
@@ -249,7 +249,7 @@ C now s(lrkele) for TRKELE
             bidon=0
             call ckele3 (iel,tstif(iel),tcoog,kconn,tkele,trhse,
      &                   l(lklocs),
-     &                   bidon,s(ltcele),wg,ipr,s(lrkele))
+     &                   bidon2,s(ltcele),wg,ipr,s(lrkele))
                          else
             call ckele3 (iel,tstif(iel),tcoog,kconn,tkele,trhse,
      &                   l(lklocs),

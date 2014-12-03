@@ -1,7 +1,7 @@
        parameter(nm=30000000)
        integer*4 inode(nm)
        real*4 u(nm),v(nm)
-       real*8 c8
+       real*8 c8(1)
        
        call ureadc(30,c8,u,valex,ipr,imax,jmax,kmax,nb)
        call ureadc(31,c8,v,valex,ipr,imax,jmax,kmax,nb)

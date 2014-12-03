@@ -1,6 +1,6 @@
       parameter(idata=5000000)
       real*4 c(idata)
-      real*8 valex8
+      real*8 valex8,c8(1)
       valex8=-99999
       isgebco=0
       ired=1
@@ -116,7 +116,7 @@ c      write(6,*),x,y,i,j,jjjjj,imax,jmax
       write(20,*) imred
       write(20,*) jmred
       
-      call uwritc(12,valex8,C,valex8,4,imred,jmred,1,imred)
+      call uwritc(12,c8,C,valex8,4,imred,jmred,1,imred)
       write(6,*) 'Finished writing binary file'
       stop
       END

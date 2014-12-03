@@ -2,7 +2,7 @@ C
         REAL*4 U(5000000)
         REAL*4 V(5000000)
         REAL*4 W(5000000)
-        REAL*8 W8
+        REAL*8 W8(1)
 
 
         character*100 in1,in2,out

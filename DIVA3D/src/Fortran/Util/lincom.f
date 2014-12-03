@@ -1,7 +1,7 @@
 C
         REAL*4 U(5000000)
         REAL*4 V(5000000)
-        REAL*8 W8
+        REAL*8 W8(1)
 
 
         CALL UREADC(10,W8,U,VALEXU,IPR,IMAX,JMAX,KMAX,NW)

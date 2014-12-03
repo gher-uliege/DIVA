@@ -156,11 +156,12 @@ C$OMP FLUSH (kmax)
             ihesitate=0
             ie0old=ie0
 ! JMB2013 why flush in jmax here
-C$OMP FLUSH (jmax,kmax)
+C$OMP FLUSH (kmax)
 ! Judge if hesitation is necessary
              if (kmax.lt.jr) then
                ihesitate=1
 !               write(6,*) 'Hesitation'
+C$OMP FLUSH (jmax)
                ie0=jmax
              endif
              if (jh.eq.2) then
@@ -226,7 +227,7 @@ C JMB TRY FLUSH jmax ??? ALSO CHANGE !OME into COPM ?
 C$OMP END CRITICAL
                endif
 C$OMP FLUSH (jmax,kmax)
-C             write(6,*) ithread,jmax,kmax,ihesitate,jr,is,jh,j,id,ih1
+             write(6,*) ithread,jmax,kmax,ihesitate,jr,is,jh,j,id,ih1
             enddo
           enddo
 

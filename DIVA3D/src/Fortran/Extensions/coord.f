@@ -262,7 +262,7 @@ C ---------------------------------------------------------------------
       INTEGER IMAX,JMAX,KMAX,I,J, K, IPR, NB
       REAL*4  A(500000),VALEX,longitude, latitude
       REAL*4  val, X, Y, FCT_LONG, FCT_LAT, lambda
-      REAL*8  c8
+      REAL*8  c8(1)
 
       OPEN (UNIT=10,FILE=input, FORM='UNFORMATTED')
       OPEN (UNIT=11,FILE=output, FORM='UNFORMATTED')

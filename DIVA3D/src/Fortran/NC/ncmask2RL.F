@@ -9,6 +9,7 @@
         integer                             :: im,jm,km,ipar
         real*4                              :: hrss,time_val !,valexu
         real*8                              :: valex8
+        real*8 c8(1)
 !
         real*4  ,dimension(:,:),allocatable        :: var
 !
@@ -165,7 +166,7 @@
       write(13,*) y(2)-y(1)
       write(13,*) IM
       write(13,*) JM
-      call uwritc(12,valex8,var,valex8,4,IM,JM,1,IM*JM)
+      call uwritc(12,c8,var,valex8,4,IM,JM,1,IM*JM)
       write(6,*) 'ncmask2RL: Finished writing binary file'
 
       stop

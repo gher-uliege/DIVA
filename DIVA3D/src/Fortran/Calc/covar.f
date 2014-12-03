@@ -762,7 +762,7 @@ cC
            bidon=0
 
            call cgelecv2 (iel,tcoog,kconn,trhse,l(lklocs),ipr,s(lrkele),
-     &  xob,yob,isub,bidon)
+     &  xob,yob,isub,bidon2)
            else
 
            call cgelecv2 (iel,tcoog,kconn,trhse,l(lklocs),ipr,s(lrkele),

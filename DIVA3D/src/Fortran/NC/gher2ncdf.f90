@@ -14,7 +14,7 @@ implicit none
 
       integer NX, NY, KMAX, ipr, nw, IMAX, JMAX
       real VALEXU
-      real*8 W8
+      real*8 W8(1)
       real xorig, yorig, dx, dy, xend, yend, valex
       
       character(len=256)::gherfile,myfield,infofile

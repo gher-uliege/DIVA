@@ -1,6 +1,6 @@
       real*4 BAT(3000000),IN(8000000)
       character*100 batname,inname
-      real*8 c8
+      real*8 c8(1)
 
 c     batname='/home/walrave/Modb/Travail/DATA/adr.GHER.bat'
 c     inname='/home/walrave/Modb/Travail/RESULTS/adr.res'
@@ -32,7 +32,7 @@ C***************************************************************
      +       ybatmin,ybatmax,xinmin,xinmax,yinmin,yinmax,dxbat,dybat,
      +       dxin,dyin,xin,yin,zin
       character*100 batinfo,ininfo,outname
-            real*8 c8
+            real*8 c8(1)
 
 
 c     batinfo='/home/walrave/Modb/Travail/DATA/adr.GHER.bat.info'

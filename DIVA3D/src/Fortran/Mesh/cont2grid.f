@@ -148,7 +148,7 @@ C23456
       real*4 x(npmax,*),y(npmax,*),xcorn(4,*)
       integer*2 ic(*)
       integer ip(*)
-      real*8 c8
+      real*8 c8(1)
       real*4 valex
       real*4 surf(*)
       real*4 topo(nx,ny),xmin,xmax,ymin,ymax

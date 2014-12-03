@@ -308,7 +308,7 @@ C
       if(ispec.eq.1.or.ispec.eq.3) then
          if(ltcele.eq.0) then
          bidon=0
-         call genf80(s(ltcoog),l(lkconn),l(lkntc),bidon,ipr)
+         call genf80(s(ltcoog),l(lkconn),l(lkntc),bidon2,ipr)
          else
          call genf80(s(ltcoog),l(lkconn),l(lkntc),s(ltcele),ipr)
       endif

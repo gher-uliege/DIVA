@@ -25,7 +25,7 @@ C ----------------------------------------
       INTEGER IMAX,JMAX
       REAL*4 A(IMAX,JMAX)
 
-      real*8 valex8
+      real*8 valex8,c8(1)
       real*4 valex
       read(11,*) 
       read(11,*) 
@@ -39,7 +39,7 @@ c         write(6,*) 'Read',J
 10    CONTINUE
 
 101   FORMAT (10F8.2)
-      call uwritc(12,valex8,A,valex8,4,imax,jmax,1,imax)
+      call uwritc(12,c8,A,valex8,4,imax,jmax,1,imax)
       write(6,*) 'Finished writing binary file'
       return
       END

@@ -9055,7 +9055,8 @@ subroutine exppro ( n, m, eps, tn, u, w, x, y, indic, ierr )
   real ( kind = 8 ) dtl
   real ( kind = 8 ) eps
   real ( kind = 8 ) errst
-  real ( kind = 8 ) hh
+  CJMB added (1,1) to cpmply with routine rank
+  real ( kind = 8 ) hh(1,1)
   integer ( kind = 4 ) ierr
   integer ( kind = 4 ) ih
   integer ( kind = 4 ) indic

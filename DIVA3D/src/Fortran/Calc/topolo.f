@@ -74,7 +74,7 @@ C
       bidon=0
       
       call rdtopo(s(ltcoog),l(lkconn),l(lklink),l(lksort),
-     &            bidon,ipr)
+     &            bidon2,ipr)
       
                        else
       
