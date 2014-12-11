@@ -427,6 +427,25 @@ fi
 # Prepare info3D and run diva3D
 #echo 'divadoall:' strange test $iscontour $isdataclean $isoptimise $isanalysis
 
+if [ "$isdataclean" -ne "0" ] || [ "$isoptimise" -ne "0" ] || [ "$isanalysis" -ne "0" ] 
+then
+	let lev=0+$minlevel
+	let upperlevel=0+$upperlevel
+	while [ "$lev" -le "$upperlevel" ]
+	do 
+ 		let level=10000+$lev
+ 		if [ -f ./input/divaparam/coast.cont.$level ]
+	 		then
+	 		echo "contour for level $lev is present"
+	 		else
+	 		echo "WARNING : some contour(s) file(s) absent"
+	 		echo "Diva will create these contours"
+	 		iscontour=1
+ 		fi
+ 		let lev=1+$lev
+ 	done
+fi
+
 if [ "$iscontour" -ne "0" ] || [ "$isdataclean" -ne "0" ] || [ "$isoptimise" -ne "0" ] || [ "$isanalysis" -ne "0" ] 
 then
 
