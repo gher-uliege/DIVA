@@ -27,7 +27,7 @@ real(kind=4),dimension(:),allocatable::Y
 !      parameter (LAT_NAME='lat', LON_NAME='lon')
 
 integer,dimension(3)::dim
-integer,dimension(3)::start, count
+integer,dimension(4)::start, count
 integer::id1,id2,i,j
 integer::timeid,idtime,icdf
 
@@ -86,20 +86,24 @@ call get_command_argument(2,myfield)
          print *,nf_strerror(status)
          STOP 'Stopped in divabath2topogrd dimlen lon'
       ENDIF
+      write(6,*) ncid,lonid,IM
+!      lonid=1
 
       status=nf_inq_dimlen(ncid,latid,JM)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in divabath2topogrd dimlen lat'
       ENDIF
+      write(6,*) ncid,latid,JM
+!      latid=5
       !-----------------------
       ! Inquire data variables
       !-----------------------
 
-      status=nf_inq_varid(ncid,"bat",id1)
+      status=nf_inq_varid(ncid,myfield,id1)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in divabath2topogrd def bat'
+         STOP 'Stopped in ncdf2gher def var'
       ENDIF
 !
 
@@ -114,9 +118,11 @@ call get_command_argument(2,myfield)
       start(1)=1
       start(2)=1
       start(3)=icdf
+      start(4)=1
       count(1)=IM
       count(2)=JM
       count(3)=1
+      count(4)=1
       
       allocate(var(IM,JM))
       allocate(X(IM))
@@ -125,24 +131,38 @@ call get_command_argument(2,myfield)
       status=nf_get_vara_real(ncid,id1, start, count,var)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in divabath2topogrd get var'
+         STOP 'Stopped in ncdf2gher get var'
       ENDIF
 !
       start(1)=1
       start(2)=1
       start(3)=icdf
+      start(4)=1
       count(1)=IM
       count(2)=1
       count(3)=1
+      count(4)=1
+      x=0
       status=nf_get_vara_real(ncid,lonid, start, count,x)
+!      IF (status .NE.nf_noerr) THEN
+!         print *,nf_strerror(status)
+!         STOP 'Stopped in ncdf2gher get lon'
+!      ENDIF
       write(6,*) 'x',x
       start(1)=1
       start(2)=1
       start(3)=icdf
+      start(4)=1
       count(1)=JM
       count(2)=1
       count(3)=1
+      count(4)=1
+      y=0
       status=nf_get_vara_real(ncid,latid, start, count,y)
+!      IF (status .NE.nf_noerr) THEN
+!         print *,nf_strerror(status)
+!         STOP 'Stopped in ncdf2gher get lat'
+!      ENDIF
       write(6,*) 'y',y
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
