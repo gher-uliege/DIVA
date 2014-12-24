@@ -136,9 +136,11 @@ echo "----------------------------"
 echo "Now starting data extraction"
 echo "----------------------------"
 
+saveifs=$IFS
+IFS=$'\n'
 for var in `cat varlist`
 do
-echo "Working on parameter" $var
+echo "Working on parameter" "$var"
 #head ODVcolumns
 datacol=$(grep -w "$var" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 cruisecol=$(grep "Cruise" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
@@ -183,15 +185,15 @@ echo "Data are in column" $datacol
 echo "Corresponding quality flags are in column" $qccol
 echo "Units are" $units
 
-echo $units > $var.units
-echo $var > $var.longname
+echo $units > "$var".units
+echo "$var" > "$var".longname
 
 # recovering bounds for variable 
 boundmin=-1E36
 boundmax=1E36
-if [ -f $var.bounds ]
+if [ -f "$var".bounds ]
 then
- Fileinfbb=$var.bounds
+ Fileinfbb="$var".bounds
 {
 read comment
 read boundmin
@@ -203,7 +205,7 @@ fi
 echo "checking for bounds $boundmin and $boundmax"
 # added test on bounds
 
-echo "Now producing one big file for variable" $var
+echo "Now producing one big file for variable" "$var"
 iqf=0
 if [ -f qflist ]
 then
@@ -263,7 +265,7 @@ return 0
 #
 #      if ( $qccol==1 || $qccol==2 || $qccol==8 );
       if ($datacol > "" && qfok==1 && $datacol != valexodv) print $loncol,$latcol,$datacol,$depthcol,$qccol,year,month,day,hour,$datecol,foralex}' \
-       > ${WORK}/${var}.bigfile
+       > ${WORK}/"${var}".bigfile
 
 fi
 
@@ -273,7 +275,7 @@ echo "Now interpolating"
 
 # make sure columns are now in correct order
 
-awk -f "dvvinterpodv" ./input/contour.depth ${WORK}/${var}.bigfile > ${WORK}/${var}.bigfile.interp
+awk -f "dvvinterpodv" ./input/contour.depth ${WORK}/"${var}".bigfile > ${WORK}/"${var}".bigfile.interp
 
 
 #Then split file in data for layers?
@@ -287,7 +289,7 @@ let lnum=10000+$lev
 echo "Now split in layers" $lnum "and drop exclusion values"
 echo "Order now: x y val 1 year month day hour meta1 meta2"
 
-awk -v lnum=$lnum '{if ($12 == lnum && $3 != 99999) {print $1,$2,$3,1,$6,$7,$8,$9,$10,$11}}' ${WORK}/${var}.bigfile.interp > ${WORK}/$var.$lnum
+awk -v lnum=$lnum '{if ($12 == lnum && $3 != 99999) {print $1,$2,$3,1,$6,$7,$8,$9,$10,$11}}' ${WORK}/"${var}".bigfile.interp > ${WORK}/"$var".$lnum
 
 #Then extract for each layer the dates (small files now)
 
@@ -320,14 +322,14 @@ echo "month from $mm1 to $mm2"
 awk -v mm1=$mm1 -v mm2=$mm2 -v year1=$year1 -v year2=$year2 \
 '{{if (mm2>12) $6=$6+12};
 {if (mm1 <=$6+0 && $6+0 <= mm2 && year1<=$5+0 && $5+0 <= year2) print $1,$2,$3,$4,$5-year1+1,$6-mm1+1,$7,$8+1,$9,$10}
-}' ${WORK}/$var.$lnum > input/${var}.${yyy}.${mmm}.$lnum
+}' ${WORK}/"$var".$lnum > input/"${var}".${yyy}.${mmm}.$lnum
 
-./specialdataonly input/${var}.${yyy}.${mmm}.$lnum
+./specialdataonly input/"${var}".${yyy}.${mmm}.$lnum
 
 #mv input/${var}.${yyy}.${mmm}.$lnum input/divadata/${var}.${yyy}.${mmm}.$lnum
 #Assume file already exist and need to add
-cat input/${var}.${yyy}.${mmm}.$lnum >> input/divadata/${var}.${yyy}.${mmm}.$lnum
-rm -f input/${var}.${yyy}.${mmm}.$lnum 
+cat input/"${var}".${yyy}.${mmm}.$lnum >> input/divadata/"${var}".${yyy}.${mmm}.$lnum
+rm -f input/"${var}".${yyy}.${mmm}.$lnum 
 
 
 done
@@ -343,6 +345,7 @@ echo "Finished loop on layers"
 
 done
 echo "Finished loop on variables"
+IFS=$saveifs
 
 
 else

@@ -9,17 +9,20 @@ smooth=1
 gmin=$1
 gmax=$2
 
+saveifs=$IFS
+IFS=$'\n'
 {
 read lev
 read var
 } < levvar
+IFS=$saveifs
 
-echo 'lev var gmin gmax '$lev $var $gmin $gmax
+echo 'lev var gmin gmax '$lev "$var" $gmin $gmax
 rm -f dvanalysisrange
 #
 cd gnuwork
 rm fort.*
-echo preparing files for mesh plot
+echo "preparing files for mesh plot"
 cp '../input/divamesh/meshtopo.'$lev fort.22 
 cp '../input/divamesh/mesh.dat.'$lev fort.23 
 ../../bin/forgnuplotmesh.a >> ../output/diva.log
@@ -54,7 +57,7 @@ echo Check execution track >> ../output/diva.log
 echo -------------------------------------------- >> ../output/diva.log
 fi
 # output if fort.71
-echo preparing files for coast plot
+echo "preparing files for coast plot"
 cp ../input/divaparam/coast.cont.$lev fort.66
 ../../bin/forgnuplotcoastfilled.a >> ../output/diva.log
 if [ $? -ne 0 ];then
@@ -77,8 +80,8 @@ fi
 rm -f fort.19
 rm -f fort.21
 echo preparing RL field
-if [ -f ../input/divaparam/RLinfo.$var.$lev ];then
- cp -f ../input/divaparam/RLinfo.$var.$lev  fort.21
+if [ -f ../input/divaparam/RLinfo."$var".$lev ];then
+ cp -f ../input/divaparam/RLinfo."$var".$lev  fort.21
 else
  if [ -f ../input/divaparam/RLinfo.$lev ];then
   cp -f ../input/divaparam/RLinfo.$lev fort.21
@@ -89,8 +92,8 @@ else
  fi
 fi
 if [ -f ./fort.21 ];then
- if [ -f ../input/divaparam/RL.$var.$lev ];then
-  cp -f ../input/divaparam/RL.$var.$lev fort.20
+ if [ -f ../input/divaparam/RL."$var".$lev ];then
+  cp -f ../input/divaparam/RL."$var".$lev fort.20
  else
   if [ -f ../input/divaparam/RL.$lev ];then
    cp -f ../input/divaparam/RL.$lev fort.20
@@ -139,11 +142,11 @@ fi
 mv fort.68 fort.72
 fi
 rm -f fort.19
-if [ -f ../input/divadata/$var'.'$lev'.DATABINS' ] 
+if [ -f ../input/divadata/"$var"'.'$lev'.DATABINS' ] 
 then
 echo preparing DATABINS field
-cp ../input/divadata/$var'.'$lev'.DATABINS' fort.20
-cp ../input/divadata/$var'.'$lev'.DATABINSinfo' fort.21
+cp ../input/divadata/"$var"'.'$lev'.DATABINS' fort.20
+cp ../input/divadata/"$var"'.'$lev'.DATABINSinfo' fort.21
 ../../bin/forgnuplotanalysis.a >> ../output/diva.log
 if [ $? -ne 0 ];then
 echo ' '
@@ -163,10 +166,10 @@ fi
 mv fort.68 fort.73
 fi
 rm -f fort.19
-if [ -f ../output/3Danalysis/Fields/$var'.'$lev'.anl' ] 
+if [ -f ../output/3Danalysis/Fields/"$var"'.'$lev'.anl' ] 
 then
 echo preparing standard deviation field
-cp '../output/3Danalysis/Fields/'$var'.'$lev'.anl' fort.20
+cp '../output/3Danalysis/Fields/'"$var"'.'$lev'.anl' fort.20
 cp ../output/3Danalysis/Fields/GridInfo.dat fort.21
 ../../bin/forgnuplotanalysis.a >> ../output/diva.log
 if [ $? -ne 0 ];then
@@ -210,16 +213,16 @@ fi
 # output is fort.55
 ###fi
 echo ' ' > fort.99
-cat ../input/divadata/$var.$lev >> fort.99
+cat ../input/divadata/"$var".$lev >> fort.99
 awk 'NF<2{printf"\n"}{print}' < fort.71 > fort.11
-echo preparing files for analysis and error plot
+echo "preparing files for analysis and error plot"
 rm -f fort.19
-if [ -f ../output/3Danalysis/Fields/$var'.'$lev'.error' ] 
+if [ -f ../output/3Danalysis/Fields/"$var"'.'$lev'.error' ] 
 then
 echo preparing error field
-cp ../output/3Danalysis/Fields/$var'.'$lev'.error' fort.19
+cp ../output/3Danalysis/Fields/"$var"'.'$lev'.error' fort.19
 fi
-cp ../output/3Danalysis/Fields/$var'.'$lev'.anl' fort.20
+cp ../output/3Danalysis/Fields/"$var"'.'$lev'.anl' fort.20
 cp ../output/3Danalysis/Fields/GridInfo.dat fort.21
 #../../bin/forgnuplotanalysis.a >> ../output/diva.log
 if [ "$smooth" == "1" ]

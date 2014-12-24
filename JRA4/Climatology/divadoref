@@ -6,7 +6,7 @@
 ###            nearest                                              #####
 #########################################################################
 #
-var=$1
+var="$1"
 year=$2
 month=$3
 #
@@ -15,7 +15,7 @@ DIVADIR="../../DIVA3D"
 
 echo '  '
 echo '================================================================'
-echo 'divadoref starting with '$var'.'$yrear'.'$month
+echo 'divadoref starting with '"$var"'.'$yrear'.'$month
 
 FILENAME=driver
 {
@@ -100,23 +100,23 @@ yeare=${year:4:4}
 monthb=${month:0:2}
 monthe=${month:2:2}
 
-ncolvar=$(grep -i $var ODVcolumns | awk -F "\t" '{print $3}')
+ncolvar=$(grep -i "$var" ODVcolumns | awk -F "\t" '{print $3}')
 
-longvarname=$(grep -i $var ODVcolumns | awk -F "\t" '{print $1}' | awk -F " " '{print $1}')
-longvarunit=$(grep -i $var ODVcolumns | awk -F "\t" '{print $1}' | awk -F " " '{print $2}')
+longvarname=$(grep -i "$var" ODVcolumns | awk -F "\t" '{print $1}' | awk -F " " '{print $1}')
+longvarunit=$(grep -i "$var" ODVcolumns | awk -F "\t" '{print $1}' | awk -F " " '{print $2}')
 
 if [ -f "${var}.units" ]
 then
 {
 read longvarunit
-} < $var.units
+} < "$var".units
 fi
 
 if [ -f "${var}.longname" ]
 then
 {
 read longvarname
-} < $var.longname
+} < "$var".longname
 fi
 #
 ###################### DATAMIX DATAMIX DATAMIX DATAMIX ###############
@@ -156,10 +156,10 @@ fi
 ################# "$isanalysis" -ge "100"
 if [ -f ${var}.pal ]
 then
-echo using local palette for plotting
+echo "using local palette for plotting"
 cp -v ${var}.pal ${DIVADIR}/divastripped/gnuwork/analysis.pal
 else
-echo using default palette for plotting
+echo "using default palette for plotting"
 cp -v ${DIVADIR}/divastripped/gnuwork/analysis.pal.default ${DIVADIR}/divastripped/gnuwork/analysis.pal
 fi
 #
@@ -168,7 +168,7 @@ cd ${DIVADIR}/divastripped/
 # preparing 3Dinfo to run
 #
 echo ! Variable  > ./input/3Dinfo
-echo $var.$year.$month >> ./input/3Dinfo
+echo "$var".$year.$month >> ./input/3Dinfo
 echo ! Number of the first level to be processed  >> ./input/3Dinfo
 echo $minlevel >> ./input/3Dinfo
 echo ! Number of the last level to be processed  >> ./input/3Dinfo
@@ -181,13 +181,13 @@ echo ! parameters optimisation >>  ./input/3Dinfo
 echo $isoptimise >>  ./input/3Dinfo
 echo ! perform 3D analysis >>  ./input/3Dinfo
 echo $isanalysis >>  ./input/3Dinfo
-echo ! Min value for correlation lenght >> ./input/3Dinfo
+echo "! Min value for correlation length" >> ./input/3Dinfo
 echo $CLMIN  >> ./input/3Dinfo
-echo ! Max value for correlation lenght >> ./input/3Dinfo
+echo "! Max value for correlation length" >> ./input/3Dinfo
 echo $CLMAX >> ./input/3Dinfo
-echo ! Min value for S/N >> ./input/3Dinfo
+echo "! Min value for S/N" >> ./input/3Dinfo
 echo $SNMIN >> ./input/3Dinfo
-echo ! Max value for S/N >> ./input/3Dinfo
+echo "! Max value for S/N" >> ./input/3Dinfo
 echo $SNMAX >> ./input/3Dinfo
 echo !gp >>  ./input/3Dinfo
 echo $isplot >>  ./input/3Dinfo
@@ -241,7 +241,7 @@ echo 10      >> ./input/detrendinfo
 fi
 fi
 #
-echo Ready to run diva3Ddress on $var $year $month
+echo Ready to run diva3Ddress on "$var" $year $month
 #
 diva3Ddress
 #
@@ -276,10 +276,10 @@ let upperlevel=0+$upperlevel
 while [ "$lev" -le "$upperlevel" ]
 do 
  let level=10000+$lev
- cp -v ${WDIR}/newinput/divadata/$var.$year.$month.$level ${WDIR}/input/divadata/.
+ cp -v ${WDIR}/newinput/divadata/"$var".$year.$month.$level ${WDIR}/input/divadata/.
 if [ -f ${WDIR}/newinput/divaparam/RLinfo.dat ];then 
  cp -v ${WDIR}/newinput/divaparam/RLinfo.dat ${WDIR}/input/divaparam/.
- cp -v ${WDIR}/newinput/divaparam/RL.$var.$year.$month.$level ${WDIR}/input/divaparam/.
+ cp -v ${WDIR}/newinput/divaparam/RL."$var".$year.$month.$level ${WDIR}/input/divaparam/.
 fi
 let lev=1+$lev
 done
@@ -291,10 +291,10 @@ let upperlevel=0+$upperlevel
 while [ "$lev" -le "$upperlevel" ]
 do 
  let level=10000+$lev
- cp -v ${WDIR}/newinput/divaparam/param.par.$var.$year.$month.$level ${WDIR}/input/divaparam/.
+ cp -v ${WDIR}/newinput/divaparam/param.par."$var".$year.$month.$level ${WDIR}/input/divaparam/.
 if [ -f ${WDIR}/newinput/divaparam/RLinfo.dat ];then 
  cp -v ${WDIR}/newinput/divaparam/RLinfo.dat ${WDIR}/input/divaparam/.
- cp -v ${WDIR}/newinput/divaparam/RL.$var.$year.$month.$level ${WDIR}/input/divaparam/.
+ cp -v ${WDIR}/newinput/divaparam/RL."$var".$year.$month.$level ${WDIR}/input/divaparam/.
 fi
 let lev=1+$lev
 done
@@ -307,15 +307,15 @@ do
  let level=10000+$lev
 if [ -d ${WDIR}/input/divarefe_all ] ;then
 cp -v ${WDIR}/newinput/divarefe/GridInfo.dat ${WDIR}/input/divarefe_all/GridInfo.dat
-cp -v ${WDIR}/newinput/divarefe/$var'.'$year'.'$month'.'$level'.datapoint.ref' ${WDIR}/input/divarefe_all/$var'.'$year'.'$month'.'$level'.datapoint.ref'
-cp -v ${WDIR}/newinput/divarefe/$var'.'$year'.'$month'.'$level'.ascii.ref' ${WDIR}/input/divarefe_all/$var'.'$year'.'$month'.'$level'.ascii.ref'
-cp -v ${WDIR}/newinput/divarefe/$var'.'$year'.'$month'.'$level'.ref' ${WDIR}/input/divarefe_all/$var'.'$year'.'$month'.'$level'.ref'
+cp -v ${WDIR}/newinput/divarefe/"$var"'.'$year'.'$month'.'$level'.datapoint.ref' ${WDIR}/input/divarefe_all/"$var"'.'$year'.'$month'.'$level'.datapoint.ref'
+cp -v ${WDIR}/newinput/divarefe/"$var"'.'$year'.'$month'.'$level'.ascii.ref' ${WDIR}/input/divarefe_all/"$var"'.'$year'.'$month'.'$level'.ascii.ref'
+cp -v ${WDIR}/newinput/divarefe/"$var"'.'$year'.'$month'.'$level'.ref' ${WDIR}/input/divarefe_all/"$var"'.'$year'.'$month'.'$level'.ref'
 else
 mkdir ${WDIR}/input/divarefe_all
 cp -v ${WDIR}/newinput/divarefe/GridInfo.dat ${WDIR}/input/divarefe_all/GridInfo.dat
-cp -v ${WDIR}/newinput/divarefe/$var'.'$year'.'$month'.'$level'.datapoint.ref' ${WDIR}/input/divarefe_all/$var'.'$year'.'$month'.'$level'.datapoint.ref'
-cp -v ${WDIR}/newinput/divarefe/$var'.'$year'.'$month'.'$level'.ascii.ref' ${WDIR}/input/divarefe_all/$var'.'$year'.'$month'.'$level'.ascii.ref'
-cp -v ${WDIR}/newinput/divarefe/$var'.'$year'.'$month'.'$level'.ref' ${WDIR}/input/divarefe_all/$var'.'$year'.'$month'.'$level'.ref'
+cp -v ${WDIR}/newinput/divarefe/"$var"'.'$year'.'$month'.'$level'.datapoint.ref' ${WDIR}/input/divarefe_all/"$var"'.'$year'.'$month'.'$level'.datapoint.ref'
+cp -v ${WDIR}/newinput/divarefe/"$var"'.'$year'.'$month'.'$level'.ascii.ref' ${WDIR}/input/divarefe_all/"$var"'.'$year'.'$month'.'$level'.ascii.ref'
+cp -v ${WDIR}/newinput/divarefe/"$var"'.'$year'.'$month'.'$level'.ref' ${WDIR}/input/divarefe_all/"$var"'.'$year'.'$month'.'$level'.ref'
 fi
 let lev=1+$lev
 done
@@ -353,6 +353,6 @@ echo $month       >>./constandrefe
 echo 'listing constandrefe:'
 cat ./constandrefe
 
-echo 'divadoref finished with '$var'.'$yrear'.'$month
+echo 'divadoref finished with '"$var"'.'$yrear'.'$month
 echo '================================================================'
 echo '  '

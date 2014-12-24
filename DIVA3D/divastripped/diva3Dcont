@@ -1,6 +1,8 @@
 #!/bin/bash
 ##########################################
 #
+saveifs=$IFS
+IFS=$'\n'
   Fileinf=./input/3Dinfo
 {
 read comment
@@ -12,13 +14,14 @@ read surf
 read comment
 read cont
 } < $Fileinf
+IFS=$saveifs
 #
 divarundir=$(pwd)
-diva3dlog=$divarundir'/output/3Danalysis/'$var'.diva3D.log'
+diva3dlog=$divarundir'/output/3Danalysis/'"$var"'.diva3D.log'
 #
 echo 'diva3Dcont:' 							| tee -a $diva3dlog 
 echo 'diva3Dcont:' 'Start contour generation flag number: '$cont	| tee -a $diva3dlog
-echo 'diva3Dcont:' 'on '$var						| tee -a $diva3dlog
+echo 'diva3Dcont:' 'on '"$var"						| tee -a $diva3dlog
 echo 'diva3Dcont:' 'level '$bottm' to level '$surf			| tee -a $diva3dlog
 echo 'diva3Dcont:'							| tee -a $diva3dlog
 #

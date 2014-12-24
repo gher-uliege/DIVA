@@ -156,10 +156,12 @@ then
 echo 'divadoall:' Cleaning up the old data files
 
 #########################################################
+saveifs=$IFS
+IFS=$'\n'
 for var in `cat varlist`
 #########################################################
 do
-echo 'divadoall:' variable $var
+echo 'divadoall:' variable "$var"
 
 #########################################################
 for year in `cat yearlist`
@@ -167,16 +169,16 @@ for year in `cat yearlist`
 do
 echo 'divadoall:' year $year
 
-if [ -f output/3Danalysis/${var}.${year}.3DNCliste ]
+if [ -f output/3Danalysis/"${var}".${year}.3DNCliste ]
 then
 echo 'divadoall:' Erasing 3DNCD list
-rm -f output/3Danalysis/${var}.${year}.3DNCliste
+rm -f output/3Danalysis/"${var}".${year}.3DNCliste
 fi
 
-if [ -f output/3Danalysis/${var}.${year}.3DNCinfo ]
+if [ -f output/3Danalysis/"${var}".${year}.3DNCinfo ]
 then
 echo 'divadoall:' Erasing 3DNCD info
-rm -f output/3Danalysis/${var}.${year}.3DNCinfo
+rm -f output/3Danalysis/"${var}".${year}.3DNCinfo
 fi
 
 #########################################################
@@ -191,8 +193,8 @@ do
 let lev=$lev+1
 let lnum=10000+$lev
 ##ls -l input/divadata/${var}.${year}.${month}.$lnum
-if [ -f input/divadata/${var}.${year}.${month}.$lnum ];then
-rm -f input/divadata/${var}.${year}.${month}.$lnum
+if [ -f input/divadata/"${var}".${year}.${month}.$lnum ];then
+rm -f input/divadata/"${var}".${year}.${month}.$lnum
 fi
 
 done
@@ -202,6 +204,7 @@ done
 done
 
 done
+IFS=$saveifs
 
 #for ODVDATA in `cat datasource`
 (cat datasource; echo) | while read -r ODVDATA qflag1 qflag2
@@ -303,6 +306,8 @@ monnumr=$(cat monthlist | wc -l)
 yeanumr=$(cat yearlist | wc -l)
 
 #########################################################
+saveifs=$IFS
+IFS=$'\n'
 for var in `cat varlist`
 #########################################################
 do
@@ -315,7 +320,7 @@ for month in `cat monthlist`
 #########################################################
 do
 echo 'divadoall:' '======================= Starting analysis loop on :'
-echo 'divadoall:' '=======================      variable     '$var
+echo 'divadoall:' '=======================      variable     '"$var"
 echo 'divadoall:' '=======================           year    '$year
 echo 'divadoall:' '=======================          month    '$month
 #########################################################
@@ -340,7 +345,7 @@ isanalysis=$isanalysisdrv
 GMIN="1"
 GMAX="0"
 
-FILENAME=${var}.bounds
+FILENAME="${var}".bounds
 
 if [ -f "$FILENAME" ] 
 then
@@ -359,12 +364,12 @@ monthe=${month:2:2}
 
 if [ -f ./ODVcolumns ];then
 
-ncolvar=$(grep -i $var ODVcolumns | awk -F "\t" '{print $3}')
+ncolvar=$(grep -i "$var" ODVcolumns | awk -F "\t" '{print $3}')
 
-longvarname=$(grep -i $var ODVcolumns | awk -F "\t" '{print $1}' | awk -F " " '{print $1}')
-longvarunit=$(grep -i $var ODVcolumns | awk -F "\t" '{print $1}' | awk -F " " '{print $2}')
+longvarname=$(grep -i "$var" ODVcolumns | awk -F "\t" '{print $1}' | awk -F " " '{print $1}')
+longvarunit=$(grep -i "$var" ODVcolumns | awk -F "\t" '{print $1}' | awk -F " " '{print $2}')
 
-echo 'divadoall:' working on variable $var 
+echo 'divadoall:' working on variable "$var" 
 echo 'divadoall:' $ncolvar
 
 fi
@@ -373,14 +378,14 @@ if [ -f "${var}.units" ]
 then
 {
 read longvarunit
-} < $var.units
+} < "$var".units
 fi
 
 if [ -f "${var}.longname" ]
 then
 {
 read longvarname
-} < $var.longname
+} < "$var".longname
 fi
 
 echo 'divadoall:' '======================  Checking levels data coverage ======'
@@ -395,17 +400,17 @@ let mlevel=$mlevel+1
 let levelp=$mlevel+1
 let jmlevel=$mlevel+10000
 
-if [ -f  ./input/divadata/$var.$year.$month.$jmlevel ];then
+if [ -f  ./input/divadata/"$var".$year.$month.$jmlevel ];then
 
-ndatajm=$(cat ./input/divadata/$var.$year.$month.$jmlevel | wc -l)
+ndatajm=$(cat ./input/divadata/"$var".$year.$month.$jmlevel | wc -l)
 echo 'divadoall:' level $mlevel with data points $ndatajm
 if [ "$ndatajm" -lt "$mindata" ]
 then
 echo 'divadoall:' Too few data $ndatajm , will try to use all month values 
-cp -v ./input/divadata/$var.$year.$month.$jmlevel ./input/divadata/$var.$year.$month.$jmlevel.ori
-cat ./input/divadata/$var.$year.*.$jmlevel > bidon
-mv bidon ./input/divadata/$var.$year.$month.$jmlevel 
-ndatajm=$(cat ./input/divadata/$var.$year.$month.$jmlevel | wc -l)
+cp -v ./input/divadata/"$var".$year.$month.$jmlevel ./input/divadata/"$var".$year.$month.$jmlevel.ori
+cat ./input/divadata/"$var".$year.*.$jmlevel > bidon
+mv bidon ./input/divadata/"$var".$year.$month.$jmlevel 
+ndatajm=$(cat ./input/divadata/"$var".$year.$month.$jmlevel | wc -l)
 echo 'divadoall:' now using data points $ndatajm 
 fi
 
@@ -538,18 +543,18 @@ while [ "$lev" -le "$upperlevel" ]
 do 
  let level=10000+$lev
  cp -v ./input/divaparam/coast.cont.$level ${DIVADIR}/divastripped/input/divaparam/.
-if [ -f ./input/divaparam/param.par.$var.$year.$month.$level ];then
- cp -v ./input/divaparam/param.par.$var.$year.$month.$level ${DIVADIR}/divastripped/input/divaparam/.
+if [ -f ./input/divaparam/param.par."$var".$year.$month.$level ];then
+ cp -v ./input/divaparam/param.par."$var".$year.$month.$level ${DIVADIR}/divastripped/input/divaparam/.
 fi
- cp -v ./input/divadata/$var.$year.$month.$level ${DIVADIR}/divastripped/input/divadata/.
+ cp -v ./input/divadata/"$var".$year.$month.$level ${DIVADIR}/divastripped/input/divadata/.
 if [ -f ./input/divaparam/RLinfo.dat ];then 
  cp -v ./input/divaparam/RLinfo.dat ${DIVADIR}/divastripped/input/divaparam/.
- cp -v ./input/divaparam/RL.$var.$year.$month.$level ${DIVADIR}/divastripped/input/divaparam/.
+ cp -v ./input/divaparam/RL."$var".$year.$month.$level ${DIVADIR}/divastripped/input/divaparam/.
  cp -v ./input/divaparam/RL.dat ${DIVADIR}/divastripped/input/divaparam/.
 fi
 
-if [ -f ./input/divaparam/valatxy.coord.$var'.'$lev ];then
- cp -v ./input/divaparam/valatxy.coord.$var'.'$lev ${DIVADIR}/divastripped/input/divaparam/.
+if [ -f ./input/divaparam/valatxy.coord."$var"'.'$lev ];then
+ cp -v ./input/divaparam/valatxy.coord."$var"'.'$lev ${DIVADIR}/divastripped/input/divaparam/.
 else
  if [ -f ./input/divaparam/valatxy.coord.$lev ];then
  cp -v ./input/divaparam/valatxy.coord.$lev ${DIVADIR}/divastripped/input/divaparam/.
@@ -565,14 +570,14 @@ else
 fi
 
 if [ -d ./input/divatrans ];then 
- cp -v ./input/divatrans/$var.$year.$month.$level.anl.mat ${DIVADIR}/divastripped/input/divatrans/.
+ cp -v ./input/divatrans/"$var".$year.$month.$level.anl.mat ${DIVADIR}/divastripped/input/divatrans/.
 fi
 let lev=$lev+1
 done
 
 
-if [ -f "./input/divadata/$var.logitrange" ];then
-cp -v ./input/divadata/$var.logitrange  ${DIVADIR}/divastripped/input/divadata
+if [ -f "./input/divadata/"$var".logitrange" ];then
+cp -v ./input/divadata/"$var".logitrange  ${DIVADIR}/divastripped/input/divadata
 fi
 
 #
@@ -584,7 +589,7 @@ echo 'divadoall:'
 echo 'divadoall:' '=== making special reference fields since isanalysis = '$isanalysis
 echo 'divadoall:' 
 #
-./divadoref $var $year $month
+./divadoref "$var" $year $month
 #
 iscontoursave=$iscontour
 iscontour=0
@@ -607,7 +612,7 @@ let isanalysis=$isanalysis-100
 fi
 #
 echo 'divadoall:' 'divadoall: finished preparing reference fields with mixed '
-echo 'divadoall:' 'and/or avraged data for  '$var'.'$year'.'$month
+echo 'divadoall:' 'and/or avraged data for  '"$var"'.'$year'.'$month
 echo 'divadoall:' 'now isanalysis =  '$isanalysis
 fi
 #############
@@ -689,9 +694,9 @@ if [ "$isref" == "1" ];then
  while [ "$lev" -le "$upperlevel" ]
  do 
  let level=10000+$lev
- cp -v './input/divarefe_all/'$var'.'$yrref.$mnref.$level'.ref' './input/divarefe/'$var'.'$year'.'$month'.'$level'.ref'
- cp -v './input/divarefe_all/'$var'.'$yrref.$mnref.$level'.ascii.ref' './input/divarefe/'$var'.'$year'.'$month'.'$level'.ascii.ref'
- cp -v './input/divarefe_all/'$var'.'$yrref.$mnref.$level'.datapoint.ref' './input/divarefe/'$var'.'$year'.'$month'.'$level'.datapoint.ref'
+ cp -v './input/divarefe_all/'"$var"'.'$yrref.$mnref.$level'.ref' './input/divarefe/'"$var"'.'$year'.'$month'.'$level'.ref'
+ cp -v './input/divarefe_all/'"$var"'.'$yrref.$mnref.$level'.ascii.ref' './input/divarefe/'"$var"'.'$year'.'$month'.'$level'.ascii.ref'
+ cp -v './input/divarefe_all/'"$var"'.'$yrref.$mnref.$level'.datapoint.ref' './input/divarefe/'"$var"'.'$year'.'$month'.'$level'.datapoint.ref'
  cp -v ./input/divarefe_all/GridInfo.dat  ./input/divarefe/GridInfo.dat
  let lev=$lev+1
  done
@@ -752,21 +757,21 @@ fi
 
 cd ${DIVADIR}/divastripped/
 
-if [ -f $WDIR'/output/3Danalysis/'$var'.'$year'.3DNCliste' ]; then
- cp -v $WDIR'/output/3Danalysis/'$var'.'$year'.3DNCliste' ${DIVADIR}/divastripped/output/3Danalysis/.
+if [ -f $WDIR'/output/3Danalysis/'"$var"'.'$year'.3DNCliste' ]; then
+ cp -v $WDIR'/output/3Danalysis/'"$var"'.'$year'.3DNCliste' ${DIVADIR}/divastripped/output/3Danalysis/.
 fi
-if [ -f $WDIR'/output/3Danalysis/'$var'.'$year'.3DNCinfo' ]; then
- cp -v $WDIR'/output/3Danalysis/'$var'.'$year'.3DNCinfo' ${DIVADIR}/divastripped/output/3Danalysis/.
+if [ -f $WDIR'/output/3Danalysis/'"$var"'.'$year'.3DNCinfo' ]; then
+ cp -v $WDIR'/output/3Danalysis/'"$var"'.'$year'.3DNCinfo' ${DIVADIR}/divastripped/output/3Danalysis/.
 fi
 #
 #
 #
 echo 'divadoall:' 
-echo 'divadoall:' ' preparing 3Dinfo input file for 3D DIVA run for: '$var $year $month
+echo 'divadoall:' ' preparing 3Dinfo input file for 3D DIVA run for: '"$var" $year $month
 echo 'divadoall:' 
 
 echo "! Variable"  > ./input/3Dinfo
-echo $var.$year.$month >> ./input/3Dinfo
+echo "$var".$year.$month >> ./input/3Dinfo
 echo "! Number of the first level to be processed"  >> ./input/3Dinfo
 echo $minlevel >> ./input/3Dinfo
 echo "! Number of the last level to be processed"  >> ./input/3Dinfo
@@ -855,7 +860,7 @@ fi
 mkdir -p ./output/ghertonetcdf
 
 echo 'divadoall:' 
-echo 'divadoall:' 'Running diva3Ddress on '$var $year $month
+echo 'divadoall:' 'Running diva3Ddress on '"$var" $year $month
 echo 'divadoall:' '########################################'
 echo 'divadoall:' 
 echo 'divadoall:' 
@@ -886,7 +891,7 @@ echo 'divadoall:' '======================  Copying output/3Danalysis to climatol
 echo 'divadoall:' 
 
 cp -r ${DIVADIR}/divastripped/output/3Danalysis ${WDIR}/output/.
-cp -v ${DIVADIR}/divastripped/output/diva.log ${WDIR}'/output/3Danalysis/'$var'.'$year'.'$month'.Fortran.log'
+cp -v ${DIVADIR}/divastripped/output/diva.log ${WDIR}'/output/3Danalysis/'"$var"'.'$year'.'$month'.Fortran.log'
 
 echo 'divadoall:' 
 echo 'divadoall:' '======================  Copying divastripped/input/ to climatology/newinput directory ======'
@@ -949,7 +954,7 @@ echo 'divadoall: second loop  '$year
 echo 'divadoall:' ==================
 
 done
-
+IFS=$saveifs
 
 if [ "$idoanal" -eq "1" ]
 then
@@ -995,7 +1000,7 @@ fi
 
 
 echo 'divadoall:' ==================
-echo 'divadoall: Finished  '$var
+echo 'divadoall: Finished  '"$var"
 echo 'divadoall:' ==================
 echo '****************'
 date

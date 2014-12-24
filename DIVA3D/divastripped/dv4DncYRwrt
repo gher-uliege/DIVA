@@ -5,8 +5,8 @@
 #####################################################
 #
 #
-var=$1
-echo  Writing 4D NETCDF multi-year climatology file for $var
+var="$1"
+echo  'Writing 4D NETCDF multi-year climatology file for' "$var"
 nbmon=`cat ./input/monthlist |wc -l`
 #
 if [ -f ./3DWORK/fort.44 ];then
@@ -16,12 +16,14 @@ fi
 rm -f ./3DWORK/3Dncliste
 nbfls=0
 #########################################################
+saveifs=$IFS
+IFS=$'\n'
 for year in `cat ./input/yearlist`
 #########################################################
 do
 #
-nblns=`cat ./output/3Danalysis/$var.$year.3DNCliste |wc -l`
-Fileinf=./output/3Danalysis/$var.$year.3DNCliste
+nblns=`cat ./output/3Danalysis/"$var".$year.3DNCliste |wc -l`
+Fileinf='./output/3Danalysis/'"$var"'.'$year'.3DNCliste'
 {
 ll=1
 while [ $ll -le $nblns ]
@@ -30,17 +32,19 @@ read filename
 echo $filename >> ./3DWORK/3Dncliste
 let ll=$ll+1
 done
-} < $Fileinf
+} < "$Fileinf"
 #
 let nbfls=$nbfls+$nblns
 done
+IFS=$saveifs
 #
-head -11 ./output/3Danalysis/$var.$year.3DNCinfo > ./3DWORK/3DNCinfo
+head -11 './output/3Danalysis/'"$var"'.'$year'.3DNCinfo' > ./3DWORK/3DNCinfo
+
 for year in `cat ./input/yearlist`
 #########################################################
 do
 #
- Fileinf=./output/3Danalysis/$var.$year.3DNCinfo
+ Fileinf='./output/3Danalysis/'"$var"'.'$year'.3DNCinfo'
 {
 read dummy
 read dummy
@@ -65,7 +69,7 @@ echo $comm3 >> ./3DWORK/3DNCinfo
 let ll=$ll+1
 done
 #
-} < $Fileinf
+} < "$Fileinf"
 #
 done
 #

@@ -14,13 +14,15 @@ mkdir -p ./output/3Danalysis/MetaDataXMLs
 #
 
 #########################################################
+saveifs=$IFS
+IFS=$'\n'
 for var in `cat varlist`
 #########################################################
 do
 
 echo ' '
 echo ' =================== Running divadoNCYR ======================== '
-echo ' =================== working on variable: ' $var
+echo ' =================== working on variable: ' "$var"
 echo ' '
 
 rm -rf ${DIVADIR}/divastripped/input/*
@@ -49,33 +51,33 @@ echo year $year
 
 cp -v $WDIR/output/3Danalysis/Fields/GridInfo.dat ${DIVADIR}/divastripped/output/3Danalysis/Fields/.
 
-if [ -f './output/3Danalysis/'$var'.Metainfo.txt' ]; then
-cp -v './output/3Danalysis/'$var'.Metainfo.txt'  ${DIVADIR}/divastripped/output/3Danalysis/.
+if [ -f './output/3Danalysis/'"$var"'.Metainfo.txt' ]; then
+cp -v './output/3Danalysis/'"$var"'.Metainfo.txt'  ${DIVADIR}/divastripped/output/3Danalysis/.
 fi
 
-if [ -f './output/3Danalysis/'$var'.'$year'.3DNCliste' ]; then
+if [ -f './output/3Danalysis/'"$var"'.'$year'.3DNCliste' ]; then
 
-cp -v './output/3Danalysis/'$var'.'$year'.3DNCliste' ${DIVADIR}/divastripped/output/3Danalysis/.
-rm './output/3Danalysis/'$var'.'$year'.3DNCliste'
+cp -v './output/3Danalysis/'"$var"'.'$year'.3DNCliste' ${DIVADIR}/divastripped/output/3Danalysis/.
+rm './output/3Danalysis/'"$var"'.'$year'.3DNCliste'
 
-if [ -f './output/3Danalysis/'$var'.'$year'.3DNCinfo' ]; then
+if [ -f './output/3Danalysis/'"$var"'.'$year'.3DNCinfo' ]; then
 
-cp -v './output/3Danalysis/'$var'.'$year'.3DNCinfo' ${DIVADIR}/divastripped/output/3Danalysis/.
-rm './output/3Danalysis/'$var'.'$year'.3DNCinfo'
+cp -v './output/3Danalysis/'"$var"'.'$year'.3DNCinfo' ${DIVADIR}/divastripped/output/3Danalysis/.
+rm './output/3Danalysis/'"$var"'.'$year'.3DNCinfo'
 
 cd ./output/3Danalysis/
 
 cp -v ./Fields/GridInfo.dat ../../${DIVADIR}/divastripped/output/3Danalysis/.
 
-for ncfile in `ls $var.$year.*.anl.nc` ;do
+for ncfile in `ls "$var".$year.*.anl.nc` ;do
 cp -v $ncfile ../../${DIVADIR}/divastripped/output/3Danalysis/.
 done
 
-for dtfile in `ls $var'.'$year'.'*'.nbrdata'` ;do
+for dtfile in `ls "$var"'.'$year'.'*'.nbrdata'` ;do
 cp -v $dtfile ../../${DIVADIR}/divastripped/output/3Danalysis/.
 done
 
-for dtfile in `ls $var'.'$year'.'*'.3Dparam'` ;do
+for dtfile in `ls "$var"'.'$year'.'*'.3Dparam'` ;do
 cp -v $dtfile ../../${DIVADIR}/divastripped/output/3Danalysis/.
 done
 cd  $WDIR
@@ -84,7 +86,7 @@ cd  $WDIR
 else
 
 echo ====SEVERE ERROR==================
-echo 'did not find ./output/3Danalysis/'$var'.'$year'.3DNCinfo'
+echo 'did not find ./output/3Danalysis/'"$var"'.'$year'.3DNCinfo'
 
 fi
 cd  $WDIR
@@ -92,7 +94,7 @@ cd  $WDIR
 else
 
 echo ====SEVERE ERROR==================
-echo 'did not find ./output/3Danalysis/'$var'.'$year'.3DNCliste'
+echo 'did not find ./output/3Danalysis/'"$var"'.'$year'.3DNCliste'
 
 fi
 
@@ -102,19 +104,20 @@ done
 
 cd ${DIVADIR}/divastripped
 
-dv4DncYRwrt $var
+dv4DncYRwrt "$var"
 
 echo now saving needs to be done
-cp -v ./output/3Danalysis/$var.4Danl.nc ${WDIR}/output/3Danalysis/.
-cp -v ./output/3Danalysis/$var'.4DNCMetainfo' ${WDIR}/output/3Danalysis/.
-cp -v ./output/3Danalysis/$var'.Metainfo.txt' ${WDIR}/output/3Danalysis/.
+cp -v ./output/3Danalysis/"$var".4Danl.nc ${WDIR}/output/3Danalysis/.
+cp -v ./output/3Danalysis/"$var"'.4DNCMetainfo' ${WDIR}/output/3Danalysis/.
+cp -v ./output/3Danalysis/"$var"'.Metainfo.txt' ${WDIR}/output/3Danalysis/.
 
 cd $WDIR
-cat  ./output/3Danalysis/DriverMetainfo ./output/3Danalysis/$var'.Metainfo.txt' > ./output/3Danalysis/MetaDataXMLs/$var'.Textinfo.txt'
+cat  ./output/3Danalysis/DriverMetainfo ./output/3Danalysis/"$var"'.Metainfo.txt' > ./output/3Danalysis/MetaDataXMLs/"$var"'.Textinfo.txt'
 
-echo '============================= divadoNCDF: end var loop    '$var
+echo '============================= divadoNCDF: end var loop    '"$var"
 
 done
+IFS=$saveifs
 
 echo ==================
 echo second loop

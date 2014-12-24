@@ -4,10 +4,10 @@
 #
 bottm=$1
 surf=$2
-var=$3
+var="$3"
 itrans=$4
 #
-dvrefetransflog='./output/3Danalysis/'$var'_dvrefetransf.log'
+dvrefetransflog='./output/3Danalysis/'"$var"'_dvrefetransf.log'
 #
 ##if [ -f "./input/dorefeinfo" ];then
 ##FILENAME="./input/dorefeinfo"
@@ -40,13 +40,13 @@ while [ $dep -le $surf ]
 do
 let level=10000+$dep
 #
-if [ -f ./input/divarefe/$var'.'$level'.datapoint.ref' ];then
+if [ -f ./input/divarefe/"$var"'.'$level'.datapoint.ref' ];then
 
 cd ./input/divarefe
-  file=$var'.'$level'.datapoint.ref'
+  file="$var"'.'$level'.datapoint.ref'
   nbcl=$(head -n 1 $file | wc -w)
   nbln=$(cat $file |wc -l)
-  echo $var > ../../3DWORK/fort.33
+  echo "$var" > ../../3DWORK/fort.33
   echo $itrans >> ../../3DWORK/fort.33
   echo $bottm >> ../../3DWORK/fort.33
   echo $surf >> ../../3DWORK/fort.33
@@ -57,7 +57,7 @@ cd ../../3DWORK/
 
 
 echo dvrefetransf: ////////////////////////////////////////// >> ../output/diva.log
-echo 'dvrefetransf:       refenoise: '$var   >> ./output/diva.log
+echo 'dvrefetransf:       refenoise: '"$var"   >> ./output/diva.log
 echo dvrefetransf: ////////////////////////////////////////// >> ../output/diva.log
 echo ' '  >> ./output/diva.log
 
@@ -103,14 +103,14 @@ do
 let level=10000+$dep
 
 
-if [ -f ./input/divarefe/$var'.'$level'.datapoint.ref' ];then
+if [ -f ./input/divarefe/"$var"'.'$level'.datapoint.ref' ];then
 
 
-file=$var'.'$level'.datapoint.ref'
+file="$var"'.'$level'.datapoint.ref'
 nbcl=$(head -n 1 $file | wc -w)
 nbln=$(cat $file |wc -l)
 echo $file $nbln $nbcl >> ../../3DWORK/lsdivarefe
-echo 'refbruit_'$var'.'$level'.datapoint.ref' >> ../../3DWORK/refbruitls
+echo 'refbruit_'"$var"'.'$level'.datapoint.ref' >> ../../3DWORK/refbruitls
 
 fi
 
@@ -119,14 +119,14 @@ done
 
 if [ -f '../../3DWORK/refbruitls' ];then
 
-cat 'refbruit_'$var'.1'*'.datapoint.ref' >../../3DWORK/$var'_noise.ref'
+cat 'refbruit_'"$var"'.1'*'.datapoint.ref' >../../3DWORK/"$var"'_noise.ref'
 
 cd ../../3DWORK/
-  file=$var'_noise.ref'
+  file="$var"'_noise.ref'
   nbln=$(cat $file |wc -l)
   file='lsdivadata'
   nbfl=$(cat $file |wc -l)
-  echo $var > fort.33
+  echo "$var" > fort.33
   echo $itrans >> fort.33
   echo $bottm >> fort.33
   echo $surf >> fort.33
@@ -162,11 +162,11 @@ echo -------------------------------------------- >> ../output/diva.log
 fi
 
 #
-  file='../input/divarefe/'$var'_inverf'
+  file='../input/divarefe/'"$var"'_inverf'
   nbln=$(cat $file |wc -l)
   file='lsdivarefe'
   nbfl=$(cat $file |wc -l)
-  echo $var > fort.33
+  echo "$var" > fort.33
   echo $itrans >> fort.33
   echo $bottm >> fort.33
   echo $surf >> fort.33
@@ -174,7 +174,7 @@ fi
   echo $nbfl >> fort.33
 
 echo dvrefetransf: ////////////////////////////////////////// >> ../output/diva.log
-echo 'dvrefetransf:       refenoise: '$var   >> ./output/diva.log
+echo 'dvrefetransf:       refenoise: '"$var"   >> ./output/diva.log
 echo dvrefetransf: ////////////////////////////////////////// >> ../output/diva.log
 echo ' '  >> ./output/diva.log
 
@@ -217,14 +217,14 @@ while [ $dep -le $surf ]
 do
 let level=10000+$dep
 
-if [ -f ./input/divarefe/$var'.'$level'.datapoint.ref' ];then
+if [ -f ./input/divarefe/"$var"'.'$level'.datapoint.ref' ];then
 #
 cd ./input/divarefe
-  file=$var.$level'.datapoint.ref'
+  file="$var".$level'.datapoint.ref'
   nbcl=$(head -n 1 $file | wc -w)
   nbln=$(cat $file |wc -l)
 
-  echo $var > ../../3DWORK/fort.44
+  echo "$var" > ../../3DWORK/fort.44
   echo $itrans >> ../../3DWORK/fort.44
   echo $bottm >> ../../3DWORK/fort.44
   echo $surf >> ../../3DWORK/fort.44
@@ -232,7 +232,7 @@ cd ./input/divarefe
   echo $nbcl >> ../../3DWORK/fort.44
   echo $dep >> ../../3DWORK/fort.44
 
-  echo $var >> $dvrefetransflog
+  echo "$var" >> $dvrefetransflog
   echo $itrans >> $dvrefetransflog
   echo $bottm  >> $dvrefetransflog
   echo $surf  >> $dvrefetransflog
@@ -243,7 +243,7 @@ cd ./input/divarefe
   cd ../../3DWORK/
 
 echo dvrefetransf: ////////////////////////////////////////// >> ../output/diva.log
-'echo dvrefetransf:       refetrans: '$var'.'$level   >> ./output/diva.log
+'echo dvrefetransf:       refetrans: '"$var"'.'$level   >> ./output/diva.log
 echo dvrefetransf: ////////////////////////////////////////// >> ../output/diva.log
 echo ' '  >> ./output/diva.log
 
@@ -271,17 +271,17 @@ echo -------------------------------------------- >> ../output/diva.log
 fi
 
   if [ -f fort.55 ];then
-  mv fort.55 'ERR.'$var'.'$level'.datapoint.ref'
+  mv fort.55 'ERR.'"$var"'.'$level'.datapoint.ref'
   fi
 cd ../
 #
 
 else
 
- if [ -f ./input/divarefe/$var'.'$lev'.ref' ];then
+ if [ -f ./input/divarefe/"$var"'.'$lev'.ref' ];then
 #
 cd ./input/divarefe
-  file=$var'.'$level'.ref'
+  file="$var"'.'$level'.ref'
 
   echo $file > ../../3DWORK/fort.44
   echo $itrans >> ../../3DWORK/fort.44
@@ -289,7 +289,7 @@ cd ./input/divarefe
   cd ../../3DWORK/
   ../../bin/refebintrans.a
   if [ -f fort.55 ];then
-  mv fort.55 'ERR.'$var'.'$level'.ref'
+  mv fort.55 'ERR.'"$var"'.'$level'.ref'
   fi
 
  fi

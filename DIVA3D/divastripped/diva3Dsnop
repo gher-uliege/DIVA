@@ -15,6 +15,8 @@
 binning=0
 #------------------------------------------------
 
+saveifs=$IFS
+IFS=$'\n'
   Fileinf=./input/3Dinfo
 {
 read comment
@@ -40,19 +42,20 @@ read minsn
 read comment
 read maxsn
 } < $Fileinf
+IFS=$saveifs
 #
 #
-diva3dlog='./output/3Danalysis/'$var'.diva3D.log'
+diva3dlog='./output/3Danalysis/'"$var"'.diva3D.log'
 #
 echo 'diva3Dsnop:' 
 echo 'diva3Dsnop:' 'Start S/N estimation: '$datop
-echo 'diva3Dsnop:' 'on '$var
+echo 'diva3Dsnop:' 'on '"$var"
 echo 'diva3Dsnop:' 'level '$lay1' to level '$lay2
 echo 'diva3Dsnop:'
 #
 echo 'diva3Dsnop:' >> $diva3dlog
 echo 'diva3Dsnop:' 'Start S/N estimation: '$datop >> $diva3dlog
-echo 'diva3Dsnop:' ' on '$var >> $diva3dlog
+echo 'diva3Dsnop:' ' on '"$var" >> $diva3dlog
 echo 'diva3Dsnop:' ' level '$lay1' to level '$lay2 >> $diva3dlog
 echo 'diva3Dsnop:' >> $diva3dlog
 #
@@ -117,12 +120,12 @@ dep=$lay1
 #Cleaning work directories first
 ./divaclean
 #
-if [ -f './output/'$var'.SN.dat' ];then
-rm -f './output/'$var'.SN.dat'
-rm -f './output/'$var'.Lay.dat'
+if [ -f './output/'"$var"'.SN.dat' ];then
+rm -f './output/'"$var"'.SN.dat'
+rm -f './output/'"$var"'.Lay.dat'
 fi
-if [ -f './output/'$var'.VAR.dat' ];then
-rm -f './output/'$var'.VAR.dat'
+if [ -f './output/'"$var"'.VAR.dat' ];then
+rm -f './output/'"$var"'.VAR.dat'
 fi
 while [ $dep -le $lay2 ]
 do
@@ -140,26 +143,26 @@ echo 'ooooooooooooooooooooooooooooooooooooooooooooooooooo'
 echo 'diva3Dsnop: determination of SN for level: '$lev
 echo 'ooooooooooooooooooooooooooooooooooooooooooooooooooo'
 #
-nblines=`cat './input/divadata/'$var'.'$lev |wc -l` 
+nblines=`cat './input/divadata/'"$var"'.'$lev |wc -l` 
 #
-if [ -f ./input/divaparam/param.par.$var'.'$lev ];then
- cp -f ./input/divaparam/param.par.$var'.'$lev ./input/divaparam/param.par.$var'.'$lev'.ori'
- cp -f ./input/divaparam/param.par.$var'.'$lev ./input/param.par
+if [ -f ./input/divaparam/param.par."$var"'.'$lev ];then
+ cp -f ./input/divaparam/param.par."$var"'.'$lev ./input/divaparam/param.par."$var"'.'$lev'.ori'
+ cp -f ./input/divaparam/param.par."$var"'.'$lev ./input/param.par
 else
   if [ -f ./input/divaparam/param.par.$lev ];then
    cp -f ./input/divaparam/param.par.$lev ./input/.
-   cp -f ./input/divaparam/param.par.$lev ./input/divaparam/param.par.$var'.'$lev
+   cp -f ./input/divaparam/param.par.$lev ./input/divaparam/param.par."$var"'.'$lev
   else
-    if [ -f ./input/divaparam/param.par.$var ];then
-     cp -f ./input/divaparam/param.par.$var ./input/.
-     cp -f ./input/divaparam/param.par.$var ./input/divaparam/param.par.$var'.'$lev
+    if [ -f ./input/divaparam/param.par."$var" ];then
+     cp -f ./input/divaparam/param.par."$var" ./input/.
+     cp -f ./input/divaparam/param.par."$var" ./input/divaparam/param.par."$var"'.'$lev
     else
      if [ -f ./input/divaparam/param.par ];then
        cp -f ./input/divaparam/param.par ./input/.
-       cp -f ./input/divaparam/param.par ./input/divaparam/param.par.$var'.'$lev
+       cp -f ./input/divaparam/param.par ./input/divaparam/param.par."$var"'.'$lev
      else
       if [ -f ./input/param.par ];then
-         cp -f ./input/param.par ./input/divaparam/param.par.$var'.'$lev
+         cp -f ./input/param.par ./input/divaparam/param.par."$var"'.'$lev
       fi
      fi
     fi
@@ -182,54 +185,54 @@ else
 fi
 #
 #
-if [ -f ./input/divadata/$var.$lev ];then
- cp -f ./input/divadata/$var.$lev  ./input/data.dat
+if [ -f ./input/divadata/"$var".$lev ];then
+ cp -f ./input/divadata/"$var".$lev  ./input/data.dat
  nbdat=`cat './input/data.dat' |wc -l` 
  if [ "$nbdat" == "0" ] ; then
   runflag=4
  fi
 else
- echo '!!!!! diva3Dsnop did not find '$var'.'$lev' in divadata/ !!!!!' >> $diva3dlog
- echo '!!!!! diva3Dsnop did not find '$var'.'$lev' in divadata/ !!!!!'
+ echo '!!!!! diva3Dsnop did not find '"$var"'.'$lev' in divadata/ !!!!!' >> $diva3dlog
+ echo '!!!!! diva3Dsnop did not find '"$var"'.'$lev' in divadata/ !!!!!'
  runflag=2
 fi
 #
 #
 if [ "$runflag" -eq "0" ];then
 #--------------------------
-#echo '>>>> looking for reference field for '$var'.'$lev' <<<<< '
+#echo '>>>> looking for reference field for '"$var"'.'$lev' <<<<< '
 #
 refdat=0
-if [ -f ./input/divarefe/$var'.'$lev'.datapoint.ref' ];then
+if [ -f ./input/divarefe/"$var"'.'$lev'.datapoint.ref' ];then
 refdat=1
- cp -v ./input/divarefe/$var'.'$lev'.datapoint.ref' ./output/fieldatdatapoint.anl.ref
-   cp -v ./input/divarefe/$var'.'$lev'.ref' ./output/fieldgher.anl.ref
+ cp -v ./input/divarefe/"$var"'.'$lev'.datapoint.ref' ./output/fieldatdatapoint.anl.ref
+   cp -v ./input/divarefe/"$var"'.'$lev'.ref' ./output/fieldgher.anl.ref
  cp -v ./input/divarefe/GridInfo.dat  ./output/ghertonetcdf/GridInfo.dat
 
 echo diva3Dsnop: ////////////////////////////////////////// >> ./output/diva.log
-echo 'diva3Dsnop:   running divaanom '$var'.'$lev >> ./output/diva.log
+echo 'diva3Dsnop:   running divaanom '"$var"'.'$lev >> ./output/diva.log
 echo diva3Dsnop: ////////////////////////////////////////// >> ./output/diva.log
 echo ' '  >> ./output/diva.log
   ./divaanom
     cat $diva3dlog ./output/divaanom.log > bidon
     mv bidon $diva3dlog
 
-  echo '!!!!! using  reference field for '$var'.'$lev'!!' >> $diva3dlog
+  echo '!!!!! using  reference field for '"$var"'.'$lev'!!' >> $diva3dlog
 else
-  if [ -f ./input/divarefe/$var'.'$lev'.ref' ];then
+  if [ -f ./input/divarefe/"$var"'.'$lev'.ref' ];then
    refdat=1
-   cp -v ./input/divarefe/$var'.'$lev'.ref' ./output/fieldgher.anl.ref
+   cp -v ./input/divarefe/"$var"'.'$lev'.ref' ./output/fieldgher.anl.ref
    cp -v ./input/divarefe/GridInfo.dat  ./output/ghertonetcdf/GridInfo.dat
 
 echo diva3Dsnop: ////////////////////////////////////////// >> ./output/diva.log
-echo 'diva3Dsnop:   running divaaanom '$var'.'$lev >> ./output/diva.log
+echo 'diva3Dsnop:   running divaaanom '"$var"'.'$lev >> ./output/diva.log
 echo diva3Dsnop: ////////////////////////////////////////// >> ./output/diva.log
 echo ' '  >> ./output/diva.log
   ./divaanom
     cat $diva3dlog ./output/divaanom.log > bidon
     mv bidon $diva3dlog
 
-   echo '!!!!! using  reference field for '$var'.'$lev' !!' >> $diva3dlog
+   echo '!!!!! using  reference field for '"$var"'.'$lev' !!' >> $diva3dlog
   fi
 #
 fi
@@ -252,8 +255,8 @@ fi
 #
 if [ -f ./input/constraint.dat ]
 then
- if [ -f ./input/divaUVcons/UVinfo.$var.$lev ];then
-  cp -f ./input/divaUVcons/UVinfo.$var.$lev ./input/UVinfo.dat
+ if [ -f ./input/divaUVcons/UVinfo."$var".$lev ];then
+  cp -f ./input/divaUVcons/UVinfo."$var".$lev ./input/UVinfo.dat
  else
   if [ -f ./input/divaUVcons/UVinfo.$lev ];then
    cp -f ./input/divaUVcons/UVinfo.$lev ./input/UVinfo.dat
@@ -264,8 +267,8 @@ then
   fi
  fi
 #
- if [ -f ./input/divaUVcons/Uvel.$var.$lev ];then
-  cp -f ./input/divaUVcons/Uvel.$var.$lev ./input/Uvel.dat
+ if [ -f ./input/divaUVcons/Uvel."$var".$lev ];then
+  cp -f ./input/divaUVcons/Uvel."$var".$lev ./input/Uvel.dat
  else
   if [ -f ./input/divaUVcons/Uvel.$lev ];then
    cp -f ./input/divaUVcons/Uvel.$lev ./input/Uvel.dat
@@ -276,8 +279,8 @@ then
   fi
  fi
 #
- if [ -f ./input/divaUVcons/Vvel.$var.$lev ];then
-  cp -f ./input/divaUVcons/Vvel.$var.$lev ./input/Vvel.dat
+ if [ -f ./input/divaUVcons/Vvel."$var".$lev ];then
+  cp -f ./input/divaUVcons/Vvel."$var".$lev ./input/Vvel.dat
  else
   if [ -f ./input/divaUVcons/Vvel.$lev ];then
    cp -f ./input/divaUVcons/Vvel.$lev ./input/Vvel.dat
@@ -291,8 +294,8 @@ fi
 ############################
 #
 if [ "$refdat" -eq "0" ];then
-echo '>>SNop:  did not find reference field for '$var'.'$lev'  <<<<<<<< ' >> $diva3dlog
-echo '>>SNop:  did not find reference field for '$var'.'$lev'  <<<<<<<< '
+echo '>>SNop:  did not find reference field for '"$var"'.'$lev'  <<<<<<<< ' >> $diva3dlog
+echo '>>SNop:  did not find reference field for '"$var"'.'$lev'  <<<<<<<< '
 fi
 #
 #
@@ -310,8 +313,8 @@ done
 echo $constvals > ./input/constraint.dat
 fi
 if [ -f ./input/constraint.dat ];then
- if [ -f ./input/divaUVcons/UVinfo.$var.$lev ];then
-  cp -f ./input/divaUVcons/UVinfo.$var.$lev ./input/UVinfo.dat
+ if [ -f ./input/divaUVcons/UVinfo."$var".$lev ];then
+  cp -f ./input/divaUVcons/UVinfo."$var".$lev ./input/UVinfo.dat
  else
   if [ -f ./input/divaUVcons/UVinfo.$lev ];then
    cp -f ./input/divaUVcons/UVinfo.$lev ./input/UVinfo.dat
@@ -322,8 +325,8 @@ if [ -f ./input/constraint.dat ];then
   fi
  fi
 #
- if [ -f ./input/divaUVcons/Uvel.$var.$lev ];then
-  cp -f ./input/divaUVcons/Uvel.$var.$lev ./input/Uvel.dat
+ if [ -f ./input/divaUVcons/Uvel."$var".$lev ];then
+  cp -f ./input/divaUVcons/Uvel."$var".$lev ./input/Uvel.dat
  else
   if [ -f ./input/divaUVcons/Uvel.$lev ];then
    cp -f ./input/divaUVcons/Uvel.$lev ./input/Uvel.dat
@@ -334,8 +337,8 @@ if [ -f ./input/constraint.dat ];then
   fi
  fi
 #
- if [ -f ./input/divaUVcons/Vvel.$var.$lev ];then
-  cp -f ./input/divaUVcons/Vvel.$var.$lev ./input/Vvel.dat
+ if [ -f ./input/divaUVcons/Vvel."$var".$lev ];then
+  cp -f ./input/divaUVcons/Vvel."$var".$lev ./input/Vvel.dat
  else
   if [ -f ./input/divaUVcons/Vvel.$lev ];then
    cp -f ./input/divaUVcons/Vvel.$lev ./input/Vvel.dat
@@ -348,8 +351,8 @@ if [ -f ./input/constraint.dat ];then
 fi
 #
 #
-if [ -f ./input/divaparam/RLinfo.$var.$lev ];then
- cp -f ./input/divaparam/RLinfo.$var..$lev ./input/RLinfo.dat
+if [ -f ./input/divaparam/RLinfo."$var".$lev ];then
+ cp -f ./input/divaparam/RLinfo."$var"..$lev ./input/RLinfo.dat
 else
  if [ -f ./input/divaparam/RLinfo.$lev ];then
   cp -f ./input/divaparam/RLinfo.$lev ./input/RLinfo.dat
@@ -360,8 +363,8 @@ else
  fi
 fi
 if [ -f ./input/RLinfo.dat ];then
- if [ -f ./input/divaparam/RL.$var.$lev ];then
-  cp -f ./input/divaparam/RL.$var.$lev ./input/RL.dat 
+ if [ -f ./input/divaparam/RL."$var".$lev ];then
+  cp -f ./input/divaparam/RL."$var".$lev ./input/RL.dat 
  else
   if [ -f ./input/divaparam/RL.$lev ];then
    cp -f ./input/divaparam/RL.$lev ./input/RL.dat 
@@ -426,7 +429,7 @@ ndata=$(cat ./input/data.dat| wc -l)
 
 
 echo diva3Dsnop: ////////////////////////////////////////// >> ./output/diva.log
-echo 'diva3Dsnop:         Creating mesh: '$var'.'$lev >> ./output/diva.log
+echo 'diva3Dsnop:         Creating mesh: '"$var"'.'$lev >> ./output/diva.log
 echo diva3Dsnop: ////////////////////////////////////////// >> ./output/diva.log
 echo ' '  >> ./output/diva.log
 ./divamesh
@@ -438,7 +441,7 @@ then
 
 
 echo diva3Dsnop: ////////////////////////////////////////// >> ./output/diva.log
-echo diva3Dsnop: '        Cross Validation (divacv): '$var'.'$lev >> ./output/diva.log
+echo diva3Dsnop: '        Cross Validation (divacv): '"$var"'.'$lev >> ./output/diva.log
 echo diva3Dsnop: ////////////////////////////////////////// >> ./output/diva.log
 echo ' '  >> ./output/diva.log
 divacv 
@@ -450,7 +453,7 @@ else
   then
 
 echo diva3Dsnop: ////////////////////////////////////////// >> ./output/diva.log
-echo 'diva3Dsnop:         Cross Validation (divagcv): '$var'.'$lev >> ./output/diva.log
+echo 'diva3Dsnop:         Cross Validation (divagcv): '"$var"'.'$lev >> ./output/diva.log
 echo diva3Dsnop: ////////////////////////////////////////// >> ./output/diva.log
 echo ' '  >> ./output/diva.log
   divagcv 
@@ -460,7 +463,7 @@ echo ' '  >> ./output/diva.log
   else
   let nsamp=$ndata/20
 echo diva3Dsnop: ////////////////////////////////////////// >> ./output/diva.log
-echo 'diva3Dsnop:         Cross Validation (divacvrand): '$var'.'$lev >> ./output/diva.log
+echo 'diva3Dsnop:         Cross Validation (divacvrand): '"$var"'.'$lev >> ./output/diva.log
 echo diva3Dsnop: ////////////////////////////////////////// >> ./output/diva.log
 echo ' '  >> ./output/diva.log
   divacvrand $nsamp 2 
@@ -477,8 +480,8 @@ read comment
 read param13
 } < $Fileinf
 #
-echo '%%%%%%%%% divagcv SN param: '$param12' for ' $var $lev >> $diva3dlog
-echo '%%%%%%%%% divagcv SN param: '$param12' for ' $var $lev
+echo '%%%%%%%%% divagcv SN param: '$param12' for ' "$var" $lev >> $diva3dlog
+echo '%%%%%%%%% divagcv SN param: '$param12' for ' "$var" $lev
 #############################################################
 if [ -f ./input/divaparam/SNminmax ];then
 Fileinf=./3DWORK/sn.$lev
@@ -511,59 +514,59 @@ echo 'ooooooooooo considered SN val = ' $param12' and VARBAK = ' $param13 >> $di
 echo 'ooooooooooo considered SN val = ' $param12' and VARBAK = ' $param13
 ############################################################
 #
-echo $param12 >> './output/'$var'.SN.dat' 
-echo $param13 >> './output/'$var'.VAR.dat'
-echo $dep >> './output/'$var'.Lay.dat' 
+echo $param12 >> './output/'"$var"'.SN.dat' 
+echo $param13 >> './output/'"$var"'.VAR.dat'
+echo $dep >> './output/'"$var"'.Lay.dat' 
 #
 else
 echo '??????????????????????????????????????????????????????????' >> $diva3dlog
-echo '?? Did not find gcvsampling.dat for param.par.'$var'.'$lev >> $diva3dlog
+echo '?? Did not find gcvsampling.dat for param.par.'"$var"'.'$lev >> $diva3dlog
 echo '??????????????????????????????????????????????????????????' >> $diva3dlog
 echo '??????????????????????????????????????????????????????????'
-echo '?? Did not find gcvsampling.dat for param.par.'$var'.'$lev
+echo '?? Did not find gcvsampling.dat for param.par.'"$var"'.'$lev
 echo '??????????????????????????????????????????????????????????'
 fi
 #
-mv ./output/gcv.dat './input/divaparam/'$var'.gcv.dat.'$lev
+mv ./output/gcv.dat './input/divaparam/'"$var"'.gcv.dat.'$lev
 #
 else
 errflag=1
 if [ "$runflag" -eq "1" ];then
 echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!' >> $diva3dlog
-echo '!!!!!!!!!!!!!DID NOT FIND ANY param.par FILE FOR '$var $lev'!'  >> $diva3dlog
+echo '!!!!!!!!!!!!!DID NOT FIND ANY param.par FILE FOR '"$var" $lev'!'  >> $diva3dlog
 echo '!!!!!!!!!!!!!THE OPTIMISATION WAS NOT PERFORMED !' >> $diva3dlog
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
 echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!'
-echo '!!!!!!!!!!!!!DID NOT FIND ANY param.par FILE FOR '$var $lev'!' 
+echo '!!!!!!!!!!!!!DID NOT FIND ANY param.par FILE FOR '"$var" $lev'!' 
 echo '!!!!!!!!!!!!!THE OPTIMISATION WAS NOT PERFORMED !'
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 fi
 if [ "$runflag" -eq "2" ];then
 echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!' >> $diva3dlog
-echo '!!!!!!!!!!!!!DID NOT FIND DATA FILE FOR '$var $lev'!'  >> $diva3dlog
+echo '!!!!!!!!!!!!!DID NOT FIND DATA FILE FOR '"$var" $lev'!'  >> $diva3dlog
 echo '!!!!!!!!!!!!!THE OPTIMISATION WAS NOT PERFORMED !' >> $diva3dlog
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
 echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!'
-echo '!!!!!!!!!!!!!DID NOT FIND DATA FILE FOR '$var $lev'!' 
+echo '!!!!!!!!!!!!!DID NOT FIND DATA FILE FOR '"$var" $lev'!' 
 echo '!!!!!!!!!!!!!THE OPTIMISATION WAS NOT PERFORMED !'
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 fi
 if [ "$runflag" -eq "3" ];then
 echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!' >> $diva3dlog
-echo '!!!!!!!!!!!!!DID NOT FIND CONTOUR FILE FOR '$var $lev'!'  >> $diva3dlog
+echo '!!!!!!!!!!!!!DID NOT FIND CONTOUR FILE FOR '"$var" $lev'!'  >> $diva3dlog
 echo '!!!!!!!!!!!!!THE OPTIMISATION WAS NOT PERFORMED !' >> $diva3dlog
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
 echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!'
-echo '!!!!!!!!!!!!!DID NOT FIND CONTOUR FILE FOR '$var $lev'!' 
+echo '!!!!!!!!!!!!!DID NOT FIND CONTOUR FILE FOR '"$var" $lev'!' 
 echo '!!!!!!!!!!!!!THE OPTIMISATION WAS NOT PERFORMED !'
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 fi
 if [ "$runflag" -eq "4" ];then
 echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!' >> $diva3dlog
-echo '!!!!!!!!!!DATA FILE  '$var $lev' IS EMPTY!'  >> $diva3dlog
+echo '!!!!!!!!!!DATA FILE  '"$var" $lev' IS EMPTY!'  >> $diva3dlog
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
 echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!'
-echo '!!!!!!!!!!DATA FILE  '$var $lev' IS EMPTY!' 
+echo '!!!!!!!!!!DATA FILE  '"$var" $lev' IS EMPTY!' 
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 fi
 fi
@@ -607,11 +610,11 @@ done
 
 #
 #
-if [ -f './output/'$var'.SN.dat' ];then
+if [ -f './output/'"$var"'.SN.dat' ];then
 ##if [ "$errflag" == "0" ];then
 #
-cp -v './output/'$var'.SN.dat' './input/divaparam/'$var'.SN.dat.notfiltered'
-cp -v './output/'$var'.VAR.dat' './input/divaparam/'$var'.VAR.dat.notfiltered'
+cp -v './output/'"$var"'.SN.dat' './input/divaparam/'"$var"'.SN.dat.notfiltered'
+cp -v './output/'"$var"'.VAR.dat' './input/divaparam/'"$var"'.VAR.dat.notfiltered'
 #
 ##
 #                      *************************
@@ -628,10 +631,10 @@ while [ "$jmi" -le "$jmnlevel" ]
 do
 #echo level $jmi
 let lev=10000+$jmi
-cp -v './input/divaparam/'$var'.gcv.dat.'$lev ./output/gcv.dat.${lev}
+cp -v './input/divaparam/'"$var"'.gcv.dat.'$lev ./output/gcv.dat.${lev}
 let jmi=$jmi+1
 done
-lay0=`head -1 './output/'$var'.Lay.dat' ` 
+lay0=`head -1 './output/'"$var"'.Lay.dat' ` 
 let llll=${lay2}-${lay0}
 ##let llll=${lay2}-${lay1}
 if [ "$llll" -gt "0" ]
@@ -640,23 +643,23 @@ dvfilter $lay1 $lay2
 #
 #echo now saving new SN.dat file and VAR.dat file
 ##ls -l ./output/*SN.dat*
-mv './output/'$var'.SN.dat' './output/'$var'.SN.dat.ori'
-cp './output/SN.dat' './output/'$var'.SN.dat'
+mv './output/'"$var"'.SN.dat' './output/'"$var"'.SN.dat.ori'
+cp './output/SN.dat' './output/'"$var"'.SN.dat'
 #
-mv './output/'$var'.VAR.dat' './output/'$var'.VAR.dat.ori'
-cp -v './output/VAR.dat' './output/'$var'.VAR.dat'
+mv './output/'"$var"'.VAR.dat' './output/'"$var"'.VAR.dat.ori'
+cp -v './output/VAR.dat' './output/'"$var"'.VAR.dat'
 #
 fi
-cp -v './output/'$var'.SN.dat' './input/divaparam/'$var'.SN.dat.filtered'
-cp -v './output/'$var'.VAR.dat' './input/divaparam/'$var'.VAR.dat.filtered'
+cp -v './output/'"$var"'.SN.dat' './input/divaparam/'"$var"'.SN.dat.filtered'
+cp -v './output/'"$var"'.VAR.dat' './input/divaparam/'"$var"'.VAR.dat.filtered'
 #
 fi
 #                       ***************************
 #
 #
-if [ -f './output/'$var'.SN.dat' ];then
-lay0=`head -1 './output/'$var'.Lay.dat' ` 
-for dep in `cat './output/'$var'.Lay.dat'`
+if [ -f './output/'"$var"'.SN.dat' ];then
+lay0=`head -1 './output/'"$var"'.Lay.dat' ` 
+for dep in `cat './output/'"$var"'.Lay.dat'`
 do
 ##dep=$lay1
 ##while [ $dep -le $lay2 ]
@@ -667,7 +670,7 @@ let nlen=$lev1-$lay0
 ##let nlen=$lev1-$lay1
 dd=1
 #
-Fileinf='./output/'$var'.SN.dat'
+Fileinf='./output/'"$var"'.SN.dat'
 {
 while [ $dd -le $nlen ]
 do
@@ -678,7 +681,7 @@ done
 #
 dd=1
 #
-Fileinf='./output/'$var'.VAR.dat'
+Fileinf='./output/'"$var"'.VAR.dat'
 {
 while [ $dd -le $nlen ]
 do
@@ -688,13 +691,13 @@ done
 } < $Fileinf
 #
 echo 'oooooooooooooooooooooooo' >> $diva3dlog
-echo 'diva3Dsnop: rewriting param.par.'$var'.'$lev': SN = '$snparam >> $diva3dlog
+echo 'diva3Dsnop: rewriting param.par.'"$var"'.'$lev': SN = '$snparam >> $diva3dlog
 echo 'oooooooooooooooooooooooo' >> $diva3dlog
 echo 'oooooooooooooooooooooooo'
-echo 'diva3Dsnop: rewriting param.par.'$var'.'$lev': SN = '$snparam
+echo 'diva3Dsnop: rewriting param.par.'"$var"'.'$lev': SN = '$snparam
 echo 'oooooooooooooooooooooooo'
 #
-Fileinf='./input/divaparam/param.par.'$var'.'$lev
+Fileinf='./input/divaparam/param.par.'"$var"'.'$lev
 {
 read comment1
 read param1
@@ -724,9 +727,9 @@ read comment13
 read param13
 } < $Fileinf
 #
-if [ -f './output/'$var'.VAR.dat' ];then
+if [ -f './output/'"$var"'.VAR.dat' ];then
 dd=1
-Fileinf='./output/'$var'.VAR.dat'
+Fileinf='./output/'"$var"'.VAR.dat'
 {
 while [ $dd -le $nlen ]
 do
@@ -768,7 +771,7 @@ echo $snparam >> ./output/newparams
 echo $comment13 >> ./output/newparams
 echo $varbakparam >> ./output/newparams
 #
-mv ./output/newparams './input/divaparam/param.par.'$var'.'$lev
+mv ./output/newparams './input/divaparam/param.par.'"$var"'.'$lev
 #
 dep=`expr $dep + 1`
 done

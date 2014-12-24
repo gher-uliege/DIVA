@@ -75,7 +75,7 @@
       EXECIN='../input/3Dinfo'
       OPEN(2,FILE=EXECIN,STATUS='OLD')
       READ(2,*)! comments
-      READ(2,*) var_shname
+      READ(2,'(a)') var_shname
       READ(2,*)! comments
       READ(2,*) MINLEV
       READ(2,*)! comments
@@ -148,7 +148,8 @@
 !
       IF(ipar == 1) then
         chlen = 1
-        DO while(var_shname(chlen:chlen) .ne. ' ') 
+        DO while((var_shname(chlen:chlen).ne.' ').or.
+     &(var_shname(chlen+1:chlen+1).ne.' ')) 
            chlen = chlen + 1
         ENDDO
         chlen = chlen - 1
@@ -830,7 +831,8 @@
      &a,".1",i4.4,".1",i4.4,".anl.nc")')TRIM(var_shname),MINLEV,MAXLEV
       IF(ipar == 1) then
       chlen = 1
-      DO while(var_shname(chlen:chlen) .ne. ' ')
+      DO while((var_shname(chlen:chlen).ne.' ').or.
+     &(var_shname(chlen+1:chlen+1).ne.' ')) 
          chlen = chlen + 1
       ENDDO
       chlen = chlen - 1

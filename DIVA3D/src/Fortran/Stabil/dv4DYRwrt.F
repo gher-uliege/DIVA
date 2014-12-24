@@ -29,6 +29,7 @@
      &                           , list_len,time_Yval1,time_Yval2
      &				 , delta_mjd
       integer                   :: NX,NY,NK,ndata,nl,ivars,chlen,lev
+      integer			:: len1,len2,len3,len4
       integer*4                 :: KMAX,ipr,nw,IMAX,JMAX
       integer                   :: ICOOC,IREG,ISPEC, ilev, nbdat, icdf
 !
@@ -57,6 +58,7 @@
       CHARACTER (len=22)         :: DEPTHS
       CHARACTER (len=99)         :: VARFILEIN
       CHARACTER (len=255)        :: file_name, file_name2, file_4Dnc
+     &				  , buffer
       character (len=255)        :: title_string,cellmeth
      &                            , INSTITUT, PRODUCTION
      &                            , SOURCE, COMMENT, Email
@@ -97,7 +99,41 @@
       EXECIN='../3DWORK/3Dncliste'
       OPEN(2,FILE=EXECIN,STATUS='OLD')
       DO I = 1,time_len
-      READ(2,*) les_files(I),flags(I)
+      read(2,'(a)') buffer
+!      write(0,*) buffer, len(buffer)
+        j=0
+        len1=999
+        len2=999
+        len3=999
+        len4=999
+      	Do while (j.le.(len(buffer)-1))
+      	  j=j+1
+      	  If ((buffer(j:j).ne.' ').and.(len1.eq.999)) then
+      	   len1=j
+!      	   write(0,*) buffer(j:j)
+      	  Endif
+      	  If ((buffer(j:j).eq.' ').and.(buffer(j+1:j+1).eq.' ')
+     &.and.(len2.eq.999)) then
+      	   len2=j-1
+!      	   write(0,*) buffer(j-1:j-1)
+      	  Endif
+      	  If ((buffer(j:j).ne.' ').and.(len3.eq.999).and.(j.gt.len2))
+     &then
+      	   len3=j
+!      	   write(0,*) buffer(j:j)
+      	  Endif
+      	  If ((buffer(j:j).eq.' ').and.(buffer(j+1:j+1).eq.' ')
+     &.and.(len4.eq.999).and.(j.gt.len3)) then
+      	   len4=j-1
+!      	   write(0,*) buffer(j-1:j-1)
+      	  Endif      	  
+      	Enddo
+!      READ(2,*) les_files(I),flags(I)
+!      write(0,*) buffer(len3:len4)
+      read(buffer(len3:len4),*) flags(I)
+      les_files(I)=buffer(len1:len2)
+!      write(0,*) les_files(I),flags(I)
+!      call sleep(10)
       ENDDO
 !
       write(*,*)' WRITE 4D NetCdf file gathering:'      
@@ -115,7 +151,8 @@
 !
       WRITE(file_name,'(a)')TRIM(all_files(1))
       chlen = 1
-      DO while(file_name(chlen:chlen) .ne. ' ') 
+      DO while ((file_name(chlen:chlen).ne.' ')
+     &.or.(file_name(chlen+1:chlen+1).ne.' '))
          chlen = chlen + 1
       ENDDO
       chlen = chlen - 1
@@ -282,7 +319,8 @@
 !
       var1_name = all_files(ivars)
       chlen = 1
-      DO while(var1_name(chlen:chlen) .ne. ' ')
+      DO while ((var1_name(chlen:chlen).ne.' ')
+     &.or.(var1_name(chlen+1:chlen+1).ne.' '))
          chlen = chlen + 1
       ENDDO
       chlen = chlen - 1

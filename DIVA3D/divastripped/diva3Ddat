@@ -5,6 +5,8 @@
 #####################################################
 #
 #
+saveifs=$IFS
+IFS=$'\n'
   Fileinf=./input/3Dinfo
 {
 read comment
@@ -36,14 +38,15 @@ read gmin
 read comment
 read gmax
 } < $Fileinf
+IFS=$saveifs
 #
 divarundir=$(pwd)
-diva3dlog=$divarundir'/output/3Danalysis/'$var'.diva3D.log'
+diva3dlog=$divarundir'/output/3Danalysis/'"$var"'.diva3D.log'
 divalog=$divarundir'/output/diva.log'
 #
 echo 'diva3Ddat:'						| tee -a $diva3dlog 
 echo 'diva3Ddat:' 'Start data cleaning flag number: '$datop	| tee -a $diva3dlog
-echo 'diva3Ddat:' 'on '$var					| tee -a $diva3dlog
+echo 'diva3Ddat:' 'on '"$var"					| tee -a $diva3dlog
 echo 'diva3Ddat:' 'level '$bottm' to level '$surf		| tee -a $diva3dlog
 echo 'diva3Ddat:'						| tee -a $diva3dlog
 #
@@ -62,8 +65,8 @@ do
 let lev=10000+$dep
 #
 errflag=0
-if [ -f ./input/divaparam/param.par.$var'.'$lev ];then
- cp -f ./input/divaparam/param.par.$var'.'$lev ./input/param.par
+if [ -f ./input/divaparam/param.par."$var"'.'$lev ];then
+ cp -f ./input/divaparam/param.par."$var"'.'$lev ./input/param.par
 else
  if [ -f ./input/divaparam/param.par.$lev ];then
    cp -f ./input/divaparam/param.par.$lev ./input/param.par
@@ -80,9 +83,9 @@ else
  fi
 fi
 #
-if [ -f  ./input/divadata/$var.$lev ] ; then
- cp ./input/divadata/$var.$lev  ./input/divadata/$var.$lev.ori
- cp ./input/divadata/$var.$lev  ./input/data.dat
+if [ -f  ./input/divadata/"$var".$lev ] ; then
+ cp ./input/divadata/"$var".$lev  ./input/divadata/"$var".$lev.ori
+ cp ./input/divadata/"$var".$lev  ./input/data.dat
  nbdat=`cat './input/data.dat' |wc -l` 
  if [ "$nbdat" == "0" ] ; then
   errflag=4
@@ -117,8 +120,8 @@ fi
 #
 if [ -f ./input/constraint.dat ]
 then
- if [ -f ./input/divaUVcons/UVinfo.$var.$lev ];then
-  cp -f ./input/divaUVcons/UVinfo.$var.$lev ./input/UVinfo.dat
+ if [ -f ./input/divaUVcons/UVinfo."$var".$lev ];then
+  cp -f ./input/divaUVcons/UVinfo."$var".$lev ./input/UVinfo.dat
  else
   if [ -f ./input/divaUVcons/UVinfo.$lev ];then
    cp -f ./input/divaUVcons/UVinfo.$lev ./input/UVinfo.dat
@@ -129,8 +132,8 @@ then
   fi
  fi
 #
- if [ -f ./input/divaUVcons/Uvel.$var.$lev ];then
-  cp -f ./input/divaUVcons/Uvel.$var.$lev ./input/Uvel.dat
+ if [ -f ./input/divaUVcons/Uvel."$var".$lev ];then
+  cp -f ./input/divaUVcons/Uvel."$var".$lev ./input/Uvel.dat
  else
   if [ -f ./input/divaUVcons/Uvel.$lev ];then
    cp -f ./input/divaUVcons/Uvel.$lev ./input/Uvel.dat
@@ -141,8 +144,8 @@ then
   fi
  fi
 #
- if [ -f ./input/divaUVcons/Vvel.$var.$lev ];then
-  cp -f ./input/divaUVcons/Vvel.$var.$lev ./input/Vvel.dat
+ if [ -f ./input/divaUVcons/Vvel."$var".$lev ];then
+  cp -f ./input/divaUVcons/Vvel."$var".$lev ./input/Vvel.dat
  else
   if [ -f ./input/divaUVcons/Vvel.$lev ];then
    cp -f ./input/divaUVcons/Vvel.$lev ./input/Vvel.dat
@@ -154,8 +157,8 @@ then
  fi
 fi
 #
-if [ -f ./input/divaparam/RLinfo.$var.$lev ];then
- cp -f ./input/divaparam/RLinfo.$var..$lev ./input/RLinfo.dat
+if [ -f ./input/divaparam/RLinfo."$var".$lev ];then
+ cp -f ./input/divaparam/RLinfo."$var"..$lev ./input/RLinfo.dat
 else
  if [ -f ./input/divaparam/RLinfo.$lev ];then
   cp -f ./input/divaparam/RLinfo.$lev ./input/RLinfo.dat
@@ -166,8 +169,8 @@ else
  fi
 fi
 if [ -f ./input/RLinfo.dat ];then
- if [ -f ./input/divaparam/RL.$var.$lev ];then
-  cp -f ./input/divaparam/RL.$var.$lev ./input/RL.dat 
+ if [ -f ./input/divaparam/RL."$var".$lev ];then
+  cp -f ./input/divaparam/RL."$var".$lev ./input/RL.dat 
  else
   if [ -f ./input/divaparam/RL.$lev ];then
    cp -f ./input/divaparam/RL.$lev ./input/RL.dat 
@@ -189,18 +192,18 @@ else
 fi
 #
 if [ "$datop" -eq "1" -o "$datop" -eq "3"  -o "$datop" -eq "4" -o "$datop" -eq "5" ];then
-echo '%%%%%%%%%%%%  cleaning '$var'.'$lev' %%%%% original data nmbr '$nbdat
-echo '%%%%%%%%%%%%  cleaning '$var'.'$lev' %%%%% original data nmbr '$nbdat >> $diva3dlog
+echo '%%%%%%%%%%%%  cleaning '"$var"'.'$lev' %%%%% original data nmbr '$nbdat
+echo '%%%%%%%%%%%%  cleaning '"$var"'.'$lev' %%%%% original data nmbr '$nbdat >> $diva3dlog
 ./divaclean
   if [ -f ./input/divamesh/meshtopo.$lev ]; then
    cp -v ./input/divamesh/meshtopo.$lev ./output/meshvisu/fort.22
    cp -v ./input/divamesh/mesh.dat.$lev ./output/meshvisu/fort.23
    cp -v ./input/divaparam/coast.cont.$lev ./output/meshvisu/fort.10
   else
-   echo 'diva3Ddat:  generating a mesh for '$var'.'$lev >> $diva3dlog
+   echo 'diva3Ddat:  generating a mesh for '"$var"'.'$lev >> $diva3dlog
 
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
-echo 'diva3Ddat:         Creating mesh: '$var'.'$lev       >> $divalog
+echo 'diva3Ddat:         Creating mesh: '"$var"'.'$lev       >> $divalog
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
 echo ' '  >> $divalog
 divamesh
@@ -213,7 +216,7 @@ divamesh
   fi
 #
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
-echo 'diva3Ddat:            Data  cleaning: '$var'.'$lev >> $divalog
+echo 'diva3Ddat:            Data  cleaning: '"$var"'.'$lev >> $divalog
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
 echo ' '  >> $divalog
 ./divadataclean
@@ -222,9 +225,9 @@ echo ' '  >> $divalog
     mv bidon $diva3dlog
 
  nbdat=`cat './input/data.dat' |wc -l` 
-echo 'After cleaning '$var'.'$lev'  data nmbr = '$nbdat
-cp -v ./input/data.dat ./input/divadata/$var.$lev
-cp -v ./input/data.beforeclean.dat ./input/divadata/$var.$lev.notclean
+echo 'After cleaning '"$var"'.'$lev'  data nmbr = '$nbdat
+cp -v ./input/data.dat ./input/divadata/"$var".$lev
+cp -v ./input/data.beforeclean.dat ./input/divadata/"$var".$lev.notclean
 fi
 
 if [ "$datop" -eq "2" -o  "$datop" -eq "3" ];then
@@ -234,10 +237,10 @@ if [ "$datop" -eq "2" -o  "$datop" -eq "3" ];then
    cp -v ./input/divamesh/mesh.dat.$lev ./output/meshvisu/fort.23
    cp -v ./input/divaparam/coast.cont.$lev ./output/meshvisu/fort.10
   else
-   echo 'diva3Ddat:  generating a mesh for '$var'.'$lev  >> $diva3dlog
+   echo 'diva3Ddat:  generating a mesh for '"$var"'.'$lev  >> $diva3dlog
 
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
-echo 'diva3Ddat:         Creating mesh: '$var'.'$lev >> $divalog
+echo 'diva3Ddat:         Creating mesh: '"$var"'.'$lev >> $divalog
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
 echo ' '  >> $divalog
   divamesh
@@ -249,7 +252,7 @@ echo ' '  >> $divalog
   fi
 
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
-echo 'diva3Ddat:   Data coverage '$var'.'$lev >> $divalog
+echo 'diva3Ddat:   Data coverage '"$var"'.'$lev >> $divalog
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
 echo ' '  >> $divalog
 
@@ -257,13 +260,13 @@ echo ' '  >> $divalog
     cat $diva3dlog ./output/divadatacovr.log > bidon
     mv bidon $diva3dlog
 
-  cp -v ./output/RL.dat ./input/divaparam/RL.$var.$lev
+  cp -v ./output/RL.dat ./input/divaparam/RL."$var".$lev
   cp -v ./output/RLinfo.dat ./input/divaparam/RLinfo.dat
 fi
 #
 if [ "$datop" -eq "4" -o "$datop" -eq "5" ];then
-echo '%%%%%%%%%%%%  ELIMINATION OF OUTLIERS '$var'.'$lev' %%%%%%%%%%'
-echo '%%%%%%%%%%%%  ELIMINATION OF OUTLIERS '$var'.'$lev' %%%%%%%%%%' >> $diva3dlog
+echo '%%%%%%%%%%%%  ELIMINATION OF OUTLIERS '"$var"'.'$lev' %%%%%%%%%%'
+echo '%%%%%%%%%%%%  ELIMINATION OF OUTLIERS '"$var"'.'$lev' %%%%%%%%%%' >> $diva3dlog
 if [ "$nbdat" -ne "0" ];then
 #
   if [ -d  ./output/3Danalysis/FieldWithOutliers ];then
@@ -279,10 +282,10 @@ if [ -f ./input/divamesh/meshtopo.$lev ]; then
  cp -v ./input/divamesh/mesh.dat.$lev ./output/meshvisu/fort.23
  cp -v ./input/divaparam/coast.cont.$lev ./output/meshvisu/fort.10
 else
- echo 'diva3Ddat:  generating a mesh for '$var'.'$lev   >> $diva3dlog
+ echo 'diva3Ddat:  generating a mesh for '"$var"'.'$lev   >> $diva3dlog
 
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
-echo 'diva3Ddat:         Creating mesh: '$var'.'$lev >> $divalog
+echo 'diva3Ddat:         Creating mesh: '"$var"'.'$lev >> $divalog
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
 echo ' '  >> $divalog
 divamesh
@@ -295,7 +298,7 @@ fi
 #echo Analysing
 
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
-echo 'diva3Ddat:         Going to analyse '$var'.'$lev >> $divalog
+echo 'diva3Ddat:         Going to analyse '"$var"'.'$lev >> $divalog
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
 echo ' '  >> $divalog
 
@@ -306,7 +309,7 @@ echo ' '  >> $divalog
 #echo Looking for outliers
 
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
-echo 'diva3Ddat:   Going to look for outliers '$var'.'$lev >> $divalog
+echo 'diva3Ddat:   Going to look for outliers '"$var"'.'$lev >> $divalog
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
 echo ' '  >> $divalog
 
@@ -316,7 +319,7 @@ echo ' '  >> $divalog
 
 
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
-echo 'diva3Ddat:   Going to clean data from outliers '$var'.'$lev >> $divalog
+echo 'diva3Ddat:   Going to clean data from outliers '"$var"'.'$lev >> $divalog
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
 echo ' '  >> $divalog
 
@@ -326,12 +329,12 @@ echo ' '  >> $divalog
 
 
   echo " saving cleaned data and writing data with no outlers"   >> $diva3dlog
-  cp -v ./input/divadata/$var.$lev ./input/divadata/$var.$lev.clean
-  cp -v ./input/data.dat ./input/divadata/$var.$lev
-  cp -v ./input/data.dat.withoutliers ./input/divadata/$var.$lev.withoutliers
+  cp -v ./input/divadata/"$var".$lev ./input/divadata/"$var".$lev.clean
+  cp -v ./input/data.dat ./input/divadata/"$var".$lev
+  cp -v ./input/data.dat.withoutliers ./input/divadata/"$var".$lev.withoutliers
 
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
-echo 'diva3Ddat:   Data coverage '$var'.'$lev >> $divalog
+echo 'diva3Ddat:   Data coverage '"$var"'.'$lev >> $divalog
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
 echo ' '  >> $divalog
 
@@ -341,28 +344,28 @@ echo ' '  >> $divalog
 
 
 if [ "$datop" -eq "5" ];then
-cp -v ./output/RL.dat ./input/divaparam/RL.$var.$lev
+cp -v ./output/RL.dat ./input/divaparam/RL."$var".$lev
 cp -v ./output/RLinfo.dat ./input/divaparam/RLinfo.dat
 fi
-cp -v ./output/DATABINS.dat ./input/divadata/$var'.'$lev'.DATABINS'
-cp -v ./output/DATABINSinfo.dat ./input/divadata/$var'.'$lev'.DATABINSinfo'
+cp -v ./output/DATABINS.dat ./input/divadata/"$var"'.'$lev'.DATABINS'
+cp -v ./output/DATABINSinfo.dat ./input/divadata/"$var"'.'$lev'.DATABINSinfo'
 ######## saving analysis and co
 if [ "$fmeshe" == "0" ]; then
 cp -r ./input/divamesh/*  ./output/3Danalysis/Meshes/.
 fi
 #
-cp -v ./output/ghertonetcdf/results.nc ./output/3Danalysis/FieldWithOutliers/$var'.'$lev'.anl.nc'
-cp -v ./output/ghertonetcdf/fort.84 ./output/3Danalysis/FieldWithOutliers/$var'.'$lev'.anl'
+cp -v ./output/ghertonetcdf/results.nc ./output/3Danalysis/FieldWithOutliers/"$var"'.'$lev'.anl.nc'
+cp -v ./output/ghertonetcdf/fort.84 ./output/3Danalysis/FieldWithOutliers/"$var"'.'$lev'.anl'
 cp -v ./output/ghertonetcdf/GridInfo.dat ./output/3Danalysis/FieldWithOutliers/GridInfo.dat
-cp -v ./output/errorfieldgher.anl ./output/3Danalysis/FieldWithOutliers/$var'.'$lev'.error'
-cp -v ./output/fieldascii.anl ./output/3Danalysis/FieldWithOutliers/$var'.'$lev'.ascii.anl'
-cp -v ./output/errorfieldascii.anl ./output/3Danalysis/FieldWithOutliers/$var'.'$lev'.errorascii'
+cp -v ./output/errorfieldgher.anl ./output/3Danalysis/FieldWithOutliers/"$var"'.'$lev'.error'
+cp -v ./output/fieldascii.anl ./output/3Danalysis/FieldWithOutliers/"$var"'.'$lev'.ascii.anl'
+cp -v ./output/errorfieldascii.anl ./output/3Danalysis/FieldWithOutliers/"$var"'.'$lev'.errorascii'
 #
 if [ -f ./output/outliersbis.normalized.dat ];then
-cp -v ./output/outliersbis.normalized.dat ./output/3Danalysis/FieldWithOutliers/$var'.'$lev'.outliersbis.norm'
+cp -v ./output/outliersbis.normalized.dat ./output/3Danalysis/FieldWithOutliers/"$var"'.'$lev'.outliersbis.norm'
 fi
 if [ -f ./output/outliersbis.dat ];then
-cp -v ./output/outliersbis.dat ./output/3Danalysis/FieldWithOutliers/$var'.'$lev'.outliersbis'
+cp -v ./output/outliersbis.dat ./output/3Danalysis/FieldWithOutliers/"$var"'.'$lev'.outliersbis'
 fi
 ##
 if [ "$gnpl" == "1" ]
@@ -382,14 +385,14 @@ echo 'diva3Ddat: Making gnu plots, range is '$gmin $gmax >> $diva3dlog
 cd ./gnuwork/plots
 for i in `ls *.png`
 do
-cp -v $i ../../output/3Danalysis/GPlotsWOutlrs/$var'.'$lev'.'$i
+cp -v $i ../../output/3Danalysis/GPlotsWOutlrs/"$var"'.'$lev'.'$i
 done
 cd ../..
 fi
 
 else
 
-echo $var'.'$lev' is EMPTY, no outliers to clean ' | tee -a $diva3dlog
+echo "$var"'.'$lev' is EMPTY, no outliers to clean ' | tee -a $diva3dlog
 fi
 ####################
 fi
@@ -407,10 +410,10 @@ if [ "$datop" -eq "6" ];then
    cp -v ./input/divamesh/mesh.dat.$lev ./output/meshvisu/fort.23
    cp -v ./input/divaparam/coast.cont.$lev ./output/meshvisu/fort.10
   else
-   echo 'diva3Ddat:  generating a mesh for '$var'.'$lev  >> $diva3dlog
+   echo 'diva3Ddat:  generating a mesh for '"$var"'.'$lev  >> $diva3dlog
 
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
-echo 'diva3Ddat:         Creating mesh: '$var'.'$lev >> $divalog
+echo 'diva3Ddat:         Creating mesh: '"$var"'.'$lev >> $divalog
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
 echo ' '  >> $divalog
   divamesh
@@ -422,7 +425,7 @@ echo ' '  >> $divalog
   fi
 
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
-echo 'diva3Ddat:   Variable RL field (dep. on depth) '$var'.'$lev >> $divalog
+echo 'diva3Ddat:   Variable RL field (dep. on depth) '"$var"'.'$lev >> $divalog
 echo diva3Ddat: ////////////////////////////////////////// >> $divalog
 echo ' '  >> $divalog
 
@@ -430,7 +433,7 @@ echo ' '  >> $divalog
     cat $diva3dlog ./output/divarlvar.log > bidon
     mv bidon $diva3dlog
 
-  cp -v ./output/RL.dat ./input/divaparam/RL.$var.$lev
+  cp -v ./output/RL.dat ./input/divaparam/RL."$var".$lev
   cp -v ./output/RLinfo.dat ./input/divaparam/RLinfo.dat
 fi
 #------------------------------------------------
@@ -438,25 +441,25 @@ fi
 else
 if [ "$errflag" -eq "1" ];then
 echo '!!!!!!!!!!!!!diva3Ddat WARNING: !!!!!!!!!!!!!!!!!!' 	| tee -a $diva3dlog
-echo '!!!!!!!!DID NOT FIND param.par FILE FOR '$var $lev'!' 	| tee -a $diva3dlog
+echo '!!!!!!!!DID NOT FIND param.par FILE FOR '"$var" $lev'!' 	| tee -a $diva3dlog
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
 
 fi
 if [ "$errflag" -eq "2" ];then
 echo '!!!!!!!!!!!!!diva3Ddat WARNING: !!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
-echo '!!!!!!!!!!!!!DID NOT FIND DATA FILE FOR '$var $lev'!' 	| tee -a $diva3dlog
+echo '!!!!!!!!!!!!!DID NOT FIND DATA FILE FOR '"$var" $lev'!' 	| tee -a $diva3dlog
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
 
 fi
 if [ "$errflag" -eq "3" ];then
 echo '!!!!!!!!!!!!!diva3Ddat WARNING: !!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
-echo '!!!!!!!!!!DID NOT FIND CONTOUR FILE FOR '$var $lev'!' 	| tee -a $diva3dlog
+echo '!!!!!!!!!!DID NOT FIND CONTOUR FILE FOR '"$var" $lev'!' 	| tee -a $diva3dlog
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
 
 fi
 if [ "$errflag" -eq "4" ];then
 echo '!!!!!!!!!!!!!diva3Ddat WARNING: !!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
-echo '!!!!!!!!!!DATA FILE  '$var $lev' IS EMPTY!' 		| tee -a $diva3dlog
+echo '!!!!!!!!!!DATA FILE  '"$var" $lev' IS EMPTY!' 		| tee -a $diva3dlog
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
 
 fi
@@ -467,7 +470,7 @@ done
 echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo	| tee -a $diva3dlog
 echo ' cleaned data files are in ./input/divadata/.'		| tee -a $diva3dlog
 echo ' and/or RL files are in ./input/divaparam/.' 		| tee -a $diva3dlog
-echo 'diva3Ddat:' 'for '$var					| tee -a $diva3dlog
+echo 'diva3Ddat:' 'for '"$var"					| tee -a $diva3dlog
 echo 'diva3Ddat:' 'level '$bottm' to level '$surf		| tee -a $diva3dlog
 echo 'diva3Ddat:'						| tee -a $diva3dlog
 echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo	| tee -a $diva3dlog

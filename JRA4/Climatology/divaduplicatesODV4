@@ -9,6 +9,8 @@ export LC_ALL=C # to get the same sorting order on different systems
 # Handling of duplicates input data                                        #
 ############################################################################
 
+saveifs=$IFS
+IFS=$'\n'
 	for var in `cat varlist`
 	do
 		for year in `cat yearlist`
@@ -20,7 +22,7 @@ export LC_ALL=C # to get the same sorting order on different systems
 				do
 					let lev=$lev+1
 					let lnum=10000+$lev
-					datafile="input/divadata/${var}.${year}.${month}.${lnum}"
+					datafile="input/divadata/"${var}".${year}.${month}.${lnum}"
 					echo "Checking for duplicates in" $datafile ...
 					cp $datafile ${datafile}"_bkp"
 					datafile_tmp=${datafile}"_tmp"
@@ -38,9 +40,6 @@ export LC_ALL=C # to get the same sorting order on different systems
 
 		done
 	done
-
-# A FAIRE
-
-# script à appeler dans divadoall, l250 (et généraliser ce script)
+IFS=$saveifs
 
 

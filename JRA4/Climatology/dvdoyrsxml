@@ -8,7 +8,7 @@
 ###################################################################
 ###################################################################
 #
-var=$1
+var="$1"
 #
 WDIR=$(pwd)
 DIVADIR="../../DIVA3D"
@@ -77,10 +77,12 @@ done
 #
 
 #########################################################
+saveifs=$IFS
+IFS=$'\n'
 for var in `cat varlist`
 #########################################################
 do
-echo variable $var
+echo variable "$var"
 
 year='-9999'
 
@@ -89,14 +91,14 @@ rm -rf ${DIVADIR}/divastripped/divawork/*
 rm -rf ${DIVADIR}/divastripped/3DWORK/*
 
 
-cp ./output/3Danalysis/$var'.4Danl.nc' ${DIVADIR}/divastripped/output/.
+cp ./output/3Danalysis/"$var"'.4Danl.nc' ${DIVADIR}/divastripped/output/.
 
 
-echo  $var   > ${DIVADIR}/divastripped/3DWORK/md.info
+echo  "$var"   > ${DIVADIR}/divastripped/3DWORK/md.info
 echo  $year >> ${DIVADIR}/divastripped/3DWORK/md.info
 
 if [ "$#" == "2" ];then
-cp './output/3Danalysis/'$var'.4Danl.nc' './output/3Danalysis/OLD_'$var'.4Danl.nc'
+cp './output/3Danalysis/'"$var"'.4Danl.nc' './output/3Danalysis/OLD_'"$var"'.4Danl.nc'
 echo  $INSTITUT_name  > ${DIVADIR}/divastripped/3DWORK/glatt.info
 echo  $INSTITUT_email >> ${DIVADIR}/divastripped/3DWORK/glatt.info
 echo  $PRODUCTION_name >> ${DIVADIR}/divastripped/3DWORK/glatt.info
@@ -110,14 +112,14 @@ cd ${DIVADIR}/divastripped/3DWORK/
 cd ../
 
 if [ "$#" == "2" ];then
-cp './output/'$var'.4Danl.nc' ${WDIR}'/output/3Danalysis/'$var'.4Danl.nc'
+cp './output/'"$var"'.4Danl.nc' ${WDIR}'/output/3Danalysis/'"$var"'.4Danl.nc'
 fi
-cp -v ./output/$var'.4DNCMetainfo' ${WDIR}/output/3Danalysis/.
-cp -v ./output/$var'.Metainfo.txt' ${WDIR}/output/3Danalysis/.
+cp -v ./output/"$var"'.4DNCMetainfo' ${WDIR}/output/3Danalysis/.
+cp -v ./output/"$var"'.Metainfo.txt' ${WDIR}/output/3Danalysis/.
 
 cd ${WDIR}/
 
-FILENAME=./output/3Danalysis/$var'.4DNCMetainfo'
+FILENAME=./output/3Danalysis/"$var"'.4DNCMetainfo'
 if [ -f "$FILENAME" ]
 then
 {
@@ -147,7 +149,7 @@ today=`date --rfc-3339='date'`
 resolt=$deltaX'X'$deltaY
 
 ############################################################
-FILENAME=./$var'.SDNconv'
+FILENAME=./"$var"'.SDNconv'
 
 if [ -f "$FILENAME" ]
 then
@@ -189,7 +191,7 @@ UseLim2='Distributed under SeaDataNet licence'
 File=sextan.tmplt
 ##XMLtempl
 ##File=$XMLFile
-NewFile='./output/3Danalysis/'$var'.xml'
+NewFile='./output/3Danalysis/'"$var"'.xml'
 ###'./output/3Danalysis/MetaDataXMLs/'$prodLocShn.xml'
 
 sed \
@@ -242,4 +244,5 @@ sed \
   <$File>$NewFile
 
 done
+IFS=$saveifs
 ## 

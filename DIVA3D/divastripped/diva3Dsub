@@ -1,6 +1,8 @@
 #!/bin/bash
 #####################################################
 #
+saveifs=$IFS
+IFS=$'\n'
   Fileinf=./input/3Dinfo
 {
 read comment
@@ -32,25 +34,26 @@ read gmin
 read comment
 read gmax
 } < $Fileinf
+IFS=$saveifs
 #
 #
-diva3dlog='./output/3Danalysis/'$var'.diva3D.log'
+diva3dlog='./output/3Danalysis/'"$var"'.diva3D.log'
 #
 echo 'diva3Dsub:' 
 echo 'diva3Dsub:' 'Start a 3D analysis flag number: '$act
-echo 'diva3Dsub:' 'on '$var
+echo 'diva3Dsub:' 'on '"$var"
 echo 'diva3Dsub:' 'level '$bottm' to level '$surf
 echo 'diva3Dsub:'
 #
-echo 'diva3Dsub:' >> $diva3dlog
-echo 'diva3Dsub:' 'Start analysis flag number: '$act >> $diva3dlog
-echo 'diva3Dsub:' ' on '$var >> $diva3dlog
-echo 'diva3Dsub:' 'level '$bottm' to level '$surf >> $diva3dlog
-echo 'diva3Dsub:' >> $diva3dlog
-echo 'diva3Dsub:' >> $diva3dlog
+echo 'diva3Dsub:' >> "$diva3dlog"
+echo 'diva3Dsub:' 'Start analysis flag number: '$act >> "$diva3dlog"
+echo 'diva3Dsub:' ' on '"$var" >> "$diva3dlog"
+echo 'diva3Dsub:' 'level '$bottm' to level '$surf >> "$diva3dlog"
+echo 'diva3Dsub:' >> "$diva3dlog"
+echo 'diva3Dsub:' >> "$diva3dlog"
 #
 if [ -d  ./output/3Danalysis/ ];then
-echo 'diva3Dsub: ./output/3Danalysis exists' >> $diva3dlog
+echo 'diva3Dsub: ./output/3Danalysis exists' >> "$diva3dlog"
 else
 mkdir -p ./output/3Danalysis/
 fi
@@ -68,7 +71,7 @@ fi
 if [ "$act" == "2" ];then
 ###################
 if [ -d ./input/divarefe ];then
-echo '>>>WARNING: ./input/divarefe exists.' >> $diva3dlog
+echo '>>>WARNING: ./input/divarefe exists.' >> "$diva3dlog"
 else
 mkdir -p ./input/divarefe
 fi
@@ -80,39 +83,39 @@ if [ -f ./input/dvtransinfo ];then
 ########################################## DATA TRANSFORMATION START
 #                                         ###########################
 #
-echo 'transforming input data:' $bottm $surf $var >> $diva3dlog
+echo 'transforming input data:' $bottm $surf "$var" >> "$diva3dlog"
   Fileinf=./input/dvtransinfo
 {
 read ntrans
 } < $Fileinf
 
-echo 'going to trans data files, ntrans = '$ntrans >> $diva3dlog
+echo 'going to trans data files, ntrans = '$ntrans >> "$diva3dlog"
 
 echo diva3Dsub: ////////////////////////////////////////// >> ./output/diva.log
 echo diva3Dsub:                 dvdatatransf   >> ./output/diva.log
-echo 'diva3Dsub: level1: '$bottm', level2: '$surf' variable: '$var', flag-transf:'$ntrans >> ./output/diva.log
+echo 'diva3Dsub: level1: '$bottm', level2: '$surf' variable: '"$var"', flag-transf:'$ntrans >> ./output/diva.log
 echo diva3Dsub: ////////////////////////////////////////// >> ./output/diva.log
 echo ' '  >> ./output/diva.log
 
- ./dvdatatransf $bottm $surf $var $ntrans
-    cat $diva3dlog './output/3Danalysis/'$var'_dvdatatransf.log' > bidon
-    mv bidon $diva3dlog
+ ./dvdatatransf $bottm $surf "$var" $ntrans
+    cat "$diva3dlog" './output/3Danalysis/'"$var"'_dvdatatransf.log' > bidon
+    mv bidon "$diva3dlog"
 
 let gnup=100+$gnup
-echo 'dvdatatransf finished transforming data ' >> $diva3dlog
+echo 'dvdatatransf finished transforming data ' >> "$diva3dlog"
 #
 if [ -f ./input/dorefeinfo ];then
-echo './input/divarefe found: going to transform reference fields' >> $diva3dlog
+echo './input/divarefe found: going to transform reference fields' >> "$diva3dlog"
 
 echo diva3Dsub: ////////////////////////////////////////// >> ./output/diva.log
 echo diva3Dsub:                 dvrefetransf   >> ./output/diva.log
-echo 'diva3Dsub: level1: '$bottm', level2: '$surf' variable: '$var', flag-transf:'$ntrans >> ./output/diva.log
+echo 'diva3Dsub: level1: '$bottm', level2: '$surf' variable: '"$var"', flag-transf:'$ntrans >> ./output/diva.log
 echo diva3Dsub: ////////////////////////////////////////// >> ./output/diva.log
 echo ' '  >> ./output/diva.log
 
- ./dvrefetransf $bottm $surf $var $ntrans
-    cat $diva3dlog './output/'$var'_dvrefetransf.log' > bidon
-    mv bidon $diva3dlog
+ ./dvrefetransf $bottm $surf "$var" $ntrans
+    cat "$diva3dlog" './output/'"$var"'_dvrefetransf.log' > bidon
+    mv bidon "$diva3dlog"
 
 fi
 ########################################## DATA TRANSFORMATION END
@@ -122,19 +125,19 @@ fi
 #
 if [ -f ./input/dvlaymixinfo ];then
 #############################
-echo 'mixing layers input data:' $bottm $surf $var >> $diva3dlog
+echo 'mixing layers input data:' $bottm $surf "$var" >> "$diva3dlog"
 cp -r ./input/divadata ./input/divadata_ORI
   Fileinf=./input/dvlaymixinfo
 {
 read ntrans
 } < $Fileinf
- ./dv3Ddatamix $bottm $surf $var $ntrans
+ ./dv3Ddatamix $bottm $surf "$var" $ntrans
 fi
 ############################fi -f ./input/dvlaymixinfo
 #
 if [ -d "./output/3Danalysis/Fields" ];then
 ####################################
-echo './output/3Danalysis/Fields exists' >> $diva3dlog
+echo './output/3Danalysis/Fields exists' >> "$diva3dlog"
 else
  mkdir -p ./output/3Danalysis/Fields
 fi
@@ -150,7 +153,7 @@ else
 fi
 ############################fi -d "./input/divamesh"
 #
-echo ' level  data_nbr' > './output/3Danalysis/'$var'.nbrdata'
+echo ' level  data_nbr' > './output/3Danalysis/'"$var"'.nbrdata'
 #
 #
 ########################################## ANALYSIS: START
@@ -161,16 +164,16 @@ while [ $dep -le $surf ]
 do
 let level=10000+$dep
 #
-echo 'ooooooooooooooooooooooooooooooooooo' >> $diva3dlog
-echo 'diva3Dsub: performing analysis for '$var'.'$level >> $diva3dlog
-echo 'ooooooooooooooooooooooooooooooooooo' >> $diva3dlog
+echo 'ooooooooooooooooooooooooooooooooooo' >> "$diva3dlog"
+echo 'diva3Dsub: performing analysis for '"$var"'.'$level >> "$diva3dlog"
+echo 'ooooooooooooooooooooooooooooooooooo' >> "$diva3dlog"
 echo 'ooooooooooooooooooooooooooooooooooo'
-echo 'diva3Dsub: performing analysis for '$var'.'$level
+echo 'diva3Dsub: performing analysis for '"$var"'.'$level
 echo 'ooooooooooooooooooooooooooooooooooo'
 #
 if [ -f "./input/detrendinfo" ]; then
 #############################
- echo  ./input/detrendinfo found >> $diva3dlog
+ echo  ./input/detrendinfo found >> "$diva3dlog"
  mkdir -p ./output/3Danalysis/DATADETREND
  trd=1
 else
@@ -181,30 +184,30 @@ fi
 #
 if [ "$act" == "1" -o  "$act" == "2" ];then
 #####################################
-echo ' ' >> $diva3dlog
-echo '=================== running dv3Drefoanl =================== ' >> $diva3dlog
-echo ' level:'$level' var: '$var' isanalysis: '$act' trend: '$trd >> $diva3dlog
-echo '=========================================================== ' >> $diva3dlog
+echo ' ' >> "$diva3dlog"
+echo '=================== running dv3Drefoanl =================== ' >> "$diva3dlog"
+echo ' level:'$level' var: '"$var"' isanalysis: '$act' trend: '$trd >> "$diva3dlog"
+echo '=========================================================== ' >> "$diva3dlog"
 echo ' '
 echo '=================== running dv3Drefoanl =================== '
-echo ' level:'$level' var: '$var' isanalysis: '$act' trend: '$trd
+echo ' level:'$level' var: '"$var"' isanalysis: '$act' trend: '$trd
 echo '=========================================================== '
 
 echo diva3Dsub: ////////////////////////////////////////// >> ./output/diva.log
 echo diva3Dsub:                 dv3Drefoanl:   >> ./output/diva.log
-echo ' level:'$level' var: '$var' isanalysis: '$act' trend: '$trd >> ./output/diva.log
+echo ' level:'$level' var: '"$var"' isanalysis: '$act' trend: '$trd >> ./output/diva.log
 echo diva3Dsub: ////////////////////////////////////////// >> ./output/diva.log
 echo ' '  >> ./output/diva.log
 
- ./dv3Drefoanl $level $var $gnup $gmin $gmax $act $trd
-    cat $diva3dlog ./output/dv3Drefoanl.log > bidon
-    mv bidon $diva3dlog
+ ./dv3Drefoanl $level "$var" $gnup $gmin $gmax $act $trd
+    cat "$diva3dlog" ./output/dv3Drefoanl.log > bidon
+    mv bidon "$diva3dlog"
 # 
-echo ' '  >> $diva3dlog
- echo 'diva3Dsub:dv3Drefoanl finished with '$var'.'$level  >> $diva3dlog
-echo ' '  >> $diva3dlog
+echo ' '  >> "$diva3dlog"
+ echo 'diva3Dsub:dv3Drefoanl finished with '"$var"'.'$level  >> "$diva3dlog"
+echo ' '  >> "$diva3dlog"
 echo ' '
- echo 'diva3Dsub:dv3Drefoanl finished with '$var'.'$level
+ echo 'diva3Dsub:dv3Drefoanl finished with '"$var"'.'$level
 echo ' '
 
 if [ -f "./input/dvtransinfo" ];then
@@ -220,22 +223,22 @@ read ntrans
 if [ "$ntrans" == "13" -o "$ntrans" == "23" ];then 
 ###########################################
 
-if [ -f './input/divadata/'$var'_inverf' ];then
-  file='./input/divadata/'$var'_inverf'
+if [ -f './input/divadata/'"$var"'_inverf' ];then
+  file='./input/divadata/'"$var"'_inverf'
 
   nbln=$(cat $file |wc -l)
 
   echo $nbln > ./3DWORK/nblinv
 
-  echo 'Start inverse anamorphose transformation' $ntrans >> $diva3dlog
+  echo 'Start inverse anamorphose transformation' $ntrans >> "$diva3dlog"
   echo 'Start inverse anamorphose transformation' $ntrans
 
 else
 
-echo SEVERE ERROR: $var.$level inv_anamorph $ntrans >> $diva3dlog
-echo did not find $var'_inverf' >> $diva3dlog
-echo SEVERE ERROR: $var.$level inv_anamorph $ntrans
-echo did not find $var'_inverf'
+echo SEVERE ERROR: "$var".$level inv_anamorph $ntrans >> "$diva3dlog"
+echo did not find "$var"'_inverf' >> "$diva3dlog"
+echo SEVERE ERROR: "$var".$level inv_anamorph $ntrans
+echo did not find "$var"'_inverf'
 exit
 
 fi
@@ -243,14 +246,14 @@ fi
 fi
 ###########################fi "$ntrans" == "13" -o "$ntrans" == "23"
 
- echo 'diva3Dsub:running ./dv3Dinvtrsh on '$var'.'$level  >> $diva3dlog
+ echo 'diva3Dsub:running ./dv3Dinvtrsh on '"$var"'.'$level  >> "$diva3dlog"
 
- ./dv3Dinvtrsh $level $var $ntrans $act
+ ./dv3Dinvtrsh $level "$var" $ntrans $act
 
 if [ "$gnup" -ge "101" ]
 then
 echo $level > levvar
-echo $var >> levvar
+echo "$var" >> levvar
 if [ "$gmin" -le "$gmax" ]
 then
 ./dv3Dgnu $gmin $gmax
@@ -260,7 +263,7 @@ fi
 cd ./gnuwork/plots
 for i in `ls *.png`
 do
-mv  $i '../../output/3Danalysis/GnuPlots/'$var'.'$level'.'$i
+mv  $i '../../output/3Danalysis/GnuPlots/'"$var"'.'$level'.'$i
 done
 cd ../..
 #
@@ -278,7 +281,7 @@ fi
  dep=`expr $dep + 1`
 done
 #
-echo ' finished with analysing! ' >> $diva3dlog
+echo ' finished with analysing! ' >> "$diva3dlog"
 
 ########################################## ANALYSIS: END
 #                                         ###########################
@@ -286,7 +289,7 @@ echo ' finished with analysing! ' >> $diva3dlog
 
 if [ -f "./input/diva3Ddoqc" ];then
 mkdir -p ./output/3Danalysis/Divaqcfiles
-./dv3Ddoqcfiles $bottm $surf $var
+./dv3Ddoqcfiles $bottm $surf "$var"
 fi
 
 #############
@@ -338,10 +341,10 @@ echo $nbfls >> ./fort.44
 #
 if [ "$act" == "1" ];then
 
-echo 'diva3Dsub:' >> ../$diva3dlog
-echo 'diva3Dsub:' ' Generating 3D NetCDF file for '$var >> ../$diva3dlog
-echo 'diva3Dsub:' 'level '$bottm' to level '$surf >> ../$diva3dlog
-echo 'diva3Dsub:' >> ../$diva3dlog
+echo 'diva3Dsub:' >> ../"$diva3dlog"
+echo 'diva3Dsub:' ' Generating 3D NetCDF file for '"$var" >> ../"$diva3dlog"
+echo 'diva3Dsub:' 'level '$bottm' to level '$surf >> ../"$diva3dlog"
+echo 'diva3Dsub:' >> ../"$diva3dlog"
 
 echo diva3Dsub: ////////////////////////////////////////// >> ../output/diva.log
 echo 'diva3Dsub:                 diva3Dstr (3DNetCDF)'   >> ../output/diva.log
@@ -357,12 +360,12 @@ echo A problem was encountered during execution !
 echo       diva3Dstr.a
 echo Check execution track
 echo --------------------------------------------
-echo ' ' >> ../$diva3dlog
-echo -------------------------------------------- >> ../$diva3dlog
-echo A problem was encountered during execution ! >> ../$diva3dlog
-echo       diva3Dstr.a >> ../$diva3dlog
-echo Check execution track >> ../$diva3dlog
-echo -------------------------------------------- >> ../$diva3dlog
+echo ' ' >> ../"$diva3dlog"
+echo -------------------------------------------- >> ../"$diva3dlog"
+echo A problem was encountered during execution ! >> ../"$diva3dlog"
+echo       diva3Dstr.a >> ../"$diva3dlog"
+echo Check execution track >> ../"$diva3dlog"
+echo -------------------------------------------- >> ../"$diva3dlog"
 echo ' ' >> ../output/diva.log
 echo -------------------------------------------- >> ../output/diva.log
 echo A problem was encountered during execution ! >> ../output/diva.log
@@ -376,6 +379,6 @@ fi
 ##../../bin/diva3Dref.a
 ##fi
 cd ..
-echo 'diva3Dsub:' >> $diva3dlog
-echo 'diva3Dsub:' ' Finished with '$var >> $diva3dlog
-echo '//////////////////////////////////////////////////////////////////' >> $diva3dlog
+echo 'diva3Dsub:' >> "$diva3dlog"
+echo 'diva3Dsub:' ' Finished with '"$var" >> "$diva3dlog"
+echo '//////////////////////////////////////////////////////////////////' >> "$diva3dlog"

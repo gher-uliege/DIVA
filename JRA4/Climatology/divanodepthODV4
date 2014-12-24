@@ -38,11 +38,11 @@ fi
 ### MAIN PROGRAM ###
 ####################
 
-inputfile=$1 # /home/sylvain/DIVA/usersw31234-data_centre43-2013-09-03_result/7011_20130903_125015.txt
-path_metadata=$(echo $inputfile | awk -F "/" '{print $NF}')
+inputfile="$1" # /home/sylvain/DIVA/usersw31234-data_centre43-2013-09-03_result/7011_20130903_125015.txt
+path_metadata=$(echo "$inputfile" | awk -F "/" '{print $NF}')
 metadata_num=$(echo $path_metadata | awk -F "_" '{print $NF}')
 metadata_num=${metadata_num:0:4}
-path_metadata=$(echo $inputfile | sed s/$path_metadata//g)
+path_metadata=$(echo "$inputfile" | sed s/$path_metadata//g)
 
 #if [ "$#" != "1" ]
 #then
@@ -111,10 +111,10 @@ fi
 
 	if [ -f "$inputfile" ]
 	then
-	#echo Trying to make data (temporal) averaging on data file $inputfile
-	#echo Number of lines in the data file : wc -l $inputfile
-	datalines=$(wc -l $inputfile | awk '{print $1}')
-	headerlines=$(head -1000 $inputfile | grep -vi "history" | grep "//" | wc -l)
+	#echo Trying to make data (temporal) averaging on data file "$inputfile"
+	#echo Number of lines in the data file : wc -l "$inputfile"
+	datalines=$(wc -l "$inputfile" | awk '{print $1}')
+	headerlines=$(head -1000 "$inputfile" | grep -vi "history" | grep "//" | wc -l)
 	let userlines=$datalines-headerlines
 	let userlines=$userlines-1
 	let beginline=$headerlines+2 # sometimes +3
@@ -128,7 +128,7 @@ then
 	metadata_file=$(ls $path_metadata*$metadata_num*metadata*)
 	ret=$?
 	if [ $ret != 0 ]; then
-	  echo "Warning: no metadata file found => will check for min and max depth in $inputfile"
+	  echo 'Warning: no metadata file found => will check for min and max depth in "$inputfile"'
 #	  exit $ret
 	fi
 fi
@@ -140,7 +140,7 @@ echo valexodvuser = $valexodvuser
 
 ### Trying to see if exclusion value is present in the input file ###
 
-valexodv=$(grep -a MissingValueIndicators $inputfile | awk -F ">" '{print $2}' | awk -F "<" '{print $1}')
+valexodv=$(grep -a MissingValueIndicators "$inputfile" | awk -F ">" '{print $2}' | awk -F "<" '{print $1}')
 echo  valexodv =  $valexodv
 if [ -z $valexodv ] 
 then 
@@ -198,7 +198,7 @@ echo "latitude is in column $latcol"
 
 if [ -z ${datacol[$nvarscal]} ]
 then
-continue # skip the rest of the loop (absence of $var in $inputfile)
+continue # skip the rest of the loop (absence of $var in "$inputfile")
 fi
 
 ave=0
@@ -212,10 +212,10 @@ lat_old=999
 	do
 if [ $flag_depth_speed == 0 ]
 then
-	tmp=$(awk -F "$delimiter" -v i=$i -v datacol=${datacol[$nvarscal]} 'NR==i {print $datacol}' $inputfile) # -v : assign a value to a variable, can't be done in the ' ' part !!!
+	tmp=$(awk -F "$delimiter" -v i=$i -v datacol=${datacol[$nvarscal]} 'NR==i {print $datacol}' "$inputfile") # -v : assign a value to a variable, can't be done in the ' ' part !!!
 fi
 	## Verification of lon and lat
-		lon=$(awk -F "$delimiter" -v i=$i -v loncol=$loncol 'NR==i {print $loncol}' $inputfile)
+		lon=$(awk -F "$delimiter" -v i=$i -v loncol=$loncol 'NR==i {print $loncol}' "$inputfile")
 		if [ -z $lon ]
 		then
 			lon=$lon_old
@@ -232,7 +232,7 @@ fi
 			lon_old=$lon
 		fi
 		
-		lat=$(awk -F "$delimiter" -v i=$i -v latcol=$latcol 'NR==i {print $latcol}' $inputfile)
+		lat=$(awk -F "$delimiter" -v i=$i -v latcol=$latcol 'NR==i {print $latcol}' "$inputfile")
 		if [ -z $lat ]
 		then
 			lat=$lat_old
@@ -309,9 +309,9 @@ for i in `seq $beginline $datalines`
 do
 if [ $flag_depth_speed == 0 ]
 then
-tmp=$(awk -F "$delimiter" -v i=$i -v pi=$pi -v datacol1=$datacol1 -v datacol2=$datacol2 'NR==i {print $datacol2*cos($datacol1*(pi/180))}' $inputfile)
-verif1=$(awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 'NR==i {print $datacol1}' $inputfile)
-verif2=$(awk -F "$delimiter" -v i=$i -v datacol2=$datacol2 'NR==i {print $datacol2}' $inputfile)
+tmp=$(awk -F "$delimiter" -v i=$i -v pi=$pi -v datacol1=$datacol1 -v datacol2=$datacol2 'NR==i {print $datacol2*cos($datacol1*(pi/180))}' "$inputfile")
+verif1=$(awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 'NR==i {print $datacol1}' "$inputfile")
+verif2=$(awk -F "$delimiter" -v i=$i -v datacol2=$datacol2 'NR==i {print $datacol2}' "$inputfile")
 
 ### Empty field ###
 test_empty=0
@@ -336,7 +336,7 @@ test_empty=0
 tmp=$(echo $tmp | sed -e 's/[eE]+*/*10^/') # replace e by *10^ (in order to use bc)
 ave_u_star=$(echo "$tmp + $ave_u_star" | bc -l) 
 
-tmp=$(awk -F "$delimiter" -v i=$i -v pi=$pi -v datacol1=$datacol1 -v datacol2=$datacol2 'NR==i {print $datacol2*sin($datacol1*(pi/180))}' $inputfile) 
+tmp=$(awk -F "$delimiter" -v i=$i -v pi=$pi -v datacol1=$datacol1 -v datacol2=$datacol2 'NR==i {print $datacol2*sin($datacol1*(pi/180))}' "$inputfile") 
 
 ### Empty field ###
 	if [ $test_empty == 1 ]
@@ -371,8 +371,8 @@ if [ $flag_depth_speed == 0 ]
 then
 ## Reading of Bot.Depth, Station, Metadata Depths !!
 echo $beginline,$botdepthcol
-botdepth=$(awk -F "$delimiter" -v beginline=$beginline -v botdepthcol=$botdepthcol 'NR==beginline {print $botdepthcol}' $inputfile)
-station=$(awk -F "$delimiter" -v beginline=$beginline 'NR==beginline {print $2}' $inputfile)
+botdepth=$(awk -F "$delimiter" -v beginline=$beginline -v botdepthcol=$botdepthcol 'NR==beginline {print $botdepthcol}' "$inputfile")
+station=$(awk -F "$delimiter" -v beginline=$beginline 'NR==beginline {print $2}' "$inputfile")
 echo botdepth = $botdepth, station = $station
 
 mindepth_col=$(awk -F "," -v var='"Minimum instrument depth (m)"' '{for(n=1;n<=NF;n++) if($n == var) print n}' $metadata_file)
@@ -380,17 +380,17 @@ maxdepth_col=$(awk -F "," -v var='"Maximum instrument depth (m)"' '{for(n=1;n<=N
 
 if [ -z $mindepth_col ] || [ -z $maxdepth_col ]
 then 
-echo "no min and max depth in metadata : will check in $inputfile" 
+echo 'no min and max depth in metadata : will check in "$inputfile"' 
 meta_index=0
-mindepth_col=$(awk -F "$delimiter" -v headerlines=$headerlines -v var='Minimum instrument depth [m]' 'NR==headerlines+1 {for(n=1;n<=NF;n++) if($n == var) print n}' $inputfile)
-maxdepth_col=$(awk -F "$delimiter" -v headerlines=$headerlines -v var='Maximum instrument depth [m]' 'NR==headerlines+1 {for(n=1;n<=NF;n++) if($n == var) print n}' $inputfile)
+mindepth_col=$(awk -F "$delimiter" -v headerlines=$headerlines -v var='Minimum instrument depth [m]' 'NR==headerlines+1 {for(n=1;n<=NF;n++) if($n == var) print n}' "$inputfile")
+maxdepth_col=$(awk -F "$delimiter" -v headerlines=$headerlines -v var='Maximum instrument depth [m]' 'NR==headerlines+1 {for(n=1;n<=NF;n++) if($n == var) print n}' "$inputfile")
 else
 meta_index=1
 fi
 
 if [ -z $mindepth_col ] || [ -z $maxdepth_col ]
 then 
-echo "Warning : no min and max depth found in $inputfile : stop." 
+echo 'Warning : no min and max depth found in "$inputfile" : stop.' 
 exit
 else
 echo $mindepth_col, $maxdepth_col
@@ -414,9 +414,9 @@ echo measurement depth = $botdepth
 else
 mdepth_line=$beginline
 echo $mdepth_line
-mindepth=$(awk -F "$delimiter" -v mdepth_line=$mdepth_line -v mindepth_col=$mindepth_col 'NR==mdepth_line {print $mindepth_col}' $inputfile)
+mindepth=$(awk -F "$delimiter" -v mdepth_line=$mdepth_line -v mindepth_col=$mindepth_col 'NR==mdepth_line {print $mindepth_col}' "$inputfile")
 mindepth=$(echo $mindepth | sed s/'"'//g)
-maxdepth=$(awk -F "$delimiter" -v mdepth_line=$mdepth_line -v maxdepth_col=$maxdepth_col 'NR==mdepth_line {print $maxdepth_col}' $inputfile)
+maxdepth=$(awk -F "$delimiter" -v mdepth_line=$mdepth_line -v maxdepth_col=$maxdepth_col 'NR==mdepth_line {print $maxdepth_col}' "$inputfile")
 maxdepth=$(echo $maxdepth | sed s/'"'//g)
 echo mindepth = $mindepth, maxdeph = $maxdepth
 instr_depth=$(echo "($mindepth+$maxdepth)/2." | bc ; scale=4)
@@ -464,13 +464,13 @@ fi
 #### Writing a new ODV data file #####
 ######################################
 
-outputfile=$(echo $inputfile | sed s/.txt/_bis.txt/g)
+outputfile=$(echo "$inputfile" | sed s/.txt/_bis.txt/g)
 rm -f $outputfile
 
 #######
 for i in `seq 1 $(($beginline-2))` 
 do
-awk -F "$delimiter" -v i=$i 'BEGIN {OFS=FS} NR==i {print $0}' $inputfile >> $outputfile # OFS = Output Field Separotor !! (tab here)
+awk -F "$delimiter" -v i=$i 'BEGIN {OFS=FS} NR==i {print $0}' "$inputfile" >> $outputfile # OFS = Output Field Separotor !! (tab here)
 done
 
 ######### 
@@ -485,28 +485,28 @@ then
 
 if [[ -z ${datacol[1]} && -z ${datacol[2]} ]]
 then ### no scalar var
- awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v units_vector=$units_vector 'BEGIN {OFS=FS} NR==i {$datacol1="u_star"" "units_vector;$datacol2="v_star"" "units_vector;print($0,"Depth [m]")}' $inputfile >> $outputfile
+ awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v units_vector=$units_vector 'BEGIN {OFS=FS} NR==i {$datacol1="u_star"" "units_vector;$datacol2="v_star"" "units_vector;print($0,"Depth [m]")}' "$inputfile" >> $outputfile
 else ### at least one scalar var
  if [ "$flag_speed" == "0" ]
  then ## no speed
   if [[ ! -z ${datacol[1]} && -z ${datacol[2]} ]]
   then # only var1
-   awk -F "$delimiter" -v i=$i -v datacol_a=${datacol[1]} -v var_scal_a="${var_scal[1]}" -v units_scalar_a="${units_scalar[1]}" 'BEGIN {OFS=FS} NR==i {$datacol_a=var_scal_a" "units_scalar_a ;print($0,"Depth [m]")}' $inputfile >> $outputfile
+   awk -F "$delimiter" -v i=$i -v datacol_a=${datacol[1]} -v var_scal_a="${var_scal[1]}" -v units_scalar_a="${units_scalar[1]}" 'BEGIN {OFS=FS} NR==i {$datacol_a=var_scal_a" "units_scalar_a ;print($0,"Depth [m]")}' "$inputfile" >> $outputfile
   elif  [[ -z ${datacol[1]} && ! -z ${datacol[2]} ]]
   then # only var2
-   awk -F "$delimiter" -v i=$i -v datacol_b=${datacol[2]} -v var_scal_b="${var_scal[2]}" -v units_scalar_b="${units_scalar[2]}" 'BEGIN {OFS=FS} NR==i {$datacol_b=var_scal_b" "units_scalar_b ;print($0,"Depth [m]")}' $inputfile >> $outputfile
+   awk -F "$delimiter" -v i=$i -v datacol_b=${datacol[2]} -v var_scal_b="${var_scal[2]}" -v units_scalar_b="${units_scalar[2]}" 'BEGIN {OFS=FS} NR==i {$datacol_b=var_scal_b" "units_scalar_b ;print($0,"Depth [m]")}' "$inputfile" >> $outputfile
   else # var1 and var2 are present
-   awk -F "$delimiter" -v i=$i -v datacol_a=${datacol[1]} -v datacol_b=${datacol[2]} -v var_scal_a="${var_scal[1]}" -v var_scal_b="${var_scal[2]}" -v units_scalar_a="${units_scalar[1]}" -v units_scalar_b="${units_scalar[2]}" 'BEGIN {OFS=FS} NR==i {$datacol_a=var_scal_a" "units_scalar_a ;$datacol_b=var_scal_b" "units_scalar_b ;print($0,"Depth [m]")}' $inputfile >> $outputfile
+   awk -F "$delimiter" -v i=$i -v datacol_a=${datacol[1]} -v datacol_b=${datacol[2]} -v var_scal_a="${var_scal[1]}" -v var_scal_b="${var_scal[2]}" -v units_scalar_a="${units_scalar[1]}" -v units_scalar_b="${units_scalar[2]}" 'BEGIN {OFS=FS} NR==i {$datacol_a=var_scal_a" "units_scalar_a ;$datacol_b=var_scal_b" "units_scalar_b ;print($0,"Depth [m]")}' "$inputfile" >> $outputfile
   fi
  else ## speed is present
   if [[ ! -z ${datacol[1]} && -z ${datacol[2]} ]]
   then # only var1
-   awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v datacol_a=${datacol[1]} -v var_scal_a="${var_scal[1]}" -v units_scalar_a="${units_scalar[1]}" -v units_vector="$units_vector" 'BEGIN {OFS=FS} NR==i {$datacol1="u_star"" "units_vector;$datacol2="v_star"" "units_vector;$datacol_a=var_scal_a" "units_scalar_a ;print($0,"Depth [m]")}' $inputfile >> $outputfile
+   awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v datacol_a=${datacol[1]} -v var_scal_a="${var_scal[1]}" -v units_scalar_a="${units_scalar[1]}" -v units_vector="$units_vector" 'BEGIN {OFS=FS} NR==i {$datacol1="u_star"" "units_vector;$datacol2="v_star"" "units_vector;$datacol_a=var_scal_a" "units_scalar_a ;print($0,"Depth [m]")}' "$inputfile" >> $outputfile
   elif  [[ -z ${datacol[1]} && ! -z ${datacol[2]} ]]
   then # only var2
-   awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v datacol_b=${datacol[2]} -v var_scal_b="${var_scal[2]}" -v units_scalar_b="${units_scalar[2]}" -v units_vector="$units_vector" 'BEGIN {OFS=FS} NR==i {$datacol1="u_star"" "units_vector;$datacol2="v_star"" "units_vector;$datacol_b=var_scal_b" "units_scalar_b ;print($0,"Depth [m]")}' $inputfile >> $outputfile
+   awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v datacol_b=${datacol[2]} -v var_scal_b="${var_scal[2]}" -v units_scalar_b="${units_scalar[2]}" -v units_vector="$units_vector" 'BEGIN {OFS=FS} NR==i {$datacol1="u_star"" "units_vector;$datacol2="v_star"" "units_vector;$datacol_b=var_scal_b" "units_scalar_b ;print($0,"Depth [m]")}' "$inputfile" >> $outputfile
   else # var1 and var2 are present
-   awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v datacol_a=${datacol[1]} -v datacol_b=${datacol[2]} -v var_scal_a="${var_scal[1]}" -v var_scal_b="${var_scal[2]}" -v units_scalar_a="${units_scalar[1]}" -v units_scalar_b="${units_scalar[2]}" -v units_vector="$units_vector" 'BEGIN {OFS=FS} NR==i {$datacol1="u_star"" "units_vector;$datacol2="v_star"" "units_vector;$datacol_a=var_scal_a" "units_scalar_a ;$datacol_b=var_scal_b" "units_scalar_b ;print($0,"Depth [m]")}' $inputfile >> $outputfile
+   awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v datacol_a=${datacol[1]} -v datacol_b=${datacol[2]} -v var_scal_a="${var_scal[1]}" -v var_scal_b="${var_scal[2]}" -v units_scalar_a="${units_scalar[1]}" -v units_scalar_b="${units_scalar[2]}" -v units_vector="$units_vector" 'BEGIN {OFS=FS} NR==i {$datacol1="u_star"" "units_vector;$datacol2="v_star"" "units_vector;$datacol_a=var_scal_a" "units_scalar_a ;$datacol_b=var_scal_b" "units_scalar_b ;print($0,"Depth [m]")}' "$inputfile" >> $outputfile
   fi
  fi
 fi
@@ -515,16 +515,16 @@ else
 
 if [[ -z ${datacol[1]} && -z ${datacol[2]} ]]
 then ### no scalar var
- awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v var_scal=$var_scal -v units_scalar=$units_scalar -v units_vector=$units_vector 'BEGIN {OFS=FS} NR==i {$datacol1="u_star"" "units_vector;$datacol2="v_star"" "units_vector;print $0}' $inputfile >> $outputfile
+ awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v var_scal=$var_scal -v units_scalar=$units_scalar -v units_vector=$units_vector 'BEGIN {OFS=FS} NR==i {$datacol1="u_star"" "units_vector;$datacol2="v_star"" "units_vector;print $0}' "$inputfile" >> $outputfile
 else ### at least one scalar var
  if [[ ! -z ${datacol[1]} && -z ${datacol[2]} ]]
  then # only var1
-  awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v datacol_a=${datacol[1]} -v var_scal_a=${var_scal[1]} -v units_scalar_a=${units_scalar[1]} -v units_vector=$units_vector 'BEGIN {OFS=FS} NR==i {$datacol1="u_star"" "units_vector;$datacol2="v_star"" "units_vector;$datacol_a=var_scal_a" "units_scalar_a ;print $0}' $inputfile >> $outputfile
+  awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v datacol_a=${datacol[1]} -v var_scal_a=${var_scal[1]} -v units_scalar_a=${units_scalar[1]} -v units_vector=$units_vector 'BEGIN {OFS=FS} NR==i {$datacol1="u_star"" "units_vector;$datacol2="v_star"" "units_vector;$datacol_a=var_scal_a" "units_scalar_a ;print $0}' "$inputfile" >> $outputfile
  elif  [[ -z ${datacol[1]} && ! -z ${datacol[2]} ]]
  then # only var2
-  awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v datacol_b=${datacol[2]} -v var_scal_b=${var_scal[2]} -v units_scalar_b=${units_scalar[2]} -v units_vector=$units_vector 'BEGIN {OFS=FS} NR==i {$datacol1="u_star"" "units_vector;$datacol2="v_star"" "units_vector;$datacol_b=var_scal_b" "units_scalar_b ;print $0}' $inputfile >> $outputfile
+  awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v datacol_b=${datacol[2]} -v var_scal_b=${var_scal[2]} -v units_scalar_b=${units_scalar[2]} -v units_vector=$units_vector 'BEGIN {OFS=FS} NR==i {$datacol1="u_star"" "units_vector;$datacol2="v_star"" "units_vector;$datacol_b=var_scal_b" "units_scalar_b ;print $0}' "$inputfile" >> $outputfile
  else # var1 and var2 are present
-  awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v datacol_a=${datacol[1]} -v datacol_b=${datacol[2]} -v var_scal_a=${var_scal[1]} -v var_scal_b=${var_scal[2]} -v units_scalar_a=${units_scalar[1]} -v units_scalar_b=${units_scalar[2]} -v units_vector=$units_vector 'BEGIN {OFS=FS} NR==i {$datacol1="u_star"" "units_vector;$datacol2="v_star"" "units_vector;$datacol_a=var_scal_a" "units_scalar_a ;$datacol_b=var_scal_b" "units_scalar_b ;print $0}' $inputfile >> $outputfile
+  awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v datacol_a=${datacol[1]} -v datacol_b=${datacol[2]} -v var_scal_a=${var_scal[1]} -v var_scal_b=${var_scal[2]} -v units_scalar_a=${units_scalar[1]} -v units_scalar_b=${units_scalar[2]} -v units_vector=$units_vector 'BEGIN {OFS=FS} NR==i {$datacol1="u_star"" "units_vector;$datacol2="v_star"" "units_vector;$datacol_a=var_scal_a" "units_scalar_a ;$datacol_b=var_scal_b" "units_scalar_b ;print $0}' "$inputfile" >> $outputfile
  fi
 fi
 
@@ -541,28 +541,28 @@ then
 i=$(($i+1))
 if [[ -z ${datacol[1]} && -z ${datacol[2]} ]]
 then ### no scalar var
-awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v ave_u_star=$ave_u_star -v ave_v_star=$ave_v_star -v depth1=$depth1 'BEGIN {OFS=FS} NR==i {$datacol1=ave_u_star;$datacol2=ave_v_star;print($0,depth1)}' $inputfile >> $outputfile
+awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v ave_u_star=$ave_u_star -v ave_v_star=$ave_v_star -v depth1=$depth1 'BEGIN {OFS=FS} NR==i {$datacol1=ave_u_star;$datacol2=ave_v_star;print($0,depth1)}' "$inputfile" >> $outputfile
 else ### at least one scalar var
  if [ "$flag_speed" == "0" ]
  then ## no speed
   if [[ ! -z ${datacol[1]} && -z ${datacol[2]} ]]
   then # only var1
-   awk -F "$delimiter" -v i=$i -v datacol_a=${datacol[1]} -v ave_var_scal_a="${ave_var_scal[1]}" -v depth1=$depth1 'BEGIN {OFS=FS} NR==i {$datacol_a=ave_var_scal_a;print($0,depth1)}' $inputfile >> $outputfile
+   awk -F "$delimiter" -v i=$i -v datacol_a=${datacol[1]} -v ave_var_scal_a="${ave_var_scal[1]}" -v depth1=$depth1 'BEGIN {OFS=FS} NR==i {$datacol_a=ave_var_scal_a;print($0,depth1)}' "$inputfile" >> $outputfile
   elif  [[ -z ${datacol[1]} && ! -z ${datacol[2]} ]]
   then # only var2
-   awk -F "$delimiter" -v i=$i -v datacol_b=${datacol[2]} -v ave_var_scal_b="${ave_var_scal[2]}" -v depth1=$depth1 'BEGIN {OFS=FS} NR==i {$datacol_b=ave_var_scal_b;print($0,depth1)}' $inputfile >> $outputfile
+   awk -F "$delimiter" -v i=$i -v datacol_b=${datacol[2]} -v ave_var_scal_b="${ave_var_scal[2]}" -v depth1=$depth1 'BEGIN {OFS=FS} NR==i {$datacol_b=ave_var_scal_b;print($0,depth1)}' "$inputfile" >> $outputfile
   else # var1 and var2 are present
-   awk -F "$delimiter" -v i=$i -v datacol_a=${datacol[1]} -v datacol_b=${datacol[2]} -v ave_var_scal_a="${ave_var_scal[1]}" -v ave_var_scal_b="${ave_var_scal[2]}" -v depth1=$depth1 'BEGIN {OFS=FS} NR==i {$datacol_a=ave_var_scal_a;$datacol_b=ave_var_scal_b;print($0,depth1)}' $inputfile >> $outputfile
+   awk -F "$delimiter" -v i=$i -v datacol_a=${datacol[1]} -v datacol_b=${datacol[2]} -v ave_var_scal_a="${ave_var_scal[1]}" -v ave_var_scal_b="${ave_var_scal[2]}" -v depth1=$depth1 'BEGIN {OFS=FS} NR==i {$datacol_a=ave_var_scal_a;$datacol_b=ave_var_scal_b;print($0,depth1)}' "$inputfile" >> $outputfile
   fi
  else ## speed is present
   if [[ ! -z ${datacol[1]} && -z ${datacol[2]} ]]
   then # only var1
-   awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v ave_u_star=$ave_u_star -v ave_v_star=$ave_v_star -v datacol_a=${datacol[1]} -v ave_var_scal_a="${ave_var_scal[1]}" -v depth1=$depth1 'BEGIN {OFS=FS} NR==i {$datacol1=ave_u_star;$datacol2=ave_v_star;$datacol_a=ave_var_scal_a;print($0,depth1)}' $inputfile >> $outputfile
+   awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v ave_u_star=$ave_u_star -v ave_v_star=$ave_v_star -v datacol_a=${datacol[1]} -v ave_var_scal_a="${ave_var_scal[1]}" -v depth1=$depth1 'BEGIN {OFS=FS} NR==i {$datacol1=ave_u_star;$datacol2=ave_v_star;$datacol_a=ave_var_scal_a;print($0,depth1)}' "$inputfile" >> $outputfile
   elif  [[ -z ${datacol[1]} && ! -z ${datacol[2]} ]]
   then # only var2
-   awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v ave_u_star=$ave_u_star -v ave_v_star=$ave_v_star -v datacol_b=${datacol[2]} -v ave_var_scal_b="${ave_var_scal[2]}" -v depth1=$depth1 'BEGIN {OFS=FS} NR==i {$datacol1=ave_u_star;$datacol2=ave_v_star;$datacol_b=ave_var_scal_b;print($0,depth1)}' $inputfile >> $outputfile
+   awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v ave_u_star=$ave_u_star -v ave_v_star=$ave_v_star -v datacol_b=${datacol[2]} -v ave_var_scal_b="${ave_var_scal[2]}" -v depth1=$depth1 'BEGIN {OFS=FS} NR==i {$datacol1=ave_u_star;$datacol2=ave_v_star;$datacol_b=ave_var_scal_b;print($0,depth1)}' "$inputfile" >> $outputfile
   else # var1 and var2 are present
-   awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v ave_u_star=$ave_u_star -v ave_v_star=$ave_v_star -v datacol_a=${datacol[1]} -v datacol_b=${datacol[2]} -v ave_var_scal_a="${ave_var_scal[1]}" -v ave_var_scal_b="${ave_var_scal[2]}" -v depth1=$depth1 'BEGIN {OFS=FS} NR==i {$datacol1=ave_u_star;$datacol2=ave_v_star;$datacol_a=ave_var_scal_a;$datacol_b=ave_var_scal_b;print($0,depth1)}' $inputfile >> $outputfile
+   awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v ave_u_star=$ave_u_star -v ave_v_star=$ave_v_star -v datacol_a=${datacol[1]} -v datacol_b=${datacol[2]} -v ave_var_scal_a="${ave_var_scal[1]}" -v ave_var_scal_b="${ave_var_scal[2]}" -v depth1=$depth1 'BEGIN {OFS=FS} NR==i {$datacol1=ave_u_star;$datacol2=ave_v_star;$datacol_a=ave_var_scal_a;$datacol_b=ave_var_scal_b;print($0,depth1)}' "$inputfile" >> $outputfile
   fi
  fi
 fi
@@ -570,28 +570,28 @@ fi
 i=$(($i+1))
 if [[ -z ${datacol[1]} && -z ${datacol[2]} ]]
 then ### no scalar var
-awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v ave_u_star=$ave_u_star -v ave_v_star=$ave_v_star -v depth2=$depth2 'BEGIN {OFS=FS} NR==i {$datacol1=ave_u_star;$datacol2=ave_v_star;print($0,depth2)}' $inputfile >> $outputfile
+awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v ave_u_star=$ave_u_star -v ave_v_star=$ave_v_star -v depth2=$depth2 'BEGIN {OFS=FS} NR==i {$datacol1=ave_u_star;$datacol2=ave_v_star;print($0,depth2)}' "$inputfile" >> $outputfile
 else ### at least one scalar var
  if [ "$flag_speed" == "0" ]
  then ## no speed
   if [[ ! -z ${datacol[1]} && -z ${datacol[2]} ]]
   then # only var1
-   awk -F "$delimiter" -v i=$i -v datacol_a=${datacol[1]} -v ave_var_scal_a="${ave_var_scal[1]}" -v depth2=$depth2 'BEGIN {OFS=FS} NR==i {$datacol_a=ave_var_scal_a;print($0,depth2)}' $inputfile >> $outputfile
+   awk -F "$delimiter" -v i=$i -v datacol_a=${datacol[1]} -v ave_var_scal_a="${ave_var_scal[1]}" -v depth2=$depth2 'BEGIN {OFS=FS} NR==i {$datacol_a=ave_var_scal_a;print($0,depth2)}' "$inputfile" >> $outputfile
   elif  [[ -z ${datacol[1]} && ! -z ${datacol[2]} ]]
   then # only var2
-   awk -F "$delimiter" -v i=$i -v datacol_b=${datacol[2]} -v ave_var_scal_b="${ave_var_scal[2]}" -v depth2=$depth2 'BEGIN {OFS=FS} NR==i {$datacol_b=ave_var_scal_b;print($0,depth2)}' $inputfile >> $outputfile
+   awk -F "$delimiter" -v i=$i -v datacol_b=${datacol[2]} -v ave_var_scal_b="${ave_var_scal[2]}" -v depth2=$depth2 'BEGIN {OFS=FS} NR==i {$datacol_b=ave_var_scal_b;print($0,depth2)}' "$inputfile" >> $outputfile
   else # var1 and var2 are present
-   awk -F "$delimiter" -v i=$i -v datacol_a=${datacol[1]} -v datacol_b=${datacol[2]} -v ave_var_scal_a="${ave_var_scal[1]}" -v ave_var_scal_b="${ave_var_scal[2]}" -v depth2=$depth2 'BEGIN {OFS=FS} NR==i {$datacol_a=ave_var_scal_a;$datacol_b=ave_var_scal_b;print($0,depth2)}' $inputfile >> $outputfile
+   awk -F "$delimiter" -v i=$i -v datacol_a=${datacol[1]} -v datacol_b=${datacol[2]} -v ave_var_scal_a="${ave_var_scal[1]}" -v ave_var_scal_b="${ave_var_scal[2]}" -v depth2=$depth2 'BEGIN {OFS=FS} NR==i {$datacol_a=ave_var_scal_a;$datacol_b=ave_var_scal_b;print($0,depth2)}' "$inputfile" >> $outputfile
   fi
  else ## speed is present
   if [[ ! -z ${datacol[1]} && -z ${datacol[2]} ]]
   then # only var1
-   awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v ave_u_star=$ave_u_star -v ave_v_star=$ave_v_star -v datacol_a=${datacol[1]} -v ave_var_scal_a="${ave_var_scal[1]}" -v depth2=$depth2 'BEGIN {OFS=FS} NR==i {$datacol1=ave_u_star;$datacol2=ave_v_star;$datacol_a=ave_var_scal_a;print($0,depth2)}' $inputfile >> $outputfile
+   awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v ave_u_star=$ave_u_star -v ave_v_star=$ave_v_star -v datacol_a=${datacol[1]} -v ave_var_scal_a="${ave_var_scal[1]}" -v depth2=$depth2 'BEGIN {OFS=FS} NR==i {$datacol1=ave_u_star;$datacol2=ave_v_star;$datacol_a=ave_var_scal_a;print($0,depth2)}' "$inputfile" >> $outputfile
   elif  [[ -z ${datacol[1]} && ! -z ${datacol[2]} ]]
   then # only var2
-   awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v ave_u_star=$ave_u_star -v ave_v_star=$ave_v_star -v datacol_b=${datacol[2]} -v ave_var_scal_b="${ave_var_scal[2]}" -v depth2=$depth2 'BEGIN {OFS=FS} NR==i {$datacol1=ave_u_star;$datacol2=ave_v_star;$datacol_b=ave_var_scal_b;print($0,depth2)}' $inputfile >> $outputfile
+   awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v ave_u_star=$ave_u_star -v ave_v_star=$ave_v_star -v datacol_b=${datacol[2]} -v ave_var_scal_b="${ave_var_scal[2]}" -v depth2=$depth2 'BEGIN {OFS=FS} NR==i {$datacol1=ave_u_star;$datacol2=ave_v_star;$datacol_b=ave_var_scal_b;print($0,depth2)}' "$inputfile" >> $outputfile
   else # var1 and var2 are present
-   awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v ave_u_star=$ave_u_star -v ave_v_star=$ave_v_star -v datacol_a=${datacol[1]} -v datacol_b=${datacol[2]} -v ave_var_scal_a="${ave_var_scal[1]}" -v ave_var_scal_b="${ave_var_scal[2]}" -v depth2=$depth2 'BEGIN {OFS=FS} NR==i {$datacol1=ave_u_star;$datacol2=ave_v_star;$datacol_a=ave_var_scal_a;$datacol_b=ave_var_scal_b;print($0,depth2)}' $inputfile >> $outputfile
+   awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v ave_u_star=$ave_u_star -v ave_v_star=$ave_v_star -v datacol_a=${datacol[1]} -v datacol_b=${datacol[2]} -v ave_var_scal_a="${ave_var_scal[1]}" -v ave_var_scal_b="${ave_var_scal[2]}" -v depth2=$depth2 'BEGIN {OFS=FS} NR==i {$datacol1=ave_u_star;$datacol2=ave_v_star;$datacol_a=ave_var_scal_a;$datacol_b=ave_var_scal_b;print($0,depth2)}' "$inputfile" >> $outputfile
   fi
  fi
 fi
@@ -601,10 +601,10 @@ else
 
 	for i in `seq $beginline $datalines`
 	do
-	u_star=$(awk -F "$delimiter" -v i=$i -v pi=$pi -v datacol1=$datacol1 -v datacol2=$datacol2 'NR==i {print $datacol2*cos($datacol1*(pi/180))}' $inputfile)
-	v_star=$(awk -F "$delimiter" -v i=$i -v pi=$pi -v datacol1=$datacol1 -v datacol2=$datacol2 'NR==i {print $datacol2*sin($datacol1*(pi/180))}' $inputfile)
-	verif1=$(awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 'NR==i {print $datacol1}' $inputfile)
-	verif2=$(awk -F "$delimiter" -v i=$i -v datacol2=$datacol2 'NR==i {print $datacol2}' $inputfile)
+	u_star=$(awk -F "$delimiter" -v i=$i -v pi=$pi -v datacol1=$datacol1 -v datacol2=$datacol2 'NR==i {print $datacol2*cos($datacol1*(pi/180))}' "$inputfile")
+	v_star=$(awk -F "$delimiter" -v i=$i -v pi=$pi -v datacol1=$datacol1 -v datacol2=$datacol2 'NR==i {print $datacol2*sin($datacol1*(pi/180))}' "$inputfile")
+	verif1=$(awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 'NR==i {print $datacol1}' "$inputfile")
+	verif2=$(awk -F "$delimiter" -v i=$i -v datacol2=$datacol2 'NR==i {print $datacol2}' "$inputfile")
 
 	if [ -z $verif1 ] || [ -z $verif2 ]
 	then
@@ -618,7 +618,7 @@ else
 	v_star=$verif2
 	fi	
 	
-	awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v u_star=$u_star -v v_star=$v_star 'BEGIN {OFS=FS} NR==i {$datacol1=u_star;$datacol2=v_star;print $0}' $inputfile >> $outputfile
+	awk -F "$delimiter" -v i=$i -v datacol1=$datacol1 -v datacol2=$datacol2 -v u_star=$u_star -v v_star=$v_star 'BEGIN {OFS=FS} NR==i {$datacol1=u_star;$datacol2=v_star;print $0}' "$inputfile" >> $outputfile
 	
 	if [ $(($i%50)) == 0 ] 
 	then
@@ -681,8 +681,8 @@ fi
 start_time_col=$(grep -i "yyyy" ODVcolumns | awk -F "$delimiter" '{print $3}')
 julian_time_col=$(grep -i "julian" ODVcolumns | awk -F "$delimiter" '{print $3}')
 
-start_jul_time=$(awk -F "$delimiter" -v beginline=$beginline -v julian_time_col=$julian_time_col 'NR==beginline {print $julian_time_col}' $inputfile)
-end_jul_time=$(awk -F "$delimiter" -v datalines=$datalines -v julian_time_col=$julian_time_col 'NR==datalines {print $julian_time_col}' $inputfile)
+start_jul_time=$(awk -F "$delimiter" -v beginline=$beginline -v julian_time_col=$julian_time_col 'NR==beginline {print $julian_time_col}' "$inputfile")
+end_jul_time=$(awk -F "$delimiter" -v datalines=$datalines -v julian_time_col=$julian_time_col 'NR==datalines {print $julian_time_col}' "$inputfile")
 
 if [ -z $julian_time_col ]
 then
@@ -691,7 +691,7 @@ else
 delta_time=$(echo "$end_jul_time-$start_jul_time" | bc -l)
 fi
 
-start_time=$(awk -F "$delimiter" -v beginline=$beginline -v start_time_col=$start_time_col 'NR==beginline {print $start_time_col}' $inputfile)
+start_time=$(awk -F "$delimiter" -v beginline=$beginline -v start_time_col=$start_time_col 'NR==beginline {print $start_time_col}' "$inputfile")
 #echo $start_time
 year=${start_time:0:4}
 month=${start_time:5:2}

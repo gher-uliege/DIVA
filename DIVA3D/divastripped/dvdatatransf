@@ -3,10 +3,10 @@
 #
 bottm=$1
 surf=$2
-var=$3
+var="$3"
 itrans=$4
 #
-dvdatatransflog='./output/3Danalysis/'$var'_dvdatatransf.log'
+dvdatatransflog='./output/3Danalysis/'"$var"'_dvdatatransf.log'
 #
 if [ -d "./3DWORK" ];then
 echo 'starting data transformation' > $dvdatatransflog
@@ -30,10 +30,10 @@ do
 let level=10000+$dep
 #
 cd ./input/divadata
-  file=$var.$level
+  file="$var".$level
   nbcl=$(head -n 1 $file | wc -w)
   nbln=$(cat $file |wc -l)
-  echo $var > ../../3DWORK/fort.44
+  echo "$var" > ../../3DWORK/fort.44
   echo $itrans >> ../../3DWORK/fort.44
   echo $bottm >> ../../3DWORK/fort.44
   echo $surf >> ../../3DWORK/fort.44
@@ -81,20 +81,20 @@ dep=$bottm
 while [ $dep -le $surf ]
 do
 let level=10000+$dep
-file=$var.$level
+file="$var".$level
 nbcl=$(head -n 1 $file | wc -w)
 nbln=$(cat $file |wc -l)
 echo $file $nbln $nbcl >> ../../3DWORK/lsdivadata
-echo 'bruit_'$var.$level >> ../../3DWORK/bruitls
+echo 'bruit_'"$var".$level >> ../../3DWORK/bruitls
 dep=`expr $dep + 1`
 done
-cat 'bruit_'$var.1* >../../3DWORK/$var'_noise'
+cat 'bruit_'"$var".1* >../../3DWORK/"$var"'_noise'
 cd ../../3DWORK/
-  file=$var'_noise'
+  file="$var"'_noise'
   nbln=$(cat $file |wc -l)
   file='lsdivadata'
   nbfl=$(cat $file |wc -l)
-  echo $var > fort.44
+  echo "$var" > fort.44
   echo $itrans >> fort.44
   echo $bottm >> fort.44
   echo $surf >> fort.44
@@ -130,11 +130,11 @@ echo -------------------------------------------- >> ../output/diva.log
 fi
 
 
-  file='../input/divadata/'$var'_inverf'
+  file='../input/divadata/'"$var"'_inverf'
   nbln=$(cat $file |wc -l)
   file='lsdivadata'
   nbfl=$(cat $file |wc -l)
-  echo $var > fort.44
+  echo "$var" > fort.44
   echo $itrans >> fort.44
   echo $bottm >> fort.44
   echo $surf >> fort.44
@@ -191,12 +191,12 @@ else
  echo 9999. > ../../3DWORK/Logitrange
  echo -9999. >> ../../3DWORK/Logitrange
 fi
-cat $var.1* >../../3DWORK/ALL_DATA
+cat "$var".1* >../../3DWORK/ALL_DATA
 cd ../../3DWORK/
 file='ALL_DATA'
 nbln=$(cat $file |wc -l)
 echo $nbln > 'all_nblall'
-echo $var >> 'all_nblall'
+echo "$var" >> 'all_nblall'
 echo $bottm >> 'all_nblall'
 echo $surf >> 'all_nblall'
 cd ../input/divadata
@@ -204,10 +204,10 @@ dep=$bottm
 while [ $dep -le $surf ]
 do
 let level=10000+$dep
-  file=$var.$level
+  file="$var".$level
   nbcl=$(head -n 1 $file | wc -w)
   nbln=$(cat $file |wc -l)
-  file=$var'_'$level'_info'
+  file="$var"'_'$level'_info'
   echo $nbln > ../../3DWORK/$file
   echo $nbcl >> ../../3DWORK/$file
   echo $dep >> ../../3DWORK/$file
@@ -251,9 +251,9 @@ dep=$bottm
 while [ $dep -le $surf ]
 do
 let level=10000+$dep
-if [ -f $var.$level'_shrink' ];then
- cp $var.$level $var.$level'.save'
- mv $var.$level'_shrink' $var.$level
+if [ -f "$var".$level'_shrink' ];then
+ cp "$var".$level "$var".$level'.save'
+ mv "$var".$level'_shrink' "$var".$level
 fi
 let dep=$dep+1
 done
@@ -267,11 +267,11 @@ do
 let level=10000+$dep
 #
 cd ./input/divadata
-  file=$var.$level
+  file="$var".$level
   nbcl=$(head -n 1 $file | wc -w)
   nbln=$(cat $file |wc -l)
 
-  echo $var > ../../3DWORK/fort.44
+  echo "$var" > ../../3DWORK/fort.44
   echo $itrans >> ../../3DWORK/fort.44
   echo $bottm >> ../../3DWORK/fort.44
   echo $surf >> ../../3DWORK/fort.44
@@ -313,11 +313,11 @@ echo Check execution track >> ../output/diva.log
 echo -------------------------------------------- >> ../output/diva.log
 fi
 if [ -f fort.55 ];then
-  mv fort.55 ERR.$var.$level
+  mv fort.55 ERR."$var".$level
 
  echo ' fort.55 found, log trans error!'
   ls -l
-  cat ERR.$var.$lev
+  cat ERR."$var".$lev
 
 fi
 cd ../

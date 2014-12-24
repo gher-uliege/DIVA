@@ -52,10 +52,12 @@ mkdir -p ./output/3Danalysis/MetaDataXMLs
 # loop on variables defined in varlist
 
 #########################################################
+saveifs=$IFS
+IFS=$'\n'
 for var in `cat varlist`
 #########################################################
 do
-echo variable $var
+echo variable "$var"
 #########################################################
 for year in `cat yearlist`
 #########################################################
@@ -70,40 +72,40 @@ monthe=${month:2:2}
 
 echo ' '
 echo ' =================== Running divadoNCDF ======================== '
-echo ' =================== working on variable: ' $var ' and year: '$year 
+echo ' =================== working on variable: ' "$var" ' and year: '$year 
 echo ' '
 
 rm -f ${DIVADIR}/divastripped/3DWORK/*
 rm -rf ${DIVADIR}/divastripped/output/3Danalysis/* 
 
-if [ -f './output/3Danalysis/'$var'.Metainfo.txt' ]; then
-cp -v './output/3Danalysis/'$var'.Metainfo.txt'  ${DIVADIR}/divastripped/output/3Danalysis/.
+if [ -f './output/3Danalysis/'"$var"'.Metainfo.txt' ]; then
+cp -v './output/3Danalysis/'"$var"'.Metainfo.txt'  ${DIVADIR}/divastripped/output/3Danalysis/.
 fi
 
-if [ -f './output/3Danalysis/'$var'.'$year'.3DNCliste' ]; then
+if [ -f './output/3Danalysis/'"$var"'.'$year'.3DNCliste' ]; then
 
-cp -v './output/3Danalysis/'$var'.'$year'.3DNCliste' ${DIVADIR}/divastripped/output/3Danalysis/.
-rm './output/3Danalysis/'$var'.'$year'.3DNCliste'
+cp -v './output/3Danalysis/'"$var"'.'$year'.3DNCliste' ${DIVADIR}/divastripped/output/3Danalysis/.
+rm './output/3Danalysis/'"$var"'.'$year'.3DNCliste'
 
-if [ -f './output/3Danalysis/'$var'.'$year'.3DNCinfo' ]; then
+if [ -f './output/3Danalysis/'"$var"'.'$year'.3DNCinfo' ]; then
 
-cp -v './output/3Danalysis/'$var'.'$year'.3DNCinfo' ${DIVADIR}/divastripped/output/3Danalysis/.
-rm './output/3Danalysis/'$var'.'$year'.3DNCinfo'
+cp -v './output/3Danalysis/'"$var"'.'$year'.3DNCinfo' ${DIVADIR}/divastripped/output/3Danalysis/.
+rm './output/3Danalysis/'"$var"'.'$year'.3DNCinfo'
 
 cp -v ./output/3Danalysis/Fields/GridInfo.dat ${DIVADIR}/divastripped/output/3Danalysis/.
 
 cd ./output/3Danalysis/
-for ncfile in `ls $var.*.anl.nc` ;do
+for ncfile in `ls "$var".*.anl.nc` ;do
 #echo $ncfile
 cp -v $ncfile ../../${DIVADIR}/divastripped/output/3Danalysis/.
 done
 
-for dtfile in `ls $var'.'$year'.'*'.nbrdata'` ;do
+for dtfile in `ls "$var"'.'$year'.'*'.nbrdata'` ;do
 #echo $dtfile
 cp -v $dtfile ../../${DIVADIR}/divastripped/output/3Danalysis/.
 done
 
-for dtfile in `ls $var'.'$year'.'*'.3Dparam'` ;do
+for dtfile in `ls "$var"'.'$year'.'*'.3Dparam'` ;do
 #echo $dtfile
 cp -v $dtfile ../../${DIVADIR}/divastripped/output/3Danalysis/.
 done
@@ -114,7 +116,7 @@ cd ${DIVADIR}/divastripped
 echo ' '
 echo '==================== Running diva4Dncwrite ========================'
 
-varl=$var'.'$year
+varl="$var"'.'$year
 vld=0
 if [ "$isxmlgenerat" -lt "0" ];then
 vld=1
@@ -131,14 +133,14 @@ let upperlevel=0+$upperlevel
 #echo SO SOS
 while [ "$lev" -le "$upperlevel" ]
 do
-echo working on level $lev for $varl
+echo "working on level $lev for $varl"
 let levn=10000+$lev
 
 # exloit the 3DNC info file to know which data have been used
 
-#cat './output/3Danalysis/'$var'.'$year'.3DNCliste'
+#cat './output/3Danalysis/'"$var"'.'$year'.3DNCliste'
 
-for ii in `cat './output/3Danalysis/'$var'.'$year'.3DNCliste' | awk '{print $1}' `
+for ii in `cat './output/3Danalysis/'"$var"'.'$year'.3DNCliste' | awk -F "  " '{print $1}' | sed 's/^ *//' `
 
 do
 #echo $ii
@@ -166,7 +168,7 @@ echo ======
 echo ======
 
 diva4Dncwrite $varl $vld
-../bin/netcdfobsid.a ./output/metajmb ./output/3Danalysis/$var.$year.4Danl.nc
+../bin/netcdfobsid.a ./output/metajmb ./output/3Danalysis/"$var".$year.4Danl.nc
 
 
 echo ' '
@@ -174,30 +176,30 @@ echo '========  Copying netcdf and metadata files to climatology output director
 echo ' '
 
 #echo now saving needs to be done
-if [ -f "./output/3Danalysis/$var.$year.4Danl.nc" ];then
-cp -v ./output/3Danalysis/$var.$year.4Danl.nc ${WDIR}/output/3Danalysis/.
-cp -v ./3DWORK/sextantcatalog_id ${WDIR}/output/3Danalysis/$var'.'$year'.product_id_uuid'
+if [ -f "./output/3Danalysis/"$var".$year.4Danl.nc" ];then
+cp -v ./output/3Danalysis/"$var".$year.4Danl.nc ${WDIR}/output/3Danalysis/.
+cp -v ./3DWORK/sextantcatalog_id ${WDIR}/output/3Danalysis/"$var"'.'$year'.product_id_uuid'
 fi
-if [ -f "./output/3Danalysis/$var.4Danl.nc" ];then
-cp -v ./output/3Danalysis/$var.4Danl.nc ${WDIR}/output/3Danalysis/.
-cp -v ./3DWORK/sextantcatalog_id ${WDIR}/output/3Danalysis/$var'.product_id_uuid'
+if [ -f "./output/3Danalysis/"$var".4Danl.nc" ];then
+cp -v ./output/3Danalysis/"$var".4Danl.nc ${WDIR}/output/3Danalysis/.
+cp -v ./3DWORK/sextantcatalog_id ${WDIR}/output/3Danalysis/"$var"'.product_id_uuid'
 fi
-cp -v ./output/3Danalysis/$var'.4DNCMetainfo' ${WDIR}/output/3Danalysis/.
-cp -v ./output/3Danalysis/$var'.Metainfo.txt' ${WDIR}/output/3Danalysis/.
+cp -v ./output/3Danalysis/"$var"'.4DNCMetainfo' ${WDIR}/output/3Danalysis/.
+cp -v ./output/3Danalysis/"$var"'.Metainfo.txt' ${WDIR}/output/3Danalysis/.
 
 cd $WDIR
 
 else
 
 echo ====SEVERE ERROR==================
-echo 'did not find ./output/3Danalysis/'$var'.'$year'.3DNCinfo'
+echo 'did not find ./output/3Danalysis/'"$var"'.'$year'.3DNCinfo'
 
 fi
 
 else
 
 echo ====SEVERE ERROR==================
-echo 'did not find ./output/3Danalysis/'$var'.'$year'.3DNCliste'
+echo 'did not find ./output/3Danalysis/'"$var"'.'$year'.3DNCliste'
 
 fi
 
@@ -207,13 +209,13 @@ echo '============================= divadoNCDF: end year loop    '$year
 
 done
 
-cat  ./output/3Danalysis/DriverMetainfo ./output/3Danalysis/$var'.Metainfo.txt' > ./output/3Danalysis/MetaDataXMLs/$var'.Textinfo.txt'
+cat  ./output/3Danalysis/DriverMetainfo ./output/3Danalysis/"$var"'.Metainfo.txt' > ./output/3Danalysis/MetaDataXMLs/"$var"'.Textinfo.txt'
 
 #---------------------------------------------------------------------------------------------
 # big 4D netcdf - all periods together (already done in divadoNCYR (netcdf flag = -11 or 11))
 #---------------------------------------------------------------------------------------------
 
-#echo $var
+#echo "$var"
 #year_begin=$(head -1 yearlist)
 #year_end=$(tail -1 yearlist)
 #period=${year_begin:0:4}${year_end:4:4}
@@ -348,9 +350,10 @@ cat  ./output/3Danalysis/DriverMetainfo ./output/3Danalysis/$var'.Metainfo.txt' 
 
 #------------------------------------------------
 
-echo '============================= divadoNCDF: end var loop    '$var
+echo '============================= divadoNCDF: end var loop    '"$var"
 
 done
+IFS=$saveifs
 
 echo =================================
 echo Finished writing 4D NetCDF  files 
