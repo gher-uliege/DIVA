@@ -1,0 +1,211 @@
+#!/bin/bash
+##########################################
+#
+saveifs=$IFS
+IFS=$'\n'
+  Fileinf=./input/3Dinfo
+{
+read comment
+read var
+read comment
+read bottm
+read comment
+read surf
+read comment
+read cont
+} < $Fileinf
+IFS=$saveifs
+#
+divarundir=$(pwd)
+diva3dlog=$divarundir'/output/3Danalysis/'"$var"'.diva3D.log'
+#
+echo 'diva3Dcont:' 							| tee -a $diva3dlog 
+echo 'diva3Dcont:' 'Start contour generation flag number: '$cont	| tee -a $diva3dlog
+echo 'diva3Dcont:' 'on '"$var"						| tee -a $diva3dlog
+echo 'diva3Dcont:' 'level '$bottm' to level '$surf			| tee -a $diva3dlog
+echo 'diva3Dcont:'							| tee -a $diva3dlog
+#
+#
+if [ "$cont" -eq "1" ]; then
+if [ -d ./input/divaparam ];then
+echo ' ./input/divaparam exists.' >> $diva3dlog
+else
+mkdir -p ./input/divaparam
+fi
+if [ -f ./input/contour.depth ]
+then
+depth1=$(head -1 ./input/contour.depth)
+depth2=$(tail -1 ./input/contour.depth)
+ if [ $depth1 -lt $depth2 ]
+ then
+ echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"	| tee -a $diva3dlog
+ echo "!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!"	| tee -a $diva3dlog
+ echo "!! WARNING : in contour.depth, the layers !!" 	| tee -a $diva3dlog
+ echo "!!     are not in the correct order       !!"	| tee -a $diva3dlog
+ echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"	| tee -a $diva3dlog
+ fi
+fi
+if [ -f ./input/topo.grd ]; then
+echo " topo.grd found, will proceed to generate coast.cont files" >> $diva3dlog
+else
+ if [ -f ./input/topo.dat ]; then
+  if [ -f ./input/param.par ]; then
+   if [ -f ./input/contour.depth ];then
+    echo "running divatopo ........." >> $diva3dlog
+    ./divatopo
+    cat $diva3dlog ./output/divatopo.log > bidon
+    mv bidon $diva3dlog
+
+    mv ./output/TopoInfo.dat ./input/.
+    mv ./output/topo.grd ./input/.
+
+    echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo >> $diva3dlog
+    echo 'TopoInfo.dat and topo.grd were created and put in ' >> $diva3dlog
+    echo ./input/. >> $diva3dlog
+    echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo >> $diva3dlog
+   else
+    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' 	| tee -a $diva3dlog
+    echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'		| tee -a $diva3dlog
+    echo 'Missing contour.depth file, could not perform !!'	| tee -a $diva3dlog
+    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'		| tee -a $diva3dlog
+   fi
+  else
+    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' 	| tee -a $diva3dlog
+    echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'		| tee -a $diva3dlog
+    echo 'Missing param.par file, could not perform !!'		| tee -a $diva3dlog
+    echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'		| tee -a $diva3dlog
+#
+  fi
+ else
+  if [ -f ./input/topo.gebco ]; then
+    if [ -f ./input/param.par ]; then
+     if [ -f ./input/contour.depth ];then
+      echo "running gebco2diva 10 10 ........." >> $diva3dlog
+      ./gebco2diva 10 10
+
+    cat $diva3dlog ./output/divagebco.log > bidon
+    mv bidon $diva3dlog
+
+      mv ./output/TopoInfo.dat ./input/.
+      mv ./output/topo.grd ./input/.
+      echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo >> $diva3dlog
+      echo 'TopoInfo.dat and topo.grd were created and put in ' >> $diva3dlog
+      echo ./input/. >> $diva3dlog
+      echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo >> $diva3dlog
+     else
+#
+      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+      echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+      echo 'Missing contour.depth file, could not perform !!'	| tee -a $diva3dlog
+      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+     fi
+    else
+#
+      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' 	| tee -a $diva3dlog
+      echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!' 	| tee -a $diva3dlog
+      echo 'Missing param.par file, could not perform !!'	| tee -a $diva3dlog	
+      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+    fi
+  fi
+ fi
+fi
+#
+if [ -f ./input/topo.grd ]; then
+ ./divacont
+mv ./output/coast.cont* ./input/divaparam/.
+echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo >> $diva3dlog
+echo 'coast.cont files were created and put in ' >> $diva3dlog
+echo ./input/divaparam/. >> $diva3dlog
+echo ooooooooooooooooooooooooooooooooooooooooooooooooooooooooo >> $diva3dlog
+fi
+#
+fi
+#
+if [ "$cont" -ge "2" ]; then
+if [ -f ./input/topo.grd ]; then
+echo "topo.grd already present, no need to recreate it"
+else
+if [ -f ./input/topo.dat ]; then
+   if [ -f ./input/param.par ]; then
+      echo "running divatopo ........."$cont >> $diva3dlog
+    ./divatopo
+
+    cat $diva3dlog ./output/divatopo.log > bidon
+    mv bidon $diva3dlog
+
+   else
+#
+     echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+     echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+     echo 'Missing param.par file, could not perform !!'	| tee -a $diva3dlog
+     echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+   fi
+else
+  if [ -f ./input/topo.gebco ]; then
+    if [ -f ./input/param.par ]; then
+      echo "running gebco2diva 10 10........."$cont >> $diva3dlog
+      ./gebco2diva 10 10
+
+    cat $diva3dlog ./output/divagebco.log > bidon
+    mv bidon $diva3dlog
+
+    else
+      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+      echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+      echo 'Missing param.par file, could not perform !!'	| tee -a $diva3dlog
+      echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+    fi
+  fi
+ mv ./output/TopoInfo.dat ./input/.
+ mv ./output/topo.grd ./input/.
+fi
+fi
+if [ "$cont" -eq "3" ]; then
+if [ -d ./input/divaparam ];then
+echo '>>>WARNING: ./input/divaparam exists ' >> $diva3dlog
+else
+mkdir -p ./input/divaparam
+fi
+if [ -f ./input/topo.grd ]; then
+ ./divacont
+mv ./output/coast.cont* ./input/divaparam/.
+fi
+fi
+if [ -d ./input/divaUVcons ];then
+echo '>>>WARNING: ./input/divaUVcons exists' >> $diva3dlog
+else
+mkdir -p ./input/divaUVcons
+fi
+if [ -f ./input/topo.grd ]; then
+if [ -f ./input/param.par ]; then
+./divaUVtopo
+cp -v ./output/U* ./input/divaUVcons
+cp -v ./output/V* ./input/divaUVcons
+cp -v ./output/constraint.dat ./input/.
+else
+#
+echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+echo '!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+echo 'Missing param.par file, could not perform !!'	| tee -a $diva3dlog
+echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+fi
+fi
+fi
+
+#------------------------------------------------
+# Warning if layer below sea bottom
+#------------------------------------------------
+
+for file in `ls input/divaparam/coast.cont.*`
+do
+	lines=$(cat $file | wc -l)
+	if [ "$lines" == "1" ]
+	then
+	echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"	| tee -a $diva3dlog
+	echo "!!!!!!!!!!  diva3Dcont:    !!!!!!!!!!!!!!!!!"	| tee -a $diva3dlog
+	echo "!!WARNING : One layer is below sea bottom !!"	| tee -a $diva3dlog
+	echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"	| tee -a $diva3dlog
+	fi
+done
+
+#------------------------------------------------

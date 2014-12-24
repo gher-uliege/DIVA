@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+#     WRITES 4D NETCDF FILES
+# 
+#####################################################
+#
+var="$1"
+#
+vld=$2
+#
+cd ./3DWORK/
+cp -v '../output/3Danalysis/'"$var"'.3DNCliste' './3Dncliste'
+cp -v '../output/3Danalysis/'"$var"'.3DNCinfo' './3DNCinfo'
+#
+rm -f sextantcatalog_id
+uuidgen -r > sextantcatalog_id
+if [ -f fort.44 ];then
+rm fort.44
+fi
+#
+nbfls=`cat './3Dncliste' |wc -l`
+echo $nbfls >> ./fort.44
+
+if [ "$vld" == "0" ]; then
+../../bin/diva4Dstr.a
+fi
+if [ "$vld" == "1" ]; then
+../../bin/diva4Dqcwrt.a
+fi
+#
+cd ../
