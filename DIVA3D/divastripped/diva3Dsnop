@@ -53,11 +53,11 @@ echo 'diva3Dsnop:' 'on '"$var"
 echo 'diva3Dsnop:' 'level '$lay1' to level '$lay2
 echo 'diva3Dsnop:'
 #
-echo 'diva3Dsnop:' >> $diva3dlog
-echo 'diva3Dsnop:' 'Start S/N estimation: '$datop >> $diva3dlog
-echo 'diva3Dsnop:' ' on '"$var" >> $diva3dlog
-echo 'diva3Dsnop:' ' level '$lay1' to level '$lay2 >> $diva3dlog
-echo 'diva3Dsnop:' >> $diva3dlog
+echo 'diva3Dsnop:' >> "$diva3dlog"
+echo 'diva3Dsnop:' 'Start S/N estimation: '$datop >> "$diva3dlog"
+echo 'diva3Dsnop:' ' on '"$var" >> "$diva3dlog"
+echo 'diva3Dsnop:' ' level '$lay1' to level '$lay2 >> "$diva3dlog"
+echo 'diva3Dsnop:' >> "$diva3dlog"
 #
 if [ -f ./input/divaparam/SNminmax ];then
 # echo 'diva3Dsnop: Using  SLminmax file'
@@ -91,12 +91,12 @@ echo ' '  >> ../output/diva.log
 
 
 if [ $? -ne 0 ];then
-echo ' ' >> $diva3dlog
-echo diva3Dsnop: -------------------------------------------- >> $diva3dlog
-echo diva3Dsnop: A problem was encountered during execution ! >> $diva3dlog
-echo diva3Dsnop:       diva3Dsnop wgcvfile.a >> $diva3dlog
-echo diva3Dsnop: Check execution track >> $diva3dlog
-echo diva3Dsnop: -------------------------------------------- >> $diva3dlog
+echo ' ' >> "$diva3dlog"
+echo diva3Dsnop: -------------------------------------------- >> "$diva3dlog"
+echo diva3Dsnop: A problem was encountered during execution ! >> "$diva3dlog"
+echo diva3Dsnop:       diva3Dsnop wgcvfile.a >> "$diva3dlog"
+echo diva3Dsnop: Check execution track >> "$diva3dlog"
+echo diva3Dsnop: -------------------------------------------- >> "$diva3dlog"
 echo ' '
 echo diva3Dsnop: --------------------------------------------
 echo diva3Dsnop: A problem was encountered during execution !
@@ -132,11 +132,11 @@ do
 let lev=10000+$dep
 #
 
-echo ' ' >> $diva3dlog
-echo ' ' >> $diva3dlog
-echo 'ooooooooooooooooooooooooooooooooooooooooooooooooooo' >> $diva3dlog
-echo 'diva3Dsnop: determination of SN for level: '$lev >> $diva3dlog
-echo 'ooooooooooooooooooooooooooooooooooooooooooooooooooo' >> $diva3dlog
+echo ' ' >> "$diva3dlog"
+echo ' ' >> "$diva3dlog"
+echo 'ooooooooooooooooooooooooooooooooooooooooooooooooooo' >> "$diva3dlog"
+echo 'diva3Dsnop: determination of SN for level: '$lev >> "$diva3dlog"
+echo 'ooooooooooooooooooooooooooooooooooooooooooooooooooo' >> "$diva3dlog"
 echo ' '
 echo ' '
 echo 'ooooooooooooooooooooooooooooooooooooooooooooooooooo'
@@ -179,7 +179,7 @@ fi
 if [ -f ./input/divaparam/coast.cont.$lev ];then
  cp -f ./input/divaparam/coast.cont.$lev  ./input/coast.cont
 else
- echo '!!!!! diva3Dsnop did not find coast.cont.'$lev' in divaparam/ !!!!!' >> $diva3dlog
+ echo '!!!!! diva3Dsnop did not find coast.cont.'$lev' in divaparam/ !!!!!' >> "$diva3dlog"
  echo '!!!!! diva3Dsnop did not find coast.cont.'$lev' in divaparam/ !!!!!'
  runflag=3
 fi
@@ -192,7 +192,7 @@ if [ -f ./input/divadata/"$var".$lev ];then
   runflag=4
  fi
 else
- echo '!!!!! diva3Dsnop did not find '"$var"'.'$lev' in divadata/ !!!!!' >> $diva3dlog
+ echo '!!!!! diva3Dsnop did not find '"$var"'.'$lev' in divadata/ !!!!!' >> "$diva3dlog"
  echo '!!!!! diva3Dsnop did not find '"$var"'.'$lev' in divadata/ !!!!!'
  runflag=2
 fi
@@ -214,10 +214,10 @@ echo 'diva3Dsnop:   running divaanom '"$var"'.'$lev >> ./output/diva.log
 echo diva3Dsnop: ////////////////////////////////////////// >> ./output/diva.log
 echo ' '  >> ./output/diva.log
   ./divaanom
-    cat $diva3dlog ./output/divaanom.log > bidon
-    mv bidon $diva3dlog
+    cat "$diva3dlog" ./output/divaanom.log > bidon
+    mv bidon "$diva3dlog"
 
-  echo '!!!!! using  reference field for '"$var"'.'$lev'!!' >> $diva3dlog
+  echo '!!!!! using  reference field for '"$var"'.'$lev'!!' >> "$diva3dlog"
 else
   if [ -f ./input/divarefe/"$var"'.'$lev'.ref' ];then
    refdat=1
@@ -229,10 +229,10 @@ echo 'diva3Dsnop:   running divaaanom '"$var"'.'$lev >> ./output/diva.log
 echo diva3Dsnop: ////////////////////////////////////////// >> ./output/diva.log
 echo ' '  >> ./output/diva.log
   ./divaanom
-    cat $diva3dlog ./output/divaanom.log > bidon
-    mv bidon $diva3dlog
+    cat "$diva3dlog" ./output/divaanom.log > bidon
+    mv bidon "$diva3dlog"
 
-   echo '!!!!! using  reference field for '"$var"'.'$lev' !!' >> $diva3dlog
+   echo '!!!!! using  reference field for '"$var"'.'$lev' !!' >> "$diva3dlog"
   fi
 #
 fi
@@ -294,7 +294,7 @@ fi
 ############################
 #
 if [ "$refdat" -eq "0" ];then
-echo '>>SNop:  did not find reference field for '"$var"'.'$lev'  <<<<<<<< ' >> $diva3dlog
+echo '>>SNop:  did not find reference field for '"$var"'.'$lev'  <<<<<<<< ' >> "$diva3dlog"
 echo '>>SNop:  did not find reference field for '"$var"'.'$lev'  <<<<<<<< '
 fi
 #
@@ -397,12 +397,12 @@ echo ' '  >> ../output/diva.log
 
 
 if [ $? -ne 0 ];then
-echo ' 'echo ' ' >> $diva3dlog
-echo diva3Dsnop: -------------------------------------------- >> $diva3dlog
-echo diva3Dsnop: A problem was encountered during execution ! >> $diva3dlog
-echo diva3Dsnop:       diva3Dsnop wgcvfile.a >> $diva3dlog
-echo diva3Dsnop: Check execution track >> $diva3dlog
-echo diva3Dsnop: -------------------------------------------- >> $diva3dlog
+echo ' 'echo ' ' >> "$diva3dlog"
+echo diva3Dsnop: -------------------------------------------- >> "$diva3dlog"
+echo diva3Dsnop: A problem was encountered during execution ! >> "$diva3dlog"
+echo diva3Dsnop:       diva3Dsnop wgcvfile.a >> "$diva3dlog"
+echo diva3Dsnop: Check execution track >> "$diva3dlog"
+echo diva3Dsnop: -------------------------------------------- >> "$diva3dlog"
 echo ' 'echo ' '
 echo diva3Dsnop: --------------------------------------------
 echo diva3Dsnop: A problem was encountered during execution !
@@ -433,8 +433,8 @@ echo 'diva3Dsnop:         Creating mesh: '"$var"'.'$lev >> ./output/diva.log
 echo diva3Dsnop: ////////////////////////////////////////// >> ./output/diva.log
 echo ' '  >> ./output/diva.log
 ./divamesh
-    cat $diva3dlog ./output/divamesh.log > bidon
-    mv bidon $diva3dlog
+    cat "$diva3dlog" ./output/divamesh.log > bidon
+    mv bidon "$diva3dlog"
 
 if [ "$ndata" -le "$small" ]
 then
@@ -445,8 +445,8 @@ echo diva3Dsnop: '        Cross Validation (divacv): '"$var"'.'$lev >> ./output/
 echo diva3Dsnop: ////////////////////////////////////////// >> ./output/diva.log
 echo ' '  >> ./output/diva.log
 divacv 
-    cat $diva3dlog ./output/divacv.log > bidon
-    mv bidon $diva3dlog
+    cat "$diva3dlog" ./output/divacv.log > bidon
+    mv bidon "$diva3dlog"
 
 else
   if [ "$ndata" -le "$medium" ]
@@ -457,8 +457,8 @@ echo 'diva3Dsnop:         Cross Validation (divagcv): '"$var"'.'$lev >> ./output
 echo diva3Dsnop: ////////////////////////////////////////// >> ./output/diva.log
 echo ' '  >> ./output/diva.log
   divagcv 
-    cat $diva3dlog ./output/divagcv.log > bidon
-    mv bidon $diva3dlog
+    cat "$diva3dlog" ./output/divagcv.log > bidon
+    mv bidon "$diva3dlog"
 
   else
   let nsamp=$ndata/20
@@ -467,8 +467,8 @@ echo 'diva3Dsnop:         Cross Validation (divacvrand): '"$var"'.'$lev >> ./out
 echo diva3Dsnop: ////////////////////////////////////////// >> ./output/diva.log
 echo ' '  >> ./output/diva.log
   divacvrand $nsamp 2 
-    cat $diva3dlog ./output/divacvrand.log > bidon
-    mv bidon $diva3dlog
+    cat "$diva3dlog" ./output/divacvrand.log > bidon
+    mv bidon "$diva3dlog"
   fi
 fi
 #
@@ -480,7 +480,7 @@ read comment
 read param13
 } < $Fileinf
 #
-echo '%%%%%%%%% divagcv SN param: '$param12' for ' "$var" $lev >> $diva3dlog
+echo '%%%%%%%%% divagcv SN param: '$param12' for ' "$var" $lev >> "$diva3dlog"
 echo '%%%%%%%%% divagcv SN param: '$param12' for ' "$var" $lev
 #############################################################
 if [ -f ./input/divaparam/SNminmax ];then
@@ -489,7 +489,7 @@ Fileinf=./3DWORK/sn.$lev
 read minsn
 read maxsn
 } < $Fileinf
-echo 'ooooooooooo SN optimal val : ' $param12 >> $diva3dlog
+echo 'ooooooooooo SN optimal val : ' $param12 >> "$diva3dlog"
  echo $minsn > ./3DWORK/MinMaxVa
  echo $maxsn >> ./3DWORK/MinMaxVa
  echo $param12 >> ./3DWORK/MinMaxVa
@@ -497,7 +497,7 @@ echo 'ooooooooooo SN optimal val : ' $param12 >> $diva3dlog
  ../../bin/boundval.a
  cd ../ 
 else
-echo 'ooooooooooo SN optimal val : ' $param12 >> $diva3dlog
+echo 'ooooooooooo SN optimal val : ' $param12 >> "$diva3dlog"
  echo $minsn > ./3DWORK/MinMaxVa
  echo $maxsn >> ./3DWORK/MinMaxVa
  echo $param12 >> ./3DWORK/MinMaxVa
@@ -510,7 +510,7 @@ Fileinf=./3DWORK/ParamVal
 read param12
 } < $Fileinf
 #echo 'ooooooooooo SN max min val : ' $maxsn $minsn $param12
-echo 'ooooooooooo considered SN val = ' $param12' and VARBAK = ' $param13 >> $diva3dlog
+echo 'ooooooooooo considered SN val = ' $param12' and VARBAK = ' $param13 >> "$diva3dlog"
 echo 'ooooooooooo considered SN val = ' $param12' and VARBAK = ' $param13
 ############################################################
 #
@@ -519,9 +519,9 @@ echo $param13 >> './output/'"$var"'.VAR.dat'
 echo $dep >> './output/'"$var"'.Lay.dat' 
 #
 else
-echo '??????????????????????????????????????????????????????????' >> $diva3dlog
-echo '?? Did not find gcvsampling.dat for param.par.'"$var"'.'$lev >> $diva3dlog
-echo '??????????????????????????????????????????????????????????' >> $diva3dlog
+echo '??????????????????????????????????????????????????????????' >> "$diva3dlog"
+echo '?? Did not find gcvsampling.dat for param.par.'"$var"'.'$lev >> "$diva3dlog"
+echo '??????????????????????????????????????????????????????????' >> "$diva3dlog"
 echo '??????????????????????????????????????????????????????????'
 echo '?? Did not find gcvsampling.dat for param.par.'"$var"'.'$lev
 echo '??????????????????????????????????????????????????????????'
@@ -532,39 +532,39 @@ mv ./output/gcv.dat './input/divaparam/'"$var"'.gcv.dat.'$lev
 else
 errflag=1
 if [ "$runflag" -eq "1" ];then
-echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!' >> $diva3dlog
-echo '!!!!!!!!!!!!!DID NOT FIND ANY param.par FILE FOR '"$var" $lev'!'  >> $diva3dlog
-echo '!!!!!!!!!!!!!THE OPTIMISATION WAS NOT PERFORMED !' >> $diva3dlog
-echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
+echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!' >> "$diva3dlog"
+echo '!!!!!!!!!!!!!DID NOT FIND ANY param.par FILE FOR '"$var" $lev'!'  >> "$diva3dlog"
+echo '!!!!!!!!!!!!!THE OPTIMISATION WAS NOT PERFORMED !' >> "$diva3dlog"
+echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> "$diva3dlog"
 echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!'
 echo '!!!!!!!!!!!!!DID NOT FIND ANY param.par FILE FOR '"$var" $lev'!' 
 echo '!!!!!!!!!!!!!THE OPTIMISATION WAS NOT PERFORMED !'
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 fi
 if [ "$runflag" -eq "2" ];then
-echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!' >> $diva3dlog
-echo '!!!!!!!!!!!!!DID NOT FIND DATA FILE FOR '"$var" $lev'!'  >> $diva3dlog
-echo '!!!!!!!!!!!!!THE OPTIMISATION WAS NOT PERFORMED !' >> $diva3dlog
-echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
+echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!' >> "$diva3dlog"
+echo '!!!!!!!!!!!!!DID NOT FIND DATA FILE FOR '"$var" $lev'!'  >> "$diva3dlog"
+echo '!!!!!!!!!!!!!THE OPTIMISATION WAS NOT PERFORMED !' >> "$diva3dlog"
+echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> "$diva3dlog"
 echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!'
 echo '!!!!!!!!!!!!!DID NOT FIND DATA FILE FOR '"$var" $lev'!' 
 echo '!!!!!!!!!!!!!THE OPTIMISATION WAS NOT PERFORMED !'
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 fi
 if [ "$runflag" -eq "3" ];then
-echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!' >> $diva3dlog
-echo '!!!!!!!!!!!!!DID NOT FIND CONTOUR FILE FOR '"$var" $lev'!'  >> $diva3dlog
-echo '!!!!!!!!!!!!!THE OPTIMISATION WAS NOT PERFORMED !' >> $diva3dlog
-echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
+echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!' >> "$diva3dlog"
+echo '!!!!!!!!!!!!!DID NOT FIND CONTOUR FILE FOR '"$var" $lev'!'  >> "$diva3dlog"
+echo '!!!!!!!!!!!!!THE OPTIMISATION WAS NOT PERFORMED !' >> "$diva3dlog"
+echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> "$diva3dlog"
 echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!'
 echo '!!!!!!!!!!!!!DID NOT FIND CONTOUR FILE FOR '"$var" $lev'!' 
 echo '!!!!!!!!!!!!!THE OPTIMISATION WAS NOT PERFORMED !'
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 fi
 if [ "$runflag" -eq "4" ];then
-echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!' >> $diva3dlog
-echo '!!!!!!!!!!DATA FILE  '"$var" $lev' IS EMPTY!'  >> $diva3dlog
-echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> $diva3dlog
+echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!' >> "$diva3dlog"
+echo '!!!!!!!!!!DATA FILE  '"$var" $lev' IS EMPTY!'  >> "$diva3dlog"
+echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> "$diva3dlog"
 echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!'
 echo '!!!!!!!!!!DATA FILE  '"$var" $lev' IS EMPTY!' 
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
@@ -677,7 +677,7 @@ do
 read snparam
 dd=`expr $dd + 1`
 done
-} < $Fileinf
+} < "$Fileinf"
 #
 dd=1
 #
@@ -688,11 +688,11 @@ do
 read varbakparam
 dd=`expr $dd + 1`
 done
-} < $Fileinf
+} < "$Fileinf"
 #
-echo 'oooooooooooooooooooooooo' >> $diva3dlog
-echo 'diva3Dsnop: rewriting param.par.'"$var"'.'$lev': SN = '$snparam >> $diva3dlog
-echo 'oooooooooooooooooooooooo' >> $diva3dlog
+echo 'oooooooooooooooooooooooo' >> "$diva3dlog"
+echo 'diva3Dsnop: rewriting param.par.'"$var"'.'$lev': SN = '$snparam >> "$diva3dlog"
+echo 'oooooooooooooooooooooooo' >> "$diva3dlog"
 echo 'oooooooooooooooooooooooo'
 echo 'diva3Dsnop: rewriting param.par.'"$var"'.'$lev': SN = '$snparam
 echo 'oooooooooooooooooooooooo'
@@ -725,7 +725,7 @@ read comment12
 read param12
 read comment13
 read param13
-} < $Fileinf
+} < "$Fileinf"
 #
 if [ -f './output/'"$var"'.VAR.dat' ];then
 dd=1
@@ -736,7 +736,7 @@ do
 read param13
 dd=`expr $dd + 1`
 done
-} < $Fileinf
+} < "$Fileinf"
 fi
 #
 #
