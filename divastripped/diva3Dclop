@@ -47,11 +47,11 @@ IFS=$saveifs
 #
 diva3dlog=$divarundir'/output/3Danalysis/'"$var"'.diva3D.log'
 #
-echo 'diva3Dclop:' 						| tee $diva3dlog
-echo 'diva3Dclop:' 'Start CL estimation flag number: '$parop    | tee -a $diva3dlog
-echo 'diva3Dclop:' 'on '"$var"					| tee -a $diva3dlog
-echo 'diva3Dclop:' 'level '$lay1' to level '$lay2		| tee -a $diva3dlog
-echo 'diva3Dclop:'						| tee -a $diva3dlog
+echo 'diva3Dclop:' 						| tee "$diva3dlog"
+echo 'diva3Dclop:' 'Start CL estimation flag number: '$parop    | tee -a "$diva3dlog"
+echo 'diva3Dclop:' 'on '"$var"					| tee -a "$diva3dlog"
+echo 'diva3Dclop:' 'level '$lay1' to level '$lay2		| tee -a "$diva3dlog"
+echo 'diva3Dclop:'						| tee -a "$diva3dlog"
 #
 #
 if [ -f ./input/divaparam/CLminmax ];then
@@ -111,10 +111,10 @@ while [ $dep -le $lay2 ]
 do
  let lev=10000+$dep
 #
-echo ' '						| tee -a $diva3dlog
-echo 'oooooooooooooooooooooooooooooooooooooooooooooooo' | tee -a $diva3dlog
-echo 'diva3Dclop: determination of CL for level: '$lev  | tee -a $diva3dlog
-echo 'oooooooooooooooooooooooooooooooooooooooooooooooo' | tee -a $diva3dlog
+echo ' '						| tee -a "$diva3dlog"
+echo 'oooooooooooooooooooooooooooooooooooooooooooooooo' | tee -a "$diva3dlog"
+echo 'diva3Dclop: determination of CL for level: '$lev  | tee -a "$diva3dlog"
+echo 'oooooooooooooooooooooooooooooooooooooooooooooooo' | tee -a "$diva3dlog"
 #
 if [ -f ./input/divaparam/param.par."$var"'.'$lev ];then
  cp -f ./input/divaparam/param.par."$var"'.'$lev ./input/divaparam/param.par."$var"'.'$lev'.ori'
@@ -150,7 +150,7 @@ fi
 if [ -f ./input/divaparam/coast.cont.$lev ];then
  cp -f ./input/divaparam/coast.cont.$lev  ./input/coast.cont
 else
- echo '!!!!! diva3Dclop did not find coast.cont.'$lev' in divaparam/ !!!!!' | tee -a $diva3dlog
+ echo '!!!!! diva3Dclop did not find coast.cont.'$lev' in divaparam/ !!!!!' | tee -a "$diva3dlog"
  runflag=3
 fi
 #
@@ -162,7 +162,7 @@ if [ -f ./input/divadata/"$var".$lev ];then
   runflag=4
  fi
 else
- echo '!!!!! diva3Dclop did not find '"$var"'.'$lev' in divadata/ !!!!!' | tee -a $diva3dlog
+ echo '!!!!! diva3Dclop did not find '"$var"'.'$lev' in divadata/ !!!!!' | tee -a "$diva3dlog"
  runflag=2
 fi
 #
@@ -199,8 +199,8 @@ echo diva3Dclop:   running divaaanom '"$var"'.'$lev'          >> $divalog
 echo diva3Dclop: ////////////////////////////////////////// >> $divalog
 echo ' '  >> $divalog
    ./divaanom
-    cat $diva3dlog ./output/divaanom.log > bidon
-    mv bidon $diva3dlog
+    cat "$diva3dlog" ./output/divaanom.log > bidon
+    mv bidon "$diva3dlog"
 
 #
 fi
@@ -262,7 +262,7 @@ fi
 ############################
 #
 if [ "$refdat" -eq "0" ];then
-echo '>>>>>>>>>>>> did not find reference field for '"$var"'.'$lev'  <<<<<<<< ' | tee -a $diva3dlog
+echo '>>>>>>>>>>>> did not find reference field for '"$var"'.'$lev'  <<<<<<<< ' | tee -a "$diva3dlog"
 fi
 ##
 small="100"
@@ -292,15 +292,15 @@ if [ "$parop" -ge "10" -o  "$parop" -le "-10" ];then
    cp -v ./input/divamesh/mesh.dat.$lev ./output/meshvisu/fort.23
    cp -v ./input/divaparam/coast.cont.$lev ./output/meshvisu/fort.10
   else
-   echo 'diva3Dclop: generating a mesh for '"$var"'.'$lev  >> $diva3dlog
+   echo 'diva3Dclop: generating a mesh for '"$var"'.'$lev  >> "$diva3dlog"
 
 echo diva3Dclop: ////////////////////////////////////////// >> $divalog
 echo 'diva3Dclop:         Creating mesh: '"$var"'.'$lev       >> $divalog 
 echo diva3Dclop: ////////////////////////////////////////// >> $divalog
 echo ' '  >> $divalog
   divamesh
-    cat $diva3dlog ./output/divamesh.log > bidon
-    mv bidon $diva3dlog
+    cat "$diva3dlog" ./output/divamesh.log > bidon
+    mv bidon "$diva3dlog"
 
    cp -v ./output/meshvisu/fort.22 ./input/divamesh/meshtopo.$lev
    cp -v ./output/meshvisu/fort.23 ./input/divamesh/mesh.dat.$lev
@@ -312,95 +312,95 @@ echo 'diva3Dclop:         divadatacoverage: '"$var"'.'$lev    >> $divalog
 echo diva3Dclop: ////////////////////////////////////////// >> $divalog
 echo ' '  >> $divalog
 ./divadatacoverage -n
-    cat $diva3dlog ./output/divadatacovr.log > bidon
-    mv bidon $diva3dlog
+    cat "$diva3dlog" ./output/divadatacovr.log > bidon
+    mv bidon "$diva3dlog"
 
 if [ "$nbdat" -le "$small" ]
 then
-echo =============== >> $diva3dlog
-echo Small data set >> $diva3dlog
-echo =============== >> $diva3dlog
+echo =============== >> "$diva3dlog"
+echo Small data set >> "$diva3dlog"
+echo =============== >> "$diva3dlog"
 
 echo diva3Dclop: ////////////////////////////////////////// >> $divalog
 echo 'diva3Dclop:         divafit: '"$var"'.'$lev 	    >> $divalog
 echo diva3Dclop: ////////////////////////////////////////// >> $divalog
 echo ' '  >> $divalog
 divafit -r -l
-    cat $diva3dlog $divalog > bidon
-    mv bidon $diva3dlog
+    cat "$diva3dlog" $divalog > bidon
+    mv bidon "$diva3dlog"
 
 else
   if [ "$nbdat" -le "$medium" ]
   then
-  echo =============== >> $diva3dlog
-  echo Medium data set >> $diva3dlog
-  echo =============== >> $diva3dlog
+  echo =============== >> "$diva3dlog"
+  echo Medium data set >> "$diva3dlog"
+  echo =============== >> "$diva3dlog"
 
 echo diva3Dclop: ////////////////////////////////////////// >> $divalog
 echo 'diva3Dclop:         divafit: '"$var"'.'$lev             >> $divalog 
 echo diva3Dclop: ////////////////////////////////////////// >> $divalog
 echo ' '  >> $divalog
   divafit -r -l
-    cat $diva3dlog ./output/divafit.log > bidon
-    mv bidon $diva3dlog
+    cat "$diva3dlog" ./output/divafit.log > bidon
+    mv bidon "$diva3dlog"
 
     else
-  echo ============== >> $diva3dlog
-  echo Large data set >> $diva3dlog
-  echo ============== >> $diva3dlog
+  echo ============== >> "$diva3dlog"
+  echo Large data set >> "$diva3dlog"
+  echo ============== >> "$diva3dlog"
 
 echo diva3Dclop: ////////////////////////////////////////// >> $divalog
 echo 'diva3Dclop:         divafit: '"$var"'.'$lev             >> $divalog
 echo diva3Dclop: ////////////////////////////////////////// >> $divalog
 echo ' '  >> $divalog
   divafit -r $medium -l
-    cat $diva3dlog ./output/divafit.log > bidon
-    mv bidon $diva3dlog
+    cat "$diva3dlog" ./output/divafit.log > bidon
+    mv bidon "$diva3dlog"
 
   fi
 fi
 else
 if [ "$nbdat" -le "$small" ]
 then
-echo =============== >> $diva3dlog
-echo Small data set >> $diva3dlog
-echo =============== >> $diva3dlog
+echo =============== >> "$diva3dlog"
+echo Small data set >> "$diva3dlog"
+echo =============== >> "$diva3dlog"
 
 echo diva3Dclop: ////////////////////////////////////////// >> $divalog
 echo 'diva3Dclop:         divafit: '"$var"'.'$lev             >> $divalog
 echo diva3Dclop: ////////////////////////////////////////// >> $divalog
 echo ' '  >> $divalog
 divafit -r
-    cat $diva3dlog ./output/divafit.log > bidon
-    mv bidon $diva3dlog
+    cat "$diva3dlog" ./output/divafit.log > bidon
+    mv bidon "$diva3dlog"
 
 else
   if [ "$nbdat" -le "$medium" ]
   then
-  echo =============== >> $diva3dlog
-  echo Medium data set >> $diva3dlog
-  echo =============== >> $diva3dlog
+  echo =============== >> "$diva3dlog"
+  echo Medium data set >> "$diva3dlog"
+  echo =============== >> "$diva3dlog"
 
 echo diva3Dclop: ////////////////////////////////////////// >> $divalog
 echo 'diva3Dclop:         divafit: '"$var"'.'$lev             >> $divalog 
 echo diva3Dclop: ////////////////////////////////////////// >> $divalog
 echo ' '  >> $divalog
   divafit -r
-    cat $diva3dlog ./output/divafit.log > bidon
-    mv bidon $diva3dlog
+    cat "$diva3dlog" ./output/divafit.log > bidon
+    mv bidon "$diva3dlog"
 
     else
-  echo ============== >> $diva3dlog
-  echo Large data set >> $diva3dlog
-  echo ============== >> $diva3dlog
+  echo ============== >> "$diva3dlog"
+  echo Large data set >> "$diva3dlog"
+  echo ============== >> "$diva3dlog"
 
 echo diva3Dclop: ////////////////////////////////////////// >> ./output/diva.log
 echo 'diva3Dclop:         divafit: '"$var"'.'$lev >> ./output/diva.log
 echo diva3Dclop: ////////////////////////////////////////// >> ./output/diva.log
 echo ' '  >> ./output/diva.log
   divafit -r $medium
-    cat $diva3dlog ./output/divafit.log > bidon
-    mv bidon $diva3dlog
+    cat "$diva3dlog" ./output/divafit.log > bidon
+    mv bidon "$diva3dlog"
 
   fi
 fi
@@ -421,9 +421,9 @@ read param1
 #
 #
 else
-echo '??????????????????????????????????????????????????????????' >> $diva3dlog
-echo '?? Did not find param.par.fit.dat for '"$var"'.'$lev >> $diva3dlog
-echo '??????????????????????????????????????????????????????????' >> $diva3dlog
+echo '??????????????????????????????????????????????????????????' >> "$diva3dlog"
+echo '?? Did not find param.par.fit.dat for '"$var"'.'$lev >> "$diva3dlog"
+echo '??????????????????????????????????????????????????????????' >> "$diva3dlog"
 echo '??????????????????????????????????????????????????????????'
 echo '?? Did not find param.par.fit.dat for '"$var"'.'$lev
 echo '??????????????????????????????????????????????????????????'
@@ -441,10 +441,10 @@ read comment
 read MRL
 } < $Fileinf
 #
-echo 'ooooooooooo For information: Mean lenth scale: '$MRL >> $diva3dlog
+echo 'ooooooooooo For information: Mean lenth scale: '$MRL >> "$diva3dlog"
 fi
 #
-echo 'ooooooooooo CL optimal val : ' $param1 >> $diva3dlog >> $diva3dlog
+echo 'ooooooooooo CL optimal val : ' $param1 >> "$diva3dlog" >> "$diva3dlog"
 echo 'ooooooooooo CL optimal val : ' $param1
 ############################################################
 echo $minlec > ./3DWORK/MinMaxVa
@@ -460,12 +460,12 @@ echo ' '  >> $divalog
 ../../bin/boundval.a
 
 if [ $? -ne 0 ];then
-echo ' ' 							| tee -a $diva3dlog $divalog
-echo diva3Dclop: --------------------------------------------   | tee -a $diva3dlog $divalog
-echo diva3Dclop: A problem was encountered during execution !	| tee -a $diva3dlog $divalog
-echo diva3Dclop:       diva3Dclop boundval.a			| tee -a $diva3dlog $divalog
-echo diva3Dclop:       Check execution track			| tee -a $diva3dlog $divalog
-echo diva3Dclop: --------------------------------------------	| tee -a $diva3dlog $divalog
+echo ' ' 							| tee -a "$diva3dlog" $divalog
+echo diva3Dclop: --------------------------------------------   | tee -a "$diva3dlog" $divalog
+echo diva3Dclop: A problem was encountered during execution !	| tee -a "$diva3dlog" $divalog
+echo diva3Dclop:       diva3Dclop boundval.a			| tee -a "$diva3dlog" $divalog
+echo diva3Dclop:       Check execution track			| tee -a "$diva3dlog" $divalog
+echo diva3Dclop: --------------------------------------------	| tee -a "$diva3dlog" $divalog
 fi
 
 cd ../
@@ -473,7 +473,7 @@ Fileinf=./3DWORK/ParamVal
 {
 read param1
 } < $Fileinf
-echo 'ooooooooooo CL considered val = ' $param1 >> $diva3dlog
+echo 'ooooooooooo CL considered val = ' $param1 >> "$diva3dlog"
 #
 echo $param1 >> './output/'"$var"'.CL.dat'
 echo $dep >> './output/'"$var"'.Lay.dat'
@@ -482,27 +482,27 @@ else
 let errflag=$errflag+1
 #
 if [ "$runflag" -eq "1" ];then
-echo '!!!!!!!!!!!!!diva3Dclop WARNING: !!!!!!!!!!!!!!!!!!' 		| tee -a $diva3dlog
-echo '!!!!!!!!!!!!!DID NOT FIND ANY param.par FILE FOR '"$var" $lev'!'  	| tee -a $diva3dlog
-echo '!!!!!!!!!!!!!THE OPTIMISATION WAS NOT PERFORMED !' 		| tee -a $diva3dlog
-echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' 		| tee -a $diva3dlog
+echo '!!!!!!!!!!!!!diva3Dclop WARNING: !!!!!!!!!!!!!!!!!!' 		| tee -a "$diva3dlog"
+echo '!!!!!!!!!!!!!DID NOT FIND ANY param.par FILE FOR '"$var" $lev'!'  	| tee -a "$diva3dlog"
+echo '!!!!!!!!!!!!!THE OPTIMISATION WAS NOT PERFORMED !' 		| tee -a "$diva3dlog"
+echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' 		| tee -a "$diva3dlog"
 else
 if [ "$runflag" -eq "2" ];then
-echo '!!!!!!!!!!!!!diva3Dclop WARNING: !!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog 
-echo '!!!!!!!!!!!!!DID NOT FIND DATA FILE FOR '"$var" $lev'!' 	| tee -a $diva3dlog
-echo '!!!!!!!!!!!!!THE OPTIMISATION WAS NOT PERFORMED !'	| tee -a $diva3dlog
-echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+echo '!!!!!!!!!!!!!diva3Dclop WARNING: !!!!!!!!!!!!!!!!!!'	| tee -a "$diva3dlog" 
+echo '!!!!!!!!!!!!!DID NOT FIND DATA FILE FOR '"$var" $lev'!' 	| tee -a "$diva3dlog"
+echo '!!!!!!!!!!!!!THE OPTIMISATION WAS NOT PERFORMED !'	| tee -a "$diva3dlog"
+echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a "$diva3dlog"
 else
 if [ "$runflag" -eq "3" ];then
-echo '!!!!!!!!!!!!!diva3Dclop WARNING: !!!!!!!!!!!!!!!!!!' 	| tee -a $diva3dlog
-echo '!!!!!!!!!!!!!DID NOT FIND CONTOUR FILE FOR '"$var" $lev'!' 	| tee -a $diva3dlog
-echo '!!!!!!!!!!!!!THE OPTIMISATION WAS NOT PERFORMED !'	| tee -a $diva3dlog
-echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+echo '!!!!!!!!!!!!!diva3Dclop WARNING: !!!!!!!!!!!!!!!!!!' 	| tee -a "$diva3dlog"
+echo '!!!!!!!!!!!!!DID NOT FIND CONTOUR FILE FOR '"$var" $lev'!' 	| tee -a "$diva3dlog"
+echo '!!!!!!!!!!!!!THE OPTIMISATION WAS NOT PERFORMED !'	| tee -a "$diva3dlog"
+echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a "$diva3dlog"
 else
 if [ "$runflag" -eq "4" ];then
-echo '!!!!!!!!!!!!!diva3Dclop WARNING: !!!!!!!!!!!!!!!!!!' 	| tee -a $diva3dlog
-echo '!!!!!!!!!!DATA FILE  '"$var" $lev' IS EMPTY!' 		| tee -a $diva3dlog
-echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a $diva3dlog
+echo '!!!!!!!!!!!!!diva3Dclop WARNING: !!!!!!!!!!!!!!!!!!' 	| tee -a "$diva3dlog"
+echo '!!!!!!!!!!DATA FILE  '"$var" $lev' IS EMPTY!' 		| tee -a "$diva3dlog"
+echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a "$diva3dlog"
 fi
 fi
 fi
@@ -528,14 +528,14 @@ llll=`cat './output/'"$var"'.CL.dat' |wc -l`
 ##let llll=${lay2}-${lay1}
 if [ "$llll" -gt "0" ]
 then
-echo Filtering CL file ${var}.CL.dat >> $diva3dlog
+echo Filtering CL file ${var}.CL.dat >> "$diva3dlog"
 ../bin/main_tomvec.a 
 #awkfilter ./output/${var}.CL.dat > bidon
 mv ./output/${var}.CL.dat ./output/${var}.CL.dat.ori
 #echo 'Filtered CL.dat:'
 #cat bidon
 mv bidon ./output/${var}.CL.dat
-echo Finished filtering >> $diva3dlog
+echo Finished filtering >> "$diva3dlog"
 fi
 cp -v ./output/${var}.CL.dat ./input/divaparam/${var}.CL.dat.filtered
 fi
@@ -563,12 +563,12 @@ do
 read clparam
 dd=`expr $dd + 1`
 done
-} < $Fileinf
+} < "$Fileinf"
 #
 #
-echo 'oooooooooooooooooooooooo' 					| tee -a $diva3dlog
-echo 'diva3Dclop: rewriting param.par.'"$var"'.'$lev':  CL = '$clparam	| tee -a $diva3dlog
-echo 'oooooooooooooooooooooooo'						| tee -a $diva3dlog
+echo 'oooooooooooooooooooooooo' 					| tee -a "$diva3dlog"
+echo 'diva3Dclop: rewriting param.par.'"$var"'.'$lev':  CL = '$clparam	| tee -a "$diva3dlog"
+echo 'oooooooooooooooooooooooo'						| tee -a "$diva3dlog"
 #
 Fileinf='./input/divaparam/param.par.'"$var"'.'$lev
 {
@@ -598,7 +598,7 @@ read comment12
 read param12
 read comment13
 read param13
-} < $Fileinf
+} < "$Fileinf"
 #
 #
 if [ -f ./output/newparams ];then
