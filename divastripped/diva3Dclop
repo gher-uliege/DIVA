@@ -517,7 +517,7 @@ done
 if [ -f './output/'"$var"'.CL.dat' ];then
 ##if [ "$errflag" == "0" ];then
 #
-cp -v ./output/${var}.CL.dat ./input/divaparam/${var}.CL.dat.notfiltered
+cp -v './output/'"$var"'.CL.dat' './input/divaparam/'"$var"'.CL.dat.notfiltered'
 #echo Non filtered CL.dat:
 #cat ./output/${var}.CL.dat
 #
@@ -528,16 +528,16 @@ llll=`cat './output/'"$var"'.CL.dat' |wc -l`
 ##let llll=${lay2}-${lay1}
 if [ "$llll" -gt "0" ]
 then
-echo Filtering CL file ${var}.CL.dat >> "$diva3dlog"
+echo Filtering CL file "$var"'.CL.dat' >> "$diva3dlog"
 ../bin/main_tomvec.a 
 #awkfilter ./output/${var}.CL.dat > bidon
-mv ./output/${var}.CL.dat ./output/${var}.CL.dat.ori
+mv './output/'"$var"'.CL.dat' './output/'"$var"'.CL.dat.ori'
 #echo 'Filtered CL.dat:'
 #cat bidon
-mv bidon ./output/${var}.CL.dat
+mv bidon './output/'"$var"'.CL.dat'
 echo Finished filtering >> "$diva3dlog"
 fi
-cp -v ./output/${var}.CL.dat ./input/divaparam/${var}.CL.dat.filtered
+cp -v './output/'"$var"'.CL.dat' './input/divaparam/'"$var"'.CL.dat.filtered'
 fi
 #
 #                 ********** 
