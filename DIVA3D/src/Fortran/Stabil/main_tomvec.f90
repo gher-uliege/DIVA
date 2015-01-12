@@ -8,9 +8,9 @@
       Program main_tomvec
       implicit none
       	
-	integer::i,j,k,lay1,lay2,n,nlayer
+	integer::i,j,k,lay1,lay2,n,nlayer !,chlen
       	real(kind=8),allocatable,dimension(:,:)::A,B,C,F,X
-	character(len=100)::var
+	character(len=200)::var
 	real(kind=8),dimension(200)::cl,depth,quality,nsamp,alpha
 	real(kind=8)::CL_mean,delta,test
 
@@ -18,11 +18,18 @@
 
 	open(11,file="./input/3Dinfo",status="old")
 	read(11,*)
-	read(11,*) var
+	read(11,'(a)') var
 	read(11,*)
 	read(11,*) lay1
 	read(11,*)
 	read(11,*) lay2
+	
+!	chlen=0
+!	Do while((var(chlen:chlen).ne.' ').or.(var(chlen+1:chlen+1).ne.' ')) 
+!         	chlen = chlen + 1
+!      	Enddo
+!      	chlen = chlen - 1
+!      	write(0,*) chlen
 
 	nlayer=(lay2-lay1)+1
 !	write(*,*) nlayer
