@@ -28,7 +28,7 @@ echo 'diva3Dcont:'							| tee -a $diva3dlog
 #
 if [ "$cont" -eq "1" ]; then
 if [ -d ./input/divaparam ];then
-echo ' ./input/divaparam exists.' >> $diva3dlog
+echo ' ./input/divaparam exists.' >> "$diva3dlog"
 else
 mkdir -p ./input/divaparam
 fi
@@ -46,7 +46,7 @@ depth2=$(tail -1 ./input/contour.depth)
  fi
 fi
 if [ -f ./input/topo.grd ]; then
-echo " topo.grd found, will proceed to generate coast.cont files" >> $diva3dlog
+echo " topo.grd found, will proceed to generate coast.cont files" >> "$diva3dlog"
 else
  if [ -f ./input/topo.dat ]; then
   if [ -f ./input/param.par ]; then
