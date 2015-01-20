@@ -145,7 +145,15 @@ head -25 ../input/param.par | tail -1 >> ../output/param.par.fit
 head -6 ../output/paramfit.dat | tail -1  >> ../output/param.par.fit
 
 head -8 ../output/paramfit.dat | tail -1  >> ../output/quality.fit
+
+
+if [ "$nsamp" -eq "0" ] 
+then
+nbdata=$(cat ../input/data.dat | wc -l)
+echo $nbdata >> ../output/nsamp.fit
+else
 echo $nsamp >> ../output/nsamp.fit
+fi
 
 if [ "$iparsave" == "1" ]
 then

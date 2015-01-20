@@ -11,7 +11,8 @@
 	integer::i,j,k,lay1,lay2,n,nlayer !,chlen
       	real(kind=8),allocatable,dimension(:,:)::A,B,C,F,X
 	character(len=200)::var
-	real(kind=8),dimension(200)::cl,depth,quality,nsamp,alpha
+	integer,dimension(200)::idepth
+	real(kind=8),dimension(200)::cl,depth,tmpdepth,quality,nsamp,alpha
 	real(kind=8)::CL_mean,delta,test
 
 !	call get_command_argument(1,var)
@@ -31,7 +32,7 @@
 !      	chlen = chlen - 1
 !      	write(0,*) chlen
 
-	nlayer=(lay2-lay1)+1
+!	nlayer=(lay2-lay1)+1
 !	write(*,*) nlayer
 
 	open(12,file="./input/contour.depth",status="old")
@@ -51,6 +52,9 @@
 	Enddo
 
 1016 continue
+
+	nlayer=i-1
+!	write(*,*) nlayer
 
 	open(14,file="./output/nsamp.fit",status="old")
 	i=1
@@ -75,6 +79,32 @@
 
 1020 	continue
 	j=j-1
+
+	rewind(20)
+	open(20,file="./output/"//trim(adjustl(var))//".Lay.dat",status="old")
+	j=1
+	Do while (.true.)
+		if (j .gt. 200) then
+		write(*,*) "SEVERE ERROR in main_tomvec.f90 : too many layers, please raise the dimension of cl"
+		endif	
+
+		read(20,*,end=1021) idepth(j)
+!		write(*,*) idepth(j)
+		j=j+1
+	Enddo
+
+1021 	continue
+	j=j-1
+
+	Do i=1,nlayer
+		tmpdepth(i)=depth(idepth(i))
+!		write(*,*) tmpdepth(i)
+	Enddo
+
+	Do i=1,nlayer
+		depth(i)=tmpdepth(i)
+	Enddo
+
 
         IF(nlayer .gt. 1) THEN
 
@@ -146,5 +176,6 @@
 	close(13)
 	close(14)
 	close(15)
+	close(20)
 
       End program

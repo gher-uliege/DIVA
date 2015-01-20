@@ -158,7 +158,7 @@ fi
 if [ -f ./input/divadata/"$var".$lev ];then
  cp -f ./input/divadata/"$var".$lev  ./input/data.dat
  nbdat=`cat './input/data.dat' |wc -l` 
- if [ "$nbdat" == "0" ] ; then
+ if [[ "$nbdat" == "0" ]] || [[ "$nbdat" -lt "10" ]] ; then
   runflag=4
  fi
 else
@@ -501,8 +501,47 @@ echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a "$diva3dlog"
 else
 if [ "$runflag" -eq "4" ];then
 echo '!!!!!!!!!!!!!diva3Dclop WARNING: !!!!!!!!!!!!!!!!!!' 	| tee -a "$diva3dlog"
-echo '!!!!!!!!!!DATA FILE  '"$var" $lev' IS EMPTY!' 		| tee -a "$diva3dlog"
+echo '!!!!!!!!!!DATA FILE  '"$var" $lev' IS EMPTY OR CONTAINS LESS THAN 10 LINES!' 		| tee -a "$diva3dlog"
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a "$diva3dlog"
+###
+ if [ $nbdat -gt "1" ];then
+
+head -4 ./input/param.par | tail -1   > fort.11
+head -8 ./input/param.par | tail -1   >> fort.11
+if [ -f ./input/data.dat ] 
+then
+cp ./input/data.dat ./divawork/fort.10
+else
+echo 'Need to provide data.dat in ./input !'
+fi
+mv fort.11 ./divawork
+
+echo "Computing mean distance"
+  cd divawork
+  echo $nbdat | ../../bin/meandistance.a #>> $divalog
+  cd ..
+
+newcl=$(cat ./divawork/fort.12)
+
+if [ $(echo "$newcl-$minlen<0" | bc -l) -eq 1 ];then
+  newcl=$minlen
+fi
+
+if [ $(echo "$newcl-$maxlen>0" | bc -l) -eq 1 ];then
+  newcl=$maxlen
+fi
+
+echo 'ooooooooooo CL considered val = ' $newcl | tee -a "$diva3dlog"
+#
+echo $newcl >> './output/'"$var"'.CL.dat'
+echo $dep >> './output/'"$var"'.Lay.dat'
+echo $nbdat >> './output/nsamp.fit'
+echo "0.0" >> './output/quality.fit'
+
+ else
+ :
+ fi
+###
 fi
 fi
 fi

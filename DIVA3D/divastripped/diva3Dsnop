@@ -188,7 +188,7 @@ fi
 if [ -f ./input/divadata/"$var".$lev ];then
  cp -f ./input/divadata/"$var".$lev  ./input/data.dat
  nbdat=`cat './input/data.dat' |wc -l` 
- if [ "$nbdat" == "0" ] ; then
+ if [[ "$nbdat" == "0" ]] || [[ "$nbdat" -lt "10" ]] ; then
   runflag=4
  fi
 else
@@ -510,8 +510,15 @@ Fileinf=./3DWORK/ParamVal
 read param12
 } < $Fileinf
 #echo 'ooooooooooo SN max min val : ' $maxsn $minsn $param12
+if [ "$param13" != "NaN" ]
+then
 echo 'ooooooooooo considered SN val = ' $param12' and VARBAK = ' $param13 >> "$diva3dlog"
 echo 'ooooooooooo considered SN val = ' $param12' and VARBAK = ' $param13
+else
+param13=1
+echo 'ooooooooooo considered SN val = ' $param12' and VARBAK = ' $param13 >> "$diva3dlog"
+echo 'ooooooooooo considered SN val = ' $param12' and VARBAK = ' $param13
+fi
 ############################################################
 #
 echo $param12 >> './output/'"$var"'.SN.dat' 
@@ -563,11 +570,17 @@ echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
 fi
 if [ "$runflag" -eq "4" ];then
 echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!' >> "$diva3dlog"
-echo '!!!!!!!!!!DATA FILE  '"$var" $lev' IS EMPTY!'  >> "$diva3dlog"
+echo '!!!!!!!!!!DATA FILE  '"$var" $lev' IS EMPTY OR CONTAINS LESS THAN 10 LINES!'  >> "$diva3dlog"
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!' >> "$diva3dlog"
 echo '!!!!!!!!!!!!!diva3Dsnop WARNING: !!!!!!!!!!!!!!!!!!'
-echo '!!!!!!!!!!DATA FILE  '"$var" $lev' IS EMPTY!' 
+echo '!!!!!!!!!!DATA FILE  '"$var" $lev' IS EMPTY OR CONTAINS LESS THAN 10 LINES!' 
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+###
+echo 'ooooooooooo SN considered val = ' 1 | tee -a "$diva3dlog"
+echo "1" >> './output/'"$var"'.SN.dat'
+echo "1" >> './output/'"$var"'.VAR.dat'
+echo "$dep" >> './output/'"$var"'.Lay.dat'
+###
 fi
 fi
 #
@@ -579,6 +592,8 @@ mv ./input/data.notbinned ./input/data.dat
 fi
 
 FILENAME="./divawork/fort.27" 
+if [ -f $FILENAME ]
+then
 {
 read poubelle
 read sn_opt
@@ -604,6 +619,7 @@ then
 echo "WARNING : SN could be too low"
 #else
 #echo "no warning"
+fi
 fi
 
 done
