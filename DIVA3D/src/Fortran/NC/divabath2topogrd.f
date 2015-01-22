@@ -281,12 +281,12 @@
       dx=x(2)-x(1)
       dy=y(2)-y(1)
       do i=1,IM-1
-      if (abs(x(i+1)-x(i)-dx).gt.0.0001*abs(dx)) then
+      if (abs(x(i+1)-x(i)-dx).gt.0.001*abs(dx)) then
          stop 'NON UNIFORM GRID X'
       endif
       enddo
       do i=1,JM-1
-      if (abs(y(i+1)-y(i)-dy).gt.0.0001*abs(dy)) then
+      if (abs(y(i+1)-y(i)-dy).gt.0.001*abs(dy)) then
          stop 'NON UNIFORM GRID Y '
       endif
       enddo
