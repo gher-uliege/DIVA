@@ -150,8 +150,10 @@ c               write(76,*) xob,yob,val,val
       endif
 c esterror provides      sqrt(1.D0*varbak(1-val))
       val=1-val*val/varbak
+
+      if (val.le.1.E-10) val=1.E-10
 c      write(6,*) '???',x_ll,y_ll,val
-C VAL contains Aii ??       
+C VAL contains Aii ??
       errstd=max(1.D0-val,0.D0)
 c      write(6,*) '???',errstd
       rlm=rl0
