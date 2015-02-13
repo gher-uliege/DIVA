@@ -9,19 +9,19 @@ itrans=$4
 dvdatatransflog='./output/3Danalysis/'"$var"'_dvdatatransf.log'
 #
 if [ -d "./3DWORK" ];then
-echo 'starting data transformation' > $dvdatatransflog
+echo 'starting data transformation' > "$dvdatatransflog"
 echo 'starting data transformation'
 else
 mkdir -p ./3DWORK
-echo 'starting data transformation flag=' $itrans > $dvdatatransflog
+echo 'starting data transformation flag=' $itrans > "$dvdatatransflog"
 echo 'starting data transformation:' $itrans
 fi
-echo 'making a backup of  ./input/divadata' >> $dvdatatransflog
+echo 'making a backup of  ./input/divadata' >> "$dvdatatransflog"
 cp -r ./input/divadata ./input/divadata_BKP
 #
 
 if [ "$itrans" == "13" -o "$itrans" == "23" ];then 
-echo Start anamorphose transformation >> $dvdatatransflog
+echo Start anamorphose transformation >> "$dvdatatransflog"
 #################################
 dep=$bottm
 rm -f ./3DWORK/fort.44
@@ -57,12 +57,12 @@ echo A problem was encountered during execution !
 echo       dvdatatransf:  addnoise.a
 echo Check execution track
 echo --------------------------------------------
-echo ' ' >> ../$dvdatatransflog
-echo -------------------------------------------- >> ../$dvdatatransflog
-echo A problem was encountered during execution ! >> ../$dvdatatransflog
-echo       dvdatatransf:  addnoise.a >> ../$dvdatatransflog
-echo Check execution track >> ../$dvdatatransflog
-echo -------------------------------------------- >> ../$dvdatatransflog
+echo ' ' >> ../"$dvdatatransflog"
+echo -------------------------------------------- >> ../"$dvdatatransflog"
+echo A problem was encountered during execution ! >> ../"$dvdatatransflog"
+echo       dvdatatransf:  addnoise.a >> ../"$dvdatatransflog"
+echo Check execution track >> ../"$dvdatatransflog"
+echo -------------------------------------------- >> ../"$dvdatatransflog"
 echo ' ' >> output/diva.log
 echo -------------------------------------------- >> ../output/diva.log
 echo A problem was encountered during execution ! >> ../output/diva.log
@@ -115,12 +115,12 @@ echo A problem was encountered during execution !
 echo       dvdatatransf:  sortall.a
 echo Check execution track
 echo --------------------------------------------
-echo ' ' >> ../$dvdatatransflog
-echo -------------------------------------------- >> ../$dvdatatransflog
-echo A problem was encountered during execution ! >> ../$dvdatatransflog
-echo       dvdatatransf:  sortall.a >> ../$dvdatatransflog
-echo Check execution track >> ../$dvdatatransflog
-echo -------------------------------------------- >> ../$dvdatatransflog
+echo ' ' >> ../"$dvdatatransflog"
+echo -------------------------------------------- >> ../"$dvdatatransflog"
+echo A problem was encountered during execution ! >> ../"$dvdatatransflog"
+echo       dvdatatransf:  sortall.a >> ../"$dvdatatransflog"
+echo Check execution track >> ../"$dvdatatransflog"
+echo -------------------------------------------- >> ../"$dvdatatransflog"
 echo ' ' >> ../output/diva.log
 echo -------------------------------------------- >> ../output/diva.log
 echo A problem was encountered during execution ! >> ../output/diva.log
@@ -156,12 +156,12 @@ echo A problem was encountered during execution !
 echo       dvdatatransf:  datadispach.a
 echo Check execution track
 echo --------------------------------------------
-echo ' ' >> ../$dvdatatransflog
-echo -------------------------------------------- >> ../$dvdatatransflog
-echo A problem was encountered during execution ! >> ../$dvdatatransflog
-echo       dvdatatransf:  datadispach.a >> ../$dvdatatransflog
-echo Check execution track >> ../$dvdatatransflog
-echo -------------------------------------------- >> ../$dvdatatransflog
+echo ' ' >> ../"$dvdatatransflog"
+echo -------------------------------------------- >> ../"$dvdatatransflog"
+echo A problem was encountered during execution ! >> ../"$dvdatatransflog"
+echo       dvdatatransf:  datadispach.a >> ../"$dvdatatransflog"
+echo Check execution track >> ../"$dvdatatransflog"
+echo -------------------------------------------- >> ../"$dvdatatransflog"
 echo ' ' >> ../output/diva.log
 echo -------------------------------------------- >> ../output/diva.log
 echo A problem was encountered during execution ! >> ../output/diva.log
@@ -170,7 +170,7 @@ echo Check execution track >> ../output/diva.log
 echo -------------------------------------------- >> ../output/diva.log
 fi
 cd ../
-echo 'finished anamorphose data transformation' >> $dvdatatransflog
+echo 'finished anamorphose data transformation' >> "$dvdatatransflog"
 echo 'finished anamorphose data transformation'
 
 else
@@ -181,7 +181,7 @@ else
 echo Start data transformation: $itrans
 #
 if [ "$itrans" == "12" -o "$itrans" == "22" ];then 
-echo "dvdatatrans: Will go for Logit transformation" >> $dvdatatransflog
+echo "dvdatatrans: Will go for Logit transformation" >> "$dvdatatransflog"
 #################################
 cd ./input/divadata
 onlyvar=${var:0:${#var}-14}
@@ -230,12 +230,12 @@ echo A problem was encountered during execution !
 echo       dvdatatransf:  dvlogitrange.a
 echo Check execution track
 echo --------------------------------------------
-echo ' ' >> ../$dvdatatransflog
-echo -------------------------------------------- >> ../$dvdatatransflog
-echo A problem was encountered during execution ! >> ../$dvdatatransflog
-echo       dvdatatransf:  dvlogitrange.a >> ../$dvdatatransflog
-echo Check execution track >> ../$dvdatatransflog
-echo -------------------------------------------- >> ../$dvdatatransflog
+echo ' ' >> ../"$dvdatatransflog"
+echo -------------------------------------------- >> ../"$dvdatatransflog"
+echo A problem was encountered during execution ! >> ../"$dvdatatransflog"
+echo       dvdatatransf:  dvlogitrange.a >> ../"$dvdatatransflog"
+echo Check execution track >> ../"$dvdatatransflog"
+echo -------------------------------------------- >> ../"$dvdatatransflog"
 echo ' ' >> ../output/diva.log
 echo -------------------------------------------- >> ../output/diva.log
 echo A problem was encountered during execution ! >> ../output/diva.log
@@ -299,12 +299,12 @@ echo A problem was encountered during execution !
 echo       dvdatatransf:  datatrans.a
 echo Check execution track
 echo --------------------------------------------
-echo ' ' >> ../$dvdatatransflog
-echo -------------------------------------------- >> ../$dvdatatransflog
-echo A problem was encountered during execution ! >> ../$dvdatatransflog
-echo       dvdatatransf:  datatrans.a >> ../$dvdatatransflog
-echo Check execution track >> ../$dvdatatransflog
-echo -------------------------------------------- >> ../$dvdatatransflog
+echo ' ' >> ../"$dvdatatransflog"
+echo -------------------------------------------- >> ../"$dvdatatransflog"
+echo A problem was encountered during execution ! >> ../"$dvdatatransflog"
+echo       dvdatatransf:  datatrans.a >> ../"$dvdatatransflog"
+echo Check execution track >> ../"$dvdatatransflog"
+echo -------------------------------------------- >> ../"$dvdatatransflog"
 echo ' ' >> ../output/diva.log
 echo -------------------------------------------- >> ../output/diva.log
 echo A problem was encountered during execution ! >> ../output/diva.log
@@ -324,11 +324,11 @@ cd ../
 #
  dep=`expr $dep + 1`
 done
-echo 'finished transforming data' > $dvdatatransflog
+echo 'finished transforming data' > "$dvdatatransflog"
 echo 'finished transforming data'
 #
 fi
-echo  End transformations > $dvdatatransflog
+echo  End transformations > "$dvdatatransflog"
 echo  End transformations
 #################################
 #
