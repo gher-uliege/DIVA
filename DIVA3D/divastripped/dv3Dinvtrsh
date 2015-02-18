@@ -90,9 +90,9 @@ mkdir -p ./3DWORK
 echo 'starting transformation of '"$var"'.'$lev'.anl.nc' >> "$diva3dlog"
 echo 'starting transformation of '"$var"'.'$lev'.anl.nc'
 #
-echo $ncdfile > ./3DWORK/ncname
-echo $binfile >> ./3DWORK/ncname
-echo $ascfile >> ./3DWORK/ncname
+echo "$ncdfile" > ./3DWORK/ncname
+echo "$binfile" >> ./3DWORK/ncname
+echo "$ascfile" >> ./3DWORK/ncname
 echo "$var" >> ./3DWORK/ncname
 echo $lev >> ./3DWORK/ncname
 echo $act >> ./3DWORK/ncname

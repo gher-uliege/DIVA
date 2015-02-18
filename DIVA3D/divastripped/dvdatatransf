@@ -31,8 +31,8 @@ let level=10000+$dep
 #
 cd ./input/divadata
   file="$var".$level
-  nbcl=$(head -n 1 $file | wc -w)
-  nbln=$(cat $file |wc -l)
+  nbcl=$(head -n 1 "$file" | wc -w)
+  nbln=$(cat "$file" |wc -l)
   echo "$var" > ../../3DWORK/fort.44
   echo $itrans >> ../../3DWORK/fort.44
   echo $bottm >> ../../3DWORK/fort.44
@@ -82,16 +82,16 @@ while [ $dep -le $surf ]
 do
 let level=10000+$dep
 file="$var".$level
-nbcl=$(head -n 1 $file | wc -w)
-nbln=$(cat $file |wc -l)
-echo $file $nbln $nbcl >> ../../3DWORK/lsdivadata
+nbcl=$(head -n 1 "$file" | wc -w)
+nbln=$(cat "$file" |wc -l)
+echo "$file" $nbln $nbcl >> ../../3DWORK/lsdivadata
 echo 'bruit_'"$var".$level >> ../../3DWORK/bruitls
 dep=`expr $dep + 1`
 done
 cat 'bruit_'"$var".1* >../../3DWORK/"$var"'_noise'
 cd ../../3DWORK/
   file="$var"'_noise'
-  nbln=$(cat $file |wc -l)
+  nbln=$(cat "$file" |wc -l)
   file='lsdivadata'
   nbfl=$(cat $file |wc -l)
   echo "$var" > fort.44
@@ -131,7 +131,7 @@ fi
 
 
   file='../input/divadata/'"$var"'_inverf'
-  nbln=$(cat $file |wc -l)
+  nbln=$(cat "$file" |wc -l)
   file='lsdivadata'
   nbfl=$(cat $file |wc -l)
   echo "$var" > fort.44
@@ -205,12 +205,12 @@ while [ $dep -le $surf ]
 do
 let level=10000+$dep
   file="$var".$level
-  nbcl=$(head -n 1 $file | wc -w)
-  nbln=$(cat $file |wc -l)
+  nbcl=$(head -n 1 "$file" | wc -w)
+  nbln=$(cat "$file" |wc -l)
   file="$var"'_'$level'_info'
-  echo $nbln > ../../3DWORK/$file
-  echo $nbcl >> ../../3DWORK/$file
-  echo $dep >> ../../3DWORK/$file
+  echo $nbln > ../../3DWORK/"$file"
+  echo $nbcl >> ../../3DWORK/"$file"
+  echo $dep >> ../../3DWORK/"$file"
 #
 let dep=$dep+1
 done
@@ -268,8 +268,8 @@ let level=10000+$dep
 #
 cd ./input/divadata
   file="$var".$level
-  nbcl=$(head -n 1 $file | wc -w)
-  nbln=$(cat $file |wc -l)
+  nbcl=$(head -n 1 "$file" | wc -w)
+  nbln=$(cat "$file" |wc -l)
 
   echo "$var" > ../../3DWORK/fort.44
   echo $itrans >> ../../3DWORK/fort.44

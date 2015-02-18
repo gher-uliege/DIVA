@@ -29,10 +29,10 @@
 !
       EXECIN='./ncname'
       OPEN(2,FILE=EXECIN,STATUS='OLD')
-      READ(2,*)VARFILENCD
-      READ(2,*)VARFILEBIN
-      READ(2,*)VARFILEASC
-      READ(2,*)var_name
+      READ(2,'(a)')VARFILENCD
+      READ(2,'(a)')VARFILEBIN
+      READ(2,'(a)')VARFILEASC
+      READ(2,'(a)')var_name
       READ(2,*)istep
       READ(2,*)isanalysis
       READ(2,*)itrans
