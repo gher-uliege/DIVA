@@ -7,7 +7,7 @@ cleaning data on mesh: 1, 2: RL, 3: both, 4: 1 + outliers elimination, 5: =4+2
 minimal number of data in a layer. If less, uses data from any month.
 0
 Parameters estimation and vertical filtering:
-0
+-30
 Minimal L
 1.4
 Maximal L
