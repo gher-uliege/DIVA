@@ -23,7 +23,7 @@ echo ' possible values are 0: direct skyline, 1: parallel skyline and 2: iterati
 echo //////////////////////////////////////////////////  | tee -a $divacalclog
 #
 divarunning=$(ps -eafl | grep -i 'diva\.a' | wc -l)
-if [ "$divarunning" != "0" ]
+if [ "$divarunning" -ne "0" ]
 then
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! | tee -a $divacalclog
 echo ????????diva already running?????? | tee -a $divacalclog
