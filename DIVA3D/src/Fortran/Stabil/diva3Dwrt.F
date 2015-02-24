@@ -173,6 +173,11 @@
         time_Yval =  float(xy1)+nint(float(xy2)-float(xy1)+1.)/2
 !       time_Mval = 12*(float(xy1)+nint(float(xy2)-float(xy1)+1.)/2)
 	time_Mval = xm1+nint((xm2-xm1)+1.)/2
+	If (xm2 < xm1) then
+		xm2=xm2+12
+		time_Mval = xm1+nint((xm2-xm1)+1.)/2
+		If (time_Mval > 12) time_Mval=time_Mval-12
+	Endif 
 !       time_Dval = 365*float(xy2)
         time_Dval = mjd(int(time_Yval),int(time_Mval),16,0.)
      &-mjd(xy1,1,1,0.)
