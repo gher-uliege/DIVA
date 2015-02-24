@@ -586,7 +586,7 @@ fi
 #
 dep=`expr $dep + 1`
 
-if [ $binning -eq 1 ]
+if [ $binning -eq "1" ]
 then
 mv ./input/data.notbinned ./input/data.dat
 fi
