@@ -89,6 +89,7 @@
 		endif	
 
 		read(20,*,end=1021) idepth(j)
+		idepth(j)=(idepth(j)-lay1)+1
 !		write(*,*) idepth(j)
 		j=j+1
 	Enddo
