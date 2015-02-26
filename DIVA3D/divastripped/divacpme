@@ -125,6 +125,6 @@ cp ./output/errorfieldgher.anl ./output/ghertonetcdf/fort.87
 cd ./output/ghertonetcdf
 ../../../bin/netcdfoutput.a 
 cd ../..
-echo  ===== Finished divaexerr ======
+echo  ===== Finished divacpme ======
 
 #--------------------------------------------------
