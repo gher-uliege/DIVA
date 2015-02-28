@@ -148,10 +148,16 @@ stationcol=$(grep "Station" ODVcolumns | head -1 |  awk -F "$delimiter" '{print 
 loncol=$(grep -i "Longitude" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 latcol=$(grep -i "Latitude" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 datecol=$(grep -i "YYYY-MM" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
+datecol_timeseries=$(grep -i "time_ISO8601" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 #2013 maybe add here tests on presence of CDI and replace or replace cruisecol by CDI if present
 cdicol=$(grep -i "LOCAL_CDI" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 edmocol=$(grep -i "EDMO" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 issdn=1
+if [ "$datecol_timeseries" != "" ]
+then
+echo "!!! Warning : TIME SERIES detected ! The column time_ISO8601 is present => it will be used as the ONLY time axis !!!"
+datecol=$datecol_timeseries
+fi
 if [ "$cdicol" == "" ]
 then
 echo WARNING NO CDI FOUND

@@ -110,6 +110,7 @@
       READ(2,*) var_units
       IF(iparpar == 34) then
         time_val = 0.
+	clbnds = 0.
         xm1 = 0
         xm2 = 0
         xy1 = 0

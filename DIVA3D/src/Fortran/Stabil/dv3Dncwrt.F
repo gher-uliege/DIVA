@@ -1363,9 +1363,11 @@
       climatology_bounds(1) = clbnds(1,icdf)
       climatology_bounds(2) = clbnds(2,icdf)
 !
+
+	If (ipar == 1) then
+
       write(*,*) 'NCWRT   climatology_bounds '
       write(*,*) 'climatology_bounds ',climatology_bounds
-
 
 
       status = 
@@ -1374,6 +1376,8 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put xclbnds'
       ENDIF
+
+	Endif
 !
       stpar(1)=1
       stpar(2)=icdf
