@@ -1,0 +1,1 @@
+Cruise	Station	Type	yyyy-mm-ddThh:mm:ss.sss	Longitude [degrees_east]	Latitude [degrees_north]	Bot. Depth [m]:METAVAR:FLOAT:4	Originator's Cruise:METAVAR:TEXT:20	Originator's Station:METAVAR:TEXT:20	Depth [m]	QV:WOD	Temperature [°C]	QV:WOD	Salinity [psu]	QV:WOD	QV:ODV:SAMPLE

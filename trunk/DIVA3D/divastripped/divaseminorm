@@ -1,8 +1,0 @@
-#!/bin/bash
-echo ===============
-echo Semi-normed reference field
-echo ===============
-divarefe
-divaanom
-divacalc
-divasumup

@@ -1,0 +1,29 @@
+diva3Ddress:
+diva3Ddress: start run on Salinity.19002009.0303
+diva3Ddress: level 1 to level 3
+diva3Ddress:
+diva3Dsub: //////////////////////////////////////////
+diva3Dsub: dv3Drefoanl:
+ level:10001 var: Salinity.19002009.0303 isanalysis: 1 trend: 0
+diva3Dsub: //////////////////////////////////////////
+ 
+diva3Dsub: //////////////////////////////////////////
+diva3Dsub: dv3Drefoanl:
+ level:10002 var: Salinity.19002009.0303 isanalysis: 1 trend: 0
+diva3Dsub: //////////////////////////////////////////
+ 
+diva3Dsub: //////////////////////////////////////////
+diva3Dsub: dv3Drefoanl:
+ level:10003 var: Salinity.19002009.0303 isanalysis: 1 trend: 0
+diva3Dsub: //////////////////////////////////////////
+ 
+diva3Dsub: //////////////////////////////////////////
+diva3Dsub:                 diva3Dstr (3DNetCDF)
+diva3Dsub: //////////////////////////////////////////
+ 
+ 
+--------------------------------------------
+A problem was encountered during execution !
+diva3Dstr.a
+Check execution track
+--------------------------------------------

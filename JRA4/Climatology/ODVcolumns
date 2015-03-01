@@ -1,0 +1,16 @@
+Cruise	 	1
+Station	 	2
+Type	 	3
+yyyy-mm-ddThh:mm:ss.sss	 	4
+Longitude [degrees_east]	 	5
+Latitude [degrees_north]	 	6
+Bot. Depth [m]:METAVAR:FLOAT:4	 	7
+Originator's Cruise:METAVAR:TEXT:20	 	8
+Originator's Station:METAVAR:TEXT:20	 	9
+Depth [m]	 	10
+QV:WOD	 	11
+Temperature [°C]	 	12
+QV:WOD	 	13
+Salinity [psu]	 	14
+QV:WOD	 	15
+QV:ODV:SAMPLE	 	16
