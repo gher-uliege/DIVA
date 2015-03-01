@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ -f fort.67 ] 
+then
+cat dvcoastlineheader >> bidon
+cat dvcoastlinetailer >> bidon
+echo gnuplot is $gplot
+awk '{print $0 >> "bidon"}' << EOF
+#the gnuplot commands
+unset pm3d
+exit
+EOF
+
+$gplot bidon
+
+else
+echo No plot produced
+
+fi
+

@@ -1,0 +1,83 @@
+#!/bin/bash
+echo //////////////////////////////////////////////////////////
+echo Saving the output files into the output directory
+echo //////////////////////////////////////////////////////////
+echo ' '
+if [ "$#" -lt "1" ]
+then
+echo ==================================================================
+echo ==================================================================
+echo Usage: divasave mydirectory
+echo ===================================================================
+echo ===================================================================
+exit
+else
+echo ==================================================================
+echo ==================================================================
+echo Saving $1
+echo ===================================================================
+echo ===================================================================
+fi
+if [ -d $1 ]
+then 
+echo Directory $1 already exists
+mkdir -p $1/output
+else
+echo Making new directory $1
+mkdir -p $1 
+echo Making directory output
+mkdir -p $1/output
+fi 
+echo ' '
+echo Saving topography files...
+echo ' ' 
+cp ./output/topo.grd $1/output/
+cp ./output/TopoInfo.dat $1/output/
+echo ' ' 
+echo Saving contour files...
+echo ' ' 
+cp ./output/coast.cont* $1/output/
+echo ' ' 
+echo Saving mesh files...
+echo ' ' 
+cp ./output/meshvisu/fort.10 $1/output/mesh10.dat
+cp ./output/meshvisu/fort.22 $1/output/mesh.dat
+cp ./output/meshvisu/fort.23 $1/output/meshtopo.dat
+echo ' ' 
+echo Saving analysis files...
+echo ' ' 
+cp ./output/fieldascii.anl $1/output
+cp ./output/fieldgher.anl $1/output
+cp ./output/valatxyascii.anl $1/output
+cp ./output/fieldatdatapoint.anl $1/output
+cp ./output/ghertonetcdf/results.nc $1/output
+cp ./output/ghertonetcdf/GridInfo.dat $1/output
+echo ' ' 
+echo Saving error files...
+echo ' ' 
+cp ./output/errorfieldascii.anl $1/output
+cp ./output/errorfieldgher.anl $1/output
+cp ./output/erroratxyascii.anl $1/output
+cp ./output/erroratdatapoint.anl $1/output
+echo ' ' 
+echo Saving fit and GCV files...
+echo ' ' 
+cp ./output/paramfit.dat  $1/output
+cp ./output/covariancefit.dat  $1/output
+cp ./output/covariance.dat  $1/output
+cp ./output/gcv.dat $1/output
+cp ./output/gcvsnvar.dat $1/output
+cp ./output/gcvval.dat $1/output
+echo ' ' 
+echo Saving Quality Control files...
+echo ' ' 
+cp ./output/outliers.dat $1/output
+cp ./output/outliers.normalized.dat $1/output
+cp ./output/outliersbis.dat $1/output
+cp ./output/outliersbis.normalized.dat $1/output
+cp ./output/outlierster.dat $1/output
+cp ./output/outlierster.normalized.dat $1/output
+echo ' '
+echo ----------------------
+echo Output files are saved
+echo ----------------------

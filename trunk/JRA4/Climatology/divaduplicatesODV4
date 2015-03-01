@@ -1,0 +1,45 @@
+#!/bin/bash
+
+#set -x # to debug
+
+export LC_ALL=C # to get the same sorting order on different systems
+
+############################################################################
+# Sylvain Watelet - 28/10/2013 						   #
+# Handling of duplicates input data                                        #
+############################################################################
+
+saveifs=$IFS
+IFS=$'\n'
+	for var in `cat varlist`
+	do
+		for year in `cat yearlist`
+		do
+			for month in `cat monthlist`
+			do
+				lev="0"
+				for layer in `cat input/contour.depth`
+				do
+					let lev=$(($lev+1))
+					let lnum=$((10000+$lev))
+					datafile="input/divadata/"${var}".${year}.${month}.${lnum}"
+					echo "Checking for duplicates in" $datafile ...
+					cp $datafile ${datafile}"_bkp"
+					datafile_tmp=${datafile}"_tmp"
+					rm -f $datafile_tmp
+					cat $datafile | sort -u -k 1,9 >> $datafile_tmp  # to remove duplicate lines (fields 1 to 9 are considered)
+					n_old=$(cat $datafile | wc -l)
+					n_new=$(cat $datafile_tmp | wc -l)
+					n_dup=$(($n_old - $n_new))
+					echo $n_dup "duplicates in this file"
+					rm $datafile
+					mv $datafile_tmp $datafile
+					
+				done
+			done
+
+		done
+	done
+IFS=$saveifs
+
+

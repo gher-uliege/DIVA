@@ -1,0 +1,11 @@
+set palette defined ( 0 '#fdfdf9',\
+                      1 '#eef9a9',\
+                      2 '#d7e486',\
+                      3 '#dcf72a',\
+                      4 '#F7EA2A',\
+                      5 '#F7A52A',\
+                      6 '#FC7302',\
+                      7 '#FC4D02',\
+                      8 '#9f0b04')
+
+

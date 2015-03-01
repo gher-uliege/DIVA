@@ -1,0 +1,74 @@
+#!/bin/bash
+export LC_ALL=C
+
+datadir='./input/divadata/'
+paramdir='./input/divaparam/'
+UVdir='./input/UVcons/'
+outputdir='./output/'
+workdir='./Datawork/'
+
+echo ' '
+
+case $1 in
+
+	# 1. Delete everything
+	#-------------------------------------------------------------
+
+	-all) echo -n 'Going to clean everything:'
+ 	echo ' ' 	
+	echo 'Cleaning input directories (1/3): divadata'
+	rm -rf $datadir
+	echo 'Cleaning input directories (2/3): divaparam'
+	rm -rf $paramdir
+	echo 'Cleaning input directories (3/3): divaUVcons'
+	rm -rf $UVdir
+
+	echo ' '
+	echo 'Removing newinput directory'
+	rm -rf ./newinput/
+
+	echo ' '
+	echo 'Cleaning output directory'
+	rm -rf $outputdir
+
+	echo ' '
+	echo 'Creating output directory structure'
+	mkdir -pv $outputdir/{3Danalysis,ghertonetcdf,meshvisu}
+
+	echo ' '
+	echo 'Cleaning Datawork directory'
+	rm -rf $workdir
+
+	;;
+	
+	# 2. Working directory
+	#---------------------------------------------------------------
+	-work) echo -n 'clean work'
+	echo ' '
+	echo 'Cleaning Datawork directory'
+	rm -rf $workdir
+	;;
+ 	
+	# 3. Input directory
+	#---------------------------------------------------------------
+
+	-input) echo -n 'clean input'
+	echo 'Cleaning input directories (1/3): divadata'
+        rm -rf $datadir
+        echo 'Cleaning input directories (2/3): divaparam'
+        rm -rf $paramdir
+        echo 'Cleaning input directories (3/3): divaUVcons'
+        rm -rf $UVdir
+
+        echo ' '
+        echo 'Removing newinput directory'
+        rm -rf ./newinput/
+	;;
+	
+
+	# 4. Other cases
+	*) echo 'Usage: diva4Dclean -option'
+	   echo 'with option = all, input or work';;
+
+esac	
+

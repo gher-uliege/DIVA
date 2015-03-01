@@ -1,0 +1,321 @@
+#!/bin/bash
+
+echo ///////////////////////////
+echo      DIVA compilation
+echo ///////////////////////////
+echo ' ' 
+
+source ./divacompile_options
+
+##########################
+# end of user parameters #
+##########################
+
+mkdir -pv ../../bin/
+bindir=$(cd ../../bin; pwd)
+
+echo ' '
+
+echo Compiling CALC programs
+echo -----------------------
+echo ' ' 
+
+cd Calc
+$compiler $flags $flagscalc *.f *.f90 -o diva.a
+n1=`ls -1p *.a | grep -vc "/$"`
+n1max=1
+
+echo You have compiled $n1
+echo programs out of $n1max
+echo 1 >> ./compilation.log
+
+mv diva.a ../../../bin/
+rm -f *.o
+
+
+if [ "$gui" = 1 ]
+then
+
+echo ' '
+echo Compiling GUI programs
+echo ----------------------
+echo ' '
+
+cd ../Extensions
+$compiler -c $flags ureadc.f
+$compiler -c $flags uwritc.f
+$compiler $noglobals $nocyg extract.f  -o extract.a $nclib
+
+for jj in `ls *.f`
+do
+if [ "$jj" != "ureadc.f" ]
+then
+if [ "$jj" != "uwritc.f" ]
+then
+if [ "$jj" != "extract.f" ]
+then
+echo $jj
+$compiler $nocyg $jj  $nclib -o `basename $jj .f`.a
+fi
+fi
+fi
+done
+n2=`ls -1p *.a | grep -vc "/$"` 
+let n2=$n2+2
+n2max=`ls -1p *.f | grep -vc "/$"` 
+
+echo You have compiled $n2
+echo out of $n2max  
+
+mv *.a ../../../bin/
+
+else
+n2=0
+n2max=0
+
+fi
+
+
+echo ' '
+echo Compiling MESH programs
+echo -----------------------
+echo ' '
+
+cd ../Mesh
+for jj in `ls *.f`
+do
+echo $jj
+$compiler $flags $jj -o `basename $jj .f`.a
+done
+
+n3=`ls -1p *.a | grep -vc "/$"` 
+n3max=`ls -1p *.f | grep -vc "/$"` 
+
+echo You have compiled $n3 programs 
+echo out of $n3max 
+
+mv *.a ../../../bin/
+
+
+if [ "$netcdf" = 1 ]
+then
+
+echo ' '
+echo Compiling NETCDF programs
+echo -------------------------
+echo ' '
+
+cd ../NC
+# first compile the module
+echo "Compile module divaio"
+$compiler $ncinc  $nocyg -c divaio.F90
+
+for jj in `ls *.f`
+do
+echo $jj
+$compiler  $nocyg $jj -o `basename $jj .f`.a $nclib
+done
+for jj in `ls *.F`
+do
+echo $jj
+$compiler  $nocyg $jj -o `basename $jj .F`.a $nclib
+done
+
+for jj in `ls *.F90 | grep -v divaio.F90`
+do
+echo $jj
+$compiler $ncinc $nocyg $jj -o `basename $jj .F90`.a divaio.o $nclib
+done
+
+for jj in `ls *.f90 | grep -v divaio.F90`
+do
+echo $jj
+$compiler $ncinc $nocyg $jj -o `basename $jj .f90`.a divaio.o $nclib
+done
+
+n4=`ls -1p *.a | grep -vc "/$"` 
+n4max=`ls -1p *.f *.F *.F90 *.f90 | grep -v divaio.F90 | grep -vc "/$"`
+
+echo You have compiled $n4 programs
+echo out of $n4max 
+
+mv *.a ../../../bin/
+
+else
+n4=0
+n4max=0
+
+fi
+
+
+
+echo ' '
+echo Compiling PLPLOT programs
+echo -------------------------
+echo ' '
+
+cd ../$Plplot
+for jj in `ls *.f`
+do
+echo $jj
+$compiler $flags $jj -o `basename $jj .f`.a
+done
+
+n5=`ls -1p *.a | grep -vc "/$"`
+n5max=`ls -1p *.f | grep -vc "/$"`
+
+echo You have compiled $n5 programs
+echo out of $n5max
+
+mv *.a ../../../bin/
+
+
+
+
+echo ' '
+echo Compiling UTILITIES programs
+echo ----------------------------
+echo ' '
+
+cd ../Util
+for jj in `ls *.f`
+do
+echo $jj
+$compiler $flags $jj -o `basename $jj .f`.a
+done
+for jj in `ls *.f90`
+do
+echo $jj
+$compiler $flags  $jj -o `basename $jj .f90`.a
+done
+
+
+n6=`ls -1p *.a | grep -vc "/$"`
+n6max=`ls -1p *.f *.f90 | grep -vc "/$"`
+
+echo You have compiled $n6 programs
+echo out of $n6max
+
+mv *.a ../../../bin/
+
+
+echo ' '
+echo Compiling PIPETEST programs
+echo ----------------------------
+echo ' '
+
+cd ../Pipetest
+for jj in `ls *.f`
+do
+echo $jj
+$compiler $flags $jj -o `basename $jj .f`.a
+done
+
+n7=`ls -1p *.a | grep -vc "/$"` 
+n7max=`ls -1p *.f | grep -vc "/$"` 
+
+echo You have compiled $n7 programs 
+echo out of $n7max 
+
+#mv *.a ../../../bin/
+
+echo ' '
+echo Compiling 3D and STABILIZATION programs
+echo ---------------------------------------
+echo ' '
+
+cd ../Stabil
+
+$compiler $flags $ncinc -I ../NC diva3Dwrt.F ureadc.F uwritc.F dv2Dreadnc.F dv3Dncwrt.F ../NC/divaio.o -o diva3Dstr.a $nclib 
+$compiler $flags $ncinc -I ../NC diva4Dwrt.F dv3Dreadnc.F dv3Dncwrt.F ../NC/divaio.o -o diva4Dstr.a $nclib
+$compiler $flags $ncinc -I ../NC dv4DYRwrt.F dv3Dreadnc.F dv3DncYRw.F ../NC/divaio.o -o dv4DYRstr.a $nclib
+$compiler $flags $ncinc -I ../NC diva3Dref.F ureadc.F uwritc.F diva3Dnc.F ../NC/divaio.o -o diva3Dref.a $nclib
+$compiler $flags $ncinc stabil.F N2brunt.F albe2d.F potmp.F pzcon.F ureadc.F -o stabil.a $nclib
+$compiler $flags $ncinc -I ../NC dv3Dtswrt.F dvvarerr.F brunt.F AlpBetSig.F potmp.F pzcon.F dv3Dtsdnc.F ../NC/divaio.o -o dv3Dtswrt.a $nclib
+$compiler $flags datatrans.F transfun.F userfunc.F -o datatrans.a
+$compiler $flags refetrans.F transfun.F userfunc.F -o refetrans.a
+$compiler $flags refebintrans.F transfun.F userfunc.F ureadc.F uwritc.F -o refebintrans.a
+$compiler $flags $ncinc anatrans.F dv2Dreadnc.F transfun.F userfunc.F dv2Drewtnc.F ureadc.F uwritc.F -o anatrans.a $nclib
+$compiler $flags $ncinc -I ../NC diva3D_qc.F ureadc.F uwritc.F dv2Dreadnc.F diva_ncclim.F caldivanorm.F ../NC/divaio.o -o diva3Dqcwrt.a $nclib
+$compiler $flags $ncinc -I ../NC diva4D_qc.F dv3Dreadnc.F diva_ncclim.F caldivanorm.F calrms.F ../NC/divaio.o -o diva4Dqcwrt.a $nclib
+$compiler $flags fillfilavref.F ureadc.F uwritc.F -o fillfilavref.a
+$compiler $flags datapre.F -o datapre.a
+$compiler $flags wclfile.F -o wclfile.a
+$compiler $flags wsnfile.F -o wsnfile.a
+$compiler $flags wgcvfile.F -o wgcvfile.a
+$compiler $flags boundval.F -o boundval.a
+$compiler $flags gebprep.F -o gebprep.a
+$compiler $flags datamix.F -o datamix.a
+$compiler $flags datagrpnoise.F -o addnoise.a
+$compiler $flags datasorts.F -o sortall.a
+$compiler $flags datadispach.F -o datadispach.a
+$compiler $flags refegrnoise.F -o refenoise.a
+$compiler $flags refesorts.F -o sortref.a
+$compiler $flags refedispach.F -o refdispach.a
+$compiler $flags datacalmoy.F -o datacalmoy.a
+$compiler $flags dvqcfiles.F -o dvqcfiles.a
+$compiler $flags main_tomvec.f90 tomvec.f -o main_tomvec.a
+$compiler $flags binning_lines.f90 -o binning_lines.a
+
+n8=`ls -1p *.a | grep -vc "/$"`
+n8max=30
+
+echo You have compiled $n8 programs
+echo out of $n8max
+
+mv *.a ../../../bin/
+
+
+
+echo --------------------
+echo Compilation finished
+echo --------------------
+echo ' '
+
+cd .. 
+
+# total number of compiled programs
+
+let ntotal=$n1+$n2+$n3+$n4+$n5+$n6+$n7+$n8
+let ntotalmax=$n1max+$n2max+$n3max+$n4max+$n5max+$n6max+$n7max+$n8max
+
+echo You have compiled $ntotal programs 
+echo out of $ntotalmax 
+
+echo '  '
+echo Writing log file...
+echo '  '
+
+echo ' ' > ./compilation.log
+echo 'Compilation time: ' $(date)      >> ./compilation.log
+echo 'compiler:          '$compiler >> ./compilation.log
+echo 'compilation flags: '$flags    >> ./compilation.log
+echo 'Calc directory:       '$n1/$n1max'   program compiled' >> ./compilation.log
+echo 'Extensions directory: '$n2/$n2max' programs compiled' >> ./compilation.log
+echo 'Mesh directory:       '$n3/$n3max'   programs compiled' >> ./compilation.log
+echo 'NC directory:         '$n4/$n4max'   programs compiled' >> ./compilation.log
+echo 'PlPlot directory:     '$n5/$n5max'   programs compiled' >> ./compilation.log
+echo 'Util directory:       '$n6/$n6max' programs compiled' >> ./compilation.log
+echo 'Pipetest directory:   '$n7/$n7max'   program compiled' >> ./compilation.log
+echo 'Stabil directory:     '$n8/$n8max' programs compiled' >> ./compilation.log
+echo '----------------------------------------------------------' >> ./compilation.log
+echo 'TOTAL:                '$ntotal/$ntotalmax programs compiled >> ./compilation.log
+echo '----------------------------------------------------------' >> ./compilation.log
+echo 'Binaries are located in directory:' >> ./compilation.log
+echo ${bindir} >> ./compilation.log
+
+echo '--> written in compilation.log'
+echo '  '
+
+echo 'Binaries are located in directory:'
+echo ${bindir}
+
+
+
+cd ../../divastripped
+mkdir -p ./divawork
+mkdir -p ./meshgenwork
+mkdir -p ./output
+mkdir -p ./input
+mkdir -p ./output/ghertonetcdf
+mkdir -p ./output/meshvisu

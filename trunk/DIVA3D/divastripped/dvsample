@@ -1,0 +1,32 @@
+#!/bin/bash
+cd divawork
+cp ../input/data.dat.ori fort.20
+nbcol=$(head -1 fort.20 | wc -w)
+echo $2 $nbcol
+ndata=$(cat fort.20 | wc -l)
+echo Subsampling of $1 from $ndata data points >> ../output/diva.log
+if [ "$1" -ge "$ndata" ] 
+then
+echo subsample size too large
+else
+echo $1 $ndata $2 $nbcol  | ../../bin/subsampling.a >> ../output/diva.log
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo                subsampling.a
+echo Check execution track
+echo --------------------------------------------
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo                subsampling.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+fi
+fi
+mv -f fort.44 ../input/data.dat
+mv -f fort.45 ../input/valatxy.coord
+rm -f fort.20
+echo New data and reference data ready >> ../output/diva.log
+cd ..

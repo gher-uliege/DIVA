@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#------------------------------------------------
+# Sylvain Watelet - 02/12/2014
+# swatelet@ulg.ac.be
+#
+# This script transforms a netcdf file (myfield.nc) 
+# into gher format (myfield.grd) + an info file 
+# (myfield.dat).
+#------------------------------------------------
+
+myfield=$1
+
+if [ "$1" == "" ]
+then
+ echo "Error : no argument !"
+ echo "Usage : ./ncdf2gher myfield"
+ exit
+fi
+
+echo "The field to transform is $myfield"
+
+ncfile=./input/${myfield}.nc
+
+../bin/ncdf2gher.a $ncfile $myfield
+
+ 

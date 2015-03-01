@@ -1,0 +1,177 @@
+#!/bin/bash
+
+echo '//////////////////////////////////////////////////////////////////////////////'
+echo 'divadocommit:  Replacing input files in ./input'
+echo 'divadocommit:  by new input files found in ./newinput'
+echo 'divadocommit:  on:'
+date
+echo '  '
+echo 'divadocommit: It is assumed that driver, varlist, yearlist and monthlist'
+echo '              files are the ones used (by divadoall) to creat the newinput'
+echo '              subdirectory on which divacommit is run'
+echo '//////////////////////////////////////////////////////////////////////////////'
+echo ' '
+echo ' '
+
+FILENAME=driver
+{
+read isextractcomm
+read isextractf
+read iscontourcomm
+read iscontour
+read isdatacleancomm
+read isdataclean
+read minimumdatanumbercomm
+read mindata
+read isoptimisecomm
+read isoptimise
+read CLMINcomm
+read CLMIN
+read CLMAXcomm
+read CLMAX
+read SNMINcomm
+read SNMIN
+read SNMAXcomm
+read SNMAX
+read isanalysiscomm
+read isanalysis
+read lowerlevelcomm
+read minlevel
+read upperlevelcomm
+read upperlevel
+read isxmlgeneratcom
+read isxmlgenerat
+read isplotcomm
+read isplot
+} < $FILENAME
+
+if [ "$iscontour" -ne "0" ];then
+
+echo 'divadocommit:' 
+echo 'divadocommit: ================================================================='
+echo 'divadocommit: ======================= Saving contour files ================='
+echo 'divadocommit: =======================' 
+
+
+ if [ -f ./newinput/topo.grd ];then
+
+  cp -v ./newinput/topo.grd ./input/.
+  cp -v ./newinput/TopoInfo.dat ./input/.
+
+ fi
+ mkdir -p  ./input/divaparam
+ if [ -d ./newinput/divaparam ];then
+ uperlev=$(cat ./input/contour.depth | wc -l)
+ lev=1
+  while [ "$lev" -le "$uperlev" ]
+  do
+     let level=$((10000+$lev))
+     cp -v ./newinput/divaparam/coast.cont.$level ./input/divaparam/.
+   let lev=$(($lev+1))
+  done
+  fi
+  if [ $iscontour -ge 2 ]; then
+  mkdir -p ./input/divaUVcons_all
+  cp -v ./newinput/divaUVcons/* ./input/divaUVcons_all/.
+  fi
+
+fi
+
+if [ "$isdataclean" -ne "0" ] || [ "$isoptimise" -ne "0" ] || [ "$isanalysis" -ne "0" ] 
+then
+
+echo 'divadocommit:' 
+echo 'divadocommit: ================================================================='
+echo 'divadocommit: ======================= Starting commit loops ================='
+echo 'divadocommit: ======================='
+#########################################################
+for var in `cat varlist`
+#########################################################
+do
+#########################################################
+for year in `cat yearlist`
+#########################################################
+do
+#########################################################
+for month in `cat monthlist`
+#########################################################
+do
+echo 'divadocommit: ======================= Starting analysis loop on :'
+echo 'divadocommit: =======================      variable     '$var
+echo 'divadocommit: =======================           year    '$year
+echo 'divadocommit: =======================          month    '$month
+echo ' '
+#########################################################
+
+
+if [ "$isdataclean" -ne "0" ]
+then
+#
+let lev=$((0+$minlevel))
+let upperlevel=$((0+$upperlevel))
+while [ "$lev" -le "$upperlevel" ]
+do 
+ let level=$((10000+$lev))
+ cp -v ./newinput/divadata/$var.$year.$month.$level ./input/divadata/.
+ if [ -f ./newinput/divaparam/RLinfo.dat ];then 
+  cp -v ./newinput/divaparam/RLinfo.dat ./input/divaparam/.
+  cp -v ./newinput/divaparam/RL.$var.$year.$month.$level ./input/divaparam/.
+ fi
+ let lev=$(($lev+1))
+done
+#
+fi
+
+
+if [ "$isoptimise" -ne "0" ]
+then
+#
+let lev=$((0+$minlevel))
+let upperlevel=$((0+$upperlevel))
+while [ "$lev" -le "$upperlevel" ]
+do 
+ let level=$((10000+$lev))
+ if [ -f ./newinput/divaparam/param.par.$var.$year.$month.$level ];then
+  cp -v ./newinput/divaparam/param.par.$var.$year.$month.$level ./input/divaparam/.
+ fi
+ let lev=$(($lev+1))
+done
+fi
+
+
+if [ "$isanalysis" -ne "0" ] 
+then
+#
+
+if [ "$isanalysis" -eq "2" -o "$isanalysis" -eq "20" -o "$isanalysis" -eq "21" -o "$isanalysis" -eq "22" -o "$isanalysis" -eq "23" -o "$isanalysis" -eq "24" ];then
+#
+mkdir -p ./input/divarefe_all
+let lev=$((0+$minlevel))
+let upperlevel=$((0+$upperlevel))
+while [ "$lev" -le "$upperlevel" ]
+do 
+ let level=$((10000+$lev))
+ cp -v ./newinput/divarefe/GridInfo.dat ./input/divarefe_all/GridInfo.dat
+ cp -v ./newinput/divarefe/$var'.'$year'.'$month'.'$level'.datapoint.ref' ./input/divarefe_all/$var'.'$year'.'$month'.'$level'.datapoint.ref'
+ cp -v ./newinput/divarefe/$var'.'$year'.'$month'.'$level'.ascii.ref' ./input/divarefe_all/$var'.'$year'.'$month'.'$level'.ascii.ref'
+ cp -v ./newinput/divarefe/$var'.'$year'.'$month'.'$level'.ref' ./input/divarefe_all/$var'.'$year'.'$month'.'$level'.ref'
+ let lev=$((1+$lev))
+done
+#
+
+fi
+#
+fi
+
+echo 'divadocommit:' '============================= end month loop '$month
+done
+echo 'divadocommit:' '============================= end year loop    '$year
+done
+echo 'divadocommit:' '============================= end variable loop '$var
+done
+
+
+fi
+
+mv ./newinput ./output/3Danalysis/.
+

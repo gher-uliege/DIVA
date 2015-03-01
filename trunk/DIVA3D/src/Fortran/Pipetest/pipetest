@@ -1,0 +1,31 @@
+#!/bin/bash
+
+rm -f fort.*
+rm -f divapipe
+rm -f dvping
+rm -f dvpong
+mkfifo dvping
+mkfifo dvpong
+mkdir -p sub
+cd sub
+rm -f fort.*
+echo 1 > fort.55
+../piperw.a &
+cd ..
+echo 0 > fort.55
+./piperw.a
+
+cat fort.66
+
+echo If problems were encountered during execution, please check for
+echo still running piperw.a \( ps -eafl piperw.a \) and kill them
+echo Possibly run the pipetest again
+
+rm -f fort.*
+rm -f divapipe
+rm -f dvping
+rm -f dvpong
+mkdir -p sub
+cd sub
+rm -f fort.*
+cd ..

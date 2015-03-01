@@ -1,0 +1,103 @@
+#!/bin/bash
+
+#------------------------------------------------
+# Sylvain Watelet - 11/09/2014
+# Creation of RL fields depending on depth
+#------------------------------------------------
+
+echo /////////////////////////////////
+echo Variable RL field generation
+echo /////////////////////////////////
+echo ' '
+
+divarllog='./output/divarlvar.log'
+echo ///////////////////////////////// >$divarllog
+echo        RL field generation >>$divarllog
+echo ///////////////////////////////// >>$divarllog
+echo ' ' >>$divarllog
+
+Filepar=./input/param.par
+{
+read linecomment
+read lc
+read linecomment
+read icoordchange
+read linecomment
+read ispec
+read linecomment
+read ireg
+read linecomment
+read xori
+read linecomment
+read yori
+read linecomment
+read dx
+read linecomment
+read dy
+read linecomment
+read nx
+read linecomment
+read ny
+read linecomment
+read valex
+read linecomment
+read snr
+read linecomment
+read varbak
+} < $Filepar
+
+echo $xori > ./divawork/fort.11
+echo $yori >> ./divawork/fort.11
+echo $dx >> ./divawork/fort.11
+echo $dy >> ./divawork/fort.11
+echo $nx >> ./divawork/fort.11
+echo $ny >> ./divawork/fort.11
+
+cat ./divawork/fort.11 
+
+if [ -f ./input/TopoInfo.dat ] 
+then
+cat ./input/TopoInfo.dat 
+cp ./input/TopoInfo.dat ./divawork/fort.10
+else
+echo Need to provide TopoInfo.dat in ./input ! >>$divarllog
+echo ' !!!!!!!!!!!!! Need to provide TopoInfo.dat in ./input !'
+fi
+if [ -f ./input/topo.grd ] 
+then
+cp ./input/topo.grd ./divawork/fort.12
+else 
+echo Need to provide topo.grd in ./input ! >>$divarllog
+echo Need to provide topo.grd in ./input !
+fi 
+
+echo RL field creation >>$divarllog
+echo ' ' >>$divarllog
+cd ./divawork
+
+echo ////////////////////////////////////////// >> ../output/diva.log
+echo            Generating RL field  >> ../output/diva.log
+echo ////////////////////////////////////////// >> ../output/diva.log
+echo ' '  >> ../output/diva.log
+
+../../bin/rlvardepth.a >> ../output/diva.log
+
+if [ $? -ne 0 ];then
+echo ' '
+echo --------------------------------------------
+echo A problem was encountered during execution !
+echo       divarlvardepth:   rlvardepth.a
+echo Check execution track
+echo --------------------------------------------
+echo ' ' >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+echo A problem was encountered during execution ! >> ../output/diva.log
+echo        divacont:    rlvardepth.a  >> ../output/diva.log
+echo Check execution track >> ../output/diva.log
+echo -------------------------------------------- >> ../output/diva.log
+fi
+
+cd ..
+cp -v ./divawork/fort.11 ./output/RLinfo.dat
+cp -v ./divawork/fort.20 ./output/RL.dat
+

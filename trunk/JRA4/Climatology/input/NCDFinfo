@@ -1,0 +1,18 @@
+ Title string for temperature 3D NetCDF file:
+'Diva analysis '
+ Reference time for data (ie: days since since 1900-01-01), if not climatological data
+'months since since 1990-01-01'
+ Time value (that reprsents the data set), if not climatological data
+1200
+ Cell_methode string:
+'time: mean (this month data from all years)'
+ Institution name: where the dataset was produced.
+'University of Liege, GeoHydrodynamics and Environbment Research'
+ Production group and date
+'Diva group. E-mails : a.barth@ulg.ac.be ; m.ouberdous@ulg.ac.be'
+ Source (observation, radiosonde, database, model-generated data,...)
+'Data mainly from HCMR cruises and observations (Greece).'
+Comment
+'No comment'
+Autor e-mail adress (or contact person to report problems)
+'m.ouberdous@ulg.ac.be'
