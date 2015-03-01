@@ -443,26 +443,28 @@ if [ "$errflag" -eq "1" ];then
 echo '!!!!!!!!!!!!!diva3Ddat WARNING: !!!!!!!!!!!!!!!!!!' 	| tee -a "$diva3dlog"
 echo '!!!!!!!!DID NOT FIND param.par FILE FOR '"$var" $lev'!' 	| tee -a "$diva3dlog"
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a "$diva3dlog"
-
 fi
+
 if [ "$errflag" -eq "2" ];then
 echo '!!!!!!!!!!!!!diva3Ddat WARNING: !!!!!!!!!!!!!!!!!!'	| tee -a "$diva3dlog"
 echo '!!!!!!!!!!!!!DID NOT FIND DATA FILE FOR '"$var" $lev'!' 	| tee -a "$diva3dlog"
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a "$diva3dlog"
-
+echo '???????? Possible data files found ???????????'		| tee -a $diva3dlog
+ls -l ./input/divadata/*.10*  | tee -a $diva3dlog
 fi
+
 if [ "$errflag" -eq "3" ];then
 echo '!!!!!!!!!!!!!diva3Ddat WARNING: !!!!!!!!!!!!!!!!!!'	| tee -a "$diva3dlog"
 echo '!!!!!!!!!!DID NOT FIND CONTOUR FILE FOR '"$var" $lev'!' 	| tee -a "$diva3dlog"
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a "$diva3dlog"
-
 fi
+
 if [ "$errflag" -eq "4" ];then
 echo '!!!!!!!!!!!!!diva3Ddat WARNING: !!!!!!!!!!!!!!!!!!'	| tee -a "$diva3dlog"
 echo '!!!!!!!!!!DATA FILE  '"$var" $lev' IS EMPTY!' 		| tee -a "$diva3dlog"
 echo '!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'	| tee -a "$diva3dlog"
-
 fi
+
 fi
 #
  dep=`expr $dep + 1`
