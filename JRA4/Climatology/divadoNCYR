@@ -123,13 +123,13 @@ if [[ -f "./output/metajmb" && "$counter" == "1" ]]
 then
 rm -f ./output/metajmb
 fi
-let lev=0+$minlevel
-let upperlevel=0+$upperlevel
+let lev=$((0+$minlevel))
+let upperlevel=$((0+$upperlevel))
 #echo SO SOS
 while [ "$lev" -le "$upperlevel" ]
 do
 echo "working on level $lev"
-let levn=10000+$lev
+let levn=$((10000+$lev))
 
 # exloit the 3DNC info file to know which data have been used
 
@@ -153,7 +153,7 @@ cat ${WDIR}/input/divadata/$jmt'.'$jmy'.'$jmm'.'$levn | awk -v depth=$depthval '
 
 done
 
-let lev=1+$lev
+let lev=$((1+$lev))
 done
 #2013JMB - 2015 Sylvain watelet
 

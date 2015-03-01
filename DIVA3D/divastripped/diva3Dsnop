@@ -129,7 +129,7 @@ rm -f './output/'"$var"'.VAR.dat'
 fi
 while [ $dep -le $lay2 ]
 do
-let lev=10000+$dep
+let lev=$((10000+$dep))
 #
 
 echo ' ' >> "$diva3dlog"
@@ -461,7 +461,7 @@ echo ' '  >> ./output/diva.log
     mv bidon "$diva3dlog"
 
   else
-  let nsamp=$ndata/20
+  let nsamp=$(($ndata/20))
 echo diva3Dsnop: ////////////////////////////////////////// >> ./output/diva.log
 echo 'diva3Dsnop:         Cross Validation (divacvrand): '"$var"'.'$lev >> ./output/diva.log
 echo diva3Dsnop: ////////////////////////////////////////// >> ./output/diva.log
@@ -646,12 +646,12 @@ jmnlevel=$lay2
 while [ "$jmi" -le "$jmnlevel" ]
 do
 #echo level $jmi
-let lev=10000+$jmi
+let lev=$((10000+$jmi))
 cp -v './input/divaparam/'"$var"'.gcv.dat.'$lev ./output/gcv.dat.${lev}
-let jmi=$jmi+1
+let jmi=$(($jmi+1))
 done
 lay0=`head -1 './output/'"$var"'.Lay.dat' ` 
-let llll=${lay2}-${lay0}
+let llll=$((${lay2}-${lay0}))
 ##let llll=${lay2}-${lay1}
 if [ "$llll" -gt "0" ]
 then
@@ -680,9 +680,9 @@ do
 ##dep=$lay1
 ##while [ $dep -le $lay2 ]
 ##do
- let lev=10000+$dep
- let lev1=$dep+1
-let nlen=$lev1-$lay0
+ let lev=$((10000+$dep))
+ let lev1=$(($dep+1))
+let nlen=$(($lev1-$lay0))
 ##let nlen=$lev1-$lay1
 dd=1
 #

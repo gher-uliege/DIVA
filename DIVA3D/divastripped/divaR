@@ -178,7 +178,7 @@ head -1 ./input/data.dat
 i=0
 while [ $i -lt $itermax ]
 do
- let i=$i+1
+ let i=$(($i+1))
  echo $i
  dvchpar LC $LCR
  dvchpar SNR $SNRR

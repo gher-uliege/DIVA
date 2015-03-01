@@ -109,7 +109,7 @@ errflag=0
 dep=$lay1
 while [ $dep -le $lay2 ]
 do
- let lev=10000+$dep
+ let lev=$((10000+$dep))
 #
 echo ' '						| tee -a "$diva3dlog"
 echo 'oooooooooooooooooooooooooooooooooooooooooooooooo' | tee -a "$diva3dlog"
@@ -479,7 +479,7 @@ echo $param1 >> './output/'"$var"'.CL.dat'
 echo $dep >> './output/'"$var"'.Lay.dat'
 else
 #
-let errflag=$errflag+1
+let errflag=$(($errflag+1))
 #
 if [ "$runflag" -eq "1" ];then
 echo '!!!!!!!!!!!!!diva3Dclop WARNING: !!!!!!!!!!!!!!!!!!' 		| tee -a "$diva3dlog"
@@ -589,10 +589,10 @@ do
 ##dep=$lay1
 ##while [ $dep -le $lay2 ]
 ##do
- let lev=10000+$dep
- let lev1=$dep+1
+ let lev=$((10000+$dep))
+ let lev1=$(($dep+1))
 dd=1
-let nlen=$lev1-$lay0
+let nlen=$(($lev1-$lay0))
 ##let nlen=$lev1-$lay1
 #
 Fileinf='./output/'"$var"'.CL.dat'

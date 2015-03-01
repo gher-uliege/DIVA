@@ -82,7 +82,7 @@ echo 0 >> ${DIVAWORK}/bidon
 mv ${DIVAWORK}/bidon ./input/param.par.02
 if [ "$#" -gt "1" ]
 then
-let nsteps=$2+0
+let nsteps=$(($2+0))
 fi
 echo =============================================
 echo Number of iterations to be performed: $nsteps
@@ -91,7 +91,7 @@ i=0
 ping=0
 while [ "$i" -le "$nsteps" ]
 do
-let i=$i+1
+let i=$(($i+1))
 if [ "$ping" == "0" ]
 then
 ping=1
@@ -251,7 +251,7 @@ done
 if [ "$method" == "1" ]
 then
 linenum=$(cat ./output/reg.dat.01 | wc -l)
-let linenum=$linenum-1
+let linenum=$(($linenum-1))
 head -$linenum ./output/reg.dat.01 | tail -1 > ./divawork/fort.20
 head -$linenum ./output/reg.dat.02 | tail -1 >> ./divawork/fort.20
 else

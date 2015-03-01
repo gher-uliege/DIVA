@@ -17,7 +17,7 @@ dep=$bottm
 rm -f ./3DWORK/fort.44
 while [ $dep -le $surf ]
 do
-let level=10000+$dep
+let level=$((10000+$dep))
 #
 cd ./input/divadata
 

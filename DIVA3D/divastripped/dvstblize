@@ -99,7 +99,7 @@ cd ../
 #
 lay=`expr $klev + 1`
 #
-let level=10000+$lay
+let level=$((10000+$lay))
 #
 #
 ./dv3Drefoanl $level $temp 0 1 -1  $actp 0 stb

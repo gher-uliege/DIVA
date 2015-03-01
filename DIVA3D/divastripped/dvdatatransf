@@ -27,7 +27,7 @@ dep=$bottm
 rm -f ./3DWORK/fort.44
 while [ $dep -le $surf ]
 do
-let level=10000+$dep
+let level=$((10000+$dep))
 #
 cd ./input/divadata
   file="$var".$level
@@ -80,7 +80,7 @@ cd input/divadata
 dep=$bottm
 while [ $dep -le $surf ]
 do
-let level=10000+$dep
+let level=$((10000+$dep))
 file="$var".$level
 nbcl=$(head -n 1 "$file" | wc -w)
 nbln=$(cat "$file" |wc -l)
@@ -203,7 +203,7 @@ cd ../input/divadata
 dep=$bottm
 while [ $dep -le $surf ]
 do
-let level=10000+$dep
+let level=$((10000+$dep))
   file="$var".$level
   nbcl=$(head -n 1 "$file" | wc -w)
   nbln=$(cat "$file" |wc -l)
@@ -212,7 +212,7 @@ let level=10000+$dep
   echo $nbcl >> ../../3DWORK/"$file"
   echo $dep >> ../../3DWORK/"$file"
 #
-let dep=$dep+1
+let dep=$(($dep+1))
 done
 
 cd ../../3DWORK/
@@ -250,12 +250,12 @@ cd ../input/divadata
 dep=$bottm
 while [ $dep -le $surf ]
 do
-let level=10000+$dep
+let level=$((10000+$dep))
 if [ -f "$var".$level'_shrink' ];then
  cp "$var".$level "$var".$level'.save'
  mv "$var".$level'_shrink' "$var".$level
 fi
-let dep=$dep+1
+let dep=$(($dep+1))
 done
 cd ../..
 fi
@@ -264,7 +264,7 @@ dep=$bottm
 rm -f ./3DWORK/fort.44
 while [ $dep -le $surf ]
 do
-let level=10000+$dep
+let level=$((10000+$dep))
 #
 cd ./input/divadata
   file="$var".$level

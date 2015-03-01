@@ -225,7 +225,7 @@ fi
 mv fort.41 dvanalysisrange
 mv fort.40 longref.dat.default
 jj=$(cat ../output/outliersbis.normalized.dat | wc -l)
-let jj=$jj-4
+let jj=$(($jj-4))
 if [ "$jj" -ge "0" ]
 then
 head -$jj ../output/outliersbis.normalized.dat | tac > fort.43

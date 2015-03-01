@@ -38,7 +38,7 @@ dep=$bottm
 rm -f ./3DWORK/fort.33
 while [ $dep -le $surf ]
 do
-let level=10000+$dep
+let level=$((10000+$dep))
 #
 if [ -f ./input/divarefe/"$var"'.'$level'.datapoint.ref' ];then
 
@@ -100,7 +100,7 @@ rm -f '../../3DWORK/refbruitls'
 dep=$bottm
 while [ $dep -le $surf ]
 do
-let level=10000+$dep
+let level=$((10000+$dep))
 
 
 if [ -f ./input/divarefe/"$var"'.'$level'.datapoint.ref' ];then
@@ -215,7 +215,7 @@ dep=$bottm
 rm -f ./3DWORK/fort.44
 while [ $dep -le $surf ]
 do
-let level=10000+$dep
+let level=$((10000+$dep))
 
 if [ -f ./input/divarefe/"$var"'.'$level'.datapoint.ref' ];then
 #

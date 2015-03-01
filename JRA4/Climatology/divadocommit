@@ -65,9 +65,9 @@ echo 'divadocommit: ======================='
  lev=1
   while [ "$lev" -le "$uperlev" ]
   do
-     let level=10000+$lev
+     let level=$((10000+$lev))
      cp -v ./newinput/divaparam/coast.cont.$level ./input/divaparam/.
-   let lev=$lev+1
+   let lev=$(($lev+1))
   done
   fi
   if [ $iscontour -ge 2 ]; then
@@ -107,17 +107,17 @@ echo ' '
 if [ "$isdataclean" -ne "0" ]
 then
 #
-let lev=0+$minlevel
-let upperlevel=0+$upperlevel
+let lev=$((0+$minlevel))
+let upperlevel=$((0+$upperlevel))
 while [ "$lev" -le "$upperlevel" ]
 do 
- let level=10000+$lev
+ let level=$((10000+$lev))
  cp -v ./newinput/divadata/$var.$year.$month.$level ./input/divadata/.
  if [ -f ./newinput/divaparam/RLinfo.dat ];then 
   cp -v ./newinput/divaparam/RLinfo.dat ./input/divaparam/.
   cp -v ./newinput/divaparam/RL.$var.$year.$month.$level ./input/divaparam/.
  fi
- let lev=$lev+1
+ let lev=$(($lev+1))
 done
 #
 fi
@@ -126,15 +126,15 @@ fi
 if [ "$isoptimise" -ne "0" ]
 then
 #
-let lev=0+$minlevel
-let upperlevel=0+$upperlevel
+let lev=$((0+$minlevel))
+let upperlevel=$((0+$upperlevel))
 while [ "$lev" -le "$upperlevel" ]
 do 
- let level=10000+$lev
+ let level=$((10000+$lev))
  if [ -f ./newinput/divaparam/param.par.$var.$year.$month.$level ];then
   cp -v ./newinput/divaparam/param.par.$var.$year.$month.$level ./input/divaparam/.
  fi
- let lev=$lev+1
+ let lev=$(($lev+1))
 done
 fi
 
@@ -146,16 +146,16 @@ then
 if [ "$isanalysis" -eq "2" -o "$isanalysis" -eq "20" -o "$isanalysis" -eq "21" -o "$isanalysis" -eq "22" -o "$isanalysis" -eq "23" -o "$isanalysis" -eq "24" ];then
 #
 mkdir -p ./input/divarefe_all
-let lev=0+$minlevel
-let upperlevel=0+$upperlevel
+let lev=$((0+$minlevel))
+let upperlevel=$((0+$upperlevel))
 while [ "$lev" -le "$upperlevel" ]
 do 
- let level=10000+$lev
+ let level=$((10000+$lev))
  cp -v ./newinput/divarefe/GridInfo.dat ./input/divarefe_all/GridInfo.dat
  cp -v ./newinput/divarefe/$var'.'$year'.'$month'.'$level'.datapoint.ref' ./input/divarefe_all/$var'.'$year'.'$month'.'$level'.datapoint.ref'
  cp -v ./newinput/divarefe/$var'.'$year'.'$month'.'$level'.ascii.ref' ./input/divarefe_all/$var'.'$year'.'$month'.'$level'.ascii.ref'
  cp -v ./newinput/divarefe/$var'.'$year'.'$month'.'$level'.ref' ./input/divarefe_all/$var'.'$year'.'$month'.'$level'.ref'
- let lev=1+$lev
+ let lev=$((1+$lev))
 done
 #
 

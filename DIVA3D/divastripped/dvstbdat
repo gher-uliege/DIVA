@@ -27,7 +27,7 @@ if [ -f fort.44 ];then
 rm fort.44
 fi
 #
-let lev=10000+$surf
+let lev=$((10000+$surf))
 #
 cp ../input/divadata/$var1.$lev fort.44
 nbccol=`head -n 1 ./fort.44 | wc -w`
@@ -40,7 +40,7 @@ echo $nbccol >> ./fort.44
 while [ $dep -le $surf ]
 do
 #
-let lev=10000+$dep
+let lev=$((10000+$dep))
 if [ -f  ./data/$var1.$lev ] ; then
  cp -v ../input/divadata/$var1.$lev  ../input/divadata/$var1.$lev.beforstb
  cp -v ./data/$var1.$lev ../input/divadata/$var1.$lev

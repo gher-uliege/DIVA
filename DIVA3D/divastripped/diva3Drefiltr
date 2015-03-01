@@ -115,7 +115,7 @@ dep=$bottm
 rm -f ./3DWORK/fort.44
 while [ $dep -le $surf ]
 do
-let level=10000+$dep
+let level=$((10000+$dep))
 #
 cd ./input/divadata
   file="$var".$level
@@ -278,7 +278,7 @@ dep=$bottm
 rm -f ./3DWORK/fort.44
 while [ $dep -le $surf ]
 do
-let lev=10000+$dep
+let lev=$((10000+$dep))
 #
 read val
 ########

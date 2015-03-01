@@ -190,8 +190,8 @@ echo 'divadoall:' month $month
 lev="0"
 for layer in `cat input/contour.depth`
 do
-let lev=$lev+1
-let lnum=10000+$lev
+let lev=$(($lev+1))
+let lnum=$((10000+$lev))
 ##ls -l input/divadata/${var}.${year}.${month}.$lnum
 if [ -f input/divadata/"${var}".${year}.${month}.$lnum ];then
 rm -f input/divadata/"${var}".${year}.${month}.$lnum
@@ -395,10 +395,10 @@ while [ "$mlevel" -lt "$maxlevel" ]
 ###################################################################
 do
 
-let levell=$mlevel+0
-let mlevel=$mlevel+1
-let levelp=$mlevel+1
-let jmlevel=$mlevel+10000
+let levell=$(($mlevel+0))
+let mlevel=$(($mlevel+1))
+let levelp=$(($mlevel+1))
+let jmlevel=$(($mlevel+10000))
 
 if [ -f  ./input/divadata/"$var".$year.$month.$jmlevel ];then
 
@@ -434,11 +434,11 @@ fi
 
 if [ "$isdataclean" -ne "0" ] || [ "$isoptimise" -ne "0" ] || [ "$isanalysis" -ne "0" ] 
 then
-	let lev=0+$minlevel
-	let upperlevel=0+$upperlevel
+	let lev=$((0+$minlevel))
+	let upperlevel=$((0+$upperlevel))
 	while [ "$lev" -le "$upperlevel" ]
 	do 
- 		let level=10000+$lev
+ 		let level=$((10000+$lev))
  		if [ -f ./input/divaparam/coast.cont.$level ]
 	 		then
 	 		echo "contour for level $lev is present"
@@ -447,7 +447,7 @@ then
 	 		echo "Diva will create these contours"
 	 		iscontour=1
  		fi
- 		let lev=1+$lev
+ 		let lev=$((1+$lev))
  	done
 fi
 
@@ -537,11 +537,11 @@ then
 cp -r ./input/divamesh ${DIVADIR}/divastripped/input/.
 fi
 
-let lev=0+$minlevel
-let upperlevel=0+$upperlevel
+let lev=$((0+$minlevel))
+let upperlevel=$((0+$upperlevel))
 while [ "$lev" -le "$upperlevel" ]
 do 
- let level=10000+$lev
+ let level=$((10000+$lev))
  cp -v ./input/divaparam/coast.cont.$level ${DIVADIR}/divastripped/input/divaparam/.
 if [ -f ./input/divaparam/param.par."$var".$year.$month.$level ];then
  cp -v ./input/divaparam/param.par."$var".$year.$month.$level ${DIVADIR}/divastripped/input/divaparam/.
@@ -572,7 +572,7 @@ fi
 if [ -d ./input/divatrans ];then 
  cp -v ./input/divatrans/"$var".$year.$month.$level.anl.mat ${DIVADIR}/divastripped/input/divatrans/.
 fi
-let lev=$lev+1
+let lev=$(($lev+1))
 done
 
 
@@ -604,11 +604,11 @@ isanalysis=0
 fi
 #
 if [ "$isanalysis" -ge "111" -a  "$isanalysis" -lt "120" ];then
-let isanalysis=$isanalysis-100
+let isanalysis=$(($isanalysis-100))
 fi
 #
 if [ "$isanalysis" -eq "101" ];then
-let isanalysis=$isanalysis-100
+let isanalysis=$(($isanalysis-100))
 fi
 #
 echo 'divadoall:' 'divadoall: finished preparing reference fields with mixed '
@@ -643,11 +643,11 @@ if [ "$isUVcst" == "1" ];then
  rm -f ./input/constraint.dat
  fi
  mkdir ./input/divaUVcons
- let lev=0+$minlevel
- let upperlevel=0+$upperlevel
+ let lev=$((0+$minlevel))
+ let upperlevel=$((0+$upperlevel))
  while [ "$lev" -le "$upperlevel" ]
  do 
- let level=10000+$lev
+ let level=$((10000+$lev))
 
  cp -v './input/divaUVcons_all/constraint.dat' './input/constraint.dat'
  cp -v './input/divaUVcons_all/UVinfo.dat' './input/divaUVcons/UVinfo.'$level
@@ -673,7 +673,7 @@ else
  fi
 fi
 
- let lev=$lev+1
+ let lev=$(($lev+1))
  done
 
 else
@@ -689,16 +689,16 @@ if [ "$isref" == "1" ];then
  echo "$yrref" > ${DIVADIR}/divastripped/input/dorefeinfo
  echo "$mnref" >> ${DIVADIR}/divastripped/input/dorefeinfo
  mkdir ./input/divarefe
- let lev=0+$minlevel
- let upperlevel=0+$upperlevel
+ let lev=$((0+$minlevel))
+ let upperlevel=$((0+$upperlevel))
  while [ "$lev" -le "$upperlevel" ]
  do 
- let level=10000+$lev
+ let level=$((10000+$lev))
  cp -v './input/divarefe_all/'"$var"'.'$yrref.$mnref.$level'.ref' './input/divarefe/'"$var"'.'$year'.'$month'.'$level'.ref'
  cp -v './input/divarefe_all/'"$var"'.'$yrref.$mnref.$level'.ascii.ref' './input/divarefe/'"$var"'.'$year'.'$month'.'$level'.ascii.ref'
  cp -v './input/divarefe_all/'"$var"'.'$yrref.$mnref.$level'.datapoint.ref' './input/divarefe/'"$var"'.'$year'.'$month'.'$level'.datapoint.ref'
  cp -v ./input/divarefe_all/GridInfo.dat  ./input/divarefe/GridInfo.dat
- let lev=$lev+1
+ let lev=$(($lev+1))
  done
 else
  if [ -d ./input/divarefe ]; then
@@ -923,9 +923,9 @@ echo '             ====== for use in the following loops ============='
   clev=1
    while [ "$clev" -le "$nblev" ]
    do
-     let clevel=10000+$clev
+     let clevel=$((10000+$clev))
      cp -v ./newinput/divaparam/coast.cont.$clevel ./input/divaparam/.
-     let clev=$clev+1
+     let clev=$(($clev+1))
    done
  fi
 

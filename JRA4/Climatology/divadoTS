@@ -155,8 +155,8 @@ echo month $month
 lev="0"
 for layer in `cat input/contour.depth`
 do
-let lev=$lev+1
-let lnum=10000+$lev
+let lev=$(($lev+1))
+let lnum=$((10000+$lev))
 ls -l input/divadata/${var}.${year}.${month}.$lnum
 rm -f input/divadata/${var}.${year}.${month}.$lnum
 
@@ -365,10 +365,10 @@ cp -r ./input/* ${DIVADIR}/divastripped/input
 
 if [ -f ${var}.pal ]
 then
-echo using local palette for plotting
+echo "using local palette for plotting"
 cp -v ${var}.pal ${DIVADIR}/divastripped/gnuwork/analysis.pal
 else
-echo using default palette for plotting
+echo "using default palette for plotting"
 cp -v ${DIVADIR}/divastripped/gnuwork/analysis.pal.default ${DIVADIR}/divastripped/gnuwork/analysis.pal
 fi
 

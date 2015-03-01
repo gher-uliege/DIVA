@@ -146,19 +146,19 @@ NINT=0
 NDATA=$(cat ../input/data.dat | wc -l)
 echo 'Number of data points:' ${NDATA} >> $divacalclog
 echo ' '
-let NREA=$NREA+4*$NDATA
-let NREA=$NREA+${nx}*${ny}
-let NINT=$NINT+8*$NDATA
-let NINT=$NINT+$nelt
-let NINT=$NINT+41
-let NDDLT=3*$nnt1+$nnint
+let NREA=$(($NREA+4*$NDATA))
+let NREA=$(($NREA+${nx}*${ny}))
+let NINT=$(($NINT+8*$NDATA))
+let NINT=$(($NINT+$nelt))
+let NINT=$(($NINT+41))
+let NDDLT=$((3*$nnt1+$nnint))
 let NDDLE=16
-let NNT=$nnt1+$nnint
-let NINT=$NINT+2*$NNT
-let NINT=$NINT+$NDDLT
-let NINT=$NINT+16*$nelt
-let NINT=$NINT+2*$NDDLE
-let NTERM=$NDDLT*$NDDLT
+let NNT=$(($nnt1+$nnint))
+let NINT=$(($NINT+2*$NNT))
+let NINT=$(($NINT+$NDDLT))
+let NINT=$(($NINT+16*$nelt))
+let NINT=$(($NINT+2*$NDDLE))
+let NTERM=$(($NDDLT*$NDDLT))
 # instead of 90, square root of $NDDLT
 let NDDLTB=$NDDLT
 #echo Square root of $NDDLTB
@@ -170,23 +170,23 @@ let NDDLTB=$NDDLT
 ##xx=$(sqrt $NDDLTB)
 xx=$(echo $NDDLTB | awk '{print int(sqrt($1))}')
 #echo root is $xx $xxb
-let NTERM=$NDDLT*$xx
-let NTERM=$NTERM+$NTERM/2
-let NREA=$NREA+$nelt
-let NREA=$NREA+2*$NTERM
-let NREA=$NREA+2*$NDDLT
-let NREA=$NREA+$NDDLE*$NDDLE
-let NREA=$NREA+$NDDLE*$NDDLE
-let NREA=$NREA+$NDDLE
-let NREA=$NREA+38*$nelt
-let NREA=$NREA+2*$nnt1
+let NTERM=$(($NDDLT*$xx))
+let NTERM=$(($NTERM+$NTERM/2))
+let NREA=$(($NREA+$nelt))
+let NREA=$(($NREA+2*$NTERM))
+let NREA=$(($NREA+2*$NDDLT))
+let NREA=$(($NREA+$NDDLE*$NDDLE))
+let NREA=$(($NREA+$NDDLE*$NDDLE))
+let NREA=$(($NREA+$NDDLE))
+let NREA=$(($NREA+38*$nelt))
+let NREA=$(($NREA+2*$nnt1))
 # For optimisation of element location, rought estimate:
-let NINT=$NINT+$nelt*100
+let NINT=$(($NINT+$nelt*100))
 #
 itcs=0
 if [ -f ../input/constraint.dat ]
 then
-let itcs=$itcs+1
+let itcs=$(($itcs+1))
 
 echo Advection requested >> $divacalclog
 
@@ -203,7 +203,7 @@ cp ../input/sources.dat ./fort.24
 fi
 
 
-let NREA=$NREA+2*$nnt1
+let NREA=$(($NREA+2*$nnt1))
 {
 read aaaaa
 read bbbbb
@@ -212,17 +212,17 @@ read ddddd
 read nxuuu
 read nyuuu
 } < ../input/UVinfo.dat
-let NREA=$NREA+$nxuuu*$nyuuu
-let NREA=$NREA+2*$nnt1
-let NREA=$NREA+1
+let NREA=$(($NREA+$nxuuu*$nyuuu))
+let NREA=$(($NREA+2*$nnt1))
+let NREA=$(($NREA+1))
 fi
 if [ -f ../input/RL.dat ]
 then
-let itcs=$itcs+2
+let itcs=$(($itcs+2))
 echo Variable L requested >> $divacalclog
 cp ../input/RL.dat ./fort.94
 cp ../input/RLinfo.dat ./fort.95
-let NREA=$NREA+$nnt1
+let NREA=$(($NREA+$nnt1))
 {
 read aaaaa
 read bbbbb
@@ -231,9 +231,9 @@ read ddddd
 read nxlll
 read nylll
 } < ../input/RLinfo.dat
-let NREA=$NREA+$nxlll*$nylll
-let NREA=$NREA+$nnt1
-let NREA=$NREA+1
+let NREA=$(($NREA+$nxlll*$nylll))
+let NREA=$(($NREA+$nnt1))
+let NREA=$(($NREA+1))
 fi
 
 #creation of file fort.13

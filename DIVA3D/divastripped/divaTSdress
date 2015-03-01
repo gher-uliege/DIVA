@@ -63,7 +63,7 @@ read acts
 } < $Fileinf
 #
 echo ' divaTSdress: Going to 3Danalyse salinity'
-diva3Ddress
+./diva3Ddress
 #
 #
 if [ -f  ./input/3Dinfo ]
@@ -98,7 +98,7 @@ read actp
 } < $Fileinf
 #
 echo ' divaTSdress: Going to 3Danalyse temperature'
-diva3Ddress
+./diva3Ddress
 #
 if [ "$actp" == "1" ];then
 echo ' divaTSdress: Going to write TEMP_PSAL.nc'
@@ -119,7 +119,7 @@ if [ -d ./input/divarefe_all ] ;then
 dep=$lay1
 while [ $dep -le $lay2 ]
 do
-let lev=10000+$dep
+let lev=$((10000+$dep))
 mv ./input/divarefe_all/$psal'.'$lev'.datapoint.ref' ./input/divarefe_all/$psal'.'$lev'.datapoint.ref.notstb'
 mv ./input/divarefe_all/$psal'.'$lev'.ascii.ref' ./input/divarefe_all/$psal'.'$lev'.ascii.ref.notstb'
 mv ./input/divarefe_all/$psal'.'$lev'.ref' ./input/divarefe_all/$psal'.'$lev'.ref.notstb'
@@ -127,7 +127,7 @@ dep=`expr $dep + 1`
 done
 fi
 fi
-diva3Ddress
+./diva3Ddress
 #
 cp ./input/3Dinfotemper ./input/3Dinfo
 if [  $actp == "2" ];then
@@ -135,7 +135,7 @@ if [ -d ./input/divarefe_all ] ;then
 dep=$lay1
 while [ $dep -le $lay2 ]
 do
-let lev=10000+$dep
+let lev=$((10000+$dep))
 mv ./input/divarefe_all/$temp'.'$lev'.datapoint.ref' ./input/divarefe_all/$temp'.'$lev'.datapoint.ref.notstb'
 mv ./input/divarefe_all/$temp'.'$lev'.ascii.ref' ./input/divarefe_all/$temp'.'$lev'.ascii.ref.notstb'
 mv ./input/divarefe_all/$temp'.'$lev'.ref' ./input/divarefe_all/$temp'.'$lev'.ref.notstb'
@@ -143,7 +143,7 @@ dep=`expr $dep + 1`
 done
 fi
 fi
-diva3Ddress
+./diva3Ddress
 #
 if [ "$actp" == "1" ];then
 ./dvtsdwrt

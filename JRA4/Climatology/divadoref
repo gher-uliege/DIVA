@@ -140,7 +140,7 @@ fi
 if [ "$isanalysis" -ge "100" ] ;then
 #######################################
 #
- let isanalysis=$isanalysis-100
+ let isanalysis=$(($isanalysis-100))
  echo "$weightfac" > ${DIVADIR}/divastripped/input/dvlaymixinfo
 fi
 
@@ -261,50 +261,50 @@ fi
 #
 if [ "$iscontour" -ne "0" ]; then 
 #
-let lev=0+$minlevel
-let upperlevel=0+$upperlevel
+let lev=$((0+$minlevel))
+let upperlevel=$((0+$upperlevel))
 while [ "$lev" -le "$upperlevel" ]
 do 
- let level=10000+$lev
+ let level=$((10000+$lev))
  cp -v ${WDIR}/newinput/divaparam/coast.cont.$level ${WDIR}/input/divaparam/.
 done
 fi
 if [ "$isdataclean" -ne "0" ]; then
 #
-let lev=0+$minlevel
-let upperlevel=0+$upperlevel
+let lev=$((0+$minlevel))
+let upperlevel=$((0+$upperlevel))
 while [ "$lev" -le "$upperlevel" ]
 do 
- let level=10000+$lev
+ let level=$((10000+$lev))
  cp -v ${WDIR}/newinput/divadata/"$var".$year.$month.$level ${WDIR}/input/divadata/.
 if [ -f ${WDIR}/newinput/divaparam/RLinfo.dat ];then 
  cp -v ${WDIR}/newinput/divaparam/RLinfo.dat ${WDIR}/input/divaparam/.
  cp -v ${WDIR}/newinput/divaparam/RL."$var".$year.$month.$level ${WDIR}/input/divaparam/.
 fi
-let lev=1+$lev
+let lev=$((1+$lev))
 done
 fi
 
 if [ "$isoptimise" -ne "0" ]; then
-let lev=0+$minlevel
-let upperlevel=0+$upperlevel
+let lev=$((0+$minlevel))
+let upperlevel=$((0+$upperlevel))
 while [ "$lev" -le "$upperlevel" ]
 do 
- let level=10000+$lev
+ let level=$((10000+$lev))
  cp -v ${WDIR}/newinput/divaparam/param.par."$var".$year.$month.$level ${WDIR}/input/divaparam/.
 if [ -f ${WDIR}/newinput/divaparam/RLinfo.dat ];then 
  cp -v ${WDIR}/newinput/divaparam/RLinfo.dat ${WDIR}/input/divaparam/.
  cp -v ${WDIR}/newinput/divaparam/RL."$var".$year.$month.$level ${WDIR}/input/divaparam/.
 fi
-let lev=1+$lev
+let lev=$((1+$lev))
 done
 fi
 #
-let lev=0+$minlevel
-let upperlevel=0+$upperlevel
+let lev=$((0+$minlevel))
+let upperlevel=$((0+$upperlevel))
 while [ "$lev" -le "$upperlevel" ]
 do 
- let level=10000+$lev
+ let level=$((10000+$lev))
 if [ -d ${WDIR}/input/divarefe_all ] ;then
 cp -v ${WDIR}/newinput/divarefe/GridInfo.dat ${WDIR}/input/divarefe_all/GridInfo.dat
 cp -v ${WDIR}/newinput/divarefe/"$var"'.'$year'.'$month'.'$level'.datapoint.ref' ${WDIR}/input/divarefe_all/"$var"'.'$year'.'$month'.'$level'.datapoint.ref'
@@ -317,7 +317,7 @@ cp -v ${WDIR}/newinput/divarefe/"$var"'.'$year'.'$month'.'$level'.datapoint.ref'
 cp -v ${WDIR}/newinput/divarefe/"$var"'.'$year'.'$month'.'$level'.ascii.ref' ${WDIR}/input/divarefe_all/"$var"'.'$year'.'$month'.'$level'.ascii.ref'
 cp -v ${WDIR}/newinput/divarefe/"$var"'.'$year'.'$month'.'$level'.ref' ${WDIR}/input/divarefe_all/"$var"'.'$year'.'$month'.'$level'.ref'
 fi
-let lev=1+$lev
+let lev=$((1+$lev))
 done
 
 cd ${WDIR}

@@ -47,7 +47,7 @@ echo ' '
 echo =============================================
 echo Trying $gcv
 echo =============================================
-let ijm=$ijm+1
+let ijm=$(($ijm+1))
 head -17 ./input/param.par.ori > bidon
 echo 1 >> bidon
 echo   >> bidon

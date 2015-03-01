@@ -20,8 +20,8 @@ IFS=$'\n'
 				lev="0"
 				for layer in `cat input/contour.depth`
 				do
-					let lev=$lev+1
-					let lnum=10000+$lev
+					let lev=$(($lev+1))
+					let lnum=$((10000+$lev))
 					datafile="input/divadata/"${var}".${year}.${month}.${lnum}"
 					echo "Checking for duplicates in" $datafile ...
 					cp $datafile ${datafile}"_bkp"

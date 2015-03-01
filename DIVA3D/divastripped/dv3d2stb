@@ -12,8 +12,8 @@ acts=$6
 #
 mkdir -p ./output/3Danalysis/Before_stab
 #
-let lev1=10000+$bottm
-let lev2=10000+$surf
+let lev1=$((10000+$bottm))
+let lev2=$((10000+$surf))
 if [ "$actp" == "1" ]; then
 mv ./output/3Danalysis/$temp'.'$lev1'.'$lev2'.anl.nc' ./output/3Danalysis/Before_stab/.
 else
@@ -21,7 +21,7 @@ mv ./output/3Danalysis/$temp'.'$lev1'.'$lev2'.ref.nc' ./output/3Danalysis/Before
 dep=$bottm
 while [ $dep -le $surf ]
 do
-let level=10000+$dep
+let level=$((10000+$dep))
 cp -v './output/3Danalysis/Fields/'$temp'.'$level'.ref' './output/3Danalysis/Fields/'$temp'.'$level'.anl'
 cp -v './output/3Danalysis/Fields/'$temp'.'$level'.ref.error'  './output/3Danalysis/Fields/'$temp'.'$level'.error'
 dep=`expr $dep + 1`
@@ -34,7 +34,7 @@ mv ./output/3Danalysis/$psal'.'$lev1'.'$lev2'.ref.nc' ./output/3Danalysis/Before
 dep=$bottm
 while [ $dep -le $surf ]
 do
-let level=10000+$dep
+let level=$((10000+$dep))
 cp -v './output/3Danalysis/Fields/'$psal'.'$level'.ref' './output/3Danalysis/Fields/'$psal'.'$level'.anl'
 cp -v './output/3Danalysis/Fields/'$psal'.'$level'.ref.error'  './output/3Danalysis/Fields/'$psal'.'$level'.error'
 dep=`expr $dep + 1`

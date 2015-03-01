@@ -25,7 +25,7 @@ cd ./3DWORK
 ../../bin/gebprep.a
 cd ..
 mv ./input/modif_topo.gebco  ./input/topo.gebco
-let ln=$ln+1
+let ln=$(($ln+1))
 done
 } < $Fileinf
 #

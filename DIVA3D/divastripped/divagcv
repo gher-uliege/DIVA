@@ -45,7 +45,7 @@ echo ' ' | tee -a $divagcvlog
 echo divagcv:============================================= | tee -a $divagcvlog
 echo divagcv:Generalized Cross Validation  with value $gcv | tee -a $divagcvlog
 echo divagcv:============================================= | tee -a $divagcvlog
-let ijm=$ijm+1
+let ijm=$(($ijm+1))
 #head -17 ./input/param.par.ori > bidon
 #
 head -5 ./input/param.par.ori > bidon

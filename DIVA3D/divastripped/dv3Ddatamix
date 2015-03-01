@@ -15,7 +15,7 @@ fi
 # Start layers combination
 #################################
 #
-let nblay=$surf-$bottm
+let nblay=$(($surf-$bottm))
 if [ $nblay -gt 2 ]; then
  let ic=0
 else
@@ -26,38 +26,38 @@ dep=$bottm
 rm -f ./3DWORK/fort.44
 while [ $dep -le $surf ]
 do
-let level=10000+$dep
+let level=$((10000+$dep))
 let depm=0
 let depp=0
 if [ $ic -eq "0" ]; then
  if [ $dep == $bottm ];then 
-  let depm=$dep+1
-  let depp=$dep+2
+  let depm=$(($dep+1))
+  let depp=$(($dep+2))
  else
   if [ $dep == $surf ];then 
-   let depm=$dep-2
-   let depp=$dep-1
+   let depm=$(($dep-2))
+   let depp=$(($dep-1))
   else
-   let depm=$dep-1
-   let depp=$dep+1
+   let depm=$(($dep-1))
+   let depp=$(($dep+1))
   fi
  fi
 fi
 if [ $ic -eq "1" ]; then
  if [ $dep == $bottm ];then 
-  let depp=$dep+1
+  let depp=$(($dep+1))
  else
   if [ $dep == $surf ];then 
-   let depp=$dep-1
+   let depp=$(($dep-1))
   fi
  fi
 fi
 #
 if [ "$depm" -ne "0" ]; then
- let levelm=10000+$depm
+ let levelm=$((10000+$depm))
 fi
 if [ "$depp" -ne "0" ]; then
-let levelp=10000+$depp
+let levelp=$((10000+$depp))
 fi
 #===============================================================
 #

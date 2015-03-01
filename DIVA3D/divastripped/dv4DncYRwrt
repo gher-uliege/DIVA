@@ -30,11 +30,11 @@ while [ $ll -le $nblns ]
 do
 read filename
 echo $filename >> ./3DWORK/3Dncliste
-let ll=$ll+1
+let ll=$(($ll+1))
 done
 } < "$Fileinf"
 #
-let nbfls=$nbfls+$nblns
+let nbfls=$(($nbfls+$nblns))
 done
 IFS=$saveifs
 #
@@ -66,7 +66,7 @@ read comm2
 echo $comm2 >> ./3DWORK/3DNCinfo
 read comm3
 echo $comm3 >> ./3DWORK/3DNCinfo
-let ll=$ll+1
+let ll=$(($ll+1))
 done
 #
 } < "$Fileinf"

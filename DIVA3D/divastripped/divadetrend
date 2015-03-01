@@ -1,61 +1,61 @@
 #!/bin/bash
 if [ "$#" -le "0" ]
 then
-echo ????????????????????????????????????????
-echo usage: divadetrend ngroups [niterations]
-echo ????????????????????????????????????????
+echo "????????????????????????????????????????"
+echo "usage: divadetrend ngroups [niterations]"
+echo "????????????????????????????????????????"
 exit
 fi
 rm -f ./input/data.undetrend.dat
 rm -f ./ouput/rmsmisfit.dat
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-echo  Applying iterative detrending on classes
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+echo " Applying iterative detrending on classes"
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 
 divadetrendlog='./output/divadetrend.log'
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! > $divadetrendlog
-echo  Applying iterative detrending on classes >> $divadetrendlog
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> $divadetrendlog
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" > $divadetrendlog
+echo " Applying iterative detrending on classes" >> $divadetrendlog
+echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" >> $divadetrendlog
 
 if [ -f ./input/detrend.order ]
 then
-echo ========================================= >> $divadetrendlog
-echo  divadetrend will use order provided: >> $divadetrendlog
+echo "=========================================" >> $divadetrendlog
+echo " divadetrend will use order provided:" >> $divadetrendlog
 cat ./input/detrend.order >> $divadetrendlog
 cp ./input/detrend.order ./divawork/fort.56
 else
-echo ========================================= >> $divadetrendlog
-echo divadetrend will use default order 5 6 ... >> $divadetrendlog
-echo 5 6 7 8 9 10 11 12 13 > ./divawork/fort.56
+echo "=========================================" >> $divadetrendlog
+echo "divadetrend will use default order 5 6 ..." >> $divadetrendlog
+echo "5 6 7 8 9 10 11 12 13" > ./divawork/fort.56
 fi
-echo ========================================= >> $divadetrendlog
+echo "=========================================" >> $divadetrendlog
 
 
-echo divadetrend: ////////////////////////////////////////// >> ./output/diva.log
-echo divadetrend:                 divadatacoverage   >> ./output/diva.log
-echo divadetrend: ////////////////////////////////////////// >> ./output/diva.log
+echo "divadetrend: //////////////////////////////////////////" >> ./output/diva.log
+echo "divadetrend:                 divadatacoverage"   >> ./output/diva.log
+echo "divadetrend: //////////////////////////////////////////" >> ./output/diva.log
 echo ' '  >> ./output/diva.log
-divadatacoverage -n
+./divadatacoverage -n
     cat $diva3dlog ./output/divadatacovr.log > bidon
     mv bidon $diva3dlog
 
-echo divadetrend: ////////////////////////////////////////// >> ./output/diva.log
-echo divadetrend:                 divamesh   >> ./output/diva.log
-echo divadetrend: ////////////////////////////////////////// >> ./output/diva.log
+echo "divadetrend: //////////////////////////////////////////" >> ./output/diva.log
+echo "divadetrend:                 divamesh"   >> ./output/diva.log
+echo "divadetrend: //////////////////////////////////////////" >> ./output/diva.log
 echo ' '  >> ./output/diva.log
-divamesh
+./divamesh
     cat $diva3dlog ./output/divamesh.log > bidon
     mv bidon $diva3dlog
 
-echo divadetrend: ////////////////////////////////////////// >> ./output/diva.log
-echo divadetrend:                 dvdataclean   >> ./output/diva.log
-echo divadetrend: ////////////////////////////////////////// >> ./output/diva.log
+echo "divadetrend: //////////////////////////////////////////" >> ./output/diva.log
+echo "divadetrend:                 dvdataclean"   >> ./output/diva.log
+echo "divadetrend: //////////////////////////////////////////" >> ./output/diva.log
 echo ' '  >> ./output/diva.log
-dvdataclean
+./dvdataclean
     cat $diva3dlog ./output/dvdataclean.log > bidon
     mv bidon $diva3dlog
 
-echo need to modify param.par for iterations to desactivate error calculations >> $divadetrendlog
+echo "need to modify param.par for iterations to desactivate error calculations" >> $divadetrendlog
 cp -v ./input/param.par ./input/param.detrend.par
 head -17 ./input/param.detrend.par > bidon
 echo 1 >> bidon
@@ -71,7 +71,7 @@ mv bidon ./input/param.par
 nsteps=10
 if [ "$#" -gt "1" ]
 then
-let nsteps=$2+0
+let nsteps=$(($2+0))
 fi
 echo ============================================= >> $divadetrendlog
 echo Number of iterations to be performed: $nsteps >> $divadetrendlog
@@ -82,7 +82,7 @@ echo =============================================
 i=0
 while [ "$i" -le "$nsteps" ]
 do
-let i=$i+1
+let i=$(($i+1))
 echo Iteration $i >> $divadetrendlog
 if [ "$i" -gt "$nsteps" ]
 then
@@ -96,7 +96,7 @@ echo divadetrend: ////////////////////////////////////////// >> ./output/diva.lo
 echo divadetrend:                 divacalc   >> ./output/diva.log
 echo divadetrend: ////////////////////////////////////////// >> ./output/diva.log
 echo ' '  >> ./output/diva.log
-divacalc
+./divacalc
     cat $diva3dlog ./output/divacalc.log > bidon
     mv bidon $diva3dlog
 
@@ -157,7 +157,7 @@ jmloop=$(cat ./divawork/fort.56 | awk '{for(i=1;i<=NF;i++){if($i > max) max = $i
 echo Maximum index of group used for detrending $jmloop >> $divadetrendlog
 while [ "$jj" -lt "$jmloop" ]
 do
-let jj=$jj+1
+let jj=$(($jj+1))
 if [ "$i" -gt "1" ]
 then
 paste ./output/trends.$jj.dat ./output/trends.all.$jj.dat > bidon

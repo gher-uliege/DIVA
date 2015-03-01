@@ -91,9 +91,9 @@ echo Check execution track >> ../output/diva.log
 echo -------------------------------------------- >> ../output/diva.log
 fi
 #execute diva
-let NREA=$NREA+3*$NDATA
-let NREA=$NREA+$NDDLT
-let NINT=$NINT+$NDATA
+let NREA=$(($NREA+3*$NDATA))
+let NREA=$(($NREA+$NDDLT))
+let NINT=$(($NINT+$NDATA))
 echo $NINT $NREA | ../../bin/diva.a >> ../output/diva.log
 if [ $? -ne 0 ];then
 echo ' ' >> ../$dvcovariancesumlog
@@ -115,9 +115,9 @@ echo                diva.a  >> ../output/diva.log
 echo Check execution track >> ../output/diva.log
 echo -------------------------------------------- >> ../output/diva.log
 fi
-let NREA=$NREA-3*$NDATA
-let NREA=$NREA-$NDDLT
-let NINT=$NINT-$NDATA
+let NREA=$(($NREA-3*$NDATA))
+let NREA=$(($NREA-$NDDLT))
+let NINT=$(($NINT-$NDATA))
 echo dvcovariancesum: now saving sums >> ../output/diva.log
 cp fort.64 ../output/Pfsumum.dat
 cp fort.65 ../output/Csum.dat

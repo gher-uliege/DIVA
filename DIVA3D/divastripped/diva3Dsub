@@ -101,7 +101,7 @@ echo ' '  >> ./output/diva.log
     cat "$diva3dlog" './output/3Danalysis/'"$var"'_dvdatatransf.log' > bidon
     mv bidon "$diva3dlog"
 
-let gnup=100+$gnup
+let gnup=$((100+$gnup))
 echo 'dvdatatransf finished transforming data ' >> "$diva3dlog"
 #
 if [ -f ./input/dorefeinfo ];then
@@ -162,7 +162,7 @@ echo ' level  data_nbr' > './output/3Danalysis/'"$var"'.nbrdata'
 dep=$bottm
 while [ $dep -le $surf ]
 do
-let level=10000+$dep
+let level=$((10000+$dep))
 #
 echo 'ooooooooooooooooooooooooooooooooooo' >> "$diva3dlog"
 echo 'diva3Dsub: performing analysis for '"$var"'.'$level >> "$diva3dlog"

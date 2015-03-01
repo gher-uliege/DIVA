@@ -61,7 +61,7 @@ else
   then
   divagcv -r
   else
-  let nsamp=$ndata/20
+  let nsamp=$(($ndata/20))
   divacvrand $nsamp 2 -r
   fi
 fi

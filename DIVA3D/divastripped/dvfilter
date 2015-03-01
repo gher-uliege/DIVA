@@ -4,21 +4,21 @@ i=0
 nlay=$nlevel
 if [ "$#" == "2" ]
 then 
-let i=$1-1
+let i=$(($1-1))
 nlevel=$2
-let nlay=$nlevel-$i
+let nlay=$(($nlevel-$i))
 fi
 rm ./divawork/fort.20
 while [ "$i" -lt "$nlevel" ]
 do
-let i=$i+1
+let i=$(($i+1))
 echo level $i
-let level=10000+$i
+let level=$((10000+$i))
 cat ./output/gcv.dat.${level} >> ./divawork/fort.20
 done
 ntot=$(cat ./divawork/fort.20 | wc -l)
 ##let ncv=${ntot}/${nlevel}
-let ncv=${ntot}/${nlay}
+let ncv=$((${ntot}/${nlay}))
 echo Cross validation points $ncv
 cd divawork
 if [ -f ../../output/diva.log ] ; then
@@ -46,19 +46,19 @@ i=0
 lowest=0
 if [ "$#" == "2" ]
 then 
-let i=$1-1
-let lowest=$1-1
+let i=$(($1-1))
+let lowest=$(($1-1))
 fi
 mv -f ./output/SN.dat ./output/SN.dat.ori
 mv -f ./output/VAR.dat ./output/VAR.dat.ori
 while [ "$i" -lt "$nlevel" ]
 do
-let i=$i+1
+let i=$(($i+1))
 echo level $i
-let level=10000+$i
+let level=$((10000+$i))
 cp ./output/gcv.dat.${level} ./output/gcv.dat.${level}.ori
-let iii=$i-$lowest
-let jj=${iii}*${ncv}
+let iii=$(($i-$lowest))
+let jj=$((${iii}*${ncv}))
 head -$jj ./divawork/fort.21 | tail -$ncv > ./output/gcv.dat.${level}
 cp ./output/gcv.dat.${level} ./divawork/fort.11
 cd divawork

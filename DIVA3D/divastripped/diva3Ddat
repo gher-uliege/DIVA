@@ -62,7 +62,7 @@ dep=$bottm
 while [ $dep -le $surf ]
 do
 #
-let lev=10000+$dep
+let lev=$((10000+$dep))
 #
 errflag=0
 if [ -f ./input/divaparam/param.par."$var"'.'$lev ];then

@@ -84,7 +84,7 @@ else
 
 	zfound1=$(grep -i "pressure" ODVcolumns | wc -l)
 	zfound2=$(grep -i -e "press" -e "pres" ODVcolumns | wc -l)
-	let zfound=$zfound1+$zfound2
+	let zfound=$(($zfound1+$zfound2))
 	if [ "$zfound" -le "0" ]
 	then
 	:
@@ -115,9 +115,9 @@ fi
 	#echo Number of lines in the data file : wc -l "$inputfile"
 	datalines=$(wc -l "$inputfile" | awk '{print $1}')
 	headerlines=$(head -1000 "$inputfile" | grep -vi "history" | grep "//" | wc -l)
-	let userlines=$datalines-headerlines
-	let userlines=$userlines-1
-	let beginline=$headerlines+2 # sometimes +3
+	let userlines=$(($datalines-headerlines))
+	let userlines=$(($userlines-1))
+	let beginline=$(($headerlines+2)) # sometimes +3
 	echo data $datalines, header $headerlines, user $userlines, begin $beginline
 	fi
 

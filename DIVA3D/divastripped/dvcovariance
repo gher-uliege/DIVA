@@ -74,9 +74,9 @@ echo dvcovariance: Check execution track 			| tee -a $divalog $dvcovariancelog
 echo dvcovariance: -------------------------------------------- | tee -a $divalog $dvcovariancelog
 fi
 #execute diva
-let NREA=$NREA+3*$NDATA
-let NREA=$NREA+$NDDLT
-let NINT=$NINT+$NDATA
+let NREA=$(($NREA+3*$NDATA))
+let NREA=$(($NREA+$NDDLT))
+let NINT=$(($NINT+$NDATA))
 mkdir -p sub
 rm -f fort.61
 echo $ipipe > fort.59
@@ -118,9 +118,9 @@ echo dvcovariance: Check execution track			| tee -a $dvcovariancelog $divalog
 echo dvcovariance: -------------------------------------------- | tee -a $dvcovariancelog $divalog
 fi
 fi
-let NREA=$NREA-3*$NDATA
-let NREA=$NREA-$NDDLT
-let NINT=$NINT-$NDATA
+let NREA=$(($NREA-3*$NDATA))
+let NREA=$(($NREA-$NDDLT))
+let NINT=$(($NINT-$NDATA))
 cd ..
 cd ..
 echo dvcovariance: ==============================================  | tee -a $dvcovariancelog

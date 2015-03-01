@@ -108,7 +108,7 @@ echo 'Copying output file'
 cp -v ./output/ghertonetcdf/results.nc './output/ghertonetcdf/error_'${filesuffix[$iii]}$$'.nc'
 cp -v ./output/errorfieldgher.anl './output/error_'${filesuffix[$iii]}$$'.anl'
 
-let iii=${iii}+1
+let iii=$((${iii}+1))
 done
 
 echo ''

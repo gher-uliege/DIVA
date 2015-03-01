@@ -54,7 +54,7 @@ rm -f ./divawork/cvdatavar.dat
 i=0
 while [ "$i" -lt "$maxclass" ]
 do
-let i=$i+1
+let i=$(($i+1))
 echo Working on member $i
 awk -v colo="$colo" -v i="$i" '{if ($colo != i) {print $0}}' ./input/data.dat.oriclass > ./input/data.dat
 awk -v colo="$colo" -v i="$i" '{if ($colo ==i) {print $0}}' ./input/data.dat.oriclass > ./input/valatxy.coord

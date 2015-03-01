@@ -4,9 +4,9 @@ finesse=1
 imeth=0
 if [ "$1" == "full" ] 
 then
-echo ===============
-echo  A la ispec=-11
-echo ===============
+echo "==============="
+echo " A la ispec=-11"
+echo "==============="
 imeth=1
 #finesse=$(echo $finesse | awk '{print $1*2}')
 fi
@@ -61,7 +61,7 @@ NYP=$(echo $ny $dy $lc $finesse | awk '{print $1*$2/($3/$4)}')
 NP=$(echo $NXP $NYP  | awk '{print int($1*$2+1)}')
 
 NG=1
-let NG=$NG+$nx*$ny
+let NG=$(($NG+$nx*$ny))
 
 echo $NP compared to $NG with  grid $dx $dy $lc
 GAIN=$(echo $nx $ny $NP | awk '{print $1*$2/($3)}')

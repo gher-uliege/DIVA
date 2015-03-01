@@ -64,7 +64,7 @@ while [ $ll -le $nblns ]
 do
 read year
 year2=${year:4:4}
-let ll=$ll+1
+let ll=$(($ll+1))
 done
 } < $Fileinf
 
@@ -80,7 +80,7 @@ while [ $ll -le $nblns ]
 do
 read month
 month2=${month:2:2}
-let ll=$ll+1
+let ll=$(($ll+1))
 done
 } < $Fileinf
 #

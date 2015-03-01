@@ -61,8 +61,8 @@ echo "Trying to make data extraction on data file $inputfile"
 #wc -l $inputfile
 datalines=$(wc -l $inputfile | awk '{print $1}')
 headerlines=$(cat $inputfile | grep "//"  | wc -l)
-let userlines=$datalines-headerlines
-let userlines=$userlines-1
+let userlines=$(($datalines-headerlines))
+let userlines=$(($userlines-1))
 echo "data $datalines comments $headerlines user $userlines"
 # 
 echo "Trying to see if exclusion value is present"
@@ -97,7 +97,7 @@ if [ "$dcoordinate" == "Pressure" ]
 then
 zfound1=$(grep -i "pressure" ODVcolumns | wc -l)
 zfound2=$(grep -i -e "press" -e "pres" ODVcolumns | wc -l)
-let zfound=$zfound1+$zfound2
+let zfound=$(($zfound1+$zfound2))
 if [ "$zfound" -le "0" ]
 then
 echo "Sorry, no pressure coordinates found, will try depth"
@@ -184,7 +184,7 @@ depthcol=$(grep -vi -e " depth" -e "depth [a-z]" -e ".depth" ODVcolumns | grep -
 echo === DEPTH COORDINATE in column $depthcol
 fi
 
-let qccol=$datacol+1
+let qccol=$(($datacol+1))
 units=$(grep "$var" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $1}' | awk -F "[" '{print $2}' \
                                         | awk -F "]" '{print $1}' )
 echo "Data are in column" $datacol
@@ -289,8 +289,8 @@ awk -f "dvvinterpodv" ./input/contour.depth ${WORK}/"${var}".bigfile > ${WORK}/"
 lev="0"
 for layer in `cat input/contour.depth`
 do
-let lev=$lev+1
-let lnum=10000+$lev
+let lev=$(($lev+1))
+let lnum=$((10000+$lev))
 
 echo "Now split in layers" $lnum "and drop exclusion values"
 echo "Order now: x y val 1 year month day hour meta1 meta2"
@@ -305,19 +305,19 @@ for mmm in `cat monthlist`
 do
 echo Working on years $yyy and month $mmm
 
-let mm11=0+${mmm:0:1}
-let mm12=0+${mmm:1:1}
-let mm21=0+${mmm:2:1}
-let mm22=0+${mmm:3:1}
-let mm1=10*$mm11+$mm12
-let mm2=10*$mm21+$mm22
+let mm11=$((0+${mmm:0:1}))
+let mm12=$((0+${mmm:1:1}))
+let mm21=$((0+${mmm:2:1}))
+let mm22=$((0+${mmm:3:1}))
+let mm1=$((10*$mm11+$mm12))
+let mm2=$((10*$mm21+$mm22))
 year1=${yyy:0:4}
 year2=${yyy:4:4}
 
 if [ "$mm1" -gt "$mm2" ]
 then
 echo "winter season across new year"
-let mm2=$mm2+12
+let mm2=$(($mm2+12))
 echo "Virtual ending month" $mm2
 fi
 
