@@ -1,0 +1,79 @@
+#!/bin/bash
+
+#set -x # to debug
+export LC_ALL=C
+
+#-----------------------------------------------------------------------------------------------
+# Sylvain Watelet - 10/03/2015	
+# Weighting of extracted data according to delta_lon, delta_lat, delta_time via the product R.x
+# where x()=1
+#-----------------------------------------------------------------------------------------------
+
+saveifs=$IFS
+IFS=$'\n'
+
+#------------------------------------------------
+# Reading input param
+#------------------------------------------------
+
+filename="./input/param.par"
+{
+read
+read CL
+read
+read rcoordchange
+} < $filename
+
+filename="./input/radiusweighting.par"
+if [ -f $filename ]
+then
+{
+read
+read LS1 #=LS2
+read 
+read LS3
+} < $filename
+else
+echo "WARNING : no radiusweighting.par file in ./input !!! Weighting will use default values for charateristic length and time."
+sleep 0.1
+LS1=$(echo "CL/10." | bc -l)
+LS3=7 # assumed cruise period
+fi
+
+echo "Characteristic length is" $LS1 "(same units as data) and characteristic time is" $LS3 "days"
+
+#------------------------------------------------
+# Computation of weights
+#------------------------------------------------
+
+	for var in `cat varlist`
+	do
+		for year in `cat yearlist`
+		do
+			for month in `cat monthlist`
+			do
+				lev="0"
+				for layer in `cat input/contour.depth`
+				do
+					let lev=$(($lev+1))
+					let lnum=$((10000+$lev))
+					datafile="./input/divadata/"${var}".${year}.${month}.${lnum}"
+
+					echo "1) Backup and reading" $datafile ...
+					cp $datafile ${datafile}"_beforeweighting"
+					cp $datafile ./Datawork/fort.20
+					
+					echo $LS1 $rcoordchange $LS3 > ./Datawork/fort.10
+					
+					cd ./Datawork
+					../../../DIVA3D/bin/Rtimesx_weighting.a
+					echo "2) Writing new weights..."
+					cp fort.22 ../$datafile
+					echo "3) Done."
+					cd ..
+				done
+			done
+
+		done
+	done
+IFS=$saveifs

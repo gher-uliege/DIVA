@@ -133,7 +133,7 @@ maxlevel=$(cat ./input/contour.depth | wc -l)
 
 
 isextract=0
-if [ "$isextractf" == "1" ]
+if [ "$isextractf" == "1" ] || [ "$isextractf" == "2" ]
 then
 isextract=1
 rm -f pressure.coordinates
@@ -227,15 +227,15 @@ echo 'divadoall:' Trying to guess ODV format on $ODVDATA
 ./divaguessformsODV4 $ODVDATA
 
 ###############################################
-# Handling one depth or depth+speed  ##########
+# Handling no depth or depth+speed  ##########
 ###############################################
 
-onedepth=yes ### CHANGE this parameter (ex. : "no") if you want to disable the script "divanodepthODV4" ###
-if [ $onedepth == yes ] && [ $isextractf == 1 ]
+nodepth=yes ### CHANGE this parameter (ex. : "no") if you want to disable the script "divanodepthODV4" ###
+if [ $nodepth == yes ] && ([ $isextractf == "1" ] || [ $isextractf == "2" ])
 then
 ./divanodepthODV4 $ODVDATA
 else
-echo "no handling of one depth (or depth+speed) files !"
+echo "no handling of no depth (or depth+speed) files !"
 fi
 
 done < datasource
@@ -284,7 +284,7 @@ echo 'divadoall:' '=============================================================
 fi
 
 #####################################
-# Handling of duplicates data files #
+# Handling of duplicates data       #
 #####################################
 check_duplicates=yes ### CHANGE this parameter (ex. : "no") if you want to disable the script "divaduplicatesODV4" ###
 
@@ -294,6 +294,25 @@ then
 fi
 
 #####################################
+
+#------------------------------------------------
+# Weighting of extracted data according to 
+# delta_lon, delta_lat, delta_time via the 
+# product R.x where x()=1
+#------------------------------------------------
+
+if [ $isextractf == "2" ]
+then
+echo '==========================================='
+echo '==== divadoall: Starting data weighting ==='
+echo '==========================================='
+./divaweighting
+echo '==========================================='
+echo '==== divadoall: End of data weighting ====='
+echo '==========================================='
+fi
+
+#------------------------------------------------
 
 echo 'divadoall:' 
 echo 'divadoall:' '================================================================='

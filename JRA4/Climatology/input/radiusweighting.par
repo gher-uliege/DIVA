@@ -1,0 +1,4 @@
+# characteristic length of weighting (same units as data) [not too low, otherwise memory problems can occur]
+0.01
+# characteristic time of weighting (days)
+2
