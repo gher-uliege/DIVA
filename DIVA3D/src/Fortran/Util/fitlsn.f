@@ -17,6 +17,7 @@ C
 C Testing if 4 columns are there
         iread=4
          read(10,*,end=123,err=123) xxx,yyy,zzz,www
+         write(6,*) 'Four data columns present'
          goto 124
  123    continue
         write(6,*) 'No weigth present will use ones'
@@ -447,7 +448,7 @@ C        write(6,*) 'RL??',RLtest,VARtest,err,errmin
         real*8 w2(n),w3(n),ww3
         real*8 bessk1
 
-        write(6,*) 'forfit .... ',RL,dx,n!,var
+C        write(6,*) 'forfit .... ',RL,dx,n!,var
 
         err=0
         errb=0
