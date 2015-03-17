@@ -80,6 +80,7 @@ C Testing if 4 columns are there
         RL=RL/6400*180/3.14
         endif
 
+C                write(6,*) 'RL,SN,VARBAK',RL,SN
         write(6,*) 'RL,SN,VARBAK',RL,SN,VARBAK
         if (icoord.eq.1) then
         write(66,*) 'Correlation length (in degrees latitude)'
@@ -125,7 +126,7 @@ C Testing if 4 columns are there
         enddo
         return
         end
-        
+
         subroutine lfit(x,y,d,iww,n,rl,sn,varbak,work
 C23456
      &    ,w2,w3,iw,icoord,rcoord,nsamp,rqual)
@@ -406,6 +407,7 @@ C         VARTEST=Variance*jj/200.
         RL=RLz
         VAR=0.01*Variance
         SN=VAR/(Variance-VAR+1.E-10)
+        VARBAK=0.99*Variance
         iwr=2
 
 
@@ -441,6 +443,7 @@ C        write(6,*) 'RL??',RLtest,VARtest,err,errmin
         if (VAR.GT.0.9999*Variance) then
         VAR=Variance
         SN=10000
+        varbak=var
                              else
         SN=VAR/(Variance-VAR+1.E-10)
         endif
@@ -451,6 +454,7 @@ C        write(6,*) 'RL??',RLtest,VARtest,err,errmin
         iwr=1
         call forfit(x0,dx,work(nstart),w2(nstart),np,RL,VAR,err,iwr,
      &    w3(nstart))
+        varbak=VAR
         return
         end
         
@@ -459,10 +463,13 @@ C        write(6,*) 'RL??',RLtest,VARtest,err,errmin
         real*8 w2(n),w3(n),ww3
         real*8 bessk1
 
-C        write(6,*) 'forfit .... ',RL,dx,n!,var
+        write(6,*) 'forfit .... ',RL,dx,n,iwr!,var
 
         err=0
         errb=0
+        
+        if(iwr.lt.2) then
+
         do i=1,n
         eps=(x0+(i-1)*dx)/RL
         errb=errb+eps*bessk1(eps)*w3(i)
@@ -471,7 +478,7 @@ C        write(6,*) 'forfit .... ',RL,dx,n!,var
         enddo
 C        write(6,*) 'TestVAR',err/errb
 
-        if(iwr.lt.2) then
+
         VAR=err/errb
 c       
         endif
@@ -488,11 +495,12 @@ c
         write(98,147) eps*RL,c(i),var*eps*bessk1(eps),w3(i)
         endif
         enddo
-c        write(6,*) 'during fitting',err,RL,VAR,n
+        write(6,*) 'during fitting',err,RL,VAR,n
         
-C       
+C
  147    format(4(E16.7))
         err=err/ww3
+        write(6,*) err,ww3
         return
         end
         
