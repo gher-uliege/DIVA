@@ -2,13 +2,32 @@
         parameter(nm=5000000)
         
         real*8 x(nm),y(nm),d(nm),work(nm)
+        real*8 iww(nm)
+        integer iflagw
         real*8 w2(nm),w3(nm)
         real*8 iw(nm),dmin,dmax,rqual
         write(6,*) ' Into fitting '
-        
+
         icoord=0
         ireg=0
-        
+C2015JMB 
+C       Put zero to go back to non weighted fittign
+        iflagw=1
+C
+C Testing if 4 columns are there
+        iread=4
+         read(10,*,end=123,err=123) xxx,yyy,zzz,www
+         goto 124
+ 123    continue
+        write(6,*) 'No weigth present will use ones'
+        iread=3
+ 124    continue
+        rewind(10)
+        if (iflagw.eq.0) iread=3
+
+
+
+
         nsamp=0
         read(5,*,end=888,err=888) nsamp
         write(6,*) 'Will try to use', nsamp*(nsamp-1)/2, ' couples'
@@ -28,7 +47,13 @@
         dmin=10D30
         dmax=-dmin
  1      continue
+        if (iread.eq.4) then
+        read(10,*,end=99) x(n+1),y(n+1),d(n+1),iww(n+1)
+                        else
         read(10,*,end=99) x(n+1),y(n+1),d(n+1)
+        iww(n+1)=1
+        endif
+
         dmin=min(dmin,d(n+1))
         dmax=max(dmax,d(n+1))
         n=n+1
@@ -47,7 +72,8 @@
         write(6,*) 'Linear regression '
         call linreg(x,y,d,n)
         endif
-        call lfit(x,y,d,n,rl,sn,varbak,work,w2,w3,iw,icoord,rcoord
+        call lfit(x,y,d,iww,
+     &  n,rl,sn,varbak,work,w2,w3,iw,icoord,rcoord
      & ,nsamp,rqual)
         if(icoord.eq.1) then
         RL=RL/6400*180/3.14
@@ -99,11 +125,11 @@
         return
         end
         
-        subroutine lfit(x,y,d,n,rl,sn,varbak,work
+        subroutine lfit(x,y,d,iww,n,rl,sn,varbak,work
 C23456
      &    ,w2,w3,iw,icoord,rcoord,nsamp,rqual)
 c
-        real*8 x(n),y(n),d(n)
+        real*8 x(n),y(n),d(n),iww(n)
         real*8 work(n),maxdist
         real*8 w2(n),w3(n)
         real*8 variance,datavar
@@ -270,8 +296,11 @@ C         write(6,*) '??',i,j
          endif
          nb=dist/ddist+1
          work(nb)=work(nb)+(d(i)-datamean)*(d(j)-datamean)
+     & *iww(i)*iww(j)
          w2(nb)=w2(nb)+((d(i)-datamean)*(d(j)-datamean))**2
+     & *iww(i)*iww(j)
          iw(nb)=iw(nb)+1
+     & *iww(i)*iww(j)
          enddo                             
         enddo           
                    else
@@ -281,8 +310,11 @@ C         write(6,*) '??',i,j
         j=jcouples(iiii)
         nb=dist/ddist+1
          work(nb)=work(nb)+(d(i)-datamean)*(d(j)-datamean)
+     & *iww(i)*iww(j)
          w2(nb)=w2(nb)+((d(i)-datamean)*(d(j)-datamean))**2
+     & *iww(i)*iww(j)
          iw(nb)=iw(nb)+1
+     & *iww(i)*iww(j)
         
         enddo
         endif
