@@ -402,6 +402,71 @@ echo ' '
 else
 ########################################### ANALYSIS with reference: start
 #
+cp ./input/param.par ./input/param.par.anawithref
+#
+Fileinf='./input/param.par'
+{
+read comment1
+read param1
+read comment2
+read param2
+read comment3
+read param3
+read comment4
+read param4
+read comment5
+read param5
+read comment6
+read param6
+read comment7
+read param7
+read comment8
+read param8
+read comment9
+read param9
+read comment10
+read param10
+read comment11
+read param11
+read comment12
+read param12
+read comment13
+read param13
+} < $Fileinf
+
+if [ "$param4" != "0" ]
+then
+echo "WARNING : IREG param is set to $param4 BUT the analysis with reference field request 0 => IREG is forced to 0 !"
+#
+echo $comment1 > ./input/param.par
+echo $param1 >> ./input/param.par
+echo $comment2 >> ./input/param.par
+echo $param2 >> ./input/param.par
+echo $comment3 >> ./input/param.par
+echo $param3 >> ./input/param.par
+echo $comment4 >> ./input/param.par
+echo 0 >> ./input/param.par
+echo $comment5 >> ./input/param.par
+echo $param5 >> ./input/param.par
+echo $comment6 >> ./input/param.par
+echo $param6 >> ./input/param.par
+echo $comment7 >> ./input/param.par
+echo $param7 >> ./input/param.par
+echo $comment8 >> ./input/param.par
+echo $param8 >> ./input/param.par
+echo $comment9 >> ./input/param.par
+echo $param9 >> ./input/param.par
+echo $comment10 >> ./input/param.par
+echo $param10 >> ./input/param.par
+echo $comment11 >> ./input/param.par
+echo $param11 >> ./input/param.par
+echo $comment12 >> ./input/param.par
+echo $param12 >> ./input/param.par
+echo $comment13 >> ./input/param.par
+echo $param13 >> ./input/param.par
+#
+fi
+
  echo '>>>>>>>>>>>>  making anomalies for '"$var"'.'$lev >> $dv3Drefoanllog
 
 echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
@@ -460,7 +525,7 @@ echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.lo
 echo dv3Drefoanl:                 divacalc   >> ./output/diva.log
 echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
 echo ' '  >> ./output/diva.log
-divacalc
+./divacalc
     cat $dv3Drefoanllog ./output/divacalc.log > bidon
     mv bidon $dv3Drefoanllog
 
@@ -484,6 +549,7 @@ echo ' '
 echo '%%%%%%%%%%%% Finished  analysis for '"$var"'.'$lev
 echo '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 echo ' '
+mv ./input/param.par.anawithref ./input/param.par
 #
 ########################################### ANALYSIS with reference: end
 fi
