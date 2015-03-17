@@ -357,11 +357,11 @@ c        w3(nn)=exp(-(nn-10)**2/100))
         work(nn)=workf
         enddo
         enddo
-        
+        ncross=5
         do nn=1,nbmax
         nnp=min(nbmax,nn+1)
 C if not working force simple use of variance
-        ncross=5
+        
 C
         write(99,147) (nn-1)*ddist,work(nn),iw(nn),2*w2(nn)/
      &    sqrt((max(iw(nn),1.D0))),w3(nn)
@@ -374,6 +374,7 @@ C
         ifo=1
         ncross=nn
         endif
+
         enddo   
         
         write(55,*) 'set xrange[',0,':',1.2*rlz,']'
