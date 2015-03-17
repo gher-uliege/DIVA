@@ -14,7 +14,7 @@
         write(6,*) 'Will try to use', nsamp*(nsamp-1)/2, ' couples'
  888    continue
         
-        
+
         read(11,*,end=11,err=11) rcoord
         read(11,*,end=11,err=11) ireg
         if (rcoord.lt.0) icoord=-1
@@ -52,7 +52,7 @@
         if(icoord.eq.1) then
         RL=RL/6400*180/3.14
         endif
-        
+
         write(6,*) 'RL,SN,VARBAK',RL,SN,VARBAK
         if (icoord.eq.1) then
         write(66,*) 'Correlation length (in degrees latitude)'
@@ -351,9 +351,9 @@ C Then extrapolate to zero to get S/N ratio
         
         do jj=1,1
          do ii=1,1000
+	 VARtest=variance ! 17/03/2015
          RLtest=RLz/10+(ii-1)*RLz/500.
 C         VARTEST=Variance*jj/200.
-        
         
         if (np.lt.10) then
         write(6,*) '!!!!!!!!!!!!!!!!!!'
@@ -364,6 +364,7 @@ C         VARTEST=Variance*jj/200.
         VAR=0.01*Variance
         SN=VAR/(Variance-VAR+1.E-10)
         iwr=1
+
 
 !! mo patch
         if(np.eq.0) then
@@ -391,7 +392,7 @@ C        write(6,*) 'RL??',RLtest,VARtest,err,errmin
         
         enddo
         enddo
-        
+
         write(6,*) 'Best fit:',RL,VAR
         if (VAR.GT.0.9999*Variance) then
         VAR=Variance
@@ -406,7 +407,6 @@ C        write(6,*) 'RL??',RLtest,VARtest,err,errmin
         iwr=1
         call forfit(x0,dx,work(nstart),w2(nstart),np,RL,VAR,err,iwr,
      &    w3(nstart))
-        
         return
         end
         
@@ -415,7 +415,7 @@ C        write(6,*) 'RL??',RLtest,VARtest,err,errmin
         real*8 w2(n),w3(n),ww3
         real*8 bessk1
 
-        write(6,*) 'forfit .... ',RL,dx,n,var
+        write(6,*) 'forfit .... ',RL,dx,n!,var
 
         err=0
         errb=0
