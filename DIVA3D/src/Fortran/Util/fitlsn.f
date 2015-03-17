@@ -144,6 +144,8 @@ c
         real*4 distcouples(nop*nop/2)
         integer*4 icouples(nop*nop/2)
         integer*4 jcouples(nop*nop/2)
+        
+        rqual=0
        if(nsamp.ne.0) then
        write(6,*) 'will generate random couples'
        if (nsamp.gt.n) then
