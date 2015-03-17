@@ -147,8 +147,8 @@ c
        write(6,*) 'will generate random couples'
        if (nsamp.gt.n) then
        write(6,*) 'Strange to ask for more samples than available'
-       write(6,*) 'from data; will proceed' 
-      
+       write(6,*) 'from data; will proceed'
+
        endif
        if (nsamp.gt.nop) then
        write(6,*) 'too many asked, will only make',nop*(nop-1)/2
@@ -162,16 +162,21 @@ c
         meandist=0
         datamean=0
         datavar=0
+        dist=0
         rjjj=0
         if (n.gt.10000.and.nsamp.ne.0) then
         write(6,*) 'Be patient big data set: ',n
         endif
+        rn=0
         do i=1,n
         datamean=datamean+d(i)
+     & *iww(i)
         datavar=datavar+d(i)*d(i)
+     & *iww(i)
+        rn=rn+iww(i)
         enddo
-        datamean=datamean/n 
-        rn=n
+        datamean=datamean/rn
+C        rn=n
         variance=datavar/rn - datamean**2
         write(6,*) 'Number of data points : ', n
         write(6,*) 'data mean', datamean
@@ -180,9 +185,11 @@ c
         if(nsamp.eq.0) then
         iiii=0
         do i=1,n
+
         nww=max((n/10),1)
         if(mod(i,nww).eq.0) write(6,*) i,' out of', n
         do j=i+1,n
+        dist=0
          if(icoord.eq.0.or.icoord.eq.1) then
          dist=(x(i)-x(j))**2+(y(i)-y(j))**2
          dist=sqrt(dist)
@@ -194,7 +201,7 @@ c
          dist=rcoord*rcoord*(x(i)-x(j))**2+(y(i)-y(j))**2
          dist=sqrt(dist)
          endif
-         if(n.le.nop) then         
+         if(n.le.nop) then
          iiii=iiii+1
          distcouples(iiii)=dist
          icouples(iiii)=i
@@ -246,7 +253,7 @@ C         write(6,*) '??',i,j
         write(6,*) 'Number of data couples considered',rjjj
         meandist=meandist/rjjj
 
-        
+
                 
         write(6,*) 'maximum distance between points: ',maxdist
         
@@ -352,6 +359,9 @@ c        w3(nn)=exp(-(nn-10)**2/100))
         
         do nn=1,nbmax
         nnp=min(nbmax,nn+1)
+C if not working force simple use of variance
+        ncross=5
+C
         write(99,147) (nn-1)*ddist,work(nn),iw(nn),2*w2(nn)/
      &    sqrt((max(iw(nn),1.D0))),w3(nn)
  147    format(5(E14.6))
@@ -387,7 +397,7 @@ C Then extrapolate to zero to get S/N ratio
 	 VARtest=variance ! 17/03/2015
          RLtest=RLz/10+(ii-1)*RLz/500.
 C         VARTEST=Variance*jj/200.
-        
+
         if (np.lt.10) then
         write(6,*) '!!!!!!!!!!!!!!!!!!'
         write(6,*) '?? too few data ??'
@@ -396,11 +406,12 @@ C         VARTEST=Variance*jj/200.
         RL=RLz
         VAR=0.01*Variance
         SN=VAR/(Variance-VAR+1.E-10)
-        iwr=1
+        iwr=2
 
 
 !! mo patch
         if(np.eq.0) then
+        iwr=2
         call forfit(x0,dx,work(nstart),w2(nstart),1,RL,VAR,err,iwr,
      &    w3(nstart))
         return
@@ -459,8 +470,11 @@ C        write(6,*) 'forfit .... ',RL,dx,n!,var
         
         enddo
 C        write(6,*) 'TestVAR',err/errb
+
+        if(iwr.lt.2) then
         VAR=err/errb
 c       
+        endif
         
         err=0
         errb=0
@@ -470,7 +484,7 @@ c
         errb=c(i)-var*eps*bessk1(eps)
         err=err+errb*errb*w3(i)
         ww3=ww3+w3(i)
-        if (iwr.eq.1) then
+        if (iwr.ge.1) then
         write(98,147) eps*RL,c(i),var*eps*bessk1(eps),w3(i)
         endif
         enddo
