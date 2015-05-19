@@ -13,7 +13,14 @@ cp -v '../output/3Danalysis/'"$var"'.3DNCliste' './3Dncliste'
 cp -v '../output/3Danalysis/'"$var"'.3DNCinfo' './3DNCinfo'
 #
 rm -f sextantcatalog_id
+system=`uname`
+if [ "$system" != "Linux" ]
+then
+uuidgen > sextantcatalog_id
+else
 uuidgen -r > sextantcatalog_id
+fi
+
 if [ -f fort.44 ];then
 rm fort.44
 fi
