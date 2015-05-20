@@ -70,7 +70,7 @@ echo                gebco2diva.a  >> ../output/diva.log
 echo Check execution track >> ../output/diva.log
 echo -------------------------------------------- >> ../output/diva.log
 fi
- cp -f ../output/diva.log ../output/.
+# cp -f ../output/diva.log ../output/.
 cd ..
 mv ./divawork/fort.12 ./output/topo.grd
 mv ./divawork/fort.20 ./output/TopoInfo.dat

@@ -77,6 +77,14 @@ C      rewind(10)
       write(6,*) ' Probably 1 minute grid, rounding'
       dy=1./60.
       endif
+      if(abs(dx-1./120.).LT.(1./12000.)) then
+      write(6,*) 'Probably 30 seconds grid, rounding'
+      dx=1./120.
+      endif
+      if(abs(dy-1./120.).LT.(1./12000.)) then
+      write(6,*) ' Probably 30 seconds grid, rounding'
+      dy=1./120.
+      endif
       jjjjj=0
       
  10   continue
@@ -98,9 +106,17 @@ c      write(6,*),x,y,i,j,jjjjj,imax,jmax
       ir=(i-1)/ired+1
       jr=(j-1)/jred+1
       jmred=jmax/jred
+c      write(0,*) imred,jmred,ired,jred,ir,jr,jjjjj
+c       write(0,*) i,ired,ir,imred
+c       write(0,*) j,jred,jr,jmred
+c       write(0,*) dx,dy,ired,jred
+c       write(0,*) dx*ired, dy*jred, x0, (ired-1)*dx
+c      call sleep(1)
       if(ir.gt.imred) goto 10
       if(jr.gt.jmred) goto 10
       c(ir+(jr-1)*imred)=topo
+c      write(0,*) ir, jr, topo
+c      call sleep(1)
       goto 10
  999  continue
       xs=0
@@ -109,6 +125,65 @@ c      write(6,*),x,y,i,j,jjjjj,imax,jmax
       xs=(ired-1)*dx
       ys=0
       endif
+      
+ccc	More precise dx and dy - S. Watelet - 19/05/2015
+
+      dx_old=dx
+      dy_old=dy
+
+      If ((dx/=1/60.).and.(dx/=1/120.)) then
+      	rewind(10)
+	If (iorder==1) then
+		read(10,*,end=1000,err=1000) x1,y1,topo
+		Do i=2,imax-1
+		read(10,*,end=1000,err=1000) x,y,topo
+		Enddo
+		read(10,*,end=1000,err=1000) x2,y2,topo
+		dx=abs(x2-x1)/real(imax)
+	elseif (iorder==2) then
+		read(10,*,end=1000,err=1000) x1,y1,topo
+		Do i=2,isgebco-1
+		read(10,*,end=1000,err=1000) x,y,topo
+		Enddo
+		read(10,*,end=1000,err=1000) x2,y2,topo
+		dx=abs(x2-x1)/real(imax)
+	Endif
+      Endif 
+
+ 1000 continue
+
+      If ((dy/=1/60.).and.(dy/=1/120.)) then
+	rewind(10)
+	If (iorder==2) then
+		read(10,*,end=1001,err=1001) x1,y1,topo
+		Do i=2,jmax-1
+		read(10,*,end=1001,err=1001) x,y,topo
+		Enddo
+		read(10,*,end=1001,err=1001) x2,y2,topo
+		dy=abs(y2-y1)/real(jmax)
+	elseif (iorder==1) then
+		read(10,*,end=1001,err=1001) x1,y1,topo
+		Do i=2,isgebco-1
+		read(10,*,end=1001,err=1001) x,y,topo
+		Enddo
+		read(10,*,end=1001,err=1001) x2,y2,topo
+		dy=abs(y2-y1)/real(jmax)
+	Endif
+      Endif 
+
+ 1001 continue
+
+	If ((abs(dx-dx_old)>(dx_old/10.)).or.
+     &(abs(dy-dy_old)>(dy_old/10.))) then
+	write(0,*) "WARNING : problem in gebco2diva.f, contact GHER !"
+	write(0,*) "dx_old=",dx_old,"dy_old=",dy_old
+	write(0,*) "dx=",dx,"dy=",dy
+	Endif
+
+	write(6,*) "more precise dx=",dx,"more precise dy=",dy
+
+ccc
+
       write(20,*) x0+xs
       write(20,*) y0+ys
       write(20,*) dx*ired
