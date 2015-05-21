@@ -142,7 +142,53 @@ for var in `cat varlist`
 do
 echo "Working on parameter" "$var"
 #head ODVcolumns
-datacol=$(grep -w "$var" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
+#datacol=$(grep -w "$var" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
+
+#------------------------------------------------
+# Exact detection of datacol + units
+# Sylvain Watelet - 21/05/2015
+#------------------------------------------------
+
+grep -w "$var" ODVcolumns > ODVcolumnscandidates
+cat ODVcolumnscandidates | awk -F "[" '{print $1}' | awk -F "\t" '{print $1}' | sed 's/ *$//g' > tmp1
+cat ODVcolumnscandidates | awk -F "\t" '{print $3}' > tmp3
+
+i=1
+while read line
+do
+if [ "$line" == "$var" ]
+then
+line_tmp3=$i
+fi
+let i=$(($i+1))
+done < tmp1
+
+i=1
+while read line
+do
+if [ "$i" == "$line_tmp3" ]
+then
+units=$(echo $line | awk -F "[" '{print $2}' | awk -F "]" '{print $1}')
+fi
+let i=$(($i+1))
+done < ODVcolumnscandidates
+
+i=1
+while read line
+do
+if [ "$i" == "$line_tmp3" ]
+then
+datacol=$line
+fi
+let i=$(($i+1))
+done < tmp3
+
+rm ODVcolumnscandidates
+rm tmp1
+rm tmp3
+
+#------------------------------------------------
+
 cruisecol=$(grep "Cruise" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 stationcol=$(grep "Station" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 loncol=$(grep -i "Longitude" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
@@ -185,8 +231,8 @@ echo === DEPTH COORDINATE in column $depthcol
 fi
 
 let qccol=$(($datacol+1))
-units=$(grep "$var" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $1}' | awk -F "[" '{print $2}' \
-                                        | awk -F "]" '{print $1}' )
+#units=$(grep "$var" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $1}' | awk -F "[" '{print $2}' \
+#                                        | awk -F "]" '{print $1}' )
 echo "Data are in column" $datacol
 echo "Corresponding quality flags are in column" $qccol
 echo "Units are" $units
