@@ -66,9 +66,13 @@ echo "Characteristic length is" $LS1 "(same units as data) and characteristic ti
 					echo $LS1 $rcoordchange $LS3 > ./Datawork/fort.10
 					
 					cd ./Datawork
+					rm -f fort.22
 					../../../DIVA3D/bin/Rtimesx_weighting.a
 					echo "2) Writing new weights..."
+					if [ -f fort.22 ]
+					then
 					cp fort.22 ../$datafile
+					fi
 					echo "3) Done."
 					cd ..
 				done
