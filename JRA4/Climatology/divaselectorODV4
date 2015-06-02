@@ -115,7 +115,7 @@ fi
 if [ "$dcoordinate" == "Depth" ]
 then
 #zfound=$(grep -i "depth" ODVcolumns | wc -l)
-zfound=$(grep -vi -e " depth" -e "depth [a-z]" -e ".depth" ODVcolumns | grep -i "depth" | wc -l)
+zfound=$(grep -vi -e " depth" -e "depth [a-z]" -e ".depth" ODVcolumns | grep -iw "depth" | wc -l)
 if [ "$zfound" -lt "1" ]
 then
 echo "Sorry, no depth coordinates found, will try pressure"
@@ -225,7 +225,7 @@ then
 depthcol=$(grep -i -e "pressure" -e "press" -e "pres" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 echo === PRESSURE COORDINATE in column $depthcol
 else
-depthcol=$(grep -vi -e " depth" -e "depth [a-z]" -e ".depth" ODVcolumns | grep -i "depth" | awk -F "$delimiter" '{print $3}')
+depthcol=$(grep -vi -e " depth" -e "depth [a-z]" -e ".depth" ODVcolumns | grep -wi "depth" | awk -F "$delimiter" '{print $3}')
 #depthcol=$(grep -i "Depth" ODVcolumns | head -2 | tail -1 |  awk -F "$delimiter" '{print $3}')
 echo === DEPTH COORDINATE in column $depthcol
 fi
