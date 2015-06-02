@@ -17,12 +17,19 @@ IFS=$'\n'
 #------------------------------------------------
 
 filename="./input/param.par"
+if [ -f $filename ]
+then
 {
 read
 read CL
 read
 read rcoordchange
 } < $filename
+else
+echo "divaweighting : ERROR : NO param.par in input/ !!! The weighting is NOT performed."
+sleep 10
+exit
+fi
 
 filename="./input/radiusweighting.par"
 if [ -f $filename ]
