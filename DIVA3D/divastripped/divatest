@@ -89,6 +89,7 @@ then
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 echo !!! PLEASE INSTALL GAWK !!!!!!!!!!!!
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+sleep 1
 else
 echo gawk is present
 fi
@@ -122,8 +123,26 @@ echo
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 echo !!! PLEASE INSTALL DOS2UNIX !!!!!!!!!!!!!!!!
 echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+sleep 1
 fi
 rm -f testdos2unix.txt
 rm -f testdos2unixbis.txt
 echo
+
+echo "Now checking if bc is present..."
+test=$(echo '1+1' | bc -l)
+if [ "$test" == "2" ]
+then
+echo "...bc is present."
+else
+echo "...bc is absent !"
+echo
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+echo !!! PLEASE INSTALL BC !!!!!!!!!!!!!!!!
+echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+sleep 1
+fi
+
+
+
 
