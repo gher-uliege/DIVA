@@ -212,7 +212,7 @@ C  INPUT/OUTPUT FILES : OPEN statement
       open(unit=87,file='fort.87',form='unformatted')
 
       write(6,920)
- 920  format(72('&'),/,20x,'D.I.V.A. - 4.6.6 - Execution track ...',
+ 920  format(72('&'),/,20x,'D.I.V.A. - 4.6.10 - Execution track ...',
      &       /,72('&'),/)
 C
 C  INPUT OF MODULES (ipr is an indicator of the amount of data
@@ -347,7 +347,7 @@ C#endif
       write(6,*)' PRIOR ESTIMATE OF INTEGER USED: ',NINTDIVA
       write(6,*)' PRIOR ESTIMATE OF REAL    USED: ',NREADIVA
       write(6,910)
- 910  format(/,72('&'),/,20x,'D.I.V.A. - 4.6.6 - Execution Completed ! '
+ 910  format(/,72('&'),/,20x,'D.I.V.A. - 4.6.10 - Execution Completed !'
      &       ,/,72('&'))
 
       close(10)
