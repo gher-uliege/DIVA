@@ -55,9 +55,13 @@ echo ' '  >> ./output/diva.log
     cat $diva3dlog ./output/dvdataclean.log > bidon
     mv bidon $diva3dlog
 
-echo "need to modify param.par for iterations to desactivate error calculations" >> $divadetrendlog
+echo "need to modify param.par for iterations to deactivate error calculations" >> $divadetrendlog
 cp -v ./input/param.par ./input/param.detrend.par
-head -17 ./input/param.detrend.par > bidon
+#head -17 ./input/param.detrend.par > bidon
+head -5 ./input/param.detrend.par > bidon
+echo 0 >> bidon # to deactivate also clever and exact error (varbak = 0 is not enough)
+head -17 ./input/param.detrend.par | tail -11 >> bidon
+#
 echo 1 >> bidon
 echo   >> bidon
 echo 1 >> bidon
@@ -154,7 +158,7 @@ jj="0"
 # in fact try over all columns up to the maximum defined in detrend.order....
 # now in fort.56 which can be exploited
 jmloop=$(cat ./divawork/fort.56 | awk '{for(i=1;i<=NF;i++){if($i > max) max = $i;}}END{print max-4}')
-echo Maximum index of group used for detrending $jmloop >> $divadetrendlog
+echo "Maximum index of group used for detrending $jmloop" >> $divadetrendlog
 while [ "$jj" -lt "$jmloop" ]
 do
 let jj=$(($jj+1))

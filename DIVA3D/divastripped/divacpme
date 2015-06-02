@@ -101,7 +101,7 @@ echo $snr >> ./input/param.par
 echo $linecomment13 >> ./input/param.par
 echo $varbak >> ./input/param.par
 
-divacalc
+./divacalc
 
 
 
