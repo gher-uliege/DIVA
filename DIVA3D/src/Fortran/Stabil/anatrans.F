@@ -22,6 +22,7 @@
       CHARACTER (len=99)         :: EXECIN,INVERFILE
       CHARACTER (len=99)         :: VARFILEIN,VARFILEOU,VARFILE
       CHARACTER (len=99)         :: VARFILENCD,VARFILEASC,VARFILEBIN
+      CHARACTER (len=99)	 :: VARFILEASC2
       CHARACTER (len=99)         :: var_name
 !
       LOGICAL                          :: exist
@@ -37,6 +38,7 @@
       READ(2,*)isanalysis
       READ(2,*)itrans
       READ(2,*) nblines
+      read(2,*) VARFILEASC2
       CLOSE(2)
 !--------------------------------------------------------------
 !
@@ -188,17 +190,31 @@
         WRITE(*,*) 'did not find ',TRIM(divafile)
         STOP
       ENDIF
-!
-        if(isanalysis == 2) then
 
-        WRITE(datafile,
-     &'("../output/3Danalysis/Fields/",a)')TRIM(VARFILEASC)
-!
+!------------------------------------------------
+! S.Watelet 15/06/2015 - inverse transf of 
+! $var.$lev.fieldatdatapoint.anl files
+!------------------------------------------------
+
+	if (isanalysis == 1) then
+
+	WRITE(datafile,
+     &'("../output/3Danalysis/Fields/",a)')TRIM(VARFILEASC2)
+
        OPEN(10, FILE=TRIM(datafile), STATUS='OLD')
          DO n = 1,nblines
-           read(10,*,end=999) LONVAL(n),LATVAL(n),VARVAL(n)
+           read(10,*,end=999) LONVAL(n),LATVAL(n),U(n)
          ENDDO
        CLOSE(10)
+       rewind(10)
+
+       nbval=0
+       DO i=1,nblines
+         IF(U(i) .ne. VALEXC) THEN
+          nbval = nbval+1
+          VARVAL(nbval) = U(i)
+         ENDIF
+       ENDDO
 !
       IF(itrans .eq. 13 .or. itrans .eq. 23) then
         OPEN(2,FILE='nblinv',STATUS='OLD')
@@ -210,14 +226,76 @@
      &'("../input/divadata/",a)')TRIM(VARFILE)
         close(12)
         open(unit=12,file=INVERFILE)
-        CALL ANAMINV(nblninv,nbval,VECFLD)
+        CALL ANAMINV(nblninv,nbval,VARVAL) !VECFLD
       ELSE
-        CALL TRANSINV(itrans,nbval,VECFLD)
+        CALL TRANSINV(itrans,nbval,VARVAL) !VECFLD
       ENDIF
+	
+      nbval2 = 0
+       DO i=1,nblines
+        IF(U(i) .ne. VALEXC) THEN
+           nbval2 = nbval2+1
+           U(i) = VARVAL(nbval2)
+        ENDIF
+      ENDDO
+!
+	
+       OPEN(11, FILE=TRIM(datafile))
+         DO n = 1,nblines
+           write(11,'(3E22.9)') LONVAL(n),LATVAL(n),U(n) !VARVAL
+         ENDDO
+       CLOSE(11)
+	rewind(11)
+
+	endif
+
+!------------------------------------------------
+
+        if (isanalysis == 2) then
+
+        WRITE(datafile,
+     &'("../output/3Danalysis/Fields/",a)')TRIM(VARFILEASC)
+!
+       OPEN(10, FILE=TRIM(datafile), STATUS='OLD')
+         DO n = 1,nblines
+           read(10,*,end=999) LONVAL(n),LATVAL(n),U(n) !VARVAL(n)
+         ENDDO
+       CLOSE(10)
+
+      nbval = 0
+       DO i=1,nblines
+         IF(U(i) .ne. VALEXC) THEN
+          nbval = nbval+1
+          VARVAL(nbval) = U(i)
+        ENDIF
+      ENDDO
+!
+      IF(itrans .eq. 13 .or. itrans .eq. 23) then
+        OPEN(2,FILE='nblinv',STATUS='OLD')
+        READ(2,*) nblninv
+        CLOSE(2)
+        WRITE(VARFILE,
+     &'(a,"_inverf")')TRIM(var_name)
+        WRITE(INVERFILE,
+     &'("../input/divadata/",a)')TRIM(VARFILE)
+        close(12)
+        open(unit=12,file=INVERFILE)
+        CALL ANAMINV(nblninv,nbval,VARVAL) !VECFLD
+      ELSE
+        CALL TRANSINV(itrans,nbval,VARVAL) !VECFLD
+      ENDIF
+
+      nbval2 = 0
+       DO i=1,nblines
+        IF(U(i) .ne. VALEXC) THEN
+           nbval2 = nbval2+1
+           U(i) = VARVAL(nbval2)
+        ENDIF
+      ENDDO
 !
        OPEN(11, FILE=TRIM(datafile))
          DO n = 1,nblines
-           write(11,*) LONVAL(n),LATVAL(n),VARVAL(n)
+           write(11,*) LONVAL(n),LATVAL(n),U(n) !VARVAL
          ENDDO
        CLOSE(11)
 

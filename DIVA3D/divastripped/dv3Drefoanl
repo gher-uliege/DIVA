@@ -331,7 +331,7 @@ if [ "$refanl" == "1" ];then
 #
 
 #echo Cleaning up the mess
-divaclean
+./divaclean
 #echo Gridding
 if [ -f ./input/divamesh/meshtopo.$lev ]; then
  cp -v ./input/divamesh/meshtopo.$lev ./output/meshvisu/fort.22
@@ -344,7 +344,7 @@ echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.lo
 echo dv3Drefoanl:                 divamesh   >> ./output/diva.log
 echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
 echo ' '  >> ./output/diva.log
-divamesh
+./divamesh
     cat $dv3Drefoanllog ./output/divamesh.log > bidon
     mv bidon $dv3Drefoanllog
 

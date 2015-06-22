@@ -232,20 +232,20 @@ cd ./input/divarefe
   echo $nbcl >> ../../3DWORK/fort.44
   echo $dep >> ../../3DWORK/fort.44
 
-  echo "$var" >> "$dvrefetransflog"
-  echo $itrans >> "$dvrefetransflog"
-  echo $bottm  >> "$dvrefetransflog"
-  echo $surf  >> "$dvrefetransflog"
-  echo $nbln >> "$dvrefetransflog"
-  echo $nbcl >> "$dvrefetransflog"
-  echo $dep  >> "$dvrefetransflog"
+  echo "$var" >> ../../"$dvrefetransflog"
+  echo $itrans >> ../../"$dvrefetransflog"
+  echo $bottm  >> ../../"$dvrefetransflog"
+  echo $surf  >> ../../"$dvrefetransflog"
+  echo $nbln >> ../../"$dvrefetransflog"
+  echo $nbcl >> ../../"$dvrefetransflog"
+  echo $dep  >> ../../"$dvrefetransflog"
 
   cd ../../3DWORK/
 
 echo dvrefetransf: ////////////////////////////////////////// >> ../output/diva.log
-'echo dvrefetransf:       refetrans: '"$var"'.'$level   >> ./output/diva.log
+echo 'dvrefetransf:       refetrans: '"$var"'.'$level   >> ../output/diva.log
 echo dvrefetransf: ////////////////////////////////////////// >> ../output/diva.log
-echo ' '  >> ./output/diva.log
+echo ' '  >> ../output/diva.log
 
   ../../bin/refetrans.a >> ../output/diva.log
 
@@ -276,9 +276,10 @@ fi
 cd ../
 #
 
-else
+#else
+fi
 
- if [ -f ./input/divarefe/"$var"'.'$lev'.ref' ];then
+if [ -f ./input/divarefe/"$var"'.'$level'.ref' ];then
 #
 cd ./input/divarefe
   file="$var"'.'$level'.ref'
@@ -288,12 +289,13 @@ cd ./input/divarefe
 
   cd ../../3DWORK/
   ../../bin/refebintrans.a
+
   if [ -f fort.55 ];then
   mv fort.55 'ERR.'"$var"'.'$level'.ref'
   fi
 
  fi
-fi
+#fi
 
 cd ../
 dep=`expr $dep + 1`

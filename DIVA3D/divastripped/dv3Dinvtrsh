@@ -37,6 +37,13 @@ if [ -f ./output/3Danalysis/Fields/"$var".$lev.anl.nc ];then
 ncdfile="$var".$lev.anl.nc
 binfile="$var".$lev.anl
 ascfile="$var".$lev.ascii.anl
+ascfile2="$var".$lev.fieldatdatapoint.anl
+
+cp ./output/3Danalysis/Fields/"$ascfile2" ./output/3Danalysis/Fields/"$ascfile2".tr
+nblines=`cat ./output/3Danalysis/Fields/$ascfile2 |wc -l` 
+
+echo 'dv3Dinvtrsh ascfile2 '"$ascfile2" >> "$diva3dlog"
+echo 'dv3Dinvtrsh ascfile2 '"$ascfile2"
 
 echo 'dv3Dinvtrsh '$gherfile' '$binfile >> "$diva3dlog"
 echo 'dv3Dinvtrsh '$gherfile' '$binfile
@@ -63,6 +70,7 @@ if [ -f ./output/3Danalysis/Fields/"$var".$lev.ref.nc ];then
   cp ./output/3Danalysis/Fields/"$var".$lev.datapoint.ref ./output/3Danalysis/Fields/"$var".$lev.datapoint.ref.tr
   ascfile="$var".$lev.datapoint.ref
   nblines=`cat ./output/3Danalysis/Fields/$ascfile |wc -l` 
+  ascfile2="none"
 
   echo 'dv3Dinvtrsh ascfile '$ascfile >> "$diva3dlog"
   echo 'dv3Dinvtrsh ascfile '$ascfile
@@ -98,6 +106,7 @@ echo $lev >> ./3DWORK/ncname
 echo $act >> ./3DWORK/ncname
 echo $ntrans >> ./3DWORK/ncname
 echo $nblines >> ./3DWORK/ncname
+echo "$ascfile2" >> ./3DWORK/ncname
 #
 # Start analyses inverse transformation
 #######################################
@@ -149,3 +158,22 @@ cd ../
 # End analyses inverse transformations
 ######################################
 #
+
+#------------------------------------------------
+# Sylvain Watelet - 19/06/2015
+# Savings from output to input
+#------------------------------------------------
+
+pwd
+
+if [ -f ./output/3Danalysis/Fields/"$var".$lev.datapoint.ref ]
+then
+cp ./output/3Danalysis/Fields/"$var".$lev.datapoint.ref ./input/divarefe/"$var".$lev.datapoint.ref
+fi
+
+if [ -f ./output/3Danalysis/Fields/"$var".$lev.ref ]
+then
+cp ./output/3Danalysis/Fields/"$var".$lev.ref ./input/divarefe/"$var".$lev.ref
+fi
+
+#------------------------------------------------
