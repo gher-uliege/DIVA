@@ -1,0 +1,51 @@
+#!/bin/bash
+
+#------------------------------------------------
+# Sylvain Watelet - 17/07/2015
+# swatelet@ulg.ac.be
+# 
+# Cut 4D netcdf using a contour file
+#------------------------------------------------
+
+#------------------------------------------------
+# START OF USER SETTINGS
+#------------------------------------------------
+
+ncfile="./output/3Danalysis/Salinity.4Danl.nc"		# path to input 4D netcdf file
+contfile="./input/cutNCDF.cont"				# path to contour file
+outfile="./output/3Danalysis/Salinity.4Danl.cut.nc"	# path to output 4D netcdf cut file
+
+#------------------------------------------------
+# END OF USER SETTINGS !!!!!
+#------------------------------------------------
+
+echo "#####################"
+echo "Start of divacutNCDF"
+echo "#####################"
+
+nx=`ncdump -h $ncfile | head -3 | tail -1`
+nx=${nx:6:${#nx}-7}
+ny=`ncdump -h $ncfile | head -4 | tail -1`
+ny=${ny:6:${#ny}-7}
+nz=`ncdump -h $ncfile | head -5 | tail -1`
+nz=${nz:8:${#nz}-9}
+nt=`ncdump -h $ncfile | head -6 | tail -1`
+nt=${nt:7:${#nt}-8}
+echo "dimensions are : "$nx,$ny,$nz,$nt
+
+obs=`ncdump -h $ncfile | head -8 | tail -1`
+obs=${obs:15:${#obs}-16}
+#echo $obs
+idlen=`ncdump -h $ncfile | head -9 | tail -1`
+idlen=${idlen:8:${#idlen}-9}
+#echo $idlen
+
+flags='-O3  -cpp   -DDIVAITERATIVE  '
+ncinc=`nc-config --fflags`
+nclib=`nc-config --flibs`
+
+../../DIVA3D/bin/test_inpolygon.a $ncfile $contfile $outfile $nx $ny $nz $nt $obs $idlen
+
+echo "###################"
+echo "End of divacutNCDF"
+echo "###################"
