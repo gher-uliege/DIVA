@@ -220,12 +220,13 @@ echo out of $n7max
 #mv *.a ../../../bin/
 
 echo ' '
-echo Compiling 3D and STABILIZATION programs
-echo ---------------------------------------
+echo Compiling 3D, 4D and STABILIZATION programs
+echo --------------------------------------------
 echo ' '
 
 cd ../Stabil
 
+$compiler $flags $ncinc -I ../NC test_inpolygon.F90 dvreadfinal4D.F dvwritefinal4D.F ../NC/divaio.o -o test_inpolygon.a $nclib
 $compiler $flags $ncinc -I ../NC diva3Dwrt.F ureadc.F uwritc.F dv2Dreadnc.F dv3Dncwrt.F ../NC/divaio.o -o diva3Dstr.a $nclib 
 $compiler $flags $ncinc -I ../NC diva4Dwrt.F dv3Dreadnc.F dv3Dncwrt.F ../NC/divaio.o -o diva4Dstr.a $nclib
 $compiler $flags $ncinc -I ../NC dv4DYRwrt.F dv3Dreadnc.F dv3DncYRw.F ../NC/divaio.o -o dv4DYRstr.a $nclib
@@ -258,7 +259,7 @@ $compiler $flags main_tomvec.f90 tomvec.f -o main_tomvec.a
 $compiler $flags binning_lines.f90 -o binning_lines.a
 
 n8=`ls -1p *.a | grep -vc "/$"`
-n8max=30
+n8max=31
 
 echo You have compiled $n8 programs
 echo out of $n8max
