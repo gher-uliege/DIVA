@@ -177,7 +177,12 @@
 	If (xm2 < xm1) then
 		xm2=xm2+12
 		time_Mval = xm1+nint((xm2-xm1)+1.)/2
-		If (time_Mval > 12) time_Mval=time_Mval-12
+		xm2=xm2-12
+		If (time_Mval > 12) then
+			time_Mval=time_Mval-12
+		else
+			time_Yval=time_Yval-1
+		Endif
 	Endif 
 !       time_Dval = 365*float(xy2)
         time_Dval = mjd(int(time_Yval),int(time_Mval),16,0.)
@@ -187,7 +192,13 @@
 !
 !
         t0 = mjd(xy1,1,1,0.)
-        clbnds(1,1)= mjd(xy1,xm1,1,0.)-t0
+
+	If (xm2 < xm1) then
+		clbnds(1,1)= mjd(xy1-1,xm1,1,0.)-t0
+	else
+        	clbnds(1,1)= mjd(xy1,xm1,1,0.)-t0
+	Endif
+
         clbnds(2,1)= mjd(xy2,xm2+1,1,0.)-t0
 !
       ENDIF
