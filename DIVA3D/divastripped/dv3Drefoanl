@@ -555,10 +555,10 @@ mv ./input/param.par.anawithref ./input/param.par
 fi
 #
 #
-if [ -f ./input/divadata/"$var"'.'$lev'.DATABINS' ];then
- echo ' '
-# "$var"'.'$lev'.DATABINS exists'
-else
+#if [ -f ./input/divadata/"$var"'.'$lev'.DATABINS' ];then
+# echo ' '
+## "$var"'.'$lev'.DATABINS exists'
+#else
 
 echo dv3Drefoanl: ////////////////////////////////////////// >> ./output/diva.log
 echo dv3Drefoanl:                 divadatacoverage   >> ./output/diva.log
@@ -570,7 +570,7 @@ echo ' '  >> ./output/diva.log
 
 cp -v ./output/DATABINS.dat ./input/divadata/"$var"'.'$lev'.DATABINS'
 cp -v ./output/DATABINSinfo.dat ./input/divadata/"$var"'.'$lev'.DATABINSinfo'
-fi
+#fi
 #
 #
 if [ "$detrd" -eq "1" ];then
@@ -710,13 +710,13 @@ echo '>>>>>>>>>>>>>>>>  running ./divarefe'  >> $dv3Drefoanllog
 ./divarefe
 fi
 mv ./input/param.par.svori ./input/param.par
-if [ -f ./input/divadata/"$var"'.'$lev'.DATABINS' ];then
- echo "$var"'.'$lev'.DATABINS exists'
-else
+#if [ -f ./input/divadata/"$var"'.'$lev'.DATABINS' ];then
+# echo "$var"'.'$lev'.DATABINS exists'
+#else
 ./divadatacoverage -n
 cp -v ./output/DATABINS.dat ./input/divadata/"$var"'.'$lev'.DATABINS'
 cp -v ./output/DATABINSinfo.dat ./input/divadata/"$var"'.'$lev'.DATABINSinfo'
-fi
+#fi
 #
 if [ "$detrd" -eq "1" ];then
 cp -v ./input/data.detrend.dat ./output/3Danalysis/DATADETREND/data.detrend."$var"'.'$lev

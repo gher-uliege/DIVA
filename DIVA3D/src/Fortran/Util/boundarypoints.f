@@ -85,7 +85,7 @@ C     & ,kconn(i,6)
        j2=3
        j3=1
       endif
-      if (-kconn(i,5).eq.j) then
+      if (-kconn(i,6).eq.j) then
        j1=3
        j2=1
        j3=2
