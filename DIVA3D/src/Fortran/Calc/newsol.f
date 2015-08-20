@@ -285,10 +285,11 @@ C$OMP& skmatx)
 ! Initializations
             ihesitate=0
             ie0old=ie0
-!$OMP flush (jmax,kmax)
+!$OMP flush (kmax)
 ! Judge if hesitation is necessary
              if (kmax.lt.jr) then
                ihesitate=1
+!$OMP flush (jmax)
                ie0=jmax
              endif
              if (jh.eq.2) then
