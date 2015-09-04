@@ -371,10 +371,22 @@ echo "year from $year1 to $year2"
 echo "month from $mm1 to $mm2"
 
 # dans awk if(mm2>12) $x=$x+12
+#awk -v mm1=$mm1 -v mm2=$mm2 -v year1=$year1 -v year2=$year2 \
+#'{{if (mm2>12) $6=$6+12};
+#{if (mm1 <=$6+0 && $6+0 <= mm2 && year1<=$5+0 && $5+0 <= year2) print $1,$2,$3,$4,$5-year1+1,$6-mm1+1,$7,$8+1,$9,$10}
+#}' ${WORK}/"$var".$lnum > input/"${var}".${yyy}.${mmm}.$lnum
+
+#------------------------------------------------
+# Sylvain Watelet - 29/05/2015
+# More robust handling of winter seasons across the year
+#------------------------------------------------
+
 awk -v mm1=$mm1 -v mm2=$mm2 -v year1=$year1 -v year2=$year2 \
-'{{if (mm2>12) $6=$6+12};
-{if (mm1 <=$6+0 && $6+0 <= mm2 && year1<=$5+0 && $5+0 <= year2) print $1,$2,$3,$4,$5-year1+1,$6-mm1+1,$7,$8+1,$9,$10}
+'{{if ((mm2>12 && $6+0<mm1 && year1<=$5+0 && $5+0<=year2) || (mm2>12 && $5+0==year2)) $6=$6+12};
+{if ((mm1<=$6+0 && $6+0<=mm2 && year1<=$5+0 && $5+0<=year2) || (mm2>12 && mm1<=$6+0 && $6+0<=mm2 && year1-1<=$5+0 && $5+0<=year2)) print $1,$2,$3,$4,$5-year1+1,$6-mm1+1,$7,$8+1,$9,$10}
 }' ${WORK}/"$var".$lnum > input/"${var}".${yyy}.${mmm}.$lnum
+
+#------------------------------------------------
 
 ./specialdataonly input/"${var}".${yyy}.${mmm}.$lnum
 
