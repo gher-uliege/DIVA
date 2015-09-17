@@ -194,6 +194,13 @@ level[j]=level[jm-j+1];level[jm-j+1]=zz}} }}
 #}
 {#Main loop
 if (ifirst==1 && i==1) {meta[1]=$1 ; meta[2]=$2 ; meta[3]=$5 ; meta[4]=$6 ; meta[5]=$7; meta[6]=$8 ; meta[7]=$9 ; meta[8]=$10 ; meta[9]=$11 ; ifirst=0};
+
+#conformity of profiles
+if (meta[8]!=$10 && meta[9]==$11) 
+  {
+print "WARNING : SOME PROFILES HAVE NON CONSTANT TIME VALUE" > "/dev/stderr";
+  }
+
 #if (meta[1]==$1 && meta[2]==$2 && meta[3]==$5 && meta[4]==$6 && meta[5]==$7 && meta[6]==$8 && meta[7]==$9 && meta[8]==$10 && meta[9]==$11)
 if (meta[8]==$10 && meta[9]==$11)
   {
@@ -201,7 +208,8 @@ zin[i]=$4;vin[i]=$3;i=i+1#;print "uu",i-1,zin[i-1],vin[i-1]
    } 
 else
 # profile now to be treated
-  {zzz=$4;vvv=$3;mm1=$1;mm2=$2;mm3=$3;mm4=$4;mm5=$5;mm6=$6;mm7=$7;mm8=$8;mm9=$9;mm10=$10;mm11=$11;
+  {
+zzz=$4;vvv=$3;mm1=$1;mm2=$2;mm3=$3;mm4=$4;mm5=$5;mm6=$6;mm7=$7;mm8=$8;mm9=$9;mm10=$10;mm11=$11;
 #  print "jjj",i-1,jm,vin[1],zin[1],meta[8],meta[9],vin[i-1],zin[i-1];
  nin=i-1;nout=jm;valex=99999; jmb=vinterp(zin,vin,nin,level,vout,nout,valex);
 # add test to put out only when no exclusion value
