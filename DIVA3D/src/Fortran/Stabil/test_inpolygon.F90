@@ -74,7 +74,7 @@ logical::in,on
      &                            , INSTITUT, PRODUCTION		&
      &                            , SOURCE, COMMENT, Email
       character (len=30)         :: Ref_time
-	character(len=30),dimension(:),allocatable	:: obsid
+	character(len=30),dimension(:),allocatable:: obsid,obsid1,obsid2
       CHARACTER (len=99)         :: var_shname, var_cfname, var_name	&
      &                            , dat_name, var1_name, prmliste
       character (len=99)         :: var_lgname
@@ -169,6 +169,8 @@ var_shname=ncfile(21:len_trim(ncfile)-9)
 !
 	allocate(time_val(time_len))
 	allocate(obsid(obs))
+        allocate(obsid1(obs))
+        allocate(obsid2(obs))
 	allocate(obslon(obs))
 	allocate(obslat(obs))
 	allocate(obsdepth(obs))
@@ -218,13 +220,14 @@ var_shname=ncfile(21:len_trim(ncfile)-9)
      &  LEN_TRIM(COMMENT),COMMENT,						&
      &  obs,idlen,obsid,obsid_lgname,obsid_coord,obslon,obslon_units,		&
      &  obslat,obslat_units,obsdepth,obsdepth_units,obsdepth_positive,          &
-     &  obstime,obstime_units)
+     &  obstime,obstime_units,obsid1,obsid2)
 
 !Do i=1,obs
 !write(*,*) obsid(i)
 !Enddo
 
 !write(*,*) obslon_units
+
 
 !------------------------------------------------
 ! Test inpolygon
@@ -312,7 +315,8 @@ file_4Dnc=outfile
      &  LEN_TRIM(COMMENT),TRIM(COMMENT),					&
      &  obs,idlen,obsid,obsid_lgname,obsid_coord,obslon,obslon_units,		&
      &  obslat,obslat_units,obsdepth,obsdepth_units,obsdepth_positive,		&
-     &  obstime,obstime_units)
+     &  obstime,obstime_units,obsid1,obsid2,					&
+     &  LEN_TRIM(file_name2),TRIM(file_name2))
 
 !------------------------------------------------
  

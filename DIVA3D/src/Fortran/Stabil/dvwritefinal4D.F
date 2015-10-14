@@ -14,7 +14,9 @@
      &  L_INSTITUT,INSTITUT,L_PRODUCTION,PRODUCTION,L_SOURCE,SOURCE,
      &  L_Email,Email,L_COMMENT,COMMENT,obs,idlen,obsid,obsid_lgname,
      &  obsid_coord,obslon,obslon_units,obslat,obslat_units,obsdepth,
-     &  obsdepth_units,obsdepth_positive,obstime,obstime_units)
+     &  obsdepth_units,obsdepth_positive,obstime,obstime_units,
+     &  obsid1,obsid2,
+     &  L_file_name_old,file_name_old)
 !
        use divaio
        IMPLICIT NONE
@@ -30,6 +32,8 @@
         integer     :: L_file_name,L_var_shname,L_var_lgname,
      &  L_var_units,L_vrb_units,L_title_string,L_cellmeth,L_Ref_time,
      &  L_INSTITUT,L_PRODUCTION,L_SOURCE,L_Email,L_COMMENT
+	integer::L_file_name_old
+	integer::i
 !
         real*4                              :: 
      &            var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
@@ -56,6 +60,7 @@
 	real*4,dimension(obs)		:: obstime
 !
 	character (len=L_file_name)        :: file_name
+	character (len=L_file_name_old)    :: file_name_old
 	character (len=L_title_string)     :: title_string
 	character (len=L_Ref_time)         :: Ref_time
 	character (len=L_var_shname)       :: var_shname
@@ -83,7 +88,7 @@
 	character(len=256)	:: obsdepth_units,obsdepth_positive
 	character(len=256)	:: obstime_units
 !
-	character(len=idlen),dimension(obs,idlen)	:: obsid
+	character(30),dimension(obs,idlen)::obsid,obsid1,obsid2
 !
       integer  ,dimension(1)		:: dimobslon
       integer  ,dimension(2)		  :: dimobsid
@@ -98,7 +103,7 @@
      &                                , id0_1,id0_2,id0_3,idcb
       integer                        :: timeid,idtime, icdf
 
-      integer			:: obsidid
+      integer			:: obsidid,obsidid_old
       integer			:: obslonid,obslatid,obsdepthid
       integer			:: obstimeid
 !
@@ -106,7 +111,7 @@
       integer                 :: lonid,latid,depthid,nvid
       integer		      :: observid,idlenid
       integer                 :: idlon,idlat,iddepth
-      integer                 :: ncid,status
+      integer                 :: ncid,status,ncid_old
       integer                 :: OLDMOD
 !
       save                    :: id1,id1_1,id1_2,id2,id2_1
@@ -115,7 +120,7 @@
       save                    :: timeid,idtime, icdf
       save                    :: lonid,latid,depthid,nvid
       save                    :: idlon,idlat,iddepth
-      save                    :: ncid,status
+      save                    :: ncid,status,ncid_old
 !
       LOGICAL                 :: exist
 !
@@ -1500,26 +1505,26 @@
       stpar(1)=1
       stpar(2)=icdf
       prcnt(1)=2
-      prcnt(2)=1
+      prcnt(2)=time_len
 !
       climatology_bounds(1) = clbnds(1,icdf)
       climatology_bounds(2) = clbnds(2,icdf)
 !
 
-	If (ipar == 1) then
+!	If (ipar == 1) then
 
       write(*,*) 'NCWRT   climatology_bounds '
       write(*,*) 'climatology_bounds ',climatology_bounds
 
 
       status = 
-     &nf_put_vara_real(ncid,idcb, stpar, prcnt,climatology_bounds)
+     &nf_put_vara_real(ncid,idcb, stpar, prcnt,clbnds)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put xclbnds'
       ENDIF
 
-	Endif
+!	Endif
 !
       stpar(1)=1
       stpar(2)=icdf
@@ -1544,16 +1549,60 @@
          STOP 'Stopped in NC_4DCLIMATO put VARBAK'
       ENDIF
 !
+      !-----------------------
+      ! Open the old data file       
+      !-----------------------
+!
+      status = nf_open(TRIM(file_name_old),nf_nowrite,ncid_old)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO open file'
+      ENDIF
+!
+      status=nf_inq_varid(ncid_old,'obsid',obsidid_old)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO def obsid'
+      ENDIF
+
+	Do i=1,obs
+
       stpar(1)=1
-      stpar(2)=1
+      stpar(2)=i !1
       prcnt(1)=idlen
-      prcnt(2)=obs
+!      prcnt(2)=int(obs/2)
+      prcnt(2)=1 !obs
+
+      status=nf_get_vara_text(ncid_old,obsidid_old,stpar,prcnt,obsid)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO get obsid1'
+      ENDIF
+
+!      status = nf_put_vara_text(ncid,obsidid, stpar, prcnt,obsid1)
+!      IF (status .NE.nf_noerr) THEN
+!         print *,nf_strerror(status)
+!         STOP 'Stopped in NC_4DCLIMATO put obsid1'
+!      ENDIF
 
       status = nf_put_vara_text(ncid,obsidid, stpar, prcnt,obsid)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put obsid'
       ENDIF
+
+	Enddo
+!
+!      stpar(1)=1
+!      stpar(2)=1+int(obs/2)
+!      prcnt(1)=idlen
+!      prcnt(2)=obs-int(obs/2)
+!
+!      status = nf_put_vara_text(ncid,obsidid, stpar, prcnt,obsid2)
+!      IF (status .NE.nf_noerr) THEN
+!         print *,nf_strerror(status)
+!         STOP 'Stopped in NC_4DCLIMATO put obsid2'
+!      ENDIF
 !
       stpar(1)=1
       stpar(2)=1

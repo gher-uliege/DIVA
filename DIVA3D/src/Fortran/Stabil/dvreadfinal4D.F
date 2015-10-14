@@ -13,7 +13,8 @@
      &  L_INSTITUT,INSTITUT,L_PRODUCTION,PRODUCTION,L_SOURCE,SOURCE,
      &  L_Email,Email,L_COMMENT,COMMENT,obs,idlen,obsid,obsid_lgname,
      &  obsid_coord,obslon,obslon_units,obslat,obslat_units,obsdepth,
-     &  obsdepth_units,obsdepth_positive,obstime,obstime_units)
+     &  obsdepth_units,obsdepth_positive,obstime,obstime_units,
+     &  obsid1,obsid2)
 
 !
        use divaio
@@ -79,7 +80,7 @@
 	character (len=20)                 :: vrb_units
 	character (len=255)                :: cellmeth
 
-	character(len=30),dimension(obs,idlen)	:: obsid
+	character(30),dimension(obs,idlen)::obsid,obsid1,obsid2
 
         character (len=20), DIMENSION(2)           :: l_units
 !
@@ -769,6 +770,17 @@
 !
       start(1)=1
       start(2)=1
+      count(1)=2
+      count(2)=time_len
+
+      status=nf_get_vara_real(ncid,idcb, start, count,clbnds)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_READ4DCL get var'
+      ENDIF
+!
+      start(1)=1
+      start(2)=1
       start(3)=1
       start(4)=icdf
       count(1)=IM
@@ -874,16 +886,30 @@
          STOP 'Stopped in NC_READ4DCL get VARBAK'
       ENDIF
 !
-      stpar(1)=1
-      stpar(2)=1
-      prcnt(1)=idlen
-      prcnt(2)=obs
-
-      status = nf_get_vara_text(ncid,obsidid, stpar, prcnt,obsid)
-      IF (status .NE.nf_noerr) THEN
-         print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL get obsid'
-      ENDIF
+!      stpar(1)=1
+!      stpar(2)=1
+!      prcnt(1)=idlen
+!      prcnt(2)=int(obs/2)
+!
+!      status = nf_get_vara_text(ncid,obsidid, stpar, prcnt,obsid1)
+!      IF (status .NE.nf_noerr) THEN
+!         print *,nf_strerror(status)
+!         STOP 'Stopped in NC_READ4DCL get obsid1'
+!      ENDIF
+!
+!      stpar(1)=1
+!      stpar(2)=1+int(obs/2)
+!      prcnt(1)=idlen
+!      prcnt(2)=obs-int(obs/2)
+!
+!      status = nf_get_vara_text(ncid,obsidid, stpar, prcnt,obsid2)
+!      IF (status .NE.nf_noerr) THEN
+!         print *,nf_strerror(status)
+!         STOP 'Stopped in NC_4DCLIMATO get obsid2'
+!      ENDIF
+!
+!      obsid(1:int(obs/2),:)=obsid1(1:int(obs/2),:)
+!      obsid(int(obs/2)+1:obs,:)=obsid2(1:(obs-int(obs/2)),:)
 !
       stpar(1)=1
       stpar(2)=1
