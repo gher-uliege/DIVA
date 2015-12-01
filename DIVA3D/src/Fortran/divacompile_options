@@ -33,23 +33,50 @@ fi
 
 ncconfigok=$(type -P nc-config | wc -l)
 nfconfigok=$(type -P nf-config | wc -l)
+
+### added tests on nc-config ###
+nclib=`nc-config --flibs`
+ncinc=`nc-config --fflags`
+nccompiler=`nc-config --fc`
+
+if [ "$nclib" == "" ]
+then
+ncconfigok="0"
+fi
+
+if [ "$ncinc" == "" ]
+then
+ncconfigok="0"
+fi
+
+if [ "$nccompiler" == "" ]
+then
+ncconfigok="0"
+fi
+### ###
+
 echo nc-config $ncconfigok
 echo nf-config $nfconfigok
 
 if [ "$ncconfigok" != "0" ]
 then
 nclib=`nc-config --flibs`
+echo "nclib="$nclib
 ncinc=`nc-config --fflags`
+echo "ncinc="$ncinc
 compiler=`nc-config --fc`
+echo "compiler="$compiler
 else
    if [ "$nfconfigok" != "0" ]
    then
     nclib=`nf-config --flibs`
 # or by hand
-    nclib=/usr/lib/libnetcdff.dll.a
-    echo $nclib
+#    nclib=/usr/lib/libnetcdff.dll.a
+    echo "nclib="$nclib
     ncinc=`nf-config --fflags`
+    echo "ncinc="$ncinc
     compiler=`nf-config --fc`
+    echo "compiler="$compiler
    else
 # put netcdlibrary by hand
    nclib=/usr/lib/libnetcdff.dll.a	
