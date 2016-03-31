@@ -133,7 +133,7 @@ maxlevel=$(cat ./input/contour.depth | wc -l)
 
 
 isextract=0
-if [ "$isextractf" == "1" ] || [ "$isextractf" == "2" ]
+if [ "$isextractf" == "1" ] || [ "$isextractf" == "2" ] || [ "$isextractf" == "3" ]
 then
 isextract=1
 rm -f pressure.coordinates
@@ -273,7 +273,7 @@ fi
 #############################################################################################
 
 echo 'divadoall:' Now extracting
-./divaselectorODV4 $ODVDATA
+./divaselectorODV4 $ODVDATA $isextractf
 
 echo 'divadoall:' finished with $ODVDATA
 done < datasource
@@ -877,6 +877,12 @@ if [ -f ./output/ghertonetcdf ]
 then rm -f ./output/ghertonetcdf 
 fi
 mkdir -p ./output/ghertonetcdf
+
+if [ $isextractf == 3 ]
+then
+cp input/contour.depth input/contour.depth.ori
+grep -v '^$' input/contour.depth.ori | tac > input/contour.depth
+fi
 
 echo 'divadoall:' 
 echo 'divadoall:' 'Running diva3Ddress on '"$var" $year $month

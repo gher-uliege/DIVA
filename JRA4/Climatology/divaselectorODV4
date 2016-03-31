@@ -53,6 +53,14 @@ fi
 fi
 
 inputfile=$1
+isextractf=$2
+
+if [ "$isextractf" == "3" ]
+then
+echo ""
+echo "Extraction will be performed from the BOTTOM."
+echo ""
+fi
 
  if [ -f "$inputfile" ]
 then
@@ -199,6 +207,10 @@ datecol_timeseries=$(grep -i "time_ISO8601" ODVcolumns | head -1 |  awk -F "$del
 cdicol=$(grep -i "LOCAL_CDI" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 edmocol=$(grep -i "EDMO" ODVcolumns | head -1 |  awk -F "$delimiter" '{print $3}')
 issdn=1
+
+botcol=$(grep -i "bot" ODVcolumns | grep -i "depth" | head -1 | awk -F "$delimiter" '{print $3}')
+echo "Bottom depth in column " $botcol
+
 if [ "$datecol_timeseries" != "" ]
 then
 echo "!!! Warning : TIME SERIES detected ! The column time_ISO8601 is present => it will be used as the ONLY time axis !!!"
@@ -206,17 +218,17 @@ datecol=$datecol_timeseries
 fi
 if [ "$cdicol" == "" ]
 then
-echo WARNING NO CDI FOUND
+echo "WARNING NO CDI FOUND"
 issdn=0
 else
 echo CDI found in column $cdicol
 fi
 if [ "$edmocol" == "" ]
 then
-echo WARNING NO EDMO-CODE FOUND
+echo "WARNING NO EDMO-CODE FOUND"
 issdn=0
 else
-echo EDMO found in column $edmocol
+echo "EDMO found in column" $edmocol
 fi
 
 # Pressure for the moment if depth, carefull about bottom depth columns
@@ -277,7 +289,7 @@ then
 awk -F "$delimiter" '{if (substr($0,1,2) !="//")  {print $0} }' $inputfile | \
     awk -F "$delimiter" -v datacol=$datacol -v qccol=$qccol -v latcol=$latcol -v loncol=$loncol -v datecol=$datecol -v depthcol=$depthcol -v todepth=$todepth \
          -v cruisecol=$cruisecol -v stationcol=$stationcol -v valexodv=$valexodv -v boundmin=$boundmin -v boundmax=$boundmax \
-        -v issdn=$issdn -v edmocol=$edmocol -v cdicol=$cdicol \
+        -v issdn=$issdn -v edmocol=$edmocol -v cdicol=$cdicol -v botcol=$botcol -v isextractf=$isextractf \
       '
       function myqfok(qf,n,qval)
 #        =====
@@ -301,6 +313,7 @@ return 0
       {if ($loncol +0> -180+360) {n=int(($loncol-(-180))/360); $loncol=$loncol-n*360}} ;
       {if ($latcol > "") {ww=$latcol} else {$latcol=ww}};
       {if ($datecol > "") {www=$datecol} else {$datecol=www}};
+      {if ($botcol > "") {wwww=$botcol} else {$botcol=wwww}};
       year=substr($datecol,1,4);
       month=substr($datecol,6,2);
       day=substr($datecol,9,2);
@@ -316,8 +329,20 @@ return 0
       {if (issdn==1) {foralex=$edmocol"-"$cdicol} else {foralex="Cruise:"$cruisecol"-"$stationcol"-"$loncol"-"$latcol}};
 #
 #      if ( $qccol==1 || $qccol==2 || $qccol==8 );
-      if ($datacol > "" && qfok==1 && $datacol != valexodv) print $loncol,$latcol,$datacol,$depthcol,$qccol,year,month,day,hour,$datecol,foralex}' \
+      {if ($datacol > "" && qfok==1 && $datacol != valexodv && isextractf != 3) {print $loncol,$latcol,$datacol,$depthcol,$qccol,year,month,day,hour,$datecol,foralex,$botcol} else if ($datacol > "" && qfok==1 && $datacol != valexodv && isextractf == 3 && $botcol > "") {print $loncol,$latcol,$datacol,$depthcol,$qccol,year,month,day,hour,$datecol,foralex,$botcol} else if ($datacol > "" && qfok==1 && $datacol != valexodv && isextractf == 3 && $botcol == "") {print "error"}}}' \
        > ${WORK}/"${var}".bigfile
+
+# interpolation of topo.grd, replace the column with bottom depth into bigfile 
+ if [ "$isextractf" == "3" ] 
+ then
+  cp ${WORK}/"${var}".bigfile ${WORK}/bigfile.nobotdepth #no ${var} to avoid blank spaces problems in fortran
+  cp -v input/topo.grd ${WORK}/topo.grd
+  cp -v input/TopoInfo.dat ${WORK}/TopoInfo.dat
+  cd ${WORK}
+  ../../../DIVA3D/bin/interpbottom.a
+  cp bigfile.botdepth "${var}".bigfile
+  cd ..
+ fi
 
 fi
 
@@ -327,7 +352,7 @@ echo "Now interpolating"
 
 # make sure columns are now in correct order
 
-awk -f "dvvinterpodv" ./input/contour.depth ${WORK}/"${var}".bigfile > ${WORK}/"${var}".bigfile.interp
+awk -f "dvvinterpodv" -v isextractf=$isextractf ./input/contour.depth ${WORK}/"${var}".bigfile > ${WORK}/"${var}".bigfile.interp
 
 
 #Then split file in data for layers?

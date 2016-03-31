@@ -12,7 +12,7 @@
 # Algorithm: 
 # Valex in input must be eliminated.
 #
-function vinterp(zin,vin,nin,zout,vout,nout,valex)
+function vinterp(zin,vin,nin,zout,vout,nout,valex,isextractf)
 #        =======
 { kl=1; klp=jmmin(nin,kl+1); k=0;
 # make sure input is sorted
@@ -35,11 +35,20 @@ while (k<nout)
 #  print "vint",k,zout[k],klp,zin[klp],kl,nout;
 #  vout[k]=k; print "kkk",k,vout[k];continue;
 # now kl and klp are the surrounding indexes for zout[k]
-# need to deal with lower and upper points.
+# need to deal with lower and upper points (partly done).
 # need to deal with large distance and over/undershooting?
+
 # Mixing layer
   if (zout[k] < zin[kl] && zin[kl] < 10) {vout[k]=vin[kl]; continue}
+
+# Measurement too deep, but not too far (only if extraction from the bottom)
+  DDout=outdist(zout[k]);
+#  print k,kl,klp,zout[k],zin[kl],vout[k],vin[kl],nin,DDout > "/dev/stderr";
+  if (zout[k] < zin[kl] && abs(zin[kl]-zout[k]) < DDout && isextractf == 3) {vout[k]=vin[kl]; continue}
+
+# Otherwise, if measurement too far
   if (zout[k] < zin[kl]) {vout[k]=valex; continue}
+
 # Too deep, but save point that is within one meter of deepest point
   if(kl==nin && zout[k] < zin[kl]+1) {vout[k]=vin[kl];continue}
   if(kl>=nin) {vout[k]=valex;continue}
@@ -48,6 +57,7 @@ while (k<nout)
 # kl and klp surround the point of interest.
 # If too far away, put exclusion
   DDDDDD=indist(zout[k]);
+#  print DDDDDD,zout[k] > "/dev/stderr";
   if( abs(zin[kl]-zout[k])> DDDDDD && abs(zin[klp]-zout[k])> DDDDDD) {vout[k]=valex;continue};
 # First point
   if (kl==1) {vout[k]=flin(zin[kl],vin[kl],zin[klp],vin[klp],zout[k]);continue}
@@ -186,14 +196,42 @@ return n
 
 # Main program
 # 
-BEGIN {meta[1]=0;meta[2]=0;meta[3]=0;meta[4]=0;meta[5]=0;meta[6]=0;meta[7]=0;meta[8]=0;meta[9]=0;i=1;ifirst=1}
+BEGIN {meta[1]=0;meta[2]=0;meta[3]=0;meta[4]=0;meta[5]=0;meta[6]=0;meta[7]=0;meta[8]=0;meta[9]=0;meta[10]=0;i=1;ifirst=1}
 NR==FNR {level[k+1]=$1;vout[k+1]=0;k=k+1;jjj=0;next} 
 {if (jjj<=0) {jjj=1;i=1;jm=k;
 {for (j=1;j<=jm/2;j++)  { zz=level[j];      
 level[j]=level[jm-j+1];level[jm-j+1]=zz}} }}
 #}
+
+#{print level[3] > "/dev/stderr"}
+
 {#Main loop
-if (ifirst==1 && i==1) {meta[1]=$1 ; meta[2]=$2 ; meta[3]=$5 ; meta[4]=$6 ; meta[5]=$7; meta[6]=$8 ; meta[7]=$9 ; meta[8]=$10 ; meta[9]=$11 ; ifirst=0};
+if (ifirst==1 && i==1) 
+  {
+meta[1]=$1 ; meta[2]=$2 ; meta[3]=$5 ; meta[4]=$6 ; meta[5]=$7; meta[6]=$8 ; meta[7]=$9 ; meta[8]=$10 ; meta[9]=$11 ; meta[10]=$12 ; ifirst=0 ;
+  }
+
+#bottom - level if isextractf=3
+
+{if (isextractf==3) 
+ {
+ for (j=1;j<=jm;j++) 
+  {
+  newlevel[j]=meta[10]-level[j];
+#  print meta[10],newlevel[1],newlevel[2],level[1],level[2] > "/dev/stderr";
+  if (newlevel[j]<0)
+   {
+#   print "WARNING : some profiles contain incorrect bottom depth or depth, PLEASE correct your ODV file (these profiles are NOT extracted)" > "/dev/stderr";
+#   print meta[10],newlevel[1],newlevel[2],level[1],level[2] > "/dev/stderr";
+   err[j]=1
+   }
+  else
+   {
+    err[j]=0
+   }
+  }
+ }
+}
 
 #conformity of profiles
 if (meta[8]!=$10 && meta[9]==$11) 
@@ -208,21 +246,39 @@ zin[i]=$4;vin[i]=$3;i=i+1#;print "uu",i-1,zin[i-1],vin[i-1]
    } 
 else
 # profile now to be treated
+
+#{print isextractf > "/dev/stderr"}
+#{print newlevel[1],newlevel[2],level[1],level[2] > "/dev/stderr"}
+
   {
-zzz=$4;vvv=$3;mm1=$1;mm2=$2;mm3=$3;mm4=$4;mm5=$5;mm6=$6;mm7=$7;mm8=$8;mm9=$9;mm10=$10;mm11=$11;
+zzz=$4;vvv=$3;mm1=$1;mm2=$2;mm3=$3;mm4=$4;mm5=$5;mm6=$6;mm7=$7;mm8=$8;mm9=$9;mm10=$10;mm11=$11;mm12=$12;
 #  print "jjj",i-1,jm,vin[1],zin[1],meta[8],meta[9],vin[i-1],zin[i-1];
- nin=i-1;nout=jm;valex=99999; jmb=vinterp(zin,vin,nin,level,vout,nout,valex);
+  nin=i-1;nout=jm;valex=99999;
+   {if (isextractf==3)
+    jmb=vinterp(zin,vin,nin,newlevel,vout,nout,valex,isextractf);
+   else
+    jmb=vinterp(zin,vin,nin,level,vout,nout,valex,isextractf);
+   }
 # add test to put out only when no exclusion value
-    for (ii=1; ii<=nout; ii++) {if (vout[ii] != valex) print meta[1],meta[2],vout[ii],level[ii],meta[3],meta[4],meta[5],meta[6],meta[7],meta[8],meta[9],10000+(jm-ii+1)};
-    meta[1]=mm1 ; meta[2]=mm2 ; meta[3]=mm5 ; meta[4]=mm6 ; meta[5]=mm7; meta[6]=mm8 ; meta[7]=mm9 ; meta[8]=mm10 ; meta[9]=mm11; 
+    for (ii=1; ii<=nout; ii++) {if (vout[ii] != valex && err[ii] != 1 && isextractf == 3) print meta[1],meta[2],vout[ii],newlevel[ii],meta[3],meta[4],meta[5],meta[6],meta[7],meta[8],meta[9],10000+(jm-ii+1)};
+    for (ii=1; ii<=nout; ii++) {if (vout[ii] != valex && err[ii] != 1 && isextractf != 3) print meta[1],meta[2],vout[ii],level[ii],meta[3],meta[4],meta[5],meta[6],meta[7],meta[8],meta[9],10000+(jm-ii+1)};
+    meta[1]=mm1 ; meta[2]=mm2 ; meta[3]=mm5 ; meta[4]=mm6 ; meta[5]=mm7; meta[6]=mm8 ; meta[7]=mm9 ; meta[8]=mm10 ; meta[9]=mm11 ; meta[10]=mm12; 
     zin[1]=zzz;vin[1]=vvv;i=2;
+    for (ii=1; ii<=nout; ii++) {err[ii]=0};
   }
 } 
 
 END {
- nin=i-1;nout=jm;valex=99999; jmb=vinterp(zin,vin,nin,level,vout,nout,valex);
+ nin=i-1;nout=jm;valex=99999; 
+   {if (isextractf==3)
+    jmb=vinterp(zin,vin,nin,newlevel,vout,nout,valex,isextractf);
+   else
+    jmb=vinterp(zin,vin,nin,level,vout,nout,valex,isextractf);
+   }
 # add test to put out only when no exclusion value
-    for (i=1; i<=nout; i++) {if (vout[i] != valex) print meta[1],meta[2],vout[i],level[i],meta[3],meta[4],meta[5],meta[6],meta[7],meta[8],meta[9],10000+(jm-i+1)};
+#    for (i=1; i<=nout; i++) {if (vout[i] != valex) print meta[1],meta[2],vout[i],level[i],meta[3],meta[4],meta[5],meta[6],meta[7],meta[8],meta[9],10000+(jm-i+1)};
+    for (ii=1; ii<=nout; ii++) {if (vout[ii] != valex && err[ii] != 1 && isextractf == 3) print meta[1],meta[2],vout[ii],newlevel[ii],meta[3],meta[4],meta[5],meta[6],meta[7],meta[8],meta[9],10000+(jm-ii+1)};
+    for (ii=1; ii<=nout; ii++) {if (vout[ii] != valex && err[ii] != 1 && isextractf != 3) print meta[1],meta[2],vout[ii],level[ii],meta[3],meta[4],meta[5],meta[6],meta[7],meta[8],meta[9],10000+(jm-ii+1)};
     }
     
 
