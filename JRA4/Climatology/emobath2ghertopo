@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#------------------------------------------------
+# Sylvain Watelet - 16/04/2016
+# swatelet@ulg.ac.be
+#
+# This script transforms the EMODnet bathymetry in a netcdf file (x.mnt)
+# into a topography in a GHER format (topo_fine.grd) + an info file 
+# (TopoInfo_fine.dat).
+#------------------------------------------------
+
+myfield="DEPTH" # name of the netcdf variable to transform
+ncfile="input/D3.mnt" # name of the netcdf file from EMO bath
+
+# Please CHECK offset and scale factor of the netcdf and adapt DIVA3D/src/Fortran/NC/emobath2ghertopo.f90 !!!
+
+#------------------------------------------------
+# End of user changes
+#------------------------------------------------
+
+echo "The field to transform is $myfield"
+
+../../DIVA3D/bin/emobath2ghertopo.a $ncfile $myfield
+
+echo "The end."
+
+

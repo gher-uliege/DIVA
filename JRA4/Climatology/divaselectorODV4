@@ -336,9 +336,10 @@ return 0
  if [ "$isextractf" == "3" ] 
  then
   cp ${WORK}/"${var}".bigfile ${WORK}/bigfile.nobotdepth #no ${var} to avoid blank spaces problems in fortran
-  cp -v input/topo.grd ${WORK}/topo.grd
-  cp -v input/TopoInfo.dat ${WORK}/TopoInfo.dat
+  cp -v input/topo_fine.grd ${WORK}/topo_fine.grd
+  cp -v input/TopoInfo_fine.dat ${WORK}/TopoInfo_fine.dat
   cd ${WORK}
+  echo "interpolation of the bottom depth..."
   ../../../DIVA3D/bin/interpbottom.a
   cp bigfile.botdepth "${var}".bigfile
   cd ..

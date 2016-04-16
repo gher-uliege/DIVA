@@ -5,7 +5,7 @@ implicit none
 ! Sylvain Watelet - 27/03/2016
 ! swatelelet@ulg.ac.be
 ! 
-! Interpolation of the bottom depth from topo.grd
+! Interpolation of the bottom depth from topo_fine.grd
 !------------------------------------------------
 
       integer nmax,iw,i,j,n,ii,d
@@ -26,8 +26,8 @@ implicit none
       character(len=256)::gherfile,infofile,bigfile,bigfile2
 	character(len=256)::c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,botdepthc
 
-gherfile="topo.grd"
-infofile="TopoInfo.dat"
+gherfile="topo_fine.grd"
+infofile="TopoInfo_fine.dat"
 bigfile="bigfile.nobotdepth"
 bigfile2="bigfile.botdepth"
 
