@@ -91,12 +91,12 @@ fi
 if [ -f './output/3Danalysis/'"$var"'.'$year'.3DNCliste' ]; then
 
 cp -v './output/3Danalysis/'"$var"'.'$year'.3DNCliste' ${DIVADIR}/divastripped/output/3Danalysis/.
-rm './output/3Danalysis/'"$var"'.'$year'.3DNCliste'
+#rm './output/3Danalysis/'"$var"'.'$year'.3DNCliste'
 
 if [ -f './output/3Danalysis/'"$var"'.'$year'.3DNCinfo' ]; then
 
 cp -v './output/3Danalysis/'"$var"'.'$year'.3DNCinfo' ${DIVADIR}/divastripped/output/3Danalysis/.
-rm './output/3Danalysis/'"$var"'.'$year'.3DNCinfo'
+#rm './output/3Danalysis/'"$var"'.'$year'.3DNCinfo'
 
 cd ./output/3Danalysis/
 

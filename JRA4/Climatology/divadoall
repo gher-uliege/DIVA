@@ -151,9 +151,7 @@ isextract=1
 fi
 
 
-if [ "$isextract" == "1" ]
-then
-echo 'divadoall:' Cleaning up the old data files
+echo 'divadoall: Cleaning up the old NC info and list files'
 
 #########################################################
 saveifs=$IFS
@@ -180,6 +178,30 @@ then
 echo 'divadoall:' Erasing 3DNCD info
 rm -f output/3Danalysis/"${var}".${year}.3DNCinfo
 fi
+
+done
+
+done
+IFS=$saveifs
+
+
+if [ "$isextract" == "1" ]
+then
+echo 'divadoall:' Cleaning up the old data files
+
+#########################################################
+saveifs=$IFS
+IFS=$'\n'
+for var in `cat varlist`
+#########################################################
+do
+echo 'divadoall:' variable "$var"
+
+#########################################################
+for year in `cat yearlist`
+#########################################################
+do
+echo 'divadoall:' year $year
 
 #########################################################
 for month in `cat monthlist`

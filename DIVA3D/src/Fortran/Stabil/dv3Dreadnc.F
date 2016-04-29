@@ -1,5 +1,5 @@
 !
-      SUBROUTINE NC_RD3DCL(im4,jm4,km,ipar,time_val,clbnds,
+      SUBROUTINE NC_RD3DCL(im4,jm4,km4,ipar,time_val,clbnds,
      &  var,var1,var2,verr,reler,dbins,obins,rlfield,varbot,varb1,varb2,
      &  clo,cla,dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,
      &  var_min,var_max,vbt_min,vbt_max,ver_min,ver_max,dbin_min,
@@ -16,7 +16,7 @@
 !
 	include "netcdf.inc" 
 !
-        integer                             :: im4,jm4
+        integer                             :: im4,jm4,km4
         integer                             :: im,jm,km,ipar
         real*4                              :: valexc, 
      &            var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
@@ -26,7 +26,7 @@
      &            obin_min,obin_max,rl_min,rl_max
         real*4                              :: hrss,time_val
 !
-        real*4  ,dimension(im4,jm4,km)        :: var, var1, var2
+        real*4  ,dimension(im4,jm4,km4)        :: var, var1, var2
      &                                       , Verr,reler,dbins
      &                                       , obins,rlfield
         real*4  ,dimension(im4,jm4)          :: varbot,varb1,varb2
@@ -36,7 +36,7 @@
 !   
         real*4  ,dimension(im4)              :: clo
         real*4  ,dimension(jm4)              :: cla
-        real*4  ,dimension(km)               :: dep, valexu
+        real*4  ,dimension(km4)               :: dep, valexu
      &                                       , CORLEN, SN, VARBAK
 !
 	character (len=*)     :: file_name,var_shname
@@ -169,6 +169,17 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_READ3DCL dimlen depth'
       ENDIF
+!
+      !----------------------------
+      ! Test coherence of dimensions
+      !----------------------------
+	
+	If ((im4.ne.im).or.(jm4.ne.jm).or.(km4.ne.km)) then
+		write(6,*) "dimensions from GridInfo.dat are:",im4,jm4,km4
+		write(6,*) "dimensions from Netcdf are:",im,jm,km
+		write(6,*) "SEVERE ERROR: the dimensions are incoherent,"
+		write(6,*) " check GridInfo.dat !"
+	Endif
 !
       !----------------------------
       ! Inquire coordinate variables
@@ -661,7 +672,6 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_READ3DCL get varbot'
       ENDIF
-
 
 !
       stpar(1)=1
