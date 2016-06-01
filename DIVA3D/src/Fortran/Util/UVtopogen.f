@@ -21,7 +21,7 @@
       write(6,*) 'into ureadc',M,N
       call ureadc(12,c8,topo,valex,iprecr,imax,jmax,kmax,nbmotr)
       write(6,*) 'out of reading',imax,jmax
-      read (5,*) icoordchange,ifull
+      read (5,*) icoordchange,ifull,ispecialUV
 C NEED TO READ IN ICOORDCHANGE if ONE, change DX and DY, otherwise leave as is
       if (icoordchange.eq.1) then
       rlonmin=X1
@@ -51,7 +51,7 @@ C NEED TO READ IN ICOORDCHANGE if ONE, change DX and DY, otherwise leave as is
       open(file=un,unit=98,form="unformatted")
       open(file=vn,unit=99,form="unformatted")
 C call the velocity generation hre
-      call uvg(topo,U,V,UNN,VNN,M,N,z,dx,dy,valex)
+      call uvg(topo,U,V,UNN,VNN,M,N,z,dx,dy,valex,ifull,ispecialUV)
       close(99)
       close(98)
       goto 1
@@ -60,7 +60,7 @@ C output info file: no, just copy the topoinfo file !
       stop
       end
       
-      subroutine uvg(topo,U,V,UN,VN,M,N,z,dx,dy,valex)
+      subroutine uvg(topo,U,V,UN,VN,M,N,z,dx,dy,valex,ifull,ispecialUV)
       real*4 TOPO(M,N),U(M,N),V(M,N),UN(M,N),VN(M,N)
       real*8 c8(1),DMEAN
       real*4 valex
@@ -97,11 +97,23 @@ C Calculate centered gradients, reduced by distance to level
       if(abs(xi).lt.5) then
       FACTEUR=exp(-xi*xi)
       endif
-      
+         
       if (ifull.eq.1) FACTEUR=1
       
-      u(i,j)=(topo(i,j+1)-topo(i,j-1))*FACTEUR/DY
-      v(i,j)=-(topo(i+1,j)-topo(i-1,j))*FACTEUR/DX
+      if (ispecialUV.eq.1) then 			! coherence with iscleaning=7 (rl dep on grad of topo / topo)
+      u(i,j)=((topo(i,j+1)-topo(i,j-1))*FACTEUR)/(DY*(1.
+     &+abs(topo(i-1,j-1)
+     &+topo(i-1,j)+topo(i-1,j+1)+topo(i,j-1)+topo(i,j)+topo(i,j+1)
+     &+topo(i+1,j-1)+topo(i+1,j)+topo(i+1,j+1))/9.))
+      v(i,j)=(-(topo(i+1,j)-topo(i-1,j))*FACTEUR)/(DX*(1.
+     &+abs(topo(i-1,j-1)
+     &+topo(i-1,j)+topo(i-1,j+1)+topo(i,j-1)+topo(i,j)+topo(i,j+1)
+     &+topo(i+1,j-1)+topo(i+1,j)+topo(i+1,j+1))/9.))
+      else
+     	u(i,j)=(topo(i,j+1)-topo(i,j-1))*FACTEUR/DY
+      	v(i,j)=-(topo(i+1,j)-topo(i-1,j))*FACTEUR/DX
+      endif
+
       enddo
       enddo
 C fill boundaries

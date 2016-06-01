@@ -1,13 +1,30 @@
 #!/bin/bash
 ifull=0
+ispecialUV=0
 if [ "$#" == "1" ]
 then
 if [ "$1" == "-full" ]
 then
-echo //// Full topographic advection
+echo "//// Full topographic advection"
 ifull=1
 fi
 fi
+
+if [ "$#" == "2" ]
+then
+if [ "$1" == "-full" ]
+then
+if [ "$2" == "-indexRL7" ]
+then
+echo
+echo "//// Full topographic advection ; coherent with iscleaning=7, which has produced a var RL field depending on 'grad of topo / topo'"
+echo
+ifull=1
+ispecialUV=1
+fi
+fi
+fi
+
 echo //////////////////////////////////////////////
 echo     Anisotropic correlation along topography
 echo /////////////////////////////////////////////
@@ -51,7 +68,7 @@ cd ./divawork
 if [ -f ../output/diva.log ] ; then
  cp -f ../output/diva.log .
 fi
-echo $icoord $ifull | ../../bin/UVtopogen.a >> diva.log
+echo $icoord $ifull $ispecialUV | ../../bin/UVtopogen.a >> diva.log
 if [ $? -ne 0 ];then
 echo ' '
 echo --------------------------------------------
