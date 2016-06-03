@@ -157,7 +157,7 @@ echo "Working on parameter" "$var"
 # Sylvain Watelet - 21/05/2015
 #------------------------------------------------
 
-grep -w "$var" ODVcolumns > ODVcolumnscandidates
+grep -aw "$var" ODVcolumns > ODVcolumnscandidates
 cat ODVcolumnscandidates | awk -F "[" '{print $1}' | awk -F "\t" '{print $1}' | sed 's/ *$//g' > tmp1
 cat ODVcolumnscandidates | awk -F "\t" '{print $3}' > tmp3
 
