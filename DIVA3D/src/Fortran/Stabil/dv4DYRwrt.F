@@ -62,6 +62,7 @@
       character (len=255)        :: title_string,cellmeth
      &                            , INSTITUT, PRODUCTION
      &                            , SOURCE, COMMENT, Email
+     &				  , Acknowledgements
       character (len=30)         :: Ref_time
       CHARACTER (len=99)         :: var_cfname, var_name
      &                            , dat_name, var1_name, prmliste
@@ -219,6 +220,7 @@
           read(12,*) SOURCE
           read(12,*) COMMENT
           read(12,*) Email
+	  read(12,*) Acknowledgements
           read(12,*) var_lgname
           read(12,*) var_units
           read(12,*) vrb_units
@@ -457,7 +459,8 @@
      &  LEN_TRIM(PRODUCTION),TRIM(PRODUCTION),
      &  LEN_TRIM(SOURCE),TRIM(SOURCE),
      &  LEN_TRIM(Email),TRIM(Email),
-     &  LEN_TRIM(COMMENT),TRIM(COMMENT))
+     &  LEN_TRIM(COMMENT),TRIM(COMMENT),
+     &  LEN_TRIM(Acknowledgements),TRIM(Acknowledgements))
 !
       ENDDO  !ivars
 !

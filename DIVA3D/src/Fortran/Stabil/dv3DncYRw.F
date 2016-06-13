@@ -12,7 +12,8 @@
      &  L_vrb_units,vrb_units,L_title_string,title_string,
      &  L_cellmeth,cellmeth,L_Ref_time,Ref_time,
      &  L_INSTITUT,INSTITUT,L_PRODUCTION,PRODUCTION,L_SOURCE,SOURCE,
-     &  L_Email,Email,L_COMMENT,COMMENT)
+     &  L_Email,Email,L_COMMENT,COMMENT,L_Acknowledgements,
+     &  Acknowledgements)
 !
        use divaio
        IMPLICIT NONE
@@ -26,7 +27,8 @@
      &              , three
         integer     :: L_file_name,L_var_shname,L_var_lgname,
      &  L_var_units,L_vrb_units,L_title_string,L_cellmeth,L_Ref_time,
-     &  L_INSTITUT,L_PRODUCTION,L_SOURCE,L_Email,L_COMMENT
+     &  L_INSTITUT,L_PRODUCTION,L_SOURCE,L_Email,L_COMMENT,
+     &  L_Acknowledgements
 !
         real*4                              :: 
      &            var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
@@ -60,6 +62,7 @@
 	character (len=L_SOURCE)           :: SOURCE
 	character (len=L_Email)            :: Email
 	character (len=L_COMMENT)          :: COMMENT
+	character (len=L_Acknowledgements) :: Acknowledgements
 	character (len=L_vrb_units)        :: vrb_units
 	character (len=L_cellmeth)         :: cellmeth
         character (len=*), DIMENSION(2)   :: l_units
@@ -974,6 +977,13 @@
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put att email'
+      ENDIF
+!
+        STATUS=NF_PUT_ATT_TEXT(NCID,NF_GLOBAL,'Acknowledgements',
+     &	        LEN_TRIM(Acknowledgements),TRIM(Acknowledgements))
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in NC_4DCLIMATO put att Acknowledgements'
       ENDIF
 !
       STATUS=NF_PUT_ATT_TEXT(NCID,NF_GLOBAL,'date',

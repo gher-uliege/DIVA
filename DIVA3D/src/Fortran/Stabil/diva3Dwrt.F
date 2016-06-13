@@ -55,6 +55,7 @@
       CHARACTER (len=255)        :: file_name,Ref_time, ncliste,prmliste
       character (len=255)        :: title_string, cellmeth
      &                        , INSTITUT,PRODUCTION,SOURCE,COMMENT,Email
+     &				,Acknowledgements
       CHARACTER (len=99)         :: var_shname,var_name,var_cfname
       character (len=99)         :: var_lgname
       character (len=20)         :: var_units,vrb_units
@@ -124,6 +125,7 @@
         SOURCE = 'Not specified'
         COMMENT = 'Not specified'
         Email = 'Not specified'
+	Acknowledgements = 'Not specified'
       ELSE
         READ(2,*)! comments
         READ(2,*) ipar
@@ -143,6 +145,8 @@
           READ(2,*) COMMENT
           READ(2,*)! comments
           READ(2,*) Email
+	  READ(2,*)! comments
+          READ(2,*) Acknowledgements
           clbnds = 0.
           CLOSE(2)
       ENDIF
@@ -890,6 +894,7 @@
           write(12,*) "'",TRIM(SOURCE),"'"
           write(12,*) "'",TRIM(COMMENT),"'"
           write(12,*) "'",TRIM(Email),"'"
+          write(12,*) "'",TRIM(Acknowledgements),"'"
           write(12,*) "'",TRIM(var_lgname),"'"
           write(12,*) "'",TRIM(var_units),"'"
           write(12,*) "'",TRIM(vrb_units),"'"
@@ -925,7 +930,8 @@
      &  LEN_TRIM(PRODUCTION),TRIM(PRODUCTION),
      &  LEN_TRIM(SOURCE),TRIM(SOURCE),
      &  LEN_TRIM(Email),TRIM(Email),
-     &  LEN_TRIM(COMMENT),TRIM(COMMENT))
+     &  LEN_TRIM(COMMENT),TRIM(COMMENT),
+     &  LEN_TRIM(Acknowledgements),TRIM(Acknowledgements))
 !
       WRITE(divafile,'("../output/3Danalysis/",
      &a,".1",i4.4,".1",i4.4,".fieldgher.anl")')TRIM(var_shname),

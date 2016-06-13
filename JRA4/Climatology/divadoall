@@ -95,6 +95,8 @@ read commentcomm
 read commentstr
 read emailcomm
 read emailstr
+read acknowledgementscomm
+read acknowledgements
 } < $FILENAME
 else
 echo 'divadoall:' DIVAERRS2 divadoall71 Missing file $FILENAME
@@ -863,6 +865,8 @@ echo $commentcomm >> ./input/3Dinfo
 echo $commentstr >> ./input/3Dinfo
 echo $emailcomm >> ./input/3Dinfo
 echo $emailstr >> ./input/3Dinfo
+echo $acknowledgementscomm >> ./input/3Dinfo
+echo $acknowledgements >> ./input/3Dinfo
 
 dos2unix  ./input/3Dinfo
 
