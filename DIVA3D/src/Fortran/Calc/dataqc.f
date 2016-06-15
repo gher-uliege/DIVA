@@ -13,7 +13,7 @@ C                                                                      C
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       subroutine dataqc(ipr)
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       common/GCV/GCVALN,vargcv,d0d,d1d,d2d,d3d,d4d,atr,btr,ctr,nntr
       zero=0.
       AIIAVER=0
@@ -183,7 +183,7 @@ c      write(76,*) AIIAVER/IIAVER,IIAVER
 
 C  PSEUDO-DATA USED TO COMPUTE ESTIMATION ERROR
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tdata(ndata,4)
 
 C  INPUT OF DATA SET DESCRIPTION

@@ -8,7 +8,7 @@ C                                                                      C
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       subroutine covar(ipr)
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       zero=0.
       read(10,*) ispec
       isumcovar=0
@@ -665,7 +665,7 @@ c      endif
 
       subroutine cvread(lcvelem,cvxy,ncvdata)
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension cvxy(2,*)
       dimension lcvelem(2,*)
       ncvdata=0   
@@ -714,7 +714,7 @@ C  LOOP FOR EVERY ELEMENT: CALCULATION OF ELEMENTARY RHS AND
 C  ASSEMBLING IN THE GLOBAL SECOND MEMBER OF THE SYSTEM
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension trhsg(nddlt),tcoog(nnt1,2),trhse(nddle),
      &          kconn(nelt,nnel)
       one=1.0D0
@@ -808,7 +808,7 @@ C
 C  INTEGRATE ELEMENTARY RHS WHEN ITYP = 2 (FDV ELEMENT)
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tcoog(nnt1,2),trhse(12),kconn(nelt,nnel),
      &          x(0:3),y(0:3),rll(0:3)
      &          ,TRKELE(3,12,*)
@@ -967,7 +967,7 @@ C
 C  INTEGRATE ELEMENTARY MATRIX WHEN ITYP = 3 (FDV ELEMENT)
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tcoog(nnt1,2),trhse(16),kconn(nelt,nnel),
      &          x(0:4),y(0:4),tcele(nelt,2),rll(0:4)
      &         ,TRKELE(3,12,*)
@@ -1150,7 +1150,7 @@ C
 C  INTEGRATE SUB-ELEMENT MATRIX WHEN ITYP = 2 (FDV ELEMENT)
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tgse(10),kindt(nelt),kdata(ndata),
      &          kelos(ndata,2),tdata(ndata,4),
      &          tjaci(2,2),tjac(2,2),tr(10,10),gtemp(10),ep(10)

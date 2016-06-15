@@ -1,4 +1,4 @@
-       include'../Calc/divainc.h'
+#include "../Calc/divainc.h"
 
        integer, dimension(:), allocatable::ksort
        integer, dimension(:,:) , allocatable::kconn

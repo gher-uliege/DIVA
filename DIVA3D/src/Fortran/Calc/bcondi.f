@@ -13,7 +13,7 @@ C                                                                      C
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       subroutine bcondi(ipr)
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
 C
 C  READ THE BOUNDARY CONDITIONS TO BE IMPLEMENTED
 C
@@ -39,7 +39,7 @@ C
 C  I/O BOUNDARY CONDITIONS TO BE FIXED (ONLY DIRICHLET TYPE)
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tcndi(ncond),kcndi(ncond,info)
 C
 C  INPUT OF B.C. DESCRIPTION

@@ -2,7 +2,7 @@
       subroutine JMBCONSTRL(U,X,Y,II,icord,valexll)
 C,dxkm,dykm)
       include 'divapre.h'
-      include 'divainc.h'
+#include "divainc.h"
       real*8 U,X,Y
       real*4 valexll
 

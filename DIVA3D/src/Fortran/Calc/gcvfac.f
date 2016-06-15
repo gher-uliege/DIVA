@@ -13,7 +13,7 @@ C                                                                      C
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       subroutine gcvfac(ipr)
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       real*8 d0d,d1d,d2d,d3d,d4d,atr,btr,ctr
       real*8 aaagcv,bbbgcv,ggggcv,lll1,lll2,lll3,lll4,ll1,ll2,ll3,ll4
       real*8 llll1,llll2,llll3,llll4
@@ -444,7 +444,7 @@ C      write(27,*) d0d/(1+bestguess)
 
 C RANDOM PSEUDO-DATA USED TO COMPUTE GCV ESTIMATION
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tdata(ndata,4)
       integer iseed
       COMMON /CSEED/ ISEED
@@ -506,7 +506,7 @@ C
 
 C READ ANALYSED DATA AT DATA LOCATION
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tdata(ndata,4)
       
       rewind(71)

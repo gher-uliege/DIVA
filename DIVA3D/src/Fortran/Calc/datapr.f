@@ -16,7 +16,7 @@ C                                                                      C
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       subroutine datapr(ipr)
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
 cJMB another bug??? why should there be the declaration???       
 c      dimension kconn(nelt,nnel),tcoog(nnt1,2)
 c jmb
@@ -174,7 +174,7 @@ C  ASSOCIATE ONE ELEMENT TO EACH DATA TO BE FITTED (IF EXISTS)
 C  !!!!!!!!!!!!!!!!  WORKS ONLY FOR ELEMENT OF TYPE 2 !!!!!!!!!!!!!!!!!
 
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tdata(ndatas,4),kconn(nelt,nnel),tcoog(nnt1,2),
      &          kelos(ndatas,2)
       dimension kntc(ncax,ncay,*)
@@ -233,7 +233,7 @@ C  ASSOCIATE ONE ELEMENT TO EACH DATA TO BE FITTED (IF EXISTS)
 C  !!!!!!!!!!!!!!!!  WORKS ONLY FOR ELEMENT OF TYPE 3 !!!!!!!!!!!!!!!!!
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tdata(ndatas,4),kconn(nelt,nnel),tcoog(nnt1,2),
      &          kelos(ndatas,2),tcele(nelt,2)
       do 20 id=1,ndatas
@@ -282,7 +282,7 @@ C
 C  I/O DATA SET TO BE FITTED BY SPLINE SMOOTHONG
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tdata(ndatas,4)
 C JMB2012 dirty hack; if iofort=24 then different reading for sources
       if (iofort.eq.24) then
@@ -332,7 +332,7 @@ C
 C  SORT THE DATA ACCORDING TO THE SEQUENCE OF ELEMENTS
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension kdata(ndata),kelos(ndata,2),kindt(nelt)
       imaxd=0
       do 10 iel=1,nelt
@@ -397,7 +397,7 @@ C --- Compute Linear Regression ---
       PARAMETER (NP = 5)
 
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
 
       DIMENSION TDATA (NDATA,4), KELOS(NDATA,2)
       REAL*8 XMEAN,TOTDAT,SX,SY,SXY,SX2,SY2,SV,SXV,SYV

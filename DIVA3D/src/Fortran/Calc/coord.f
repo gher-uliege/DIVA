@@ -18,7 +18,7 @@ C                                                                      C
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       subroutine coord(ipr)
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
 C
 C  INPUT OF GENERAL DATA
 C     
@@ -38,7 +38,7 @@ C
 
       subroutine llxy(x,y)
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
 
 C      write(6,*) 'BEF x,y',x,y
       if(isspheric.eq.1)  then
@@ -56,7 +56,7 @@ C      write(6,*) 'AFT x,y',x,y
 
       subroutine xyll(x,y)
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       if(isspheric.eq.1)  then
       dyyy=(rlatmax-rlatmin)/1000
       xxx=max(cos(y*RPI/180.),cos(RPI/2-dyyy*RPI/180))
@@ -75,7 +75,7 @@ C
       subroutine alphallxy()
 
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
 
 C      write(6,*) 'alphamr',rl0,alpha0, alpha1,dykm
       rl0=sqrt(2./alpha1)
@@ -93,7 +93,7 @@ C
 C COORDINATE CHANGE TOPO LL to xy 
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tcoog(nnt1,2)
 C
 C FIND LAT MIN, LAT MAX
@@ -199,7 +199,7 @@ C
 C COORDINATE CHANGE LL to XY
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tdata(ndata,4)
 
       do 20 i=1,ndata
@@ -226,7 +226,7 @@ C IF icoordchange: change aspect ratio of u,v
 C 
 
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
 
       if (icoordchange.ne.0) then
 c      do i=1,nnt1

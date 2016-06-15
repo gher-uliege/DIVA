@@ -135,7 +135,7 @@ C  COMPUTE THE LOCALISATION OF THE D.O.F. OF ELEMENT IEL IN THE
 C  GLOBAL D.O.F. VECTOR
 
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension loce(nloc),kconn(nelt,nnel),klink(nnt)
       do 10 i=1,nloc
          loce(i)=0
@@ -212,7 +212,7 @@ C
 C  COMPUTE THE KSKYH VECTOR FROM THE TOPOLOGIC DATA
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension kskyh(nddlt+1),kconn(nelt,nnel),klink(nnt),
      &          kloce(nddle)
       do 10 iel=1,nelt
@@ -292,7 +292,7 @@ C
 C  LOCATE THE (X,Y) POINT IN THE F.E. STRUCTURE (for ITYP = 2)
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension kconn(nelt,nnel),tcoog(nnt1,2)
       ielem=-1
       isub=-1
@@ -336,7 +336,7 @@ C
 C  LOCATE THE (X,Y) POINT IN THE F.E. STRUCTURE (for ITYP = 3)
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension kconn(nelt,nnel),tcoog(nnt1,2),tcele(nelt,2)
       ielem=-1
       isub=-1

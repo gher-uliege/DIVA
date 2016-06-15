@@ -1,7 +1,7 @@
       subroutine repeltest2 (tcoog,kconn,kntc,ncamax)
 C============================================================================
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension kconn(nelt,nnel),tcoog(nnt1,2)
       dimension kntc(ncax,ncay,*)
       dimension ikntc(3),jkntc(3),xn(3),yn(3)
@@ -102,7 +102,7 @@ C============================================================================
       subroutine repeltest3 (tcoog,kconn,kntc,ncamax)
 C============================================================================
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension kconn(nelt,nnel),tcoog(nnt1,2)
       dimension kntc(ncax,ncay,*)
       dimension ikntc(4),jkntc(4),xn(4),yn(4)

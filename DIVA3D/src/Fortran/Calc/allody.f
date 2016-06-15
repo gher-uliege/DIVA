@@ -7,7 +7,7 @@ C     -  ALLODY (dynamical allocation of storage area in S or L vector)
       SUBROUTINE ALLODY(NCOMP,IR,TAB,IDEB,IPR)
 C     ====================================
       include'divapre.h'
-      INCLUDE'divainc.h'
+#include "divainc.h"
       CHARACTER*(*) TAB
       DATA ZERO/0.0D0/
       IF(IR.EQ.0) GO TO 20

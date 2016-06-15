@@ -23,7 +23,7 @@ C%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       subroutine divesp(tcoog,kconn)
 C============================================================================
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension kconn(nelt,nnel),tcoog(nnt1,2)
 
 C COMPUTE THE SIZE OF THE SPACE
@@ -85,7 +85,7 @@ C============================================================================
 C============================================================================
 C COMPUTE THE SIZE OF THE SPACE FOR ELEMENTS OF TYPE 2
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension kconn(nelt,nnel),tcoog(nnt1,2)
       tmax=tcoog(kconn(1,1),1)
       tmix=tcoog(kconn(1,1),1)
@@ -123,7 +123,7 @@ C============================================================================
       subroutine sizes3 (tcoog,kconn)
 C============================================================================
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension kconn(nelt,nnel),tcoog(nnt1,2)
 
 C COMPUTE THE SIZE OF THE SPACE FOR ELEMENTS OF TYPE 3
@@ -163,7 +163,7 @@ C============================================================================
       subroutine repel2 (tcoog,kconn,kntc,ncamax)
 C============================================================================
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension kconn(nelt,nnel),tcoog(nnt1,2)
       dimension kntc(ncax,ncay,*)
       dimension ikntc(3),jkntc(3),xn(3),yn(3)
@@ -274,7 +274,7 @@ C============================================================================
       subroutine repel3 (tcoog,kconn,kntc,ncamax)
 C============================================================================
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension kconn(nelt,nnel),tcoog(nnt1,2)
       dimension kntc(ncax,ncay,*)
       dimension ikntc(4),jkntc(4),xn(4),yn(4)
@@ -376,7 +376,7 @@ C============================================================================
 C  LOCATE THE (X,Y) POINT IN THE F.E. STRUCTURE (for ITYP = 2)
 
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension kconn(nelt,nnel),tcoog(nnt1,2)
       dimension kntc(ncax,ncay,*)
       ielem=-1
@@ -456,7 +456,7 @@ C============================================================================
      &                      kntc,ipr)
 C  LOCATE THE (X,Y) POINT IN THE F.E. STRUCTURE (for ITYP = 3)
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension kconn(nelt,nnel),tcoog(nnt1,2),tcele(nelt,2)
       dimension kntc(ncax,ncay,*)
       ielem=-1
@@ -525,7 +525,7 @@ CJMB2012 added parameters to be able to use it for data AND sources
      & sortdtopti(kindt,kdata,kelos,kelos1,ipr,ndatas,nonlocs)
 C============================================================================
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension kdata(ndatas),kelos(ndatas,2),kindt(nelt)
       dimension kelos1(ndatas)
 
@@ -818,7 +818,7 @@ C=============================================================================
 C=============================================================================
 C  PSEUDO-DATA USED TO COMPUTE ESTIMATION ERROR
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tdata(ndata,4)
 
 C JMB FOR FULL KERNEL CALCULATION
@@ -856,7 +856,7 @@ c=======================================================================
       subroutine fcorropti(x1,x2,y1,y2,corre)
 C=============================================================================
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
 
       external euclidist
       external bessk1
@@ -881,7 +881,7 @@ C=============================================================================
       subroutine tabess
 C=============================================================================
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
 C      dimension tbess(40000)
       external bessk1
       eps=0

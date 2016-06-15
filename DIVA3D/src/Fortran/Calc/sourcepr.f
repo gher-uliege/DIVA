@@ -11,7 +11,7 @@ C                                                                      C
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       subroutine sourcepr(ipr)
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       ifortQ=24
       nsources=0
 C  READ THE sources SET TO COMPUTE THE NUMBER OF DATA CONSTRAINTS

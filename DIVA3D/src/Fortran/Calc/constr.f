@@ -13,7 +13,7 @@ C                                                                      C
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       subroutine constr(ipr)
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
 C
 C  READ GENERAL DATA
 C
@@ -101,7 +101,7 @@ C
 C  I/O NODAL PROPERTIES FOR CONSTRAINT IMPLEMENTATION
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       real*4 valexll,valexuu
       dimension tprop(nnt1,nnpr),tcoog(nnt1,2)
       if (itcs.eq.1.or.itcs.eq.3) then
@@ -206,7 +206,7 @@ C End variable L
       subroutine JMBCONSTR(U,V,X,Y,II,icord,valexuu)
 C,dxkm,dykm)
       include 'divapre.h'
-      include 'divainc.h'
+#include "divainc.h"
       real*8 U,V,X,Y
       
 

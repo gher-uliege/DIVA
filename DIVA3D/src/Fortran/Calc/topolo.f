@@ -13,7 +13,7 @@ C                                                                      C
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       subroutine topolo(ipr)
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
 C
 C  INPUT OF GENERAL DATA
 C
@@ -94,7 +94,7 @@ C
 C  I/O OF TOPOLOGIC DATA SET
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tcoog(nnt1,2),kconn(nelt,nnel),klink(nnt),ksort(nnt),
      &          tcele(nelt,2)
 C

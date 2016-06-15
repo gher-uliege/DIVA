@@ -19,7 +19,7 @@ C                                                                      C
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       subroutine esterr(ipr)
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
  1661 format(3(E22.9))
       zero=0.
       read(10,*) ispec
@@ -518,7 +518,7 @@ C  LOOP FOR EVERY ELEMENT: CALCULATION OF ELEMENTARY RHS AND
 C  ASSEMBLING IN THE GLOBAL SECOND MEMBER OF THE SYSTEM
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension trhsg(nddlt),tcoog(nnt1,2),trhse(nddle),
      &          kconn(nelt,nnel)
       one=1.0D0
@@ -575,7 +575,7 @@ C
 C  INTEGRATE ELEMENTARY RHS WHEN ITYP = 2 (FDV ELEMENT)
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tcoog(nnt1,2),trhse(12),kconn(nelt,nnel),
      &          x(0:3),y(0:3)
      &          ,TRKELE(3,12,*)
@@ -703,7 +703,7 @@ C
 C  INTEGRATE ELEMENTARY MATRIX WHEN ITYP = 3 (FDV ELEMENT)
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tcoog(nnt1,2),trhse(16),kconn(nelt,nnel),
      &          x(0:4),y(0:4),tcele(nelt,2)
      &         ,TRKELE(3,12,*)
@@ -847,7 +847,7 @@ C
 C  INTEGRATE SUB-ELEMENT MATRIX WHEN ITYP = 2 (FDV ELEMENT)
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tgse(10),kindt(nelt),kdata(ndata),
      &          kelos(ndata,2),tdata(ndata,4),
      &          tjaci(2,2),tjac(2,2),tr(10,10),gtemp(10),ep(10)
@@ -1018,7 +1018,7 @@ C         gtemp(i)=gtemp(i)+TRKELEB(k,i,isub,iel)*tgse(k)
 
 C  PSEUDO-DATA USED TO COMPUTE ESTIMATION ERROR
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tdata(ndata,4)
 
 C  INPUT OF DATA SET DESCRIPTION
@@ -1129,7 +1129,7 @@ C  !!!!!!  A CHANGE OF COORDINATES (FROM GLOBAL TO REFERENCE SYSTEM)
 C            IS COMPULSORY                               !!!!!!!!!!!
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tcoog(nnt1,2),kconn(nelt,nnel),kloce(nddle),klocs(3,10),
      &          sol(nddlt),tr(3,12),ddl(15),x(0:3),y(0:3),ddlsub(10),
 c     &          tjac(2,2),tjaci(2,2),wk(10,10),tgrde(nx,ny),ep(10)
@@ -1304,7 +1304,7 @@ C  !!!!!!  A CHANGE OF COORDINATES (FROM GLOBAL TO REFERENCE SYSTEM)
 C            IS COMPULSORY                               !!!!!!!!!!!
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tcoog(nnt1,2),kconn(nelt,nnel),kloce(nddle),klocs(4,10),
      &          sol(nddlt),tr(3,16),ddl(19),x(0:4),y(0:4),ddlsub(10),
      &          tjac(2,2),tjaci(2,2),wk(10,10),tgrde(nx,ny),

@@ -15,7 +15,7 @@ C                                                                      C
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       subroutine meshgn(ipr)
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
 C
 C  INPUT OF GENERAL DATA
 C
@@ -89,7 +89,7 @@ C
 
       subroutine countn(ktpol)
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension ktpol(0:nex+1,0:ney+1)
 C
 C  READ OR CREATE THE TOPOLOGY MATRIX KTPOL:
@@ -165,7 +165,7 @@ C
 C  I/O OF TOPOLOGIC DATA SET
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tcoog(nnt1,2),kconn(nelt,nnel),klink(nnt),ksort(nnt),
      &          tcele(nelt,2),ktpol(0:nex+1,0:ney+1)
 C

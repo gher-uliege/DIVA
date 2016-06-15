@@ -21,7 +21,7 @@ C                                                                      C
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       subroutine solver(ipr)
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
 C
 C  INPUT OF GENERAL DATA
 C
@@ -122,7 +122,7 @@ C  LOOP FOR EVERY ELEMENT: CALCULATION OF ELEMENTARY MATRICES AND
 C  ASSEMBLING IN THE GLOBAL SYSTEM
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tuppe(nterm),tlowe(nterm),tdiag(nddlt),trhsg(nddlt),
      &          tcoog(nnt1,2),tkele(nddle,nddle),trhse(nddle),
      &          kconn(nelt,nnel),kskyh(nddlt+1),tstif(nelt),
@@ -306,7 +306,7 @@ C
 C  INTEGRATE ELEMENTARY MATRIX WHEN ITYP = 2 (FDV ELEMENT)
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tcoog(nnt1,2),tkele(12,12),trhse(12),kconn(nelt,nnel),
      &          x(0:3),y(0:3),wg(ng),tprop(nnt1,nnpr),u(0:3),v(0:3)
 C
@@ -612,7 +612,7 @@ C
 C  INTEGRATE ELEMENTARY MATRIX WHEN ITYP = 2 (FDV ELEMENT)
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tcoog(nnt1,2),tkele(16,16),trhse(16),kconn(nelt,nnel),
      &          x(0:4),y(0:4),wg(ng),tprop(nnt1,nnpr),u(0:4),v(0:4),
      &          tcele(nelt,2)
@@ -967,7 +967,7 @@ C
 C  INTEGRATE SUB-ELEMENT MATRIX WHEN ITYP = 2 (FDV ELEMENT)
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tkse(10,10),tgse(10),kindt(nelt),kdata(ndata),
      &          kelos(ndata,2),tdata(ndata,4),tshag(10,8,ng),
      &          tjaci(2,2),t2j(3,3),tp(10),wg(ng),derx1(10),derx2(10),
@@ -1419,7 +1419,7 @@ C
 C  FIX BOUNDARY CONDITIONS IN THE GLOBAL MATRIX SYSTEM
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tuppe(nterm),tlowe(*),tdiag(nddlt),trhsg(nddlt),
      &          tcndi(ncond),kcndi(ncond,info),kskyh(nddlt+1),
      &          klink(nnt)
@@ -1467,7 +1467,7 @@ C
 C  PRINT THE SOLUTION AT PRINCIPAL CONNECTORS
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tcoog(nnt1,2),klink(nnt),sol(nddlt)
       if(ityp.eq.2.or.ityp.eq.3) then
 c         write(81,400)
@@ -1494,7 +1494,7 @@ C
 C  INTEGRATE ELEMENTARY MATRIX WHEN ITYP = 2 (FDV ELEMENT)
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension klocs(3,10)
       klocs(1,1)=13
       klocs(1,2)=14
@@ -1536,7 +1536,7 @@ C
 C  INTEGRATE ELEMENTARY MATRIX WHEN ITYP = 3 (FDV ELEMENT)
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension klocs(4,10)
       klocs(1,1)=17
       klocs(1,2)=18

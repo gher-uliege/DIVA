@@ -17,7 +17,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       subroutine stores(ipr)
       include'divapre.h'
       real*8 c8,gcvaln,vargcv
-      include'divainc.h'
+#include "divainc.h"
       real*8 d0d,d1d,d2d,d3d,d4d,atr,btr,ctr
       common/GCV/GCVALN,vargcv,d0d,d1d,d2d,d3d,d4d,atr,btr,ctr,nntr
       GCVALN=0
@@ -405,7 +405,7 @@ C  !!!!!!  A CHANGE OF COORDINATES (FROM GLOBAL TO REFERENCE SYSTEM)
 C            IS COMPULSORY                               !!!!!!!!!!!
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tcoog(nnt1,2),kconn(nelt,nnel),kloce(nddle),klocs(3,10),
      &          sol(nddlt),tr(3,12),ddl(15),x(0:3),y(0:3),ddlsub(10),
      &          tjac(2,2),tjaci(2,2),wk(10,10),tgrds(nx,ny),ep(10)
@@ -592,7 +592,7 @@ C  !!!!!!  A CHANGE OF COORDINATES (FROM GLOBAL TO REFERENCE SYSTEM)
 C            IS COMPULSORY                               !!!!!!!!!!!
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tcoog(nnt1,2),kconn(nelt,nnel),kloce(nddle),klocs(4,10),
      &          sol(nddlt),tr(3,16),ddl(19),x(0:4),y(0:4),ddlsub(10),
      &          tjac(2,2),tjaci(2,2),wk(10,10),tgrds(nx,ny),
@@ -786,7 +786,7 @@ C  THIS ROUTINE GENERATES A LIST OF POINTS (X,Y,IEL,ISUB) ON A REGULAR
 C  GRID, WHERE THE SOLUTION IS REQUIRED
 C
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
       dimension tcoog(nnt1,2),kconn(nelt,nnel),tcele(nelt,2)
 C
 C  FOR ITYP = 2 ...

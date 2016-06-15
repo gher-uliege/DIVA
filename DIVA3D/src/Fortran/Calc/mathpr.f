@@ -12,7 +12,7 @@ C                                                                      C
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
       subroutine mathpr(ipr)
       include'divapre.h'
-      include'divainc.h'
+#include "divainc.h"
 C
 C  input of general data
 C

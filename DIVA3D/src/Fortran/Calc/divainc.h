@@ -19,8 +19,14 @@ C      COMMON /SDYN/ S
 C      COMMON /LDYN/ L
 C
 C#else
+
+#ifdef DIVAHUGEMEMORY
+      PARAMETER(nrea=255000000)
+      PARAMETER(nent=25000000)
+#else
       PARAMETER(nrea=180000000)
       PARAMETER(nent=20000000)
+#endif
 
       COMMON /SDYN/ S(nrea)
       COMMON /LDYN/ L(nent)
