@@ -4,7 +4,8 @@
          real(kind=8)::tmp1(ndatamax),tmp2(ndatamax),tmp3(ndatamax),tmp4(ndatamax)
 	 character(len=250)::yc,mc,dc,time1,tmp5_1
          character(len=50),dimension(ndatamax)::time,tmp5 ! remark for developpers : too big size (len*dim) creates compilation errors.
-	 character(len=50)::c1,c2,c3,c4,c5,c6,c7,c8,c9,c10
+	 character(len=50)::c1,c2,c3,c4,c5,c6,c7,c8,c9 !,c10
+	 character(len=80)::c10
 	 integer::y,m,d
 	 real(kind=8)::mjd
 
@@ -129,7 +130,8 @@
          do i=1,ndata
          write(21,*) rx(i)
 	 read(20,*) c1,c2,c3,c4,c5,c6,c7,c8,c9,c10
-	 write(22,'(3(a,x),f4.2,x,6(a,x))') trim(c1),trim(c2),trim(c3),w(i)/rx(i),trim(c5),trim(c6),trim(c7),trim(c8),trim(c9),trim(c10)
+	 write(22,'(3(a,x),f4.2,x,6(a,x))') trim(c1),trim(c2),trim(c3),w(i)/rx(i),trim(c5),trim(c6),trim(c7),trim(c8),trim(c9),&
+     &trim(adjustl(c10))
          enddo
          stop
          end
