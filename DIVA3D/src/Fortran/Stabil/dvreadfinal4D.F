@@ -40,7 +40,7 @@
         real*4  ,dimension(im4,jm4,km,time_len)  :: var, var1, var2
      &                                       , Verr,reler,dbins
      &                                       , obins,rlfield
-        real*4  ,dimension(im4,jm4)          :: varbot,varb1,varb2
+        real*4  ,dimension(im4,jm4,time_len)  :: varbot,varb1,varb2
 !
         real*4  ,dimension(2,time_len)              :: clbnds
 	real*4	,dimension(2)		     :: climatology_bounds
@@ -841,7 +841,7 @@
       star2(3)=icdf
       coun2(1)=IM
       coun2(2)=JM
-      coun2(3)=1
+      coun2(3)=time_len
 ! 
       status=nf_get_vara_real(ncid,id2d1, star2, coun2,varbot)
       IF (status .NE.nf_noerr) THEN

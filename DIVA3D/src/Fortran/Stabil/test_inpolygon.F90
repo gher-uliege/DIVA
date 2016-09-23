@@ -29,8 +29,9 @@ logical::in,on
       REAL*4 , DIMENSION(:)  ,  ALLOCATABLE :: XLON,YLAT, time_val
       REAL*4 , DIMENSION(:,:), ALLOCATABLE :: CORLEN, SN, VARBAK
 !
-      REAL*4 ,DIMENSION(:,:),    ALLOCATABLE :: resmax1,resmin1,clbnds	&
-     &                                        , varbot			&
+      REAL*4 ,DIMENSION(:,:),    ALLOCATABLE :: resmax1,resmin1,clbnds
+!
+      REAL*4 ,DIMENSION(:,:,:),    ALLOCATABLE :: varbot		&
      &                                        , varb1, varb2
 !
       REAL*4 , DIMENSION(:,:,:,:),  ALLOCATABLE :: var, var1, var2	&
@@ -158,9 +159,9 @@ var_shname=ncfile(21:len_trim(ncfile)-9)
 !
       ALLOCATE(resmax1(1:NY,NK))
       ALLOCATE(resmin1(1:NY,NK))
-      ALLOCATE(varbot(1:NX,1:NY))
-      ALLOCATE(varb1(1:NX,1:NY))
-      ALLOCATE(varb2(1:NX,1:NY))
+      ALLOCATE(varbot(1:NX,1:NY,time_len))
+      ALLOCATE(varb1(1:NX,1:NY,time_len))
+      ALLOCATE(varb2(1:NX,1:NY,time_len))
 !
       ALLOCATE(dep(NK))
       ALLOCATE(CORLEN(NK,time_len))
@@ -257,9 +258,9 @@ Do j=1,NY
 		 dbins(i,j,:,:)=VALEXC
 		 obins(i,j,:,:)=VALEXC
 		 rlfield(i,j,:,:)=VALEXC
-		 varbot(i,j)=VALEXC
-		 varb1(i,j)=VALEXC
-		 varb2(i,j)=VALEXC
+		 varbot(i,j,:)=VALEXC
+		 varb1(i,j,:)=VALEXC
+		 varb2(i,j,:)=VALEXC
      		end if
 	Enddo
    
@@ -292,8 +293,8 @@ file_4Dnc=outfile
      &	var2(imin:imax,jmin:jmax,:,:),verr(imin:imax,jmin:jmax,:,:),		&
      &	reler(imin:imax,jmin:jmax,:,:),dbins(imin:imax,jmin:jmax,:,:),		&
      &	obins(imin:imax,jmin:jmax,:,:),rlfield(imin:imax,jmin:jmax,:,:),	&
-     &  varbot(imin:imax,jmin:jmax),varb1(imin:imax,jmin:jmax),			&
-     &	varb2(imin:imax,jmin:jmax),						&
+     &  varbot(imin:imax,jmin:jmax,:),varb1(imin:imax,jmin:jmax,:),		&
+     &	varb2(imin:imax,jmin:jmax,:),						&
      &  xlon(imin:imax),ylat(jmin:jmax),dep,CORLEN,SN,VARBAK,IREG,ISPEC,ICOOC,	&
      &  var_min0,var_max0,vbt_min0,vbt_max0,ver_min0,ver_max0,			&
      &  dbin_min0,dbin_max0,var1_min0,var1_max0,var2_min0,var2_max0,		&
