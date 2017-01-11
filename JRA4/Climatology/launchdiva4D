@@ -1,0 +1,269 @@
+#!/bin/bash
+
+#################################################
+# Sylvain Watelet -23/11/2016 ###################
+# swatelet@ulg.ac.be ############################
+#
+# Adapted by Alexander Barth
+#################################################
+
+
+programname=$0
+
+function usage {
+    echo "Usage: $programname --with-many-arguments ..."
+    echo "Arguments (optional):"
+    echo "   --help                         print this message"
+    echo "   --outdir='value'               Output directory"
+    echo "Arguments (all mandatory):"
+    echo "   --data=file1,file2,...         comma-separated list of data files (to generate the file datasource)"
+    echo "   --years=y1,y2,...              comma-separated list of year ranges (to generate the file yearlist)"
+    echo "   --months=m1,m2,...             comma-separated list of month ranges (to generate the file monthlist)"
+    echo "   --qfs=qf1,qf2,...              comma-separated list of quality-flags (to generate the file qflist)"
+    echo "   --vars=var1,var2,...           comma-separated list of variables (to generate the file varlist)"
+    echo "   --depths=depth1,depth2,...     comma-separated list of depths (to generate the file contour.depth)"
+    echo "   --signal-to-noise-ratio=value  signal to noise ratio"
+    echo "   --correlation-length=value     correlation length (in arc degrees)"
+    echo "   --xori=value                   longitude of the first grid point (south-west corner)"
+    echo "   --yori=value                   latitude of the first grid point (south-west corner)"
+    echo "   --dx=value                     resolution in x-direction (degrees)"
+    echo "   --dy=value                     resolution in y-direction (degrees)"
+    echo "   --nx=value                     number of grid points in x-direction"
+    echo "   --ny=value                     number of grid points in y-direction"
+    echo "   --institution='value'          institution name"
+    echo "   --group='name'                 name of the group"
+    echo "   --comment='value'              some comment"
+    echo "   --email='value'                your email"
+    echo "   --acknowledgements='value'     data acknowledgement"
+    echo "   --datasource='value'           description of the data source"
+    echo "   --title='value'                title of the netCDF file"
+    echo "   --bathymetry='value'           filename of the bathymetry netCDF file"
+    echo
+    echo "There should be no space before and after the equal sign."
+    echo "If the value of the parameter contains a space, then the value should in quotes"
+
+    exit 1
+}
+
+
+function writelist() {
+    # save a coma-separated  and save it to a file with one item per line
+    # call as
+    # writelist "a,b,c" > myfile_with_abc
+
+    IFS=',' read -r -a list <<< "$1"
+
+    # print list
+    printf "%s\n" "${list[@]}"
+
+    # additional new line to make DIVA happy
+    echo
+}
+
+DRY_RUN=off
+# process arguments
+
+while [[ $# -ge 1 ]]; do
+    key="$1"
+
+    case $1 in
+        --help | -h )
+            usage
+            ;;
+
+        --dry-run)
+            DRY_RUN=on
+            ;;
+
+	--data=* | \
+	--vars=* | \
+        --qfs=* | \
+	--months=* | \
+	--years=* | \
+	--depths=* | \
+	--signal-to-noise-ratio=* | \
+        --correlation-length=* | \
+	--xori=* | \
+	--yori=* | \
+	--dx=* | \
+	--dy=* | \
+	--nx=* | \
+	--ny=* | \
+        --institution=* | \
+        --group=* | \
+        --comment=* | \
+        --email=* | \
+        --acknowledgements=* | \
+        --datasource=* | \
+        --outdir=* | \
+        --bathymetry=* | \
+        --title=*)
+            # parse this type of parameter: --some-param=somevalue and stores the
+            # value "somevalue" in the bash variable SOME_PARAM
+
+            # strip leading --
+            tmp="${key#*--}"
+
+            # strip everything after first =
+            varname=${tmp%%=*}
+
+            # transform to upper-case and replace - by _
+            varname=$(echo "$varname" | tr '[:lower:]' '[:upper:]' | tr '-' '_')
+
+            # declare variable
+            declare "${varname}"="${key#*=}"
+            ;;
+
+        *)
+            # unknown option
+            echo "unknown option $key; try $programname --help"
+	    exit  1
+
+    esac
+    shift
+done
+
+
+path4D="."
+inputpath="$path4D/input"
+
+
+writelist "$DATA" > "$path4D/datasource"
+writelist "$YEARS" > "$path4D/yearlist"
+writelist "$MONTHS" > "$path4D/monthlist"
+writelist "$QFS" > "$path4D/qflist"
+writelist "$VARS" > "$path4D/varlist"
+writelist "$DEPTHS" > "$inputpath/contour.depth"
+
+IFS=',' read -r -a DEPTHS_VEC <<< "$DEPTHS"
+IFS=',' read -r -a VARS_VEC <<< "$VARS"
+
+
+echo '# advection flag
+0
+# reference field flag
+0
+# vriable year code
+00000000
+# variable month code
+0000
+' > "$path4D/constandrefe"
+
+echo "Data extraction: 1 do it, 0 do nothing, -1 press coord, -10 pressure+Saunders
+1
+boundary lines and coastlines generation: 0 nothing, 1: contours, 2: UV, 3: 1+2
+1
+cleaning data on mesh: 1, 2: RL, 3: both, 4: 1 + outliers elimination, 5: =4+2
+0
+minimal number of data in a layer. If less, uses data from any month.
+0
+Parameters estimation and vertical filtering:
+-30
+Minimal L
+1.4
+Maximal L
+10.
+Minimal SN
+0.1
+Maximal SN
+5.0
+Analysis and reference field:
+1
+lowerlevel number
+1
+upperlevel number
+${#DEPTHS_VEC[@]}
+4D netcdf files generation:
+11
+gnuplot plots: 0 or 1
+0
+Data detrending: number of groups, 0 if no detrending.
+0
+" > "$path4D/driver"
+
+
+echo " Title string for 3D NetCDF file:
+'$TITLE'
+ Reference time for data (ie: days since since 1900-01-01), if not climatological data
+'months since since xxxx-01-01'
+ Time value (that reprsents the data set), if not climatological data
+1200
+ Cell_methode string:
+'time: mean (this month data from all years)'
+ Institution name: where the dataset was produced.
+'$INSTITUTION'
+ Production group and e-mail
+'$GROUP'
+ Source (observation, radiosonde, database, model-generated data,...)
+'$DATASOURCE'
+Comment
+'$COMMENT'
+Autor e-mail adress (or contact person to report problems)
+'$EMAIL'
+Acknowledgements
+'$ACKNOWLEDGEMENTS'
+" > "$inputpath/NCDFinfo"
+
+echo "# Lc: correlation length (in units coherent with your data)#
+$CORRELATION_LENGTH
+# icoordchange (=0 if no change of coordinates is to be performed; =1 if positions are in degrees and if you want to use real distances)#
+1
+# ispec: output files required#
+11
+# ireg: mode selected for background field: 0=null guess; 1=mean of data; 2=regression plan if at least 3 non-aligned data provided#
+1
+# xori: x-coordinate of the first grid point of the output#
+$XORI
+# xori: y-coordinate of the first grid point of the output#
+$YORI
+# dx: step of output grid#
+$DX
+# dy: step of output grid#
+$DY
+# nx: number of grid points in the x-direction#
+$NX
+# ny: number of grid points in the y-direction#
+$NY
+# valex: exclusion value#
+-99
+# snr: signal to noise ratio of the whole dataset#
+$SIGNAL_TO_NOISE_RATIO
+# varbak: variance of the background field. If zero, no error fields are produced. If one, relative errors are obtained#
+1.0
+" > "$inputpath/param.par"
+
+
+# Bathymetry
+
+cp "$BATHYMETRY" "$inputpath/diva_bath.nc"
+(
+    cd "$inputpath"
+    ../../../DIVA3D/bin/divabath2topogrd.a
+)
+
+
+
+#for debugging to inspect all files
+if [ "$DRY_RUN" == "ON" ]; then
+    exit
+fi
+
+# delete files which would be overwritten
+for v in "${VARS_VEC[@]}"; do
+    rm "$path4D/output/3Danalysis/$v.4Danl.nc"
+done
+
+
+(
+    cd "$path4D"
+    export PATH=".:$PATH"
+    ./divadoall
+)
+
+# copy results if OUTDIR set
+
+if [ "$OUTDIR" ]; then
+    for v in "${VARS_VEC[@]}"; do
+        cp "$path4D/output/3Danalysis/$v.4Danl.nc" "$OUTDIR"
+    done
+fi
