@@ -1,8 +1,10 @@
 # DIVA
 
-DIVA allows the spatial interpolation of data (analysis) in an optimal way, comparable to optimal interpolation (OI). In comparison to OI it takes into account coastlines, sub-basins and advection. Calculations are highly optimized and rely on a finite element resolution. Tools to generate the finite element mesh are provided as well as tools to optimize the parameters of the analysis. Quality control of data can be performed and error fields can be calculated. Also detrending of data is possible. Finally 3D and 4D extensions are included with emphasis on direct computations of climatologies from ODV spreadsheet files.
+DIVA allows the spatial interpolation of data (*analysis*) in an optimal way, comparable to optimal interpolation (OI). In comparison to OI, it takes into account coastlines, sub-basins and advection. Calculations are highly optimized and rely on a [finite element](https://en.wikipedia.org/wiki/Finite_element_method) resolution. 
 
-The DIVA development has received funding from the European Union Sixth Framework Programme (FP6/2002-2006) under grant agreement n° 026212, SeaDataNet, Seventh Framework Programme (FP7/2007-2013) under grant agreement n° 283607, SeaDataNet SeaDataNet II, and project EMODNet (MARE/2008/03 - Lot 3 Chemistry - SI2.531432) from the Directorate-General for Maritime Affairs and Fisheries.
+Tools to generate the finite element mesh are provided as well as tools to optimize the parameters of the analysis. Quality control of data can be performed and error fields can be calculated. In addition, *detrending* of data is possible. Finally 3D and 4D extensions are included with emphasis on direct computations of climatologies from Ocean Data View (ODV) spreadsheet files.
+
+The DIVA development has received funding from the European Union Sixth Framework Programme (FP6/2002-2006) under grant agreement n° 026212, SeaDataNet, Seventh Framework Programme (FP7/2007-2013) under grant agreement n° 283607, SeaDataNet II, SeaDataCloud and EMODNet (MARE/2008/03 - Lot 3 Chemistry - SI2.531432) from the Directorate-General for Maritime Affairs and Fisheries.
 
 ## How does it work?
 
@@ -20,7 +22,7 @@ The advantage of the method over classic interpolation methods is multiple:
 
 If you are familiar with Ocean Data View [ODV](http://odv.awi.de/) you can access DIVA gridding when plotting vertical or horizontal sections as the other 25000 scientists using ODV.
 
-You can also use basic DIVA features in a web application Diva on Web if you have your data ready in a simple three-column ascii file or ODV ascii spreadsheet format. 
+You can also use basic DIVA features in a web application [Diva on Web](http://gher-diva.phys.ulg.ac.be/web-vis/diva.html) if you have your data ready in a simple three-column ascii file or ODV ascii spreadsheet format. 
 
 ##  Publications & documents 
 
