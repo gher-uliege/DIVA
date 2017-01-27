@@ -1,4 +1,4 @@
-# test_git_DIVA
+# DIVA
 
 DIVA allows the spatial interpolation of data (analysis) in an optimal way, comparable to optimal interpolation (OI). In comparison to OI it takes into account coastlines, sub-basins and advection. Calculations are highly optimized and rely on a finite element resolution. Tools to generate the finite element mesh are provided as well as tools to optimize the parameters of the analysis. Quality control of data can be performed and error fields can be calculated. Also detrending of data is possible. Finally 3D and 4D extensions are included with emphasis on direct computations of climatologies from ODV spreadsheet files.
 
