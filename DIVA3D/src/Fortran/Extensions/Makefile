@@ -3,13 +3,13 @@
 # Compiler
 FC=/usr/bin/gfortran
 # flags for maximum performance or for debugging
-FCFLAGS=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE -DDIVAHUGEMEMORYa
+FCFLAGS=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE -DDIVAHUGEMEMORY
 #FCFLAGS=-O2
 
 LDFLAGS=-L/usr/local/lib -lnetcdff  -lnetcdf -lnetcdf
 ncinc=-I/usr/local/include
 
-BINDIR=../../bin/
+BINDIR=../../../bin/
 	
 ureadwrite := ureadc.f uwritc.f
 sources := $(filter-out $(ureadwrite),$(wildcard *.f))
@@ -25,6 +25,7 @@ uwritc.o : uwritc.f
 extract.a : extract.f
 	$(FC) extract.f -o extract.a $(LDFLAGS)
 $(executables) : $(sources)
+	@ mkdir -p ${BINDIR}
 	$(FC) $(FCFLAGS) $< -o $@
 
 # Utility targets
