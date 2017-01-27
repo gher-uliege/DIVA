@@ -4,7 +4,7 @@ DIVA allows the spatial interpolation of data (*analysis*) in an optimal way, co
 
 Tools to generate the finite element mesh are provided as well as tools to optimize the parameters of the analysis. Quality control of data can be performed and error fields can be calculated. In addition, *detrending* of data is possible. Finally 3D and 4D extensions are included with emphasis on direct computations of climatologies from Ocean Data View (ODV) spreadsheet files.
 
-The DIVA development has received funding from the European Union Sixth Framework Programme (FP6/2002-2006) under grant agreement n° 026212, SeaDataNet, Seventh Framework Programme (FP7/2007-2013) under grant agreement n° 283607, SeaDataNet II, SeaDataCloud and EMODNet (MARE/2008/03 - Lot 3 Chemistry - SI2.531432) from the Directorate-General for Maritime Affairs and Fisheries.
+The DIVA development has received funding from the European Union Sixth Framework Programme (FP6/2002-2006) under grant agreement n° 026212, [SeaDataNet](http://www.seadatanet.org/), Seventh Framework Programme (FP7/2007-2013) under grant agreement n° 283607, SeaDataNet II, SeaDataCloud and [EMODNet](http://www.emodnet.eu/) (MARE/2008/03 - Lot 3 Chemistry - SI2.531432) from the Directorate-General for Maritime Affairs and Fisheries.
 
 ## How does it work?
 
