@@ -34,13 +34,13 @@ Check the [GHER publications](http://modb.oce.ulg.ac.be/mediawiki/index.php/Publ
 
 Troupin, C.; Sirjacobs, D.; Rixen, M.; Brasseur, P.; Brankart, J.-M.; Barth, A.; Alvera-Azcárate, A.; Capet, A.; Ouberdous, M.; Lenartz, F.; Toussaint, M.-E. & Beckers, J.-M. (2012) Generation of analysis and consistent error fields using the Data Interpolating Variational Analysis (Diva). *Ocean Modelling*, **52-53**: 90-101. doi:[10.1016/j.ocemod.2012.05.002](http://dx.doi.org/10.1016/j.ocemod.2012.05.002)
 
-Beckers, J.-M.; Barth, A.; Troupin, C. & Alvera-Azcárate, A. Some approximate and efficient methods to assess error fields in spatial gridding with DIVA (Data Interpolating Variational Analysis) (2014). *Journal of Atmospheric and Oceanic Technology*,  *31**: 515-530. doi:[10.1175/JTECH-D-13-00130.1](http://dx.doi.org/10.1175/JTECH-D-13-00130.1)
+Beckers, J.-M.; Barth, A.; Troupin, C. & Alvera-Azcárate, A. Some approximate and efficient methods to assess error fields in spatial gridding with DIVA (Data Interpolating Variational Analysis) (2014). *Journal of Atmospheric and Oceanic Technology*,  **31**: 515-530. doi:[10.1175/JTECH-D-13-00130.1](http://dx.doi.org/10.1175/JTECH-D-13-00130.1)
 
 #### Applications 
 
 Capet, A.; Troupin, C.; Carstensen, J.; Grégoire, M. & Beckers, J.-M. Untangling spatial and temporal trends in the variability of the Black Sea Cold Intermediate Layer and mixed Layer Depth using the DIVA detrending procedure (2014). *Ocean Dynamics*, **64**: 315-324. doi:[10.1007/s10236-013-0683-4](http://dx.doi.org/10.1007/s10236-013-0683-4)
 
-Troupin, C.; Machín, F.; Ouberdous, M.; Sirjacobs, D.; Barth, A. & Beckers, J.-M. High-resolution Climatology of the North-East Atlantic using Data-Interpolating Variational Analysis (Diva) (2010). *Journal of Geophysical Researhttp://modb.oce.ulg.ac.be/mediawiki/index.php/Publicationsch*, **115**: C08005. doi:[10.1029/2009JC005512](http://dx.doi.org/10.1029/2009JC005512)
+Troupin, C.; Machín, F.; Ouberdous, M.; Sirjacobs, D.; Barth, A. & Beckers, J.-M. High-resolution Climatology of the North-East Atlantic using Data-Interpolating Variational Analysis (Diva) (2010). *Journal of Geophysical Research*, **115**: C08005. doi:[10.1029/2009JC005512](http://dx.doi.org/10.1029/2009JC005512)
 
 ### User guide
 
