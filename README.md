@@ -24,6 +24,21 @@ If you are familiar with Ocean Data View [ODV](http://odv.awi.de/) you can acces
 
 You can also use basic DIVA features in a web application [Diva on Web](http://gher-diva.phys.ulg.ac.be/web-vis/diva.html) if you have your data ready in a simple three-column ascii file or ODV ascii spreadsheet format. 
 
+## Related projects 
+
+### divand.jl 
+
+[divand.jl](https://github.com/gher-ulg/divand.jl)(Julia)  performs n-dimensional variational analysis of arbitrarily located observations.
+
+### divand.py
+
+[divand.py](https://github.com/gher-ulg/divand.py) is the Python interface to the previous code.
+
+### DivaPythonTools
+
+[DivaPythonTools](https://github.com/gher-ulg/DivaPythonTools) is a set of utilies to read, write and plot the content of input or output files used in Diva.
+
+
 ##  Publications & documents 
 
 Check the [GHER publications](http://modb.oce.ulg.ac.be/mediawiki/index.php/Publications) for the most recent updates.
