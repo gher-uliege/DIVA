@@ -15,7 +15,7 @@ sources90 := $(filter-out divaio.F90,$(wildcard *.f90 *F90))
 executables := $(addprefix $(BINDIR),$(patsubst %.f,%.a,$(patsubst %.F,%.a,$(sources)))) 
 executables90 := $(addprefix $(BINDIR),$(patsubst %.f90,%.a,$(patsubst %.F90,%.a,$(sources90))))
 
-test : divaio.o $(executables) $(executables90)  
+all : divaio.o $(executables) $(executables90)  
 
 divaio.o : divaio.F90
 	$(FC) $(ncinc) -c divaio.F90
