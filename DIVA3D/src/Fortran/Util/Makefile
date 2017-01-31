@@ -3,10 +3,10 @@
 # Compiler
 FC=/usr/bin/gfortran
 # flags for maximum performance or for debugging
-FCFLAGS=-O3 -frecord-marker=4 -cpp 
-
-LDFLAGS=-L/usr/local/lib -lnetcdff  -lnetcdf -lnetcdf
-ncinc=-I/usr/local/include
+FCFLAGS=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE -DDIVAHUGEMEMORY
+#FCFLAGS=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY
+LDFLAGS=-L/usr/lib -lnetcdff  -lnetcdf -lnetcdf
+ncinc=-I/usr/include
 
 BINDIR := ../../../bin/
 	

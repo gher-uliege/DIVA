@@ -4,7 +4,8 @@
 FC=/usr/bin/gfortran
 # flags for maximum performance or for debugging
 FCFLAGS=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE -DDIVAHUGEMEMORY
-LDFLAGS=-L/usr/local/lib -lnetcdff  -lnetcdf -lnetcdf
+#FCFLAGS=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY
+LDFLAGS=-L/usr/local/lib -lnetcdff -lnetcdf
 ncinc=-g -O2 -I/usr/include
 
 BINDIR := ./

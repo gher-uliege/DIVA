@@ -3,8 +3,8 @@
 # Compiler
 FC=/usr/bin/gfortran
 # flags for maximum performance or for debugging
-#FCFLAGS=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE -DDIVAHUGEMEMORY
-FCFLAGS=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY
+FCFLAGS=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE -DDIVAHUGEMEMORY
+
 #FCFLAGSCALC=-O3 -cpp -DDIVAITERATIVE -fbounds-check -DDIVAHUGEMEMORY
 FCFLAGSCALC=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY
 BINDIR := ../../../bin/
