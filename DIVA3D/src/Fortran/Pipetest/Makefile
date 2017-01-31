@@ -24,6 +24,6 @@ cleanobj :
 	rm *.o
 
 cleanexec :
-	rm *.a
+	rm $(executables)
 
 

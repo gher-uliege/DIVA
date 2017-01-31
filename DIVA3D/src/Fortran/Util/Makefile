@@ -10,10 +10,13 @@ ncinc=-I/usr/local/include
 
 BINDIR := ../../../bin/
 	
-sources := $(wildcard *.f .f90)
+sources := $(wildcard *.f *.f90)
 executables := $(addprefix $(BINDIR),$(patsubst %.f,%.a,$(patsubst %.f90,%.a,$(sources)))) 
 
 all : $(executables)  
+
+test:
+	echo $(sources)
 
 $(executables): | $(BINDIR)
 
@@ -35,6 +38,6 @@ cleanobj :
 	rm *.o
 
 cleanexec :
-	rm $(BINDIR)*.a
+	rm $(executables)
 
 

@@ -43,6 +43,6 @@ cleanobj :
 	rm *.o
 
 cleanexec :
-	rm $(BINDIR)*.a
+	rm $(executables)
 
 

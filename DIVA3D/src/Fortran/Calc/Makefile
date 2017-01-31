@@ -3,8 +3,10 @@
 # Compiler
 FC=/usr/bin/gfortran
 # flags for maximum performance or for debugging
-FCFLAGS=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE -DDIVAHUGEMEMORY
-FCFLAGSCALC=-O3 -cpp -DDIVAITERATIVE -fbounds-check -DDIVAHUGEMEMORY
+#FCFLAGS=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE -DDIVAHUGEMEMORY
+FCFLAGS=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY
+#FCFLAGSCALC=-O3 -cpp -DDIVAITERATIVE -fbounds-check -DDIVAHUGEMEMORY
+FCFLAGSCALC=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY
 BINDIR := ../../../bin/
 	
 sources := $(wildcard *.f *.f90)
@@ -20,6 +22,7 @@ $(BINDIR) :
 $(executables) : $(sources) divainc.h divapre.h
 	        $(FC) $(FCFLAG) $(FCFLAGSCALC) -o $@ $(sources)
 
+
 # Utility targets
 .PHONY: cleanall cleanobj cleanexec
 
@@ -29,6 +32,6 @@ cleanobj :
 	rm *.o
 
 cleanexec :
-	rm $(BINDIR)*.a
+	rm $(executables)
 
 

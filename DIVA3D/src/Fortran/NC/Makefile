@@ -3,10 +3,11 @@
 # Compiler
 FC=/usr/bin/gfortran
 # flags for maximum performance or for debugging
-FCFLAGS=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE -DDIVAHUGEMEMORY
-
-LDFLAGS=-L/usr/local/lib -lnetcdff  -lnetcdf -lnetcdf
-ncinc=-I/usr/local/include
+#FCFLAGS=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE -DDIVAHUGEMEMORY
+FCFLAGS=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY
+LDFLAGS=-L/usr/lib -lnetcdff -lnetcdf
+#LDFLAGS=-L/usr/local/lib -lnetcdff  -lnetcdf -lnetcdf
+ncinc=-g -O2 -I/usr/include
 
 BINDIR := ../../../bin/
 	
@@ -43,9 +44,9 @@ $(BINDIR)%.a : %.F90 divaio.o
 cleanall : cleanobj cleanexec
 
 cleanobj :
-	rm *.o
+	rm *.o *.mod
 
 cleanexec :
-	rm $(BINDIR)*.a
+	rm $(executables) $(executables90)
 
 

@@ -4,9 +4,8 @@
 FC=/usr/bin/gfortran
 # flags for maximum performance or for debugging
 FCFLAGS=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE -DDIVAHUGEMEMORY
-
 LDFLAGS=-L/usr/local/lib -lnetcdff  -lnetcdf -lnetcdf
-ncinc=-I/usr/local/include
+ncinc=-g -O2 -I/usr/include
 
 BINDIR := ./
 	
@@ -15,7 +14,9 @@ sources90 := $(filter-out divaio.F90,$(wildcard *.f90 *F90))
 executables := $(addprefix $(BINDIR),$(patsubst %.f,%.a,$(patsubst %.F,%.a,$(sources)))) 
 executables90 := $(addprefix $(BINDIR),$(patsubst %.f90,%.a,$(patsubst %.F90,%.a,$(sources90))))
 
-all : $(executables) $(executables90)  
+all : $(executables) $(executables90) addnoise.a diva3Dqcwrt.a\
+  diva3Dstr.a diva4Dqcwrt.a diva4Dstr.a dv4DYRstr.a \
+  refdispach.a refenoise.a sortall.a sortref.a
 
 $(executables): | $(BINDIR)
 
@@ -52,7 +53,7 @@ datatrans.a : datatrans.F transfun.F userfunc.F
 refetrans.a : refetrans.F transfun.F userfunc.F
 	$(FC) $(FCFLAGS) refetrans.F transfun.F userfunc.F -o refetrans.a
 
-refebintrans.a : transfun.F userfunc.F ureadc.F uwritc.F
+refebintrans.a : refebintrans.F transfun.F userfunc.F ureadc.F uwritc.F
 	$(FC) $(FCFLAGS) refebintrans.F transfun.F userfunc.F ureadc.F uwritc.F -o refebintrans.a
 
 anatrans.a : anatrans.F dv2Dreadnc.F transfun.F userfunc.F dv2Drewtnc.F ureadc.F uwritc.F
@@ -75,6 +76,9 @@ sortall.a : datasorts.F
 
 refenoise.a : refegrnoise.F
 	$(FC) $(FCFLAGS) refegrnoise.F -o refenoise.a
+
+sortref.a : refesorts.F
+	$(FC) $(FCFLAGS) refesorts.F -o sortref.a
 
 datapre.a : datapre.F
 	$(FC) $(FCFLAGS) datapre.F -o datapre.a
@@ -100,7 +104,7 @@ datamix.a : datamix.F
 datadispach.a : datadispach.F
 	$(FC) $(FCFLAGS) datadispach.F -o datadispach.a
 
-refdispach.a : refdispach.F
+refdispach.a : refedispach.F
 	$(FC) $(FCFLAGS) refedispach.F -o refdispach.a
 
 datacalmoy.a : datacalmoy.F
