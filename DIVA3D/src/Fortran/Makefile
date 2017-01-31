@@ -55,4 +55,4 @@ cleanexec:
 	rm $(BINDIR)*.a
 
 cleanobject:
-	rm */*.o
+	rm */*.o */*.mod
