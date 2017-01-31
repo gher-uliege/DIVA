@@ -1,4 +1,8 @@
 
+LDFLAGS=-L/usr/local/lib -lnetcdff  -lnetcdf -lnetcdf
+ncinc=-I/usr/local/include
+
+
 BINDIR=../../bin/
 SRCDIR=$(pwd)
 PLPLOT=Plplot
@@ -34,8 +38,8 @@ pipetest:
 
 stabil:
 	cd Stabil && $(MAKE) all
-	mv *.a $(BINDIR)
 	cd $(SRCDIR)
+	mv Stabil/*.a $(BINDIR)
 	
 util:
 	cd Util && $(MAKE) all
