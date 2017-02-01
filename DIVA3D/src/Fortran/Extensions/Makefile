@@ -32,7 +32,7 @@ $(BINDIR)extract.a : extract.f
 	$(FC) extract.f -o $(BINDIR)extract.a $(LDFLAGS)
 
 $(executables) : $(BINDIR)%.a : %.f
-	$(FC) $(FCFLAGS) $< -o $@
+	$(FC) $(LDFLAGS) $< -o $@
 
 # Utility targets
 .PHONY: cleanall cleanobj cleanexec
