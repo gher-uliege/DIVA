@@ -1,15 +1,5 @@
 # Makefile to compile the Diva code
 
-# Compiler
-FC=/usr/bin/gfortran
-# flags for maximum performance or for debugging
-FCFLAGS=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE -DDIVAHUGEMEMORY
-#FCFLAGS=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY
-LDFLAGS=-L/usr/lib -lnetcdff -lnetcdf
-ncinc=-I/usr/include
-
-BINDIR := ../../../bin/
-	
 ureadwrite := ureadc.f uwritc.f
 sources := $(filter-out $(ureadwrite) extract.f,$(wildcard *.f))
 objects := $(patsubst %.f,%.o,$(ureadwrite))
@@ -23,16 +13,16 @@ $(BINDIR):
 	mkdir $(BINDIR)
 	
 ureadc.o : ureadc.f
-	$(FC) -c $(FCFLAGS) ureadc.f -o ureadc.o
+	$(compiler) -c $(flags) ureadc.f -o ureadc.o
 
 uwritc.o : uwritc.f
-	$(FC) -c $(FCFLAGS) uwritc.f -o uwritc.o
+	$(compiler) -c $(flags) uwritc.f -o uwritc.o
 
 $(BINDIR)extract.a : extract.f
-	$(FC) extract.f -o $(BINDIR)extract.a $(LDFLAGS)
+	$(compiler) extract.f -o $(BINDIR)extract.a $(nclib)
 
 $(executables) : $(BINDIR)%.a : %.f
-	$(FC) $(LDFLAGS) $< -o $@
+	$(compiler) $(nclib) $< -o $@
 
 # Utility targets
 .PHONY: cleanall cleanobj cleanexec

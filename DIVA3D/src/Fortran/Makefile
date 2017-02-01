@@ -1,10 +1,13 @@
 
-LDFLAGS=-L/usr/local/lib -lnetcdff  -lnetcdf -lnetcdf
-ncinc=-I/usr/local/include
+export compiler=/usr/bin/gfortran
+export flags=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE -DDIVAHUGEMEMORY
+export flagscalc=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY
+export ncinc=-g -O2 -I/usr/include
+export nclib=-L/usr/lib -lnetcdff -lnetcdf
 
+export SRCDIR=$(PWD)
+export BINDIR=$(SRCDIR)/../../bin/
 
-BINDIR=../../bin/
-SRCDIR=$(pwd)
 PLPLOT=Plplot
 PLPLOT=NoPlplot   # Comment this line of you have Plplot installed
 
@@ -12,6 +15,8 @@ PLPLOT=NoPlplot   # Comment this line of you have Plplot installed
 # we take them all into account
 all: calc extensions mesh netcdf plplot pipetest stabil util
 
+test:
+	echo $(PWD)
 calc:   
 	cd Calc && $(MAKE) all
 	cd $(SRCDIR)
@@ -51,7 +56,7 @@ util:
 cleanall: cleanexec cleanobject
 
 cleanexec:
-	rm $(BINDIR)*.a
+	rm -v $(BINDIR)*.a
 
 cleanobject:
 	rm */*.o */*.mod

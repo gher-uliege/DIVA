@@ -1,15 +1,5 @@
 # Makefile to compile the Diva code
 
-# Compiler
-FC=/usr/bin/gfortran
-# flags for maximum performance or for debugging
-FCFLAGS=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE -DDIVAHUGEMEMORY
-#FCFLAGS=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY
-LDFLAGS=-L/usr/lib -lnetcdff  -lnetcdf -lnetcdf
-ncinc=-I/usr/include
-
-BINDIR := ../../../bin/
-	
 sources := $(wildcard *.f *.f90)
 executables := $(addprefix $(BINDIR),$(patsubst %.f,%.a,$(patsubst %.f90,%.a,$(sources)))) 
 
@@ -24,10 +14,10 @@ $(BINDIR):
 	mkdir $(BINDIR)
 
 $(BINDIR)%.a : %.f
-	$(FC) $(FCFLAGS) -o $@ $< 
+	$(compiler) $(flags) -o $@ $< 
 
 $(BINDIR)%.a : %.f90
-	$(FC) $(FCFLAGS) -o $@ $< 
+	$(compiler) $(flags) -o $@ $< 
 
 # Utility targets
 .PHONY: cleanall cleanobj cleanexec

@@ -1,15 +1,5 @@
 # Makefile to compile the Diva code
 
-# Compiler
-FC=/usr/bin/gfortran
-# flags for maximum performance or for debugging
-FCFLAGS=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE -DDIVAHUGEMEMORY
-#FCFLAGS=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY
-LDFLAGS=-L/usr/lib -lnetcdff -lnetcdf
-ncinc=-g -O2 -I/usr/include
-
-BINDIR := ../../../bin/
-	
 sources := $(wildcard *.f *F)
 sources90 := $(filter-out divaio.F90,$(wildcard *.f90 *F90))
 executables := $(addprefix $(BINDIR),$(patsubst %.f,%.a,$(patsubst %.F,%.a,$(sources)))) 
@@ -25,100 +15,100 @@ $(BINDIR):
 	mkdir $(BINDIR)
 
 ../NC/divaio.o : ../NC/divaio.F90
-	        $(FC) $(ncinc) -c $^ -o $@
+	        $(compiler) $(ncinc) -c $^ -o $@
 
 $(BINDIR)test_inpolygon.a : test_inpolygon.F90 dvreadfinal4D.F dvwritefinal4D.F ../NC/divaio.o
-	$(FC) $(FCFLAGS) $(ncinc) -I ../NC test_inpolygon.F90 dvreadfinal4D.F dvwritefinal4D.F ../NC/divaio.o -o $(BINDIR)test_inpolygon.a $(LDFLAGS)
+	$(compiler) $(flags) $(ncinc) -I ../NC test_inpolygon.F90 dvreadfinal4D.F dvwritefinal4D.F ../NC/divaio.o -o $(BINDIR)test_inpolygon.a $(nclib)
 
 $(BINDIR)diva3Dstr.a : diva3Dwrt.F ureadc.F uwritc.F dv2Dreadnc.F dv3Dncwrt.F ../NC/divaio.o
-	$(FC) $(FCFLAGS) $(ncinc) -I ../NC diva3Dwrt.F ureadc.F uwritc.F dv2Dreadnc.F dv3Dncwrt.F ../NC/divaio.o -o $(BINDIR)diva3Dstr.a $(LDFLAGS)
+	$(compiler) $(flags) $(ncinc) -I ../NC diva3Dwrt.F ureadc.F uwritc.F dv2Dreadnc.F dv3Dncwrt.F ../NC/divaio.o -o $(BINDIR)diva3Dstr.a $(nclib)
 
 $(BINDIR)diva4Dstr.a : diva4Dwrt.F dv3Dreadnc.F dv3Dncwrt.F ../NC/divaio.o
-	$(FC) $(FCFLAGS) $(ncinc) -I ../NC diva4Dwrt.F dv3Dreadnc.F dv3Dncwrt.F ../NC/divaio.o -o $(BINDIR)diva4Dstr.a $(LDFLAGS)
+	$(compiler) $(flags) $(ncinc) -I ../NC diva4Dwrt.F dv3Dreadnc.F dv3Dncwrt.F ../NC/divaio.o -o $(BINDIR)diva4Dstr.a $(nclib)
 
 $(BINDIR)dv4DYRstr.a : dv4DYRwrt.F dv3Dreadnc.F dv3DncYRw.F ../NC/divaio.o
-	$(FC) $(FCFLAGS) $(ncinc) -I ../NC dv4DYRwrt.F dv3Dreadnc.F dv3DncYRw.F ../NC/divaio.o -o $(BINDIR)dv4DYRstr.a $(LDFLAGS)
+	$(compiler) $(flags) $(ncinc) -I ../NC dv4DYRwrt.F dv3Dreadnc.F dv3DncYRw.F ../NC/divaio.o -o $(BINDIR)dv4DYRstr.a $(nclib)
 
 $(BINDIR)diva3Dref.a : diva3Dref.F ureadc.F uwritc.F diva3Dnc.F ../NC/divaio.o
-	$(FC) $(FCFLAGS) $(ncinc) -I ../NC diva3Dref.F ureadc.F uwritc.F diva3Dnc.F ../NC/divaio.o -o $(BINDIR)diva3Dref.a $(LDFLAGS)
+	$(compiler) $(flags) $(ncinc) -I ../NC diva3Dref.F ureadc.F uwritc.F diva3Dnc.F ../NC/divaio.o -o $(BINDIR)diva3Dref.a $(nclib)
 
 $(BINDIR)stabil.a : stabil.F N2brunt.F albe2d.F potmp.F pzcon.F ureadc.F
-	$(FC) $(FCFLAGS) $(ncinc) stabil.F N2brunt.F albe2d.F potmp.F pzcon.F ureadc.F -o $(BINDIR)stabil.a $(LDFLAGS)
+	$(compiler) $(flags) $(ncinc) stabil.F N2brunt.F albe2d.F potmp.F pzcon.F ureadc.F -o $(BINDIR)stabil.a $(nclib)
 
 $(BINDIR)dv3Dtswrt.a : dv3Dtswrt.F dvvarerr.F brunt.F AlpBetSig.F potmp.F pzcon.F dv3Dtsdnc.F ../NC/divaio.o
-	$(FC) $(FCFLAGS) $(ncinc) -I ../NC dv3Dtswrt.F dvvarerr.F brunt.F AlpBetSig.F potmp.F pzcon.F dv3Dtsdnc.F ../NC/divaio.o -o $(BINDIR)dv3Dtswrt.a $(LDFLAGS)
+	$(compiler) $(flags) $(ncinc) -I ../NC dv3Dtswrt.F dvvarerr.F brunt.F AlpBetSig.F potmp.F pzcon.F dv3Dtsdnc.F ../NC/divaio.o -o $(BINDIR)dv3Dtswrt.a $(nclib)
 
 $(BINDIR)datatrans.a : datatrans.F transfun.F userfunc.F
-	$(FC) $(FCFLAGS) datatrans.F transfun.F userfunc.F -o $(BINDIR)datatrans.a
+	$(compiler) $(flags) datatrans.F transfun.F userfunc.F -o $(BINDIR)datatrans.a
 
 $(BINDIR)refetrans.a : refetrans.F transfun.F userfunc.F
-	$(FC) $(FCFLAGS) refetrans.F transfun.F userfunc.F -o $(BINDIR)refetrans.a
+	$(compiler) $(flags) refetrans.F transfun.F userfunc.F -o $(BINDIR)refetrans.a
 
 $(BINDIR)refebintrans.a : refebintrans.F transfun.F userfunc.F ureadc.F uwritc.F
-	$(FC) $(FCFLAGS) refebintrans.F transfun.F userfunc.F ureadc.F uwritc.F -o $(BINDIR)refebintrans.a
+	$(compiler) $(flags) refebintrans.F transfun.F userfunc.F ureadc.F uwritc.F -o $(BINDIR)refebintrans.a
 
 $(BINDIR)anatrans.a : anatrans.F dv2Dreadnc.F transfun.F userfunc.F dv2Drewtnc.F ureadc.F uwritc.F
-	$(FC) $(FCFLAGS) $(ncinc) anatrans.F dv2Dreadnc.F transfun.F userfunc.F dv2Drewtnc.F ureadc.F uwritc.F -o $(BINDIR)anatrans.a $(LDFLAGS)
+	$(compiler) $(flags) $(ncinc) anatrans.F dv2Dreadnc.F transfun.F userfunc.F dv2Drewtnc.F ureadc.F uwritc.F -o $(BINDIR)anatrans.a $(nclib)
 
 $(BINDIR)diva3Dqcwrt.a : diva3D_qc.F ureadc.F uwritc.F dv2Dreadnc.F diva_ncclim.F caldivanorm.F ../NC/divaio.o
-	$(FC) $(FCFLAGS) $(ncinc) -I ../NC diva3D_qc.F ureadc.F uwritc.F dv2Dreadnc.F diva_ncclim.F caldivanorm.F ../NC/divaio.o -o $(BINDIR)diva3Dqcwrt.a $(LDFLAGS)
+	$(compiler) $(flags) $(ncinc) -I ../NC diva3D_qc.F ureadc.F uwritc.F dv2Dreadnc.F diva_ncclim.F caldivanorm.F ../NC/divaio.o -o $(BINDIR)diva3Dqcwrt.a $(nclib)
 
 $(BINDIR)diva4Dqcwrt.a : diva4D_qc.F dv3Dreadnc.F diva_ncclim.F caldivanorm.F calrms.F ../NC/divaio.o
-	$(FC) $(FCFLAGS) $(ncinc) -I ../NC diva4D_qc.F dv3Dreadnc.F diva_ncclim.F caldivanorm.F calrms.F ../NC/divaio.o -o $(BINDIR)diva4Dqcwrt.a $(LDFLAGS)
+	$(compiler) $(flags) $(ncinc) -I ../NC diva4D_qc.F dv3Dreadnc.F diva_ncclim.F caldivanorm.F calrms.F ../NC/divaio.o -o $(BINDIR)diva4Dqcwrt.a $(nclib)
 
 $(BINDIR)fillfilavref.a : fillfilavref.F ureadc.F uwritc.F
-	$(FC) $(FCFLAGS) fillfilavref.F ureadc.F uwritc.F -o $(BINDIR)fillfilavref.a
+	$(compiler) $(flags) fillfilavref.F ureadc.F uwritc.F -o $(BINDIR)fillfilavref.a
 
 $(BINDIR)addnoise.a : datagrpnoise.F
-	$(FC) $(FCFLAGS) datagrpnoise.F -o $(BINDIR)addnoise.a
+	$(compiler) $(flags) datagrpnoise.F -o $(BINDIR)addnoise.a
 
 $(BINDIR)sortall.a : datasorts.F
-	$(FC) $(FCFLAGS) datasorts.F -o $(BINDIR)sortall.a
+	$(compiler) $(flags) datasorts.F -o $(BINDIR)sortall.a
 
 $(BINDIR)refenoise.a : refegrnoise.F
-	$(FC) $(FCFLAGS) refegrnoise.F -o $(BINDIR)refenoise.a
+	$(compiler) $(flags) refegrnoise.F -o $(BINDIR)refenoise.a
 
 $(BINDIR)sortref.a : refesorts.F
-	$(FC) $(FCFLAGS) refesorts.F -o $(BINDIR)sortref.a
+	$(compiler) $(flags) refesorts.F -o $(BINDIR)sortref.a
 
 $(BINDIR)datapre.a : datapre.F
-	$(FC) $(FCFLAGS) datapre.F -o $(BINDIR)datapre.a
+	$(compiler) $(flags) datapre.F -o $(BINDIR)datapre.a
 
 $(BINDIR)wclfile.a : wclfile.F
-	$(FC) $(FCFLAGS) wclfile.F -o $(BINDIR)wclfile.a
+	$(compiler) $(flags) wclfile.F -o $(BINDIR)wclfile.a
 
 $(BINDIR)wsnfile.a : wsnfile.F
-	$(FC) $(FCFLAGS) wsnfile.F -o $(BINDIR)wsnfile.a
+	$(compiler) $(flags) wsnfile.F -o $(BINDIR)wsnfile.a
 
 $(BINDIR)wgcvfile.a : wgcvfile.F
-	$(FC) $(FCFLAGS) wgcvfile.F -o $(BINDIR)wgcvfile.a
+	$(compiler) $(flags) wgcvfile.F -o $(BINDIR)wgcvfile.a
 
 $(BINDIR)boundval.a : boundval.F
-	$(FC) $(FCFLAGS) boundval.F -o $(BINDIR)boundval.a
+	$(compiler) $(flags) boundval.F -o $(BINDIR)boundval.a
 
 $(BINDIR)gebprep.a : gebprep.F
-	$(FC) $(FCFLAGS) gebprep.F -o $(BINDIR)gebprep.a
+	$(compiler) $(flags) gebprep.F -o $(BINDIR)gebprep.a
 
 $(BINDIR)datamix.a : datamix.F
-	$(FC) $(FCFLAGS) datamix.F -o $(BINDIR)datamix.a
+	$(compiler) $(flags) datamix.F -o $(BINDIR)datamix.a
 
 $(BINDIR)datadispach.a : datadispach.F
-	$(FC) $(FCFLAGS) datadispach.F -o $(BINDIR)datadispach.a
+	$(compiler) $(flags) datadispach.F -o $(BINDIR)datadispach.a
 
 $(BINDIR)refdispach.a : refedispach.F
-	$(FC) $(FCFLAGS) refedispach.F -o $(BINDIR)refdispach.a
+	$(compiler) $(flags) refedispach.F -o $(BINDIR)refdispach.a
 
 $(BINDIR)datacalmoy.a : datacalmoy.F
-	$(FC) $(FCFLAGS) datacalmoy.F -o $(BINDIR)datacalmoy.a
+	$(compiler) $(flags) datacalmoy.F -o $(BINDIR)datacalmoy.a
 
 $(BINDIR)dvqcfiles.a : dvqcfiles.F
-	$(FC) $(FCFLAGS) dvqcfiles.F -o $(BINDIR)dvqcfiles.a
+	$(compiler) $(flags) dvqcfiles.F -o $(BINDIR)dvqcfiles.a
 
 $(BINDIR)main_tomvec.a : main_tomvec.f90 tomvec.f
-	$(FC) $(FCFLAGS) main_tomvec.f90 tomvec.f -o $(BINDIR)main_tomvec.a
+	$(compiler) $(flags) main_tomvec.f90 tomvec.f -o $(BINDIR)main_tomvec.a
 
 $(BINDIR)binning_lines.a : binning_lines.f90
-	$(FC) $(FCFLAGS) binning_lines.f90 -o $(BINDIR)binning_lines.a
+	$(compiler) $(flags) binning_lines.f90 -o $(BINDIR)binning_lines.a
 
 
 # Utility targets
