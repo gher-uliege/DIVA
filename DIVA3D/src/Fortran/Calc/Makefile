@@ -7,6 +7,7 @@ FCFLAGS=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE -DDIVAHUGEMEMORY
 
 #FCFLAGSCALC=-O3 -cpp -DDIVAITERATIVE -fbounds-check -DDIVAHUGEMEMORY
 FCFLAGSCALC=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY
+
 BINDIR := ../../../bin/
 	
 sources := $(wildcard *.f *.f90)
@@ -20,8 +21,7 @@ $(BINDIR) :
 	mkdir $(BINDIR)
 
 $(executables) : $(sources) divainc.h divapre.h
-	        $(FC) $(FCFLAG) $(FCFLAGSCALC) -o $@ $(sources)
-
+	$(FC) $(FCFLAGS) $(FCFLAGSCALC) $(sources) -o $@ 
 
 # Utility targets
 .PHONY: cleanall cleanobj cleanexec
