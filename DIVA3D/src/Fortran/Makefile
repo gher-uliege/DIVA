@@ -39,7 +39,6 @@ pipetest:
 stabil:
 	cd Stabil && $(MAKE) all
 	cd $(SRCDIR)
-	mv Stabil/*.a $(BINDIR)
 	
 util:
 	cd Util && $(MAKE) all
