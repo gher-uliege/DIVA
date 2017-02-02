@@ -13,16 +13,16 @@ $(BINDIR):
 	mkdir $(BINDIR)
 	
 ureadc.o : ureadc.f
-	$(compiler) -c $(flags) ureadc.f -o ureadc.o
+	$(compiler) -c $(flags) ureadc.f -o uread$noglobals $nocygc.o
 
 uwritc.o : uwritc.f
 	$(compiler) -c $(flags) uwritc.f -o uwritc.o
 
 $(BINDIR)extract.a : extract.f
-	$(compiler) extract.f -o $(BINDIR)extract.a $(nclib)
+	$(compiler) $(noglobals) $(nocyg) extract.f -o $(BINDIR)extract.a $(nclib)
 
 $(executables) : $(BINDIR)%.a : %.f
-	$(compiler) $(nclib) $< -o $@
+	$(compiler) $(nocyg) $(nclib) $< -o $@
 
 # Utility targets
 .PHONY: cleanall cleanobj cleanexec

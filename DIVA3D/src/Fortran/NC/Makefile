@@ -8,7 +8,7 @@ executables90 := $(addprefix $(BINDIR),$(patsubst %.f90,%.a,$(patsubst %.F90,%.a
 all : divaio.o $(executables) $(executables90)  
 
 divaio.o : divaio.F90
-	$(compiler) $(ncinc) -c divaio.F90
+	$(compiler) $(ncinc) $(nocyg) -c divaio.F90
 
 $(executables): | $(BINDIR)
 
@@ -16,10 +16,10 @@ $(BINDIR):
 	        mkdir $(BINDIR)
 
 $(BINDIR)%.a : %.f
-	$(compiler) -o $@ $< $(nclib)
+	$(compiler) $(nocyg) -o $@ $< $(nclib)
 
 $(BINDIR)%.a : %.F
-	$(compiler) -o $@ $< $(nclib)
+	$(compiler) $(nocyg) -o $@ $< $(nclib)
 
 $(BINDIR)%.a : %.f90 divaio.o
 	$(compiler) $(ncinc) $(nocyg) $< -o $@ divaio.o $(nclib)
