@@ -13,7 +13,7 @@ $(BINDIR):
 	mkdir $(BINDIR)
 	
 ureadc.o : ureadc.f
-	$(compiler) -c $(flags) ureadc.f -o uread$noglobals $nocygc.o
+	$(compiler) -c $(flags) ureadc.f -o ureadc.o
 
 uwritc.o : uwritc.f
 	$(compiler) -c $(flags) uwritc.f -o uwritc.o

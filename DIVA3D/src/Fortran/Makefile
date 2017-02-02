@@ -5,6 +5,9 @@ export flagscalc=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMO
 export ncinc=-g -O2 -I/usr/include
 export nclib=-L/usr/lib -lnetcdff -lnetcdf
 
+# export nocyg=...
+# export noglobals=...
+
 export SRCDIR=$(PWD)
 export BINDIR=$(SRCDIR)/../../bin/
 
