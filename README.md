@@ -8,7 +8,7 @@ The DIVA development has received funding from the European Union Sixth Framewor
 
 ## How does it work?
 
-Diva is a software developed for gridding in situ data.
+Diva is a software tool developed for gridding in situ data.
 It uses a finite-element method to solve a variational principle which takes into account:
  1. the distance between analysis and data (observation constraint),
  2. the regularity of the analysis (smoothness constraint),
