@@ -18,7 +18,7 @@ The advantage of the method over classic interpolation methods is multiple:
 * the coastline are taken into account during the analysis, since the variational principle is solved only in the region covered by the sea. This prevents the information from traveling across boundaries (e.g., peninsula, islands, etc) and then produce artificial mixing between water masses.
 * the numerical cost is not dependent on the number of data, but on the number of degrees of freedom, itself related to the size of the finite-element mesh. 
 
-##  How to try DIVA without installing ?
+##  How to try DIVA without installing?
 
 If you are familiar with Ocean Data View [ODV](http://odv.awi.de/) you can access DIVA gridding when plotting vertical or horizontal sections as the other 25000 scientists using ODV.
 
