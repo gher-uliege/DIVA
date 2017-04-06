@@ -2,8 +2,8 @@
 export compiler=/usr/bin/gfortran
 export flags=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE -DDIVAHUGEMEMORY
 export flagscalc=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY
-export ncinc=-g -O2 -I/usr/include
-export nclib=-L/usr/lib -lnetcdff -lnetcdf
+export ncinc=-g -O2 -I/usr/local/include
+export nclib=-L/usr/local/lib -lnetcdf -lnetcdff
 
 # export nocyg=...
 # export noglobals=...
