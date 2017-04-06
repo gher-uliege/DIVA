@@ -1,10 +1,14 @@
 # DIVA (Data-Interpolating Variational Analysis)
 
-DIVA allows the spatial interpolation of data (*analysis*) in an optimal way, comparable to optimal interpolation (OI). In comparison to OI, it takes into account coastlines, sub-basins and advection. Calculations are highly optimized and rely on a [finite element](https://en.wikipedia.org/wiki/Finite_element_method) resolution. 
+DIVA allows the spatial interpolation of data (*analysis*) in an optimal way, comparable to *optimal interpolation* (OI). In comparison to OI, it takes into account coastlines, sub-basins and advection. Calculations are highly optimized and rely on a [*finite element*](https://en.wikipedia.org/wiki/Finite_element_method) resolution. 
 
-Tools to generate the finite element mesh are provided as well as tools to optimize the parameters of the analysis. Quality control of data can be performed and error fields can be calculated. In addition, *detrending* of data is possible. Finally 3D and 4D extensions are included with emphasis on direct computations of climatologies from Ocean Data View (ODV) spreadsheet files.
+Tools to generate the finite element mesh are provided as well as tools to optimize the parameters of the analysis. Quality control of data can be performed and error fields can be calculated. In addition, *detrending* of data is possible. Finally 3D and 4D extensions are included with emphasis on direct computations of climatologies from [Ocean Data View](https://odv.awi.de/) (ODV) spreadsheet files.
 
-The DIVA development has received funding from the European Union Sixth Framework Programme (FP6/2002-2006) under grant agreement n° 026212, [SeaDataNet](http://www.seadatanet.org/), Seventh Framework Programme (FP7/2007-2013) under grant agreement n° 283607, SeaDataNet II, SeaDataCloud and [EMODNet](http://www.emodnet.eu/) (MARE/2008/03 - Lot 3 Chemistry - SI2.531432) from the Directorate-General for Maritime Affairs and Fisheries.
+![Diva logo](https://cloud.githubusercontent.com/assets/11868914/24106959/c6d8fb44-0d89-11e7-921b-a36fcccf5a21.png)
+
+### Ackowledgments
+
+The DIVA development has received funding from the European Union Sixth Framework Programme (FP6/2002-2006) under grant agreement n° 026212, [SeaDataNet](http://www.seadatanet.org/), Seventh Framework Programme (FP7/2007-2013) under grant agreement n° 283607, SeaDataNet II, SeaDataCloud and [EMODNet](http://www.emodnet.eu/) (MARE/2008/03 - Lot 3 Chemistry - SI2.531432) from the [Directorate-General for Maritime Affairs and Fisheries](http://ec.europa.eu/dgs/maritimeaffairs_fisheries/index_en.htm).
 
 ## How does it work?
 
@@ -39,7 +43,7 @@ You can also use basic DIVA features in a web application [Diva on Web](http://g
 [DivaPythonTools](https://github.com/gher-ulg/DivaPythonTools) is a set of utilies to read, write and plot the content of input or output files used in Diva.
 
 
-##  Publications & documents 
+## Publications & documents 
 
 Check the [GHER publications](http://modb.oce.ulg.ac.be/mediawiki/index.php/Publications) for the most recent updates.
 
