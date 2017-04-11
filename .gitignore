@@ -3,3 +3,5 @@
 *.o
 *.log
 *.mod
+*.nc
+fort.*
