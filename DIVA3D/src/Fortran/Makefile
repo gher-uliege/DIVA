@@ -76,7 +76,7 @@ util: | directories
 clean: cleanexec cleanobject
 
 cleanexec:
-	rm -v $(BINDIR)*.a
+	rm -f $(BINDIR)*.a
 
 cleanobject:
-	rm */*.o */*.mod
+	rm -f */*.o */*.mod
