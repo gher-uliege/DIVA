@@ -10,6 +10,15 @@ export nclib=-L/usr/local/lib -lnetcdf -lnetcdff
 
 export SRCDIR=$(PWD)
 export BINDIR=$(SRCDIR)/../../bin/
+export DIVA2DDIR=$(SRCDIR)/../../divastripped
+export DIVAWORKDIR=$(DIVA2DDIR)/divawork/
+export DIVAMESHDIR=$(DIVA2DDIR)/meshgenwork/
+export DIVAINPUTDIR=$(DIVA2DDIR)/input/
+export DIVAOUTPUTDIR=$(DIVA2DDIR)/output/
+export DIVANCDIR=$(DIVA2DDIR)/output/ghertonetcdf/
+export DIVAMESHVISUDIR=$(DIVA2DDIR)/output/meshvisu/
+
+MKDIR = mkdir -p
 
 PLPLOT=Plplot
 PLPLOT=NoPlplot   # Comment this line of you have Plplot installed
@@ -20,43 +29,51 @@ all: calc extensions mesh netcdf plplot pipetest stabil util
 
 test:
 	echo $(PWD)
-calc:   
+
+directories: | $(DIVAWORKDIR) $(DIVAMESHDIR) $(DIVAINPUTDIR) $(DIVAOUTPUTDIR) $(DIVANCDIR) $(DIVAMESHVISUDIR)
+
+$(DIVAWORKDIR) $(DIVAMESHDIR) $(DIVAINPUTDIR) $(DIVAOUTPUTDIR) $(DIVANCDIR) $(DIVAMESHVISUDIR):
+	$(MKDIR) $@
+
+$(BINDIR):
+	$(MKDIR) $@
+
+calc: | directories
 	cd Calc && $(MAKE) all
 	cd $(SRCDIR)
 
-extensions:
+extensions: | directories
 	cd Extensions && $(MAKE) all
 	cd $(SRCDIR)
 
-mesh:
+mesh: | directories
 	cd Mesh && $(MAKE) all
 	cd $(SRCDIR)
 
-netcdf: 
+netcdf: | directories
 	cd NC && $(MAKE) all
 	cd $(SRCDIR)
 
-plplot:
+plplot: | directories
 	cd $(PLPLOT) && $(MAKE) all
 	cd $(SRCDIR)
 
-pipetest:
+pipetest: | directories
 	cd Pipetest && $(MAKE) all
 	cd $(SRCDIR)
 
-stabil:
+stabil: | directories
 	cd Stabil && $(MAKE) all
 	cd $(SRCDIR)
 	
-util:
+util: | directories
 	cd Util && $(MAKE) all
 	cd $(SRCDIR)
        
-
 # Utility targets
 .PHONY: cleanobject cleanexec cleanall
 
-cleanall: cleanexec cleanobject
+clean: cleanexec cleanobject
 
 cleanexec:
 	rm -v $(BINDIR)*.a
