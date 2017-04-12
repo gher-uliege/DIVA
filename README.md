@@ -17,6 +17,8 @@ It uses a finite-element method to solve a variational principle which takes int
  1. the distance between analysis and data (observation constraint),
  2. the regularity of the analysis (smoothness constraint),
  3. physical laws (behaviour constraint). 
+ 
+ ![800px-diva_gridding_canary](https://cloud.githubusercontent.com/assets/11868914/24946939/09c918fc-1f65-11e7-9974-06264c70ec1e.png)
 
 The advantage of the method over classic interpolation methods is multiple:
 * the coastline are taken into account during the analysis, since the variational principle is solved only in the region covered by the sea. This prevents the information from traveling across boundaries (e.g., peninsula, islands, etc) and then produce artificial mixing between water masses.
@@ -24,9 +26,11 @@ The advantage of the method over classic interpolation methods is multiple:
 
 ##  How to try DIVA without installing?
 
-If you are familiar with Ocean Data View [ODV](http://odv.awi.de/) you can access DIVA gridding when plotting vertical or horizontal sections as the other 25000 scientists using ODV.
+If you are familiar with Ocean Data View [ODV](http://odv.awi.de/) software tool, you can perfom DIVA gridding when plotting vertical or horizontal sections as the other 25000 scientists using ODV.
 
 You can also use basic DIVA features in a web application [Diva on Web](http://gher-diva.phys.ulg.ac.be/web-vis/diva.html) if you have your data ready in a simple three-column ascii file or ODV ascii spreadsheet format. 
+
+![divaonweb](https://cloud.githubusercontent.com/assets/11868914/24947093/a980dd26-1f65-11e7-8715-f1e50bd69a83.png)
 
 ## Related projects 
 
