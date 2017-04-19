@@ -16,8 +16,6 @@ infolog --			| tee -a $divalog
 divaecho ' '
 divaecho "Calc logs written in ${divacalclog}"
 divaecho ' '
-
-infolog -- | tee -a $divacalclog
 divaecho '          Going to analyse a field          '           | tee -a $divacalclog
 divaecho ' '                                                      | tee $divacalclog
 divaecho 'running divacalc with flag number for solver = '$solver | tee -a $divacalclog
