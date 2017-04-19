@@ -1,0 +1,85 @@
+#!/bin/bash
+# Define functions to have color in the logging
+
+function divaecho(){
+  local bold=$(tput bold)
+  local normal=$(tput sgr0)
+  echo -e ${bold}$(basename $0)${normal}: "$@"
+}
+
+function infolog(){
+  local logcolor='\033[0;32m'
+  local nocolor='\033[0m'
+  if [ "${1}" == "--" ]; then
+    echo -e "${logcolor}/////////////////////////////////////////${nocolor}"
+  else
+    echo -e "${logcolor}$(basename $0): $@ ${nocolor}"
+  fi
+}
+
+function warnlog(){
+  local logcolor='\033[0;33m'
+  local nocolor='\033[0m'
+  if [ "${1}" == "!!" ]; then
+    echo -e "${logcolor}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!${nocolor}"
+  else
+    echo -e ${logcolor}$(basename $0): $@ ${nocolor}
+  fi
+}
+
+function errorlog(){
+  local logcolor='\033[0;31m'
+  local nocolor='\033[0m'
+  if [ "${1}" == "!!" ]; then
+    echo -e "${logcolor}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!${nocolor}"
+  else
+    echo -e "${logcolor}$(basename $0): $@ ${nocolor}"
+  fi
+
+}
+
+function hline(){
+  echo "-----------------------------------------"
+}
+
+function errorline(){
+  errorlog "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+}
+
+function warnline(){
+  warnlog "??????????????????????????????????"
+}
+
+function infoline(){
+  infolog "///////////////////////////////"
+}
+
+function titleline(){
+  echo "##################################"
+}
+
+# Create different log files 
+# --------------------------
+
+divarundir=$(pwd)
+
+divalogdir=${divarundir}'/logs/'
+mkdir -pv ${divalogdir}
+
+divalog=$divalogdir'diva.log'
+divacalclog=$divalogdir'divacalc.log'
+divameshlog=$divalogdir'divamesh.log'
+divafitlog=$divalogdir'divafit.log'
+divagcvlog=$divalogdir'divagcv.log'
+divacvlog=$divalogdir'divacv.log'
+divacvrandlog=$divalogdir'divacvrand.log'
+divacovariancelog=$divalogdir'dvcovariance.log'a
+
+# Input files
+# -----------
+
+inputdir=${divarundir}'/input/'
+contfile=${inputdir}'coast.cont'
+datafile=${inputdir}'data.dat'
+paramfile=${inputdir}'param.par'
+valatxyfile=${inputdir}'valatxy.coord'
