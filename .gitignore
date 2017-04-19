@@ -1,0 +1,5 @@
+DIVA3D/bin/
+DIVA3D/divastripped/input/
+DIVA3D/divastripped/logs/
+DIVA3D/divastripped/output/
+*.log
