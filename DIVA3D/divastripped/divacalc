@@ -7,47 +7,45 @@ ipipe=0
 # 2: iterative sparse
 solver=0
 
+source divalogging
 
-# Define log files
-#-----------------
-divarundir=$(pwd)
-divacalclog=$divarundir'/output/divacalc.log'
-divalog=$divarundir'/output/diva.log'
+infolog --			| tee -a $divalog
+infolog 'Diva calculation'	| tee -a $divalog
+infolog --			| tee -a $divalog
 
+divaecho ' '
+divaecho "Calc logs written in ${divacalclog}"
+divaecho ' '
 
-echo //////////////////////////////////////////////////  | tee $divacalclog
-echo           Going to analyse a field                  | tee -a $divacalclog
-echo '                                            '      | tee $divacalclog
-echo  'running divacalc with flag number for solver = '$solver | tee -a $divacalclog
-echo ' possible values are 0: direct skyline, 1: parallel skyline and 2: iterative sparse' | tee -a $divacalclog
-echo //////////////////////////////////////////////////  | tee -a $divacalclog
+infolog -- | tee -a $divacalclog
+divaecho '          Going to analyse a field          '           | tee -a $divacalclog
+divaecho ' '                                                      | tee $divacalclog
+divaecho 'running divacalc with flag number for solver = '$solver | tee -a $divacalclog
+divaecho 'possible values are 0: direct skyline, 1: parallel skyline and 2: iterative sparse' | tee -a $divacalclog
+infolog -- | tee -a $divacalclog
 #
 divarunning=$(ps -eafl | grep -i 'diva\.a' | wc -l)
-if [ "$divarunning" -ne "0" ]
-then
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! | tee -a $divacalclog
-echo ????????diva already running?????? | tee -a $divacalclog
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! | tee -a $divacalclog
-ps -eafl | grep -i 'diva\.a'
+if [ "$divarunning" -ne "0" ]; then
+  warnlog !! | tee -a $divacalclog
+  warnlog "????????diva already running??????" | tee -a $divacalclog
+  warnlog !! tee -a $divacalclog
+  ps -eafl | grep -i 'diva\.a'
 fi
 iqc=0
-if [ "$1" == "qc" ] 
-then
-echo =============== >> $divacalclog
-echo Quality control >> $divacalclog
-echo =============== >> $divacalclog
-iqc=1
+if [ "$1" == "qc" ]; then
+  divaecho =============== >> $divacalclog
+  divaecho Quality control >> $divacalclog
+  divaecho =============== >> $divacalclog
+  iqc=1
 fi
 
 ibii=0
-if [ "$1" == "Bii" ] 
-then
-
-echo =============== >> $divacalclog
-echo Bii calculation >> $divacalclog
-echo =============== >> $divacalclog
-ibii=1
-ipipe=0
+if [ "$1" == "Bii" ]; then
+  divaecho =============== >> $divacalclog
+  divaecho Bii calculation >> $divacalclog
+  divaecho =============== >> $divacalclog
+  ibii=1
+  ipipe=0
 fi
 
 
@@ -85,43 +83,33 @@ read varbak
 # Stuff for errors
 iflagcpme=0
 iflagexerr=0
-if [ "$ispec" -ge "100" ]
-then
-echo "Clever poor mans error"
-iflagcpme=1
+if [ "$ispec" -ge "100" ]; then
+  divaecho "Clever poor mans error"
+  iflagcpme=1
 fi
 
-if [ "$ispec" -le "-100" ]
-then
-if  [ "$ispec" -le "-110" ]
-then
-echo exerr with boundary effect
-iflagexerr=2
-ispec=17
-else
-echo exerr
-iflagexerr=1
-ispec=17
-fi
-
-
+if [ "$ispec" -le "-100" ]; then
+  if [ "$ispec" -le "-110" ]; then
+    divaecho exerr with boundary effect
+    iflagexerr=2
+    ispec=17
+  else
+    divaecho exerr
+    iflagexerr=1
+    ispec=17
+  fi
 fi
 
 ##################
 
 
-
-
-
-if [ "$ibii" == "1" ]
-then
-ispec=-1000
+if [ "$ibii" == "1" ]; then
+  ispec=-1000
 fi
 
 
-if [ -f ./input/valatxy.coord ] 
-then
-cp ./input/valatxy.coord ./divawork/fort.79
+if [ -f ./input/valatxy.coord ]; then
+  cp ./input/valatxy.coord ./divawork/fort.79
 fi
 xi=1
 cd ./meshgenwork
@@ -144,8 +132,8 @@ cd ../divawork
 NREA=0
 NINT=0
 NDATA=$(cat ../input/data.dat | wc -l)
-echo 'Number of data points:' ${NDATA} >> $divacalclog
-echo ' '
+divaecho 'Number of data points:' ${NDATA} >> $divacalclog
+divaecho ' '
 let NREA=$(($NREA+4*$NDATA))
 let NREA=$(($NREA+${nx}*${ny}))
 let NINT=$(($NINT+8*$NDATA))
@@ -184,56 +172,54 @@ let NREA=$(($NREA+2*$nnt1))
 let NINT=$(($NINT+$nelt*100))
 #
 itcs=0
-if [ -f ../input/constraint.dat ]
-then
-let itcs=$(($itcs+1))
+if [ -f ../input/constraint.dat ]; then
+  let itcs=$(($itcs+1))
 
-echo Advection requested >> $divacalclog
+  echo Advection requested >> $divacalclog
 
-cat ../input/constraint.dat > ./fort.49
-cp ../input/UVinfo.dat ./fort.93
-cp ../input/Uvel.dat ./fort.91
-cp ../input/Vvel.dat ./fort.92
+  cat ../input/constraint.dat > ./fort.49
+  cp ../input/UVinfo.dat ./fort.93
+  cp ../input/Uvel.dat ./fort.91
+  cp ../input/Vvel.dat ./fort.92
 
 #JMB2012 added support for source terms in advection constraint
 # as many sources as whished, format: x y Q
-if [ -f ../input/sources.dat ]
-then
-cp ../input/sources.dat ./fort.24
-fi
+  if [ -f ../input/sources.dat ]; then
+    cp ../input/sources.dat ./fort.24
+  fi
 
 
-let NREA=$(($NREA+2*$nnt1))
-{
-read aaaaa
-read bbbbb
-read ccccc
-read ddddd
-read nxuuu
-read nyuuu
-} < ../input/UVinfo.dat
-let NREA=$(($NREA+$nxuuu*$nyuuu))
-let NREA=$(($NREA+2*$nnt1))
-let NREA=$(($NREA+1))
+  let NREA=$(($NREA+2*$nnt1))
+  {
+  read aaaaa
+  read bbbbb
+  read ccccc
+  read ddddd
+  read nxuuu
+  read nyuuu
+  } < ../input/UVinfo.dat
+  let NREA=$(($NREA+$nxuuu*$nyuuu))
+  let NREA=$(($NREA+2*$nnt1))
+  let NREA=$(($NREA+1))
 fi
-if [ -f ../input/RL.dat ]
-then
-let itcs=$(($itcs+2))
-echo Variable L requested >> $divacalclog
-cp ../input/RL.dat ./fort.94
-cp ../input/RLinfo.dat ./fort.95
-let NREA=$(($NREA+$nnt1))
-{
-read aaaaa
-read bbbbb
-read ccccc
-read ddddd
-read nxlll
-read nylll
-} < ../input/RLinfo.dat
-let NREA=$(($NREA+$nxlll*$nylll))
-let NREA=$(($NREA+$nnt1))
-let NREA=$(($NREA+1))
+
+if [ -f ../input/RL.dat ]; then
+  let itcs=$(($itcs+2))
+  divaecho Variable L requested >> $divacalclog
+  cp ../input/RL.dat ./fort.94
+  cp ../input/RLinfo.dat ./fort.95
+  let NREA=$(($NREA+$nnt1))
+  {
+  read aaaaa
+  read bbbbb
+  read ccccc
+  read ddddd
+  read nxlll
+  read nylll
+  } < ../input/RLinfo.dat
+  let NREA=$(($NREA+$nxlll*$nylll))
+  let NREA=$(($NREA+$nnt1))
+  let NREA=$(($NREA+1))
 fi
 
 #creation of file fort.13
@@ -261,75 +247,70 @@ echo $valex >> ./fort.13
 echo $(echo $lc | awk '{print (1/($1*$1*$1*$1))}') > fort.12
 echo $(echo $lc $xi | awk '{print (2*$2/($1*$1))}') >> fort.12
 
-if [ "$ireg" == "3" ]
-then
-aaaref=$(head -1 fort.12)
-echo 0 > newalpha
-# Test, not really zero, but small
+if [ "$ireg" == "3" ]; then
+ddaaaref=$(head -1 fort.12)
+  echo 0 > newalpha
+  # Test, not really zero, but small
 
-##echo  1.E-6 $aaaref | ../../bin/multiply.a > newalpha
-echo $(echo $aaaref | awk '{print ($1*1.E-6)}') >  newalpha
+  ##echo  1.E-6 $aaaref | ../../bin/multiply.a > newalpha
+  echo $(echo $aaaref | awk '{print ($1*1.E-6)}') >  newalpha
 
-tail -1 fort.12 >> newalpha
-mv newalpha fort.12
-let ireg=1
+  tail -1 fort.12 >> newalpha
+  mv newalpha fort.12
+  let ireg=1
 fi
 echo $varbak > ./fort.15
 cd ..
-if [ "$iqc" != "1" ]
-then
-if [ "$ispec" -lt "0" ] 
-then
-if [ "$varbak" != "0" ]
-then
-if [ "$1" != "-pfsum" ]
-then
-#dvkern
-echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% >> $divacalclog
-echo %  Going to call another diva execution    % >> $divacalclog
-echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% >> $divacalclog
+if [ "$iqc" != "1" ]; then
+  if [ "$ispec" -lt "0" ]; then
+    if [ "$varbak" != "0" ]; then
+      if [ "$1" != "-pfsum" ]; then
+        #dvkern
+        divaecho %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% >> $divacalclog
+        divaecho %  Going to call another diva execution    % >> $divacalclog
+        divaecho %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% >> $divacalclog
+        
+        
+        divaecho ////////////////////////////////////////// >> $divalog
+        divaecho          running dvcovariance >> $divalog
+        divaecho ////////////////////////////////////////// >> $divalog
+        divaecho ' '  >> $divalog
+        
+        . dvcovariance
+        cat $divacalclog ${divacovariancelog} > bidon
+        mv bidon $divacalclog
 
+        if [ "$ibii" == "1" ]; then
+          cd divawork
+          #pwd
+          ../../bin/bintoasc.a | awk '{print $1,$2,$3/(1-$3)}' >../output/Bii.dat
+          cd ..
+          divaecho Finished bii  >> $divacalclog
+          exit
+        fi
 
-echo divacalc: ////////////////////////////////////////// >> $divalog
-echo divacalc:         running dvcovariance >> $divalog
-echo divacalc: ////////////////////////////////////////// >> $divalog
-echo ' '  >> $divalog
-
-. dvcovariance
-    cat $divacalclog ./output/dvcovariance.log > bidon
-    mv bidon $divacalclog
-
-if [ "$ibii" == "1" ]
-then
-cd divawork
-#pwd
-../../bin/bintoasc.a | awk '{print $1,$2,$3/(1-$3)}' >../output/Bii.dat
-cd ..
-echo Finished bii  >> $divacalclog
-exit
+        if [ "$ipipe" == "1" ]; then
+          divaecho %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% >> $divacalclog
+          divaecho %  Have launched another diva execution    % >> $divacalclog
+          divaecho %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% >> $divacalclog
+        else
+          divaecho %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% >> $divacalclog
+          divaecho %  Have finished another diva execution    % >> $divacalclog
+          divaecho %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% >> $divacalclog
+        fi
+      fi
+    fi
+  fi
 fi
 
-if [ "$ipipe" == "1" ]
-then
-echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% >> $divacalclog
-echo %  Have launched another diva execution    % >> $divacalclog
-echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% >> $divacalclog
+if [ -f ./input/data.dat ]; then 
+  cp ./input/data.dat ./divawork/fort.44
 else
-echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% >> $divacalclog
-echo %  Have finished another diva execution    % >> $divacalclog
-echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% >> $divacalclog
-fi
-fi
-fi
-fi
-fi
-if [ -f ./input/data.dat ] 
-then 
-cp ./input/data.dat ./divawork/fort.44
-else
-echo Need to provide data.dat in ./input !
-##ls -l ./input
-##pwd
+  warnline
+  warnlog "echo Need to provide data.dat in ./input !"
+  warnline
+  ##ls -l ./input
+  ##pwd
 fi
 cd ./divawork
 echo coord 1 > ./fort.10
@@ -345,43 +326,38 @@ echo $nelt >> ./fort.10
 echo datapr 1 >> ./fort.10
 echo $ireg >> ./fort.10
 #JMB
-if [ "$itcs" != "0" ]
-then
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! >> $divacalclog
-echo  Module constraint activated >> $divacalclog
-echo $itcs
-echo constr 1 >> ./fort.10
-echo $itcs >> ./fort.10
+if [ "$itcs" != "0" ]; then
+  divaecho "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" >> $divacalclog
+  divaecho "Module constraint activated" >> $divacalclog
+  echo $itcs
+  echo constr 1 >> ./fort.10
+  echo $itcs >> ./fort.10
 fi
 echo solver 1 >> ./fort.10
 echo $solver >> ./fort.10
-if [ "$solver" == "2" ]
-then
-echo 0 0 0 >> ./fort.10
+if [ "$solver" == "2" ]; then
+  echo 0 0 0 >> ./fort.10
 fi
 echo stores 1 >> ./fort.10
 echo 3 >> ./fort.10
 echo VARBAK: $varbak >> $divacalclog
-if [ "$iqc" != "1" ]
-then
-if [ "$varbak" != "0" ]
-then
-if [ "$ispec" != "0" ]
-then
-	echo ' ' >> $divacalclog
-echo Errors will be calculated >> $divacalclog
-echo esterr 1 >> ./fort.10
-echo $ispec >> ./fort.10
-fi
-fi
-#echo $ >> ./fort.10
-echo gcvfac 1 >> ./fort.10
-echo 5 >> ./fort.10
-echo stopex >> ./fort.10
+if [ "$iqc" != "1" ]; then
+  if [ "$varbak" != "0" ]; then
+    if [ "$ispec" != "0" ]; then
+      divaecho ' ' >> $divacalclog
+      divaecho Errors will be calculated >> $divacalclog
+      echo esterr 1 >> ./fort.10
+      echo $ispec >> ./fort.10
+    fi
+  fi
+  #echo $ >> ./fort.10
+  echo gcvfac 1 >> ./fort.10
+  echo 5 >> ./fort.10
+  echo stopex >> ./fort.10
 else
-#QC
-echo dataqc 1 >> ./fort.10
-echo stopex >>./fort.10
+  #QC
+  echo dataqc 1 >> ./fort.10
+  echo stopex >>./fort.10
 fi
 #creation of file fort.20
 nbccol=$(head -n 1 ./fort.44 | wc -w)
@@ -403,37 +379,35 @@ awk -v multconst=$multvar '{ if (NF>2) {if ($4 > "") {$4=$4*multconst} else {$4=
 ##?? echo --------------------------------------------
 
 NDATAB=$(cat ./fort.20 | wc -l)
-if [ "$NDATAB" -lt "$NDATA" ]
-then
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! | tee -a $divacalclog
-echo ------------------------------------------- | tee -a $divacalclog
-echo ??????????????????????????????????????????? | tee -a $divacalclog
-echo ?????   Corrupted data file    ???????????? | tee -a $divacalclog
-echo From $NDATA lines in data.dat 		 | tee -a $divacalclog
-echo Only $NDATAB have been feed into DIVA 	 | tee -a $divacalclog
-echo ??????????????????????????????????????????? | tee -a $divacalclog
-echo ------------------------------------------- | tee -a $divacalclog
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! | tee -a $divacalclog
+if [ "$NDATAB" -lt "$NDATA" ]; then
+  errorlog !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! | tee -a $divacalclog
+  errorlog ------------------------------------------- | tee -a $divacalclog
+  errorlog ??????????????????????????????????????????? | tee -a $divacalclog
+  errorlog ?????   Corrupted data file    ???????????? | tee -a $divacalclog
+  errorlog "From $NDATA lines in data.dat"	       | tee -a $divacalclog
+  errorlog "Only $NDATAB have been feed into DIVA"     | tee -a $divacalclog
+  errorlog ??????????????????????????????????????????? | tee -a $divacalclog
+  errorlog ------------------------------------------- | tee -a $divacalclog
+  errorlog !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! | tee -a $divacalclog
 fi
-if [ "$1" == "-pfsum" ]
-then
-echo Summing covariances >> $divacalclog
-cd ..
+if [ "$1" == "-pfsum" ]; then
+  echo Summing covariances >> $divacalclog
+  cd ..
 
-echo divacalc: ////////////////////////////////////////// >> $divalog
-echo divacalc:         running dvcovariancesum >> $divalog
-echo divacalc: ////////////////////////////////////////// >> $divalog
-echo ' '  >> $divalog
+  divaecho "//////////////////////////////////////////" >> $divalog
+  divaecho "       running dvcovariancesum"             >> $divalog
+  divaecho "//////////////////////////////////////////" >> $divalog
+  echo ' '  >> $divalog
 . ./dvcovariancesum
-    cat $divacalclog ./output/dvcovariancesum.log > bidon
-    mv bidon $divacalclog
-exit
+  cat $divacalclog ./output/dvcovariancesum.log > bidon
+  mv bidon $divacalclog
+  exit
 fi
 
-echo divacalc: ////////////////////////////////////////// >> $divacalclog
-echo divacalc:'        Diva calculation (diva.a)'  >> $divacalclog
-echo divacalc: ////////////////////////////////////////// >> $divacalclog
-echo ' '  >> $divacalclog
+divaecho "//////////////////////////////////////////" >> $divacalclog
+divaecho "        Diva calculation (diva.a)"          >> $divacalclog
+divaecho "//////////////////////////////////////////" >> $divacalclog
+divaecho ' '  >> $divacalclog
 
 ##echo 'REMOVE FORT.35 and FORT.43'
 rm -f fort.43
@@ -441,26 +415,25 @@ rm -f fort.35
 #execute diva
 echo $NINT $NREA | ../../bin/diva.a >> $divacalclog
 
-if [ $? -ne 0 ];then
-echo ' ' | tee -a $divacalclog $divalog
-echo "------------------------------------------- "	| tee -a $divacalclog $divalog
-echo "A problem was encountered during execution !"	| tee -a $divacalclog $divalog
-echo "      divacalc:  diva.a	"		 	| tee -a $divacalclog $divalog
-echo 'ERROR : Check execution track in diva.log'  	| tee -a $divacalclog $divalog
-echo "--------------------------------------------"	| tee -a $divacalclog $divalog
+if [ $? -ne 0 ]; then
+  errorlog ' ' | tee -a $divacalclog $divalog
+  errorlog "------------------------------------------- "| tee -a $divacalclog $divalog
+  errorlog "A problem was encountered during execution !"| tee -a $divacalclog $divalog
+  errorlog "      divacalc:  diva.a	"		 | tee -a $divacalclog $divalog
+  errorlog "ERROR : Check execution track in ${divalog}" | tee -a $divacalclog $divalog
+  errorlog "--------------------------------------------"| tee -a $divacalclog $divalog
 fi
 
 dataonmesh=0
 ##ctroupin Oct 2012
 # Check if fort.84 was generated AND if not empty...
-if [ ! -s ./fort.84 ];
-then
-        echo ' ' | tee -a $divacalclog
-        echo '//////////////////////////////////////////////////' | tee -a $divacalclog $divalog
-        echo 'Problem in diva.a : analysis could not be finished' | tee -a $divacalclog $divalog
-        echo ' '						  | tee -a $divacalclog $divalog
-        echo 'ERROR : Check diva.log'				  | tee -a $divacalclog $divalog
-        echo '//////////////////////////////////////////////////' | tee -a $divacalclog $divalog
+if [ ! -s ./fort.84 ]; then
+  errorlog ' ' | tee -a $divacalclog
+  errorlog '//////////////////////////////////////////////////' | tee -a $divacalclog $divalog
+  errorlog 'Problem in diva.a : analysis could not be finished' | tee -a $divacalclog $divalog
+  errorlog ' '						  | tee -a $divacalclog $divalog
+  errorlog 'ERROR : Check diva.log'				  | tee -a $divacalclog $divalog
+  errorlog '//////////////////////////////////////////////////' | tee -a $divacalclog $divalog
 fi
 ##---
 
@@ -488,260 +461,248 @@ fi
 #------------------------
 
 if [ -f ./fort.35  ]; then
-	dataonmesh=$(cat ./fort.35 | awk '{print $1-$2}')
+  dataonmesh=$(cat ./fort.35 | awk '{print $1-$2}')
 fi
 if [ "$dataonmesh" -lt "1" ]; then
-	cd ..
-	echo Data are outside the mesh, will produce empty files
-	dvnil
-	cd ./divawork
+  cd ..
+  warnlog '-----------------------------------------------'
+  warnlog 'Data are outside the mesh, will produce empty files'
+  warnlog '-----------------------------------------------'
+  dvnil
+  cd ./divawork
 fi
 
 rm -f fort.59
 rm -f fort.61
-if [ "$iqc" == "1" ] 
-then
-#
-#output of results to user
-cp fort.76 ../output/expectederroratdatapoint.anl
-cp fort.71 ../output/fieldatdatapoint.anl
+if [ "$iqc" == "1" ]; then
+  #
+  #output of results to user
+  cp fort.76 ../output/expectederroratdatapoint.anl
+  cp fort.71 ../output/fieldatdatapoint.anl
 
+  divaecho ////////////////////////////////////////// | tee -a $divalog $divacalclog
+  divaecho       lookforoutliers  			  | tee -a $divalog $divacalclog 
+  divaecho ////////////////////////////////////////// | tee -a $divalog $divacalclog
+  divaecho ' '   						  | tee -a $divalog $divacalclog
 
-echo divacalc: ////////////////////////////////////////// | tee -a $divalog $divacalclog
-echo divacalc:       lookforoutliers  			  | tee -a $divalog $divacalclog 
-echo divacalc: ////////////////////////////////////////// | tee -a $divalog $divacalclog
-echo ' '  						  | tee -a $divalog $divacalclog
+  echo $valex | ../../bin/lookforoutliers.a >> $divalog
 
-echo $valex | ../../bin/lookforoutliers.a >> $divalog
-if [ $? -ne 0 ];then
-echo ' '                                          | tee -a $divalog
-echo -------------------------------------------- | tee -a $divalog
-echo A problem was encountered during execution ! | tee -a $divalog
-echo       divacalc:   lookforoutliers.a          | tee -a $divalog
-echo 'ERROR : Check execution track in diva.log'  | tee -a $divalog
-echo -------------------------------------------- | tee -a $divalog
-fi
-echo ' '
+  if [ $? -ne 0 ]; then
+    errorlog ' '                                             | tee -a $divalog
+    errorlog "-------------------------------------------- " | tee -a $divalog
+    errorlog "A problem was encountered during execution ! " | tee -a $divalog
+    errorlog "      divacalc:   lookforoutliers.a          " | tee -a $divalog
+    errorlog "ERROR : Check execution track in diva.log    " | tee -a $divalog
+    errorlog "-------------------------------------------- " | tee -a $divalog
+  fi
+  divaecho ' ' | tee -a  $divacalclog
+  divaecho "Copying outlier lists" >> $divacalclog
+  divaecho ' '
 
-echo ' ' >> $divacalclog
-echo Copying outlier lists >> $divacalclog
-echo ' '
-if [ -f fort.66 ]
-then
-mv -f fort.66 ../output/outliers.dat
-mv -f fort.67 ../output/outliers.normalized.dat
+  if [ -f fort.66 ]; then
+    mv -f fort.66 ../output/outliers.dat
+    mv -f fort.67 ../output/outliers.normalized.dat
+  else
+    errorlog ' '                                          	| tee -a $divacalclog
+    errorlog "--------------------------------------------" 	| tee -a $divacalclog
+    errorlog "A problem was encountered during execution !" 	| tee -a $divacalclog
+    errorlog "ERROR : Check execution track in diva.log"  	| tee -a $divacalclog
+    errorlog "--------------------------------------------" 	| tee -a $divacalclog
+  fi
 else
-echo ' '                                          	| tee -a $divacalclog
-echo "--------------------------------------------" 	| tee -a $divacalclog
-echo "A problem was encountered during execution !" 	| tee -a $divacalclog
-echo 'ERROR : Check execution track in diva.log'  	| tee -a $divacalclog
-echo "--------------------------------------------" 	| tee -a $divacalclog
-fi
-else
-#output as netcdf not yet done
-echo ' ' >> $divacalclog
-echo Output of results copied in ./output/ >> $divacalclog
-echo ' ' >> $divacalclog
-cp fort.84 ../output/fieldgher.anl
-if [ -f fort.82 ]
-then
-cp fort.82 ../output/valatxyascii.anl
-fi
-cp fort.83 ../output/fieldascii.anl
-if [ -f fort.87 ]
-then
-cp fort.87 ../output/errorfieldgher.anl
-fi
-if [ -f fort.73 ]
-then
-cp fort.73 ../output/erroratxyascii.anl
-fi
-if [ -f fort.86 ]
-then
-cp fort.86 ../output/errorfieldascii.anl
-fi
-cp fort.71 ../output/fieldatdatapoint.anl
-if [ -f fort.72 ] 
-then
-cp fort.72 ../output/erroratdatapoint.anl
-fi
-if [ -f fort.77 ]
-then
-cp fort.77 ../output/gcvval.dat
-fi
+  #output as netcdf not yet done
+  divaecho ' ' >> $divacalclog
+  divaecho "Output of results copied in ./output/ " >> $divacalclog
+  divaecho ' ' >> $divacalclog
+  cp fort.84 ../output/fieldgher.anl
 
-##echo ' '
-##echo Creation of file GridInfo.dat
-##echo ' '
+  if [ -f fort.82 ]; then
+    cp fort.82 ../output/valatxyascii.anl
+  fi
+  cp fort.83 ../output/fieldascii.anl
 
-echo $xori > ../output/ghertonetcdf/GridInfo.dat
-echo $yori >> ../output/ghertonetcdf/GridInfo.dat
-echo $dx >> ../output/ghertonetcdf/GridInfo.dat
-echo $dy >> ../output/ghertonetcdf/GridInfo.dat
-echo $nx >> ../output/ghertonetcdf/GridInfo.dat
-echo $ny >> ../output/ghertonetcdf/GridInfo.dat
-echo $valex >> ../output/ghertonetcdf/GridInfo.dat
+  if [ -f fort.87 ]; then
+    cp fort.87 ../output/errorfieldgher.anl
+  fi
 
+  if [ -f fort.73 ]; then
+    cp fort.73 ../output/erroratxyascii.anl
+  fi
 
-#Iceedge case
-if [ -f ../input/iceedge.dat ]
-then
-echo Ice edge to be used as mask
-cd ..
-./dvicemask
-cp ./output/fieldgher.anl ./divawork/fort.84
-cd divawork
-echo finished ice edge case
-fi
-cp fort.84 ../output/ghertonetcdf/fort.84
-if [ -f fort.87 ]
-then 
-cp  fort.87 ../output/ghertonetcdf/fort.87
-fi
-iecal=0
-if [ "$ispec" == "1" ]
-then
-iecal=1
-fi
-if [ "$ispec" == "3" ]
-then
-iecal=1
-fi
-if [ "$ispec" == "5" ]
-then
-iecal=1
-fi
-if [ "$ispec" == "7" ]
-then
-iecal=1
-fi
-if [ "$ispec" == "11" ]
-then
-iecal=1
-fi
-if [ "$ispec" == "13" ]
-then
-iecal=1
-fi
-if [ "$ispec" == "15" ]
-then
-iecal=1
-fi
-if [ "$ispec" == "17" ]
-then
-iecal=1
-fi
-if [ "$ispec" == "-1" ]
-then
-iecal=1
-fi
-if [ "$ispec" == "-3" ]
-then
-iecal=1
-fi
-if [ "$ispec" == "-5" ]
-then
-iecal=1
-fi
-if [ "$ispec" == "-7" ]
-then
-iecal=1
-fi
-if [ "$ispec" == "-11" ]
-then
-iecal=1
-fi
-if [ "$ispec" == "-13" ]
-then
-iecal=1
-fi
-if [ "$ispec" == "-15" ]
-then
-iecal=1
-fi
-if [ "$ispec" == "-17" ]
-then
-iecal=1
-fi
-# JMB ADAPTED FOR DIFFERENT CASES IF ISPEC
-if [ "$varbak" != "0" ]
-then
-if [ "$iecal" == "1" ] 
-then
-echo Creating netcdf file for field and associated error >> $divacalclog
-echo in directory ./output/ghertonetcdf/ >> $divacalclog
-cd ../output/ghertonetcdf
+  if [ -f fort.86 ]; then 
+    cp fort.86 ../output/errorfieldascii.anl
+  fi
+  cp fort.71 ../output/fieldatdatapoint.anl
 
-echo divacalc: ////////////////////////////////////////// >> $divalog
-echo divacalc:       netcdfoutput   >> $divalog
-echo divacalc: ////////////////////////////////////////// >> $divalog
-echo ' '  >> $divalog
+  if [ -f fort.72 ]; then
+    cp fort.72 ../output/erroratdatapoint.anl
+  fi
 
-../../../bin/netcdfoutput.a >> $divalog
-if [ $? -ne 0 ];then
-echo ' ' | tee -a $divacalclog $divalog
-echo "--------------------------------------------" 	| tee -a $divacalclog $divalog
-echo "A problem was encountered during execution !" 	| tee -a $divacalclog $divalog
-echo "      divacalc:   netcdfoutput.a"		  	| tee -a $divacalclog $divalog
-echo 'ERROR : Check execution track in diva.log'	  	| tee -a $divacalclog $divalog
-echo "--------------------------------------------" 	| tee -a $divacalclog $divalog
-fi
-fi
-fi
-if [ "$varbak" == "0"  -o  "$iecal" == "0" ] 
-then
-echo "Creating netcdf file only for field"  >> $divacalclog
-echo "since Varbak and ispec are $varbak $ispec" >> $divacalclog
+  if [ -f fort.77 ]; then
+    cp fort.77 ../output/gcvval.dat
+  fi
 
-cd ../output/ghertonetcdf
-../../../bin/netcdfoutputfield.a >> $divalog
-if [ $? -ne 0 ];then
-echo ' ' | tee -a $divacalclog $divalog
-echo "--------------------------------------------" 	| tee -a $divacalclog $divalog
-echo "A problem was encountered during execution !" 	| tee -a $divacalclog $divalog
-echo "      divacalc:   netcdfoutputfield.a "       	| tee -a $divacalclog $divalog
-echo 'ERROR : Check execution track in diva.log'         | tee -a $divacalclog $divalog
-echo "--------------------------------------------" 	| tee -a $divacalclog $divalog
-echo ' '                                          	| tee -a $divacalclog $divalog
-fi
-###rm -f ../error*.anl
-fi
-cd ../..
+  ##echo ' '
+  ##echo Creation of file GridInfo.dat
+  ##echo ' '
 
-echo ' ' | tee -a $divacalclog
-echo -------------------- | tee -a $divacalclog
-echo Analysis is finished | tee -a $divacalclog
-echo -------------------- | tee -a $divacalclog
+  echo $xori > ../output/ghertonetcdf/GridInfo.dat
+  echo $yori >> ../output/ghertonetcdf/GridInfo.dat
+  echo $dx >> ../output/ghertonetcdf/GridInfo.dat
+  echo $dy >> ../output/ghertonetcdf/GridInfo.dat
+  echo $nx >> ../output/ghertonetcdf/GridInfo.dat
+  echo $ny >> ../output/ghertonetcdf/GridInfo.dat
+  echo $valex >> ../output/ghertonetcdf/GridInfo.dat
+
+  # Ice-edge case
+  if [ -f ../input/iceedge.dat ]; then
+    divaecho "Ice edge to be used as mask"
+    cd ..
+    ./dvicemask
+    cp ./output/fieldgher.anl ./divawork/fort.84
+    cd divawork
+    divaecho "Finished ice edge case"
+  fi
+  cp fort.84 ../output/ghertonetcdf/fort.84
+
+  if [ -f fort.87 ]; then 
+    cp  fort.87 ../output/ghertonetcdf/fort.87
+  fi
+  iecal=0
+
+  if [ "$ispec" == "1" ]; then
+    iecal=1
+  fi
+
+  if [ "$ispec" == "3" ]; then
+    iecal=1
+  fi
+
+  if [ "$ispec" == "5" ]; then
+    iecal=1
+  fi
+
+  if [ "$ispec" == "7" ]; then
+    iecal=1
+  fi
+
+  if [ "$ispec" == "11" ]; then
+    iecal=1
+  fi
+
+  if [ "$ispec" == "13" ]; then
+    iecal=1
+  fi
+
+  if [ "$ispec" == "15" ]; then
+    iecal=1
+  fi
+
+  if [ "$ispec" == "17" ]; then
+    iecal=1
+  fi
+
+  if [ "$ispec" == "-1" ]; then
+    iecal=1
+  fi
+
+  if [ "$ispec" == "-3" ]; then
+    iecal=1
+  fi
+
+  if [ "$ispec" == "-5" ]; then
+    iecal=1
+  fi
+
+  if [ "$ispec" == "-7" ]; then
+    iecal=1
+  fi
+
+  if [ "$ispec" == "-11" ]; then
+    iecal=1 
+  fi
+
+  if [ "$ispec" == "-13" ]; then
+    iecal=1
+  fi
+
+  if [ "$ispec" == "-15" ]; then
+    iecal=1
+  fi
+
+  if [ "$ispec" == "-17" ]; then
+    iecal=1
+  fi
+
+  # JMB ADAPTED FOR DIFFERENT CASES IF ISPEC
+  if [ "$varbak" != "0" ]; then
+    if [ "$iecal" == "1" ]; then
+      divaecho "Creating netcdf file for field and associated error" >> $divacalclog
+      divaecho "in directory ./output/ghertonetcdf/" >> $divacalclog
+      cd ../output/ghertonetcdf
+
+      divaecho "//////////////////////////////////////////" >> $divalog
+      divaecho "       netcdfoutput  " >> $divalog
+      divaecho "//////////////////////////////////////////" >> $divalog
+      divaecho " "  >> $divalog
+
+      ../../../bin/netcdfoutput.a >> $divalog
+      
+      if [ $? -ne 0 ]; then
+        errorlog ' ' | tee -a $divacalclog $divalog
+        errorlog "--------------------------------------------"	| tee -a $divacalclog $divalog
+        errorlog "A problem was encountered during execution !"	| tee -a $divacalclog $divalog
+        errorlog "      divacalc:   netcdfoutput.a"	  	| tee -a $divacalclog $divalog
+        errorlog 'ERROR : Check execution track in diva.log'	| tee -a $divacalclog $divalog
+        errorlog "--------------------------------------------" | tee -a $divacalclog $divalog
+      fi
+    fi
+  fi
+
+  if [ "$varbak" == "0"  -o  "$iecal" == "0" ]; then
+    divaecho "Creating netcdf file only for field"  >> $divacalclog
+    divaecho "since Varbak and ispec are $varbak $ispec" >> $divacalclog
+
+    cd ../output/ghertonetcdf
+    ../../../bin/netcdfoutputfield.a >> $divalog
+
+    if [ $? -ne 0 ]; then
+      errorlog ' ' | tee -a $divacalclog $divalog
+      errorlog "--------------------------------------------" 	| tee -a $divacalclog $divalog
+      errorlog "A problem was encountered during execution !" 	| tee -a $divacalclog $divalog
+      errorlog "      divacalc:   netcdfoutputfield.a "       	| tee -a $divacalclog $divalog
+      errorlog 'ERROR : Check execution track in diva.log'      | tee -a $divacalclog $divalog
+      errorlog "--------------------------------------------" 	| tee -a $divacalclog $divalog
+      errorlog ' '                                          	| tee -a $divacalclog $divalog
+    fi
+     ###rm -f ../error*.anl
+  fi
+    
+  cd ../..
+
+  divaecho ' ' | tee -a $divacalclog
+  divaecho "--------------------" | tee -a $divacalclog
+  divaecho "Analysis is finished" | tee -a $divacalclog
+  divaecho "--------------------" | tee -a $divacalclog
 
 
-if [ "$iflagcpme" == "1" ]
-then
-./divacpme 
+  if [ "$iflagcpme" == "1" ]; then
+    ./divacpme 
+  fi
+
+  if [ "$iflagexerr" == "1" ]; then
+    ./divaexerr
+  fi
+
+  if [ "$iflagexerr" == "2" ]; then
+    ./divaexerr full
+  fi
 fi
 
-if [ "$iflagexerr" == "1" ]
-then
-./divaexerr
-fi
-
-
-if [ "$iflagexerr" == "2" ]
-then
-./divaexerr full
-fi
-
-
-
-
-
-
-fi
-if [ "$ispec" -lt "0" ] 
-then
-if [ "$varbak" != "0" ]
-then
-rm -f ./divawork/sub/fort.*
-fi
+if [ "$ispec" -lt "0" ]; then
+  if [ "$varbak" != "0" ]; then
+    rm -f ./divawork/sub/fort.*
+  fi
 fi
 
 

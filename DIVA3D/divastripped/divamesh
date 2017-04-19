@@ -1,34 +1,33 @@
 #!/bin/bash
 export LC_ALL=C
-divarundir=$(pwd)
-divameshlog=$divarundir'/output/divamesh.log'
-divalog=$divarundir'/output/diva.log'
 
+source divalogging
 
-echo ////////////////////////////////////////////////// | tee $divameshlog
-echo                Mesh generation | tee -a $divameshlog
-echo ////////////////////////////////////////////////// | tee -a $divameshlog
-echo ' '
+infolog -- | tee -a $divalog
+infolog 'Mesh generation' | tee -a $divalog
+infolog -- | tee -a $divalog
 
-if [ -f ./input/coast.cont ] 
-then
-cp ./input/coast.cont ./meshgenwork/fort.10
+divaecho ' '
+divaecho "Mesh logs written in ${divameshlog}"
+divaecho ' '
+
+if [ -f ./input/coast.cont ]; then
+  cp ./input/coast.cont ./meshgenwork/fort.10
 else
-echo Need to provide coast.cont in ./input | tee -a $divameshlog
+  divaecho "Need to provide coast.cont in ./input" | tee -a $divameshlog
 fi
 isdens=0
-if [ -f ./input/coast.cont.dens ] 
-then
-echo There is a density file for the mesh | tee -a $divameshlog
-cp -v ./input/coast.cont.dens ./meshgenwork/fort.12
-isdens=1
+if [ -f ./input/coast.cont.dens ]; then
+  divaecho "There is a density file for the mesh" | tee -a $divameshlog
+  cp -v ./input/coast.cont.dens ./meshgenwork/fort.12
+  isdens=1
 fi
+
 ##echo $isdens
-if [ -f ./input/param.par ] 
-then
-echo Reading parameters | tee -a $divameshlog
+if [ -f ./input/param.par ]; then
+  divaecho "Reading parameters" | tee -a $divameshlog
 else
-echo Need to provide param.par in ./input/ | tee -a $divameshlog
+  divaecho "Need to provide param.par in ./input/" | tee -a $divameshlog
 fi
 Filepar=./input/param.par
 {
@@ -89,18 +88,18 @@ echo 5 >> ./meshgenwork/fort.11
 #generation of the mesh
 cd ./meshgenwork
 
-echo ////////////////////////////////////////// >> $divalog
-echo '           Mesh generation (generopt)' >> $divalog
-echo ////////////////////////////////////////// >> $divalog
-echo ' '  >> $divalog
-echo $icoordchange | ../../bin/generopt.a >> $divalog
-if [ $? -ne 0 ];then
-echo ' ' | tee -a $divalog $divameshlog
-echo -------------------------------------------- | tee -a $divalog $divameshlog
-echo A problem was encountered during execution ! | tee -a $divalog $divameshlog
-echo          divamesh      generopt.a  | tee -a $divalog $divameshlog
-echo Check execution track | tee -a $divalog $divameshlog
-echo -------------------------------------------- | tee -a $divalog $divameshlog
+divaecho ////////////////////////////////////////// >> $divalog
+divaecho '           Mesh generation (generopt)' >> $divalog
+divaecho ////////////////////////////////////////// >> $divalog
+divaecho ' '  >> $divalog
+echo $icoordchange | ../../bin/generopt.a >> $divameshlog
+if [ $? -ne 0 ]; then
+  divaecho ' ' | tee -a $divalog $divameshlog
+  divaecho -------------------------------------------- | tee -a $divalog $divameshlog
+  divaecho A problem was encountered during execution ! | tee -a $divalog $divameshlog
+  divaecho          divamesh      generopt.a  | tee -a $divalog $divameshlog
+  divaecho Check execution track | tee -a $divalog $divameshlog
+  divaecho -------------------------------------------- | tee -a $divalog $divameshlog
 fi
 File23=./fort.23
 {
@@ -109,9 +108,9 @@ read nnint
 read nelt
 } < $File23
 #output of info for mesh visualisation with meshvisu.m
-echo ' '
-echo Copying output files for visualisation >> $divameshlog
-echo in directory ./output/meshvisu/  >> $divameshlog
+divaecho ' '
+divaecho Copying output files for visualisation >> $divameshlog
+divaecho in directory ./output/meshvisu/  >> $divameshlog
 cp fort.10 ../output/meshvisu/
 cp fort.22 ../output/meshvisu/
 cp fort.23 ../output/meshvisu/
@@ -120,9 +119,8 @@ cp fort.23 ../output/meshvisu/
 #read  nnt1 nnint nelt <&3
 #exec 23>&-
 cd ..
-echo ' '  | tee -a $divameshlog
-echo ---------------   | tee -a $divameshlog
-echo Mesh is created   | tee -a $divameshlog
-echo ---------------   | tee -a $divameshlog
-echo ' '   | tee -a $divameshlog
+divaecho ---------------   | tee -a $divameshlog
+divaecho Mesh is created   | tee -a $divameshlog
+divaecho ---------------   | tee -a $divameshlog
+divaecho ' '   | tee -a $divameshlog
 

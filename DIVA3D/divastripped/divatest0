@@ -1,32 +1,26 @@
 #!/bin/bash
 
+source divalogging
 
-
-echo 'Sanity check:'
-echo 'Control the value of the field at 0,0'
-echo 'should be 0.5'
+infolog 'Sanity check:'
+infolog 'Control the value of the field at (0,0)'
+infolog 'Should be 0.5'
  
-inputdir=$(pwd)'/input/'
-contfile=${inputdir}'coast.cont'
-datafile=${inputdir}'data.dat'
-paramfile=${inputdir}'param.par'
-valatxyfile=${inputdir}'valatxy.coord'
-
 divaclean
 
 ##echo ${inputdir}
-echo //////////////////////////////////////////////////
-echo 'Running a simple test'
-echo //////////////////////////////////////////////////
-echo ' '
+divaecho //////////////////////////////////////////////////
+divaecho 'Running a simple test'
+divaecho //////////////////////////////////////////////////
+divaecho ' '
 
-echo '1. creating data file'
-echo ' '
+divaecho '1. creating data file'
+divaecho ' '
 
 echo '0 0 1' > ${datafile}
 
-echo '2. creating contour file'
-echo ' '
+divaecho '2. creating contour file'
+divaecho ' '
 
 echo 1 > ${contfile}
 echo 4 >> ${contfile}
@@ -36,8 +30,8 @@ echo 10 10 >> ${contfile}
 echo -10 10 >> ${contfile}
 
 
-echo '3. creating parameter file'
-echo ' '
+divaecho '3. creating parameter file'
+divaecho ' '
 
 echo '# Correlation Length lc' > ${paramfile}
 echo '1.0' >> ${paramfile}
@@ -66,8 +60,9 @@ echo '1.0' >> ${paramfile}
 echo '# varbak' >> ${paramfile}
 echo '1.0' >> ${paramfile}
 
-echo '4. creating coordinate list file'
-echo ' '
+divaecho '4. creating coordinate list file'
+divaecho ' '
+
 echo 0.0 0.0 > ${valatxyfile}
 
 divamesh
@@ -77,9 +72,9 @@ divacalc
 field0=$(awk '{print $3}' output/valatxyascii.anl)
 
 echo ' '
-echo 'Check the results in'
-echo './ouput/ghertonetcdf/results.nc (netcdf)'
+infolog 'Check the results in'
+infolog './ouput/ghertonetcdf/results.nc (netcdf)'
 echo ' '
-echo 'Field value at origin = ' ${field0}
+infolog 'Field value at origin = ' ${field0}
 echo ' '
 
