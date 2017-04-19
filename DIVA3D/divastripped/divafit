@@ -79,9 +79,11 @@ if [ $binning -eq 1 ]; then
   ./divabin
 fi
 
-echo 'Going to fit covariance function' | tee -a ${divafitlog}
-echo ' ' 			        | tee -a ${divafitlog}
+
 if [ -f "${paramfile}" ]; then
+  divaecho 'Going to fit covariance function' | tee -a ${divafitlog}
+  divaecho ' ' 			        | tee -a ${divafitlog}
+  
   head -4 ./input/param.par | tail -1   > fort.11
   head -8 ./input/param.par | tail -1   >> fort.11
 
@@ -91,21 +93,23 @@ if [ -f "${paramfile}" ]; then
     divaecho "Adding a fourth column with ones (weights) if needed"
     cat ./input/data.dat |  awk '{{if ($4 > "") {} else {$4=1}};print $0}' > ./divawork/fort.10
   else
-    divaecho 'Need to provide data.dat in ./input !' | tee -a $divafitlog
+    warnline | tee -a ${divafitlog}
+    warnlog 'Need to provide data.dat in ./input !' | tee -a ${divafitlog}
+    warnline | tee -a ${divafitlog}
   fi
 
   mv fort.11 ./divawork
   cd ./divawork
 
-  divaecho $nsamp | ../../bin/fitlsn.a >> ${divafitlog}
+  echo $nsamp | ../../bin/fitlsn.a >> ${divafitlog}
 
   if [ $? -ne 0 ];then
-    divaecho ' ' | tee -a $divalog ${divafitlog}
-    divaecho -------------------------------------------- | tee -a $divalog ${divafitlog}
-    divaecho A problem was encountered during execution ! | tee -a $divalog ${divafitlog}
-    divaecho          divafit      fitlsn.a		  | tee -a $divalog ${divafitlog}
-    divaecho Check execution track			  | tee -a $divalog ${divafitlog}
-    divaecho -------------------------------------------- | tee -a $divalog ${divafitlog}
+    errorlog ' ' | tee -a $divalog ${divafitlog}
+    errorline | tee -a $divalog ${divafitlog}
+    errorlog "A problem was encountered during execution ! " | tee -a $divalog ${divafitlog}
+    errorlog "          divafit      fitlsn.a		   " | tee -a $divalog ${divafitlog}
+    errorlog "Check execution track			   " | tee -a $divalog ${divafitlog}
+    errorline | tee -a $divalog ${divafitlog}
   fi
 
   if [ -f fort.98 ]; then
@@ -159,7 +163,7 @@ if [ -f "${paramfile}" ]; then
 
     if [ "$iparsave" == "1" ]; then
       divaecho ======================================================= | tee -a ${divafitlog}
-      divaecho Replacing  param file with fit  			     | tee -a ${divafitlog}
+      divaecho Replacing  param file with fit  			       | tee -a ${divafitlog}
       cd ..
       cp -v ./input/param.par ./input/param.par.old
       cp -v ./output/param.par.fit ./input/param.par
@@ -168,9 +172,9 @@ if [ -f "${paramfile}" ]; then
   else
     divaecho ' ' | tee -a ${divafitlog}
     errorline | tee -a ${divafitlog}
-    errorlog "A problem was encountered during execution !"   | tee -a ${divafitlog}
-    errorlog "covariancefit.dat was not generated !"	  | tee -a ${divafitlog}
-    errorlog "Check execution track"			  | tee -a ${divafitlog}
+    errorlog "A problem was encountered during execution !" | tee -a ${divafitlog}
+    errorlog "covariancefit.dat was not generated !"	    | tee -a ${divafitlog}
+    errorlog "Check execution track"			    | tee -a ${divafitlog}
     errorline | tee -a ${divafitlog}
     cd ..
 
@@ -180,5 +184,4 @@ if [ -f "${paramfile}" ]; then
   fi
   else
     errorlog "No parameter file in input directory"
->>>>>>> improved logging in main scripts
 fi
