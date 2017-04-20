@@ -21,7 +21,7 @@ Analysis and reference field:
 lowerlevel number
 1
 upperlevel number
-3
+4
 4D netcdf files generation:
 0
 gnuplot plots: 0 or 1
