@@ -29,6 +29,13 @@ divaecho ' '
 divaecho  > ${divafitlog}
 divaecho '********' >> ${divafitlog}
 
+if ! [ -f $datafile ]; then
+  errorline 
+  errorlog "No data file available in ./input/ directory"
+  errorline 
+  exit 1
+fi
+
 if [ "$#" == "1" ]; then
   if [ "$1" != "-r" -a "$1" != "-l" ]; then
     divaecho Subsampling activated >> ${divafitlog}
@@ -183,5 +190,7 @@ if [ -f "${paramfile}" ]; then
     fi
   fi
   else
+    errorline
     errorlog "No parameter file in input directory"
+    errorline 
 fi
