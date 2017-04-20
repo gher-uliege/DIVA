@@ -21,6 +21,17 @@ divaecho ' '                                                      | tee $divacal
 divaecho 'running divacalc with flag number for solver = '$solver | tee -a $divacalclog
 divaecho 'possible values are 0: direct skyline, 1: parallel skyline and 2: iterative sparse' | tee -a $divacalclog
 infolog -- | tee -a $divacalclog
+
+if ! [ -f ${datafile} ]; then
+  errorline 
+  errorlog "No data file available in ./input"
+  errorline
+  dvnil
+  exit 1
+fi
+
+
+
 #
 divarunning=$(ps -eafl | grep -i 'diva\.a' | wc -l)
 if [ "$divarunning" -ne "0" ]; then
