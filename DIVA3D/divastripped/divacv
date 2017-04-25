@@ -1,96 +1,100 @@
 #!/bin/bash
-echo divacv:///////////////////////////////////////////
-echo divacv:       Cross Validation
-echo divacv:///////////////////////////////////////////
-echo ' '
 
-divarundir=$(pwd)
-divacvlog=$divarundir'/output/divacv.log'
-divalog=$divarundir'/output/diva.log'
-divacalclog=$divarundir'/output/divacalc.log'
-divameshlog=$divarundir'/output/divamesh.log'
+source divalogging
 
-echo divacv://///////////////////////////////////////// > $divacvlog
-echo divacv:       Cross Validation >> $divacvlog
-echo divacv://///////////////////////////////////////// >> $divacvlog
-echo ' ' >> $divacvlog
+infolog --
+infolog "       Cross Validation"
+infolog --
+
+divaecho ' '
+divaecho "///////////////////////////////////////////" > $divacvlog
+divaecho "       Cross Validation" >> $divacvlog
+divaecho "///////////////////////////////////////////" >> $divacvlog
+divaecho ' ' >> $divacvlog
 
 cp ./input/param.par  ./input/param.par.ori
 rm -f ./input/valatxy.coord.ori
-mv -f ./input/valatxy.coord ./input/valatxy.coord.ori
+if [ -f ./input/valatxy.coord ]; then
+  mv -f ./input/valatxy.coord ./input/valatxy.coord.ori
+fi
+
 rm -f ./output/gcv.dat
-if [ -f ./input/gcvsampling.dat ]
-then
-#Create mesh once
-if [ -f ./meshgenwork/fort.22 ]
-then 
-echo divacv:=========================================================================== >> $divacvlog
-echo divacv:Mesh files already exist, hope they are correct: otherwise execute divamesh >> $divacvlog
-echo divacv:=========================================================================== >> $divacvlog
+if [ -f ./input/gcvsampling.dat ]; then
+  #Create mesh once
+  if [ -f ./meshgenwork/fort.22 ]; then 
+    warnline >> $divacvlog
+    warnlog "Mesh files already exist, hope they are correct: otherwise execute divamesh" >> $divacvlog
+    warnline >> $divacvlog
+  else
+    divamesh
+    cat  $divacvlog $divameshlog > bidon
+    mv bidon $divacvlog
+  fi
 else
-divamesh
- cat  $divacvlog $divameshlog > bidon
- mv bidon $divacvlog
+  errorline | tee -a $divacvlog
+  errorlog "Need to provide gcvsampling.dat in ./input !" | tee -a $divacvlog
+  errorline | tee -a $divacvlog
 fi
-else
-echo divacv:Need to provide gcvsampling.dat in ./input ! | tee -a $divacvlog
-fi
+
 ijm=0
 for gcv in `cat ./input/gcvsampling.dat`
 do
-echo ' ' | tee -a $divacvlog
-echo divacv:============================================= | tee -a $divacvlog
-echo divacv:============================================= | tee -a $divacvlog
-echo divacv:Cross validation working with value $gcv 	  | tee -a $divacvlog
-echo divacv:============================================= | tee -a $divacvlog
-let ijm=$ijm+1
-head -17 ./input/param.par.ori > bidon
-echo 1 >> bidon
-echo   >> bidon
-echo 1 >> bidon
-echo   >> bidon
-echo -99 >> bidon
-echo >> bidon
-echo $gcv >> bidon
-#tail -2 ./input/param.par.ori >> bidon
-# no error field but qc needs a value
-echo >> bidon
-echo 1 >> bidon
-mv bidon ./input/param.par
-divacalc qc
- cat  $divacvlog $divacalclog > bidon
- mv bidon $divacvlog
+  divaecho ' ' | tee -a $divacvlog
+  divaecho ":=============================================  " | tee -a $divacvlog
+  divaecho "divacv:Cross validation working with value $gcv " | tee -a $divacvlog
+  divaecho "=============================================   " | tee -a $divacvlog
+  let ijm=$ijm+1
+  head -17 ./input/param.par.ori > bidon
+  echo 1 >> bidon
+  echo   >> bidon
+  echo 1 >> bidon
+  echo   >> bidon
+  echo -99 >> bidon
+  echo >> bidon
+  echo $gcv >> bidon
+  #tail -2 ./input/param.par.ori >> bidon
+  # no error field but qc needs a value
+  echo >> bidon
+  echo 1 >> bidon
+  mv bidon ./input/param.par
+  divacalc qc
+  cat  $divacvlog $divacalclog > bidon
+  mv bidon $divacvlog
 
-# Now get misfit from adequate files: data, analysis at data and
-# A_ii
+  # Now get misfit from adequate files: data, analysis at data and
+  # A_ii
 
-cd divawork
+  cd divawork
 
-cp ../input/data.dat fort.20
-cp ../output/fieldatdatapoint.anl fort.21
-cp ../output/expectederroratdatapoint.anl fort.22
-echo -99 $gcv | ../../bin/cverroraii.a >> $divalog
-if [ $? -ne 0 ];then
-echo ' ' | tee -a $divacvlog $divalog
-echo -------------------------------------------- | tee -a $divacvlog $divalog
-echo A problem was encountered during execution ! | tee -a $divacvlog $divalog
-echo        divacv:     cverroraii.a		  | tee -a $divacvlog $divalog
-echo Check execution track			  | tee -a $divacvlog $divalog
-echo -------------------------------------------- | tee -a $divacvlog $divalog
-fi
-# cp -f ../output/diva.log ../output/.
-cat fort.23 >> ../output/gcv.dat
+  cp ../input/data.dat fort.20
+  cp ../output/fieldatdatapoint.anl fort.21
+  cp ../output/expectederroratdatapoint.anl fort.22
+  echo -99 $gcv | ../../bin/cverroraii.a >> $divalog
 
-cd ..
+  if [ $? -ne 0 ];then
+    errorlog ' ' | tee -a $divacvlog $divalog
+    errorline | tee -a $divacvlog $divalog
+    errorlog "A problem was encountered during execution !" | tee -a $divacvlog $divalog
+    errorlog "        divacv:     cverroraii.a		  " | tee -a $divacvlog $divalog
+    errorlog "Check execution track			  " | tee -a $divacvlog $divalog
+    errorline | tee -a $divacvlog $divalog
+  fi
+  # cp -f ../output/diva.log ../output/.
+  cat fort.23 >> ../output/gcv.dat
 
-echo ' ' >> $divacvlog
-echo divacv:============================================= >> $divacvlog
-echo divacv:Finished working with value $gcv >> $divacvlog
-echo divacv:============================================= >> $divacvlog
-echo ' '
+  cd ..
+
+  divaecho "=============================================" >> $divacvlog
+  divaecho "Finished working with value" $gcv >> $divacvlog
+  divaecho "=============================================" >> $divacvlog
+  divaecho ' ' | tee -a >> ${divacvlog}
 done
+
 mv -f ./input/param.par.ori ./input/param.par
-mv -f ./input/valatxy.coord.ori ./input/valatxy.coord
+if [ -f ./input/valatxy.coord.ori ]; then
+  mv -f ./input/valatxy.coord.ori ./input/valatxy.coord
+fi
+
 cp ./output/gcv.dat ./divawork/fort.11
 
 cd divawork
@@ -98,51 +102,49 @@ cd divawork
 echo divacv:Looking for the minimum of CV >> $divacvlog
 echo ' ' >> $divacvlog
 
-if [ -f ../input/gcvsampling.dat ] 
-then 
-../../bin/findmin.a >> $divalog
-if [ $? -ne 0 ];then
-echo ' ' | tee -a $divacvlog $divalog
-echo -------------------------------------------- | tee -a $divacvlog $divalog
-echo A problem was encountered during execution ! | tee -a $divacvlog $divalog
-echo        divacv:     findmin.a 		  | tee -a $divacvlog $divalog
-echo Check execution track 		          | tee -a $divacvlog $divalog
-echo -------------------------------------------- | tee -a $divacvlog $divalog
-fi
-echo ' ' | tee -a $divacvlog
-echo ---------------------------------------- | tee -a $divacvlog
-echo CV finished 			      | tee -a $divacvlog
-echo Results written in ./output/gcvsnvar.dat | tee -a $divacvlog
-echo ---------------------------------------- | tee -a $divacvlog
+if [ -f ../input/gcvsampling.dat ]; then 
+  ../../bin/findmin.a >> $divalog
+  if [ $? -ne 0 ]; then
+    errorlog ' ' | tee -a $divacvlog $divalog
+    errorline | tee -a $divacvlog $divalog
+    errorlog "A problem was encountered during execution  !" | tee -a $divacvlog $divalog
+    errorlog "        divacv:     findmin.a 		   " | tee -a $divacvlog $divalog
+    errorlog "Check execution track 		           " | tee -a $divacvlog $divalog
+    errorline | tee -a $divacvlog $divalog
+  fi
+  divaecho ' ' | tee -a $divacvlog
+  divaecho "----------------------------------------" | tee -a $divacvlog
+  divaecho "CV finished 			    " | tee -a $divacvlog
+  divaecho "Results written in ./output/gcvsnvar.dat" | tee -a $divacvlog
+  divaecho "----------------------------------------" | tee -a $divacvlog
 else
-echo ' ' | tee -a $divacvlog
-echo -------------------------------------------- | tee -a $divacvlog
-echo A problem was encountered during execution ! | tee -a $divacvlog
-echo Check execution track 			  | tee -a $divacvlog
-echo -------------------------------------------- | tee -a $divacvlog
+  errorlog ' ' | tee -a $divacvlog
+  errorline | tee -a $divacvlog
+  errorlog "A problem was encountered during execution !" | tee -a $divacvlog
+  errorlog "Check execution track 			" | tee -a $divacvlog
+  errorline | tee -a $divacvlog
 fi
 
 mv fort.12 ../output/gcvsnvar.dat
-echo ' ' | tee -a $divacvlog
-echo ---------------------------------------- | tee -a $divacvlog
-echo 'GCV finished' | tee -a $divacvlog
-echo 'Estimated value of SNR = ' $(awk 'FNR == 2 { print; exit }' ../output/gcvsnvar.dat) | tee -a $divacvlog
-echo Results written in ./output/gcvsnvar.dat | tee -a $divacvlog
-echo ---------------------------------------- | tee -a $divacvlog
+divaecho ' ' | tee -a $divacvlog
+divaecho "----------------------------------------" | tee -a $divacvlog
+divaecho "GCV finished" | tee -a $divacvlog
+divaecho "Estimated value of SNR = ' $(awk 'FNR == 2 { print; exit }' ../output/gcvsnvar.dat)" | tee -a $divacvlog
+divaecho "Results written in ./output/gcvsnvar.dat" | tee -a $divacvlog
+divaecho "----------------------------------------" | tee -a $divacvlog
 
-echo ----------------------------------------------------- >> $divacvlog
-echo divacv:'Creating adapted param.par in ./output/param.par.gcv' >> $divacvlog
-echo divacv:----------------------------------------------------- >> $divacvlog
+divaecho "-----------------------------------------------------" >> $divacvlog
+divaecho "Creating adapted param.par in ./output/param.par.gcv " >> $divacvlog
+divaecho "-----------------------------------------------------" >> $divacvlog
 head -23 ../input/param.par  > ../output/param.par.gcv
 head -2 ../output/gcvsnvar.dat | tail -1 >> ../output/param.par.gcv
 head -25 ../input/param.par | tail -1 >> ../output/param.par.gcv
 head -4 ../output/gcvsnvar.dat  | tail -1 >> ../output/param.par.gcv
-if [ "$1" == "-r" ]
-then
-echo divacv:======================================================= | tee -a $divacvlog
-echo divacv:Replacing SNR with new value from GCV in param.par 	    | tee -a $divacvlog
-cd ..
-cp -v ./input/param.par ./input/param.par.old
-cp -v ./output/param.par.gcv ./input/param.par
-echo =======================================================
+if [ "$1" == "-r" ]; then
+  divaecho "=======================================================" | tee -a $divacvlog
+  divaecho "Replacing SNR with new value from GCV in param.par 	   " | tee -a $divacvlog
+  cd ..
+  cp -v ./input/param.par ./input/param.par.old
+  cp -v ./output/param.par.gcv ./input/param.par
+  divaecho "=======================================================" | tee -a $divacvlog
 fi
