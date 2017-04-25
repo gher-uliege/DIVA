@@ -7,6 +7,10 @@ infolog "   Generalized Cross Validation"
 infolog --
 
 divaecho ' '
+divaecho "GCV logs written in ${divagcvlog}"
+divaecho ' '
+
+divaecho ' '
 divaecho "/////////////////////////////////////////// " > ${divagcvlog}
 divaecho "      Generalized Cross Validation          " >> ${divagcvlog}
 divaecho "/////////////////////////////////////////// " >> ${divagcvlog}
