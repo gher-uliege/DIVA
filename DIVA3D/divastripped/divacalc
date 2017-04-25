@@ -424,11 +424,11 @@ echo $NINT $NREA | ../../bin/diva.a >> $divacalclog
 
 if [ $? -ne 0 ]; then
   errorlog ' ' | tee -a $divacalclog $divalog
-  errorlog "------------------------------------------- "| tee -a $divacalclog $divalog
+  errorline | tee -a $divacalclog $divalog
   errorlog "A problem was encountered during execution !"| tee -a $divacalclog $divalog
   errorlog "      divacalc:  diva.a	"		 | tee -a $divacalclog $divalog
   errorlog "ERROR : Check execution track in ${divalog}" | tee -a $divacalclog $divalog
-  errorlog "--------------------------------------------"| tee -a $divacalclog $divalog
+  errorline | tee -a $divacalclog $divalog
 fi
 
 dataonmesh=0
@@ -436,11 +436,11 @@ dataonmesh=0
 # Check if fort.84 was generated AND if not empty...
 if [ ! -s ./fort.84 ]; then
   errorlog ' ' | tee -a $divacalclog
-  errorlog '//////////////////////////////////////////////////' | tee -a $divacalclog $divalog
+  errorline | tee -a $divacalclog $divalog
   errorlog 'Problem in diva.a : analysis could not be finished' | tee -a $divacalclog $divalog
   errorlog ' '						  | tee -a $divacalclog $divalog
   errorlog 'ERROR : Check diva.log'				  | tee -a $divacalclog $divalog
-  errorlog '//////////////////////////////////////////////////' | tee -a $divacalclog $divalog
+  errorline | tee -a $divacalclog $divalog
 fi
 ##---
 
@@ -496,11 +496,11 @@ if [ "$iqc" == "1" ]; then
 
   if [ $? -ne 0 ]; then
     errorlog ' '                                             | tee -a $divalog
-    errorlog "-------------------------------------------- " | tee -a $divalog
+    errorline | tee -a $divalog
     errorlog "A problem was encountered during execution ! " | tee -a $divalog
     errorlog "      divacalc:   lookforoutliers.a          " | tee -a $divalog
     errorlog "ERROR : Check execution track in diva.log    " | tee -a $divalog
-    errorlog "-------------------------------------------- " | tee -a $divalog
+    errorline | tee -a $divalog
   fi
   divaecho ' ' | tee -a  $divacalclog
   divaecho "Copying outlier lists" >> $divacalclog
@@ -511,10 +511,10 @@ if [ "$iqc" == "1" ]; then
     mv -f fort.67 ../output/outliers.normalized.dat
   else
     errorlog ' '                                          	| tee -a $divacalclog
-    errorlog "--------------------------------------------" 	| tee -a $divacalclog
+    errorline | tee -a $divacalclog
     errorlog "A problem was encountered during execution !" 	| tee -a $divacalclog
     errorlog "ERROR : Check execution track in diva.log"  	| tee -a $divacalclog
-    errorlog "--------------------------------------------" 	| tee -a $divacalclog
+    errorline | tee -a $divacalclog
   fi
 else
   #output as netcdf not yet done
@@ -657,11 +657,11 @@ else
 
       if [ $? -ne 0 ]; then
         errorlog ' ' | tee -a $divacalclog $divalog
-        errorlog "--------------------------------------------"	| tee -a $divacalclog $divalog
+        errorline | tee -a $divacalclog $divalog
         errorlog "A problem was encountered during execution !"	| tee -a $divacalclog $divalog
         errorlog "      divacalc:   netcdfoutput.a"	  	| tee -a $divacalclog $divalog
         errorlog 'ERROR : Check execution track in diva.log'	| tee -a $divacalclog $divalog
-        errorlog "--------------------------------------------" | tee -a $divacalclog $divalog
+        errorline | tee -a $divacalclog $divalog
       fi
     fi
   fi
@@ -675,11 +675,11 @@ else
 
     if [ $? -ne 0 ]; then
       errorlog ' ' | tee -a $divacalclog $divalog
-      errorlog "--------------------------------------------" 	| tee -a $divacalclog $divalog
+      errorline | tee -a $divacalclog $divalog
       errorlog "A problem was encountered during execution !" 	| tee -a $divacalclog $divalog
       errorlog "      divacalc:   netcdfoutputfield.a "       	| tee -a $divacalclog $divalog
       errorlog 'ERROR : Check execution track in diva.log'      | tee -a $divacalclog $divalog
-      errorlog "--------------------------------------------" 	| tee -a $divacalclog $divalog
+      errorline | tee -a $divacalclog $divalog
       errorlog ' '                                          	| tee -a $divacalclog $divalog
     fi
      ###rm -f ../error*.anl
