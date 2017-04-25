@@ -33,7 +33,9 @@ if [ -f ./input/gcvsampling.dat ]; then
     divamesh
   fi
 else
-  divaecho "Need to provide gcvsampling.dat in ./input ! " | tee -a ${divagcvlog}
+  errorline | tee -a $divacvlog
+  errorlog "Need to provide gcvsampling.dat in ./input ! " | tee -a ${divagcvlog}
+  errorline | tee -a $divacvlog
 fi
 
 ijm=0
