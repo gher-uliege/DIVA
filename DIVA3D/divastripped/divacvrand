@@ -6,6 +6,10 @@ infolog --
 infolog "          Cross Validation"
 infolog --
 
+divaecho ' '
+divaecho "CVrand logs written in ${divacvrandlog}"
+divaecho ' '
+
 divaecho "///////////////////////////////////////////" > ${divacvrandlog}
 divaecho "          Cross Validation" >> ${divacvrandlog}
 divaecho "///////////////////////////////////////////" >> ${divacvrandlog}
@@ -175,6 +179,6 @@ else
       else
         cd ..
       fi
-      fi
+    fi
   fi
 fi

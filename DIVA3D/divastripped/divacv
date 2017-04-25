@@ -7,6 +7,11 @@ infolog "       Cross Validation"
 infolog --
 
 divaecho ' '
+divaecho "CV logs written in ${divacvlog}"
+divaecho ' '
+
+
+divaecho ' '
 divaecho "///////////////////////////////////////////" > $divacvlog
 divaecho "       Cross Validation" >> $divacvlog
 divaecho "///////////////////////////////////////////" >> $divacvlog
