@@ -71,7 +71,7 @@ divacalc
 
 field0=$(awk '{print $3}' output/valatxyascii.anl)
 
-echo ' '
+divaecho ' '
 infolog 'Check the results in'
 infolog './ouput/ghertonetcdf/results.nc (netcdf)'
 infolog ' '
