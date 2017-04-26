@@ -1,42 +1,43 @@
 #!/bin/bash
 
-# Testing error fields
-# with a few data points and a coarse grid (should be quick)
-# ctroupin, April 2013
+source divalogging
 
-if [ "$#" == "1" ]
-then
-        ndata=$1
-else
-        ndata='150'
-fi
-echo 'Now testing diva error computation'
-echo 'using '${Ndata} 'data points' 
+infolog "Testing error fields"
+infolog "with a few data points and a coarse grid (should be quick)"
 
-inputdir=$(pwd)'/input/'
-contfile=${inputdir}'coast.cont'
-datafile=${inputdir}'data.dat'
+# Define 2 parameters files that we will modify
 paramfile=${inputdir}'param.par.base'
 paramfile2=${inputdir}'param.par'
-timefile=$(pwd)'/output/time_error_'$$'.log'
+
+if [ "$#" == "1" ]; then
+  ndata=$1
+else
+  ndata='150'
+fi
+divaecho "Now testing diva error computation"
+divaecho "using ${Ndata} data points"
+
+timefile=${divalogdir}'time_error_'$$'.log'
+divaecho "Computation time written in ${timefile}"
+
 divaclean
 
-echo '' > $timefile
+divaecho '' > $timefile
 
 ##echo ${inputdir}
-echo //////////////////////////////////////////////////
-echo 'Running a simple test'
-echo //////////////////////////////////////////////////
-echo ' '
+divaecho "//////////////////////////////////////////////////"
+divaecho "Running a simple test with error computation"
+divaecho "//////////////////////////////////////////////////"
+divaecho " "
 
-echo '1. creating data file'
-echo ' '
+divaecho "1. creating data file"
+divaecho ' '
 
 awk -v N=$ndata 'BEGIN { for (i = 1; i <= N; i++)
         {x=rand();y=rand();z=rand();print x,y,xy-z} }' > ${datafile}
 
-echo '2. creating contour file'
-echo ' '
+divaecho "2. creating contour file"
+divaecho ' '
 
 echo 2 > ${contfile}
 echo 4 >> ${contfile}
@@ -51,8 +52,8 @@ echo 0.601 0.801 >> ${contfile}
 echo 0.601 0.201 >> ${contfile}
 
 
-echo '3. creating parameter file'
-echo ' '
+divaecho "3. creating parameter file"
+divaecho ' '
 
 echo '# Correlation Length lc' > ${paramfile}
 echo '0.2' >> ${paramfile}
@@ -83,34 +84,32 @@ echo '1.0' >> ${paramfile}
 
 divamesh
 
-
 # Start a loop on a list of values for ispec
 # in the file param.par
 
 filesuffix=( hybrid realcov poorman realcov_bnd cpme exerr exerr_bnd )
 let iii=0
+
 for ispec in {7,-7,17,-17,107,-107,-117}
 do
+  sed "6s/.*/${ispec}/" ${paramfile} > ${paramfile2}
 
-sed "6s/.*/${ispec}/" ${paramfile} > ${paramfile2}
+  timeinit=$(date +%s.%N)
+  divacalc
+  timeend=$(date +%s.%N)
 
+  timecalc=$(echo ${timeend} ${timeinit} | awk '{print ($1-$2)}')
+  divaecho 'time for ' ${filesuffix[$iii]} ' error computation:' ${timecalc} ' s' | tee -a $timefile
 
-timeinit=$(date +%s.%N)
-divacalc
-timeend=$(date +%s.%N)
+  divaecho ' '
+  divaecho 'Copying output file'
+  cp -v ./output/ghertonetcdf/results.nc './output/ghertonetcdf/error_'${filesuffix[$iii]}$$'.nc'
+  cp -v ./output/errorfieldgher.anl './output/error_'${filesuffix[$iii]}$$'.anl'
 
-timecalc=$(echo ${timeend} ${timeinit} | awk '{print ($1-$2)}')
-echo 'time for ' ${filesuffix[$iii]} ' error computation:' ${timecalc} ' s' >> $timefile
-
-
-echo ' '
-echo 'Copying output file'
-cp -v ./output/ghertonetcdf/results.nc './output/ghertonetcdf/error_'${filesuffix[$iii]}$$'.nc'
-cp -v ./output/errorfieldgher.anl './output/error_'${filesuffix[$iii]}$$'.anl'
-
-let iii=$((${iii}+1))
+  let iii=$((${iii}+1))
 done
 
-echo ''
-echo 'Check the error files in output/ghertonetcdf'
+infolog ''
+infolog "Check the error files in output/ghertonetcdf"
+infolog ' '
 
