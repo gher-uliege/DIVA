@@ -9,9 +9,9 @@ infolog 'Should be 0.5'
 divaclean
 
 ##echo ${inputdir}
-divaecho //////////////////////////////////////////////////
-divaecho 'Running a simple test'
-divaecho //////////////////////////////////////////////////
+divaecho "//////////////////////////////////////////////////"
+divaecho "Running a simple test"
+divaecho "//////////////////////////////////////////////////"
 divaecho ' '
 
 divaecho '1. creating data file'
@@ -76,5 +76,5 @@ infolog 'Check the results in'
 infolog './ouput/ghertonetcdf/results.nc (netcdf)'
 infolog ' '
 infolog 'Field value at origin = ' ${field0}
-echo ' '
+divaecho ' '
 
