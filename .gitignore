@@ -5,3 +5,8 @@
 *.mod
 *.nc
 fort.*
+xrangecova
+DIVA3D/divastripped/divawork/
+DIVA3D/divastripped/input/
+DIVA3D/divastripped/output/
+DIVA3D/divastripped/logs/
