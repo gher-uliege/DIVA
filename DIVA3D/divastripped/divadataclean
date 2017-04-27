@@ -7,6 +7,10 @@ infoline
 infolog "       Cleaning data out of the mesh"
 infoline
 
+divaecho ' '
+divaecho "Dataclean logs written in ${divadatalog}"
+divaecho ' '
+
 divaecho "//////////////////////////////////////" > ${divadatalog}
 divaecho "       Cleaning data out of the mesh" >> ${divadatalog}
 divaecho "//////////////////////////////////////" >> ${divadatalog}
