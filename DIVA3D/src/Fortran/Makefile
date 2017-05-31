@@ -22,9 +22,9 @@ export DIVANCDIR=$(DIVA2DDIR)/output/ghertonetcdf/
 export DIVAMESHVISUDIR=$(DIVA2DDIR)/output/meshvisu/
 
 
-MKDIR = mkdir -p
-PLPLOT=Plplot
-PLPLOT=NoPlplot   # Comment this line of you have Plplot installed
+export MKDIR=mkdir -p
+PLPLOT = Plplot
+PLPLOT = NoPlplot   # Comment this line of you have Plplot installed
 
 
 .PHONY: all directories cleanobject cleanexec
@@ -37,9 +37,6 @@ test:
 directories: $(DIVAWORKDIR) $(DIVAMESHDIR) $(DIVAINPUTDIR) $(DIVAOUTPUTDIR) $(DIVANCDIR) $(DIVAMESHVISUDIR) $(BINDIR)
 
 $(DIVAWORKDIR) $(DIVAMESHDIR) $(DIVAINPUTDIR) $(DIVAOUTPUTDIR) $(DIVANCDIR) $(DIVAMESHVISUDIR) $(BINDIR):
-	$(MKDIR) $@
-
-$(BINDIR):
 	$(MKDIR) $@
 
 calc: 
