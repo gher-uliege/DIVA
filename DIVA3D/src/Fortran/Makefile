@@ -1,9 +1,10 @@
 
-export compiler=/usr/bin/gfortran
-export flags=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE -DDIVAHUGEMEMORY
+export compiler = /usr/bin/gfortran
+export flags=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE
 export flagscalc=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY
-export ncinc=-g -O2 -I/usr/local/include
-export nclib=-L/usr/local/lib -lnetcdf -lnetcdff
+export ncinc=-I/usr/local/include
+export nclib=-L/usr/local/lib -lnetcdff -L/usr/local/lib -lnetcdf -lnetcdf
+#export $(eval nclib=$(nf-config --flibs))
 
 # export nocyg=...
 # export noglobals=...
