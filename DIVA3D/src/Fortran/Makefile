@@ -1,4 +1,6 @@
 
+# Pass variables from the top-level make
+# (Variables are not normally passed down)
 export compiler = /usr/bin/gfortran
 export flags=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE
 export flagscalc=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY
@@ -19,22 +21,22 @@ export DIVAOUTPUTDIR=$(DIVA2DDIR)/output/
 export DIVANCDIR=$(DIVA2DDIR)/output/ghertonetcdf/
 export DIVAMESHVISUDIR=$(DIVA2DDIR)/output/meshvisu/
 
-MKDIR = mkdir -p
 
+MKDIR = mkdir -p
 PLPLOT=Plplot
 PLPLOT=NoPlplot   # Comment this line of you have Plplot installed
 
 
 .PHONY: all directories cleanobject cleanexec
  
-all: calc extensions mesh netcdf plplot pipetest stabil util
+all: calc extensions mesh netcdf plplot pipetest stabil util directories
 
 test:
 	echo $(PWD)
 
-directories: $(DIVAWORKDIR) $(DIVAMESHDIR) $(DIVAINPUTDIR) $(DIVAOUTPUTDIR) $(DIVANCDIR) $(DIVAMESHVISUDIR)
+directories: $(DIVAWORKDIR) $(DIVAMESHDIR) $(DIVAINPUTDIR) $(DIVAOUTPUTDIR) $(DIVANCDIR) $(DIVAMESHVISUDIR) $(BINDIR)
 
-$(DIVAWORKDIR) $(DIVAMESHDIR) $(DIVAINPUTDIR) $(DIVAOUTPUTDIR) $(DIVANCDIR) $(DIVAMESHVISUDIR):
+$(DIVAWORKDIR) $(DIVAMESHDIR) $(DIVAINPUTDIR) $(DIVAOUTPUTDIR) $(DIVANCDIR) $(DIVAMESHVISUDIR) $(BINDIR):
 	$(MKDIR) $@
 
 $(BINDIR):
@@ -44,32 +46,25 @@ calc:
 	$(MAKE) -C Calc
 
 extensions: 
-	cd Extensions && $(MAKE) all
-	cd $(SRCDIR)
+	$(MAKE) -C Extensions 
 
-mesh: 
-	cd Mesh && $(MAKE) all
-	cd $(SRCDIR)
+mesh:
+	$(MAKE) -C Mesh
 
 netcdf: 
-	cd NC && $(MAKE) all
-	cd $(SRCDIR)
+	$(MAKE) -C NC
 
 plplot: 
-	cd $(PLPLOT) && $(MAKE) all
-	cd $(SRCDIR)
+	$(MAKE) -C $(PLPLOT) 
 
 pipetest: 
-	cd Pipetest && $(MAKE) all
-	cd $(SRCDIR)
+	$(MAKE) -C Pipetest
 
 stabil: 
-	cd Stabil && $(MAKE) all
-	cd $(SRCDIR)
+	$(MAKE) -C Stabil
 	
 util:
-	cd Util && $(MAKE) all
-	cd $(SRCDIR)
+	$(MAKE) -C Util
        
 # Utility targets
 
