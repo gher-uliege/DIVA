@@ -1,0 +1,19 @@
+#!/bin/bash
+
+testEquality()
+{
+    assertEquals 1 1
+}
+
+testOrigin()
+{
+    echo "Checking interpolated value with one data point at origin"
+    cd ../DIVA3D/divastripped/
+    ./divatest0 > divatest0.log
+    field0=$(awk '{print $3}' output/valatxyascii.anl)
+
+    assertEquals 0.49961258874045061 ${field0}
+}
+
+# load shunit2
+. ./shunit2

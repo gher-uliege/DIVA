@@ -1,0 +1,10 @@
+#!/bin/bash
+
+testdir=$(pwd)
+echo ${testdir}
+
+bindir=${testdir}'/../DIVA3D/bin/'
+echo ${bindir}
+
+srcdir=${testdir}'/../DIVA3D/src/Fortran/'
+echo ${srcdir}

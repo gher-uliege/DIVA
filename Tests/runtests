@@ -1,0 +1,11 @@
+#!/bin/bash
+
+source testinit
+
+cd ../DIVA3D/divastripped/
+divatest0 > test1.log
+
+field0=$(awk '{print $3}' output/valatxyascii.anl)
+echo "Test 1:"
+echo "Expected value: 0.5"
+echo "Obtained value: ${field0}"
