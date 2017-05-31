@@ -5,3 +5,6 @@ DIVA3D/divastripped/output/
 DIVA3D/divastripped/divawork/
 DIVA3D/divastripped/meshgenwork/
 *.log
+*.mod
+*.nc
+fort.*

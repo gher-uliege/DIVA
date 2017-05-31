@@ -16,10 +16,10 @@ DIVA_PARALLEL=1
 
 # !!! The flag -DDIVAHUGEMEMORY allow larger analysis and/or finer meshes. Disable it in case of compilation problems.
 
-flags='-O3  -frecord-marker=4  -cpp  -DDIVAITERATIVE -DDIVAHUGEMEMORY' # ' -DDIVABINARYFILESMESH -DDIVABINARYFILES '
+flags='-O3  -frecord-marker=4  -cpp  -DDIVAITERATIVE'  # -DDIVAHUGEMEMORY' # ' -DDIVABINARYFILESMESH -DDIVABINARYFILES '
 #flags='-O3' 			# no optimization
 
-flagscalc=' -O3 -cpp   -DDIVAITERATIVE -Wall -fbounds-check -DDIVAHUGEMEMORY'
+flagscalc=' -O3 -cpp   -DDIVAITERATIVE -Wall -fbounds-check ' #-DDIVAHUGEMEMORY'
 # -DALLODYZERO if ZEROS in ALLODY to be forced, time consuming...
 
 if [ "$DIVA_PARALLEL" = 1 ]
@@ -96,3 +96,8 @@ gui=1
 
 # netcdf = 1 for NetCDF programs to be compiled
 netcdf=1
+
+echo 'flags = '${flags}
+echo 'flagscalc = '${flagscalc}
+echo 'ncinc = '${ncinc}
+echo 'nclib = '${nclib}

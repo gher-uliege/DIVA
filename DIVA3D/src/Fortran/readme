@@ -1,0 +1,11 @@
+To compile the code you have two main possibilities:
+
+1. Work with the specific script:
+
+    a) edit the file 'divacompile_options' according to your installation
+    b) run the script 'divacompileall'
+
+2. Use the Makefile
+
+    a) edit the file 'Makefile'
+    b) type 'make' or 'make all'    
