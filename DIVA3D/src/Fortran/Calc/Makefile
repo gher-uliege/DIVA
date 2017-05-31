@@ -8,7 +8,7 @@ all : $(executables)
 $(executables): | $(BINDIR)
 
 $(BINDIR) :
-	mkdir $(BINDIR)
+	$(MKDIR) $(BINDIR)
 
 $(executables) : $(sources) divainc.h divapre.h
 	$(compiler) $(flags) $(flagscalc) $(sources) -o $@ 

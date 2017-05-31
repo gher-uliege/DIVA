@@ -13,7 +13,7 @@ divaio.o : divaio.F90
 $(executables): | $(BINDIR)
 
 $(BINDIR):
-	        mkdir $(BINDIR)
+	$(MKDIR) $(BINDIR)
 
 $(BINDIR)%.a : %.f
 	$(compiler) $(nocyg) -o $@ $< $(nclib)

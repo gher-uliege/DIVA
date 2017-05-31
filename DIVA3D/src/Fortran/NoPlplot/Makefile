@@ -8,7 +8,7 @@ all : $(executables)
 $(executables): | $(BINDIR)
 
 $(BINDIR):
-	mkdir $(BINDIR)
+	$(MKDIR) $(BINDIR)
 	
 $(executables) : $(BINDIR)%.a : %.f
 	$(compiler) $(flags) $< -o $@

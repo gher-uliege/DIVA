@@ -12,7 +12,7 @@ all : $(executables) $(executables90) $(BINDIR)addnoise.a $(BINDIR)diva3Dqcwrt.a
 $(executables): | $(BINDIR)
 
 $(BINDIR):
-	mkdir $(BINDIR)
+	$(MKDIR) $(BINDIR)
 
 ../NC/divaio.o : ../NC/divaio.F90
 	        $(compiler) $(ncinc) -c $^ -o $@

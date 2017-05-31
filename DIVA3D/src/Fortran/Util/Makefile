@@ -5,13 +5,10 @@ executables := $(addprefix $(BINDIR),$(patsubst %.f,%.a,$(patsubst %.f90,%.a,$(s
 
 all : $(executables)  
 
-test:
-	echo $(sources)
-
 $(executables): | $(BINDIR)
 
 $(BINDIR):
-	mkdir $(BINDIR)
+	$(MKDIR) $(BINDIR)
 
 $(BINDIR)%.a : %.f
 	$(compiler) $(flags) -o $@ $< 

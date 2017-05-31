@@ -10,7 +10,7 @@ all : $(objects) $(executables) $(BINDIR)extract.a
 $(executables): | $(BINDIR)
 
 $(BINDIR):
-	mkdir $(BINDIR)
+	$(MKDIR) $(BINDIR)
 	
 ureadc.o : ureadc.f
 	$(compiler) -c $(flags) ureadc.f -o ureadc.o
