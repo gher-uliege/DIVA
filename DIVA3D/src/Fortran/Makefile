@@ -4,7 +4,7 @@
 
 DIVA_PARALLEL=1
 
-export compiler = /usr/bin/gfortran
+export compiler = gfortran
 export flags=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE
 ifeq ($(DIVA_PARALLEL), 1)
 export flagscalc=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY
