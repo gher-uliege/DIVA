@@ -1,10 +1,23 @@
 
 # Pass variables from the top-level make
 # (Variables are not normally passed down)
+
+
+
+DIVA_PARALLEL=1
+# !!! The flag -DDIVAHUGEMEMORY allow larger analysis and/or finer meshes. Disable it in case of compilation problems.
+# -DALLODYZERO if ZEROS in ALLODY to be forced, time consuming...
+
 export compiler = /usr/bin/gfortran
 export flags=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE
+
+ifeq ($(DIVA_PARALLEL), 1)
 export flagscalc=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY
+else
+export flagscalc=-O3 -cpp -DDIVAITERATIVE -Wall -fbounds-check -DDIVAHUGEMEMORY
+endif
 export ncinc=-I/usr/local/include
+
 export nclib=-L/usr/local/lib -lnetcdff -L/usr/local/lib -lnetcdf -lnetcdf
 #export $(eval nclib=$(nf-config --flibs))
 
