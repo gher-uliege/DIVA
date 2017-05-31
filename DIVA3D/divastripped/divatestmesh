@@ -1,0 +1,60 @@
+#!/bin/bash
+
+
+echo 'Sanity check:'
+echo 'Control the value of the field at 0,0'
+echo 'should be 0.5'
+ 
+inputdir=$(pwd)'/input/'
+contfile=${inputdir}'coast.cont'
+paramfile=${inputdir}'param.par'
+
+./divaclean
+
+echo 1 > ${contfile}
+echo 4 >> ${contfile}
+echo 0. 0.>> ${contfile}
+echo 5. 0. >> ${contfile}
+echo 5. 5. >> ${contfile}
+echo 0. 5 >> ${contfile}
+
+
+echo '# Correlation Length lc' > ${paramfile}
+echo '2.0' >> ${paramfile}
+echo '# icoordchange' >> ${paramfile}
+echo '0' >> ${paramfile}
+echo '# ispec' >> ${paramfile}
+echo '11' >> ${paramfile}
+echo '# ireg' >> ${paramfile}
+echo '0' >> ${paramfile}
+echo '# xori' >> ${paramfile}
+echo '0' >> ${paramfile}
+echo '# yori' >> ${paramfile}
+echo '0' >> ${paramfile} 
+echo '# dx' >> ${paramfile}
+echo '.5' >> ${paramfile}
+echo '# dy' >> ${paramfile}
+echo '.5' >> ${paramfile}
+echo '# nx' >> ${paramfile}
+echo '11' >> ${paramfile}
+echo '#ny' >> ${paramfile}
+echo '11' >> ${paramfile}
+echo '# valex' >> ${paramfile}
+echo '-99' >> ${paramfile}
+echo '# snr' >> ${paramfile}
+echo '1.0' >> ${paramfile}
+echo '# varbak' >> ${paramfile}
+echo '1.0' >> ${paramfile}
+
+./divamesh
+
+meshtopofile="./meshgenwork/fort.23"
+{
+read nnodes
+read ninterfaces
+read nelements
+} < $meshtopofile
+
+echo "Number of nodes: ${nnodes} (should be 233)"
+echo "Number of interfaces: ${ninterfaces} (should be 648)"
+echo "Number of elements: ${nelements} (should be 416)"
