@@ -24,14 +24,15 @@ MKDIR = mkdir -p
 PLPLOT=Plplot
 PLPLOT=NoPlplot   # Comment this line of you have Plplot installed
 
-# Maybe add loop on subdirectories to be sure 
-# we take them all into account
+
+.PHONY: all directories cleanobject cleanexec
+ 
 all: calc extensions mesh netcdf plplot pipetest stabil util
 
 test:
 	echo $(PWD)
 
-directories: | $(DIVAWORKDIR) $(DIVAMESHDIR) $(DIVAINPUTDIR) $(DIVAOUTPUTDIR) $(DIVANCDIR) $(DIVAMESHVISUDIR)
+directories: $(DIVAWORKDIR) $(DIVAMESHDIR) $(DIVAINPUTDIR) $(DIVAOUTPUTDIR) $(DIVANCDIR) $(DIVAMESHVISUDIR)
 
 $(DIVAWORKDIR) $(DIVAMESHDIR) $(DIVAINPUTDIR) $(DIVAOUTPUTDIR) $(DIVANCDIR) $(DIVAMESHVISUDIR):
 	$(MKDIR) $@
@@ -39,40 +40,38 @@ $(DIVAWORKDIR) $(DIVAMESHDIR) $(DIVAINPUTDIR) $(DIVAOUTPUTDIR) $(DIVANCDIR) $(DI
 $(BINDIR):
 	$(MKDIR) $@
 
-calc: | directories
-	cd Calc && $(MAKE) all
-	cd $(SRCDIR)
+calc: 
+	$(MAKE) -C Calc
 
-extensions: | directories
+extensions: 
 	cd Extensions && $(MAKE) all
 	cd $(SRCDIR)
 
-mesh: | directories
+mesh: 
 	cd Mesh && $(MAKE) all
 	cd $(SRCDIR)
 
-netcdf: | directories
+netcdf: 
 	cd NC && $(MAKE) all
 	cd $(SRCDIR)
 
-plplot: | directories
+plplot: 
 	cd $(PLPLOT) && $(MAKE) all
 	cd $(SRCDIR)
 
-pipetest: | directories
+pipetest: 
 	cd Pipetest && $(MAKE) all
 	cd $(SRCDIR)
 
-stabil: | directories
+stabil: 
 	cd Stabil && $(MAKE) all
 	cd $(SRCDIR)
 	
-util: | directories
+util:
 	cd Util && $(MAKE) all
 	cd $(SRCDIR)
        
 # Utility targets
-.PHONY: cleanobject cleanexec cleanall
 
 clean: cleanexec cleanobject
 
