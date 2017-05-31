@@ -18,7 +18,7 @@ Maximal SN
 50.0
 Analysis and reference field:
 0
-lowerlevel number
+lowerlevel number (should be compatible with values in contour.depth)
 1
 upperlevel number
 1
