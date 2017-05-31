@@ -33,7 +33,7 @@ PLPLOT = Plplot
 PLPLOT = NoPlplot   # Comment this line of you have Plplot installed
 
 
-.PHONY: all directories cleanobject cleanexec
+.PHONY: all calc extensions mesh netcdf plplot pipetest stabil util directories cleanobject cleanexec
  
 all: calc extensions mesh netcdf plplot pipetest stabil util directories
 
