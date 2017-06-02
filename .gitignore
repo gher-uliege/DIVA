@@ -8,3 +8,6 @@ DIVA3D/divastripped/meshgenwork/
 *.mod
 *.nc
 fort.*
+*.a
+*.swp
+*.o
