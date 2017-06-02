@@ -14,7 +14,7 @@ infolog -- | tee -a $divalog
 if [ -f ./input/coast.cont ]; then
 cp ./input/coast.cont ./meshgenwork/fort.10
 else
-  errorlog "No file coast.cont in ./input" | tee -a $divameshlog
+  errorlog "No file coast.cont in ./input" | tee -a $divameshlog $divalog
   exit 1
 fi
 
@@ -30,7 +30,7 @@ fi
 if [ -f ./input/param.par ]; then
   divaecho "Reading parameters" | tee -a $divameshlog
 else
-  divaerror "No file param.par in ./input/" | tee -a $divameshlog
+  divaerror "No file param.par in ./input/" | tee -a $divameshlog $divalog
   exit 1
 fi
 Filepar=./input/param.par
