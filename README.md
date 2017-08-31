@@ -15,10 +15,13 @@ Tools to generate the finite element mesh are provided as well as tools to optim
 * [gnuplot](http://www.gnuplot.info/) for the creation of graphics (optional).
 
 ### Installing
-
-Go in the source directory
+Download the latest stable [release](https://github.com/gher-ulg/DIVA/releases) and extract the archive:
 ```bash
-cd DIVA3D/src/Fortran/
+tar xvf DIVA-4.7.1.tar.gz
+```
+then go in the source directory
+```bash
+cd DIVA-4.7.1/DIVA3D/src/Fortran/
 ```
 and run the compilation script:
 ```bash
