@@ -6,10 +6,34 @@ Tools to generate the finite element mesh are provided as well as tools to optim
 
 ![Diva logo](https://cloud.githubusercontent.com/assets/11868914/24106959/c6d8fb44-0d89-11e7-921b-a36fcccf5a21.png)
 
-### Ackowledgments
+## Getting started
 
-The DIVA development has received funding from the European Union Sixth Framework Programme (FP6/2002-2006) under grant agreement n° 026212, [SeaDataNet](http://www.seadatanet.org/), Seventh Framework Programme (FP7/2007-2013) under grant agreement n° 283607, SeaDataNet II, SeaDataCloud and [EMODNet](http://www.emodnet.eu/) (MARE/2008/03 - Lot 3 Chemistry - SI2.531432) from the [Directorate-General for Maritime Affairs and Fisheries](http://ec.europa.eu/dgs/maritimeaffairs_fisheries/index_en.htm).
+### Prerequisites
 
+* A fortran compiler: [gfortran](https://gcc.gnu.org/wiki/GFortran), ifort, pgf, ...
+* The [NetCDF](https://www.unidata.ucar.edu/software/netcdf/netcdf-4/newdocs/netcdf-f90.html) library for Fortran for the output writing.
+* [gnuplot](http://www.gnuplot.info/) for the creation of graphics (optional).
+
+### Installing
+
+Go in the source directory
+```bash
+cd DIVA3D/src/Fortran/
+```
+and run the compilation script:
+```bash
+make
+```
+
+### Testing
+
+Go in the main execution directory (*divastripped*) and run the tests:
+```bash
+cd ../../divastripped/
+divatest
+divatest0
+...
+```
 ## How does it work?
 
 Diva is a software tool developed for gridding in situ data.
@@ -34,22 +58,13 @@ You can also use basic DIVA features in a web application [Diva on Web](http://g
 
 ## Related projects 
 
-### divand.jl 
-
-[divand.jl](https://github.com/gher-ulg/divand.jl)(Julia)  performs n-dimensional variational analysis of arbitrarily located observations.
-
-### divand.py
-
-[divand.py](https://github.com/gher-ulg/divand.py) is the Python interface to the previous code.
-
-### DivaPythonTools
-
-[DivaPythonTools](https://github.com/gher-ulg/DivaPythonTools) is a set of utilies to read, write and plot the content of input or output files used in Diva.
-
+* [divand.jl](https://github.com/gher-ulg/divand.jl)(Julia)  performs n-dimensional variational analysis of arbitrarily located observations.
+* [divand.py](https://github.com/gher-ulg/divand.py) is the Python interface to the previous code.
+* [DivaPythonTools](https://github.com/gher-ulg/DivaPythonTools) is a set of utilies to read, write and plot the content of input or output files used in Diva.
 
 ## Publications & documents 
 
-Check the [GHER publications](http://modb.oce.ulg.ac.be/mediawiki/index.php/Publications) for the most recent updates.
+Check the [GHER publications]([http://orbi.ulg.ac.be/ulg-report?query=%28%28affil%3A%22GeoHydrodynamics+and+Environment+Research%22%29+OR+%28affil%3A%22Oc%C3%A9anographie+physique%22%29%29&model=a&format=apa&sort_by0=1&order0=DESC&sort_by1=3&order1=ASC&sort_by2=2&order2=ASC&output=html&language=en&title=GHER+publications]) for the most recent updates.
 
 ### Articles
 
@@ -69,8 +84,12 @@ Troupin, C.; Machín, F.; Ouberdous, M.; Sirjacobs, D.; Barth, A. & Beckers, J.-
 
 ### User guide
 
-Last version: [DivaUserGuide_June2016](http://modb.oce.ulg.ac.be/mediawiki/upload/DIVA/notes/DivaUserGuide_June2016.pdf)
+Most recent version in [PDF](https://github.com/gher-ulg/Diva-User-Guide/raw/master/DivaUserGuide.pdf).
 
 ### Poster and presentations
 
 Check the complete list of documents hosted through the [ULg Orbi catalogue](http://orbi.ulg.ac.be/orbi-report?query=%28%28affil%3A%22GeoHydrodynamics+and+Environment+Research%22%29+OR+%28affil%3A%22Oc%C3%A9anographie+physique%22%29%29&model=a&format=apa&sort_by0=1&order0=DESC&sort_by1=3&order1=ASC&sort_by2=2&order2=ASC&output=html&language=en&title=GHER+publications).
+
+## Acknowledgments
+
+The DIVA development has received funding from the European Union Sixth Framework Programme (FP6/2002-2006) under grant agreement n° 026212, [SeaDataNet](http://www.seadatanet.org/), Seventh Framework Programme (FP7/2007-2013) under grant agreement n° 283607, SeaDataNet II, SeaDataCloud and [EMODNet](http://www.emodnet.eu/) (MARE/2008/03 - Lot 3 Chemistry - SI2.531432) from the [Directorate-General for Maritime Affairs and Fisheries](http://ec.europa.eu/dgs/maritimeaffairs_fisheries/index_en.htm).
