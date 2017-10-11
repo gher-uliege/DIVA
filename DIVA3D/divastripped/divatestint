@@ -33,9 +33,9 @@ echo 0.601 0.201 >> ${contfile}
 echo '# Correlation Length lc' > ${paramfile}
 echo '0.2' >> ${paramfile}
 echo '# icoordchange' >> ${paramfile}
-echo '0' >> ${paramfile}
+echo '2' >> ${paramfile}
 echo '# ispec' >> ${paramfile}
-echo '11' >> ${paramfile}
+echo '101' >> ${paramfile}
 echo '# ireg' >> ${paramfile}
 echo '0' >> ${paramfile}
 echo '# xori' >> ${paramfile}
@@ -76,7 +76,6 @@ integralvaluesplit=(${integralvalues// / })
 echo " "
 echo "                Obtained values (expected)"
 echo "---------------------------------------------------"
-echo "Integral value: "  ${integralvaluesplit[0]} "(0.0416288)"
-echo "Surface:        "  ${integralvaluesplit[1]} "(0.9204)"
-echo "averaged value: "  ${integralvaluesplit[2]} "(0.045229)"
-
+echo "Integral value: "  ${integralvaluesplit[0]} "(5.14786e+08)"
+echo "Surface:        "  ${integralvaluesplit[1]} "(1.13761e+10)"
+echo "averaged value: "  ${integralvaluesplit[2]} "(0.0452516)"
