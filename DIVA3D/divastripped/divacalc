@@ -91,6 +91,9 @@ echo "Clever poor mans error"
 iflagcpme=1
 fi
 
+if [ "$ispec" -ne "-250" ]
+then
+
 if [ "$ispec" -le "-100" ]
 then
 if  [ "$ispec" -le "-110" ]
@@ -103,7 +106,7 @@ echo exerr
 iflagexerr=1
 ispec=17
 fi
-
+fi
 
 fi
 
