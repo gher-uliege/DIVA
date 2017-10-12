@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/80114691.svg)](https://zenodo.org/badge/latestdoi/80114691)
+
 # DIVA (Data-Interpolating Variational Analysis)
 
 DIVA allows the spatial interpolation of data (*analysis*) in an optimal way, comparable to *optimal interpolation* (OI). In comparison to OI, it takes into account coastlines, sub-basins and advection. Calculations are highly optimized and rely on a [*finite element*](https://en.wikipedia.org/wiki/Finite_element_method) resolution. 
