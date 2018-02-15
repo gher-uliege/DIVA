@@ -16,13 +16,13 @@ $(BINDIR):
 	$(MKDIR) $(BINDIR)
 
 $(BINDIR)%.a : %.f
-	$(compiler) $(nocyg) -o $@ $< $(nclib)
+	$(compiler) $(nocyg) -o $@ $< $(nclib) $(ncinc)
 
 $(BINDIR)%.a : %.F
-	$(compiler) $(nocyg) -o $@ $< $(nclib)
+	$(compiler) $(nocyg) -o $@ $< $(nclib) $(ncinc)
 
 $(BINDIR)%.a : %.f90 divaio.o
-	$(compiler) $(ncinc) $(nocyg) $< -o $@ divaio.o $(nclib)
+	$(compiler) $(ncinc) $(nocyg) $< -o $@ divaio.o $(nclib) 
 
 $(BINDIR)%.a : %.F90 divaio.o
 	$(compiler) $(ncinc) $(nocyg) $< -o $@ divaio.o $(nclib)
