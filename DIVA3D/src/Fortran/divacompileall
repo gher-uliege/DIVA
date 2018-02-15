@@ -44,7 +44,7 @@ echo ' '
 cd ../Extensions
 $compiler -c $flags ureadc.f
 $compiler -c $flags uwritc.f
-$compiler $noglobals $nocyg extract.f  -o extract.a $nclib
+$compiler $noglobals $nocyg extract.f  -o extract.a $nclib $ncinc
 
 for jj in `ls *.f`
 do
@@ -113,12 +113,12 @@ $compiler $ncinc  $nocyg -c divaio.F90
 for jj in `ls *.f`
 do
 echo $jj
-$compiler  $nocyg $jj -o `basename $jj .f`.a $nclib
+$compiler  $nocyg $jj -o `basename $jj .f`.a $nclib $ncinc
 done
 for jj in `ls *.F`
 do
 echo $jj
-$compiler  $nocyg $jj -o `basename $jj .F`.a $nclib
+$compiler  $nocyg $jj -o `basename $jj .F`.a $nclib $ncinc
 done
 
 for jj in `ls *.F90 | grep -v divaio.F90`
