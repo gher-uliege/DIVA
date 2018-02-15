@@ -303,13 +303,15 @@
          STOP 'Stopped in NC_READ4DCL def clbnds'
       ENDIF
 !
-      status = nf_get_att_real(ncid,idcb,'climatology_bounds',
-     &                            clbnds)
-      IF (status .NE.nf_noerr) THEN
-         print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL put clbnds'
-      ENDIF
-
+! No attribute(s) to read for this variable,
+! hence comment the next lines
+!      status = nf_get_att_real(ncid,idcb,'climatology_bounds',
+!     &                            clbnds)
+!      IF (status .NE.nf_noerr) THEN
+!         print *,nf_strerror(status)
+!         STOP 'Stopped in NC_READ4DCL put clbnds'
+!      ENDIF
+!
 !!      ENDIF
 !
       !-----------------------------------------     
