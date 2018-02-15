@@ -19,7 +19,7 @@ uwritc.o : uwritc.f
 	$(compiler) -c $(flags) uwritc.f -o uwritc.o
 
 $(BINDIR)extract.a : extract.f
-	$(compiler) $(noglobals) $(nocyg) extract.f -o $(BINDIR)extract.a $(nclib)
+	$(compiler) $(noglobals) $(nocyg) extract.f -o $(BINDIR)extract.a $(nclib) $(ncinc)
 
 $(executables) : $(BINDIR)%.a : %.f
 	$(compiler) $(nocyg) $(nclib) $< -o $@
