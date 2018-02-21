@@ -10,21 +10,21 @@ echo                Mesh generation | tee -a $divameshlog
 echo ////////////////////////////////////////////////// | tee -a $divameshlog
 echo ' '
 
-if [ -f ./input/coast.cont ] 
+if [ -f ./input/coast.cont ]
 then
 cp ./input/coast.cont ./meshgenwork/fort.10
 else
 echo Need to provide coast.cont in ./input | tee -a $divameshlog
 fi
 isdens=0
-if [ -f ./input/coast.cont.dens ] 
+if [ -f ./input/coast.cont.dens ]
 then
 echo There is a density file for the mesh | tee -a $divameshlog
 cp -v ./input/coast.cont.dens ./meshgenwork/fort.12
 isdens=1
 fi
 ##echo $isdens
-if [ -f ./input/param.par ] 
+if [ -f ./input/param.par ]
 then
 echo Reading parameters | tee -a $divameshlog
 else
@@ -115,7 +115,7 @@ echo in directory ./output/meshvisu/  >> $divameshlog
 cp fort.10 ../output/meshvisu/
 cp fort.22 ../output/meshvisu/
 cp fort.23 ../output/meshvisu/
- 
+
 #exec 23<>fort.23
 #read  nnt1 nnint nelt <&3
 #exec 23>&-
@@ -125,4 +125,3 @@ echo ---------------   | tee -a $divameshlog
 echo Mesh is created   | tee -a $divameshlog
 echo ---------------   | tee -a $divameshlog
 echo ' '   | tee -a $divameshlog
-
