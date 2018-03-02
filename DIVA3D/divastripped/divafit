@@ -2,7 +2,7 @@
 export LC_ALL=C
 
 #------------------------------------------------
-# user can ask for binning the data before 
+# user can ask for binning the data before
 # the optimization with binning=1
 binning=0
 #------------------------------------------------
@@ -81,11 +81,13 @@ echo 'Going to fit covariance function' | tee -a $divafitlog
 echo ' ' 			        | tee -a $divafitlog
 head -4 ./input/param.par | tail -1   > fort.11
 head -8 ./input/param.par | tail -1   >> fort.11
-if [ -f ./input/data.dat ] 
-then
-cp ./input/data.dat ./divawork/fort.10
+if [ -f ./input/data.dat ]; then
+  # cp ./input/data.dat ./divawork/fort.10
+  # Add a 4th column of ones if necessary
+  echo "Adding a fourth column with ones (weights) if needed"
+  cat ./input/data.dat |  awk '{{if ($4 > "") {} else {$4=1}};print $0}' > ./divawork/fort.10
 else
-echo 'Need to provide data.dat in ./input !' | tee -a $divafitlog
+  echo 'Need to provide data.dat in ./input !' | tee -a $divafitlog
 fi
 mv fort.11 ./divawork
 
@@ -102,8 +104,8 @@ echo Check execution track			  | tee -a $divalog $divafitlog
 echo -------------------------------------------- | tee -a $divalog $divafitlog
 fi
 
-if [ -f fort.98 ] 
-then 
+if [ -f fort.98 ]
+then
 mv fort.98 ../output/covariancefit.dat
 mv fort.99 ../output/covariance.dat
 mv fort.66 ../output/paramfit.dat
@@ -147,7 +149,7 @@ head -6 ../output/paramfit.dat | tail -1  >> ../output/param.par.fit
 head -8 ../output/paramfit.dat | tail -1  >> ../output/quality.fit
 
 
-if [ "$nsamp" -eq "0" ] 
+if [ "$nsamp" -eq "0" ]
 then
 nbdata=$(cat ../input/data.dat | wc -l)
 echo $nbdata >> ../output/nsamp.fit
@@ -179,4 +181,3 @@ mv ./input/data.notbinned ./input/data.dat
 fi
 
 fi
-

@@ -10,31 +10,12 @@
 
         icoord=0
         ireg=0
-C2015JMB 
-C       Put zero to go back to non weighted fittign
-        iflagw=1
-C
-C Testing if 4 columns are there
-        iread=4
-         read(10,*,end=123,err=123) xxx,yyy,zzz,www
-         write(6,*) 'Four data columns present'
-         goto 124
- 123    continue
-        write(6,*) 'No weigth present will use ones'
-        iread=3
- 124    continue
-        rewind(10)
-        if (iflagw.eq.0) iread=3
-
-
-
 
         nsamp=0
         read(5,*,end=888,err=888) nsamp
         write(6,*) 'Will try to use', nsamp*(nsamp-1)/2, ' couples'
  888    continue
         
-
         read(11,*,end=11,err=11) rcoord
         read(11,*,end=11,err=11) ireg
         if (rcoord.lt.0) icoord=-1
@@ -48,44 +29,39 @@ C Testing if 4 columns are there
         dmin=10D30
         dmax=-dmin
  1      continue
-        if (iread.eq.4) then
         read(10,*,end=99) x(n+1),y(n+1),d(n+1),iww(n+1)
-                        else
-        read(10,*,end=99) x(n+1),y(n+1),d(n+1)
-        iww(n+1)=1
-        endif
 
         dmin=min(dmin,d(n+1))
         dmax=max(dmax,d(n+1))
         n=n+1
         if (n.ge.nm) then
-        write(6,*) 'Open fitsnl.f and increase parameter nm'
-        stop
+          write(6,*) 'Edit fitsnl.f and increase parameter nm'
+          stop
         endif
         goto 1
  99     continue
         write(6,*) 'Data range :',dmin,dmax
         if (icoord.eq.1) then
-        write(6,*) 'Into coordinate change'
-        call changec(x,y,n,icoord)
+          write(6,*) 'Into coordinate change'
+          call changec(x,y,n,icoord)
         endif
         if (ireg.eq.2) then
-        write(6,*) 'Linear regression '
-        call linreg(x,y,d,n)
+          write(6,*) 'Linear regression '
+          call linreg(x,y,d,n)
         endif
         call lfit(x,y,d,iww,
      &  n,rl,sn,varbak,work,w2,w3,iw,icoord,rcoord
      & ,nsamp,rqual)
         if(icoord.eq.1) then
-        RL=RL/6400*180/3.14
+          RL=RL/6400*180/3.14
         endif
 
 C                write(6,*) 'RL,SN,VARBAK',RL,SN
         write(6,*) 'RL,SN,VARBAK',RL,SN,VARBAK
         if (icoord.eq.1) then
-        write(66,*) 'Correlation length (in degrees latitude)'
-                         else
-        write(66,*) 'Correlation length'
+          write(66,*) 'Correlation length (in degrees latitude)'
+        else
+          write(66,*) 'Correlation length'
         endif
         write(66,*) RL
         write(66,*) 'Signal to noise ratio'
@@ -95,12 +71,12 @@ C                write(6,*) 'RL,SN,VARBAK',RL,SN
         write(66,*) 'Quality of the fit (0: bad 1: good)'
         write(66,*) rqual
         if (icoord.ge.1) then
-        write(66,*) 'For information: correlation length in km is',
+          write(66,*) 'For information: correlation length in km is',
      &      RL*6400.*3.14/180.
-        write(6,*) 'For information: correlation length in km is',
+          write(6,*) 'For information: correlation length in km is',
      &      RL*6400.*3.14/180.
 
-             endif
+        endif
         stop
         end
         subroutine changec(x,y,n,icoord)
@@ -111,18 +87,18 @@ C                write(6,*) 'RL,SN,VARBAK',RL,SN
         ymax=-ymin
         
         do i=1,n
-        if (x(i).lt.xmin) xmin=x(i)
-        if (x(i).gt.xmax) xmax=x(i)
-        if (y(i).lt.ymin) ymin=y(i)
-        if (y(i).gt.ymax) ymax=y(i)
+          if (x(i).lt.xmin) xmin=x(i)
+          if (x(i).gt.xmax) xmax=x(i)
+          if (y(i).lt.ymin) ymin=y(i)
+          if (y(i).gt.ymax) ymax=y(i)
         enddo
         ylat=(ymax+ymin)/2.
         dx=cos(ylat*3.1415/180.)
         write(6,*) 'dx',dx,ylat,xmin,xmax,ymin,ymax
         
         do i=1,n
-        x(i)=(x(i)-xmin)*3.1415/180.*6400.*dx
-        y(i)=(y(i)-ymin)*3.1415/180.*6400.
+          x(i)=(x(i)-xmin)*3.1415/180.*6400.*dx
+          y(i)=(y(i)-ymin)*3.1415/180.*6400.
         enddo
         return
         end
@@ -146,21 +122,20 @@ c
         integer*4 jcouples(nop*nop/2)
         
         rqual=0
-       if(nsamp.ne.0) then
-       write(6,*) 'will generate random couples'
-       if (nsamp.gt.n) then
-       write(6,*) 'Strange to ask for more samples than available'
-       write(6,*) 'from data; will proceed'
-
-       endif
-       if (nsamp.gt.nop) then
-       write(6,*) 'too many asked, will only make',nop*(nop-1)/2
-       nsamp=nop
-       endif
-       ii=n
-       call mysrand(ii)
-       endif
-       j=nint((n-1)*randf())+1
+        if(nsamp.ne.0) then
+          write(6,*) 'will generate random couples'
+          if (nsamp.gt.n) then
+            write(6,*) 'Strange to ask for more samples than available'
+            write(6,*) 'from data; will proceed'
+          endif
+          if (nsamp.gt.nop) then
+            write(6,*) 'too many asked, will only make',nop*(nop-1)/2
+            nsamp=nop
+          endif
+          ii=n
+          call mysrand(ii)
+        endif
+        j=nint((n-1)*randf())+1
         maxdist=0
         meandist=0
         datamean=0
@@ -168,89 +143,84 @@ c
         dist=0
         rjjj=0
         if (n.gt.10000.and.nsamp.ne.0) then
-        write(6,*) 'Be patient big data set: ',n
+          write(6,*) 'Be patient big data set: ',n
         endif
         rn=0
         do i=1,n
-        datamean=datamean+d(i)
-     & *iww(i)
-        datavar=datavar+d(i)*d(i)
-     & *iww(i)
-        rn=rn+iww(i)
+          datamean=datamean+d(i)
+     &    *iww(i)
+          datavar=datavar+d(i)*d(i)
+     &    *iww(i)
+          rn=rn+iww(i)
         enddo
         datamean=datamean/rn
-C        rn=n
+C       rn=n
         variance=datavar/rn - datamean**2
         write(6,*) 'Number of data points : ', n
         write(6,*) 'data mean', datamean
         write(6,*) 'data variance ',variance
         write(6,*) 'Now calculating distance distribution'
         if(nsamp.eq.0) then
-        iiii=0
-        do i=1,n
+          iiii=0
+          do i=1,n
 
-        nww=max((n/10),1)
-        if(mod(i,nww).eq.0) write(6,*) i,' out of', n
-        do j=i+1,n
-        dist=0
-         if(icoord.eq.0.or.icoord.eq.1) then
-         dist=(x(i)-x(j))**2+(y(i)-y(j))**2
-         dist=sqrt(dist)
-         endif
-         if(icoord.eq.2) then
-         call greatarc(x(i),y(i),x(j),y(j),dist)
-         endif
-         if(icoord.eq.-1) then
-         dist=rcoord*rcoord*(x(i)-x(j))**2+(y(i)-y(j))**2
-         dist=sqrt(dist)
-         endif
-         if(n.le.nop) then
-         iiii=iiii+1
-         distcouples(iiii)=dist
-         icouples(iiii)=i
-         jcouples(iiii)=j
-         endif
+            nww=max((n/10),1)
+            if(mod(i,nww).eq.0) write(6,*) i,' out of', n
+            do j=i+1,n
+              dist=0
+              if(icoord.eq.0.or.icoord.eq.1) then
+                dist=(x(i)-x(j))**2+(y(i)-y(j))**2
+                dist=sqrt(dist)
+              endif
+              if(icoord.eq.2) then
+                call greatarc(x(i),y(i),x(j),y(j),dist)
+              endif
+              if(icoord.eq.-1) then
+                dist=rcoord*rcoord*(x(i)-x(j))**2+(y(i)-y(j))**2
+                dist=sqrt(dist)
+              endif
+              if(n.le.nop) then
+                iiii=iiii+1
+                distcouples(iiii)=dist
+                icouples(iiii)=i
+                jcouples(iiii)=j
+              endif
 
-         meandist=meandist+dist
-         if (dist.gt.maxdist) maxdist=dist
-         enddo
-        enddo
-        rjjjbis=rn*(rn-1.D0)*0.5
-        rjjj=rjjjbis
-                      else
-        do iiii=1,nsamp*(nsamp-1)/2
-         j=nint((n-1)*randf())+1
- 4444    continue
-         i=nint((n-1)*randf())+1
-C         write(6,*) '??',i,j
-         if(i.eq.j) goto 4444
-         if(icoord.eq.0.or.icoord.eq.1) then
-         dist=(x(i)-x(j))**2+(y(i)-y(j))**2
-         dist=sqrt(dist)
-         endif
-         if(icoord.eq.2) then
-         call greatarc(x(i),y(i),x(j),y(j),dist)
-         endif
-         if(icoord.eq.-1) then
-         dist=rcoord*rcoord*(x(i)-x(j))**2+(y(i)-y(j))**2
-         dist=sqrt(dist)
-         endif
+              meandist=meandist+dist
+              if (dist.gt.maxdist) maxdist=dist
+            enddo
+          enddo
+          rjjjbis=rn*(rn-1.D0)*0.5
+          rjjj=rjjjbis
+        else
+          do iiii=1,nsamp*(nsamp-1)/2
+            j=nint((n-1)*randf())+1
+ 4444       continue
+            i=nint((n-1)*randf())+1
+C           write(6,*) '??',i,j
+            if(i.eq.j) goto 4444
+            if(icoord.eq.0.or.icoord.eq.1) then
+              dist=(x(i)-x(j))**2+(y(i)-y(j))**2
+              dist=sqrt(dist)
+            endif
+            if(icoord.eq.2) then
+              call greatarc(x(i),y(i),x(j),y(j),dist)
+            endif
+            if(icoord.eq.-1) then
+              dist=rcoord*rcoord*(x(i)-x(j))**2+(y(i)-y(j))**2
+              dist=sqrt(dist)
+            endif
          
-         distcouples(iiii)=dist
-         icouples(iiii)=i
-         jcouples(iiii)=j
+            distcouples(iiii)=dist
+            icouples(iiii)=i
+            jcouples(iiii)=j
          
 
-         meandist=meandist+dist
-         if (dist.gt.maxdist) maxdist=dist
-         enddo
-        rjjj=nsamp*(nsamp-1)/2
+            meandist=meandist+dist
+            if (dist.gt.maxdist) maxdist=dist
+          enddo
+          rjjj=nsamp*(nsamp-1)/2
 
-        
-        
-        
-                      
-                      
         endif
         
         write(6,*) 'Number of data couples considered',rjjj
