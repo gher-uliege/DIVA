@@ -1,0 +1,93 @@
+#!/bin/bash
+
+echo ' '
+echo 'divamesh with a decreasing correlation length (finer mesh)'
+echo ' '
+
+CLlist=( 10 5 3 1 0.5 0.3 0.1 0.05 )
+inputdir=$(pwd)'/input/'
+contfile=${inputdir}'coast.cont'
+paramfile=${inputdir}'param.par'
+tmpfile=$(mktemp)
+
+# Add divaclean to avoid working on old files!
+divaclean
+
+##echo ${inputdir}
+echo '1. Creating a simple contour file'
+echo ' '
+
+echo 2 > ${contfile}
+echo 4 >> ${contfile}
+echo -1 -1 >> ${contfile}
+echo 1 -1 >> ${contfile}
+echo 1  1 >> ${contfile}
+echo -1 1 >> ${contfile}
+echo 4 >> ${contfile}
+echo 0.4 0.2 >> ${contfile}
+echo 0.4 0.8 >> ${contfile}
+echo 0.6 0.8 >> ${contfile}
+echo 0.6 0.2 >> ${contfile}
+
+
+echo '2. Creating base parameter file'
+echo ' '
+
+echo '# Correlation Length lc' > ${paramfile}
+echo ${correlationLength} >> ${paramfile}
+echo '# icoordchange' >> ${paramfile}
+echo '0' >> ${paramfile}
+echo '# ispec' >> ${paramfile}
+echo '11' >> ${paramfile}
+echo '# ireg' >> ${paramfile}
+echo '0' >> ${paramfile}
+echo '# xori' >> ${paramfile}
+echo '-1' >> ${paramfile}
+echo '# yori' >> ${paramfile}
+echo '-1' >> ${paramfile} 
+echo '# dx' >> ${paramfile}
+echo '0.02' >> ${paramfile}
+echo '# dy' >> ${paramfile}
+echo '0.02' >> ${paramfile}
+echo '# nx' >> ${paramfile}
+echo '101' >> ${paramfile}
+echo '#ny' >> ${paramfile}
+echo '101' >> ${paramfile}
+echo '# valex' >> ${paramfile}
+echo '-99' >> ${paramfile}
+echo '# snr' >> ${paramfile}
+echo '1.0' >> ${paramfile}
+echo '# varbak' >> ${paramfile}
+echo '1.0' >> ${paramfile}
+
+logfile='./logs/testmesh_'`date +%Y-%m-%d-%H-%M-%S`'.log'
+echo "Writing results in ${logfile}"
+echo 'Correlation length (degrees)      Time (seconds)	Nodes	Interfaces	Elements' > ${logfile}
+# Loop on the listed values of correlation length
+for correlationLength in "${CLlist[@]}"
+do
+  echo ${correlationLength}
+  # Replace value in param.par
+  awk -v CL=${correlationLength} 'NR==2 {$0=CL} { print }' ${paramfile} > ${tmpfile} 
+  mv ${tmpfile} ${paramfile}
+  timeinit=$(date +%s.%N)
+
+  ./divamesh
+
+  timeend=$(date +%s.%N)
+  timemesh=$(echo ${timeend} ${timeinit} | awk '{print ($1-$2)}')
+
+  topomesh=./meshgenwork/fort.23
+  {
+  read nodes
+  read interfaces
+  read elements
+   } < $topomesh
+
+  echo ${correlationLength}       ${timemesh}	${nodes}	${interfaces}	${elements}   >> ${logfile}
+
+
+done
+
+
+
