@@ -4,15 +4,23 @@
 
 DIVA_PARALLEL=1
 
-export compiler = gfortran
+export compiler=gfortran
+
 export flags=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE
 ifeq ($(DIVA_PARALLEL), 1)
 export flagscalc=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY
 else
 export flagscalc=-O3 -cpp -DDIVAITERATIVE -Wall -fbounds-check -DDIVAHUGEMEMORY
 endif
+
 export ncinc=-I/usr/local/include
 export nclib=-L/usr/local/lib -lnetcdff -L/usr/local/lib -lnetcdf -lnetcdf
+
+# For ifort (adapt path to ifort compiled netCDF library)
+#export compiler=ifort
+#export flagscalc='-O3 -xHost -ip -no-prec-div -static-intel -cpp -DDIVAITERATIVE -Wall -fbounds-check'
+#export ncinc=-I/home/ctroupin/Software/netCDF/include
+#export nclib=-L/home/ctroupin/Software/netCDF/lib -lnetcdff -L/home/ctroupin/Software/netCDF/lib -lnetcdf -lnetcdf
 
 # export nocyg=...
 # export noglobals=...
