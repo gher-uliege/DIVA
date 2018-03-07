@@ -1,0 +1,91 @@
+#!/bin/bash
+
+echo ' '
+echo 'divamesh with a decreasing correlation length (finer mesh)'
+echo ' '
+
+ndatalist=(1000 5000 10000 50000 100000 500000 1000000 1500000)
+#ndatalist=(1000 5000 10000) # 50000 100000 500000 1000000 1500000)
+
+inputdir=$(pwd)'/input/'
+contfile=${inputdir}'coast.cont'
+paramfile=${inputdir}'param.par'
+datafile=${inputdir}'data.dat'
+tmpfile=$(mktemp)
+
+mkdir -pv logs
+
+# Add divaclean to avoid working on old files!
+divaclean
+
+##echo ${inputdir}
+echo '1. Creating a simple contour file'
+echo ' '
+
+echo 2 > ${contfile}
+echo 4 >> ${contfile}
+echo -1 -1 >> ${contfile}
+echo 1 -1 >> ${contfile}
+echo 1  1 >> ${contfile}
+echo -1 1 >> ${contfile}
+echo 4 >> ${contfile}
+echo 0.4 0.2 >> ${contfile}
+echo 0.4 0.8 >> ${contfile}
+echo 0.6 0.8 >> ${contfile}
+echo 0.6 0.2 >> ${contfile}
+
+
+echo '2. Creating base parameter file'
+echo ' '
+
+echo '# Correlation Length lc' > ${paramfile}
+echo '.5' >> ${paramfile}
+echo '# icoordchange' >> ${paramfile}
+echo '0' >> ${paramfile}
+echo '# ispec' >> ${paramfile}
+echo '11' >> ${paramfile}
+echo '# ireg' >> ${paramfile}
+echo '0' >> ${paramfile}
+echo '# xori' >> ${paramfile}
+echo '-1' >> ${paramfile}
+echo '# yori' >> ${paramfile}
+echo '-1' >> ${paramfile}
+echo '# dx' >> ${paramfile}
+echo '0.02' >> ${paramfile}
+echo '# dy' >> ${paramfile}
+echo '0.02' >> ${paramfile}
+echo '# nx' >> ${paramfile}
+echo '101' >> ${paramfile}
+echo '#ny' >> ${paramfile}
+echo '101' >> ${paramfile}
+echo '# valex' >> ${paramfile}
+echo '-99' >> ${paramfile}
+echo '# snr' >> ${paramfile}
+echo '1.0' >> ${paramfile}
+echo '# varbak' >> ${paramfile}
+echo '1.0' >> ${paramfile}
+
+logfile='./logs/testcalc_'`date +%Y-%m-%d-%H-%M-%S`'.log'
+echo "Writing results in ${logfile}"
+echo 'Number of data points Time (seconds)' > ${logfile}
+
+# Generate the mesh
+./divamesh
+
+# Loop on the listed values of correlation length
+for ndata in "${ndatalist[@]}"
+do
+  echo "Working with ${ndata} data points"
+
+  echo $ndata | awk '{NP=$1;{for (i = 1; i <= NP; i++) {x=-1+2*rand();y=-1+2*rand();z=sin(3.14*x)*cos(3.14*y)*exp(x+y);print x,y,z,1}}}' > ${datafile}
+
+  timeinit=$(date +%s.%N)
+
+  ./divacalc
+
+  timeend=$(date +%s.%N)
+  timecalc=$(echo ${timeend} ${timeinit} | awk '{print ($1-$2)}')
+
+  echo ${ndata}       ${timecalc}	>> ${logfile}
+
+done
