@@ -4,11 +4,13 @@ echo ' '
 echo 'divamesh with a decreasing correlation length (finer mesh)'
 echo ' '
 
-CLlist=( 10 5 3 1 0.5 0.3 0.1 0.05 )
+CLlist=( 10 5 2.5 1 0.5 0.25 0.1 0.05 0.025)
 inputdir=$(pwd)'/input/'
 contfile=${inputdir}'coast.cont'
 paramfile=${inputdir}'param.par'
 tmpfile=$(mktemp)
+
+mkdir -pv logs
 
 # Add divaclean to avoid working on old files!
 divaclean
@@ -63,6 +65,7 @@ echo '1.0' >> ${paramfile}
 logfile='./logs/testmesh_'`date +%Y-%m-%d-%H-%M-%S`'.log'
 echo "Writing results in ${logfile}"
 echo 'Correlation length (degrees)      Time (seconds)	Nodes	Interfaces	Elements' > ${logfile}
+
 # Loop on the listed values of correlation length
 for correlationLength in "${CLlist[@]}"
 do
@@ -85,7 +88,6 @@ do
    } < $topomesh
 
   echo ${correlationLength}       ${timemesh}	${nodes}	${interfaces}	${elements}   >> ${logfile}
-
 
 done
 
