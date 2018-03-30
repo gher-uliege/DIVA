@@ -304,12 +304,18 @@
       ENDIF
 !
       ttime_len=2*time_len
+!
+	if (corlen(1,1) .ne. (valexc-1)) then ! not divand file
+!
       status = nf_put_att_real(ncid,idcb,'climatology_bounds',
      &                            nf_float,ttime_len,clbnds)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put clbnds'
       ENDIF
+!
+	endif
+!
 
 !      ENDIF
 !
@@ -368,6 +374,8 @@
       cbdim(1)=depthid
       cbdim(2)=timeid
 !
+	if (corlen(1,1) .ne. (valexc-1)) then
+!
       status=nf_def_var(ncid,'CORRLEN',nf_float,two,cbdim,id0_1)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
@@ -386,6 +394,10 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att0_1 units'
       ENDIF
+!
+	endif
+!
+	if (sn(1,1) .ne. (valexc-1)) then
 !
       status=nf_def_var(ncid,'SNR',nf_float,two,cbdim,id0_2)
       IF (status .NE.nf_noerr) THEN
@@ -407,6 +419,10 @@
 !x         STOP 'Stopped in NC_4DCLIMATO att0_2 units'
 !x      ENDIF
 !
+	endif
+!
+	if (varbak(1,1) .ne. (valexc-1)) then
+!
       status=nf_def_var(ncid,'VARBACK',nf_float,two,cbdim,id0_3)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
@@ -426,6 +442,8 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att0_3 units'
       ENDIF
+!
+	endif
 !
 !===================================================
 !
@@ -455,6 +473,8 @@
          STOP 'Stopped in NC_4DCLIMATO att units'
       ENDIF
 !
+	if (corlen(1,1) .ne. (valexc-1)) then ! not divand file
+!
       status=nf_put_att_real(ncid,id1,'valid_min',
      &                                   nf_float,one,var_min)
       IF (status .NE.nf_noerr) THEN
@@ -468,6 +488,9 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att varmax'
       ENDIF
+!
+	endif
+!
       status=nf_put_att_real(ncid,id1,'_FillValue',
      &                                   nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
@@ -492,13 +515,15 @@
 !
 !
 !===================================================
-
+!
+	if (corlen(1,1) .ne. (valexc-1)) then ! not divand file
+!
       status=nf_def_var(ncid,TRIM(err_shname),nf_float,four,dim,id2)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def err3'
       ENDIF
-
+!
       status=nf_put_att_text(ncid,id2,'long_name',
      &                 LEN_TRIM(err_lgname),TRIM(err_lgname))
       IF (status .NE.nf_noerr) THEN
@@ -526,6 +551,9 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att vermax'
       ENDIF
+!
+	endif
+!
       status=nf_put_att_real(ncid,id2,'_FillValue',
      &                                   nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
@@ -561,6 +589,8 @@
          STOP 'Stopped in NC_4DCLIMATO att var1units'
       ENDIF
 !
+	if (corlen(1,1) .ne. (valexc-1)) then ! not divand file
+!
       status=nf_put_att_real(ncid,id1_1,'valid_min',
      &                                nf_float,one,var1_min)
       IF (status .NE.nf_noerr) THEN
@@ -574,6 +604,9 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att valex'
       ENDIF
+!
+	endif
+!
       status=nf_put_att_real(ncid,id1_1,'_FillValue',
      &                                   nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
@@ -609,6 +642,8 @@
          STOP 'Stopped in NC_4DCLIMATO att v2units'
       ENDIF
 !
+	if (corlen(1,1) .ne. (valexc-1)) then ! not divand file
+!
       status=nf_put_att_real(ncid,id1_2,'valid_min',
      &                                   nf_float,one,var2_min)
       IF (status .NE.nf_noerr) THEN
@@ -622,6 +657,9 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att v2max'
       ENDIF
+!
+	endif
+!
       status=nf_put_att_real(ncid,id1_2,'_FillValue',
      &                                   nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
@@ -682,13 +720,14 @@
 !
 !----------------------------------------------------------------
 !
-
+	if (corlen(1,1) .ne. (valexc-1)) then ! not divand file
+!
       status=nf_def_var(ncid,'databins',nf_float,four,dim,id3)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def dbins'
       ENDIF
-
+!
       status=nf_put_att_text(ncid,id3,'long_name',
      &     LEN_TRIM('Logarithm10 of number of data in bins'),
      &              'Logarithm10 of number of data in bins')
@@ -696,7 +735,6 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att dblgname'
       ENDIF
-
 ! 
       status=nf_put_att_real(ncid,id3,'valid_min',
      &                                   nf_float,one,dbin_min)
@@ -711,6 +749,7 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att dbmax'
       ENDIF
+!
       status=nf_put_att_real(ncid,id3,'_FillValue',
      &                                   nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
@@ -731,6 +770,7 @@
          STOP 'Stopped in NC_4DCLIMATO def obins'
       ENDIF
 
+!
       status=nf_put_att_text(ncid,id3_1,'long_name',
      &   LEN_TRIM('Logarithm10 of number of outliers data in bins'),
      &            'Logarithm10 of number of outliers data in bins')
@@ -738,6 +778,10 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att oblgname'
       ENDIF
+!
+	endif
+!
+	if (corlen(1,1) .ne. (valexc-1)) then ! not divand file
 ! 
       status=nf_put_att_real(ncid,id3_1,'valid_min',
      &                                   nf_float,one,obin_min)
@@ -752,6 +796,7 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att obmax'
       ENDIF
+!
       status=nf_put_att_real(ncid,id3_1,'_FillValue',
      &                                   nf_float,one,valexc)
       IF (status .NE.nf_noerr) THEN
@@ -766,12 +811,16 @@
          STOP 'Stopped in NC_4DCLIMATO att valexob'
       ENDIF
 !
+	endif
+!
+	if (corlen(1,1) .ne. (valexc-1)) then ! not divand file
+!
       status=nf_def_var(ncid,'CLfield',nf_float,four,dim,id4)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO def rlfield'
       ENDIF
-
+!
       status=nf_put_att_text(ncid,id4,'long_name',
      &     LEN_TRIM('Correlation length field'),
      &              'Correlation length field')
@@ -807,10 +856,13 @@
          STOP 'Stopped in NC_4DCLIMATO att valexdb'
       ENDIF
 !
+	endif
 !
       dim2(1)=lonid
       dim2(2)=latid
       dim2(3)=timeid
+!
+	if (corlen(1,1) .ne. (valexc-1)) then ! not divand file
 !
       status=nf_def_var(ncid,TRIM(vbt_shname),nf_float,
      &                                             three,dim2,id2d1)
@@ -861,6 +913,8 @@
          STOP 'Stopped in NC_4DCLIMATO att valex'
       ENDIF
 !
+	endif
+!
 !x      status= nf_put_att_text(ncid,id2d1 , 'cell_methods',
 !x     &                 LEN_TRIM(cellmeth),TRIM(cellmeth))
 !x      IF (status .NE.nf_noerr) THEN
@@ -868,6 +922,9 @@
 !x         STOP 'Stopped in NC_4DCLIMATO vbt clmt'
 !x      ENDIF
 !==================================================================
+!
+	if (corlen(1,1) .ne. (valexc-1)) then ! not divand file
+!
       status=nf_def_var(ncid,TRIM(varb1_shname),nf_float,
      &                                             three,dim2,id2d2)
       IF (status .NE.nf_noerr) THEN
@@ -916,8 +973,12 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att valex'
       ENDIF
+!
+	endif
+!
 !==========================================================
 !
+	if (corlen(1,1) .ne. (valexc-1)) then ! not divand file
 !
       status=nf_def_var(ncid,TRIM(varb2_shname),nf_float,
      &                                             three,dim2,id2d3)
@@ -967,6 +1028,8 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att vbt2valex'
       ENDIF
+!
+	endif
 !
 !==========================================================
 !
@@ -1391,12 +1454,16 @@
 !
       ttime_len=2*time_len
 !
+	if (corlen(1,1) .ne. (valexc-1)) then ! not divand file
+!
       status = nf_put_att_real(ncid,idcb,'climatology_bounds',
      &                            nf_float,ttime_len,clbnds)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put clbnds'
       ENDIF
+!
+	endif
 !
       status = nf_enddef(ncid)
       IF (status .NE.nf_noerr) THEN
@@ -1446,18 +1513,24 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put var2'
       ENDIF
-
+!
+	if (corlen(1,1) .ne. (valexc-1)) then ! not divand file
+!
       status=nf_put_vara_real(ncid,id2, start, count,verr)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put verr'
       ENDIF
-
+!
+	endif
+!
       status=nf_put_vara_real(ncid,id2_1, start, count,reler)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put reler'
       ENDIF
+!
+	if (corlen(1,1) .ne. (valexc-1)) then ! not divand file
 !
       status=nf_put_vara_real(ncid,id3, start, count,dbins)
       IF (status .NE.nf_noerr) THEN
@@ -1465,17 +1538,27 @@
          STOP 'Stopped in NC_4DCLIMATO put dbins'
       ENDIF
 !
+	endif
+!
+	if (corlen(1,1) .ne. (valexc-1)) then ! not divand file
+!
       status=nf_put_vara_real(ncid,id3_1, start, count,obins)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put obins'
       ENDIF
 !
+	endif
+!
+	if (corlen(1,1) .ne. (valexc-1)) then ! not divand file
+!
       status=nf_put_vara_real(ncid,id4, start, count,rlfield)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put rlfield'
       ENDIF
+!
+	endif
 !
       star2(1)=1
       star2(2)=1
@@ -1484,11 +1567,17 @@
       coun2(2)=JM
       coun2(3)=time_len
 ! 
+	if (corlen(1,1) .ne. (valexc-1)) then ! not divand file
+!
       status=nf_put_vara_real(ncid,id2d1, star2, coun2,varbot)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put var'
       ENDIF
+!
+	endif
+!
+	if (corlen(1,1) .ne. (valexc-1)) then ! not divand file
 !
       status=nf_put_vara_real(ncid,id2d2, star2, coun2,varb1)
       IF (status .NE.nf_noerr) THEN
@@ -1496,11 +1585,17 @@
          STOP 'Stopped in NC_4DCLIMATO put var'
       ENDIF
 !
+	endif
+!
+	if (corlen(1,1) .ne. (valexc-1)) then ! not divand file
+!
       status=nf_put_vara_real(ncid,id2d3, star2, coun2,varb2)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put var'
       ENDIF
+!
+	endif
 !
       stpar(1)=1
       stpar(2)=icdf
@@ -1531,11 +1626,17 @@
       prcnt(1)=KM
       prcnt(2)=time_len
 !
+	if (corlen(1,1) .ne. (valexc-1)) then !not divand file
+!
       status = nf_put_vara_real(ncid,id0_1, stpar, prcnt,CORLEN)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put CORLEN'
       ENDIF
+!
+	endif
+!
+	if (sn(1,1) .ne. (valexc-1)) then !not divand file
 !
       status = nf_put_vara_real(ncid,id0_2, stpar, prcnt,SN)
       IF (status .NE.nf_noerr) THEN
@@ -1543,11 +1644,17 @@
          STOP 'Stopped in NC_4DCLIMATO put SN'
       ENDIF
 !
+	endif
+!
+	if (varbak(1,1) .ne. (valexc-1)) then !not divand file
+!
       status = nf_put_vara_real(ncid,id0_3, stpar, prcnt,VARBAK)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put VARBAK'
       ENDIF
+!
+	endif
 !
       !-----------------------
       ! Open the old data file       

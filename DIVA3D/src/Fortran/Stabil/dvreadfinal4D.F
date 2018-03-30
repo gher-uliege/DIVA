@@ -343,25 +343,29 @@
       status=nf_inq_varid(ncid,'CORRLEN',id0_1)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL def var0_1'
+!         STOP 'Stopped in NC_READ4DCL def var0_1'
+	 write(*,*) 'Warning: Stopped in NC_READ4DCL def var0_1'
       ENDIF
 
       status=nf_inq_varid(ncid,'SNR',id0_2)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL def var0_2'
+!         STOP 'Stopped in NC_READ4DCL def var0_2'
+	 write(*,*) 'Warning: Stopped in NC_READ4DCL def var0_2'
       ENDIF
 !
       status=nf_inq_varid(ncid,'VARBACK',id0_3)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL def var0_3'
+!         STOP 'Stopped in NC_READ4DCL def var0_3'
+	 write(*,*) 'Warning: Stopped in NC_READ4DCL def var0_3'
       ENDIF
 
       status=nf_get_att_text(ncid,id0_3,'units',vrb_units)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL att units'
+!         STOP 'Stopped in NC_READ4DCL att units'
+	 write(*,*) 'Warning: Stopped in NC_READ4DCL att units'
       ENDIF
 !
 !===================================================
@@ -387,13 +391,15 @@
       status=nf_get_att_real(ncid,id1,'valid_min',var_min)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL att varmin'
+!         STOP 'Stopped in NC_READ4DCL att varmin'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL att varmin'
       ENDIF
 !
       status=nf_get_att_real(ncid,id1,'valid_max',var_max)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL att varmax'
+!         STOP 'Stopped in NC_READ4DCL att varmax'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL att varmax'
       ENDIF
 !
       status=nf_get_att_real(ncid,id1,'missing_value',valexc)
@@ -438,7 +444,8 @@
       status=nf_inq_varid(ncid,TRIM(vbt_shname),id2d1)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL def vardeep'
+!         STOP 'Stopped in NC_READ4DCL def vardeep'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL def vardeep'
       ENDIF
 !
 !x      status=nf_get_att_text(ncid,id2d1,'long_name',vbt_lgname)
@@ -450,13 +457,15 @@
       status=nf_get_att_real(ncid,id2d1,'valid_min',vbt_min)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL att vbtmin'
+!         STOP 'Stopped in NC_READ4DCL att vbtmin'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL att vbtmin'
       ENDIF
 !
       status=nf_get_att_real(ncid,id2d1,'valid_max',vbt_max)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL att vbtmax'
+!         STOP 'Stopped in NC_READ4DCL att vbtmax'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL att vbtmax'
       ENDIF
 !
 !-----------------------------------------------------------------
@@ -464,7 +473,8 @@
       status=nf_inq_varid(ncid,TRIM(varb1_shname),id2d2)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL def vardeep'
+!         STOP 'Stopped in NC_READ4DCL def vardeep'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL def vardeep'
       ENDIF
 !
 !x      status=nf_get_att_text(ncid,id2d2,'long_name',varb1_lgname)
@@ -476,13 +486,15 @@
       status=nf_get_att_real(ncid,id2d2,'valid_min',vbt1_min)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL att vbtmin'
+!         STOP 'Stopped in NC_READ4DCL att vbtmin'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL att vbtmin'
       ENDIF
 !
       status=nf_get_att_real(ncid,id2d2,'valid_max',vbt1_max)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL att vbtmax'
+!         STOP 'Stopped in NC_READ4DCL att vbtmax'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL att vbtmax'
       ENDIF
 !
 !-----------------------------------------------------------------
@@ -490,7 +502,8 @@
       status=nf_inq_varid(ncid,TRIM(varb2_shname),id2d3)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL def vardeep'
+!         STOP 'Stopped in NC_READ4DCL def vardeep'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL def vardeep'
       ENDIF
 !
 !x      status=nf_get_att_text(ncid,id2d3,'long_name',varb2_lgname)
@@ -502,13 +515,15 @@
       status=nf_get_att_real(ncid,id2d3,'valid_min',vbt2_min)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL att vbtmin'
+!         STOP 'Stopped in NC_READ4DCL att vbtmin'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL att vbtmin'
       ENDIF
 !
       status=nf_get_att_real(ncid,id2d3,'valid_max',vbt2_max)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL att vbtmax'
+!         STOP 'Stopped in NC_READ4DCL att vbtmax'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL att vbtmax'
       ENDIF
 !
 !----------------------------------------------------------------
@@ -522,13 +537,15 @@
       status=nf_get_att_real(ncid,id1_1,'valid_min',var1_min)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL att valex'
+!         STOP 'Stopped in NC_READ4DCL att valid_min'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL att valid_min'
       ENDIF
 !
       status=nf_get_att_real(ncid,id1_1,'valid_max',var1_max)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL att valex'
+!         STOP 'Stopped in NC_READ4DCL att valid_max'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL att valid_max'
       ENDIF
 !
 !--------------------
@@ -543,33 +560,38 @@
       status=nf_get_att_real(ncid,id1_2,'valid_min',var2_min)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL att v2min'
+!         STOP 'Stopped in NC_READ4DCL att v2min'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL att v2min'
       ENDIF
 !
       status=nf_get_att_real(ncid,id1_2,'valid_max',var2_max)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL att v2max'
+!         STOP 'Stopped in NC_READ4DCL att v2max'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL att v2min'
       ENDIF
 !--------------------
 
       status=nf_inq_varid(ncid,TRIM(err_shname),id2)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL def err3'
+!         STOP 'Stopped in NC_READ4DCL def err3'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL def err3'
       ENDIF
 
 !
       status=nf_get_att_real(ncid,id2,'valid_min',ver_min)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL att vermin'
+!         STOP 'Stopped in NC_READ4DCL att vermin'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL att vermin'
       ENDIF
 !
       status=nf_get_att_real(ncid,id2,'valid_max',ver_max)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL att vermax'
+!         STOP 'Stopped in NC_READ4DCL att vermax'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL att vermax'
       ENDIF
 !
 !-----------------------
@@ -598,55 +620,64 @@
       status=nf_inq_varid(ncid,'databins',id3)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL def dbins'
+!         STOP 'Stopped in NC_READ4DCL def dbins'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL def dbins'
       ENDIF
 ! 
       status=nf_get_att_real(ncid,id3,'valid_min',dbin_min)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL att dbmax'
+!         STOP 'Stopped in NC_READ4DCL att dbmax'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL att dbmin'
       ENDIF
 !
       status=nf_get_att_real(ncid,id3,'valid_max',dbin_max)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL att dbmax'
+!         STOP 'Stopped in NC_READ4DCL att dbmax'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL att dbmax'
       ENDIF
 !
       status=nf_inq_varid(ncid,'outlbins',id3_1)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL def obins'
+!         STOP 'Stopped in NC_READ4DCL def obins'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL def obins'
       ENDIF
 ! 
       status=nf_get_att_real(ncid,id3_1,'valid_min',obin_min)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL att obmin'
+!         STOP 'Stopped in NC_READ4DCL att obmin'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL att obmin'
       ENDIF
 !
       status=nf_get_att_real(ncid,id3_1,'valid_max',obin_max)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL att obmax'
+!         STOP 'Stopped in NC_READ4DCL att obmax'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL att obmax'
       ENDIF
 
       status=nf_inq_varid(ncid,'CLfield',id4)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_4DCLIMATO inq rlfield'
+!         STOP 'Stopped in NC_4DCLIMATO inq rlfield'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL inq rlfield'
       ENDIF
 ! 
       status=nf_get_att_real(ncid,id4,'valid_min',rl_min)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_4DCLIMATO get att rlmin'
+!         STOP 'Stopped in NC_4DCLIMATO get att rlmin'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL att rlmin'
       ENDIF
 !
       status=nf_get_att_real(ncid,id4,'valid_max',rl_max)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_4DCLIMATO get att rlbmax'
+!         STOP 'Stopped in NC_4DCLIMATO get att rlbmax'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL att rlmin'
       ENDIF
 !
 !----------------------------------------------------------------
@@ -811,7 +842,8 @@
       status=nf_get_vara_real(ncid,id2, start, count,verr)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL get verr'
+!         STOP 'Stopped in NC_READ4DCL get verr'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL get verr'
       ENDIF
 
       status=nf_get_vara_real(ncid,id2_1, start, count,reler)
@@ -823,19 +855,22 @@
       status=nf_get_vara_real(ncid,id3, start, count,dbins)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL get dbins'
+!         STOP 'Stopped in NC_READ4DCL get dbins'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL get dbins'
       ENDIF
 !
       status=nf_get_vara_real(ncid,id3_1, start, count,obins)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL get obins'
+!         STOP 'Stopped in NC_READ4DCL get obins'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL get obins'
       ENDIF
 !
       status=nf_get_vara_real(ncid,id4, start, count,rlfield)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL get rlfield'
+!         STOP 'Stopped in NC_READ4DCL get rlfield'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL get rlfield'
       ENDIF
 !
       star2(1)=1
@@ -848,19 +883,22 @@
       status=nf_get_vara_real(ncid,id2d1, star2, coun2,varbot)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL get varbot'
+!         STOP 'Stopped in NC_READ4DCL get varbot'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL get varbot'
       ENDIF
 !
       status=nf_get_vara_real(ncid,id2d2, star2, coun2,varb1)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL get varbot'
+!         STOP 'Stopped in NC_READ4DCL get varbot'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL get varb1'
       ENDIF
 !
       status=nf_get_vara_real(ncid,id2d3, star2, coun2,varb2)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL get varbot'
+!         STOP 'Stopped in NC_READ4DCL get varbot'
+	write(*,*) 'Warning: Stopped in NC_READ4DCL get varb2'
       ENDIF
 !
       stpar(1)=1
@@ -871,7 +909,9 @@
       status = nf_get_vara_real(ncid,id0_1, stpar, prcnt,CORLEN)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL get CORLEN'
+!         STOP 'Stopped in NC_READ4DCL get CORLEN'
+	 write(*,*) 'Warning : Stopped in NC_READ4DCL get CORLEN'
+	 CORLEN=valexc-1
       ENDIF
 !      write(*,*)' dvncread CORLEN ',CORLEN
 !      write(*,*)' dvncread sterror ',nf_strerror(status)
@@ -879,13 +919,17 @@
       status = nf_get_vara_real(ncid,id0_2, stpar, prcnt,SN)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL get SN'
+!         STOP 'Stopped in NC_READ4DCL get SN'
+	 write(*,*) 'Warning : Stopped in NC_READ4DCL get SN'
+	 SN=valexc-1
       ENDIF
 !
       status = nf_get_vara_real(ncid,id0_3, stpar, prcnt,VARBAK)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
-         STOP 'Stopped in NC_READ4DCL get VARBAK'
+!         STOP 'Stopped in NC_READ4DCL get VARBAK'
+	 write(*,*) 'Warning : Stopped in NC_READ4DCL get VARBAK'
+	 VARBAK=valexc-1
       ENDIF
 !
 !      stpar(1)=1
