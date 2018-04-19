@@ -9,7 +9,7 @@ rm -rf ./newinput/*
 DIVADIR="../../DIVA3D"
 
 dos2unix datasource
-
+dos2unix driver
 
 FILENAME=driver
 {
