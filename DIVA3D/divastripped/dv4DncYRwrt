@@ -38,7 +38,7 @@ let nbfls=$(($nbfls+$nblns))
 done
 IFS=$saveifs
 #
-head -11 './output/3Danalysis/'"$var"'.'$year'.3DNCinfo' > ./3DWORK/3DNCinfo
+head -12 './output/3Danalysis/'"$var"'.'$year'.3DNCinfo' > ./3DWORK/3DNCinfo
 
 for year in `cat ./input/yearlist`
 #########################################################
@@ -46,6 +46,7 @@ do
 #
  Fileinf='./output/3Danalysis/'"$var"'.'$year'.3DNCinfo'
 {
+read dummy
 read dummy
 read dummy
 read dummy
