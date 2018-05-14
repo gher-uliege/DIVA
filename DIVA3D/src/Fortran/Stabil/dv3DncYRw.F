@@ -154,7 +154,9 @@
       ! create the data file
       !-----------------------
 !
-      status = nf_create(TRIM(file_name), nf_share,ncid)
+!      status = nf_create(TRIM(file_name), nf_share,ncid)
+      status = nf_create(TRIM(file_name), ior(nf_share,nf_64bit_offset)
+     &,ncid) 
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO create file'
