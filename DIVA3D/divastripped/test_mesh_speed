@@ -46,7 +46,7 @@ echo '0' >> ${paramfile}
 echo '# xori' >> ${paramfile}
 echo '-1' >> ${paramfile}
 echo '# yori' >> ${paramfile}
-echo '-1' >> ${paramfile} 
+echo '-1' >> ${paramfile}
 echo '# dx' >> ${paramfile}
 echo '0.02' >> ${paramfile}
 echo '# dy' >> ${paramfile}
@@ -71,7 +71,7 @@ for correlationLength in "${CLlist[@]}"
 do
   echo ${correlationLength}
   # Replace value in param.par
-  awk -v CL=${correlationLength} 'NR==2 {$0=CL} { print }' ${paramfile} > ${tmpfile} 
+  awk -v CL=${correlationLength} 'NR==2 {$0=CL} { print }' ${paramfile} > ${tmpfile}
   mv ${tmpfile} ${paramfile}
   timeinit=$(date +%s.%N)
 
@@ -91,5 +91,4 @@ do
 
 done
 
-
-
+echo "Check results of the test in ${logfile}"
