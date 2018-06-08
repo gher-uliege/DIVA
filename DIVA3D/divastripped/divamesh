@@ -30,7 +30,7 @@ fi
 if [ -f ./input/param.par ]; then
   divaecho "Reading parameters" | tee -a $divameshlog
 else
-  divaerror "No file param.par in ./input/" | tee -a $divameshlog $divalog
+  errorlog "No file param.par in ./input/" | tee -a $divameshlog $divalog
   exit 1
 fi
 Filepar=./input/param.par
