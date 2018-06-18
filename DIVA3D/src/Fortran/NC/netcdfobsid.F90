@@ -14,8 +14,8 @@
 !
 ! Compile with something like:
 !
-! gfortran $(nc-config --fflags) -o netcdfobsid netcdfobsid.F90 \
-!   $(nc-config --flibs)
+! gfortran $(nf-config --fflags) -o netcdfobsid ndivaio.F90 etcdfobsid.F90 \
+!   $(nf-config --flibs)
 !
 
 #define ERROR_STOP call exit(1)
