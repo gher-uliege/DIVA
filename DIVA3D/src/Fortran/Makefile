@@ -13,8 +13,12 @@ else
 export flagscalc=-O3 -cpp -DDIVAITERATIVE -Wall -fbounds-check -DDIVAHUGEMEMORY
 endif
 
-export ncinc=-I/usr/local/include
-export nclib=-L/usr/local/lib -lnetcdff -L/usr/local/lib -lnetcdf -lnetcdf
+
+export nclib=$(shell nf-config --flibs)
+export ncinc=$(shell nf-config --fflags)
+
+#export ncinc=-I/usr/local/include
+#export nclib=-L/usr/local/lib -lnetcdff -L/usr/local/lib -lnetcdf -lnetcdf
 
 # For ifort (adapt path to ifort compiled netCDF library)
 #export compiler=ifort
@@ -47,7 +51,8 @@ all: calc extensions mesh netcdf plplot pipetest stabil util directories
 
 test:
 	@echo $(PWD)
-	@echo $(nclib)
+	@echo "nclib: " $(nclib)
+	@echo "ncinc: " $(ncinc)
 
 directories: $(DIVAWORKDIR) $(DIVAMESHDIR) $(DIVAINPUTDIR) $(DIVAOUTPUTDIR) $(DIVANCDIR) $(DIVAMESHVISUDIR) $(BINDIR)
 
