@@ -85,6 +85,8 @@ echo 'divadocommit: ============================================================
 echo 'divadocommit: ======================= Starting commit loops ================='
 echo 'divadocommit: ======================='
 #########################################################
+saveifs=$IFS
+IFS=$'\n'
 for var in `cat varlist`
 #########################################################
 do
@@ -97,7 +99,7 @@ for month in `cat monthlist`
 #########################################################
 do
 echo 'divadocommit: ======================= Starting analysis loop on :'
-echo 'divadocommit: =======================      variable     '$var
+echo 'divadocommit: =======================      variable     '"$var"
 echo 'divadocommit: =======================           year    '$year
 echo 'divadocommit: =======================          month    '$month
 echo ' '
@@ -112,10 +114,10 @@ let upperlevel=$((0+$upperlevel))
 while [ "$lev" -le "$upperlevel" ]
 do 
  let level=$((10000+$lev))
- cp -v ./newinput/divadata/$var.$year.$month.$level ./input/divadata/.
+ cp -v ./newinput/divadata/"$var".$year.$month.$level ./input/divadata/.
  if [ -f ./newinput/divaparam/RLinfo.dat ];then 
   cp -v ./newinput/divaparam/RLinfo.dat ./input/divaparam/.
-  cp -v ./newinput/divaparam/RL.$var.$year.$month.$level ./input/divaparam/.
+  cp -v ./newinput/divaparam/RL."$var".$year.$month.$level ./input/divaparam/.
   cp ./newinput/divaparam/theta.dat ./input/divaparam/.
  fi
  let lev=$(($lev+1))
@@ -132,8 +134,8 @@ let upperlevel=$((0+$upperlevel))
 while [ "$lev" -le "$upperlevel" ]
 do 
  let level=$((10000+$lev))
- if [ -f ./newinput/divaparam/param.par.$var.$year.$month.$level ];then
-  cp -v ./newinput/divaparam/param.par.$var.$year.$month.$level ./input/divaparam/.
+ if [ -f ./newinput/divaparam/param.par."$var".$year.$month.$level ];then
+  cp -v ./newinput/divaparam/param.par."$var".$year.$month.$level ./input/divaparam/.
  fi
  let lev=$(($lev+1))
 done
@@ -153,9 +155,9 @@ while [ "$lev" -le "$upperlevel" ]
 do 
  let level=$((10000+$lev))
  cp -v ./newinput/divarefe/GridInfo.dat ./input/divarefe_all/GridInfo.dat
- cp -v ./newinput/divarefe/$var'.'$year'.'$month'.'$level'.datapoint.ref' ./input/divarefe_all/$var'.'$year'.'$month'.'$level'.datapoint.ref'
- cp -v ./newinput/divarefe/$var'.'$year'.'$month'.'$level'.ascii.ref' ./input/divarefe_all/$var'.'$year'.'$month'.'$level'.ascii.ref'
- cp -v ./newinput/divarefe/$var'.'$year'.'$month'.'$level'.ref' ./input/divarefe_all/$var'.'$year'.'$month'.'$level'.ref'
+ cp -v ./newinput/divarefe/"$var"'.'$year'.'$month'.'$level'.datapoint.ref' ./input/divarefe_all/"$var"'.'$year'.'$month'.'$level'.datapoint.ref'
+ cp -v ./newinput/divarefe/"$var"'.'$year'.'$month'.'$level'.ascii.ref' ./input/divarefe_all/"$var"'.'$year'.'$month'.'$level'.ascii.ref'
+ cp -v ./newinput/divarefe/"$var"'.'$year'.'$month'.'$level'.ref' ./input/divarefe_all/"$var"'.'$year'.'$month'.'$level'.ref'
  let lev=$((1+$lev))
 done
 #
@@ -168,9 +170,9 @@ echo 'divadocommit:' '============================= end month loop '$month
 done
 echo 'divadocommit:' '============================= end year loop    '$year
 done
-echo 'divadocommit:' '============================= end variable loop '$var
+echo 'divadocommit:' '============================= end variable loop '"$var"
 done
-
+IFS=$saveifs
 
 fi
 
