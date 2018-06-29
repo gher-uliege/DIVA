@@ -40,7 +40,7 @@ ascfile="$var".$lev.ascii.anl
 ascfile2="$var".$lev.fieldatdatapoint.anl
 
 cp ./output/3Danalysis/Fields/"$ascfile2" ./output/3Danalysis/Fields/"$ascfile2".tr
-nblines=`cat ./output/3Danalysis/Fields/$ascfile2 |wc -l` 
+nblines=`cat ./output/3Danalysis/Fields/"$ascfile2" |wc -l` 
 
 echo 'dv3Dinvtrsh ascfile2 '"$ascfile2" >> "$diva3dlog"
 echo 'dv3Dinvtrsh ascfile2 '"$ascfile2"
@@ -69,11 +69,11 @@ if [ -f ./output/3Danalysis/Fields/"$var".$lev.ref.nc ];then
  if [ -f ./output/3Danalysis/Fields/"$var".$lev.datapoint.ref ];then
   cp ./output/3Danalysis/Fields/"$var".$lev.datapoint.ref ./output/3Danalysis/Fields/"$var".$lev.datapoint.ref.tr
   ascfile="$var".$lev.datapoint.ref
-  nblines=`cat ./output/3Danalysis/Fields/$ascfile |wc -l` 
+  nblines=`cat ./output/3Danalysis/Fields/"$ascfile" |wc -l` 
   ascfile2="none"
 
-  echo 'dv3Dinvtrsh ascfile '$ascfile >> "$diva3dlog"
-  echo 'dv3Dinvtrsh ascfile '$ascfile
+  echo 'dv3Dinvtrsh ascfile '"$ascfile" >> "$diva3dlog"
+  echo 'dv3Dinvtrsh ascfile '"$ascfile"
 
  fi
 
