@@ -38,7 +38,7 @@
       READ(2,*)isanalysis
       READ(2,*)itrans
       READ(2,*) nblines
-      read(2,*) VARFILEASC2
+      read(2,'(a)') VARFILEASC2
       CLOSE(2)
 !--------------------------------------------------------------
 !
