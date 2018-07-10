@@ -45,9 +45,9 @@ PLPLOT = Plplot
 PLPLOT = NoPlplot   # Comment this line of you have Plplot installed
 
 
-.PHONY: all calc extensions mesh netcdf plplot pipetest stabil util directories cleanobject cleanexec
+.PHONY: all calc extensions mesh netcdf pipetest stabil util directories cleanobject cleanexec
  
-all: calc extensions mesh netcdf plplot pipetest stabil util directories
+all: calc extensions mesh netcdf pipetest stabil util directories
 
 test:
 	@echo $(PWD)
@@ -70,9 +70,6 @@ mesh:
 
 netcdf: 
 	$(MAKE) -C NC
-
-plplot: 
-	$(MAKE) -C $(PLPLOT) 
 
 pipetest: 
 	$(MAKE) -C Pipetest
