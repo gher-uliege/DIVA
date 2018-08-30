@@ -1,14 +1,34 @@
-DIVA3D/bin/
-DIVA3D/divastripped/input/
-DIVA3D/divastripped/logs/
-DIVA3D/divastripped/output/
-DIVA3D/divastripped/divawork/
-DIVA3D/divastripped/meshgenwork/
-*.log
 *.mod
 *.nc
 fort.*
 *.a
 *.swp
 *.o
+# Log files
+JRA4/Climatology/divadoall.*
+*.log
+# Input files
+DIVA3D/divastripped/gnuwork/analysis.pal
+DIVA3D/divastripped/gnuwork/dvanalysisrange
+DIVA3D/divastripped/gnuwork/dvcoastlinetailer
+DIVA3D/divastripped/gnuwork/longref.dat.default
+JRA4/Climatology/constandrefe
+JRA4/Climatology/datasource
+JRA4/Climatology/divadoall
+JRA4/Climatology/driver
+JRA4/Climatology/input/NCDFinfo
+JRA4/Climatology/input/contour.depth
+JRA4/Climatology/monthlist
+JRA4/Climatology/qflist
+JRA4/Climatology/varlist
+# Diva directories
+DIVA3D/bin/
+DIVA3D/divastripped/input/
+DIVA3D/divastripped/logs/
+DIVA3D/divastripped/output/
+DIVA3D/divastripped/divawork/
+DIVA3D/divastripped/meshgenwork/
 DIVA3D/divastripped/gnuwork/xrangecova
+JRA4/Climatology/input/
+JRA4/Climatology/newinput/
+JRA4/Climatology/output/
