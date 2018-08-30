@@ -19,7 +19,7 @@
 !
       CHARACTER (len=256) :: divafile,datafile,infodata,comments
       CHARACTER (len=256) :: datafile2
-      CHARACTER (len=20)   :: EXECIN 
+      CHARACTER (len=20)   :: EXECIN
 !
       CHARACTER (len=99)                :: VARFILEIN,VARFINFO,VARFILEOU
       CHARACTER (len=255)               :: file_name
@@ -56,7 +56,7 @@
       ALLOCATE(LATVAL(nblines))
       ALLOCATE(VARVAL(nblines))
       ALLOCATE(VECFLD(nblines))
-      ALLOCATE(FINLINE(nbcols,nblines))    
+      ALLOCATE(FINLINE(nbcols,nblines))
 !
         WRITE(VARFILEIN,
      &'(a,".1",i4.4)')TRIM(var_name),istep
@@ -118,7 +118,3 @@
 !-----Done--------------------------------------------------------------
 !
       END
-
-
-
-

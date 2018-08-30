@@ -1,20 +1,20 @@
-! netcdfobsid adds coordinates of observations (longitude, latitude, depth and 
-! time) and observation identifier to a NetCDF file
+! netcdfobsid adds coordinates of observations (longitude, latitude, depth and
+! time) and observation identifier to an existing netCDF file
 !
 ! Call as
 ! netcdfobsid <obsid.txt> <file.nc>
 !
-! obsid.txt: text file with 5 columns: longitude (degrees north), latitude 
-! (degrees east), depth (meters, positive in water) and time 
-! (yyyy-mm-ddTHH:MM:SS, seconds, minutes and days might be omitted) and id 
-! separated by space. The id cannot contain a space. The time or the time and 
+! obsid.txt: text file with 5 columns: longitude (degrees north), latitude
+! (degrees east), depth (meters, positive in water) and time
+! (yyyy-mm-ddTHH:MM:SS, seconds, minutes and hours might be omitted) and id
+! separated by space. The id cannot contain any space. The time or the time and
 ! depth column can be omitted.
-!   
-! file.nc: netcdf file where the information is appended (file must exist)
+!
+! file.nc: netCDF file where the information is appended (file must exist)
 !
 ! Compile with something like:
 !
-! gfortran $(nf-config --fflags) -o netcdfobsid ndivaio.F90 etcdfobsid.F90 \
+! gfortran $(nf-config --fflags) -o netcdfobsid divaio.F90 netcdfobsid.F90 \
 !   $(nf-config --flibs)
 !
 
@@ -33,7 +33,7 @@ program netcdfobsid
 
  if (iargc().ne.2) then
    write(0,*) 'Usage: netcdfobsid <obsid.txt> <file.nc>'
-   ERROR_STOP 
+   ERROR_STOP
  end if
 
  call getarg(1,file)
