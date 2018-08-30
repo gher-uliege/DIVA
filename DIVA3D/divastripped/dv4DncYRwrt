@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#     WRITES 4D NETCDF multi-year climatology FILE
+#     WRITES 4D netCDF multi-year climatology FILE
 #
 #####################################################
 #
