@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-#     WRITES 4D NETCDF multi-year climatologies FILE
-# 
+#     WRITES 4D NETCDF multi-year climatology FILE
+#
 #####################################################
 #
 #
@@ -10,9 +10,9 @@ echo  'Writing 4D NETCDF multi-year climatology file for' "$var"
 nbmon=`cat ./input/monthlist |wc -l`
 #
 if [ -f ./3DWORK/fort.44 ];then
-rm fort.44
+  rm fort.44
 fi
-# 
+#
 rm -f ./3DWORK/3Dncliste
 nbfls=0
 #########################################################
@@ -21,20 +21,20 @@ IFS=$'\n'
 for year in `cat ./input/yearlist`
 #########################################################
 do
-#
-nblns=`cat ./output/3Danalysis/"$var".$year.3DNCliste |wc -l`
-Fileinf='./output/3Danalysis/'"$var"'.'$year'.3DNCliste'
-{
-ll=1
-while [ $ll -le $nblns ]
-do
-read filename
-echo $filename >> ./3DWORK/3Dncliste
-let ll=$(($ll+1))
-done
-} < "$Fileinf"
-#
-let nbfls=$(($nbfls+$nblns))
+  #
+  nblns=`cat ./output/3Danalysis/"$var".$year.3DNCliste |wc -l`
+  Fileinf='./output/3Danalysis/'"$var"'.'$year'.3DNCliste'
+  {
+    ll=1
+    while [ $ll -le $nblns ]
+    do
+      read filename
+      echo $filename >> ./3DWORK/3Dncliste
+      let ll=$(($ll+1))
+    done
+  } < "$Fileinf"
+  #
+  let nbfls=$(($nbfls+$nblns))
 done
 IFS=$saveifs
 #
@@ -43,35 +43,34 @@ head -12 './output/3Danalysis/'"$var"'.'$year'.3DNCinfo' > ./3DWORK/3DNCinfo
 for year in `cat ./input/yearlist`
 #########################################################
 do
-#
- Fileinf='./output/3Danalysis/'"$var"'.'$year'.3DNCinfo'
-{
-read dummy
-read dummy
-read dummy
-read dummy
-read dummy
-read dummy
-read dummy
-read dummy
-read dummy
-read dummy
-read dummy
-read dummy
-ll=1
-while [ $ll -le $nbmon ]
-do
-read comm1
-echo $comm1 >> ./3DWORK/3DNCinfo
-read comm2
-echo $comm2 >> ./3DWORK/3DNCinfo
-read comm3
-echo $comm3 >> ./3DWORK/3DNCinfo
-let ll=$(($ll+1))
-done
-#
-} < "$Fileinf"
-#
+  #
+  Fileinf='./output/3Danalysis/'"$var"'.'$year'.3DNCinfo'
+  {
+    read dummy
+    read dummy
+    read dummy
+    read dummy
+    read dummy
+    read dummy
+    read dummy
+    read dummy
+    read dummy
+    read dummy
+    read dummy
+    read dummy
+    ll=1
+    while [ $ll -le $nbmon ]; do
+      read comm1
+      echo $comm1 >> ./3DWORK/3DNCinfo
+      read comm2
+      echo $comm2 >> ./3DWORK/3DNCinfo
+      read comm3
+      echo $comm3 >> ./3DWORK/3DNCinfo
+      let ll=$(($ll+1))
+    done
+    #
+  } < "$Fileinf"
+  #
 done
 #
 #
