@@ -44,7 +44,7 @@ divarundir=$(pwd)
 diva3dlog=$divarundir'/output/3Danalysis/'"$var"'.diva3D.log'
 divalog=$divarundir'/output/diva.log'
 #
-echo 'diva3Ddat:'						| tee -a "$diva3dlog" 
+echo 'diva3Ddat:'						| tee -a "$diva3dlog"
 echo 'diva3Ddat:' 'Start data cleaning flag number: '$datop	| tee -a "$diva3dlog"
 echo 'diva3Ddat:' 'on '"$var"					| tee -a "$diva3dlog"
 echo 'diva3Ddat:' 'level '$bottm' to level '$surf		| tee -a "$diva3dlog"
@@ -86,7 +86,7 @@ fi
 if [ -f  ./input/divadata/"$var".$lev ] ; then
  cp ./input/divadata/"$var".$lev  ./input/divadata/"$var".$lev.ori
  cp ./input/divadata/"$var".$lev  ./input/data.dat
- nbdat=`cat './input/data.dat' |wc -l` 
+ nbdat=`cat './input/data.dat' |wc -l`
  if [ "$nbdat" == "0" ] ; then
   errflag=4
  fi
@@ -170,10 +170,10 @@ else
 fi
 if [ -f ./input/RLinfo.dat ];then
  if [ -f ./input/divaparam/RL."$var".$lev ];then
-  cp -f ./input/divaparam/RL."$var".$lev ./input/RL.dat 
+  cp -f ./input/divaparam/RL."$var".$lev ./input/RL.dat
  else
   if [ -f ./input/divaparam/RL.$lev ];then
-   cp -f ./input/divaparam/RL.$lev ./input/RL.dat 
+   cp -f ./input/divaparam/RL.$lev ./input/RL.dat
   else
    if [ -f ./input/divaparam/RL.dat ];then
     cp -f ./input/divaparam/RL.dat ./input/RL.dat
@@ -191,7 +191,7 @@ else
  fmeshe=0
 fi
 #
-if [ "$datop" -eq "1" -o "$datop" -eq "3"  -o "$datop" -eq "4" -o "$datop" -eq "5" ];then
+if [ "$datop" -eq "1" -o "$datop" -eq "3"  -o "$datop" -eq "4" -o "$datop" -eq "5" -o "$datop" -eq "6" -o "$datop" -eq "7" ];then
 echo '%%%%%%%%%%%%  cleaning '"$var"'.'$lev' %%%%% original data nmbr '$nbdat
 echo '%%%%%%%%%%%%  cleaning '"$var"'.'$lev' %%%%% original data nmbr '$nbdat >> "$diva3dlog"
 ./divaclean
@@ -224,7 +224,7 @@ echo ' '  >> $divalog
     cat "$diva3dlog" ./output/divadata.log > bidon
     mv bidon "$diva3dlog"
 
- nbdat=`cat './input/data.dat' |wc -l` 
+ nbdat=`cat './input/data.dat' |wc -l`
 echo 'After cleaning '"$var"'.'$lev'  data nmbr = '$nbdat
 cp -v ./input/data.dat ./input/divadata/"$var".$lev
 cp -v ./input/data.beforeclean.dat ./input/divadata/"$var".$lev.notclean
