@@ -1,12 +1,12 @@
 #!/bin/bash
-export LC_ALL=C 
+export LC_ALL=C
 
 #------------------------------------------------
 # Sylvain Watelet - 16/07/2014 - GHER (ULg)
 # swatelet@ulg.ac.be
-# 
-# This script performs a binning of the input 
-# data before the optimisation of CL and SNR 
+#
+# This script performs a binning of the input
+# data before the optimisation of CL and SNR
 # parameters.
 #------------------------------------------------
 
@@ -35,9 +35,9 @@ i=1
 #(cat $datafile; echo) | # => causes problems with storage of the arrays (sub-shell because of pipe)
 while read -r col1[i] col2[i] col3[i] col4[i] col5[i] col6[i] col7[i] col8[i] col9[i] col10[i]
 do
-#echo ${col1[i]} ${col2[i]} ${col3[i]} ${col4[i]} ${col5[i]} ${col6[i]} ${col7[i]} ${col8[i]} ${col9[i]} ${col10[i]}
-#echo ${col1[i]} ${col2[i]} ${col3[i]}
-i=$(($i+1))
+  #echo ${col1[i]} ${col2[i]} ${col3[i]} ${col4[i]} ${col5[i]} ${col6[i]} ${col7[i]} ${col8[i]} ${col9[i]} ${col10[i]}
+  #echo ${col1[i]} ${col2[i]} ${col3[i]}
+  i=$(($i+1))
 done < $datafile
 
 datalines=$(cat $datafile | wc -l)
@@ -48,26 +48,26 @@ echo "lines =" $datalines
 #------------------------------------------------
 
 {
-read comment
-read comment
-read comment
-read comment
-read comment
-read comment
-read comment
-read comment
-read comment
-read xori
-read comment
-read yori
-read comment
-read dx
-read comment
-read dy
-read comment
-read nx
-read comment
-read ny
+  read comment
+  read comment
+  read comment
+  read comment
+  read comment
+  read comment
+  read comment
+  read comment
+  read comment
+  read xori
+  read comment
+  read yori
+  read comment
+  read dx
+  read comment
+  read dy
+  read comment
+  read nx
+  read comment
+  read ny
 } < $paramfile
 
 echo "x step =" $dx "y step =" $dy
@@ -82,25 +82,25 @@ echo "computing close neighbours..."
 #for i in `seq 1 $nx`
 #do
 #	echo $lonmin
-#	latmin=$yori	
-#	
-#	for j in `seq 1 $ny`	
+#	latmin=$yori
+#
+#	for j in `seq 1 $ny`
 #	do
 ##		echo $latmin
-#		
+#
 #		for k in `seq 1 $datalines`
 #		do
-#			if [ $(echo "${col1[k]} - $lonmin < 0." | bc -l) -eq 1 ] 
+#			if [ $(echo "${col1[k]} - $lonmin < 0." | bc -l) -eq 1 ]
 #			then
 #			continue
 #			else
 #			:
 #			fi
 #		done
-#		
+#
 #		latmin=$(echo "$latmin+$dy" | bc -l)
 #	done
-#	
+#
 #	lonmin=$(echo "$lonmin+$dx" | bc -l)
 #done
 
@@ -123,12 +123,12 @@ echo "computing close neighbours..."
 ##echo $i
 #previous="yes"
 #	for j in `seq $firstyes $datalines`
-#	do	
+#	do
 #		if [ $(echo "sqrt((${col1[i]} - ${col1[j]})^2) <= $dy" | bc -l) -eq 1 ] # && [ $i -ne $j ] && [ $(echo "sqrt((${col2[i]} - ${col2[j]})^2) <= $dx" | bc -l) -eq 1 ]
 #		then
 #			if [ $previous == "no" ]
 #			then
-#			firstyes=$j			
+#			firstyes=$j
 #			fi
 #		previous="yes"
 #			if [ $i -ne $j ] # not the same line
@@ -138,7 +138,7 @@ echo "computing close neighbours..."
 ##				echo "yes" $i $j
 #				neighbours=$(($neighbours+1))
 #				echo $i $j >> ./input/tmpfile
-#				col2[j]=$j*10000 # a single measurement is used ONCE only 
+#				col2[j]=$j*10000 # a single measurement is used ONCE only
 #				fi
 #			fi
 #		else
@@ -164,16 +164,3 @@ echo "binning neighbours..."
 
 mv ./input/bidon $datafile
 echo "End divabin."
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -3,9 +3,9 @@
 
 if [ "$#" == "1" ]
 then
-        ndata=$1
+  ndata=$1
 else
-        ndata='1500000'
+  ndata='1500000'
 fi
 
 
@@ -64,7 +64,7 @@ echo '0' >> ${paramfile}
 echo '# xori' >> ${paramfile}
 echo '-1' >> ${paramfile}
 echo '# yori' >> ${paramfile}
-echo '-1' >> ${paramfile} 
+echo '-1' >> ${paramfile}
 echo '# dx' >> ${paramfile}
 echo '0.02' >> ${paramfile}
 echo '# dy' >> ${paramfile}
@@ -103,6 +103,3 @@ timerun=$(echo ${timeend} ${timeinit} | awk '{print ($1-$2)}')
 echo 'Time for mesh creation:  ' $timemesh ' s'
 echo 'Time for calculation:    ' $timecalc ' s'
 echo 'Total time for analysis: ' $timerun ' s'
-
-
-
