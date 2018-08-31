@@ -1,3 +1,4 @@
+
 *.mod
 *.nc
 fort.*
@@ -15,6 +16,3 @@ DIVA3D/divastripped/output/
 DIVA3D/divastripped/divawork/
 DIVA3D/divastripped/meshgenwork/
 DIVA3D/divastripped/gnuwork/xrangecova
-JRA4/Climatology/input/
-JRA4/Climatology/newinput/
-JRA4/Climatology/output/
