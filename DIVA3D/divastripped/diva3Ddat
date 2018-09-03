@@ -187,7 +187,7 @@ while [ $dep -le $surf ]; do
         fmeshe=0
       fi
       #
-      if [ "$datop" -eq "1" -o "$datop" -geq "3"]; then
+      if [ "$datop" -eq "1" -o "$datop" -geq "3" ]; then
         echo '%%%%%%%%%%%%  cleaning '"$var"'.'$lev' %%%%% original data nmbr '$nbdat
         echo '%%%%%%%%%%%%  cleaning '"$var"'.'$lev' %%%%% original data nmbr '$nbdat >> "$diva3dlog"
         ./divaclean
