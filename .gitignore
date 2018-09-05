@@ -7,20 +7,6 @@ fort.*
 # Log files
 JRA4/Climatology/divadoall.*
 *.log
-# Input files
-DIVA3D/divastripped/gnuwork/analysis.pal
-DIVA3D/divastripped/gnuwork/dvanalysisrange
-DIVA3D/divastripped/gnuwork/dvcoastlinetailer
-DIVA3D/divastripped/gnuwork/longref.dat.default
-JRA4/Climatology/constandrefe
-JRA4/Climatology/datasource
-JRA4/Climatology/divadoall
-JRA4/Climatology/driver
-JRA4/Climatology/input/NCDFinfo
-JRA4/Climatology/input/contour.depth
-JRA4/Climatology/monthlist
-JRA4/Climatology/qflist
-JRA4/Climatology/varlist
 # Diva directories
 DIVA3D/bin/
 DIVA3D/divastripped/input/
