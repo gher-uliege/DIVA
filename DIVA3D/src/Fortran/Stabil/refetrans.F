@@ -28,7 +28,7 @@
 !-----------------------------------------------------------------------
 !
       OPEN(44, FILE='fort.44')
-      READ(44,*) var_name
+      READ(44,'(a)') var_name
       READ(44,*) itrans
       READ(44,*) first_level
       READ(44,*) last_level
