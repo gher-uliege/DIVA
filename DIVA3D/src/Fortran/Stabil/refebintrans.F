@@ -24,7 +24,7 @@
 !
       EXECIN='./fort.44'
       OPEN(44,FILE=EXECIN,STATUS='OLD')
-      READ(44,*)BINFILE
+      READ(44,'(a)')BINFILE
       READ(44,*)itrans
       CLOSE(44)
 
