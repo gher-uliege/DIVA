@@ -21,6 +21,7 @@ mkdir -p ./gnuwork
 
 divaecho Cleaning divawork and gnuwork directory
 divaecho ' '
+rm -f ./logs/*log
 rm -f ./divawork/*.log              # Remove all log files?
 rm -f ./divawork/fort.*
 rm -f ./divawork/dvping
@@ -39,7 +40,6 @@ rm -f ./meshgenwork/fort.*
 rm -f ./meshgenwork/diva.log
 divaecho Cleaning output directory
 divaecho ' '
-
 rm -f ./output/meshvisu/fort.*
 rm -f ./output/*.anl
 rm -f ./output/ghertonetcdf/GridInfo.dat
@@ -48,7 +48,6 @@ rm -f ./output/ghertonetcdf/diva.log
 rm -f ./output/*.dat
 rm -f ./output/*.nc
 rm -f ./output/*.ref
-
 divaecho Looking for density file...
 divaecho ' '
 

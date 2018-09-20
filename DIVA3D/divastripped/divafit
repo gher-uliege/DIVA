@@ -30,9 +30,9 @@ divaecho > ${divafitlog}
 divaecho '********' >> ${divafitlog}
 
 if ! [ -f $datafile ]; then
-  errorline 
+  errorline
   errorlog "No data file available in ./input/ directory"
-  errorline 
+  errorline
   exit 1
 fi
 
@@ -90,7 +90,7 @@ fi
 if [ -f "${paramfile}" ]; then
   divaecho 'Going to fit covariance function' | tee -a ${divafitlog}
   divaecho ' ' 			        | tee -a ${divafitlog}
-  
+
   head -4 ./input/param.par | tail -1   > fort.11
   head -8 ./input/param.par | tail -1   >> fort.11
 
@@ -192,5 +192,5 @@ if [ -f "${paramfile}" ]; then
   else
     errorline
     errorlog "No parameter file in input directory"
-    errorline 
+    errorline
 fi
