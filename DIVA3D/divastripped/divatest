@@ -1,6 +1,11 @@
 #!/bin/bash
+export LC_ALL=C
 
+source divalogging
 
+infolog -- | tee -a $divalog
+infolog 'Mesh generation' | tee -a $divalog
+infolog -- | tee -a $divalog
 
 
 
@@ -14,20 +19,19 @@ paramfile=${inputdir}'param.par'
 ./divaclean
 
 ##echo ${inputdir}
-echo //////////////////////////////////////////////////
-echo 'Running a simple test'
-echo //////////////////////////////////////////////////
-echo ' '
+infolog --
+infolog 'Running a simple test'
+infolog --
 
-echo '1. creating data file'
-echo ' '
+divaecho '1. creating data file'
+divaecho ' '
 
 echo '0.3 0.3 1' > ${datafile}
 echo '0.55 0.9 -1' >> ${datafile}
 echo '0.85 0.1 0.2' >> ${datafile}
 
-echo '2. creating contour file'
-echo ' '
+divaecho '2. creating contour file'
+divaecho ' '
 
 echo 2 > ${contfile}
 echo 4 >> ${contfile}
@@ -42,8 +46,8 @@ echo 0.601 0.801 >> ${contfile}
 echo 0.601 0.201 >> ${contfile}
 
 
-echo '3. creating parameter file'
-echo ' '
+divaecho '3. creating parameter file'
+divaecho ' '
 
 echo '# Correlation Length lc' > ${paramfile}
 echo '0.2' >> ${paramfile}
@@ -56,7 +60,7 @@ echo '0' >> ${paramfile}
 echo '# xori' >> ${paramfile}
 echo '0' >> ${paramfile}
 echo '# yori' >> ${paramfile}
-echo '0' >> ${paramfile} 
+echo '0' >> ${paramfile}
 echo '# dx' >> ${paramfile}
 echo '0.02' >> ${paramfile}
 echo '# dy' >> ${paramfile}
@@ -76,73 +80,63 @@ echo '1.0' >> ${paramfile}
 
 ./divacalc
 
-echo ' '
-echo 'Check the results in'
-echo './ouput/ghertonetcdf/results.nc (netcdf)'
+divaecho ' '
+divaecho 'Check the results in'
+divaecho './ouput/ghertonetcdf/results.nc (netcdf)'
 
 
-echo 'Now checking if you have gawk or nawk'
+divaecho 'Now checking if you have gawk or nawk'
 whichawk=$(echo 0 | awk '{if (PROCINFO["version"])  print "1"; else print "0"; }')
 echo $whichawk
 if [ "$whichawk" != "1" ]
 then
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-echo !!! PLEASE INSTALL GAWK !!!!!!!!!!!!
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-sleep 1
+  warnlog !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  warnlog !!! PLEASE INSTALL GAWK !!!!!!!!!!!!
+  warnlog !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  sleep 1
 else
-echo gawk is present
+  divaecho gawk is present
 fi
 
-echo 
-echo
-echo
-
-echo "Finally testing pipes needed for exact error calculations"
-echo "If the program hangs it means pipes are not supported"
-echo "In this case you need to adapt parameter ipipe to ipipe=0 in divacalc"
+divaecho "Finally testing pipes needed for exact error calculations"
+divaecho "If the program hangs it means pipes are not supported"
+divaecho "In this case you need to adapt parameter ipipe to ipipe=0 in divacalc"
 cd ../src/Fortran/Pipetest
 ./pipetest
 
 cd ../../../divastripped
 
-echo
-echo
-echo
+divaecho
 
-echo "Now checking if dos2unix is present..."
+divaecho "Now checking if dos2unix is present..."
 rm -f testdos2unixbis.txt
 echo "test" > testdos2unix.txt
 dos2unix -n testdos2unix.txt testdos2unixbis.txt > /dev/null 2>&1
 if [ -s testdos2unixbis.txt ]
 then
-echo "...dos2unix is present."
+  divaecho "...dos2unix is present."
 else
-echo "...dos2unix is absent !"
-echo
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-echo !!! PLEASE INSTALL DOS2UNIX !!!!!!!!!!!!!!!!
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-sleep 1
+  divaecho "...dos2unix is absent !"
+  divaecho
+  warnlog !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  warnlog !!! PLEASE INSTALL DOS2UNIX !!!!!!!!!!!!!!!!
+  warnlog !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  sleep 1
 fi
 rm -f testdos2unix.txt
 rm -f testdos2unixbis.txt
 echo
 
-echo "Now checking if bc is present..."
+divaecho "Now checking if bc is present..."
 test=$(echo '1+1' | bc -l)
 if [ "$test" == "2" ]
 then
-echo "...bc is present."
+  divaecho "...bc is present."
 else
-echo "...bc is absent !"
-echo
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-echo !!! PLEASE INSTALL BC !!!!!!!!!!!!!!!!
-echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-sleep 1
+  divaecho "...bc is absent !"
+  divaecho
+  warnlog !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  warnlog !!! PLEASE INSTALL BC !!!!!!!!!!!!!!!!
+  warnlog !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  sleep 1
 fi
-
-
-
-
