@@ -1,22 +1,15 @@
 #!/bin/bash
-<<<<<<< 2248ddf9230adf1beb99b3dfeb081ec262fbce2e
-echo //////////////////////////////////////////////////
-echo Cleaning up the mess
-echo //////////////////////////////////////////////////
-echo ' '
-echo Making directories
-echo ' '
-=======
+
 
 source divalogging
 
-infolog -- 
+infolog --
 infolog "Cleaning up intermediate files"
 infolog --
 
-divaecho ' ' 
+divaecho ' '
 divaecho Making directories
-divaecho ' ' 
+divaecho ' '
 
 mkdir -p ./divawork
 mkdir -p ./meshgenwork
@@ -27,7 +20,7 @@ mkdir -p ./output/meshvisu
 mkdir -p ./gnuwork
 
 divaecho Cleaning divawork and gnuwork directory
-divaecho ' ' 
+divaecho ' '
 rm -f ./divawork/*.log              # Remove all log files?
 rm -f ./divawork/fort.*
 rm -f ./divawork/dvping
@@ -41,11 +34,11 @@ rm -f ./divawork/sub/*
 rm -f ./divawork/coast.cont*        # Removing old contours
 
 divaecho Cleaning meshgenwork directory
-divaecho ' ' 
+divaecho ' '
 rm -f ./meshgenwork/fort.*
 rm -f ./meshgenwork/diva.log
 divaecho Cleaning output directory
-divaecho ' ' 
+divaecho ' '
 
 rm -f ./output/meshvisu/fort.*
 rm -f ./output/*.anl
@@ -57,10 +50,10 @@ rm -f ./output/*.nc
 rm -f ./output/*.ref
 
 divaecho Looking for density file...
-divaecho ' ' 
+divaecho ' '
 
 if [ -f ./input/coast.cont.dens ]; then
-  warnline 
+  warnline
   warnlog "... there is a coast.cont.dens file"
   warnlog "Are you sure you provided it for this application?"
   echo ' '
@@ -68,11 +61,11 @@ if [ -f ./input/coast.cont.dens ]; then
   warnlog "In any case, make sure the input files in ./input are OK"
   echo
   warline
-  else 
+  else
   warnlog "... there is no density file"
 fi
 
-divaecho ' ' 
+divaecho ' '
 divaecho --------------------
 divaecho Cleaning is finished
 divaecho --------------------
