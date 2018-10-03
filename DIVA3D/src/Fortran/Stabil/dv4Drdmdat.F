@@ -10,12 +10,12 @@
 !
 !-------------------------------------------------------------------
 !
-	include "netcdf.inc" 
+	include "netcdf.inc"
 !
         integer                             :: i,j,k,attlen
         integer                             :: im,jm,km,irewrt,nm,chlen
 
-        integer     :: 
+        integer     ::
      &  L_INSTITUT,L_PRODUCTION,L_Email
 
         real*4                              :: valexc,
@@ -29,7 +29,7 @@
 !
         real*4  ,dimension(2,1)              :: clbnds
      &                                        ,climatology_bounds
-!   
+!
         real*4  ,dimension(:)  ,  ALLOCATABLE        :: clo
         real*4  ,dimension(:)  ,  ALLOCATABLE        :: cla
         real*4  ,dimension(:)  ,  ALLOCATABLE        :: dep
@@ -79,7 +79,7 @@
       save                    :: ncid,status
 !
       !-----------------------
-      ! Open the data file       
+      ! Open the data file
       !-----------------------
 !
 
@@ -117,7 +117,7 @@
       !----------------------
       ! Put in define mode
       !----------------------
-!      
+!
       status = nf_redef(ncid)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
@@ -156,7 +156,7 @@
          STOP 'Stopped in NC_4DCLIMATO put att prod'
       ENDIF
 !
-      string256='GHER OPENDAB: http://gher-diva.phys.ulg.ac.be/data/'
+      string256='GHER OPeNDAP: http://gher-diva.phys.ulg.ac.be/data/'
       status=nf_put_att_text(ncid,NF_GLOBAL,'data_access',
      &                 LEN_TRIM(string256),TRIM(string256))
       IF (status .NE.nf_noerr) THEN
@@ -295,7 +295,7 @@
          STOP 'Stopped in NC_READ4DCL put clbnds'
       ENDIF
 !
-      !-----------------------------------------     
+      !-----------------------------------------
       ! Get coordinate variables attributes
       !-----------------------------------------
 !

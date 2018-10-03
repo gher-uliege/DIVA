@@ -20,10 +20,10 @@
 !
 !-------------------------------------------------------------------
 !
-	include "netcdf.inc" 
+	include "netcdf.inc"
 !
-        integer*4   :: im4,jm4 
-!!        integer   :: im4,jm4 
+        integer*4   :: im4,jm4
+!!        integer   :: im4,jm4
         integer     :: one,two,four,ttime_len,km ,time_len,ipar,im,jm
      &              , three
         integer     :: L_file_name,L_var_shname,L_var_lgname,
@@ -31,7 +31,7 @@
      &  L_INSTITUT,L_PRODUCTION,L_SOURCE,L_Email,L_COMMENT,
      &  L_Acknowledgements
 !
-        real*4                              :: 
+        real*4                              ::
      &            var_min,var_max,ver_min,ver_max,dbin_min,dbin_max,
      &            vbt_min,vbt_max,var1_min,var1_max,clen_min,clen_max,
      &            var2_min,var2_max,verel_min,verel_max,
@@ -43,9 +43,9 @@
      &                                       , Verr,reler,dbins
      &                                       , obins,rlfield
         real*4  ,dimension(im4,jm4)          :: varbot,varb1,varb2
-        real*4  ,dimension(2,time_len)       :: clbnds ,xclbnds 
+        real*4  ,dimension(2,time_len)       :: clbnds ,xclbnds
         real*4  ,dimension(2)       :: climatology_bounds
-!   
+!
         real*4  ,dimension(im4)              :: clo
         real*4  ,dimension(jm4)              :: cla
         real*4  ,dimension(km)               :: dep, valexu
@@ -164,7 +164,7 @@
       ENDIF
 !
       !-----------------------
-      ! Open the data file       
+      ! Open the data file
       !-----------------------
 !
       status = nf_open(TRIM(file_name), nf_write,ncid)
@@ -177,7 +177,7 @@
       !----------------------
       ! Put in define mode
       !----------------------
-!      
+!
       status = nf_redef(ncid)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
@@ -278,8 +278,8 @@
 
       ENDIF
 !
-      !-----------------------------------------     
-      ! Give attributes to coordinate variables 
+      !-----------------------------------------
+      ! Give attributes to coordinate variables
       !-----------------------------------------
 !
       status=nf_put_att_text(ncid,idlon,'units',
@@ -662,7 +662,7 @@
          STOP 'Stopped in NC_4DCLIMATO att dblgname'
       ENDIF
 
-! 
+!
       status=nf_put_att_real(ncid,id3,'valid_min',
      &                                   nf_float,one,dbin_min)
       IF (status .NE.nf_noerr) THEN
@@ -703,7 +703,7 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att oblgname'
       ENDIF
-! 
+!
       status=nf_put_att_real(ncid,id3_1,'valid_min',
      &                                   nf_float,one,obin_min)
       IF (status .NE.nf_noerr) THEN
@@ -744,7 +744,7 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att rllgname'
       ENDIF
-! 
+!
       status=nf_put_att_real(ncid,id4,'valid_min',
      &                                   nf_float,one,rl_min)
       IF (status .NE.nf_noerr) THEN
@@ -972,7 +972,7 @@
          STOP 'Stopped in NC_4DCLIMATO put att prod'
       ENDIF
 !
-      string256='GHER OPENDAB: http://gher-diva.phys.ulg.ac.be/data/'
+      string256='GHER OPeNDAP: http://gher-diva.phys.ulg.ac.be/data/'
       status=nf_put_att_text(ncid,NF_GLOBAL,'data_access',
      &                 LEN_TRIM(string256),TRIM(string256))
       IF (status .NE.nf_noerr) THEN
@@ -1025,7 +1025,7 @@
       STATUS=NF_PUT_ATT_TEXT(NCID,NF_GLOBAL,'date',
      &                   len('YYYY-MM-DD hh:mm:ss.ss'),
      &                   mjdstr(mjdnow(),'YYYY-MM-DD hh:mm:ss.ss'))
-      
+
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put att date'
@@ -1094,7 +1094,7 @@
       else                  !   icdf=0
 !
       if (icdf == time_len-1) then
-      
+
       status = nf_redef(ncid)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
@@ -1209,7 +1209,7 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att verelmax 2'
       ENDIF
-! 
+!
       status=nf_put_att_real(ncid,id3,'valid_min',
      &                                   nf_float,one,dbin_min)
       IF (status .NE.nf_noerr) THEN
@@ -1223,7 +1223,7 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att dbmax 2'
       ENDIF
-! 
+!
       status=nf_put_att_real(ncid,id3_1,'valid_min',
      &                                   nf_float,one,obin_min)
       IF (status .NE.nf_noerr) THEN
@@ -1237,7 +1237,7 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO att obmax 2'
       ENDIF
-! 
+!
       status=nf_put_att_real(ncid,id4,'valid_min',
      &                                   nf_float,one,rl_min)
       IF (status .NE.nf_noerr) THEN
@@ -1291,7 +1291,7 @@
       count(2)=JM
       count(3)=KM
       count(4)=1
-! 
+!
       status=nf_put_vara_real(ncid,id1, start, count,var)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
@@ -1346,7 +1346,7 @@
       coun2(1)=IM
       coun2(2)=JM
       coun2(3)=1
-! 
+!
       status=nf_put_vara_real(ncid,id2d1, star2, coun2,varbot)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
@@ -1380,7 +1380,7 @@
       write(*,*) 'climatology_bounds ',climatology_bounds
 
 
-      status = 
+      status =
      &nf_put_vara_real(ncid,idcb, stpar, prcnt,climatology_bounds)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
@@ -1411,7 +1411,7 @@
          print *,nf_strerror(status)
          STOP 'Stopped in NC_4DCLIMATO put VARBAK'
       ENDIF
-! 
+!
       status = nf_sync(ncid)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
