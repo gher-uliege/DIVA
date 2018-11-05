@@ -303,7 +303,9 @@ C           write(6,*) '??',i,j
         w3mean=0
         do nn=1,nbmax
          w3(nn)=0
-        if (iw(nn).gt.0) then
+C        if (iw(nn).gt.0) then
+c dirty fix JMB 05/11
+	if (iw(nn).ge.1) then
          work(nn)=work(nn)/iw(nn)
          w2(nn)=w2(nn)/iw(nn)-work(nn)**2
          if(w2(nn).gt.1E-8*work(nn)**2) w3(nn)=1/w2(nn)**2*(iw(nn)-1)
