@@ -6,10 +6,6 @@ infolog --
 infolog "          Cross Validation"
 infolog --
 
-divaecho ' '
-divaecho "CVrand logs written in ${divacvrandlog}"
-divaecho ' '
-
 divaecho "///////////////////////////////////////////" > ${divacvrandlog}
 divaecho "          Cross Validation" >> ${divacvrandlog}
 divaecho "///////////////////////////////////////////" >> ${divacvrandlog}
@@ -41,7 +37,7 @@ else
       rm -f ./output/gcv.dat
       if [ -f ./input/gcvsampling.dat ]; then
         #Create mesh once
-        if [ -f ./meshgenwork/fort.22 ]; then 
+        if [ -f ./meshgenwork/fort.22 ]; then
           warnline >> ${divacvrandlog}
           warnlog "Mesh files aready exist, hope they are correct: otherwise exectute divamesh" >> ${divacvrandlog}
           warnline >> ${divacvrandlog}
@@ -60,14 +56,14 @@ else
         divaecho "Working with $gcv" | tee -a ${divacvrandlog}
         #For a given subsample size
         isize=$1
-        ijm=0 
+        ijm=0
         N=$2
         rm -f ./divawork/cverror.dat
         rm -f ./divawork/cvdatavar.dat
         #Repeat N times the estimates
         while [ "$ijm" -lt "$N" ]
         do
-          # Extract a random subsample 
+          # Extract a random subsample
           ./dvsample $isize $ijm
           let ijm=$(($ijm+1))
           #head -17 ./input/param.par.ori > bidon
@@ -89,7 +85,7 @@ else
           ./divacalc
           cat  ${divacvrandlog} $divacalclog > bidon
           mv bidon ${divacvrandlog}
-          
+
           #now calculate errors from differences in valatxy.coord and fieldatxyascii.anl
           # only in real points
           # with valex=-99
@@ -97,7 +93,7 @@ else
           cd divawork
           cp ../input/valatxy.coord fort.20
           cp ../output/valatxyascii.anl fort.21
-          
+
           echo -99 | ../../bin/cverror.a >> $divalog
           if [ $? -ne 0 ];  then
             errorlog ' ' | tee -a ${divacvrandlog} ${divalog}
@@ -111,7 +107,7 @@ else
           cat fort.33 >> cvdatavar.dat
           cd ..
           # End loops
-          # 
+          #
         done
         cd divawork
         cp cverror.dat fort.20
@@ -139,10 +135,10 @@ else
       cd divawork
       divaecho "Looking for the minimum of GCV"  >> ${divacvrandlog}
       divaecho ' ' 			         >> ${divacvrandlog}
-      if [ -f ../input/gcvsampling.dat ]; then 
+      if [ -f ../input/gcvsampling.dat ]; then
         ../../bin/findmin.a >> $divalog
         if [ $? -ne 0 ]; then
-          errorline ' ' 
+          errorline ' '
           errorlog "--------------------------------------------" | tee -a ${divacvrandlog}
           errorlog "A problem was encountered during execution !" | tee -a ${divacvrandlog}
           errorlog "         divacvrand      findmin.a" | tee -a ${divacvrandlog}
@@ -179,6 +175,6 @@ else
       else
         cd ..
       fi
-    fi
+      fi
   fi
 fi

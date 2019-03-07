@@ -7,11 +7,6 @@ infolog "       Cross Validation"
 infolog --
 
 divaecho ' '
-divaecho "CV logs written in ${divacvlog}"
-divaecho ' '
-
-
-divaecho ' '
 divaecho "///////////////////////////////////////////" > $divacvlog
 divaecho "       Cross Validation" >> $divacvlog
 divaecho "///////////////////////////////////////////" >> $divacvlog
@@ -26,7 +21,7 @@ fi
 rm -f ./output/gcv.dat
 if [ -f ./input/gcvsampling.dat ]; then
   #Create mesh once
-  if [ -f ./meshgenwork/fort.22 ]; then 
+  if [ -f ./meshgenwork/fort.22 ]; then
     warnline >> $divacvlog
     warnlog "Mesh files already exist, hope they are correct: otherwise execute divamesh" >> $divacvlog
     warnline >> $divacvlog
@@ -107,7 +102,7 @@ cd divawork
 echo divacv:Looking for the minimum of CV >> $divacvlog
 echo ' ' >> $divacvlog
 
-if [ -f ../input/gcvsampling.dat ]; then 
+if [ -f ../input/gcvsampling.dat ]; then
   ../../bin/findmin.a >> $divalog
   if [ $? -ne 0 ]; then
     errorlog ' ' | tee -a $divacvlog $divalog
