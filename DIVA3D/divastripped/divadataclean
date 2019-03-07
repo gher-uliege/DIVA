@@ -86,7 +86,7 @@ if [ -f ./output/fieldatdatapoint.anl ] ; then
   else
     warnlog "fieldatdatapoint does not seem to be consistent" >> ${divadatalog}
     divadatacoverage -n
-  fi  
+  fi
 
 else
   divaecho "Analysed field does not exists: will create it" >> ${divadatalog}
