@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 source divalogging
 
 infolog --
@@ -38,6 +39,7 @@ rm -f ./meshgenwork/fort.*
 rm -f ./meshgenwork/diva.log
 divaecho Cleaning output directory
 divaecho ' '
+
 rm -f ./output/meshvisu/fort.*
 rm -f ./output/*.anl
 rm -f ./output/ghertonetcdf/GridInfo.dat
