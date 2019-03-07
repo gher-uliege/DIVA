@@ -16,6 +16,8 @@ infolog --			| tee -a $divalog
 divaecho ' '
 divaecho "Calc logs written in ${divacalclog}"
 divaecho ' '
+
+infolog -- | tee -a $divacalclog
 divaecho '          Going to analyse a field          '           | tee -a $divacalclog
 divaecho ' '                                                      | tee $divacalclog
 divaecho 'running divacalc with flag number for solver = '$solver | tee -a $divacalclog
@@ -23,7 +25,7 @@ divaecho 'possible values are 0: direct skyline, 1: parallel skyline and 2: iter
 infolog -- | tee -a $divacalclog
 
 if ! [ -f ${datafile} ]; then
-  errorline 
+  errorline
   errorlog "No data file available in ./input"
   errorline
   dvnil
@@ -92,27 +94,30 @@ Filepar=./input/param.par
 # Stuff for errors
 iflagcpme=0
 iflagexerr=0
+
 if [ "$ispec" -ge "100" ]; then
   divaecho "Clever poor mans error"
   iflagcpme=1
 fi
 
-if [ "$ispec" -le "-100" ]; then
-  if [ "$ispec" -le "-110" ]; then
-    divaecho exerr with boundary effect
-    iflagexerr=2
-    ispec=17
-  else
-    divaecho exerr
-    iflagexerr=1
-    ispec=17
+if [ "$ispec" -ne "-250" ]; then
+  if [ "$ispec" -le "-100" ]; then
+    if  [ "$ispec" -le "-110" ]; then
+      divaecho exerr with boundary effect
+      iflagexerr=2
+      ispec=17
+    else
+      divaecho exerr
+      iflagexerr=1
+      ispec=17
+    fi
   fi
 fi
+
 
 if [ "$ibii" == "1" ]; then
   ispec=-1000
 fi
-
 
 if [ -f ./input/valatxy.coord ]; then
   cp ./input/valatxy.coord ./divawork/fort.79
@@ -178,6 +183,7 @@ let NREA=$(($NREA+2*$nnt1))
 let NINT=$(($NINT+$nelt*100))
 #
 itcs=0
+
 if [ -f ../input/constraint.dat ]; then
   let itcs=$(($itcs+1))
 
@@ -188,8 +194,9 @@ if [ -f ../input/constraint.dat ]; then
   cp ../input/Uvel.dat ./fort.91
   cp ../input/Vvel.dat ./fort.92
 
-#JMB2012 added support for source terms in advection constraint
-# as many sources as whished, format: x y Q
+
+  #JMB2012 added support for source terms in advection constraint
+  # as many sources as whished, format: x y Q
   if [ -f ../input/sources.dat ]; then
     cp ../input/sources.dat ./fort.24
   fi
@@ -253,9 +260,9 @@ echo $valex >> ./fort.13
 echo $(echo $lc | awk '{print (1/($1*$1*$1*$1))}') > fort.12
 echo $(echo $lc $xi | awk '{print (2*$2/($1*$1))}') >> fort.12
 
-if [ "$ireg" == "3" ]
-then
-  aaaref=$(head -1 fort.12)
+
+if [ "$ireg" == "3" ]; then
+  ddaaaref=$(head -1 fort.12)
   echo 0 > newalpha
   # Test, not really zero, but small
 
@@ -268,6 +275,7 @@ then
 fi
 echo $varbak > ./fort.15
 cd ..
+
 if [ "$iqc" != "1" ]; then
   if [ "$ispec" -lt "0" ]; then
     if [ "$varbak" != "0" ]; then
@@ -292,6 +300,7 @@ if [ "$iqc" != "1" ]; then
           #pwd
           ../../bin/bintoasc.a | awk '{print $1,$2,$3/(1-$3)}' >../output/Bii.dat
           cd ..
+
           divaecho Finished bii  >> $divacalclog
           exit
         fi
@@ -309,6 +318,7 @@ if [ "$iqc" != "1" ]; then
     fi
   fi
 fi
+
 
 if [ -f ./input/data.dat ]; then
   cp ./input/data.dat ./divawork/fort.44
@@ -333,6 +343,7 @@ echo $nelt >> ./fort.10
 echo datapr 1 >> ./fort.10
 echo $ireg >> ./fort.10
 #JMB
+
 if [ "$itcs" != "0" ]; then
   divaecho "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" >> $divacalclog
   divaecho "Module constraint activated" >> $divacalclog
@@ -342,12 +353,14 @@ if [ "$itcs" != "0" ]; then
 fi
 echo solver 1 >> ./fort.10
 echo $solver >> ./fort.10
+
 if [ "$solver" == "2" ]; then
   echo 0 0 0 >> ./fort.10
 fi
 echo stores 1 >> ./fort.10
 echo 3 >> ./fort.10
 echo VARBAK: $varbak >> $divacalclog
+
 if [ "$iqc" != "1" ]; then
   if [ "$varbak" != "0" ]; then
     if [ "$ispec" != "0" ]; then
@@ -386,6 +399,7 @@ awk -v multconst=$multvar '{ if (NF>2) {if ($4 > "") {$4=$4*multconst} else {$4=
 ##?? echo --------------------------------------------
 
 NDATAB=$(cat ./fort.20 | wc -l)
+
 if [ "$NDATAB" -lt "$NDATA" ]; then
   errorlog !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! | tee -a $divacalclog
   errorlog ------------------------------------------- | tee -a $divacalclog
@@ -422,25 +436,27 @@ rm -f fort.35
 #execute diva
 echo $NINT $NREA | ../../bin/diva.a >> $divacalclog
 
+
 if [ $? -ne 0 ]; then
   errorlog ' ' | tee -a $divacalclog $divalog
-  errorline | tee -a $divacalclog $divalog
+  errorlog "------------------------------------------- "| tee -a $divacalclog $divalog
   errorlog "A problem was encountered during execution !"| tee -a $divacalclog $divalog
   errorlog "      divacalc:  diva.a	"		 | tee -a $divacalclog $divalog
   errorlog "ERROR : Check execution track in ${divalog}" | tee -a $divacalclog $divalog
-  errorline | tee -a $divacalclog $divalog
+  errorlog "--------------------------------------------"| tee -a $divacalclog $divalog
 fi
 
 dataonmesh=0
 ##ctroupin Oct 2012
 # Check if fort.84 was generated AND if not empty...
+
 if [ ! -s ./fort.84 ]; then
   errorlog ' ' | tee -a $divacalclog
-  errorline | tee -a $divacalclog $divalog
+  errorlog '//////////////////////////////////////////////////' | tee -a $divacalclog $divalog
   errorlog 'Problem in diva.a : analysis could not be finished' | tee -a $divacalclog $divalog
   errorlog ' '						  | tee -a $divacalclog $divalog
   errorlog 'ERROR : Check diva.log'				  | tee -a $divacalclog $divalog
-  errorline | tee -a $divacalclog $divalog
+  errorlog '//////////////////////////////////////////////////' | tee -a $divacalclog $divalog
 fi
 ##---
 
@@ -472,6 +488,7 @@ if [ -f ./fort.35  ]; then
 fi
 if [ "$dataonmesh" -lt "1" ]; then
   cd ..
+
   warnlog '-----------------------------------------------'
   warnlog 'Data are outside the mesh, will produce empty files'
   warnlog '-----------------------------------------------'
@@ -481,11 +498,13 @@ fi
 
 rm -f fort.59
 rm -f fort.61
+
 if [ "$iqc" == "1" ]; then
   #
   #output of results to user
   cp fort.76 ../output/expectederroratdatapoint.anl
   cp fort.71 ../output/fieldatdatapoint.anl
+
 
   divaecho ////////////////////////////////////////// | tee -a $divalog $divacalclog
   divaecho       lookforoutliers  			  | tee -a $divalog $divacalclog
@@ -496,11 +515,11 @@ if [ "$iqc" == "1" ]; then
 
   if [ $? -ne 0 ]; then
     errorlog ' '                                             | tee -a $divalog
-    errorline | tee -a $divalog
+    errorlog "-------------------------------------------- " | tee -a $divalog
     errorlog "A problem was encountered during execution ! " | tee -a $divalog
     errorlog "      divacalc:   lookforoutliers.a          " | tee -a $divalog
     errorlog "ERROR : Check execution track in diva.log    " | tee -a $divalog
-    errorline | tee -a $divalog
+    errorlog "-------------------------------------------- " | tee -a $divalog
   fi
   divaecho ' ' | tee -a  $divacalclog
   divaecho "Copying outlier lists" >> $divacalclog
@@ -511,10 +530,10 @@ if [ "$iqc" == "1" ]; then
     mv -f fort.67 ../output/outliers.normalized.dat
   else
     errorlog ' '                                          	| tee -a $divacalclog
-    errorline | tee -a $divacalclog
+    errorlog "--------------------------------------------" 	| tee -a $divacalclog
     errorlog "A problem was encountered during execution !" 	| tee -a $divacalclog
     errorlog "ERROR : Check execution track in diva.log"  	| tee -a $divacalclog
-    errorline | tee -a $divacalclog
+    errorlog "--------------------------------------------" 	| tee -a $divacalclog
   fi
 else
   #output as netcdf not yet done

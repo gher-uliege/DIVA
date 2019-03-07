@@ -5,13 +5,13 @@ source divalogging
 infolog 'Sanity check:'
 infolog 'Control the value of the field at (0,0)'
 infolog 'Should be 0.5'
- 
+
 divaclean
 
 ##echo ${inputdir}
-divaecho "//////////////////////////////////////////////////"
-divaecho "Running a simple test"
-divaecho "//////////////////////////////////////////////////"
+divaecho //////////////////////////////////////////////////
+divaecho 'Running a simple test'
+divaecho //////////////////////////////////////////////////
 divaecho ' '
 
 divaecho '1. creating data file'
@@ -44,7 +44,7 @@ echo '0' >> ${paramfile}
 echo '# xori' >> ${paramfile}
 echo '-10' >> ${paramfile}
 echo '# yori' >> ${paramfile}
-echo '-10' >> ${paramfile} 
+echo '-10' >> ${paramfile}
 echo '# dx' >> ${paramfile}
 echo '0.1' >> ${paramfile}
 echo '# dy' >> ${paramfile}
@@ -71,10 +71,9 @@ divacalc
 
 field0=$(awk '{print $3}' output/valatxyascii.anl)
 
-divaecho ' '
+echo ' '
 infolog 'Check the results in'
 infolog './ouput/ghertonetcdf/results.nc (netcdf)'
-infolog ' '
+echo ' '
 infolog 'Field value at origin = ' ${field0}
-divaecho ' '
-
+echo ' '

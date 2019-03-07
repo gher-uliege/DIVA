@@ -29,7 +29,7 @@ rm -f ./output/gcv.dat
 
 if [ -f ./input/gcvsampling.dat ]; then
   #Create mesh once if no mesh present
-  if [ -f ./meshgenwork/fort.22 ]; then 
+  if [ -f ./meshgenwork/fort.22 ]; then
     warnline >> ${divagcvlog}
     warnlog "Mesh files already exist, hope they are correct: otherwise execute divamesh " >> ${divagcvlog}
     warnline >> ${divagcvlog}
@@ -68,24 +68,24 @@ do
   echo >> bidon
   echo 0 >> bidon
   mv bidon ./input/param.par
-  
+
   ./divacalc
   cat  ${divagcvlog} $divacalclog > bidon
   mv bidon ${divagcvlog}
-  
+
   FILENAME=./divawork/fort.77
-  { 
-  read gcvval 
+  {
+  read gcvval
   } < $FILENAME
   FILENAME=bidon
   echo $gcv > bidon
-  { 
-  read gcv 
+  {
+  read gcv
   } < $FILENAME
   rm bidon
   divaecho $gcvval >> ${divagcvlog}
   divaecho $gcv $gcvval >> ${divagcvlog}
-  
+
   echo $gcv $gcvval >> ./output/gcv.dat
   ########for testing
   itestGCV=0
@@ -119,7 +119,7 @@ cd divawork
 divaecho "Looking for the minimum of GCV " >> ${divagcvlog}
 divaecho ' ' >> ${divagcvlog}
 
-if [ -f ../input/gcvsampling.dat ]; then 
+if [ -f ../input/gcvsampling.dat ]; then
   ../../bin/findmin.a >> ../output/diva.log
   if [ $? -ne 0 ]; then
     errorlog ' ' | tee -a ${divagcvlog} ${divalog}
@@ -156,8 +156,8 @@ head -25 ../input/param.par | tail -1 >> ../output/param.par.gcv
 head -4 ../output/gcvsnvar.dat  | tail -1 >> ../output/param.par.gcv
 
 if [ "$1" == "-r" ]; then
-  divaecho "=======================================================" | tee -a ${divagcvlog} 
-  divaecho "Replacing SNR by new value from GCV in param.par  	   " | tee -a ${divagcvlog} 
+  divaecho "=======================================================" | tee -a ${divagcvlog}
+  divaecho "Replacing SNR by new value from GCV in param.par  	   " | tee -a ${divagcvlog}
   cd ..
   cp -v ./input/param.par ./input/param.par.old
   cp -v ./output/param.par.gcv ./input/param.par
@@ -165,4 +165,3 @@ if [ "$1" == "-r" ]; then
 else
   cd ..
 fi
-

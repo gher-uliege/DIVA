@@ -30,9 +30,9 @@ divaecho > ${divafitlog}
 divaecho '********' >> ${divafitlog}
 
 if ! [ -f $datafile ]; then
-  errorline 
+  errorline
   errorlog "No data file available in ./input/ directory"
-  errorline 
+  errorline
   exit 1
 fi
 
@@ -157,18 +157,18 @@ if [ -f "${paramfile}" ]; then
 
     if [ "$nsamp" -eq "0" ]; then
       nbdata=$(cat ../input/data.dat | wc -l)
-      echo $nbdata >> ../output/nsamp.fit
+      divaecho $nbdata >> ../output/nsamp.fit
     else
-      echo $nsamp >> ../output/nsamp.fit
+      divaecho $nsamp >> ../output/nsamp.fit
     fi
 
     if [ "$iparsave" == "1" ]; then
-      divaecho "=======================================================" | tee -a ${divafitlog}
-      divaecho "Replacing  param file with fit  		       " | tee -a ${divafitlog}
+      divaecho ======================================================= | tee -a ${divafitlog}
+      divaecho Replacing  param file with fit  			     | tee -a ${divafitlog}
       cd ..
       cp -v ./input/param.par ./input/param.par.old
       cp -v ./output/param.par.fit ./input/param.par
-      divaecho "======================================================="
+      divaecho =======================================================
     fi
   else
     divaecho ' ' | tee -a ${divafitlog}
@@ -186,5 +186,5 @@ if [ -f "${paramfile}" ]; then
   else
     errorline
     errorlog "No parameter file in input directory"
-    errorline 
+    errorline
 fi

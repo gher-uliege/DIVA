@@ -3,21 +3,22 @@ export LC_ALL=C
 
 source divalogging
 
-infolog -- | tee -a $divalog
-infolog 'Mesh generation' | tee -a $divalog
-infolog -- | tee -a $divalog
-
 divaecho ' '
 divaecho "Mesh logs written in ${divameshlog}"
 divaecho ' '
 
+infolog -- | tee -a $divalog
+infolog 'Mesh generation' | tee -a $divalog
+infolog -- | tee -a $divalog
+
 if [ -f ./input/coast.cont ]; then
-  cp ./input/coast.cont ./meshgenwork/fort.10
+cp ./input/coast.cont ./meshgenwork/fort.10
 else
-  errorlog "No file coast.cont in ./input" | tee -a $divameshlog $divalog
-  exit 1
+  divaecho "Need to provide coast.cont in ./input" | tee -a $divameshlog
 fi
+
 isdens=0
+
 if [ -f ./input/coast.cont.dens ]; then
   divaecho "There is a density file for the mesh" | tee -a $divameshlog
   cp -v ./input/coast.cont.dens ./meshgenwork/fort.12
@@ -28,8 +29,7 @@ fi
 if [ -f ./input/param.par ]; then
   divaecho "Reading parameters" | tee -a $divameshlog
 else
-  divaerror "No file param.par in ./input/" | tee -a $divameshlog $divalog
-  exit 1
+  divaecho "Need to provide param.par in ./input/" | tee -a $divameshlog
 fi
 Filepar=./input/param.par
 {
@@ -121,6 +121,7 @@ cp fort.23 ../output/meshvisu/
 #read  nnt1 nnint nelt <&3
 #exec 23>&-
 cd ..
+
 divaecho ---------------   | tee -a $divameshlog
 divaecho Mesh is created   | tee -a $divameshlog
 divaecho ---------------   | tee -a $divameshlog
