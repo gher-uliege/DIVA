@@ -1,17 +1,13 @@
 #!/bin/bash
 
+source divalogging
+
 if [ "$#" == "1" ]
 then
 	Ndata=$1
 else
 	Ndata=100
 fi
-
-inputdir=$(pwd)'/input/'
-contfile=${inputdir}'coast.cont'
-datafile=${inputdir}'data.dat'
-paramfile=${inputdir}'param.par'
-gcvsamplingfile=${inputdir}'gcvsampling.dat'
 
 ##echo ${inputdir}
 echo //////////////////////////////////////////////////

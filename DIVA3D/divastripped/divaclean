@@ -1,10 +1,15 @@
 #!/bin/bash
-echo //////////////////////////////////////////////////
-echo Cleaning up the mess
-echo //////////////////////////////////////////////////
-echo ' '
-echo Making directories
-echo ' '
+
+source divalogging
+
+infolog --
+infolog "Cleaning up intermediate files"
+infolog --
+
+divaecho ' '
+divaecho Making directories
+divaecho ' '
+
 mkdir -p ./divawork
 mkdir -p ./meshgenwork
 mkdir -p ./output
@@ -12,8 +17,9 @@ mkdir -p ./input
 mkdir -p ./output/ghertonetcdf
 mkdir -p ./output/meshvisu
 mkdir -p ./gnuwork
-echo Cleaning divawork and gnuwork directory
-echo ' '
+divaecho Cleaning divawork and gnuwork directory
+divaecho ' '
+rm -f ./logs/*log
 rm -f ./divawork/*.log              # Remove all log files?
 rm -f ./divawork/fort.*
 rm -f ./divawork/dvping
@@ -26,12 +32,12 @@ rm -f ./gnuwork/plots/*
 rm -f ./divawork/sub/*
 rm -f ./divawork/coast.cont*        # Removing old contours
 
-echo Cleaning meshgenwork directory
-echo ' '
+divaecho Cleaning meshgenwork directory
+divaecho ' '
 rm -f ./meshgenwork/fort.*
 rm -f ./meshgenwork/diva.log
-echo Cleaning output directory
-echo ' '
+divaecho Cleaning output directory
+divaecho ' '
 rm -f ./output/meshvisu/fort.*
 rm -f ./output/*.anl
 rm -f ./output/ghertonetcdf/GridInfo.dat
@@ -40,22 +46,23 @@ rm -f ./output/ghertonetcdf/diva.log
 rm -f ./output/*.dat
 rm -f ./output/*.nc
 rm -f ./output/*.ref
-echo Looking for density file...
-echo ' '
-if [ -f ./input/coast.cont.dens ]
-then
-  echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  echo ... there is a coast.cont.dens file
-  echo Are you sure you provided it for this application?
+divaecho Looking for density file...
+divaecho ' '
+
+if [ -f ./input/coast.cont.dens ]; then
+  warnline
+  warnlog "... there is a coast.cont.dens file"
+  warnlog "Are you sure you provided it for this application?"
+  echo ' '
+  warnline
+  warnlog "In any case, make sure the input files in ./input are OK"
   echo
-  echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  echo In any case, make sure the input files in ./input are OK
-  echo
-  echo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-else
-  echo ... there is no density file
+  warline
+  else
+  warnlog "... there is no density file"
 fi
-echo ' '
-echo --------------------
-echo Cleaning is finished
-echo --------------------
+
+divaecho ' '
+divaecho --------------------
+divaecho Cleaning is finished
+divaecho --------------------

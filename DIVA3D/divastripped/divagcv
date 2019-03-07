@@ -1,12 +1,11 @@
 #!/bin/bash
+
+source divalogging
+
 echo divagcv:///////////////////////////////////////////
 echo divagcv:       Generalized Cross Validation
 echo divagcv:///////////////////////////////////////////
 echo ' '
-
-divarundir=$(pwd)
-divagcvlog=$divarundir'/output/divagcv.log'
-divacalclog=$divarundir'/output/divagcv.log'
 
 echo divagcv://///////////////////////////////////////// > $divagcvlog
 echo divagcv:       Generalized Cross Validation >> $divagcvlog
