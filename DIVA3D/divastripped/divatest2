@@ -10,20 +10,20 @@ else
 fi
 
 ##echo ${inputdir}
-echo //////////////////////////////////////////////////
-echo 'Running a test with divafit'
-echo //////////////////////////////////////////////////
-echo ' '
+infolog --
+infolog 'Running a test with divafit'
+infolog --
+divaecho ' '
 
-echo '1. creating data file'
-echo '   with points at random coordinates'
-echo ' '
+divaecho '1. creating data file'
+divaecho '   with points at random coordinates'
+divaecho ' '
 
 awk -v N=$Ndata 'BEGIN { for (i = 1; i <= N; i++)
         {x=rand();y=rand();print x,y,3*x-2*y-1} }' > ${datafile}
 
-echo '2. creating contour file'
-echo ' '
+divaecho '2. creating contour file'
+divaecho ' '
 
 echo 2 > ${contfile}
 echo 4 >> ${contfile}
@@ -37,9 +37,8 @@ echo 0.4 0.8 >> ${contfile}
 echo 0.6 0.8 >> ${contfile}
 echo 0.6 0.2 >> ${contfile}
 
-
-echo '3. creating parameter file'
-echo ' '
+divaecho '3. creating parameter file'
+divaecho ' '
 
 echo '# Correlation Length lc' > ${paramfile}
 echo '0.2' >> ${paramfile}
@@ -70,7 +69,7 @@ echo '1.0' >> ${paramfile}
 
 divamesh
 
-echo ' '
+divaecho ' '
 
 divacalc
 
@@ -82,10 +81,10 @@ divacalc
 
 cp ./output/ghertonetcdf/results.nc ./output/ghertonetcdf/results_fit.nc
 
-echo ' '
-echo 'Check the results in'
-echo './ouput/ghertonetcdf/results_notfit.nc (before estimation of L)'
-echo './ouput/ghertonetcdf/results_fit.nc    (after estimation of L)'
+divaecho ' '
+infolog 'Check the results in'
+infolog './ouput/ghertonetcdf/results_notfit.nc (before estimation of L)'
+infolog './ouput/ghertonetcdf/results_fit.nc    (after estimation of L)'
 
 
 

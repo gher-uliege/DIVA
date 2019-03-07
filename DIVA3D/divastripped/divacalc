@@ -16,8 +16,6 @@ infolog --			| tee -a $divalog
 divaecho ' '
 divaecho "Calc logs written in ${divacalclog}"
 divaecho ' '
-
-infolog -- | tee -a $divacalclog
 divaecho '          Going to analyse a field          '           | tee -a $divacalclog
 divaecho ' '                                                      | tee $divacalclog
 divaecho 'running divacalc with flag number for solver = '$solver | tee -a $divacalclog
@@ -100,18 +98,7 @@ if [ "$ispec" -le "-100" ]; then
   fi
 fi
 
-##################
-
-
-<<<<<<< f843b42596e99cff623cbf683e4b876f769368d5
-
-
-
-if [ "$ibii" == "1" ]
-then
-=======
 if [ "$ibii" == "1" ]; then
->>>>>>> improved logging in main scripts
   ispec=-1000
 fi
 
@@ -563,17 +550,9 @@ else
   echo $ny >> ../output/ghertonetcdf/GridInfo.dat
   echo $valex >> ../output/ghertonetcdf/GridInfo.dat
 
-<<<<<<< f843b42596e99cff623cbf683e4b876f769368d5
-
-  #Iceedge case
-  if [ -f ../input/iceedge.dat ]
-  then
-    echo Ice edge to be used as mask
-=======
   # Ice-edge case
   if [ -f ../input/iceedge.dat ]; then
     divaecho "Ice edge to be used as mask"
->>>>>>> improved logging in main scripts
     cd ..
     ./dvicemask
     cp ./output/fieldgher.anl ./divawork/fort.84
