@@ -89,3 +89,5 @@ do
   echo ${ndata}       ${timecalc}	>> ${logfile}
 
 done
+
+echo "Check results of the test in ${logfile}"
