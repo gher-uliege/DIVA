@@ -106,12 +106,12 @@ if [ -f "${paramfile}" ]; then
   echo $nsamp | ../../bin/fitlsn.a >> ${divafitlog}
 
   if [ $? -ne 0 ];then
-    errorlog ' ' | tee -a $divalog ${divafitlog}
-    errorline | tee -a $divalog ${divafitlog}
-    errorlog "A problem was encountered during execution ! " | tee -a $divalog ${divafitlog}
-    errorlog "          divafit      fitlsn.a		   " | tee -a $divalog ${divafitlog}
-    errorlog "Check execution track			   " | tee -a $divalog ${divafitlog}
-    errorline | tee -a $divalog ${divafitlog}
+    errorlog ' ' | tee -a ${divalog} ${divafitlog}
+    errorline | tee -a ${divalog} ${divafitlog}
+    errorlog "A problem was encountered during execution ! " | tee -a ${divalog} ${divafitlog}
+    errorlog "          divafit      fitlsn.a		   " | tee -a ${divalog} ${divafitlog}
+    errorlog "Check execution track			   " | tee -a ${divalog} ${divafitlog}
+    errorline | tee -a ${divalog} ${divafitlog}
   fi
 
   if [ -f fort.98 ]; then
@@ -158,18 +158,18 @@ if [ -f "${paramfile}" ]; then
 
     if [ "$nsamp" -eq "0" ]; then
       nbdata=$(cat ../input/data.dat | wc -l)
-      divaecho $nbdata >> ../output/nsamp.fit
+      echo $nbdata >> ../output/nsamp.fit
     else
-      divaecho $nsamp >> ../output/nsamp.fit
+      echo $nsamp >> ../output/nsamp.fit
     fi
 
     if [ "$iparsave" == "1" ]; then
-      divaecho ======================================================= | tee -a ${divafitlog}
-      divaecho Replacing  param file with fit  			       | tee -a ${divafitlog}
+      divaecho "=======================================================" | tee -a ${divafitlog}
+      divaecho "Replacing  param file with fit  		       " | tee -a ${divafitlog}
       cd ..
       cp -v ./input/param.par ./input/param.par.old
       cp -v ./output/param.par.fit ./input/param.par
-      divaecho =======================================================
+      divaecho "======================================================="
     fi
   else
     divaecho ' ' | tee -a ${divafitlog}
