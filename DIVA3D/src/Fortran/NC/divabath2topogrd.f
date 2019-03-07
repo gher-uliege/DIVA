@@ -37,6 +37,7 @@
 !
       integer                 :: lonid,latid,depthid,nvid
       integer                 :: idlon,idlat,iddepth
+      integer                 :: lonvarid,latvarid
       integer                 :: ncid,status
       integer                 :: ierr
       real*4 :: dx,dy
@@ -51,6 +52,8 @@
       !-----------------------
       ! Open the data file
       !-----------------------
+
+			write(6,*) 'Reading bathymetry netCDF file'
 !
       status = nf_open(TRIM(file_name), nf_nowrite,ncid)
       IF (status .NE.nf_noerr) THEN
@@ -85,14 +88,34 @@
          print *,nf_strerror(status)
          STOP 'Stopped in divabath2topogrd dimlen lat'
       ENDIF
+
+      write(6,*) 'Grid size: ', IM, ' X ', JM
+
       !-----------------------
-      ! Inquire data variables
+      ! Inquire data and coordinate variables
+			! Note: the id's for the dimensions are not the same
+			! as for the variables, i.e.
+			! nf_inq_varid and nf_inq_dimid provide different outputs
       !-----------------------
+
+      write(6,*) 'Reading bathymetry and coordinates'
 
       status=nf_inq_varid(ncid,"bat",id1)
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in divabath2topogrd def bat'
+      ENDIF
+
+      status=nf_inq_varid(ncid,LAT_NAME,latvarid)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in divabath2topogrd def lat'
+      ENDIF
+
+      status=nf_inq_varid(ncid,LON_NAME,lonvarid)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in divabath2topogrd def lon'
       ENDIF
 !
 
@@ -110,7 +133,7 @@
       count(1)=IM
       count(2)=JM
       count(3)=1
-      
+
       allocate(var(IM,JM))
       allocate(X(IM))
       allocate(Y(JM))
@@ -120,6 +143,8 @@
          print *,nf_strerror(status)
          STOP 'Stopped in divabath2topogrd get var'
       ENDIF
+
+
 !
       start(1)=1
       start(2)=1
@@ -127,16 +152,16 @@
       count(1)=IM
       count(2)=1
       count(3)=1
-      status=nf_get_vara_real(ncid,lonid, start, count,x)
-      write(6,*) 'x',x
+      status=nf_get_vara_real(ncid,lonvarid, start, count,x)
+!      write(6,*) 'x',x
       start(1)=1
       start(2)=1
       start(3)=icdf
       count(1)=JM
       count(2)=1
       count(3)=1
-      status=nf_get_vara_real(ncid,latid, start, count,y)
-      write(6,*) 'y',y
+      status=nf_get_vara_real(ncid,latvarid, start, count,y)
+!      write(6,*) 'y',y
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
          STOP 'Stopped in divabath2topogrd get var'
@@ -160,6 +185,8 @@
       !-----------------------
       ! Open the data file
       !-----------------------
+
+      write(6,*) 'Reading the netCDF mask file (if any)'
 !
       status = nf_open(TRIM(file_name2), nf_nowrite,ncid)
       IF (status .NE.nf_noerr) THEN
@@ -211,6 +238,18 @@
          print *,nf_strerror(status)
          STOP 'Stopped in divabath2topogrd def bat'
       ENDIF
+
+      status=nf_inq_varid(ncid,LAT_NAME,latvarid)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in divabath2topogrd def lat'
+      ENDIF
+
+      status=nf_inq_varid(ncid,LON_NAME,lonvarid)
+      IF (status .NE.nf_noerr) THEN
+         print *,nf_strerror(status)
+         STOP 'Stopped in divabath2topogrd def lon'
+      ENDIF
 !
 
 
@@ -227,7 +266,7 @@
       count(1)=IM2
       count(2)=JM2
       count(3)=1
-      
+
       allocate(mask(IM2,JM2))
       allocate(X2(IM2))
       allocate(Y2(JM2))
@@ -244,7 +283,7 @@
       count(1)=IM2
       count(2)=1
       count(3)=1
-      status=nf_get_vara_real(ncid,lonid, start, count,x2)
+      status=nf_get_vara_real(ncid,lonvarid, start, count,x2)
       write(6,*) 'x2',x2
       start(1)=1
       start(2)=1
@@ -252,7 +291,7 @@
       count(1)=JM2
       count(2)=1
       count(3)=1
-      status=nf_get_vara_real(ncid,latid, start, count,y2)
+      status=nf_get_vara_real(ncid,latvarid, start, count,y2)
       write(6,*) 'y2',y2
       IF (status .NE.nf_noerr) THEN
          print *,nf_strerror(status)
@@ -267,10 +306,10 @@
          print *,nf_strerror(status)
          STOP 'Stopped when closing' !,TRIM(file_name)
       ENDIF
-      
+
 !------------------------------------------------
  1020 continue
-     
+
 ! need to get exclusion value ...
        valex8=1E6
 
@@ -290,7 +329,7 @@
          stop 'NON UNIFORM GRID Y '
       endif
       enddo
-      
+
 !------------------------------------------------
 ! Multipliying topo by mask
 !------------------------------------------------
@@ -311,7 +350,7 @@
       var(i,j)=-var(i,j)
       enddo
       enddo
-      
+
       write(13,*)  x(1)
       write(13,*)  y(1)
       write(13,*) x(2)-x(1)
@@ -326,16 +365,16 @@
       Subroutine UWRITC(iu,c8,c4,valex8,ipre8,imaxc,jmaxc,kmaxc,nbmots)
 c                ======
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-c writes the field C(I,J,K)  into fortran unit iu 
+c writes the field C(I,J,K)  into fortran unit iu
 c writes the field in the array c4 if iprecr=4
 c writes the field in the array c8 if iprecr=8
 c
 c The KBLANC blank lines are at the disposal of the user
 c JMB 6/3/92
 c
-c IF c(i,j,k)=NaN or infinity, it is replaced by VALEX! 
+c IF c(i,j,k)=NaN or infinity, it is replaced by VALEX!
 c
-c 
+c
 c RS 12/1/93
 c
 c If nbmots = -1  then write only 1 data record
@@ -364,15 +403,15 @@ c Putting  Valex where not numbers
        do k=1,kmaxc
         do j=1,jmaxc
          do i=1,imaxc
-c         if( c4(ioff).eq.(z/z) ) goto 1010 
+c         if( c4(ioff).eq.(z/z) ) goto 1010
 c         if( c4(ioff).eq.(un/z) ) goto 1010
-c         if( c4(ioff).eq.(-z/z) ) goto 1010 
-c         if( c4(ioff).eq.(-un/z) ) goto 1010 
+c         if( c4(ioff).eq.(-z/z) ) goto 1010
+c         if( c4(ioff).eq.(-un/z) ) goto 1010
          goto 1011
  1010     continue
           c4(ioff)=sngl(valex8)
           ich=ich+1
- 1011    continue 
+ 1011    continue
          ioff=ioff+1
          enddo
         enddo
@@ -398,7 +437,7 @@ c compute the number of full records to read and the remaining words
         ir=imaxc*jmaxc*kmaxc-nbmots*nl
         ide=0
 c
-c if pathological case, write only four values C0 and DCI,DCJ,DCK found 
+c if pathological case, write only four values C0 and DCI,DCJ,DCK found
 c as the two four elements of the array so that C(I,J,K) =
 c C0 + I * DCI + J * DCJ + K * DCK
         if(imaxc.lt.0.or.jmaxc.lt.0.or.kmaxc.lt.0) then
@@ -435,4 +474,3 @@ c
         write(*,*) imaxc,jmaxc,kmaxc,iprec,nbmots,valexc
          return
          end
-         
