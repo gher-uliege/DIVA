@@ -74,6 +74,6 @@ field0=$(awk '{print $3}' output/valatxyascii.anl)
 echo ' '
 infolog 'Check the results in'
 infolog './ouput/ghertonetcdf/results.nc (netcdf)'
-echo ' '
+infolog ' '
 infolog 'Field value at origin = ' ${field0}
 echo ' '
