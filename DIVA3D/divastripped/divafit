@@ -86,10 +86,11 @@ if [ $binning -eq 1 ]; then
   ./divabin
 fi
 
-divaecho 'Going to fit covariance function' | tee -a ${divafitlog}
-divaecho ' ' 			        | tee -a ${divafitlog}
 
 if [ -f "${paramfile}" ]; then
+  divaecho 'Going to fit covariance function' | tee -a ${divafitlog}
+  divaecho ' ' 			        | tee -a ${divafitlog}
+
   head -4 ./input/param.par | tail -1   > fort.11
   head -8 ./input/param.par | tail -1   >> fort.11
   if [ -f ./input/data.dat ]; then
@@ -105,12 +106,12 @@ if [ -f "${paramfile}" ]; then
   echo $nsamp | ../../bin/fitlsn.a >> ${divafitlog}
 
   if [ $? -ne 0 ];then
-    errorlog ' ' | tee -a ${divalog} ${divafitlog}
-    errorline | tee -a ${divalog} ${divafitlog}
-    errorlog "A problem was encountered during execution ! " | tee -a ${divalog} ${divafitlog}
-    errorlog "          divafit      fitlsn.a		   " | tee -a ${divalog} ${divafitlog}
-    errorlog "Check execution track			   " | tee -a ${divalog} ${divafitlog}
-    errorline | tee -a ${divalog} ${divafitlog}
+    errorlog ' ' | tee -a $divalog ${divafitlog}
+    errorline | tee -a $divalog ${divafitlog}
+    errorlog "A problem was encountered during execution ! " | tee -a $divalog ${divafitlog}
+    errorlog "          divafit      fitlsn.a		   " | tee -a $divalog ${divafitlog}
+    errorlog "Check execution track			   " | tee -a $divalog ${divafitlog}
+    errorline | tee -a $divalog ${divafitlog}
   fi
 
   if [ -f fort.98 ]; then
@@ -164,7 +165,7 @@ if [ -f "${paramfile}" ]; then
 
     if [ "$iparsave" == "1" ]; then
       divaecho ======================================================= | tee -a ${divafitlog}
-      divaecho Replacing  param file with fit  			     | tee -a ${divafitlog}
+      divaecho Replacing  param file with fit  			       | tee -a ${divafitlog}
       cd ..
       cp -v ./input/param.par ./input/param.par.old
       cp -v ./output/param.par.fit ./input/param.par

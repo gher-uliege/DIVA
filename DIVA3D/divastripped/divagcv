@@ -7,10 +7,13 @@ infolog "   Generalized Cross Validation"
 infolog --
 
 divaecho ' '
+<<<<<<< d883ddfeb2a956d3b915ee43923b3ae4a78187cc
 divaecho "GCV logs written in ${divagcvlog}"
 divaecho ' '
 
 divaecho ' '
+=======
+>>>>>>> improved logging and indentation
 divaecho "/////////////////////////////////////////// " > ${divagcvlog}
 divaecho "      Generalized Cross Validation          " >> ${divagcvlog}
 divaecho "/////////////////////////////////////////// " >> ${divagcvlog}
@@ -29,7 +32,11 @@ rm -f ./output/gcv.dat
 
 if [ -f ./input/gcvsampling.dat ]; then
   #Create mesh once if no mesh present
+<<<<<<< d883ddfeb2a956d3b915ee43923b3ae4a78187cc
   if [ -f ./meshgenwork/fort.22 ]; then
+=======
+  if [ -f ./meshgenwork/fort.22 ]; then
+>>>>>>> improved logging and indentation
     warnline >> ${divagcvlog}
     warnlog "Mesh files already exist, hope they are correct: otherwise execute divamesh " >> ${divagcvlog}
     warnline >> ${divagcvlog}
@@ -37,9 +44,13 @@ if [ -f ./input/gcvsampling.dat ]; then
     divamesh
   fi
 else
+<<<<<<< d883ddfeb2a956d3b915ee43923b3ae4a78187cc
   errorline | tee -a $divacvlog
   errorlog "Need to provide gcvsampling.dat in ./input ! " | tee -a ${divagcvlog}
   errorline | tee -a $divacvlog
+=======
+  divaecho "Need to provide gcvsampling.dat in ./input ! " | tee -a ${divagcvlog}
+>>>>>>> improved logging and indentation
 fi
 
 ijm=0
@@ -68,6 +79,7 @@ do
   echo >> bidon
   echo 0 >> bidon
   mv bidon ./input/param.par
+<<<<<<< d883ddfeb2a956d3b915ee43923b3ae4a78187cc
 
   ./divacalc
   cat  ${divagcvlog} $divacalclog > bidon
@@ -81,11 +93,30 @@ do
   echo $gcv > bidon
   {
   read gcv
+=======
+
+  ./divacalc
+  cat  ${divagcvlog} $divacalclog > bidon
+  mv bidon ${divagcvlog}
+
+  FILENAME=./divawork/fort.77
+  {
+  read gcvval
+  } < $FILENAME
+  FILENAME=bidon
+  echo $gcv > bidon
+  {
+  read gcv
+>>>>>>> improved logging and indentation
   } < $FILENAME
   rm bidon
   divaecho $gcvval >> ${divagcvlog}
   divaecho $gcv $gcvval >> ${divagcvlog}
+<<<<<<< d883ddfeb2a956d3b915ee43923b3ae4a78187cc
 
+=======
+
+>>>>>>> improved logging and indentation
   echo $gcv $gcvval >> ./output/gcv.dat
   ########for testing
   itestGCV=0

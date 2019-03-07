@@ -62,18 +62,17 @@ function titleline(){
 # --------------------------
 
 divarundir=$(pwd)
-
 divalogdir=${divarundir}'/logs/'
 mkdir -pv ${divalogdir}
 
-divalog=$divalogdir'diva.log'
-divacalclog=$divalogdir'divacalc.log'
-divameshlog=$divalogdir'divamesh.log'
-divafitlog=$divalogdir'divafit.log'
-divagcvlog=$divalogdir'divagcv.log'
-divacvlog=$divalogdir'divacv.log'
-divacvrandlog=$divalogdir'divacvrand.log'
-divacovariancelog=$divalogdir'dvcovariance.log'a
+divalog=${divalogdir}'diva.log'
+divacalclog=${divalogdir}'divacalc.log'
+divameshlog=${divalogdir}'divamesh.log'
+divafitlog=${divalogdir}'divafit.log'
+divagcvlog=${divalogdir}'divagcv.log'
+divacvlog=${divalogdir}'divacv.log'
+divacvrandlog=${divalogdir}'divacvrand.log'
+divacovariancelog=${divalogdir}'dvcovariance.log'
 
 # Input files
 # -----------
@@ -83,3 +82,4 @@ contfile=${inputdir}'coast.cont'
 datafile=${inputdir}'data.dat'
 paramfile=${inputdir}'param.par'
 valatxyfile=${inputdir}'valatxy.coord'
+gcvsamplingfile=${inputdir}'gcvsampling.dat'
