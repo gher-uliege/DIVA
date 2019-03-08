@@ -1,12 +1,15 @@
 #!/bin/bash
 export LC_ALL=C
-divarundir=$(pwd)
-divaanomlog=$divarundir'/output/divaanom.log'
-divalog=$divarundir'/output/diva.log'
+
+source divalogging
+
+infolog --			| tee -a $divalog
+infolog 'Anomaly calculation'	| tee -a $divalog
+infolog --			| tee -a $divalog
 
 cd divawork
 
-echo 'divaanom: ' > $divaanomlog
+divaecho 'divaanom: ' > $divaanomlog
 
 cp ../input/data.dat fort.44
 LR=0
@@ -19,32 +22,26 @@ then
 fi
 if [ "$LD" -eq "$LR" ]
 then
-  echo ' '
-  echo ===================================================================
-  echo There are already reference fields at data points. Will use them
-  echo Preparing data anomalies based on ./output/fieldatdatapoint.anl.ref
-  echo ===================================================================
-
-  echo ' '
-  echo =================================================================== >> $divaanomlog
-  echo There are already reference fields at data points. Will use them >> $divaanomlog
-  echo Preparing data anomalies based on ./output/fieldatdatapoint.anl.ref >> $divaanomlog
-  echo =================================================================== >> $divaanomlog
+  divaecho ' '
+  divaecho =================================================================== | tee -a $divaanomlog
+  divaecho There are already reference fields at data points. Will use them | tee -a $divaanomlog
+  divaecho Preparing data anomalies based on ./output/fieldatdatapoint.anl.ref | tee -a $divaanomlog
+  divaecho =================================================================== | tee -a $divaanomlog
 
 else
 
-  echo ' '
-  echo ===================================================================
-  echo !!!!! Will try to use gridded reference field by interpolation !!!!!
-  echo !!!!! Will also create reference field at valatxy.coord !!!!!!!!!!!!
-  echo ===================================================================
-  echo ' ' >> $divaanomlog
-  echo =================================================================== >> $divaanomlog
-  echo !!!!! Will try to use gridded reference field by interpolation !!!!! >> $divaanomlog
-  echo !!!!! Will also create reference field at valatxy.coord !!!!!!!!!!!! >> $divaanomlog
-  echo =================================================================== >> $divaanomlog
+  divaecho ' ' | tee -a $divaanomlog
+  divaecho =================================================================== | tee -a $divaanomlog
+  divaecho !!!!! Will try to use gridded reference field by interpolation !!!!!| tee -a $divaanomlog
+  divaecho !!!!! Will also create reference field at valatxy.coord !!!!!!!!!!!!| tee -a $divaanomlog
+  divaecho =================================================================== | tee -a $divaanomlog
 
-  cp ../output/fieldgher.anl.ref fort.20
+  if [ -f ../output/fieldgher.anl.ref ]; then
+    cp ../output/fieldgher.anl.ref fort.20
+  else
+    errorlog "File ../output/fieldgher.anl.ref does not exist" | tee -a $divaanomlog
+    exit 1
+  fi
   cp ../output/ghertonetcdf/GridInfo.dat fort.21
   if [ -f ../input/valatxy.coord ]
   then
@@ -54,31 +51,19 @@ else
     rm -f fort.45
   fi
 
-  echo divaanom: ////////////////////////////////////////// >> ../output/diva.log
-  echo divaanom:        interprefe  >> ../output/diva.log
-  echo divaanom: ////////////////////////////////////////// >> ../output/diva.log
-  echo ' '  >> ../output/diva.log
+  echo divaanom: ////////////////////////////////////////// >> $divalog
+  echo divaanom:        interprefe  >> $divalog
+  echo divaanom: ////////////////////////////////////////// >> $divalog
+  echo ' '  >> $divalog
 
   ../../bin/interprefe.a
   if [ $? -ne 0 ];then
-    echo ' '
-    echo --------------------------------------------
-    echo A problem was encountered during execution !
-    echo      divaanom:     interprefe.a
-    echo Check execution track
-    echo --------------------------------------------
-    echo ' ' >> $divaanomlog
-    echo -------------------------------------------- >> $divaanomlog
-    echo A problem was encountered during execution ! >> $divaanomlog
-    echo      divaanom:     interprefe.a >> $divaanomlog
-    echo Check execution track >> $divaanomlog
-    echo -------------------------------------------- >> $divaanomlog
-    echo ' ' >> ../output/diva.log
-    echo -------------------------------------------- >> ../output/diva.log
-    echo A problem was encountered during execution ! >> ../output/diva.log
-    echo      divaanom:    interprefe.a  >> ../output/diva.log
-    echo Check execution track >> ../output/diva.log
-    echo -------------------------------------------- >> ../output/diva.log
+    errorlog ' '
+    errorlog -------------------------------------------- | tee -a $divaanomlog $divalog
+    errorlog A problem was encountered during execution ! | tee -a $divaanomlog $divalog
+    errorlog      divaanom:     interprefe.a              | tee -a $divaanomlog $divalog
+    errorlog Check execution track                        | tee -a $divaanomlog $divalog
+    errorlog -------------------------------------------- | tee -a $divaanomlog $divalog
   fi
   cp -v fort.81 ../output/fieldatdatapoint.anl.ref
   cp -v  fort.82 ../output/valatxyascii.anl.ref
@@ -89,9 +74,9 @@ else
   rm fort.82
   # keep fort.44
 fi
-echo ============================ >> $divaanomlog
-echo       Now anomalies >> $divaanomlog
-echo ============================ >> $divaanomlog
+divaecho ============================ >> $divaanomlog
+divaecho       Now anomalies >> $divaanomlog
+divaecho ============================ >> $divaanomlog
 head -22 ../input/param.par | tail -1 > coucou
 {
   read valex
@@ -101,10 +86,10 @@ paste ../output/fieldatdatapoint.anl.ref ../input/data.dat > bidon
 mv ../input/data.dat ../input/data.dat.full
 awk -v valex=$valex '{$6=$6-$3; $1=""; $2=""; $3=""; print $0}' bidon > ../input/data.dat
 rm bidon
-echo =================================================================== >> $divaanomlog
-echo data.dat now contains anomalies >> $divaanomlog
-echo data.dat.full are original data >> $divaanomlog
-echo =================================================================== >> $divaanomlog
-echo  ' ' >> $divaanomlog
+divaecho =================================================================== >> $divaanomlog
+divaecho data.dat now contains anomalies >> $divaanomlog
+divaecho data.dat.full are original data >> $divaanomlog
+divaecho =================================================================== >> $divaanomlog
+divaecho  ' ' >> $divaanomlog
 
 cd ..

@@ -1,28 +1,34 @@
 #!/bin/bash
 
+source divalogging
+
+infolog --			| tee -a $divalog
+infolog 'Best guess for the parameter estimation'	| tee -a $divalog
+infolog --			| tee -a $divalog
+
 small="100"
 medium="2000"
 ndata=$(cat ./input/data.dat| wc -l)
-echo ========================================
-echo    Full parameter estimation
-echo ========================================
+divaecho ========================================
+divaecho    Full parameter estimation
+divaecho ========================================
 if [ "$ndata" -le "$small" ]
 then
-  echo ===============
-  echo Small data set
-  echo ===============
+  divaecho ===============
+  divaecho Small data set
+  divaecho ===============
   divafit -r
 else
   if [ "$ndata" -le "$medium" ]
   then
-    echo ===============
-    echo Medium data set
-    echo ===============
+    divaecho ===============
+    divaecho Medium data set
+    divaecho ===============
     divafit -r
   else
-    echo ==============
-    echo Large data set
-    echo ==============
+    divaecho ==============
+    divaecho Large data set
+    divaecho ==============
     divafit $medium -r
   fi
 fi
@@ -30,9 +36,9 @@ fi
 # Make the mesh accordingly (option -r already made the param.par)
 divamesh
 FIRSTL=$(head -2 ./input/param.par | tail -1)
-echo ==========
-echo L: $FIRSTL
-echo will try
+divaecho ==========
+divaecho L: $FIRSTL
+divaecho will try
 rm ./input/gcvsamplingL.dat
 echo $(echo $FIRSTL | awk '{print ($1*0.3)}') >>  ./input/gcvsamplingL.dat
 echo $(echo $FIRSTL | awk '{print ($1*0.5)}') >>  ./input/gcvsamplingL.dat
@@ -42,23 +48,21 @@ echo $(echo $FIRSTL | awk '{print ($1*5.0)}') >>  ./input/gcvsamplingL.dat
 echo ==========
 if [ -f ./output/gcvL.dat ]
 then
-  echo Erasing old gcvL.dat
+  divaecho Erasing old gcvL.dat
   rm ./output/gcvL.dat
 fi
 for Lgcv in `cat ./input/gcvsamplingL.dat`
 do
-  echo Working with length scale $Lgcv
+  divaecho Working with length scale $Lgcv
   # Prepare adapted param.par
   cp -v ./input/param.par ./input/param.par.oriL
   head -1 ./input/param.par.oriL > ./input/param.par
   echo $Lgcv >> ./input/param.par
   head -26 ./input/param.par.oriL | tail -24 >> ./input/param.par
-  if [ "$ndata" -le "$small" ]
-  then
+  if [ "$ndata" -le "$small" ]; then
     divacv -r
   else
-    if [ "$ndata" -le "$medium" ]
-    then
+    if [ "$ndata" -le "$medium" ]; then
       divagcv -r
     else
       let nsamp=$(($ndata/20))
@@ -69,3 +73,7 @@ do
   cp -v ./input/param.par.oriL ./input/param.par
   cat ./output/gcv.dat >> ./output/gcvL.dat
 done
+
+infolog --			| tee -a $divalog
+infolog 'End parameter estimation'	| tee -a $divalog
+infolog --			| tee -a $divalog

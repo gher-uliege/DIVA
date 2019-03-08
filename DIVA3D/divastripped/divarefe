@@ -1,11 +1,19 @@
 #!/bin/bash
+
+source divalogging
+
+infolog --			| tee -a $divalog
+infolog 'Creation of the reference field'	| tee -a $divalog
+infolog --			| tee -a $divalog
+
+
 echo ' '
-echo =============================================================
-echo Preparing reference fields, here semi-normed with increased L
-echo =============================================================
-echo =============================================================
-echo Mesh with original L
-echo =============================================================
+echo '============================================================='
+echo 'Preparing reference fields, here semi-normed with increased L'
+echo '============================================================='
+echo '============================================================='
+echo 'Mesh with original L'
+echo '============================================================='
 divamesh
 cp ./input/param.par ./input/param.par.ori
 Filepar=./input/param.par
@@ -69,6 +77,6 @@ cp -v fort.83 ../output/fieldascii.anl.ref
 cp -v fort.71 ../output/fieldatdatapoint.anl.ref
 cd ..
 echo ' '
-echo ==============================================================
-echo Finished preparing reference field
-echo ==============================================================
+echo '=============================================================='
+echo 'Finished preparing reference field'
+echo '=============================================================='

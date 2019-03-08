@@ -10,7 +10,13 @@ export LC_ALL=C
 # parameters.
 #------------------------------------------------
 
-echo "Begin divabin."
+source divalogging
+
+infolog --			| tee -a $divalog
+infolog 'Diva binning'	| tee -a $divalog
+infolog --			| tee -a $divalog
+
+divaecho "Begin divabin"
 
 datafile="./input/data.dat"
 datafile_bkp="./input/data.dat.notbinned"
@@ -70,12 +76,12 @@ echo "lines =" $datalines
   read ny
 } < $paramfile
 
-echo "x step =" $dx "y step =" $dy
+divaecho "x step =" $dx "y step =" $dy
 
 #------------------------------------------------
 # Computing close neighbours
 #------------------------------------------------
-echo "computing close neighbours..."
+divaecho "computing close neighbours..."
 
 #lonmin=$xori
 
@@ -158,9 +164,9 @@ echo "computing close neighbours..."
 #------------------------------------------------
 # Binning neighbours
 #------------------------------------------------
-echo "binning neighbours..."
+divaecho "binning neighbours..."
 
 ../bin/binning_lines.a $datafile $xori $yori $nx $ny $dx $dy
 
 mv ./input/bidon $datafile
-echo "End divabin."
+infolog "End divabin"

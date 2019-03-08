@@ -1,10 +1,12 @@
 #!/bin/bash
-echo ' '
-echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-echo %% Try to translate ODV contours into DIVA format %%%
-echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-if [ -f ./input/coast.coa ]
-then
+
+source divalogging
+
+infolog --
+infolog "Try to translate ODV contours into DIVA format"
+infolog --
+
+if [ -f ./input/coast.coa ]; then
   Filepar=./input/param.par
   {
     read linecomment
@@ -45,7 +47,7 @@ then
   if [ -f ../output/diva.log ] ; then
     cp  -f ../output/diva.log .
   fi
-  ../../bin/coatocont.a >> diva.log
+  ../../bin/coatocont.a >> ${divalog}
   cp -f diva.log ../output/.
   cp -v fort.99 ../output/coast.cont
   cp -v fort.67 ../output/coast.cont.odv
@@ -53,14 +55,13 @@ then
   rm -f fort.10
   rm -f fort.99
   rm -f fort.66
-  if [ "$1" == "-r" ]
-  then
-    echo Placing new contour file as input
+  if [ "$1" == "-r" ]; then
+    divaecho Placing new contour file as input
     cp -v ../output/coast.cont ../input/coast.cont
   fi
   cd ..
 else
-  echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  echo %%% Sorry, need an ODV coast.coa  file %%%%%%%%%%%%
-  echo %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  warnlog '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+  warnlog '%%% Sorry, need an ODV coast.coa  file %%%%%%%%%%%%'
+  warnlog '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
 fi

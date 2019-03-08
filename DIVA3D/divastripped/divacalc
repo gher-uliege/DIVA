@@ -30,8 +30,6 @@ if ! [ -f ${datafile} ]; then
   exit 1
 fi
 
-
-
 #
 divarunning=$(ps -eafl | grep -i 'diva\.a' | wc -l)
 if [ "$divarunning" -ne "0" ]; then
@@ -101,11 +99,11 @@ fi
 if [ "$ispec" -ne "-250" ]; then
   if [ "$ispec" -le "-100" ]; then
     if  [ "$ispec" -le "-110" ]; then
-      divaecho exerr with boundary effect
+      divaecho "exerr with boundary effect"
       iflagexerr=2
       ispec=17
     else
-      divaecho exerr
+      divaecho "exerr"
       iflagexerr=1
       ispec=17
     fi

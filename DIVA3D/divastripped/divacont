@@ -1,94 +1,82 @@
 #!/bin/bash
-echo /////////////////////////////////
-echo        Contour generation
-echo /////////////////////////////////
-echo ' '
 
-divacontlog='./output/divacont.log'
-echo ///////////////////////////////// >$divacontlog
-echo        Contour generation >>$divacontlog
-echo ///////////////////////////////// >>$divacontlog
-echo ' ' >>$divacontlog
+source divalogging
 
-echo Cleaning up old files >>$divacontlog
-echo ' '
+infolog --
+infolog "Contour generation"
+infolog --
+
+divaecho ///////////////////////////////// > ${divacontlog}
+divaecho        Contour generation >> ${divacontlog}
+divaecho ///////////////////////////////// >> ${divacontlog}
+divaecho ' ' >>${divacontlog}
+
+divaecho Cleaning up old files >> ${divacontlog}
 rm -f ./divawork/fort.10
 rm -f ./divawork/fort.11
 rm -f ./divawork/fort.12
 rm -f ./divawork/fort.13
-echo Cleaning finished   >>$divacontlog
-if [ -f ./input/TopoInfo.dat ]
-then
+echo Cleaning finished   >> ${divacontlog}
+if [ -f ./input/TopoInfo.dat ]; then
   cat ./input/TopoInfo.dat
   cp ./input/TopoInfo.dat ./divawork/fort.10
 else
-  echo Need to provide TopoInfo.dat in ./input ! >>$divacontlog
-  echo ' !!!!!!!!!!!!! Need to provide TopoInfo.dat in ./input !'
+  errorline | tee -a ${divacontlog}
+  errorlog Need to provide TopoInfo.dat in ./input ! | tee -a ${divacontlog}
+  errorline | tee -a ${divacontlog}
 fi
-if [ -f ./input/topo.grd ]
-then
+if [ -f ./input/topo.grd ]; then
   cp ./input/topo.grd ./divawork/fort.12
 else
-  echo Need to provide topo.grd in ./input ! >>$divacontlog
-  echo Need to provide topo.grd in ./input !
+  errorline | tee -a ${divacontlog}
+  errorlog "Need to provide topo.grd in ./input !" | tee -a ${divacontlog}
+  errorline | tee -a ${divacontlog}
 fi
 if [ -f ./input/contour.depth ]
 then
   cp ./input/contour.depth ./divawork/fort.13
 else
-  echo Need to provide contour.depth in ./input !
-  echo Need to provide contour.depth in ./input ! >>$divacontlog
-  echo Assuming zero depth contour is asked >>$divacontlog
+  warnline | tee -a ${divacontlog}
+  warnline Need to provide contour.depth in ./input ! | tee -a ${divacontlog}
+  warnline Assuming zero depth contour is asked | tee -a ${divacontlog}
 fi
-echo Contour creation >>$divacontlog
-echo ' ' >>$divacontlog
+divaecho Contour creation >>${divacontlog}
 cd ./divawork
 
-echo ////////////////////////////////////////// >> ../output/diva.log
-echo            Generating contour files >> ../output/diva.log
-echo ////////////////////////////////////////// >> ../output/diva.log
-echo ' '  >> ../output/diva.log
+divaecho '//////////////////////////////////////////' >> ${divalog}
+divaecho '           Generating contour files' >> ${divalog}
+divaecho '//////////////////////////////////////////' >> ${divalog}
 
 ../../bin/contourgen.a >> ../output/diva.log
-if [ $? -ne 0 ];then
-  echo ' '
-  echo --------------------------------------------
-  echo A problem was encountered during execution !
-  echo       divacont:   contourgen.a
-  echo Check execution track
-  echo --------------------------------------------
-  echo ' ' >> ../output/diva.log
-  echo -------------------------------------------- >> ../output/diva.log
-  echo A problem was encountered during execution ! >> ../output/diva.log
-  echo        divacont:    contourgen.a  >> ../output/diva.log
-  echo Check execution track >> ../output/diva.log
-  echo -------------------------------------------- >> ../output/diva.log
+if [ $? -ne 0 ]; then
+  errorline | tee -a ${divalog}
+  errorlog  'A problem was encountered during execution !' | tee -a ${divalog}
+  errorlog  '     divacont:   contourgen.a' | tee -a ${divalog}
+  errorlog' Check execution track' | tee -a ${divalog}
+  errorline | tee -a ${divalog}
 fi
 cd ..
-if [ -f ./divawork/coast.cont ]
-then
-echo Copying coast files in output >>$divacontlog
-echo ' '
-cp -v ./divawork/coast.cont*  ./output
-rm -f ./divawork/fort.10
-rm -f ./divawork/fort.11
-echo ---------------- >>$divacontlog
-echo Contours created  >>$divacontlog
-echo ---------------- >>$divacontlog
-if [ "$1" == "-r" ]
-then
-  echo 'Moving coast.cont into ./input directory' >>$divacontlog
-  cp -v ./output/coast.cont* ./input
-fi
+if [ -f ./divawork/coast.cont ]; then
+  divaecho Copying coast files in output >>${divacontlog}
+  cp -v ./divawork/coast.cont*  ./output
+  rm -f ./divawork/fort.10
+  rm -f ./divawork/fort.11
+  divaecho '----------------' >> ${divacontlog}
+  divaecho 'Contours created'  >> ${divacontlog}
+  divaecho '----------------' >> ${divacontlog}
+  if [ "$1" == "-r" ]
+  then
+    divaecho 'Moving coast.cont into ./input directory' >>${divacontlog}
+    cp -v ./output/coast.cont* ./input
+  fi
 else
-  echo ' ' >>$divacontlog
-  echo -------------------------------------------- >>$divacontlog
-  echo A problem was encountered during execution ! >>$divacontlog
-  echo Check execution track >>$divacontlog
-  echo -------------------------------------------- >>$divacontlog
-  echo ' '
-  echo --------------------------------------------
-  echo A problem was encountered during execution !
-  echo Check execution track
-  echo --------------------------------------------
+  errorline | tee -a ${divacontlog}
+  errorlog '--------------------------------------------' | tee -a ${divacontlog}
+  errorlog 'A problem was encountered during execution !' | tee -a ${divacontlog}
+  errorlog 'Check execution track >>${divacontlog}'  | tee -a ${divacontlog}
+  errorline | tee -a ${divacontlog}
 fi
+
+infolog --
+infolog "End contour generation"
+infolog --

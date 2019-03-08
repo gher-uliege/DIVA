@@ -75,6 +75,9 @@ divacvlog=${divalogdir}'divacv.log'
 divacvrandlog=${divalogdir}'divacvrand.log'
 divacovariancelog=${divalogdir}'dvcovariance.log'
 dvcovariancelog=${divalogdir}'dvcovariance.log'
+divaanomlog=${divarundir}'divaanom.log'
+divacontlog=${divarundir}'divacont.log'
+
 
 # Input files
 # -----------

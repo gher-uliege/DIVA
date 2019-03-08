@@ -1,18 +1,21 @@
 #!/bin/bash
 
+source divalogging
+
+infolog --			| tee -a $divalog
+infolog 'Diva test on a big data set'	| tee -a $divalog
+infolog --			| tee -a $divalog
 
 if [ "$#" == "1" ]
 then
   ndata=$1
 else
-  ndata='1500000'
+  ndata='15000'
 fi
 
-
-
-echo ' '
-echo 'Now testing divacalc with' ${ndata} ' data points and a fine mesh'
-echo ' '
+divaecho ' '
+divaecho 'Now testing divacalc with' ${ndata} ' data points and a fine mesh'
+divaecho ' '
 
 
 inputdir=$(pwd)'/input/'
@@ -24,18 +27,17 @@ paramfile=${inputdir}'param.par'
 divaclean
 
 ##echo ${inputdir}
-echo //////////////////////////////////////////////////
-echo 'Running a heavy test'
-echo //////////////////////////////////////////////////
-echo ' '
+infolog //////////////////////////////////////////////////
+infolog 'Running a heavy test'
+infolog //////////////////////////////////////////////////
 
-echo '1. creating huge data file, be patient'
-echo ' '
+divaecho '1. creating huge data file, be patient'
+divaecho ' '
 
 echo $ndata | awk '{NP=$1;{for (i = 1; i <= NP; i++) {x=-1+2*rand();y=-1+2*rand();z=sin(3.14*x)*cos(3.14*y)*exp(x+y);print x,y,z,1}}}' > ${datafile}
 
-echo '2. creating contour file'
-echo ' '
+divaecho '2. creating contour file'
+divaecho ' '
 
 echo 2 > ${contfile}
 echo 4 >> ${contfile}
@@ -50,8 +52,8 @@ echo 0.6 0.8 >> ${contfile}
 echo 0.6 0.2 >> ${contfile}
 
 
-echo '3. creating parameter file'
-echo ' '
+divaecho '3. creating parameter file'
+divaecho ' '
 
 echo '# Correlation Length lc' > ${paramfile}
 echo '0.07' >> ${paramfile}
@@ -90,9 +92,8 @@ echo 'Now into the calculation itself'
 
 divacalc
 
-echo ' '
-echo 'Check the results in'
-echo './ouput/ghertonetcdf/results.nc (netcdf)'
+infolog 'Check the results in'
+infolog './ouput/ghertonetcdf/results.nc (netcdf)'
 
 timeend=$(date +%s.%N)
 
@@ -100,6 +101,6 @@ timemesh=$(echo ${timeinterm} ${timeinit} | awk '{print ($1-$2)}')
 timecalc=$(echo ${timeend} ${timeinterm} | awk '{print ($1-$2)}')
 timerun=$(echo ${timeend} ${timeinit} | awk '{print ($1-$2)}')
 
-echo 'Time for mesh creation:  ' $timemesh ' s'
-echo 'Time for calculation:    ' $timecalc ' s'
-echo 'Total time for analysis: ' $timerun ' s'
+infolog 'Time for mesh creation:  ' $timemesh ' s'
+infolog 'Time for calculation:    ' $timecalc ' s'
+infolog 'Total time for analysis: ' $timerun ' s'
