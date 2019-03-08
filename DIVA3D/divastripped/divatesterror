@@ -2,8 +2,10 @@
 
 source divalogging
 
+infolog --
 infolog "Testing error fields"
 infolog "with a few data points and a coarse grid (should be quick)"
+infolog --
 
 # Define 2 parameters files that we will modify
 paramfile=${inputdir}'param.par.base'
@@ -34,7 +36,7 @@ divaecho "1. creating data file"
 divaecho ' '
 
 awk -v N=$ndata 'BEGIN { for (i = 1; i <= N; i++)
-        {x=rand();y=rand();z=rand();print x,y,xy-z} }' > ${datafile}
+{x=rand();y=rand();z=rand();print x,y,xy-z} }' > ${datafile}
 
 divaecho "2. creating contour file"
 divaecho ' '
@@ -66,7 +68,7 @@ echo '0' >> ${paramfile}
 echo '# xori' >> ${paramfile}
 echo '0' >> ${paramfile}
 echo '# yori' >> ${paramfile}
-echo '0' >> ${paramfile} 
+echo '0' >> ${paramfile}
 echo '# dx' >> ${paramfile}
 echo '0.02' >> ${paramfile}
 echo '# dy' >> ${paramfile}
@@ -90,8 +92,7 @@ divamesh
 filesuffix=( hybrid realcov poorman realcov_bnd cpme exerr exerr_bnd )
 let iii=0
 
-for ispec in {7,-7,17,-17,107,-107,-117}
-do
+for ispec in {7,-7,17,-17,107,-107,-117} ; do
   sed "6s/.*/${ispec}/" ${paramfile} > ${paramfile2}
 
   timeinit=$(date +%s.%N)
@@ -99,7 +100,7 @@ do
   timeend=$(date +%s.%N)
 
   timecalc=$(echo ${timeend} ${timeinit} | awk '{print ($1-$2)}')
-  divaecho 'time for ' ${filesuffix[$iii]} ' error computation:' ${timecalc} ' s' | tee -a $timefile
+  echo 'time for ' ${filesuffix[$iii]} ' error computation:' ${timecalc} ' s' | tee -a $timefile
 
   divaecho ' '
   divaecho 'Copying output file'
@@ -109,7 +110,7 @@ do
   let iii=$((${iii}+1))
 done
 
-infolog ''
-infolog "Check the error files in output/ghertonetcdf"
 infolog ' '
-
+infolog "Check the error files in output/ghertonetcdf"
+infolog 'and the execution times in ${timecalc}'
+infolog ' '

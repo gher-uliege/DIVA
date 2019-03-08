@@ -1,8 +1,9 @@
 #!/bin/bash
+source divalogging
 
-echo ' '
-echo 'divamesh with a decreasing correlation length (finer mesh)'
-echo ' '
+infolog --
+infolog 'Running divamesh with a decreasing correlation length (finer mesh)'
+infolog
 
 CLlist=( 10 5 2.5 1 0.5 0.25 0.1 0.05 0.025)
 inputdir=$(pwd)'/input/'
@@ -16,8 +17,8 @@ mkdir -pv logs
 divaclean
 
 ##echo ${inputdir}
-echo '1. Creating a simple contour file'
-echo ' '
+divaecho '1. Creating a simple contour file'
+divaecho ' '
 
 echo 2 > ${contfile}
 echo 4 >> ${contfile}
@@ -32,8 +33,8 @@ echo 0.6 0.8 >> ${contfile}
 echo 0.6 0.2 >> ${contfile}
 
 
-echo '2. Creating base parameter file'
-echo ' '
+divaecho '2. Creating base parameter file'
+divaecho ' '
 
 echo '# Correlation Length lc' > ${paramfile}
 echo ${correlationLength} >> ${paramfile}
@@ -63,13 +64,13 @@ echo '# varbak' >> ${paramfile}
 echo '1.0' >> ${paramfile}
 
 logfile='./logs/testmesh_'`date +%Y-%m-%d-%H-%M-%S`'.log'
-echo "Writing results in ${logfile}"
+divaecho "Writing results in ${logfile}"
 echo 'Correlation length (degrees)      Time (seconds)	Nodes	Interfaces	Elements' > ${logfile}
 
 # Loop on the listed values of correlation length
 for correlationLength in "${CLlist[@]}"
 do
-  echo ${correlationLength}
+  divaecho "Working with CL: ${correlationLength}"
   # Replace value in param.par
   awk -v CL=${correlationLength} 'NR==2 {$0=CL} { print }' ${paramfile} > ${tmpfile}
   mv ${tmpfile} ${paramfile}
@@ -91,4 +92,7 @@ do
 
 done
 
-echo "Check results of the test in ${logfile}"
+infolog --
+infolog "Check results of the test in ${logfile}"
+infolog "End mesh speed test"
+infolog --

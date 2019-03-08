@@ -320,7 +320,7 @@ if [ -f ./input/data.dat ]; then
   cp ./input/data.dat ./divawork/fort.44
 else
   warnline
-  warnlog "echo Need to provide data.dat in ./input !"
+  warnlog "Need to provide data.dat in ./input !"
   warnline
   ##ls -l ./input
   ##pwd

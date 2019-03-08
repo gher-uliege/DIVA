@@ -1,10 +1,13 @@
 #!/bin/bash
+export LC_ALL=C
+
+source divalogging
 
 
 
-
-
-echo "Now testing divacalc"
+infolog --
+infolog 'Testing domain integral computation'
+infolog --
 
 inputdir=$(pwd)'/input/'
 contfile=${inputdir}'coast.cont'
@@ -41,7 +44,7 @@ echo '0' >> ${paramfile}
 echo '# xori' >> ${paramfile}
 echo '0' >> ${paramfile}
 echo '# yori' >> ${paramfile}
-echo '0' >> ${paramfile} 
+echo '0' >> ${paramfile}
 echo '# dx' >> ${paramfile}
 echo '0.02' >> ${paramfile}
 echo '# dy' >> ${paramfile}
@@ -61,7 +64,7 @@ echo '1.0' >> ${paramfile}
 
 ./divacalc
 
-echo "Computing integral over domain"
+divaecho "Computing integral over domain"
 
 ./divaintegral
 
@@ -73,9 +76,9 @@ read integralvalues
 # Split values (written in same line)
 integralvaluesplit=(${integralvalues// / })
 
-echo " "
-echo "                Obtained values (expected)"
-echo "---------------------------------------------------"
-echo "Integral value: "  ${integralvaluesplit[0]} "(5.14786e+08)"
-echo "Surface:        "  ${integralvaluesplit[1]} "(1.13761e+10)"
-echo "Averaged value: "  ${integralvaluesplit[2]} "(0.0452516)"
+infolog --
+infolog "                Obtained values (expected)"
+infolog "---------------------------------------------------"
+infolog "Integral value: "  ${integralvaluesplit[0]} "(5.14786e+08)"
+infolog "Surface:        "  ${integralvaluesplit[1]} "(1.13761e+10)"
+infolog "Averaged value: "  ${integralvaluesplit[2]} "(0.0452516)"

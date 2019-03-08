@@ -1,14 +1,16 @@
 #!/bin/bash
+export LC_ALL=C
+
+source divalogging
 
 inputdir=$(pwd)'/input/'
 contfile=${inputdir}'coast.cont'
 datafile=${inputdir}'data.dat'
 paramfile=${inputdir}'param.par'
 
-echo --------------------------------------------------
-echo 'Testing divafit without data weight'
-echo --------------------------------------------------
-echo ' '
+infoline --
+infolog 'Testing divafit without data weight'
+infoline --
 
 Nseed=226342.444
 awk -v Ndata=1000 -v Nseed=${Nseed} 'BEGIN {srand(Nseed); for (i = 1; i <= Ndata; i++)
@@ -43,14 +45,14 @@ echo '1.0' >> ${paramfile}
 
 ./divafit
 
-echo " "
+divaecho " "
 echo 'Estimated correlation length L: '$(awk 'FNR == 2 { print; exit }' ./output/paramfit.dat)
-echo 'Expected value of L:             0.197846353'
+divaecho 'Expected value of L:             0.197846353'
 
-echo --------------------------------------------------
-echo 'Testing divafit with random data weight'
-echo --------------------------------------------------
-echo ' '
+divaecho --------------------------------------------------
+divaecho 'Testing divafit with random data weight'
+divaecho --------------------------------------------------
+divaecho ' '
 
 Nseed=226342.444
 awk -v Ndata=1000 -v Nseed=${Nseed} 'BEGIN {srand(Nseed); for (i = 1; i <= Ndata; i++)
@@ -58,6 +60,6 @@ awk -v Ndata=1000 -v Nseed=${Nseed} 'BEGIN {srand(Nseed); for (i = 1; i <= Ndata
 
 ./divafit
 
-echo " "
-echo 'Estimated correlation length L: '$(awk 'FNR == 2 { print; exit }' ./output/paramfit.dat)
-echo 'Expected value of L:             0.179912895'
+divaecho " "
+divaecho 'Estimated correlation length L: '$(awk 'FNR == 2 { print; exit }' ./output/paramfit.dat)
+divaecho 'Expected value of L:             0.179912895'

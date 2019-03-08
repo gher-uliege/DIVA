@@ -4,6 +4,7 @@
 function divaecho(){
   local bold=$(tput bold)
   local normal=$(tput sgr0)
+  # echo -e ${bold}$(date +"%Y-%m-%dT%H:%M:%S") $(basename $0)${normal}: "$@"
   echo -e ${bold}$(basename $0)${normal}: "$@"
 }
 
@@ -77,6 +78,7 @@ divacovariancelog=${divalogdir}'dvcovariance.log'
 dvcovariancelog=${divalogdir}'dvcovariance.log'
 divaanomlog=${divarundir}'divaanom.log'
 divacontlog=${divarundir}'divacont.log'
+divaintlog=${divarundir}'divaintegral.log'
 
 
 # Input files
