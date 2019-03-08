@@ -397,24 +397,20 @@ awk -v multconst=$multvar '{ if (NF>2) {if ($4 > "") {$4=$4*multconst} else {$4=
 NDATAB=$(cat ./fort.20 | wc -l)
 
 if [ "$NDATAB" -lt "$NDATA" ]; then
-  errorlog !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! | tee -a $divacalclog
-  errorlog ------------------------------------------- | tee -a $divacalclog
-  errorlog ??????????????????????????????????????????? | tee -a $divacalclog
+  errorline | tee -a $divacalclog
   errorlog ?????   Corrupted data file    ???????????? | tee -a $divacalclog
   errorlog "From $NDATA lines in data.dat"	       | tee -a $divacalclog
   errorlog "Only $NDATAB have been feed into DIVA"     | tee -a $divacalclog
-  errorlog ??????????????????????????????????????????? | tee -a $divacalclog
-  errorlog ------------------------------------------- | tee -a $divacalclog
-  errorlog !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! | tee -a $divacalclog
+  errorline
 fi
 if [ "$1" == "-pfsum" ]; then
-  echo Summing covariances >> $divacalclog
+  divaecho Summing covariances >> $divacalclog
   cd ..
 
   divaecho "//////////////////////////////////////////" >> $divalog
   divaecho "       running dvcovariancesum"             >> $divalog
   divaecho "//////////////////////////////////////////" >> $divalog
-  echo ' '  >> $divalog
+  divaecho ' '  >> $divalog
 . ./dvcovariancesum
   cat $divacalclog ./output/dvcovariancesum.log > bidon
   mv bidon $divacalclog

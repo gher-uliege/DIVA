@@ -93,13 +93,18 @@ if [ -f "${paramfile}" ]; then
 
   head -4 ./input/param.par | tail -1   > fort.11
   head -8 ./input/param.par | tail -1   >> fort.11
+
   if [ -f ./input/data.dat ]; then
-    cp ./input/data.dat ./divawork/fort.10
+    # cp ./input/data.dat ./divawork/fort.10
+    # Add a 4th column of ones if necessary
+    divaecho "Adding a fourth column with ones (weights) if needed"
+    cat ./input/data.dat |  awk '{{if ($4 > "") {} else {$4=1}};print $0}' > ./divawork/fort.10
   else
     warnline | tee -a ${divafitlog}
     warnlog 'Need to provide data.dat in ./input !' | tee -a ${divafitlog}
     warnline | tee -a ${divafitlog}
   fi
+
   mv fort.11 ./divawork
   cd ./divawork
 
