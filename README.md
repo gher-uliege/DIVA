@@ -1,7 +1,7 @@
 [![DOI](https://zenodo.org/badge/80114691.svg)](https://zenodo.org/badge/latestdoi/80114691)
 
 
-IMPORTANT: this original DIVA version will remain available but not further developped. For new features you should switch to the generalization in N-dimensions https://github.com/gher-ulg/DIVAnd.jl using a very modern progamming language Julia.
+<span style="color:red">IMPORTANT:</span> this original DIVA version will remain available but not further developped. For new features you should switch to the generalization in N-dimensions https://github.com/gher-ulg/DIVAnd.jl using a very modern progamming language: Julia.
 
 
 # DIVA (Data-Interpolating Variational Analysis)
