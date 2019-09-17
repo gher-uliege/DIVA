@@ -1,5 +1,9 @@
 [![DOI](https://zenodo.org/badge/80114691.svg)](https://zenodo.org/badge/latestdoi/80114691)
 
+
+IMPORTANT: this original DIVA version will remain available but not further developped. For new features you should switch to the generalization in N-dimensions https://github.com/gher-ulg/DIVAnd.jl using a very modern progamming language Julia.
+
+
 # DIVA (Data-Interpolating Variational Analysis)
 
 DIVA allows the spatial interpolation of data (*analysis*) in an optimal way, comparable to *optimal interpolation* (OI). In comparison to OI, it takes into account coastlines, sub-basins and advection. Calculations are highly optimized and rely on a [*finite element*](https://en.wikipedia.org/wiki/Finite_element_method) resolution. 
