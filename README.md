@@ -1,7 +1,7 @@
 [![DOI](https://zenodo.org/badge/80114691.svg)](https://zenodo.org/badge/latestdoi/80114691)
 
 
-IMPORTANT: this original DIVA version will remain available but not be further developped. For new features you should switch to the generalization in N-dimensions https://github.com/gher-ulg/DIVAnd.jl using a very modern progamming language: Julia.
+IMPORTANT: this original `DIVA` tool will remain available, but will not be further developped. For new features, users are invited to switch to the generalization in N-dimensions [`DIVAnd`](https://github.com/gher-ulg/DIVAnd.jl) using a very modern progamming language: [`Julia`](julialang.org/).
 
 
 # DIVA (Data-Interpolating Variational Analysis)
@@ -23,11 +23,11 @@ Tools to generate the finite element mesh are provided as well as tools to optim
 ### Installing
 Download the latest stable [release](https://github.com/gher-ulg/DIVA/releases) and extract the archive:
 ```bash
-tar xvf DIVA-4.7.1.tar.gz
+tar xvf DIVA-4.7.2.tar.gz
 ```
 then go in the source directory
 ```bash
-cd DIVA-4.7.1/DIVA3D/src/Fortran/
+cd DIVA-4.7.2/DIVA3D/src/Fortran/
 ```
 and run the compilation script:
 ```bash
@@ -45,10 +45,10 @@ divatest0
 ```
 ## How does it work?
 
-Diva is a software tool developed for gridding in situ data.
+DIVA is a software tool developed for gridding in situ data.
 It uses a finite-element method to solve a variational principle which takes into account:
  1. the distance between analysis and data (observation constraint),
- 2. the regularity of the analysis (smoothness constraint),
+ 2. the regularity of the analysis (*smoothness* constraint),
  3. physical laws (behaviour constraint). 
  
  ![800px-diva_gridding_canary](https://cloud.githubusercontent.com/assets/11868914/24946939/09c918fc-1f65-11e7-9974-06264c70ec1e.png)
@@ -59,15 +59,15 @@ The advantage of the method over classic interpolation methods is multiple:
 
 ##  How to try DIVA without installing?
 
-If you are familiar with Ocean Data View [ODV](http://odv.awi.de/) software tool, you can perfom DIVA gridding when plotting vertical or horizontal sections as the other 25000 scientists using ODV.
+If you are familiar with Ocean Data View [ODV](http://odv.awi.de/) software tool, you can perfom DIVA gridding when plotting vertical or horizontal sections, as the other 25000 scientists using ODV.
 
-You can also use basic DIVA features in a web application [Diva on Web](http://gher-diva.phys.ulg.ac.be/web-vis/diva.html) if you have your data ready in a simple three-column ascii file or ODV ascii spreadsheet format. 
+You can also use basic DIVA features in a web application [Diva on Web](https://ec.oceanbrowser.net/emodnet/diva.html) if you have your data ready in a simple three-column ascii file or ODV ascii spreadsheet format. 
 
 ![divaonweb](https://cloud.githubusercontent.com/assets/11868914/24947093/a980dd26-1f65-11e7-8715-f1e50bd69a83.png)
 
 ## Related projects 
 
-* [divand.jl](https://github.com/gher-ulg/divand.jl)(Julia)  performs n-dimensional variational analysis of arbitrarily located observations.
+* [DIVAnd.jl](https://github.com/gher-ulg/divand.jl) performs n-dimensional variational analysis of arbitrarily located observations (written in Julia language).
 * [divand.py](https://github.com/gher-ulg/divand.py) is the Python interface to the previous code.
 * [DivaPythonTools](https://github.com/gher-ulg/DivaPythonTools) is a set of utilies to read, write and plot the content of input or output files used in Diva.
 
@@ -93,7 +93,7 @@ Troupin, C.; Machín, F.; Ouberdous, M.; Sirjacobs, D.; Barth, A. & Beckers, J.-
 
 ### User guide
 
-Most recent version in [PDF](https://github.com/gher-ulg/Diva-User-Guide/raw/master/DivaUserGuide.pdf).
+The most recent version is available in [PDF](https://github.com/gher-ulg/Diva-User-Guide/raw/master/DivaUserGuide.pdf).
 
 ### Poster and presentations
 
@@ -101,4 +101,5 @@ Check the complete list of documents hosted through the [ULg Orbi catalogue](htt
 
 ## Acknowledgments
 
-The DIVA development has received funding from the European Union Sixth Framework Programme (FP6/2002-2006) under grant agreement n° 026212, [SeaDataNet](http://www.seadatanet.org/), Seventh Framework Programme (FP7/2007-2013) under grant agreement n° 283607, SeaDataNet II, SeaDataCloud and [EMODNet](http://www.emodnet.eu/) (MARE/2008/03 - Lot 3 Chemistry - SI2.531432) from the [Directorate-General for Maritime Affairs and Fisheries](http://ec.europa.eu/dgs/maritimeaffairs_fisheries/index_en.htm).
+The DIVA development has received funding from:
+the European Union Sixth Framework Programme (FP6/2002-2006) under grant agreement n° 026212, [SeaDataNet](http://www.seadatanet.org/), Seventh Framework Programme (FP7/2007-2013) under grant agreement n° 283607, SeaDataNet II, SeaDataCloud and [EMODNet](http://www.emodnet.eu/) (MARE/2008/03 - Lot 3 Chemistry - SI2.531432) from the [Directorate-General for Maritime Affairs and Fisheries](http://ec.europa.eu/dgs/maritimeaffairs_fisheries/index_en.htm).
