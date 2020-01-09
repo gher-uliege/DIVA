@@ -17,7 +17,8 @@ addons:
           - gfortran
 
 script:
-  - echo ${FORTRANDIR}
+  - echo "Source directory --> ${FORTRANDIR}"
+  - echo "DIVA directory --> ${DIVADIR}"
   - ls ${FORTRANDIR}
   - cd ${FORTRANDIR}; make clean; make
   - cd ${DIVADIR}; ./divatest0
