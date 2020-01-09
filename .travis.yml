@@ -1,7 +1,7 @@
 language: generic
 os:
   - linux
-  - osx
+
 env:
   - FORTRANDIR="$(pwd)/DIVA3D/src/Fortran/" DIVADIR="$(pwd)/DIVA3D/divastripped/"
 
