@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/gher-ulg/DIVA.svg?branch=master)](https://travis-ci.org/gher-ulg/DIVA)      
 [![DOI](https://zenodo.org/badge/80114691.svg)](https://zenodo.org/badge/latestdoi/80114691)
 
 
