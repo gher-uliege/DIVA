@@ -12,5 +12,7 @@ addons:
           - libnetcdf-dev
           - gfortran
 script:
+  - echo ${FORTRANDIR}
+  - ls ${FORTRANDIR}
   - cd ${FORTRANDIR}; make clean; make
   - cd ${DIVADIR}; ./divatest0
