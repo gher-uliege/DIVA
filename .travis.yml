@@ -25,3 +25,6 @@ before_script:
 script:
   - cd ${FORTRANDIR}; make clean; make
   - cd ${DIVADIR}; ./divatest0
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
