@@ -3,8 +3,7 @@ os:
   - linux
   - osx
 env:
-  - FORTRANDIR="$(pwd)/DIVA3D/src/Fortran/"
-  - DIVADIR="$(pwd)/DIVA3D/divastripped/"
+  - FORTRANDIR="$(pwd)/DIVA3D/src/Fortran/" DIVADIR="$(pwd)/DIVA3D/divastripped/"
 
 sudo: required
 addons:
