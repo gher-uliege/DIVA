@@ -5,13 +5,16 @@ os:
 env:
   - FORTRANDIR="$(pwd)/DIVA3D/src/Fortran/"
   - DIVADIR="$(pwd)/DIVA3D/divastripped/"
-  
+
 sudo: required
 addons:
     apt: # apt-get for linux
         packages:
+          - libhdf5-serial-dev
           - libnetcdf-dev
+          - netcdf-bin
           - gfortran
+
 script:
   - echo ${FORTRANDIR}
   - ls ${FORTRANDIR}
