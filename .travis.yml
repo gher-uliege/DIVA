@@ -12,6 +12,7 @@ addons:
         packages:
           - libhdf5-serial-dev
           - libnetcdf-dev
+          - libnetcdff-dev
           - netcdf-bin
           - gfortran
 
