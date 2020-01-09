@@ -15,9 +15,13 @@ addons:
           - netcdf-bin
           - gfortran
 
-script:
+install:
   - echo "Source directory --> ${FORTRANDIR}"
   - echo "DIVA directory --> ${DIVADIR}"
-  - ls ${FORTRANDIR}
+
+before_script:
+  - export PATH=${PATH}:.
+
+script:
   - cd ${FORTRANDIR}; make clean; make
   - cd ${DIVADIR}; ./divatest0
