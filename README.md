@@ -98,7 +98,7 @@ The most recent version is available in [PDF](https://github.com/gher-ulg/Diva-U
 
 ### Poster and presentations
 
-Check the complete list of documents hosted through the [ULg Orbi catalogue](http://orbi.ulg.ac.be/orbi-report?query=%28%28affil%3A%22GeoHydrodynamics+and+Environment+Research%22%29+OR+%28affil%3A%22Oc%C3%A9anographie+physique%22%29%29&model=a&format=apa&sort_by0=1&order0=DESC&sort_by1=3&order1=ASC&sort_by2=2&order2=ASC&output=html&language=en&title=GHER+publications).
+Check the complete list of documents hosted through the [ULiege Orbi catalogue](http://orbi.ulg.ac.be/orbi-report?query=%28%28affil%3A%22GeoHydrodynamics+and+Environment+Research%22%29+OR+%28affil%3A%22Oc%C3%A9anographie+physique%22%29%29&model=a&format=apa&sort_by0=1&order0=DESC&sort_by1=3&order1=ASC&sort_by2=2&order2=ASC&output=html&language=en&title=GHER+publications).
 
 ## Acknowledgments
 
