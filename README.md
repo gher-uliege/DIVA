@@ -19,7 +19,15 @@ Tools to generate the finite element mesh are provided as well as tools to optim
 
 * A fortran compiler: [gfortran](https://gcc.gnu.org/wiki/GFortran), ifort, pgf, ...
 * The [NetCDF](https://www.unidata.ucar.edu/software/netcdf/netcdf-4/newdocs/netcdf-f90.html) library for Fortran for the output writing.
-* [gnuplot](http://www.gnuplot.info/) for the creation of graphics (optional).
+* [gnuplot](http://www.gnuplot.info/) for the creation of graphics [optional].
+
+For Debia architectures, you can run:
+```bash
+sudo apt-get install -y software-properties-common	# needed to use add-apt-repository
+sudo add-apt-repository universe  	                # needed to get netCDF
+sudo apt-get install -y git make                   # needed for the compilation
+sudo apt-get install -y gfortran netcdf-bin libnetcdf-dev libnetcdff-dev
+```
 
 ### Installing
 Download the latest stable [release](https://github.com/gher-ulg/DIVA/releases) and extract the archive:
@@ -66,7 +74,7 @@ You can also use basic DIVA features in a web application [Diva on Web](https://
 
 ![divaonweb](https://cloud.githubusercontent.com/assets/11868914/24947093/a980dd26-1f65-11e7-8715-f1e50bd69a83.png)
 
-## Related projects 
+## Related tools 
 
 * [DIVAnd.jl](https://github.com/gher-ulg/divand.jl) performs n-dimensional variational analysis of arbitrarily located observations (written in Julia language).
 * [divand.py](https://github.com/gher-ulg/divand.py) is the Python interface to the previous code.
