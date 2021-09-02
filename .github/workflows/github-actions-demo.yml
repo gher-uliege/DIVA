@@ -9,6 +9,23 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y software-properties-common
           sudo add-apt-repository universe
-          sudo apt-get install -y make gfortran netcdf-bin libnetcdf-dev libnetcdff-dev
+          sudo apt-get install -y wget make gfortran netcdf-bin libnetcdf-dev libnetcdff-dev
       - name: Download DIVA
-        run: echo "Installing DIVA software"
+        env:
+          DIVA_VERSION: 4.7.2
+        run: |
+          echo "Installing DIVA software"
+          TOOLSDIR="/tmp/tools/"
+          mkdir -pv ${TOOLSDIR}
+          cd ${TOOLSDIR}
+          wget -q "https://github.com/gher-ulg/DIVA/archive/refs/tags/v${DIVA_VERSION}.tar.gz"
+          tar xvf "v${DIVA_VERSION}.tar.gz"
+      - name: Compilation
+        run: |
+          cd ${TOOLSDIR}/DIVA-${DIVA_VERSION}/DIVA3D/src/Fortran/
+          make
+      - name: Test code
+        env: PATH=.:$PATH
+        run: |
+          cd ${TOOLSDIR}/DIVA-${DIVA_VERSION}/DIVA3D/divastripped/
+          ./divatest0
