@@ -32,7 +32,7 @@ jobs:
           DIVA_VERSION: 4.7.2
           TOOLSDIR: "/tmp/tools/"
         run: |
-          export PATH=.${PATH}
+          export PATH=.:${PATH}
           echo "This is the PATH variable: ${PATH}"
           cd ${TOOLSDIR}/DIVA-${DIVA_VERSION}/DIVA3D/divastripped/
           ./divatest0
