@@ -30,17 +30,27 @@ sudo apt-get install -y gfortran netcdf-bin libnetcdf-dev libnetcdff-dev
 ```
 
 ### Installing
-Download the latest stable [release](https://github.com/gher-ulg/DIVA/releases) and extract the archive:
+
+1. Download the latest stable [release](https://github.com/gher-ulg/DIVA/releases) and extract the archive:
 ```bash
 tar xvf DIVA-4.7.2.tar.gz
 ```
-then go in the source directory
+or clone the project and checkout the last version.
+2. Go in the source directory
 ```bash
 cd DIVA-4.7.2/DIVA3D/src/Fortran/
 ```
-and run the compilation script:
+3. Run the compilation script:
 ```bash
 make
+```
+Notes: 
+- the compiler (by default `gfortran`) and its flags can be modified by editing `Makefile`
+- the netCDF _library_ and _include_ flags are deduced from `nf-config` command, which provides the options with which netCDF was build.     
+The values can be specified differently (if for example you use a non-standard path) by editing the lines
+```bash
+export nclib=$(shell nf-config --flibs)
+export ncinc=$(shell nf-config --fflags)
 ```
 
 ### Testing
@@ -104,11 +114,14 @@ Troupin, C.; Machín, F.; Ouberdous, M.; Sirjacobs, D.; Barth, A. & Beckers, J.-
 
 The most recent version is available in [PDF](https://github.com/gher-ulg/Diva-User-Guide/raw/master/DivaUserGuide.pdf).
 
-### Poster and presentations
+### Posters and presentations
 
 Check the complete list of documents hosted through the [ULiege Orbi catalogue](http://orbi.ulg.ac.be/orbi-report?query=%28%28affil%3A%22GeoHydrodynamics+and+Environment+Research%22%29+OR+%28affil%3A%22Oc%C3%A9anographie+physique%22%29%29&model=a&format=apa&sort_by0=1&order0=DESC&sort_by1=3&order1=ASC&sort_by2=2&order2=ASC&output=html&language=en&title=GHER+publications).
 
 ## Acknowledgments
 
 The DIVA development has received funding from:
-the European Union Sixth Framework Programme (FP6/2002-2006) under grant agreement n° 026212, [SeaDataNet](http://www.seadatanet.org/), Seventh Framework Programme (FP7/2007-2013) under grant agreement n° 283607, SeaDataNet II, SeaDataCloud and [EMODNet](http://www.emodnet.eu/) (MARE/2008/03 - Lot 3 Chemistry - SI2.531432) from the [Directorate-General for Maritime Affairs and Fisheries](http://ec.europa.eu/dgs/maritimeaffairs_fisheries/index_en.htm).
+- the European Union Sixth Framework Programme (FP6/2002-2006) under grant agreement n° 026212, [SeaDataNet](http://www.seadatanet.org/), 
+- the Seventh Framework Programme (FP7/2007-2013) under grant agreement n° 283607, SeaDataNet II, 
+- SeaDataCloud and 
+- [EMODNet](http://www.emodnet.eu/) (MARE/2008/03 - Lot 3 Chemistry - SI2.531432) from the [Directorate-General for Maritime Affairs and Fisheries](http://ec.europa.eu/dgs/maritimeaffairs_fisheries/index_en.htm).
