@@ -28,7 +28,11 @@ jobs:
           cd ${TOOLSDIR}/DIVA-${DIVA_VERSION}/DIVA3D/src/Fortran/
           make
       - name: Test code
+        env:
+          DIVA_VERSION: 4.7.2
+          TOOLSDIR: "/tmp/tools/"
         run: |
+          export PATH=.${PATH}
           echo "This is the PATH variable: ${PATH}"
           cd ${TOOLSDIR}/DIVA-${DIVA_VERSION}/DIVA3D/divastripped/
           ./divatest0
