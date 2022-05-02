@@ -88,7 +88,7 @@ You can also use basic DIVA features in a web application [Diva on Web](https://
 ## Related tools 
 
 * [DIVAnd.jl](https://github.com/gher-ulg/divand.jl) performs n-dimensional variational analysis of arbitrarily located observations (written in Julia language).
-* [divand.py](https://github.com/gher-ulg/divand.py) is the Python interface to the previous code.
+* [divand.py](https://github.com/gher-ulg/divand.py) is the Python interface to [DIVAnd.jl](https://github.com/gher-ulg/divand.jl).
 * [DivaPythonTools](https://github.com/gher-ulg/DivaPythonTools) is a set of utilies to read, write and plot the content of input or output files used in Diva.
 
 ## Publications & documents 
