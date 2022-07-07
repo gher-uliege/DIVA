@@ -2,6 +2,8 @@
 [![Build Status](https://travis-ci.org/gher-ulg/DIVA.svg?branch=master)](https://travis-ci.org/gher-ulg/DIVA)
 [![DOI](https://zenodo.org/badge/80114691.svg)](https://zenodo.org/badge/latestdoi/80114691)
 
+![made-with-bash](https://img.shields.io/badge/Made%20with-Bash-1f425f.svg) 
+
 
 IMPORTANT: this original `DIVA` tool will remain available, but will not be further developped. For new features, users are invited to switch to the generalization in N-dimensions [`DIVAnd`](https://github.com/gher-ulg/DIVAnd.jl) using a very modern progamming language: [`Julia`](julialang.org/).
 
