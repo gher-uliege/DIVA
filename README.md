@@ -1,12 +1,11 @@
 [![Project Status: Inactive – The project has reached a stable, usable state but is no longer being actively developed; support/maintenance will be provided as time allows.](https://www.repostatus.org/badges/latest/inactive.svg)](https://www.repostatus.org/#inactive)
-[![Build Status](https://travis-ci.org/gher-ulg/DIVA.svg?branch=master)](https://travis-ci.org/gher-ulg/DIVA)
+[![Build Status](https://travis-ci.org/gher-uliege/DIVA.svg?branch=master)](https://travis-ci.org/gher-uliege/DIVA)
 [![DOI](https://zenodo.org/badge/80114691.svg)](https://zenodo.org/badge/latestdoi/80114691)
 
 ![made-with-bash](https://img.shields.io/badge/Made%20with-Bash-1f425f.svg) 
 
 
-IMPORTANT: this original `DIVA` tool will remain available, but will not be further developped. For new features, users are invited to switch to the generalization in N-dimensions [`DIVAnd`](https://github.com/gher-ulg/DIVAnd.jl) using a very modern progamming language: [`Julia`](julialang.org/).
-
+__IMPORTANT:__ this original `DIVA` tool will remain available, but will not be further developped. For new features, users are invited to switch to the generalization in N-dimensions [`DIVAnd`](https://github.com/gher-uliege/DIVAnd.jl) using a very modern progamming language: [`Julia`](julialang.org/).
 
 # DIVA (Data-Interpolating Variational Analysis)
 
@@ -20,11 +19,11 @@ Tools to generate the finite element mesh are provided as well as tools to optim
 
 ### Prerequisites
 
-* A fortran compiler: [gfortran](https://gcc.gnu.org/wiki/GFortran), ifort, pgf, ...
-* The [NetCDF](https://www.unidata.ucar.edu/software/netcdf/netcdf-4/newdocs/netcdf-f90.html) library for Fortran for the output writing.
-* [gnuplot](http://www.gnuplot.info/) for the creation of graphics [optional].
+✅ A fortran compiler: [gfortran](https://gcc.gnu.org/wiki/GFortran), [ifort](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html), pgf, ...
+✅ The [NetCDF](https://www.unidata.ucar.edu/software/netcdf/netcdf-4/newdocs/netcdf-f90.html) library for Fortran, needed for the writing of output files.
+✅ [gnuplot](http://www.gnuplot.info/)[optional] for the creation of graphics.
 
-For Debia architectures, you can run:
+For Debian architectures, you can run:
 ```bash
 sudo apt-get install -y software-properties-common	# needed to use add-apt-repository
 sudo add-apt-repository universe  	                # needed to get netCDF
@@ -38,16 +37,21 @@ sudo apt-get install -y gfortran netcdf-bin libnetcdf-dev libnetcdff-dev
 ```bash
 tar xvf DIVA-4.7.2.tar.gz
 ```
-or clone the project and checkout the last version.
+or clone the project and checkout the last version:
+```bash
+git clone git@github.com:gher-uliege/DIVA.git
+git checkout v4.7.2
+```
+
 2. Go in the source directory
 ```bash
-cd DIVA-4.7.2/DIVA3D/src/Fortran/
+cd DIVA3D/src/Fortran/
 ```
 3. Run the compilation script:
 ```bash
 make
 ```
-Notes: 
+#### Notes
 - the compiler (by default `gfortran`) and its flags can be modified by editing `Makefile`
 - the netCDF _library_ and _include_ flags are deduced from `nf-config` command, which provides the options with which netCDF was build.     
 The values can be specified differently (if for example you use a non-standard path) by editing the lines
@@ -68,7 +72,7 @@ divatest0
 ## How does it work?
 
 DIVA is a software tool developed for gridding in situ data.
-It uses a finite-element method to solve a variational principle which takes into account:
+It uses a _finite-element_ method to solve a variational principle which takes into account:
  1. the distance between analysis and data (observation constraint),
  2. the regularity of the analysis (*smoothness* constraint),
  3. physical laws (behaviour constraint). 
@@ -89,9 +93,10 @@ You can also use basic DIVA features in a web application [Diva on Web](https://
 
 ## Related tools 
 
-* [DIVAnd.jl](https://github.com/gher-ulg/divand.jl) performs n-dimensional variational analysis of arbitrarily located observations (written in Julia language).
-* [divand.py](https://github.com/gher-ulg/divand.py) is the Python interface to [DIVAnd.jl](https://github.com/gher-ulg/divand.jl).
-* [DivaPythonTools](https://github.com/gher-ulg/DivaPythonTools) is a set of utilies to read, write and plot the content of input or output files used in Diva.
+* [`DIVAnd.jl`](https://github.com/gher-uliege/DIVAnd.jl): n-dimensional variational analysis of arbitrarily located observations (written in Julia).
+* [`DIVAndNN.jl`](https://github.com/gher-uliege/DIVAndNN.jl): multivariate DIVAnd using a neural network.
+* [`DIVAnd.py`](https://github.com/gher-uliege/DIVAnd.py) (not developed anymore): the Python interface to `DIVAnd.jl`.
+* [`DivaPythonTools`](https://github.com/gher-uliege/DivaPythonTools): a set of utilies to read, write and plot the content of input or output files used in DIVA.
 
 ## Publications & documents 
 
