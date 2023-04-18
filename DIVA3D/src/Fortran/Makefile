@@ -6,11 +6,11 @@ DIVA_PARALLEL=1
 
 export compiler=gfortran
 
-export flags=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE
+export flags=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE -std=legacy
 ifeq ($(DIVA_PARALLEL), 1)
-export flagscalc=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY
+export flagscalc=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY -std=legacy
 else
-export flagscalc=-O3 -cpp -DDIVAITERATIVE -Wall -fbounds-check -DDIVAHUGEMEMORY
+export flagscalc=-O3 -cpp -DDIVAITERATIVE -Wall -fbounds-check -DDIVAHUGEMEMORY -std=legacy 
 endif
 
 
