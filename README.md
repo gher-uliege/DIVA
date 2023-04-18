@@ -100,7 +100,7 @@ You can also use basic DIVA features in a web application [Diva on Web](https://
 
 ## Publications & documents 
 
-Check the [GHER publications](http://orbi.ulg.ac.be/ulg-report?query=%28%28affil%3A%22GeoHydrodynamics+and+Environment+Research%22%29+OR+%28affil%3A%22Oc%C3%A9anographie+physique%22%29%29&model=a&format=apa&sort_by0=1&order0=DESC&sort_by1=3&order1=ASC&sort_by2=2&order2=ASC&output=html&language=en&title=GHER+publications) for the most recent updates.
+Check the [GHER publications](https://orbi.uliege.be/reports?action=1&conjunction_1=AND&field_1=affil&value_1_authority=&value_1=GHER&type=DSO%2FA01&type=DSO%2FA02&type=DSO%2FA03&type=DSO%2FA04&type=DSO%2FA05&type=DSO%2FA99&type=DSO%2FB01&type=DSO%2FB02&year_start=&year_end=&references=&model=none&format=apa&abstract_length=&sort_1=issued_dt%3Adesc&sort_1=author_sort%3Aasc&sort_1=title_sort%3Aasc&output=html&lang_report=en&title=GHER+Publications+) for the most recent updates.
 
 ### Articles
 
