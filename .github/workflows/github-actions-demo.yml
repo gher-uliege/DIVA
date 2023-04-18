@@ -18,7 +18,7 @@ jobs:
           echo "Installing DIVA software"
           mkdir -pv ${TOOLSDIR}
           cd ${TOOLSDIR}
-          wget -q "https://github.com/gher-ulg/DIVA/archive/refs/tags/v${DIVA_VERSION}.tar.gz"
+          wget -q "https://github.com/gher-uliege/DIVA/archive/refs/tags/v${DIVA_VERSION}.tar.gz"
           tar xvf "v${DIVA_VERSION}.tar.gz"
       - name: Compilation
         env:
