@@ -19,8 +19,8 @@ Tools to generate the finite element mesh are provided as well as tools to optim
 
 ### Prerequisites
 
-✅ A fortran compiler: [gfortran](https://gcc.gnu.org/wiki/GFortran), [ifort](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html), pgf, ...
-✅ The [NetCDF](https://www.unidata.ucar.edu/software/netcdf/netcdf-4/newdocs/netcdf-f90.html) library for Fortran, needed for the writing of output files.
+✅ A fortran compiler: [gfortran](https://gcc.gnu.org/wiki/GFortran), [ifort](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html), pgf, ...          
+✅ The [NetCDF](https://www.unidata.ucar.edu/software/netcdf/netcdf-4/newdocs/netcdf-f90.html) library for Fortran, needed for the writing of output files.           
 ✅ [gnuplot](http://www.gnuplot.info/)[optional] for the creation of graphics.
 
 For Debian architectures, you can run:
