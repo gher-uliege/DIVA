@@ -6,16 +6,17 @@ DIVA_PARALLEL=1
 
 export compiler=gfortran
 
-export flags=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE -std=legacy
+
+export flags=-O3 -frecord-marker=4 -cpp -DDIVAITERATIVE -fallow-argument-mismatch 
 ifeq ($(DIVA_PARALLEL), 1)
-export flagscalc=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY -std=legacy
+  export flagscalc=-O3 -cpp -fopenmp -DDIVAITERATIVE -DDIVAPARALLEL -DDIVAHUGEMEMORY -fallow-argument-mismatch 
 else
-export flagscalc=-O3 -cpp -DDIVAITERATIVE -Wall -fbounds-check -DDIVAHUGEMEMORY -std=legacy 
+  export flagscalc=-O3 -cpp -DDIVAITERATIVE -Wall -fbounds-check -DDIVAHUGEMEMORY -fallow-argument-mismatch 
 endif
 
 
 export nclib=$(shell nf-config --flibs)
-export ncinc=$(shell nf-config --fflags)
+export ncinc=$(shell nf-config --fflags) -fallow-argument-mismatch
 
 #export ncinc=-I/usr/local/include
 #export nclib=-L/usr/local/lib -lnetcdff -L/usr/local/lib -lnetcdf -lnetcdf
