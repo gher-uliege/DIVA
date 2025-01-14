@@ -5,7 +5,7 @@
 ![made-with-bash](https://img.shields.io/badge/Made%20with-Bash-1f425f.svg) 
 
 
-__IMPORTANT:__ this original `DIVA` tool will remain available, but will not be further developped. For new features, users are invited to switch to the generalization in N-dimensions [`DIVAnd`](https://github.com/gher-uliege/DIVAnd.jl) using a very modern progamming language: [`Julia`](julialang.org/).
+⚠️⚠️ this original `DIVA` tool will remain available, but will not be further developped. For new features, users are invited to switch to the generalization in N-dimensions [`DIVAnd`](https://github.com/gher-uliege/DIVAnd.jl) using the [`Julia`](julialang.org/) programming language.
 
 # DIVA (Data-Interpolating Variational Analysis)
 
@@ -85,7 +85,7 @@ The advantage of the method over classic interpolation methods is multiple:
 
 ##  How to try DIVA without installing?
 
-If you are familiar with Ocean Data View [ODV](http://odv.awi.de/) software tool, you can perfom DIVA gridding when plotting vertical or horizontal sections, as the other 25000 scientists using ODV.
+If you are familiar with Ocean Data View [ODV](http://odv.awi.de/) software tool, you can perfom `DIVA` gridding when plotting vertical or horizontal sections, as the other 25000 scientists using ODV.
 
 You can also use basic DIVA features in a web application [Diva on Web](https://ec.oceanbrowser.net/emodnet/diva.html) if you have your data ready in a simple three-column ascii file or ODV ascii spreadsheet format. 
 
