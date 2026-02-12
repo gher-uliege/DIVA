@@ -1,8 +1,8 @@
 [![Project Status: Inactive – The project has reached a stable, usable state but is no longer being actively developed; support/maintenance will be provided as time allows.](https://www.repostatus.org/badges/latest/inactive.svg)](https://www.repostatus.org/#inactive)
 [![Build Status](https://travis-ci.org/gher-uliege/DIVA.svg?branch=master)](https://travis-ci.org/gher-uliege/DIVA)
-[![DOI](https://zenodo.org/badge/80114691.svg)](https://zenodo.org/badge/latestdoi/80114691)
-
-![made-with-bash](https://img.shields.io/badge/Made%20with-Bash-1f425f.svg) 
+![GitHub last commit](https://img.shields.io/github/last-commit/gher-uliege/DIVA)
+[![DOI](https://zenodo.org/badge/80114691.svg)](https://zenodo.org/badge/latestdoi/80114691)           
+![GitHub top language](https://img.shields.io/github/languages/top/gher-uliege/DIVA) [![Static Badge](https://img.shields.io/badge/Project-SeaDataNet-blue)](https://www.seadatanet.org/) [![Static Badge](https://img.shields.io/badge/Project-SeaDataCloud-blue)](https://www.seadatanet.org/)
 
 
 ⚠️⚠️ this original `DIVA` tool will remain available, but will not be further developped. For new features, users are invited to switch to the generalization in N-dimensions [`DIVAnd`](https://github.com/gher-uliege/DIVAnd.jl) using the [`Julia`](julialang.org/) programming language.
