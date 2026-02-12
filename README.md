@@ -4,8 +4,8 @@
 [![DOI](https://zenodo.org/badge/80114691.svg)](https://zenodo.org/badge/latestdoi/80114691)           
 ![GitHub top language](https://img.shields.io/github/languages/top/gher-uliege/DIVA) [![Static Badge](https://img.shields.io/badge/Project-SeaDataNet-blue)](https://www.seadatanet.org/) [![Static Badge](https://img.shields.io/badge/Project-SeaDataCloud-blue)](https://www.seadatanet.org/)
 
-
-⚠️⚠️ this original `DIVA` tool will remain available, but will not be further developped. For new features, users are invited to switch to the generalization in N-dimensions [`DIVAnd`](https://github.com/gher-uliege/DIVAnd.jl) using the [`Julia`](julialang.org/) programming language.
+> [!WARNING]
+> This original `DIVA` tool will remain available, but will not be further developped. For new features, users are invited to switch to the generalization in N-dimensions [`DIVAnd`](https://github.com/gher-uliege/DIVAnd.jl) using the [`Julia`](julialang.org/) programming language.
 
 # DIVA (Data-Interpolating Variational Analysis)
 
